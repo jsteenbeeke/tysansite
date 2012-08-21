@@ -51,7 +51,6 @@ public class GroupPage extends TysanPage {
 
 		PageParameters params = RequestCycle.get().getPageParameters();
 		String groupidstr = params.getString("groupid");
-		@SuppressWarnings("deprecation")
 		Group g = groupDAO.get(Long.parseLong(groupidstr));
 
 		if (g == null) {

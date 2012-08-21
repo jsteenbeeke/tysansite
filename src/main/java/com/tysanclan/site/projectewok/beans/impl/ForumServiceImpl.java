@@ -66,8 +66,6 @@ import com.tysanclan.site.projectewok.util.StringUtil;
 @Scope("request")
 class ForumServiceImpl implements
 		com.tysanclan.site.projectewok.beans.ForumService {
-	private static final long serialVersionUID = 1L;
-
 	@Autowired
 	private ForumDAO forumDAO;
 	@Autowired

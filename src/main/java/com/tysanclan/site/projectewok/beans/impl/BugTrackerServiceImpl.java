@@ -41,8 +41,6 @@ import com.tysanclan.site.projectewok.entities.dao.filters.BugFilter;
 @Component
 @Scope("request")
 class BugTrackerServiceImpl implements BugTrackerService {
-	private static final long serialVersionUID = 1L;
-
 	private static Logger log = LoggerFactory
 			.getLogger(BugTrackerServiceImpl.class);
 

@@ -33,8 +33,6 @@ import com.tysanclan.site.projectewok.entities.dao.LogItemDAO;
 @Component
 @Scope("request")
 class LogServiceImpl implements com.tysanclan.site.projectewok.beans.LogService {
-	private static final long serialVersionUID = 1L;
-
 	@Autowired
 	private LogItemDAO logItemDAO;
 

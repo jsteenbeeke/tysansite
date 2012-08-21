@@ -101,8 +101,6 @@ import com.tysanclan.site.projectewok.util.MemberUtil;
 @Scope("request")
 class DemocracyServiceImpl implements
 		com.tysanclan.site.projectewok.beans.DemocracyService {
-	private static final long serialVersionUID = 1L;
-
 	@Autowired
 	private ChancellorElectionDAO chancellorElectionDAO;
 

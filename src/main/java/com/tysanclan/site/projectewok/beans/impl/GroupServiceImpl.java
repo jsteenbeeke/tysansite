@@ -61,8 +61,6 @@ import com.tysanclan.site.projectewok.util.HTMLSanitizer;
 @Scope("request")
 class GroupServiceImpl implements
 		com.tysanclan.site.projectewok.beans.GroupService {
-	private static final long serialVersionUID = 1L;
-
 	private static final Logger logger = LoggerFactory
 			.getLogger(GroupServiceImpl.class);
 

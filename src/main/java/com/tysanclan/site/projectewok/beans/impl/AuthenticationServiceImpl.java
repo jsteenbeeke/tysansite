@@ -32,8 +32,6 @@ import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 @Scope("request")
 class AuthenticationServiceImpl implements
 		com.tysanclan.site.projectewok.beans.AuthenticationService {
-	private static final long serialVersionUID = 1L;
-
 	@Autowired
 	private UserDAO userDAO;
 

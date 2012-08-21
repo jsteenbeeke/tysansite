@@ -98,7 +98,6 @@ public class ForumThreadPage extends TysanPage {
 	@SpringBean
 	private ForumPostDAO forumPostDAO;
 
-	@SuppressWarnings("deprecation")
 	public ForumThreadPage() {
 		super("");
 		PageParameters params = RequestCycle.get().getPageParameters();

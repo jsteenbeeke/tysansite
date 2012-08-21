@@ -66,8 +66,6 @@ import com.tysanclan.site.projectewok.util.MemberUtil;
 @Scope("request")
 class MembershipServiceImpl implements
 		com.tysanclan.site.projectewok.beans.MembershipService {
-	private static final long serialVersionUID = 1L;
-
 	private static final Random random = new Random();
 
 	private static final Logger log = LoggerFactory

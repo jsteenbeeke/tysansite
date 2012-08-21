@@ -76,7 +76,6 @@ public class MemberPage extends TysanPage {
 	@SpringBean
 	private ForumService forumService;
 
-	@SuppressWarnings("deprecation")
 	public MemberPage() {
 		super("");
 

@@ -67,8 +67,6 @@ import com.tysanclan.site.projectewok.util.MemberUtil;
 @Scope("request")
 class LawEnforcementServiceImpl implements
 		com.tysanclan.site.projectewok.beans.LawEnforcementService {
-	private static final long serialVersionUID = 1L;
-
 	@Autowired
 	private com.tysanclan.site.projectewok.beans.LogService logService;
 

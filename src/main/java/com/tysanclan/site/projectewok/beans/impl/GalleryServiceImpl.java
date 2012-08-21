@@ -48,8 +48,6 @@ import com.tysanclan.site.projectewok.util.ImageUtil;
  */
 @Scope("request")
 class GalleryServiceImpl implements GalleryService {
-	private static final long serialVersionUID = 1L;
-
 	private static final Logger log = LoggerFactory
 			.getLogger(GalleryServiceImpl.class);
 

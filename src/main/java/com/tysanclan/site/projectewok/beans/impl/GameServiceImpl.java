@@ -69,8 +69,6 @@ import com.tysanclan.site.projectewok.util.ImageUtil;
 @Scope("request")
 class GameServiceImpl implements
 		com.tysanclan.site.projectewok.beans.GameService {
-	private static final long serialVersionUID = 1L;
-
 	private static final Logger log = LoggerFactory
 			.getLogger(GameServiceImpl.class);
 

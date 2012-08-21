@@ -64,7 +64,6 @@ public class ProcessPaymentRequestPage extends WebPage {
 				AccessDeniedPage.class);
 	}
 
-	@SuppressWarnings("deprecation")
 	private PaymentRequest getRequest(Long requestId) {
 
 		return paymentRequestDAO.get(requestId);

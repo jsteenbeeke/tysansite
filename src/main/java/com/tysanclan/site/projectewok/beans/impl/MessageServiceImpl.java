@@ -43,8 +43,6 @@ import com.tysanclan.site.projectewok.util.HTMLSanitizer;
 @Scope("request")
 class MessageServiceImpl implements
 		com.tysanclan.site.projectewok.beans.MessageService {
-	private static final long serialVersionUID = 1L;
-
 	@Autowired
 	private MessageDAO messageDAO;
 

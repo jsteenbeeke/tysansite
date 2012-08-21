@@ -48,7 +48,6 @@ public class SubscriptionPaymentResolvedPage extends WebPage {
 				AccessDeniedPage.class);
 	}
 
-	@SuppressWarnings("deprecation")
 	private SubscriptionPayment getPayment(Long paymentId) {
 		return subscriptionPaymentDAO.get(paymentId);
 	}

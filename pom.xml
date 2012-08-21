@@ -26,11 +26,6 @@
 		        <name>wiquery wicket components</name>
 		        <url>http://wiquery.googlecode.com/svn/repo/</url>
 		</repository>
-		<repository>
-		        <id>sonatype-staging</id>
-		        <name>sonatype staging repository</name>
-		        <url>http://oss.sonatype.org/content/groups/staging/</url>
-		</repository>
 	</repositories>
 
 	<dependencies>

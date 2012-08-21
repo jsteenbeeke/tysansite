@@ -59,8 +59,6 @@ import com.tysanclan.site.projectewok.util.MemberUtil;
 @Component
 @Scope("request")
 class AchievementServiceImpl implements AchievementService {
-	private static final long serialVersionUID = 1L;
-
 	@Autowired
 	private AchievementDAO achievementDAO;
 
@@ -78,7 +76,7 @@ class AchievementServiceImpl implements AchievementService {
 
 	@Autowired
 	private com.tysanclan.site.projectewok.beans.NotificationService notificationService;
-
+ 
 	@Autowired
 	private UserDAO userDAO;
 

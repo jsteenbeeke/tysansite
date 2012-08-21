@@ -35,8 +35,6 @@ import com.tysanclan.site.projectewok.entities.dao.filters.OtterSightingFilter;
 @Scope("request")
 class HumorServiceImpl implements
 		com.tysanclan.site.projectewok.beans.HumorService {
-	private static final long serialVersionUID = 1L;
-
 	@Autowired
 	private OtterSightingDAO otterSightingDAO;
 

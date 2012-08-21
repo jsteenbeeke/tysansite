@@ -38,8 +38,6 @@ import com.tysanclan.site.projectewok.entities.User;
 @Component
 class MailServiceImpl implements
 		com.tysanclan.site.projectewok.beans.MailService {
-	private static final long serialVersionUID = 1L;
-
 	private Logger logger = LoggerFactory.getLogger(MailServiceImpl.class);
 
 	@Autowired

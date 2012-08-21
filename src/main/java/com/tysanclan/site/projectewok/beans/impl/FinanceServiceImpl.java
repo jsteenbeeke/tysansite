@@ -64,8 +64,6 @@ import com.tysanclan.site.projectewok.util.DateUtil;
 @Scope("request")
 class FinanceServiceImpl implements
 		com.tysanclan.site.projectewok.beans.FinanceService {
-	private static final long serialVersionUID = 1L;
-
 	@Autowired
 	private ExpenseDAO expenseDAO;
 

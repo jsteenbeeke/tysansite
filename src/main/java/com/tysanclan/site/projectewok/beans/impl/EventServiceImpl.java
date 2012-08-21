@@ -39,8 +39,6 @@ import com.tysanclan.site.projectewok.util.StringUtil;
 @Scope("request")
 class EventServiceImpl implements
 		com.tysanclan.site.projectewok.beans.EventService {
-	private static final long serialVersionUID = 1L;
-
 	@Autowired
 	private EventDAO eventDAO;
 

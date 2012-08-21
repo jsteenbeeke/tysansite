@@ -230,7 +230,6 @@ public class TysanPage extends WebPage {
 
 	}
 
-	@SuppressWarnings("deprecation")
 	private void addAnimalPanel() {
 		Calendar cal = DateUtil.getCalendarInstance();
 
