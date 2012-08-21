@@ -1,0 +1,84 @@
+<html xmlns:wicket>
+	<wicket:extend>
+		<p wicket:id="description"></p>
+		
+		<p>
+			<b>Status</b><br />
+			<span wicket:id="status"></span>			
+		</p>
+		
+		<p>
+			<b>Permalink</b><br />
+			<a wicket:id="permalink">Permalink</a>			
+		</p>
+		
+		<p>
+			<b>Reported by</b><br />
+			<span wicket:id="reportedBy"></span>			
+		</p>
+		
+		<p>
+			<b>Reported</b><br />
+			<span wicket:id="created"></span>			
+		</p>
+		
+		<p>
+			<b>Updated</b><br />
+			<span wicket:id="updated"></span>			
+		</p>
+		
+		<wicket:enclosure child="fixedIn">
+		<p>
+			<b>Fixed in version</b><br />
+			<span wicket:id="fixedIn"></span>			
+		</p>
+		</wicket:enclosure>
+		
+		<p>
+			<div wicket:id="accept"></div>
+			<div wicket:id="close"></div>
+			<div wicket:id="reopen"></div>
+		</p>
+		
+		<h3>Comments</h3>
+		<p wicket:id="comments">
+			<span wicket:id="user"></span>
+			<span wicket:id="comment">
+			</span>
+		</p>
+		
+		<h3>Add Comment</h3>
+		<form wicket:id="addForm">
+			<p>
+				<textarea wicket:id="descriptionArea" rows="12" cols="50"></textarea><br />
+				<input type="submit" class="SubmitButton" value="Add" />
+			</p>
+		</form>
+		
+		<div wicket:id="masterPanel">
+		<h3>Mark as Duplicate</h3>
+		<form wicket:id="markAsDuplicateForm">
+			<p>
+				<b>Duplicate of:</b><br />
+				<select wicket:id="duplicate"></select>
+				<input type="submit" class="SubmitButton" value="Mark" />
+			</p>
+		</form>
+
+		<h3>Resolve bug</h3>
+		<form wicket:id="resolveForm">
+			<p>
+				<b>Fixed in version</b>
+				<input type="text" wicket:id="fixedIn" />
+			</p>
+		
+			<p>
+				<b>Solution:</b><br />
+				<textarea wicket:id="solutionArea" rows="12" cols="50"></textarea><br />
+				<input type="submit" class="SubmitButton" value="Solve" />
+			</p>
+		</form>
+
+		</div>
+	</wicket:extend>
+</html>

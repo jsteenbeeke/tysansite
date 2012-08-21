@@ -1,0 +1,24 @@
+<html xmlns:wicket>
+<wicket:panel>
+	<div style="color: #ccc; text-align: center;">
+		<span wicket:id="page"></span>
+		
+		<form wicket:id="debugLogin">
+			<b>Developer Username:</b><br />
+			<input type="text" wicket:id="devusername" /><br />
+			<b>Username:</b><br />
+			<input type="text" wicket:id="username" /><br />
+			<b>Password:</b><br />
+			<input type="password" wicket:id="password" /><br />
+			
+			<input class="SubmitButton" type="submit" value="Login" />
+		</form>
+		
+		<b>Debug Tasks:</b><br />
+		<div wicket:id="taskStarter">
+			<a wicket:id="task">Start task of type <span wicket:id="type"></span></a><br />
+		</div>
+	</div>
+</wicket:panel>
+</html>
+  

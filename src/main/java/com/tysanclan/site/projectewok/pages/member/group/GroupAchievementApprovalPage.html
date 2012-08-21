@@ -1,0 +1,31 @@
+<html xmlns:wicket>
+	<wicket:extend>
+		<div wicket:id="accordion">
+			<wicket:container wicket:id="requests">
+				<h2><a wicket:id="name"></a></h2>
+				<div>
+					<p>
+						<b>Icon</b><br />
+						<img wicket:id="icon" />
+					</p>
+					<p>
+						<b>Description:</b><br />
+						<span wicket:id="description"></span>
+					</p>
+					<p>
+						<b>Requested by:</b><br />
+						<span wicket:id="requester"></span>
+					</p>
+					<p>
+						<b>Evidence:</b><br />
+						<wicket:enclosure child="screenshot"><img wicket:id="screenshot" /><br /></wicket:enclosure>
+						<span wicket:id="evidence"></span>
+					</p>
+					
+					<div wicket:id="yes"></div>
+					<div wicket:id="no"></div>
+				</div>
+			</wicket:container>
+		</div>
+	</wicket:extend>
+</html>

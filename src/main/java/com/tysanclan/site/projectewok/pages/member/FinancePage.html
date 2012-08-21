@@ -1,0 +1,80 @@
+<html xmlns:wicket>
+<wicket:extend>
+		Keeping our servers running is not cheap. Here is an overview of how much everything costs, and how
+		these costs are covered, and have been covered historically.
+		
+		<h2>Donate</h2>
+		If you enjoy being a member of Tysan and have some money to spare, we kindly ask you
+		make a donation to keep our various services running. Members who donate money gain the ability to participate
+		in elections without the need to gather endorsements (assuming they pass the minimum, for more details, please refer to the <a wicket:id="charter">Charter</a>).
+
+		
+			<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+				<p style="text-align: center;  width: 100%;">
+						<input type="hidden" name="cmd" value="_donations" />
+						<input type="hidden" name="business" wicket:id="paypalAddress" />
+						<input type="hidden" name="lc" value="US" />
+						<input type="hidden" name="item_name" wicket:id="un" value="Tysan Donation" />
+						<input type="hidden" name="item_number" value="" />
+						<input type="hidden" name="amount" />
+						<input type="hidden" name="currency_code" value="USD" />
+						<input type="hidden" name="no_note" value="0" />
+						<input type="hidden" name="no_shipping" value="1" />
+						<input type="hidden" name="rm" value="1" />
+						<input type="hidden" name="return" value="https://www.tysanclan.com/" />
+						<input type="hidden" name="bn" value="PP-DonationsBF:btn_donate_LG.gif:NonHosted" />
+						<input type="submit" class="SubmitButton" value="Donate" />
+				</p>
+			</form>
+
+		<div wicket:id="activatesubscription"></div>
+		<div wicket:id="viewsubscription"></div>
+		
+		<h2>Current expenses</h2>
+		<table class="HeaderUnderlined">
+			<tr>
+				<th>Expense</th>
+				<th>Regularity</th>
+				<th>Annual Amount (USD)</th>
+			</tr>
+			<wicket:container wicket:id="expenses">
+				<tr>
+					<td class="centeredCell"><span wicket:id="name">Cookies</span></td>
+					<td class="centeredCell"><span wicket:id="regularity">Monthly</span><wicket:enclosure child="amounteach">&nbsp;(<span wicket:id="amounteach">Monthly</span>)</wicket:enclosure></td>
+					<td class="centeredCell"><span wicket:id="annualfee">$600</span></td>
+				</tr>
+			</wicket:container>
+			<tr>
+				<th colspan="2">Total annual (USD)</th>
+				<th><span wicket:id="annualcost">$1000,00</span></th>
+			</tr>
+		</table>
+		
+		<h2>Cash flow</h2>
+		<div style="text-align: center;">	
+			<br /><br />
+			<div wicket:id="monthlychart" id="plot21" class="chart"></div>
+			<br /><br />
+			<div wicket:id="yearlychart" id="plot22" class="chart"></div>
+			<br /><br />
+			<div wicket:id="alltimechart" id="plot23" class="chart"></div>
+		</div>
+		Please note that prior to 2003 we did not use paid hosting, and
+		therefore do not have any financial records for that time.
+		
+		<h2>Contributions</h2>
+		<div wicket:id="reserves" id="plot31" class="chart"></div>
+		<br /><br />
+		<div wicket:id="monthlyparticipation" id="plot32" class="chart"></div>
+		<br /><br />
+		<div wicket:id="annualparticipation" id="plot33" class="chart"></div>
+		<br /><br />
+		<div wicket:id="alltimeparticipation" id="plot34" class="chart"></div>
+		
+		
+	
+	
+		
+</wicket:extend>
+
+</html>

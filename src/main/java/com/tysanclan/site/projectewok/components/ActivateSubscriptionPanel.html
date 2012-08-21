@@ -1,0 +1,27 @@
+<html xmlns:wicket>
+	<wicket:panel>
+		<h2>Subscribe</h2>
+		<p>
+			If you want to do more than just a single donation, you can choose to become a subscriber. 
+			The benefits for subscribers are the same as those for donators. Subscribing will give you
+			periodic payment reminders, providing you with payment links on a regular basis. Please note
+			that we can no longer use Paypal Subscriptions for this purpose.
+		</p>
+		
+		<form wicket:id="subscribeForm">
+			<p>
+				<b>Amount (at least $2)</b><br />
+				<input type="text" wicket:id="amount" />
+			</p>
+			
+			<p>
+				<b>Regularity</b>
+				<select wicket:id="regularity"></select>
+			</p>
+			
+			<p>
+				<input type="submit" class="SubmitButton" value="Subscribe" />
+			</p>
+		</form>
+	</wicket:panel>
+</html>

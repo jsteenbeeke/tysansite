@@ -1,0 +1,21 @@
+<html xmlns:wicket>
+	<wicket:extend>
+		<p>
+			<a wicket:id="back">Back to overview</a>
+		</p>
+		
+		<div wicket:id="accordion">
+			<h2><a>Create new forum</a></h2>
+			<div>
+				<form wicket:id="createform">
+					<b>Forum name:</b><br />
+					<input type="text" wicket:id="name" /><br />
+					<b>Forum description:</b><br />
+					<textarea cols="60" rows="10" wicket:id="description"></textarea>
+					<br />
+					<input type="submit" class="SubmitButton" value="Create" />
+				</form>
+			</div>
+		</div>
+	</wicket:extend>
+</html>

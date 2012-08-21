@@ -1,0 +1,21 @@
+<html xmlns:wicket>
+	<wicket:extend>
+		<div wicket:id="accordion">
+			<h2><a>Group applications</a></h2>
+			<div>
+				<table style="width: 100%;">
+					<tr>
+						<th>User</th>
+						<th>Approve</th>
+						<th>Decline</th>
+					</tr>
+					<tr wicket:id="applications">
+						<td style="text-align: center;" wicket:id="name"></td>
+						<td style="text-align: center;"><a wicket:id="yes"><img wicket:id="icon" /></a></td>
+						<td style="text-align: center;"><a wicket:id="no"><img wicket:id="icon" /></a></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</wicket:extend>
+</html>

@@ -1,0 +1,158 @@
+<html xmlns:wicket>
+    <wicket:extend>
+    	<p>
+	        The Tysan Clan is an online gaming clan, originally based on the USEast realm of Battle.net, that focuses
+	        on friendship before gaming prowess. It is our belief that gaming should be a means of relaxation, not a
+	        second job or an obligation. Our clan was shaped to strengthen these principles.
+        </p>
+        <p>
+        	Many clans on Battle.net are organized in a similar way. A single leader stands at the top, and dozens
+        	of ranks separate him from other members of the clan, whose only hope of ever gaining a role of significance
+        	is by spending years working their way up, or starting their own clan.
+        </p>
+        <p>
+        	The Tysan Clan rejects these methods of clan organization. In the Tysan Clan, any member can
+        	gain a role of significance, and no leader can attain a position without being elected to it.
+        	We believe that all members should play a part in the decision process.
+        </p>
+        <p>
+        	Members of the Tysan Clan are never subject to the whims of a single person. No member can be punished
+        	or expelled	without due process, and no position of power is ever achieved without the approval of multiple
+        	members of the clan.
+        </p>
+        <p>
+        	Due to our unique philosophy, and our adherence to our Clan's traditions, we have been around for a long
+        	time. The Tysan Clan was allegedly founded in 1997 by (TYC)Blayde, though no members from that time remain,
+        	and the earliest evidence of Tysan's existence dates from 1999 (a recruiting post by (TYC)Judicator on Clan Hall,
+        	which we found in the <a href="http://www.archive.org/">Internet Archive</a>).
+        </p>
+        <h2>Clan Information</h2>
+        <table>
+        	<tr>
+        		<th style="text-align: left;">Clan Founder</th>
+        	</tr>
+        	<tr>
+        		<td style="padding-bottom: 10px;">(TYC)Blayde</td>
+        	</tr>
+        	<tr>
+        		<th style="text-align: left;">Current Clan Leader</th>
+       		</tr>
+        	<tr>
+        		<td style="padding-bottom: 10px;"><span wicket:id="leader"></span></td>
+        	</tr>
+        	
+        	<tr>
+        		<th style="text-align: left; vertical-align: top;">Clan Senate members</th>
+       		</tr>
+        	<tr>
+        		<td style="padding-bottom: 10px;">
+        			<span wicket:id="senate">
+        				<span wicket:id="member"></span><br />
+        			</span>
+        		</td>
+        	</tr>
+        	<tr>
+        		<th style="text-align: left;">Number of active members</th>
+       		</tr>
+        	<tr>
+        		<td style="padding-bottom: 10px;" wicket:id="activecount"></td>
+       		</tr>
+       		<tr>
+        		<th style="text-align: left;">Total number of members</th>
+       		</tr>
+        	<tr>
+        		<td style="padding-bottom: 10px;" wicket:id="membercount"></td>
+       		</tr>
+       		<tr>
+        		<th style="text-align: left;">Tysan on Twitter</th>
+       		</tr>
+        	<tr>
+        		<td style="padding-bottom: 10px;"><a href="http://twitter.com/tysanclan">http://twitter.com/tysanclan</a></td>
+       		</tr>
+        </table>
+        
+        <h2>Played games</h2>
+        
+        We play the following games:
+        
+        <table class="fullWidth">
+        	<tr>
+        		<th colspan="2">Game</th>
+        		<th>Realm</th>
+        		<th>Players</th>
+        		<th>Supervisor</th>
+        	</tr>
+	        <wicket:container wicket:id="games">
+	        	<tr wicket:id="realms">
+	        		<td class="centeredCell" wicket:id="iconcontainer"><img wicket:id="icon" /></td>
+	        		<td class="centeredCell" wicket:id="name"></td>
+	        		<td class="centeredCell"><a wicket:id="realm"><span wicket:id="name"></span></a></td>
+	        		<td class="centeredCell" wicket:id="playercount"></td>
+	        		<td class="centeredCell" wicket:id="supervisorcontainer"><span wicket:id="supervisor"></span></td>
+	        	</tr>
+	        </wicket:container>
+        </table>
+        
+        <h2>Clan Structure</h2>
+        <p>
+			Unlike many other clans, the Tysan Clan has a proper separation of powers. The Chancellor has
+			<b>executive power</b>, and has the power to appoint persons to various roles, create committees, and veto proposed regulations.
+			In addition, the Chancellor can nominate Truthsayers. The Senate has <b>legislative power</b> and has the primary responsibility
+			of creating, modifying and repealing regulations. The Senate's secondary responsibilities are to advise the Chancellor,
+			to approve Truthsayer nominations and to carry out impeachment procedures should they prove necessary. Finally,
+			the Truthsayers have <b>judiciary power</b> in Tysan. Truthsayers are in charge of maintaining order, and have
+			the power to judge rules violations as well as declare Regulations untenable . Finally, a Truthsayer can
+			start an impeachment procedure.
+        </p>
+        
+        <h2>Ranks</h2>
+        <p>
+	        The Tysan Clan is characterized by it's flat structure. Many gaming clans, especially on Battle.net, tend
+	        to have a large vertical structure with a lot of ranks. These clans attract people who like to boss others
+	        around, and are often run by narcissistic adolescents. While the Tysan Clan does have a ranking structure,
+	        we only have 8 ranks, 5 of which are solely based on the amount of time spent as a member, and 3 of which
+	        represent elected positions within the Clan.
+	        
+	        <table>
+	        	<tr>
+	        		<th>Rank</th>
+	        		<th>Description</th>
+	        	</tr>
+	        	<tr wicket:id="ranks">
+	        		<td><span wicket:id="icon"></span> <span wicket:id="name"></span></td>
+	        		<td><span wicket:id="description"></span></td>
+	        	</tr>
+	        </table>
+	        
+        </p>        
+        <h2>Technology</h2>
+        <p>
+        The Tysan Clan website was created using the <a href="http://java.sun.com/">Java programming language</a>,
+        and uses a number of different technologies and frameworks. Our website is primarily based on the 
+        <a href="http://wicket.apache.org/">Apache Wicket web application framework</a>
+        in combination with the <a href="http://www.springsource.org/">Spring framework</a>
+        for Dependency Injection and Transaction processing. Finally, it uses the
+        <a href="http://www.hibernate.org/">Hibernate framework</a> for object-relational mapping
+        and for connecting with our <a href="http://www.postgresql.org/">PostgreSQL database</a>.
+        In addition to these, it uses a dozen smaller frameworks that tie into these, such as <a href="http://www.fortuityframework.com">Fortuity</a>,
+        <a href="http://code.google.com/p/wiquery/">WiQuery</a> for integration between Wicket,
+        Wicket extensions for the <a href="http://tinymce.moxiecode.com">TinyMCE rich text editor</a>,
+        and <a href="http://jqueryui.com/">JQuery UI</a>
+        and <a href="http://www.hibernate.org/397.html">Hibernate Annotations</a>.
+        </p>
+        <p>
+        	Most of the graphics on this site we did ourselves, but we also use the
+        	<a href="http://www.famfamfam.com/lab/icons/silk/">FamFamFam Silk Icon</a>
+        	set by Mark James, which can be used freely according to the 
+        	<a href="http://creativecommons.org/licenses/by/2.5/">Creative Commons Attribution 2.5 License</a>. Head
+        	over to his site for more information. If you do not like these terms, please contact
+        	the author.
+        </p>
+        <p>
+        	Our banner was created by Merlin. To see more of her work please visit <a href="http://butterfly20.deviantart.com/">Merlin's page on DeviantArt</a>.
+        </p>
+        
+        
+        
+    </wicket:extend>
+</html>

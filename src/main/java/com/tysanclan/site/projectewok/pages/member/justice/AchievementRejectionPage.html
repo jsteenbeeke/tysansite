@@ -1,0 +1,20 @@
+<html xmlns:wicket>
+	<wicket:extend>
+		<form wicket:id="rejectForm">
+			Achievements that are in violation of, or suggest the violation of the Charter or one or more Regulations may be rejected
+			by Truthsayers. You have indicated that the proposed Achievement named <b wicket:id="name"></b> qualifies for rejection. 
+			Please indicate the exact reason below.
+		
+			<p>
+				<input type="checkbox" wicket:id="charter" /> Achievement violates the Charter, or promotes violation thereof.
+			</p>
+			
+			<p>
+				Achievement violates the following regulation, or promotes violation thereof <select wicket:id="regulation"></select>
+			</p>
+			
+			<input type="submit" value="Reject" class="SubmitButton" />
+		</form>	
+	</wicket:extend>
+</html>
+

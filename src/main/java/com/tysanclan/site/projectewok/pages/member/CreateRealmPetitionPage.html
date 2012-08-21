@@ -1,0 +1,39 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket>
+	<wicket:extend>
+		<div wicket:id="tabs">
+  			<ul>
+				<li><a href="#tabs-1">New realm</a></li>
+				
+				<li wicket:id="tab2"><a href="#tabs-2">Existing realm</a></li>
+			</ul>
+			<div id="tabs-1">
+				<form wicket:id="new">
+					Using this form you can create a petition for a game already played by Tysan on a realm where Tysan does not
+					yet play a single game.<br />
+					
+					<b>Realm name:</b><br />
+  					<input type="text" wicket:id="name" /><br />
+				
+					<b>Game:</b><br />
+					<select wicket:id="game"></select>
+					
+					<input wicket:id="submit" type="submit" value="Create" class="SubmitButton" />
+				</form>
+			</div>
+			<wicket:enclosure child="existing:submit">
+			<div id="tabs-2">
+				<form wicket:id="existing">
+					Using this form you can create a petition for a game already played by Tysan, but not yet
+					played on the given realm.<br />
+				
+					<b>Desired game and realm:</b><br />
+					<select wicket:id="existing"></select><br />
+					
+					<input wicket:id="submit" type="submit" value="Create" class="SubmitButton" />
+				</form>
+			</div>
+			</wicket:enclosure>
+		</div>
+	</wicket:extend>
+</html>
+

@@ -1,0 +1,19 @@
+<html xmlns:wicket>
+	<wicket:extend>
+		<div style="text-align: left;">
+			<a wicket:id="backtothread">Return to thread</a>
+		</div>
+		<br />
+		<form wicket:id="editform">
+			<wicket:enclosure child="title">
+				<b>Thread title</b><br />
+				<input type="text" wicket:id="title" /><br />
+			</wicket:enclosure>
+		
+			<div wicket:id="editor">
+			</div>
+			<br />
+			<input type="submit" class="SubmitButton" value="Edit" />
+		</form>
+	</wicket:extend>
+</html>

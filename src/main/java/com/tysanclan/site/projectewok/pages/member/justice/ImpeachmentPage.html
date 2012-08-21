@@ -1,0 +1,23 @@
+<html xmlns:wicket>
+	<wicket:extend>
+		<div wicket:id="accordion">
+			<h2><a>Impeach Chancellor</a></h2>
+			<div>
+				<span wicket:id="initiator"></span> has initiated an impeachment procedure against <span wicket:id="chancellor"></span>, and you are requested to
+				cast a vote in this matter.
+				
+				<wicket:enclosure child="yes">
+				<p>
+					<span wicket:id="yes"></span><br />
+					<span wicket:id="no"></span>
+				</p>
+				</wicket:enclosure>
+				
+				<p wicket:id="vote">
+					
+				</p>
+			</div>
+		</div>
+	</wicket:extend>
+</html>
+

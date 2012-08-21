@@ -1,0 +1,53 @@
+<html xmlns:wicket>
+	<wicket:panel>
+		<div wicket:id="accordion">
+			<h2><a>Threads</a></h2>
+			<div>
+				<table style="width: 100%;">
+					<tr>
+						<td colspan="2"><b>Topic Title</b></td>
+						<td style="width: 10%;"><b>Post count</b></td>
+						<td><b>Last response</b></td>
+						<td><b>Last Poster</b></td>
+					</tr>
+					<wicket:container wicket:id="threads">
+					<tr>
+						<td style="width: 60px;">
+							<img wicket:id="thread" style="padding: 0px; margin: 0px;" src="../../images/icons/page_white_text.png" alt="Thread" title="Forum Thread" />
+							<img wicket:id="locked" style="padding: 0px; margin: 0px;" src="../../images/icons/lock.png" alt="Locked" title="Locked" />
+							<img wicket:id="sticky" style="padding: 0px; margin: 0px;" src="../../images/icons/link.png" alt="Sticky" title="Sticky" />
+							<img wicket:id="new" style="padding: 0px; margin: 0px;" src="../../images/icons/new.png" alt="Contains New Messages" title="Contains New Messages" />
+							
+						</td>
+						<td><span wicket:id="postlink"></span> <span wicket:id="last"></span></td>
+						<td style="text-align: center; width: 75px;"><span wicket:id="postcount">1337</span></td>
+						<td><span wicket:id="lastresponse">2008-12-12 13:37</span></td>
+						<td><span wicket:id="lastposter"></span></td>
+					</tr>
+					<tr>
+						<td></td><td colspan="4" style="font-size: 10px;">By <b wicket:id="poster">Prospero</b></td>
+					</tr>
+					</wicket:container>
+				</table>
+				<br />
+		        
+		        <wicket:enclosure child="threadlink">
+					<div class="ToolBox">
+						<a href="thread.html" wicket:id="threadlink"><img style="border: 0px;" src="images/icons/add.png" alt="New Thread" title="New Thread" /></a>
+					</div>
+					<br />
+				</wicket:enclosure>
+				
+		
+				<div wicket:id="navigation" class="nav">
+		        </div>
+		        
+       			<p style="text-align: center;">
+					<a wicket:id="markasread"><img wicket:id="icon" alt="Mark as read" title="Mark as read" /> Mark forum as read</a>
+				</p>		
+			</div>
+		</div>
+
+        
+	</wicket:panel>
+</html>

@@ -1,0 +1,58 @@
+/**
+ * Tysan Clan Website
+ * Copyright (C) 2008-2011 Jeroen Steenbeeke and Ties van de Ven
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.tysanclan.site.projectewok.tasks;
+
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.joda.time.DateTime;
+
+import com.tysanclan.site.projectewok.beans.LawEnforcementService;
+import com.tysanclan.site.projectewok.entities.TruthsayerComplaint;
+import com.tysanclan.site.projectewok.entities.dao.TruthsayerComplaintDAO;
+import com.tysanclan.site.projectewok.entities.dao.filters.TruthsayerComplaintFilter;
+import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
+
+public class ResolveTruthsayerComplaintTask extends PeriodicTask {
+	@SpringBean
+	private LawEnforcementService lawEnforcementService;
+
+	@SpringBean
+	private TruthsayerComplaintDAO truthsayerComplaintDAO;
+
+	public ResolveTruthsayerComplaintTask() {
+		super("Resolve Truthsayer Complaint", "Justice",
+				ExecutionMode.ONCE_EVERY_SIX_HOURS);
+	}
+
+	@Override
+	public void run() {
+		TruthsayerComplaintFilter filter = new TruthsayerComplaintFilter();
+		filter.setMediated(true);
+		filter.setStartBefore(new DateTime().minusWeeks(1).toDate());
+		for (TruthsayerComplaint complaint : truthsayerComplaintDAO
+				.findByFilter(filter)) {
+			lawEnforcementService.resolveComplaint(complaint);
+		}
+
+		filter.setMediated(false);
+		for (TruthsayerComplaint complaint : truthsayerComplaintDAO
+				.findByFilter(filter)) {
+			lawEnforcementService.complaintToSenate(complaint, false);
+		}
+
+	}
+}

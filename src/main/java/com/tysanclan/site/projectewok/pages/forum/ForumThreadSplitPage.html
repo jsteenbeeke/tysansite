@@ -1,0 +1,31 @@
+<html xmlns:wicket>
+	<wicket:extend>
+		Please select the posts to split into a new thread:
+		<form wicket:id="splitform">
+			<div wicket:id="threadstart"></div>
+		
+			<hr />
+			<div wicket:id="postselection">
+				<input wicket:id="checkbox" type="checkbox" /> Add this post to new thread:
+				<div wicket:id="postpanel"></div>
+			</div>
+			
+			Title of split thread:<br />
+			
+			<input type="text" wicket:id="title" size="50" /><br />
+			
+			Opening text of split thread:<br />
+			
+			<div wicket:id="editor"></div>
+			
+			Are you sure you want to split this thread?
+		
+			<div style="float: left; padding: 2px;">
+				<input type="submit" class="SubmitButton" value="Yes" />
+			</div>
+			<div style="float: left; padding: 3px;">
+				<a href="noway.html" class="SmallButton" wicket:id="no">No</a>
+			</div>
+		</form>
+	</wicket:extend>
+</html>

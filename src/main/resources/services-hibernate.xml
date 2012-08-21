@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+    Tysan Clan Website
+    Copyright (C) 2008-2011 Jeroen Steenbeeke and Ties van de Ven
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-3.0.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+           ">
+	<import resource="daos-hibernate.xml" />
+
+	<context:annotation-config />
+
+	<context:component-scan base-package="com.tysanclan.site.projectewok.beans.impl" />
+	<context:component-scan base-package="com.tysanclan.site.projectewok.beans.impl.twitter" />
+
+	<bean id="twitterConfig" class="twitter4j.conf.PropertyConfiguration">
+		<constructor-arg>
+			<props>
+				<prop key="oauth.consumerKey">YAhekAS2sehtKbphyycA</prop>
+				<prop key="oauth.consumerSecret">BlJrU3RedJ2xtFfJZa94uSgdG68UC6EIRqModtO6DQY</prop>
+			</props>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="twitterToken" class="twitter4j.auth.AccessToken">
+		<constructor-arg>
+			<value>${twitter.accessToken}</value>
+		</constructor-arg>
+		<constructor-arg>
+			<value>${twitter.accessTokenSecret}</value>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="twitterFactory" class="twitter4j.TwitterFactory">
+		<constructor-arg ref="twitterConfig" />
+	</bean>
+
+	<bean id="twitter" class="twitter4j.Twitter" factory-bean="twitterFactory"
+		factory-method="getInstance" scope="prototype">
+		<constructor-arg ref="twitterToken" />
+	</bean>
+	
+	<bean id="galleryService" class="com.tysanclan.site.projectewok.beans.impl.GalleryServiceImpl" autowire="byType" scope="request">
+		<constructor-arg>
+			<value>${gallery.urlbase}</value>
+		</constructor-arg>
+		<constructor-arg>
+			<value>${gallery.path}</value>
+		</constructor-arg>
+		<constructor-arg>
+			<value>/</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${mail.server}" />
+		<property name="username" value="${mail.username}" />
+		<property name="password" value="${mail.password}" />
+		<property name="port" value="587" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+			</props>
+		</property>
+	</bean>
+</beans>

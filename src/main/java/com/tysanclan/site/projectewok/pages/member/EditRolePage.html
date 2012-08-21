@@ -1,0 +1,25 @@
+<html xmlns:wicket>
+	<wicket:extend>
+  		<a wicket:id="back">Back to overview</a>
+  		
+  		<div wicket:id="accordion">
+  			<h2><a wicket:id="title"></a></h2>
+  			<div>
+  				<form wicket:id="editForm">
+  					<p>
+						<b>Name:</b><br />
+						<input type="text" wicket:id="name" />
+					</p>
+					<p>
+						<b>Description:</b><br />
+						<textarea wicket:id="description" rows="15" cols="60"></textarea>
+					</p>
+					<p>
+						<input type="submit" value="Modify" class="SubmitButton" />
+					</p>
+  				</form>
+  			</div>
+  		</div>
+	</wicket:extend>
+</html>
+

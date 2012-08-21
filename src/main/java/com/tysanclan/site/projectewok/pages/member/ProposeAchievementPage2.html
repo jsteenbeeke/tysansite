@@ -1,0 +1,33 @@
+<html xmlns:html="http://www.w3.org/1999/xhtml" xmlns:wicket>
+	<wicket:extend>
+		<form wicket:id="proposalForm">
+			<p>
+				<b>Icon</b><br />
+				<img wicket:id="icon" />
+			</p>
+			<p>
+				<b>Achievement Type</b><br />
+				<select wicket:id="type"></select>
+			</p>
+			<p wicket:id="gameContainer">
+				<b>Game</b><br />
+				<select wicket:id="game"></select>
+			</p>
+			<p wicket:id="groupContainer">
+				<b>Group</b><br />
+				<select wicket:id="group"></select>
+			</p>
+			<p>
+				<b>Name</b><br />
+				<input type="text" wicket:id="name" />
+			</p>
+			<p>
+				<b>Description</b><br />
+				<textarea cols="80" rows="25" wicket:id="description"></textarea>
+			</p>
+			
+			<input type="submit" value="Submit" class="SubmitButton" />
+		</form>
+	</wicket:extend>
+</html>
+

@@ -1,0 +1,39 @@
+<html xmlns:wicket>
+	<wicket:extend>
+		<div wicket:id="accordion">
+			<wicket:container wicket:id="votes">
+				<h2><a wicket:id="title"></a></h2>
+				<div>
+					<wicket:enclosure child="name">
+					<b>Proposed name:</b><br />
+					<div wicket:id="name">
+					</div>
+					<br />
+					</wicket:enclosure>
+					
+					<wicket:enclosure child="current">
+					<b>Current body:</b><br />
+					<div wicket:id="current">
+					</div>
+					<br />
+					</wicket:enclosure>
+					
+					<wicket:enclosure child="body">
+					<b>Proposed body:</b><br />
+					<div wicket:id="body">
+					</div>
+					<br />
+					</wicket:enclosure>
+					
+					<span wicket:id="yes"></span><br />
+					<span wicket:id="no"></span>
+					
+					<p style="color: #f00;" wicket:id="veto">The Chancellor has vetoed this proposition. This means that instead of a simple majority, 66% of the Senate must vote in favor, and Senators that do not cast a vote will be counted as voting <b>No</b></p>
+					
+					<p style="color: #fc0;" wicket:id="whatisay"></p>
+				</div>
+			</wicket:container>
+			
+		</div>
+	</wicket:extend>
+</html>

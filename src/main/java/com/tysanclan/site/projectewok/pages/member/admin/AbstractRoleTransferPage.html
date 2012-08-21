@@ -1,0 +1,24 @@
+<html xmlns:wicket>
+	<wicket:extend>
+		<form wicket:id="transferForm">
+			<p>
+				If you feel you can no longer fulfill your role of <span wicket:id="type"></span>,
+				then you have the option of stepping down. Before you can step down however, you
+				need to find a replacement. The best course of action is usually to ask
+				for volunteers on the forums, and then nominating them here.  
+			</p>
+			
+			<p>
+				If they accept the nomination, then the Chancellor and Senate must also approve
+				the nomination. If any of them objects, you need to find a new candidate.
+			</p>
+		
+			<p>
+				<b>Candidate of your choice:</b><br />
+				<select wicket:id="user"></select>
+			</p>
+			
+			<input type="submit" class="SubmitButton" value="Nominate" />
+		</form>
+	</wicket:extend>
+</html>

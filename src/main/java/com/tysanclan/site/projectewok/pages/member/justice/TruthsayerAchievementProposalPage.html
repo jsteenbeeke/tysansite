@@ -1,0 +1,36 @@
+<html xmlns:wicket>
+	<wicket:extend>
+		<div wicket:id="accordion">
+			<wicket:container wicket:id="proposals">
+				<h2><a wicket:id="name"></a></h2>
+				<div>
+					<p>
+						<b>Icon</b><br />
+						<img wicket:id="icon" />
+					</p>
+					<wicket:enclosure child="game">
+					<p>
+						<b>Game:</b><br />
+						<img wicket:id="game" />
+					</p>
+					</wicket:enclosure>
+					
+					<wicket:enclosure child="group">
+					<p>
+						<b>group:</b><br />
+						<span wicket:id="group"></span>
+					</p>
+					</wicket:enclosure>
+					
+					<p>
+						<b>Description:</b><br />
+						<span wicket:id="description"></span>
+					</p>
+					
+					<div wicket:id="yes"></div>
+					<div wicket:id="no"></div>
+				</div>
+			</wicket:container>
+		</div>
+	</wicket:extend>
+</html>

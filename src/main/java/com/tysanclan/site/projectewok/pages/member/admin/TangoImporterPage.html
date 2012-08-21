@@ -1,0 +1,15 @@
+<html xmlns:wicket>
+	<wicket:extend>
+		This page can be used to populate the site with data from
+		the previous Tysan Site, nicknamed "Project Tango".<br /><br />
+		<form wicket:id="uploadForm">
+			<h2>Master Key</h2>
+			<input type="password" wicket:id="masterKey" /><br />
+			
+			<h2>Tango Export File</h2>
+			<input type="file" wicket:id="fileUploader" style="color: #000;" /><br /><br />
+			
+			<input type="submit" class="SubmitButton" value="Import" />
+		</form>
+	</wicket:extend>
+</html>

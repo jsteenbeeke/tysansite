@@ -1,0 +1,18 @@
+<html xmlns:wicket>
+	<wicket:extend>
+		<div wicket:id="accordion">
+			<wicket:container wicket:id="complaints">
+				<h2><a wicket:id="title"></a></h2>
+				<div>
+					<span wicket:id="complainer"></span> has filed the following complaint against <span wicket:id="truthsayer"></span>:
+				
+					<p wicket:id="complaint">
+					</p>
+					
+					<div wicket:id="mediated"></div>
+					<div wicket:id="defer"></div>
+				</div>
+			</wicket:container>
+		</div>
+	</wicket:extend>
+</html>

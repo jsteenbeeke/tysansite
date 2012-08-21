@@ -1,0 +1,24 @@
+<html xmlns:wicket>
+	<wicket:extend>
+		<div wicket:id="accordion">
+			<h2><a>Impeach Chancellor</a></h2>
+			<div>
+				If there is general dissatisfaction about the policies of the currently active Chancellor, then the Senate,
+				combined with the support of at least one Truthsayer, may impeach the Chancellor. Impeachment is a serious
+				procedure and should not be initiated lightly.
+				
+				<wicket:enclosure child="yes">
+				<p>
+					<span wicket:id="yes"></span><br />
+					<span wicket:id="no"></span>
+				</p>
+				</wicket:enclosure>
+				
+				<p wicket:id="alreadyactive">
+					The impeachment procedure is already active!
+				</p>
+			</div>
+		</div>
+	</wicket:extend>
+</html>
+

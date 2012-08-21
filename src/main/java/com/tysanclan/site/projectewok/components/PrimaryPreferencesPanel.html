@@ -1,0 +1,46 @@
+<html xmlns:wicket>
+<wicket:panel>
+	<form wicket:id="settingsForm">
+		<p>
+			<b>Collapse forum categories</b><br />
+			<span style="font-size: 8px;">Collapse all forum categories except the general discussion category</span><br />
+			<input type="checkbox" wicket:id="collapseForums" />
+		</p>
+	
+		<p>
+			<b>Forum Custom Title</b><br />
+			<span style="font-size: 8px;">Appears below your username on the forum</span><br />
+			<input type="text" wicket:id="customTitle" />
+		</p>
+		
+		<p>
+			<b>Forum Avatar URL</b><br />
+			<span style="font-size: 8px;">This should link to an online picture, not one on your hard drive</span><br />
+			<input type="text" wicket:id="imageURL" />
+		</p>
+			
+		<p>
+			<div style="width: 250px; border-top: 1px solid #f66; font-size: 8px;">
+				If your avatar is wider than this red line, it is too big
+			</div>
+								
+			<img wicket:id="preview" alt="Preview" title="Preview" style="display: block;" />
+		</p>
+		
+		<p>
+			<b>Forum Signature</b><br />
+			<textarea wicket:id="signature" rows="10" cols="60"></textarea>
+		</p>
+	
+		<p>
+			<b>Timezone</b><br />
+			<select wicket:id="timezone"></select>
+		</p>
+
+		<p>
+			<input type="submit" class="SubmitButton" value="Change" />
+		</p>
+	</form>
+</wicket:panel>
+</html>
+  

@@ -1,0 +1,20 @@
+<html xmlns:wicket>
+	<wicket:extend>
+			<div>
+				Here you can edit public user information like a avatar.
+				<form wicket:id="userSearchForm">
+					<input wicket:id="username"></input>
+					<a wicket:id="submit"><img wicket:id="search"></img></a>
+				</form>
+				<br />
+				Selected user: <span wicket:id="username"></span>
+				<br />
+				<br />
+				<a wicket:id="removeAvatar" class="SubmitButton"><img wicket:id="delete"></img>Remove avatar</a>
+				<br />
+				<a wicket:id="removeSignature" class="SubmitButton"><img wicket:id="delete"></img>Remove signature</a>
+				<br />
+				<a wicket:id="removeCustomTitleLink" class="SubmitButton"><img wicket:id="delete"></img>Remove custom title</a>
+			</div>
+	</wicket:extend>
+</html>

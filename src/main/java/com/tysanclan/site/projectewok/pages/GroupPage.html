@@ -1,0 +1,29 @@
+<html xmlns:wicket>
+
+	<wicket:extend>
+		<div wicket:id="accordion">
+			<h2><a>Overview</a></h2>
+			<div>
+				<span wicket:id="description"></span>
+				
+				<wicket:enclosure child="leader">
+				<h3>Leader</h3>
+				<span wicket:id="leader"></span>
+				</wicket:enclosure>
+				
+				<h3>Members</h3>
+				<div wicket:id="members">
+					<span wicket:id="member"></span>
+				</div>
+			</div>
+			<h2><a>Gallery</a></h2>
+			<div>
+					<span wicket:id="gallery"></span>
+				
+					<span wicket:id="ygallery"></span>
+			</div>
+		</div>
+		
+		<br /><br />
+	</wicket:extend>
+</html>

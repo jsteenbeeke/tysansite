@@ -1,0 +1,55 @@
+<html xmlns:wicket>
+	<wicket:panel>
+		<div wicket:id="accordion">
+			<h2><a wicket:id="poster"><span wicket:id="name">Prospero</span></a></h2>
+			<div>
+		
+				<table style="width: 100%; padding: 0px;" cellpadding="0" cellspacing="0">
+				<tr>
+					<td style="width: 250px; vertical-align: top;">
+						<span wicket:id="customtitle">The One</span><br />
+						<wicket:enclosure child="lucky">Lucky Score: <span wicket:id="lucky">4</span><br /></wicket:enclosure>
+						<span style="display: inline;" wicket:id="sendMessage"></span><span wicket:id="viewProfile"></span><br />
+						
+						<br />
+						<wicket:enclosure child="rank">
+						<div>
+							<span wicket:id="rank"></span> <span wicket:id="rankName"></span>
+						</div><br />
+						</wicket:enclosure>
+						<img src="test.jpg" wicket:id="avatar" />
+						<br />
+						<p wicket:id="realms">
+							<b>Realm:</b> <span wicket:id="realm"></span><br />
+							<b>Accounts:</b> <span wicket:id="accounts"></span><br />
+						</p>
+						
+						<wicket:enclosure child="donations"><span wicket:id="donations"></span><br /></wicket:enclosure>
+						<span wicket:id="posttime">25th of October, 2008 @ 11:38</span><br />
+						<wicket:enclosure child="icon">
+							<br /><img wicket:id="icon" alt="Unread message" title="Unread message" />
+						</wicket:enclosure>
+					</td>
+					<td style="vertical-align: top; padding-left: 5px; ">
+						<div wicket:id="branchnote">Off-topic responses in this thread were branched to <span wicket:id="source"></span></div>
+						<span wicket:id="body">This is a test</span>
+						<wicket:enclosure child="signature">
+						<hr style="width: 80%;" />
+						<span wicket:id="signature">War is Peace; Freedom is Slavery; Ignorance is Strength</span>
+						</wicket:enclosure>
+					</td>
+					</tr>
+					<wicket:enclosure child="edit">
+					<tr>
+						<td colspan="2" style="text-align: center;">
+							<a wicket:id="edit"><img style="border: 0px;" src="images/icons/page_white_edit.png" alt="Edit" title="Edit post" /></a>
+							<a wicket:id="delete"><img style="border: 0px;" src="images/icons/page_white_delete.png" alt="Delete" title="Delete post" /></a>
+						</td>
+					</tr>
+					</wicket:enclosure>
+				</table>
+			</div>
+		</div>
+		<br />
+	</wicket:panel>
+</html>

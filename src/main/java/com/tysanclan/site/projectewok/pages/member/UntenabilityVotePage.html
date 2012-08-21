@@ -1,0 +1,29 @@
+<html xmlns:wicket>
+	<wicket:extend>
+		<div wicket:id="accordion">
+			<wicket:container wicket:id="votes">
+				<h2><a wicket:id="name">Regulation</a></h2>
+				<div>
+					<p>
+						This regulation has been deemed untenable by the Truthsayers. This means that they think the
+						regulation is in violation of the Charter and is therefore not enforcable.
+					</p>
+				
+					<p>
+						Do you agree that this regulation should be repealed?
+					</p>
+					
+					<p>
+						<span wicket:id="yes"></span><br />
+						<span wicket:id="no"></span>
+					</p>
+					
+					<p wicket:id="currentvote" style="color: #fc0;">
+					</p>
+					
+				</div>
+			</wicket:container>
+		</div>
+	</wicket:extend>
+</html>
+
