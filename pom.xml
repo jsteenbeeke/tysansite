@@ -17,11 +17,6 @@
 
 	<repositories>
 		<repository>
-			<id>hyperion-tools</id>
-			<name>Hyperion Tools Repo</name>
-			<url>http://hyperiontools.sourceforge.net/repo/</url>
-		</repository>
-		<repository>
 		        <id>wiquery</id>
 		        <name>wiquery wicket components</name>
 		        <url>http://wiquery.googlecode.com/svn/repo/</url>
@@ -35,18 +30,13 @@
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket</artifactId>
 			<version>${wicket.version}</version>
+			<type>pom</type>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-extensions</artifactId>
 			<version>${wicket.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.jeroensteenbeeke</groupId>
-			<artifactId>hyperion-tools</artifactId>
-			<version>1.0-SNAPSHOT</version>
 		</dependency>
 
 		<!-- Web Service Dependencies -->
@@ -193,7 +183,7 @@
 		<!-- UI Dependencies -->
 		<dependency>
 			<groupId>org.wicketstuff</groupId>
-			<artifactId>tinymce</artifactId>
+			<artifactId>wicketstuff-tinymce</artifactId>
 			<version>${wicket.version}</version>
 		</dependency>
 		<dependency>
@@ -680,8 +670,8 @@
 		<!-- Dependency versions -->
 		<cxf.version>2.4.1</cxf.version>
 		<fortuity.version>1.0.7</fortuity.version>
-		<spring.version>3.0.5.RELEASE</spring.version>
-		<wicket.version>1.4.18</wicket.version>
+		<spring.version>3.1.1.RELEASE</spring.version>
+		<wicket.version>1.5.7</wicket.version>
 	</properties>
 
 </project>
