@@ -19,9 +19,9 @@ package com.tysanclan.site.projectewok.pages;
 
 import java.util.List;
 
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.tysanclan.site.projectewok.TysanPage;
@@ -33,17 +33,18 @@ import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
  * @author Jeroen Steenbeeke
  */
 public class HistoryPage extends TysanPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private UserDAO userDAO;
 
 	/**
-     * 
-     */
+	 * 
+	 */
 	public HistoryPage() {
 		super("Clan History");
 
-		add(new ContextImage("ccimage",
-		        "images/cc-by-nc-nd.png"));
+		add(new ContextImage("ccimage", "images/cc-by-nc-nd.png"));
 
 		User prospero = null;
 
@@ -56,11 +57,9 @@ public class HistoryPage extends TysanPage {
 		}
 
 		PageParameters pp = new PageParameters();
-		pp.put("userid", prospero != null ? prospero
-		        .getId().toString() : "");
+		pp.add("userid", prospero != null ? prospero.getId().toString() : "");
 
-		add(new BookmarkablePageLink<User>("prosperolink",
-		        MemberPage.class, pp)
-		        .setVisible(prospero != null));
+		add(new BookmarkablePageLink<User>("prosperolink", MemberPage.class, pp)
+				.setVisible(prospero != null));
 	}
 }

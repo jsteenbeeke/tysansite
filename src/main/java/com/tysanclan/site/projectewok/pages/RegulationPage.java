@@ -35,12 +35,11 @@ import com.tysanclan.site.projectewok.entities.dao.RegulationDAO;
  * @author Jeroen Steenbeeke
  */
 public class RegulationPage extends TysanPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private RegulationDAO dao;
 
-	/**
-	 * 
-	 */
 	public RegulationPage() {
 		super("Regulations");
 

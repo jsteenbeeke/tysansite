@@ -36,43 +36,33 @@ import com.tysanclan.site.projectewok.entities.dao.UntenabilityVoteDAO;
 /**
  * @author Jeroen Steenbeeke
  */
-public class UntenabilityVotePage extends
-        AbstractMemberPage {
+public class UntenabilityVotePage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private UntenabilityVoteDAO untenabilityVoteDAO;
 
-	/**
-     * 
-     */
 	public UntenabilityVotePage() {
 		super("Untenability Votes");
 
 		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(
-		        new LiteralOption("h2")));
+		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
 
-		accordion.add(new ListView<UntenabilityVote>(
-		        "votes",
-		        ModelMaker.wrap(untenabilityVoteDAO
-		                .findAll())) {
+		accordion.add(new ListView<UntenabilityVote>("votes", ModelMaker
+				.wrap(untenabilityVoteDAO.findAll())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void populateItem(
-			        ListItem<UntenabilityVote> item) {
-				UntenabilityVote vote = item
-				        .getModelObject();
+			protected void populateItem(ListItem<UntenabilityVote> item) {
+				UntenabilityVote vote = item.getModelObject();
 
-				item.add(new Label("name", vote
-				        .getRegulation().getName()));
+				item.add(new Label("name", vote.getRegulation().getName()));
 
 				UntenabilityVoteChoice myChoice = null;
 
-				for (UntenabilityVoteChoice choice : vote
-				        .getChoices()) {
-					if (choice.getCaster()
-					        .equals(getUser())) {
+				for (UntenabilityVoteChoice choice : vote.getChoices()) {
+					if (choice.getCaster().equals(getUser())) {
 						myChoice = choice;
 						break;
 					}
@@ -82,68 +72,52 @@ public class UntenabilityVotePage extends
 
 				if (myChoice != null) {
 					currentChoice = myChoice.isInFavor() ? "You have voted to repeal the regulation"
-					        : "You have voted to maintain the regulation";
+							: "You have voted to maintain the regulation";
 				}
 
-				item.add(new Label("currentvote",
-				        currentChoice));
+				item.add(new Label("currentvote", currentChoice));
 
-				item
-				        .add(new IconLink.Builder(
-				                "images/icons/tick.png",
-				                new DefaultClickResponder<UntenabilityVote>(
-				                        ModelMaker
-				                                .wrap(vote)) {
-					                private static final long serialVersionUID = 1L;
+				item.add(new IconLink.Builder("images/icons/tick.png",
+						new DefaultClickResponder<UntenabilityVote>(ModelMaker
+								.wrap(vote)) {
+							private static final long serialVersionUID = 1L;
 
-					                @SpringBean
-					                private DemocracyService democracyService;
+							@SpringBean
+							private DemocracyService democracyService;
 
-					                /**
-					                 * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
-					                 */
-					                @Override
-					                public void onClick() {
-						                democracyService
-						                        .castUntenabilityVote(
-						                                getUser(),
-						                                getModelObject(),
-						                                true);
+							/**
+							 * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
+							 */
+							@Override
+							public void onClick() {
+								democracyService.castUntenabilityVote(
+										getUser(), getModelObject(), true);
 
-						                setResponsePage(new UntenabilityVotePage());
-					                }
-				                })
-				                .setText(
-				                        "Yes, I want this regulation repealled!")
-				                .newInstance("yes"));
-				item
-				        .add(new IconLink.Builder(
-				                "images/icons/cross.png",
-				                new DefaultClickResponder<UntenabilityVote>(
-				                        ModelMaker
-				                                .wrap(vote)) {
-					                private static final long serialVersionUID = 1L;
+								setResponsePage(new UntenabilityVotePage());
+							}
+						}).setText("Yes, I want this regulation repealled!")
+						.newInstance("yes"));
+				item.add(new IconLink.Builder("images/icons/cross.png",
+						new DefaultClickResponder<UntenabilityVote>(ModelMaker
+								.wrap(vote)) {
+							private static final long serialVersionUID = 1L;
 
-					                @SpringBean
-					                private DemocracyService democracyService;
+							@SpringBean
+							private DemocracyService democracyService;
 
-					                /**
-					                 * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
-					                 */
-					                @Override
-					                public void onClick() {
-						                democracyService
-						                        .castUntenabilityVote(
-						                                getUser(),
-						                                getModelObject(),
-						                                false);
+							/**
+							 * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
+							 */
+							@Override
+							public void onClick() {
+								democracyService.castUntenabilityVote(
+										getUser(), getModelObject(), false);
 
-						                setResponsePage(new UntenabilityVotePage());
-					                }
-				                })
-				                .setText(
-				                        "No, this regulation must remain in effect!")
-				                .newInstance("no"));
+								setResponsePage(new UntenabilityVotePage());
+							}
+						})
+						.setText("No, this regulation must remain in effect!")
+						.newInstance("no"));
 
 			}
 

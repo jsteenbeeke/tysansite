@@ -23,9 +23,8 @@ import com.tysanclan.site.projectewok.TysanPage;
  * @author Jeroen Steenbeeke
  */
 public class SessionTimeoutPage extends TysanPage {
-	/**
-     * 
-     */
+	private static final long serialVersionUID = 1L;
+
 	public SessionTimeoutPage() {
 		super("Session timed out");
 	}

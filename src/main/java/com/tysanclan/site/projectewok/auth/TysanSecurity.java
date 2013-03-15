@@ -20,7 +20,6 @@ package com.tysanclan.site.projectewok.auth;
 import java.util.Arrays;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.RequestCycle;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.application.IComponentInstantiationListener;
 
@@ -51,20 +50,20 @@ public class TysanSecurity implements IComponentInstantiationListener {
 	 *         otherwise
 	 */
 	public boolean authorize(Class<? extends Component> componentClass) {
-		TysanSession session = (TysanSession) RequestCycle.get().getSession();
+		TysanSession session = TysanSession.get();
 
 		// Check for rank-based security policy
 		TysanRankSecured sec1 = componentClass
-		        .getAnnotation(TysanRankSecured.class);
+				.getAnnotation(TysanRankSecured.class);
 		// Check for member-based security policy
 		TysanMemberSecured sec2 = componentClass
-		        .getAnnotation(TysanMemberSecured.class);
+				.getAnnotation(TysanMemberSecured.class);
 		// Check for non-member based security policy
 		TysanNonMemberSecured sec3 = componentClass
-		        .getAnnotation(TysanNonMemberSecured.class);
+				.getAnnotation(TysanNonMemberSecured.class);
 		// Check for a logged in user-based security policy
 		TysanLoginSecured sec4 = componentClass
-		        .getAnnotation(TysanLoginSecured.class);
+				.getAnnotation(TysanLoginSecured.class);
 
 		// Get the current user
 		User u = (session != null) ? session.getUser() : null;
@@ -102,7 +101,7 @@ public class TysanSecurity implements IComponentInstantiationListener {
 		if (!authorize(component.getClass())) {
 			// If not authorized, redirect to access denied page
 			throw new RestartResponseAtInterceptPageException(
-			        AccessDeniedPage.class);
+					AccessDeniedPage.class);
 		}
 
 	}

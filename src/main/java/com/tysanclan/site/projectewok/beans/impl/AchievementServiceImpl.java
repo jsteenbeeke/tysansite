@@ -54,7 +54,7 @@ import com.tysanclan.site.projectewok.util.ImageUtil;
 import com.tysanclan.site.projectewok.util.MemberUtil;
 
 /**
- * @author Jeroen
+ * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")

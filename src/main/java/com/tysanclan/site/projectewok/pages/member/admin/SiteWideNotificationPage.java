@@ -41,6 +41,8 @@ import com.tysanclan.site.projectewok.pages.member.OverviewPage;
  * @author Jeroen Steenbeeke
  */
 public class SiteWideNotificationPage extends AbstractSingleAccordionMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private RoleService roleService;
 

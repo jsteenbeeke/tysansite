@@ -27,6 +27,7 @@ import com.tysanclan.site.projectewok.entities.User;
  * @author Jeroen Steenbeeke
  */
 public abstract class AbstractMemberPage extends TysanPage {
+	private static final long serialVersionUID = 1L;
 
 	public AbstractMemberPage(String title, IModel<?> model) {
 		super(title, model);

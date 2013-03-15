@@ -22,7 +22,7 @@ import java.util.List;
 import org.hibernate.SQLQuery;
 
 /**
- * @author jeroen
+ * @author Jeroen Steenbeeke
  */
 public abstract class AbstractForumViewContext implements ForumViewContext {
 

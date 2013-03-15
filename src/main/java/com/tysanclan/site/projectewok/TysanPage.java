@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 
 import org.apache.wicket.Application;
+import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -56,6 +57,8 @@ import com.tysanclan.site.projectewok.util.MemberUtil;
  * @author Jeroen Steenbeeke
  */
 public class TysanPage extends WebPage {
+	private static final long serialVersionUID = 1L;
+
 	private static final boolean ENABLE_MAGIC_PUSHTBUTTON = false;
 
 	@SpringBean
@@ -126,12 +129,11 @@ public class TysanPage extends WebPage {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				Dialog _window = getModelObject();
-				target.appendJavascript(_window.open().render().toString());
+				target.appendJavaScript(_window.open().render().toString());
 
 			}
 
-		}.setVisible(Application.get().getConfigurationType()
-				.equals(Application.DEVELOPMENT)));
+		}.setVisible(Application.get().getConfigurationType() == RuntimeConfigurationType.DEVELOPMENT));
 
 		User u = getTysanSession().getUser();
 		WebMarkupContainer subMenu = new WebMarkupContainer("topMenu");
@@ -179,7 +181,7 @@ public class TysanPage extends WebPage {
 							if (i > 0) {
 								d.setAutoOpen(true);
 								d.setVisible(true);
-								target.addComponent(d);
+								target.add(d);
 								getNotificationWindow().open(target);
 							}
 						}
@@ -195,15 +197,6 @@ public class TysanPage extends WebPage {
 
 	public TysanSession getTysanSession() {
 		return (TysanSession) getSession();
-	}
-
-	@Override
-	public void onPageAttached() {
-		if (topPanel instanceof TysanTopPanel) {
-			((TysanTopPanel) topPanel).onAttachComponent();
-		}
-
-		super.onPageAttached();
 	}
 
 	/**

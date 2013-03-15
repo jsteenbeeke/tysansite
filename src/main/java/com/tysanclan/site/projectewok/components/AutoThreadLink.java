@@ -17,8 +17,8 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.tysanclan.site.projectewok.entities.ForumThread;
 import com.tysanclan.site.projectewok.pages.ForumThreadPage;

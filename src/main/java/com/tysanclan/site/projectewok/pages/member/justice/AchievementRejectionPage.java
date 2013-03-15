@@ -41,6 +41,8 @@ import com.tysanclan.site.projectewok.pages.member.AbstractSingleAccordionMember
  */
 @TysanRankSecured(Rank.TRUTHSAYER)
 public class AchievementRejectionPage extends AbstractSingleAccordionMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private RegulationDAO regulationDAO;
 

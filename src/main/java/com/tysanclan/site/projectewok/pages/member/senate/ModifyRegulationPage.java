@@ -47,22 +47,21 @@ import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
 /**
  * @author Jeroen Steenbeeke
  */
-@TysanRankSecured( { Rank.SENATOR, Rank.CHANCELLOR })
-public class ModifyRegulationPage extends
-        AbstractMemberPage {
+@TysanRankSecured({ Rank.SENATOR, Rank.CHANCELLOR })
+public class ModifyRegulationPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private RegulationDAO regulationDAO;
 
 	/**
-     * 
-     */
+	 * 
+	 */
 	public ModifyRegulationPage() {
 		super("Modify Regulation");
 
 		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(
-		        new LiteralOption("h2")));
+		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
 
 		accordion.add(createModifyForm());
@@ -74,8 +73,7 @@ public class ModifyRegulationPage extends
 	/**
 	 	 */
 	private Form<RegulationChange> createModifyForm() {
-		Form<RegulationChange> form = new Form<RegulationChange>(
-		        "editForm") {
+		Form<RegulationChange> form = new Form<RegulationChange>("editForm") {
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean
@@ -91,17 +89,13 @@ public class ModifyRegulationPage extends
 				TextField<String> newTitleField = (TextField<String>) get("newTitle");
 				DropDownChoice<Regulation> regulationChoice = (DropDownChoice<Regulation>) get("regulation");
 
-				String newDescription = descriptionArea
-				        .getModelObject();
-				String newTitle = newTitleField
-				        .getModelObject();
-				Regulation regulation = regulationChoice
-				        .getModelObject();
+				String newDescription = descriptionArea.getModelObject();
+				String newTitle = newTitleField.getModelObject();
+				Regulation regulation = regulationChoice.getModelObject();
 
 				RegulationChange vote = democracyService
-				        .createModifyRegulationVote(
-				                getUser(), regulation,
-				                newTitle, newDescription);
+						.createModifyRegulationVote(getUser(), regulation,
+								newTitle, newDescription);
 				if (vote != null) {
 					if (getUser().getRank() == Rank.SENATOR) {
 						setResponsePage(new RegulationModificationPage());
@@ -114,101 +108,76 @@ public class ModifyRegulationPage extends
 
 		};
 
-		form.add(new TextField<String>("newTitle",
-		        new Model<String>("")));
+		form.add(new TextField<String>("newTitle", new Model<String>("")));
 
-		form
-		        .add(new TextArea<String>("description",
-		                new Model<String>(""))
-		                .setRequired(true)
-		                .add(
-		                        new TinyMceBehavior(
-		                                new TysanTinyMCESettings())));
+		form.add(new TextArea<String>("description", new Model<String>(""))
+				.setRequired(true).add(
+						new TinyMceBehavior(new TysanTinyMCESettings())));
 
-		form
-		        .add(new Label("example",
-		                new Model<String>(""))
-		                .setEscapeModelStrings(false)
-		                .setVisible(false)
-		                .setOutputMarkupId(true)
-		                .setOutputMarkupPlaceholderTag(true));
+		form.add(new Label("example", new Model<String>(""))
+				.setEscapeModelStrings(false).setVisible(false)
+				.setOutputMarkupId(true).setOutputMarkupPlaceholderTag(true));
 
-		form.add(new DropDownChoice<Regulation>(
-		        "regulation", ModelMaker.wrap(
-		                (Regulation) null, true),
-		        ModelMaker.wrapChoices(regulationDAO
-		                .findAll()),
-		        new IChoiceRenderer<Regulation>() {
-			        private static final long serialVersionUID = 1L;
+		form.add(new DropDownChoice<Regulation>("regulation", ModelMaker.wrap(
+				(Regulation) null, true), ModelMaker.wrapChoices(regulationDAO
+				.findAll()), new IChoiceRenderer<Regulation>() {
+			private static final long serialVersionUID = 1L;
 
-			        /**
-			         * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(java.lang.Object)
-			         */
-			        @Override
-			        public Object getDisplayValue(
-			                Regulation object) {
-				        return object.getName();
-			        }
+			/**
+			 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(java.lang.Object)
+			 */
+			@Override
+			public Object getDisplayValue(Regulation object) {
+				return object.getName();
+			}
 
-			        /**
-			         * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getIdValue(java.lang.Object,
-			         *      int)
-			         */
-			        @Override
-			        public String getIdValue(
-			                Regulation object, int index) {
-				        return object.getId().toString();
-			        }
-		        }).setNullValid(false).add(
-		        new AjaxFormComponentUpdatingBehavior(
-		                "onchange") {
-			        private static final long serialVersionUID = 1L;
+			/**
+			 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getIdValue(java.lang.Object,
+			 *      int)
+			 */
+			@Override
+			public String getIdValue(Regulation object, int index) {
+				return object.getId().toString();
+			}
+		}).setNullValid(false).add(
+				new AjaxFormComponentUpdatingBehavior("onchange") {
+					private static final long serialVersionUID = 1L;
 
-			        @SuppressWarnings("unchecked")
-			        @Override
-			        protected void onUpdate(
-			                AjaxRequestTarget target) {
-				        System.out.println("FOO!!");
-				        Form<Regulation> regForm = (Form<Regulation>) getComponent()
-				                .getParent();
-				        Label example = (Label) regForm
-				                .get("example");
+					@SuppressWarnings("unchecked")
+					@Override
+					protected void onUpdate(AjaxRequestTarget target) {
+						System.out.println("FOO!!");
+						Form<Regulation> regForm = (Form<Regulation>) getComponent()
+								.getParent();
+						Label example = (Label) regForm.get("example");
 
-				        DropDownChoice<Regulation> regulationChoice = (DropDownChoice<Regulation>) regForm
-				                .get("regulation");
-				        Regulation regulation = regulationChoice
-				                .getModelObject();
+						DropDownChoice<Regulation> regulationChoice = (DropDownChoice<Regulation>) regForm
+								.get("regulation");
+						Regulation regulation = regulationChoice
+								.getModelObject();
 
-				        if (regulation != null) {
+						if (regulation != null) {
 
-					        Component example2 = new Label(
-					                "example",
-					                new Model<String>(
-					                        regulation
-					                                .getContents()))
-					                .setEscapeModelStrings(
-					                        false)
-					                .setVisible(true)
-					                .setOutputMarkupId(true)
-					                .setOutputMarkupPlaceholderTag(
-					                        true);
+							Component example2 = new Label("example",
+									new Model<String>(regulation.getContents()))
+									.setEscapeModelStrings(false)
+									.setVisible(true).setOutputMarkupId(true)
+									.setOutputMarkupPlaceholderTag(true);
 
-					        example.replaceWith(example2);
+							example.replaceWith(example2);
 
-					        if (target != null) {
-						        target
-						                .addComponent(example2);
-					        }
-				        } else {
-					        example.setVisible(false);
-					        if (target != null) {
-						        target
-						                .addComponent(example);
-					        }
-				        }
-			        }
+							if (target != null) {
+								target.add(example2);
+							}
+						} else {
+							example.setVisible(false);
+							if (target != null) {
+								target.add(example);
+							}
+						}
+					}
 
-		        }));
+				}));
 
 		return form;
 	}

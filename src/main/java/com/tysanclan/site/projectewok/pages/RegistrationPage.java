@@ -35,6 +35,8 @@ import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
 import com.tysanclan.site.projectewok.util.StringUtil;
 
 public class RegistrationPage extends TysanPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private UserService userBean;
 
@@ -49,24 +51,23 @@ public class RegistrationPage extends TysanPage {
 
 		resource = new CaptchaImageResource(passId);
 
-		final TextField<String> tfUsername = new TextField<String>(
-		        "username", new Model<String>(""));
+		final TextField<String> tfUsername = new TextField<String>("username",
+				new Model<String>(""));
 		tfUsername.setRequired(true);
-		final TextField<String> tfMail = new TextField<String>(
-		        "mail", new Model<String>(""));
+		final TextField<String> tfMail = new TextField<String>("mail",
+				new Model<String>(""));
 		tfMail.setRequired(true);
-		final PasswordTextField tfPassword = new PasswordTextField(
-		        "password", new Model<String>(""));
+		final PasswordTextField tfPassword = new PasswordTextField("password",
+				new Model<String>(""));
 		tfPassword.setRequired(true);
 		final PasswordTextField tfPassword2 = new PasswordTextField(
-		        "password2", new Model<String>(""));
+				"password2", new Model<String>(""));
 		tfPassword2.setRequired(true);
 
 		final TextField<String> tfCaptcha = new TextField<String>(
-		        "captchaResponse", new Model<String>(""));
+				"captchaResponse", new Model<String>(""));
 
-		Form<?> registrationForm = new Form<Void>(
-		        "registerform") {
+		Form<?> registrationForm = new Form<Void>("registerform") {
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean
@@ -82,110 +83,82 @@ public class RegistrationPage extends TysanPage {
 
 				if (ub.hasUser(tfUsername.getModelObject())) {
 					valid = false;
-					RegistrationPage.this
-					        .error("Username already taken");
+					RegistrationPage.this.error("Username already taken");
 				}
 				if (valid) {
-					String username = tfUsername
-					        .getModelObject();
+					String username = tfUsername.getModelObject();
 					for (int i = 0; i < username.length(); i++) {
-						if (!Character
-						        .isLetterOrDigit(username
-						                .charAt(i))) {
+						if (!Character.isLetterOrDigit(username.charAt(i))) {
 							valid = false;
 							RegistrationPage.this
-							        .error("Username may only contain letters and digits");
+									.error("Username may only contain letters and digits");
 							break;
 						}
 					}
 					if (valid) {
 						if (username.length() < 2) {
 							valid = false;
-							RegistrationPage.this
-							        .error("Username too short");
+							RegistrationPage.this.error("Username too short");
 						}
 						if (valid) {
-							if (!Character
-							        .isLetter(username
-							                .charAt(0))) {
+							if (!Character.isLetter(username.charAt(0))) {
 								valid = false;
 								RegistrationPage.this
-								        .error("Username must start with a letter");
+										.error("Username must start with a letter");
 							}
 						}
 					}
 				}
-				if (valid
-				        && tfPassword.getModelObject()
-				                .length() < 8) {
+				if (valid && tfPassword.getModelObject().length() < 8) {
 					valid = false;
 					RegistrationPage.this
-					        .error("Password must be at least 8 characters");
+							.error("Password must be at least 8 characters");
 				}
 				if (valid
-				        && !tfPassword
-				                .getModelObject()
-				                .equals(
-				                        tfPassword2
-				                                .getModelObject())) {
+						&& !tfPassword.getModelObject().equals(
+								tfPassword2.getModelObject())) {
 					valid = false;
-					RegistrationPage.this
-					        .error("Passwords do not match");
+					RegistrationPage.this.error("Passwords do not match");
 				}
-				if (valid
-				        && !StringUtil.isValidEMail(tfMail
-				                .getModelObject())) {
+				if (valid && !StringUtil.isValidEMail(tfMail.getModelObject())) {
 					valid = false;
 					RegistrationPage.this
-					        .error("Please provide a valid e-mail address");
+							.error("Please provide a valid e-mail address");
 				}
 				if (valid) {
 					UserFilter filter = new UserFilter();
-					filter
-					        .setEmail(tfMail
-					                .getModelObject());
-					int users = userDAO
-					        .countByFilter(filter);
+					filter.setEmail(tfMail.getModelObject());
+					int users = userDAO.countByFilter(filter);
 					if (users != 0) {
 						valid = false;
 						RegistrationPage.this
-						        .error("That e-mail address is already in use");
+								.error("That e-mail address is already in use");
 					}
 
 				}
 
-				if (!passId.equals(tfCaptcha
-				        .getModelObject())) {
+				if (!passId.equals(tfCaptcha.getModelObject())) {
 					resource.invalidate();
 					valid = false;
-					RegistrationPage.this
-					        .error("Challenge response invalid");
+					RegistrationPage.this.error("Challenge response invalid");
 				}
 
 				if (valid) {
-					User user = ub.createUser(tfUsername
-					        .getModelObject(), tfPassword
-					        .getModelObject(), tfMail
-					        .getModelObject());
+					User user = ub.createUser(tfUsername.getModelObject(),
+							tfPassword.getModelObject(),
+							tfMail.getModelObject());
 					if (user != null) {
-						Activation activation = ub
-						        .getActivationByUser(user);
+						Activation activation = ub.getActivationByUser(user);
 
-						mailService
-						        .sendHTMLMail(
-						                tfMail
-						                        .getModelObject(),
-						                "Tysan Clan Forums",
-						                mailService
-						                        .getActivationMailBody(
-						                                user
-						                                        .getUsername(),
-						                                activation
-						                                        .getActivationKey()));
+						mailService.sendHTMLMail(
+								tfMail.getModelObject(),
+								"Tysan Clan Forums",
+								mailService.getActivationMailBody(
+										user.getUsername(),
+										activation.getActivationKey()));
 
 						info("You have succesfully registered as "
-						        + tfUsername
-						                .getModelObject());
+								+ tfUsername.getModelObject());
 						tfUsername.clearInput();
 						tfMail.clearInput();
 
@@ -201,8 +174,7 @@ public class RegistrationPage extends TysanPage {
 		registrationForm.add(tfPassword2);
 		registrationForm.add(tfMail);
 		registrationForm.add(tfCaptcha);
-		registrationForm
-		        .add(new Image("captcha", resource));
+		registrationForm.add(new Image("captcha", resource));
 
 		add(registrationForm);
 	}

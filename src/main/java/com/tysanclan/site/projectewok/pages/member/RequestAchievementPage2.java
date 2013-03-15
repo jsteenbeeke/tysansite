@@ -23,15 +23,16 @@ import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.markup.html.image.resource.DynamicImageResource;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import wicket.contrib.tinymce.TinyMceBehavior;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.AchievementService;
+import com.tysanclan.site.projectewok.components.StoredImageResource;
 import com.tysanclan.site.projectewok.components.TysanTinyMCESettings;
 import com.tysanclan.site.projectewok.entities.Achievement;
 import com.tysanclan.site.projectewok.entities.AchievementRequest;
@@ -41,6 +42,9 @@ import com.tysanclan.site.projectewok.util.ImageUtil;
  * @author Jeroen Steenbeeke
  */
 public class RequestAchievementPage2 extends AbstractSingleAccordionMemberPage {
+
+	private static final long serialVersionUID = 1L;
+
 	private IModel<Achievement> achievementModel;
 
 	public RequestAchievementPage2(Achievement achievement) {
@@ -49,7 +53,7 @@ public class RequestAchievementPage2 extends AbstractSingleAccordionMemberPage {
 		achievementModel = ModelMaker.wrap(achievement);
 
 		final FileUploadField uploadField = new FileUploadField("screenshot",
-				new Model<FileUpload>());
+				new ListModel<FileUpload>());
 		final TextArea<String> evidenceField = new TextArea<String>("evidence",
 				new Model<String>());
 		evidenceField.add(new TinyMceBehavior(new TysanTinyMCESettings()));
@@ -62,7 +66,7 @@ public class RequestAchievementPage2 extends AbstractSingleAccordionMemberPage {
 
 			@Override
 			protected void onSubmit() {
-				FileUpload upload = uploadField.getModelObject();
+				FileUpload upload = uploadField.getFileUpload();
 				String evidence = evidenceField.getModelObject();
 
 				if (upload != null) {
@@ -99,26 +103,12 @@ public class RequestAchievementPage2 extends AbstractSingleAccordionMemberPage {
 		getAccordion().add(form);
 
 		form.add(new Label("name", achievement.getName()));
-		form.add(new Image("icon", new DynamicImageResource() {
 
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected byte[] getImageData() {
-				return achievementModel.getObject().getIcon().getImage();
-			}
-
-		}));
-		form.add(new Image("game", new DynamicImageResource() {
-
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected byte[] getImageData() {
-				return achievementModel.getObject().getGame().getImage();
-			}
-
-		}).setVisible(achievement.getGame() != null));
+		form.add(new Image("icon", new StoredImageResource(achievementModel
+				.getObject().getIcon().getImage())));
+		form.add(new Image("game", new StoredImageResource(achievementModel
+				.getObject().getGame().getImage())).setVisible(achievement
+				.getGame() != null));
 
 		boolean hasGroup = achievement.getGroup() != null;
 

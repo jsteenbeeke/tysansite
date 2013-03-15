@@ -38,17 +38,15 @@ import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
 /**
  * @author Jeroen Steenbeeke
  */
-@TysanRankSecured( { Rank.SENATOR, Rank.CHANCELLOR })
+@TysanRankSecured({ Rank.SENATOR, Rank.CHANCELLOR })
 public class AddRegulationPage extends AbstractMemberPage {
-	/**
-     * 
-     */
+	private static final long serialVersionUID = 1L;
+
 	public AddRegulationPage() {
 		super("Create Regulation");
 
 		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(
-		        new LiteralOption("h2")));
+		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
 
 		accordion.add(createAddForm());
@@ -60,8 +58,7 @@ public class AddRegulationPage extends AbstractMemberPage {
 	/**
 	 	 */
 	private Form<RegulationChange> createAddForm() {
-		Form<RegulationChange> form = new Form<RegulationChange>(
-		        "addForm") {
+		Form<RegulationChange> form = new Form<RegulationChange>("addForm") {
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean
@@ -76,14 +73,12 @@ public class AddRegulationPage extends AbstractMemberPage {
 				TextArea<String> descriptionArea = (TextArea<String>) get("description");
 				TextField<String> newTitleField = (TextField<String>) get("newTitle");
 
-				String newDescription = descriptionArea
-				        .getModelObject();
-				String newTitle = newTitleField
-				        .getModelObject();
+				String newDescription = descriptionArea.getModelObject();
+				String newTitle = newTitleField.getModelObject();
 
 				RegulationChange vote = democracyService
-				        .createAddRegulationVote(getUser(),
-				                newTitle, newDescription);
+						.createAddRegulationVote(getUser(), newTitle,
+								newDescription);
 				if (vote != null) {
 					if (getUser().getRank() == Rank.SENATOR) {
 						setResponsePage(new RegulationModificationPage());
@@ -96,16 +91,11 @@ public class AddRegulationPage extends AbstractMemberPage {
 
 		};
 
-		form.add(new TextField<String>("newTitle",
-		        new Model<String>("")));
+		form.add(new TextField<String>("newTitle", new Model<String>("")));
 
-		form
-		        .add(new TextArea<String>("description",
-		                new Model<String>(""))
-		                .setRequired(true)
-		                .add(
-		                        new TinyMceBehavior(
-		                                new TysanTinyMCESettings())));
+		form.add(new TextArea<String>("description", new Model<String>(""))
+				.setRequired(true).add(
+						new TinyMceBehavior(new TysanTinyMCESettings())));
 
 		return form;
 	}

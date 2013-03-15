@@ -47,6 +47,7 @@ import com.tysanclan.site.projectewok.util.GraphUtil;
  * @author Jeroen Steenbeeke
  */
 public class GamingGroupSupervisionPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
 
 	public GamingGroupSupervisionPage(Game game) {
 		super("Gaming groups for " + game.getName());

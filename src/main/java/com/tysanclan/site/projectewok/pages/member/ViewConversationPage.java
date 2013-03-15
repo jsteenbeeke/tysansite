@@ -32,9 +32,8 @@ import com.tysanclan.site.projectewok.entities.ConversationParticipation;
 @TysanMemberSecured
 public class ViewConversationPage extends TysanPage implements
 		EntityClickListener<ConversationParticipation> {
-	/**
-	 * 
-	 */
+	private static final long serialVersionUID = 1L;
+
 	public ViewConversationPage(ConversationParticipation conversation) {
 		super(conversation.getConversation().getTitle());
 

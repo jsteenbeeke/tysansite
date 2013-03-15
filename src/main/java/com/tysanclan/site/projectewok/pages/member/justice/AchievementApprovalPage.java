@@ -20,9 +20,9 @@ package com.tysanclan.site.projectewok.pages.member.justice;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.markup.html.image.resource.DynamicImageResource;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.request.resource.ByteArrayResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.core.options.LiteralOption;
 import org.odlabs.wiquery.ui.accordion.Accordion;
@@ -34,16 +34,21 @@ import com.tysanclan.site.projectewok.beans.AchievementService;
 import com.tysanclan.site.projectewok.components.IconLink;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
 import com.tysanclan.site.projectewok.components.MemberListItem;
+import com.tysanclan.site.projectewok.entities.Achievement;
 import com.tysanclan.site.projectewok.entities.AchievementRequest;
+import com.tysanclan.site.projectewok.entities.Game;
 import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.dao.AchievementRequestDAO;
 import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
+import com.tysanclan.site.projectewok.util.ImageUtil;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @TysanRankSecured(Rank.TRUTHSAYER)
 public class AchievementApprovalPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private AchievementService achievementService;
 
@@ -65,31 +70,21 @@ public class AchievementApprovalPage extends AbstractMemberPage {
 			@Override
 			protected void populateItem(final ListItem<AchievementRequest> item) {
 				AchievementRequest request = item.getModelObject();
+				Achievement achievement = request.getAchievement();
+				Game game = achievement.getGame();
 
 				item.add(new Label("name", request.getAchievement().getName()));
-				item.add(new Image("icon", new DynamicImageResource() {
 
-					private static final long serialVersionUID = 1L;
+				byte[] iconImage = item.getModelObject().getAchievement()
+						.getIcon().getImage();
 
-					@Override
-					protected byte[] getImageData() {
-						return item.getModelObject().getAchievement().getIcon()
-								.getImage();
-					}
+				byte[] gameImage = game != null ? game.getImage() : new byte[0];
 
-				}));
-
-				item.add(new Image("game", new DynamicImageResource() {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					protected byte[] getImageData() {
-						return item.getModelObject().getAchievement().getGame()
-								.getImage();
-					}
-
-				}).setVisible(item.getModelObject().getAchievement().getGame() != null));
+				item.add(new Image("icon", new ByteArrayResource(ImageUtil
+						.getMimeType(iconImage), iconImage)));
+				item.add(new Image("game", new ByteArrayResource(ImageUtil
+						.getMimeType(gameImage), gameImage))
+						.setVisible(game != null));
 
 				item.add(new Label("description", request.getAchievement()
 						.getDescription()).setEscapeModelStrings(false));
@@ -97,18 +92,10 @@ public class AchievementApprovalPage extends AbstractMemberPage {
 						.getRequestedBy()));
 
 				if (request.getEvidencePicture() != null) {
-					item.add(new Image("screenshot",
-							new DynamicImageResource() {
+					byte[] evidence = request.getEvidencePicture();
 
-								private static final long serialVersionUID = 1L;
-
-								@Override
-								protected byte[] getImageData() {
-									return item.getModelObject()
-											.getEvidencePicture();
-								}
-
-							}));
+					item.add(new Image("screenshot", new ByteArrayResource(
+							ImageUtil.getMimeType(evidence), evidence)));
 				} else {
 					item.add(new WebMarkupContainer("screenshot")
 							.setVisible(false));

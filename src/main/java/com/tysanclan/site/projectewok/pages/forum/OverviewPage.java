@@ -26,11 +26,13 @@ import com.tysanclan.site.projectewok.entities.Rank;
 
 @TysanNonMemberSecured
 public class OverviewPage extends TysanPage {
+	private static final long serialVersionUID = 1L;
+
 	public OverviewPage() {
 		super("User overview");
 
-		add(new EmailChangeConfirmationPanel(
-		        "emailChangeConfirmation", getUser()) {
+		add(new EmailChangeConfirmationPanel("emailChangeConfirmation",
+				getUser()) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -46,7 +48,7 @@ public class OverviewPage extends TysanPage {
 		});
 
 		add(new WebMarkupContainer("apply")
-		        .setVisible(getUser().getRank() == Rank.FORUM));
+				.setVisible(getUser().getRank() == Rank.FORUM));
 
 	}
 }

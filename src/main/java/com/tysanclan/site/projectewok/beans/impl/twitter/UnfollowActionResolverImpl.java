@@ -30,7 +30,7 @@ import com.tysanclan.site.projectewok.beans.twitter.UnfollowActionResolver;
 import com.tysanclan.site.projectewok.entities.twitter.UnfollowAction;
 
 /**
- * @author jeroen
+ * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("component")

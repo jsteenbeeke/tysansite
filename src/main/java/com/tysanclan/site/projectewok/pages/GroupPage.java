@@ -20,13 +20,12 @@ package com.tysanclan.site.projectewok.pages;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.wicket.PageParameters;
-import org.apache.wicket.RequestCycle;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.ui.accordion.Accordion;
 
@@ -43,15 +42,14 @@ import com.tysanclan.site.projectewok.entities.dao.GroupDAO;
  * @author Jeroen Steenbeeke
  */
 public class GroupPage extends TysanPage {
+	private static final long serialVersionUID = 1L;
 	@SpringBean
 	private GroupDAO groupDAO;
 
-	public GroupPage() {
+	public GroupPage(PageParameters params) {
 		super("Group");
 
-		PageParameters params = RequestCycle.get().getPageParameters();
-		String groupidstr = params.getString("groupid");
-		Group g = groupDAO.get(Long.parseLong(groupidstr));
+		Group g = groupDAO.get(params.get("groupid").toLong());
 
 		if (g == null) {
 			throw new RestartResponseAtInterceptPageException(

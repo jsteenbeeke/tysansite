@@ -23,9 +23,8 @@ import com.tysanclan.site.projectewok.TysanPage;
  * @author Jeroen Steenbeeke
  */
 public class VacationPage extends TysanPage {
-	/**
-     * 
-     */
+	private static final long serialVersionUID = 1L;
+
 	public VacationPage() {
 		super("Vacation Mode Active");
 	}

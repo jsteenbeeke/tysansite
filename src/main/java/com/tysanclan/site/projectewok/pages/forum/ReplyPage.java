@@ -49,6 +49,7 @@ import com.tysanclan.site.projectewok.util.DateUtil;
  * @author Jeroen Steenbeeke
  */
 public class ReplyPage extends TysanPage {
+	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private ForumService forumService;

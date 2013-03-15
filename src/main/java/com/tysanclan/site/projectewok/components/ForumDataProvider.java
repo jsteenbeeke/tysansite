@@ -30,7 +30,7 @@ import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.ContextBasedForumDAO;
 
 /**
- * @author jeroen
+ * @author Jeroen Steenbeeke
  */
 public class ForumDataProvider<T extends DomainObject, C extends DomainObject, D extends ContextBasedForumDAO<T, C>>
 		implements IDataProvider<T> {

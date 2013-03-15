@@ -17,11 +17,11 @@
  */
 package com.tysanclan.site.projectewok.util.scheduler;
 
-import org.apache.wicket.Application;
-import org.apache.wicket.injection.web.InjectorHolder;
-import org.apache.wicket.protocol.http.MockHttpServletRequest;
-import org.apache.wicket.protocol.http.MockHttpSession;
-import org.apache.wicket.protocol.http.MockServletContext;
+import org.apache.wicket.ThreadContext;
+import org.apache.wicket.injection.Injector;
+import org.apache.wicket.protocol.http.mock.MockHttpServletRequest;
+import org.apache.wicket.protocol.http.mock.MockHttpSession;
+import org.apache.wicket.protocol.http.mock.MockServletContext;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -57,7 +57,7 @@ public class TysanTaskExecutor implements Job {
 				.get(TASK_KEY);
 		TysanApplication application = (TysanApplication) context
 				.getMergedJobDataMap().get(APP_KEY);
-		Application.set(application);
+		ThreadContext.setApplication(application);
 
 		if (task != null) {
 			MockServletContext sctx = new MockServletContext(application,
@@ -67,7 +67,7 @@ public class TysanTaskExecutor implements Job {
 			RequestAttributes attr = new ServletRequestAttributes(request);
 
 			RequestContextHolder.setRequestAttributes(attr);
-			InjectorHolder.getInjector().inject(task);
+			Injector.get().inject(task);
 			try {
 				task.run();
 			} catch (Exception e) {

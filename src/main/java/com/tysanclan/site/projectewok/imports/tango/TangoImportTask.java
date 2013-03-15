@@ -24,7 +24,7 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.injection.Injector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,20 +36,20 @@ import com.tysanclan.site.projectewok.util.scheduler.SingleExecutionTask;
  */
 public class TangoImportTask extends SingleExecutionTask {
 	private static final Logger logger = LoggerFactory
-	        .getLogger(TangoImportTask.class);
+			.getLogger(TangoImportTask.class);
 
 	private List<String> data;
 
 	/**
-     * 
-     */
+	 * 
+	 */
 	public TangoImportTask(InputStream stream) {
 		super("Tango Import task", "Imports");
 		data = new LinkedList<String>();
 
 		try {
 			BufferedReader br = new BufferedReader(
-			        new InputStreamReader(stream));
+					new InputStreamReader(stream));
 			String next = br.readLine();
 
 			while (next != null) {
@@ -74,25 +74,22 @@ public class TangoImportTask extends SingleExecutionTask {
 	@Override
 	public void run() {
 		RecordHandlerLocator handlerLocator = RecordHandlerLocator
-		        .getInstance();
+				.getInstance();
 
 		TangoImporterCallback callback = new TangoImporterCallback();
 		for (String line : data) {
 			String[] parts = line.split("\t\t");
-			RecordHandler handler = handlerLocator
-			        .getHandler(parts[0]);
-			InjectorHolder.getInjector().inject(handler);
+			RecordHandler handler = handlerLocator.getHandler(parts[0]);
+			Injector.get().inject(handler);
 			if (handler.handle(parts, callback)) {
 				if (parts.length > 1) {
-					logger.info(StringUtil.combineStrings(
-					        "Record ", parts[1],
-					        " succesfully imported!"));
+					logger.info(StringUtil.combineStrings("Record ", parts[1],
+							" succesfully imported!"));
 				}
 			} else {
 				if (parts.length > 1) {
-					logger.warn(StringUtil.combineStrings(
-					        "Record ", parts[1],
-					        " could not be imported!"));
+					logger.warn(StringUtil.combineStrings("Record ", parts[1],
+							" could not be imported!"));
 				}
 
 			}

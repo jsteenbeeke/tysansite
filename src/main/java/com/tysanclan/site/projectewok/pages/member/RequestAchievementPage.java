@@ -25,7 +25,6 @@ import java.util.Set;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.markup.html.image.resource.DynamicImageResource;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -34,7 +33,12 @@ import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.components.IconLink;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
-import com.tysanclan.site.projectewok.entities.*;
+import com.tysanclan.site.projectewok.components.StoredImageResource;
+import com.tysanclan.site.projectewok.entities.Achievement;
+import com.tysanclan.site.projectewok.entities.AchievementRequest;
+import com.tysanclan.site.projectewok.entities.Game;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.UserGameRealm;
 import com.tysanclan.site.projectewok.entities.dao.AchievementDAO;
 import com.tysanclan.site.projectewok.util.AchievementComparator;
 
@@ -43,6 +47,8 @@ import com.tysanclan.site.projectewok.util.AchievementComparator;
  */
 @TysanMemberSecured
 public class RequestAchievementPage extends AbstractSingleAccordionMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private AchievementDAO achievementDAO;
 
@@ -92,31 +98,12 @@ public class RequestAchievementPage extends AbstractSingleAccordionMemberPage {
 					protected void populateItem(final ListItem<Achievement> item) {
 						Achievement achievement = item.getModelObject();
 
-						item.add(new Image("icon", new DynamicImageResource() {
-
-							private static final long serialVersionUID = 1L;
-
-							@Override
-							protected byte[] getImageData() {
-								return item.getModelObject().getIcon()
-										.getImage();
-							}
-
-						}));
+						item.add(new Image("icon", new StoredImageResource(
+								achievement.getIcon().getImage())));
 
 						if (achievement.getGame() != null) {
-							item.add(new Image("game",
-									new DynamicImageResource() {
-
-										private static final long serialVersionUID = 1L;
-
-										@Override
-										protected byte[] getImageData() {
-											return item.getModelObject()
-													.getGame().getImage();
-										}
-
-									}));
+							item.add(new Image("game", new StoredImageResource(
+									achievement.getGame().getImage())));
 						} else {
 							item.add(new WebMarkupContainer("game")
 									.setVisible(false));

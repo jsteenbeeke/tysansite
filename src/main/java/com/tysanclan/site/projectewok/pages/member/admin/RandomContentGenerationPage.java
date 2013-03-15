@@ -32,17 +32,15 @@ import com.tysanclan.site.projectewok.util.scheduler.TysanScheduler;
  * @author Jeroen Steenbeeke
  */
 public class RandomContentGenerationPage extends TysanPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private UserDAO userDAO;
 
-	/**
-     * 
-     */
 	public RandomContentGenerationPage() {
 		super("Random Content Generator");
 
-		Form<?> confirmationForm = new Form<Void>(
-		        "confirmationForm") {
+		Form<?> confirmationForm = new Form<Void>("confirmationForm") {
 			private static final long serialVersionUID = 1L;
 
 			/**
@@ -55,11 +53,9 @@ public class RandomContentGenerationPage extends TysanPage {
 				if (userDAO.findAll().isEmpty()) {
 
 					if (keyField.getModelObject().equals(
-					        TysanApplication.MASTER_KEY)) {
-						TysanScheduler
-						        .getScheduler()
-						        .scheduleTask(
-						                new DebugSiteCreationTask());
+							TysanApplication.MASTER_KEY)) {
+						TysanScheduler.getScheduler().scheduleTask(
+								new DebugSiteCreationTask());
 						info("Site population background task started");
 					} else {
 						error("Master key invalid");
@@ -72,7 +68,7 @@ public class RandomContentGenerationPage extends TysanPage {
 
 		};
 		confirmationForm.add(new PasswordTextField("masterKey",
-		        new Model<String>("")));
+				new Model<String>("")));
 		add(confirmationForm);
 	}
 }

@@ -57,6 +57,8 @@ import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
  */
 @TysanRankSecured(Rank.CHANCELLOR)
 public class RolesManagementPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private RoleDAO roleDAO;
 

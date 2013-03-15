@@ -50,14 +50,12 @@ import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
  */
 @TysanMemberSecured
 public class EditGroupForumModeratorPage extends TysanPage {
+	private static final long serialVersionUID = 1L;
+
 	private IModel<GroupForum> forumModel;
 
-	/**
-     * 
-     */
 	public EditGroupForumModeratorPage(GroupForum groupForum) {
-		super("Moderators for forum "
-		        + groupForum.getName());
+		super("Moderators for forum " + groupForum.getName());
 
 		forumModel = ModelMaker.wrap(groupForum);
 
@@ -65,44 +63,39 @@ public class EditGroupForumModeratorPage extends TysanPage {
 
 		if (!group.getLeader().equals(getUser())) {
 			throw new RestartResponseAtInterceptPageException(
-			        AccessDeniedPage.class);
+					AccessDeniedPage.class);
 		}
 
 		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(
-		        new LiteralOption("h2")));
+		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
 
-		accordion.add(new Label("title",
-		        "Moderators for forum "
-		                + groupForum.getName()));
+		accordion.add(new Label("title", "Moderators for forum "
+				+ groupForum.getName()));
 
 		List<User> moderators = new LinkedList<User>();
 		moderators.addAll(groupForum.getModerators());
 
-		Collections.sort(moderators,
-		        new Comparator<User>() {
+		Collections.sort(moderators, new Comparator<User>() {
 
-			        @Override
-			        public int compare(User o1, User o2) {
-				        return o1.getUsername().compareTo(
-				                o2.getUsername());
-			        }
+			@Override
+			public int compare(User o1, User o2) {
+				return o1.getUsername().compareTo(o2.getUsername());
+			}
 
-		        });
+		});
 
-		accordion.add(new ListView<User>("moderators",
-		        ModelMaker.wrap(moderators)) {
+		accordion.add(new ListView<User>("moderators", ModelMaker
+				.wrap(moderators)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void populateItem(ListItem<User> item) {
 				User user = item.getModelObject();
-				item.add(new Label("user", user
-				        .getUsername()));
+				item.add(new Label("user", user.getUsername()));
 
-				Link<User> deleteLink = new Link<User>(
-				        "remove", ModelMaker.wrap(user)) {
+				Link<User> deleteLink = new Link<User>("remove", ModelMaker
+						.wrap(user)) {
 					private static final long serialVersionUID = 1L;
 
 					@SpringBean
@@ -116,16 +109,13 @@ public class EditGroupForumModeratorPage extends TysanPage {
 						User moderator = getModelObject();
 
 						setResponsePage(new EditGroupForumModeratorPage(
-						        (GroupForum) forumService
-						                .removeModerator(
-						                        getUser(),
-						                        getForum(),
-						                        moderator)));
+								(GroupForum) forumService.removeModerator(
+										getUser(), getForum(), moderator)));
 					}
 				};
 
 				deleteLink.add(new ContextImage("icon",
-				        "images/icons/group_delete.png"));
+						"images/icons/group_delete.png"));
 
 				item.add(deleteLink);
 
@@ -133,8 +123,8 @@ public class EditGroupForumModeratorPage extends TysanPage {
 
 		});
 
-		Form<GroupForum> addModeratorForm = new Form<GroupForum>(
-		        "addForm", ModelMaker.wrap(groupForum)) {
+		Form<GroupForum> addModeratorForm = new Form<GroupForum>("addForm",
+				ModelMaker.wrap(groupForum)) {
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean
@@ -148,14 +138,11 @@ public class EditGroupForumModeratorPage extends TysanPage {
 			protected void onSubmit() {
 				DropDownChoice<User> userChoice = (DropDownChoice<User>) get("userSelect");
 
-				User moderator = userChoice
-				        .getModelObject();
+				User moderator = userChoice.getModelObject();
 
 				setResponsePage(new EditGroupForumModeratorPage(
-				        (GroupForum) forumService
-				                .addModerator(getUser(),
-				                        getModelObject(),
-				                        moderator)));
+						(GroupForum) forumService.addModerator(getUser(),
+								getModelObject(), moderator)));
 			}
 
 		};
@@ -169,18 +156,14 @@ public class EditGroupForumModeratorPage extends TysanPage {
 
 			@Override
 			public int compare(User o1, User o2) {
-				return o1.getUsername()
-				        .compareToIgnoreCase(
-				                o2.getUsername());
+				return o1.getUsername().compareToIgnoreCase(o2.getUsername());
 			}
 
 		});
 
-		addModeratorForm.add(new DropDownChoice<User>(
-		        "userSelect", ModelMaker.wrap(users
-		                .isEmpty() ? null : users.get(0),
-		                true), ModelMaker.wrap(users))
-		        .setNullValid(false));
+		addModeratorForm.add(new DropDownChoice<User>("userSelect", ModelMaker
+				.wrap(users.isEmpty() ? null : users.get(0), true), ModelMaker
+				.wrap(users)).setNullValid(false));
 
 		addModeratorForm.setVisible(!users.isEmpty());
 
@@ -195,7 +178,6 @@ public class EditGroupForumModeratorPage extends TysanPage {
 		return forumModel.getObject();
 	}
 
-	
 	private void addBackLink(Group group) {
 		add(new Link<Group>("back", ModelMaker.wrap(group)) {
 			private static final long serialVersionUID = 1L;
@@ -205,8 +187,7 @@ public class EditGroupForumModeratorPage extends TysanPage {
 			 */
 			@Override
 			public void onClick() {
-				setResponsePage(new GroupForumManagementPage(
-				        getModelObject()));
+				setResponsePage(new GroupForumManagementPage(getModelObject()));
 
 			}
 		});

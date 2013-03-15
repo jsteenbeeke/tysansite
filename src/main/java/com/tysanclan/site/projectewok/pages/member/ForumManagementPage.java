@@ -36,7 +36,11 @@ import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.ForumService;
-import com.tysanclan.site.projectewok.entities.*;
+import com.tysanclan.site.projectewok.entities.Forum;
+import com.tysanclan.site.projectewok.entities.ForumCategory;
+import com.tysanclan.site.projectewok.entities.GroupForum;
+import com.tysanclan.site.projectewok.entities.NewsForum;
+import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.dao.ForumCategoryDAO;
 
 /**
@@ -44,6 +48,8 @@ import com.tysanclan.site.projectewok.entities.dao.ForumCategoryDAO;
  */
 @TysanRankSecured(Rank.CHANCELLOR)
 public class ForumManagementPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private ForumCategoryDAO forumCategoryDAO;
 
@@ -68,8 +74,8 @@ public class ForumManagementPage extends AbstractMemberPage {
 	/**
 	 	 */
 	private ListView<ForumCategory> createCategoryListView() {
-		return new ListView<ForumCategory>("categories", ModelMaker
-				.wrap(forumCategoryDAO.findAll())) {
+		return new ListView<ForumCategory>("categories",
+				ModelMaker.wrap(forumCategoryDAO.findAll())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -119,11 +125,10 @@ public class ForumManagementPage extends AbstractMemberPage {
 						"images/icons/cross.png"));
 				deleteLink.add(new Label("name2", category.getName()));
 				item.add(deleteLink);
-				item
-						.add(new Label(
-								"allowpublic",
-								category.isAllowPublicGroupForums() ? "This category may contain public group forums"
-										: "This category may not contains public group forums"));
+				item.add(new Label(
+						"allowpublic",
+						category.isAllowPublicGroupForums() ? "This category may contain public group forums"
+								: "This category may not contains public group forums"));
 
 				final int total = category.getForums().size();
 

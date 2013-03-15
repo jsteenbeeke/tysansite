@@ -46,6 +46,8 @@ import com.tysanclan.site.projectewok.entities.Realm;
 @TysanRankSecured({ Rank.CHANCELLOR, Rank.FULL_MEMBER, Rank.SENIOR_MEMBER,
 		Rank.SENATOR, Rank.TRUTHSAYER, Rank.REVERED_MEMBER })
 public class CreateGamePetitionPage extends AbstractSingleAccordionMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private GameService gameService;
 
@@ -123,7 +125,7 @@ public class CreateGamePetitionPage extends AbstractSingleAccordionMemberPage {
 				Component newRealmField = rc.getParent().get("newRealm");
 				newRealmField.setVisible(rc.getModelObject() == null);
 				if (target != null) {
-					target.addComponent(newRealmField);
+					target.add(newRealmField);
 				}
 
 			}

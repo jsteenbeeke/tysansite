@@ -17,12 +17,12 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import org.apache.wicket.PageParameters;
-import org.apache.wicket.RequestCycle;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.tysanclan.site.projectewok.TysanSession;
@@ -76,7 +76,7 @@ public class LastPostLink extends Panel {
 				.toString();
 
 		if (firstPost != null) {
-			threadLink.add(new SimpleAttributeModifier("href", url + "#"
+			threadLink.add(AttributeModifier.replace("href", url + "#"
 					+ firstPost.getId().toString()));
 		}
 

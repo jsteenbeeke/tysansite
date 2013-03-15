@@ -40,6 +40,7 @@ import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
 import com.tysanclan.site.projectewok.pages.member.AbstractSingleAccordionMemberPage;
 
 public class RequestPaymentPage extends AbstractSingleAccordionMemberPage {
+	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private RoleService roleService;

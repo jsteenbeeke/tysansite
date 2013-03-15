@@ -40,26 +40,23 @@ import com.tysanclan.site.projectewok.pages.member.OverviewPage;
  * @author Jeroen Steenbeeke
  */
 @TysanMemberSecured
-public class EditGroupDescriptionPage extends
-        AbstractMemberPage {
-	/**
-     * 
-     */
+public class EditGroupDescriptionPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	public EditGroupDescriptionPage(Group group) {
 		super("Edit group description - " + group.getName());
 
 		if (!group.getLeader().equals(getUser())) {
 			throw new RestartResponseAtInterceptPageException(
-			        new OverviewPage());
+					new OverviewPage());
 		}
 
 		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(
-		        new LiteralOption("h2")));
+		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
 
-		Form<Group> descriptionForm = new Form<Group>(
-		        "descriptionForm", ModelMaker.wrap(group)) {
+		Form<Group> descriptionForm = new Form<Group>("descriptionForm",
+				ModelMaker.wrap(group)) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -73,22 +70,18 @@ public class EditGroupDescriptionPage extends
 			@Override
 			protected void onSubmit() {
 				TextArea<String> descriptionArea = (TextArea<String>) get("description");
-				String description = descriptionArea
-				        .getModelObject();
+				String description = descriptionArea.getModelObject();
 
-				groupService.setGroupDescription(
-				        getModelObject(), description);
+				groupService.setGroupDescription(getModelObject(), description);
 
 				setResponsePage(new OverviewPage());
 			}
 
 		};
 
-		descriptionForm.add(new TextArea<String>(
-		        "description", new Model<String>(group
-		                .getDescription()))
-		        .add(new TinyMceBehavior(
-		                new TysanTinyMCESettings())));
+		descriptionForm.add(new TextArea<String>("description",
+				new Model<String>(group.getDescription()))
+				.add(new TinyMceBehavior(new TysanTinyMCESettings())));
 
 		accordion.add(descriptionForm);
 

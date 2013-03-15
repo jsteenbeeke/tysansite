@@ -24,6 +24,7 @@ import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.tysanclan.site.projectewok.TysanApplication;
@@ -36,12 +37,14 @@ import com.tysanclan.site.projectewok.util.scheduler.TysanScheduler;
  * @author Jeroen Steenbeeke
  */
 public class TangoImporterPage extends TysanPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private UserDAO userDAO;
 
 	/**
-     * 
-     */
+	 * 
+	 */
 	public TangoImporterPage() {
 		super("Tango Conversion Page");
 
@@ -58,10 +61,9 @@ public class TangoImporterPage extends TysanPage {
 				if (userDAO.findAll().isEmpty()) {
 
 					if (keyField.getModelObject().equals(
-					        TysanApplication.MASTER_KEY)) {
+							TysanApplication.MASTER_KEY)) {
 						FileUploadField field = (FileUploadField) get("fileUploader");
-						FileUpload upload = field
-						        .getFileUpload();
+						FileUpload upload = field.getFileUpload();
 
 						if (upload == null) {
 							error("You must upload a file");
@@ -69,12 +71,10 @@ public class TangoImporterPage extends TysanPage {
 						}
 
 						try {
-							TysanScheduler
-							        .getScheduler()
-							        .scheduleTask(
-							                new TangoImportTask(
-							                        upload
-							                                .getInputStream()));
+							TysanScheduler.getScheduler()
+									.scheduleTask(
+											new TangoImportTask(upload
+													.getInputStream()));
 							info("Tango import background job started");
 						} catch (IOException e) {
 							error("Internal error: Unable to read upload");
@@ -90,10 +90,10 @@ public class TangoImporterPage extends TysanPage {
 			}
 
 		};
-		uploadForm.add(new PasswordTextField("masterKey",
-		        new Model<String>("")));
+		uploadForm
+				.add(new PasswordTextField("masterKey", new Model<String>("")));
 		uploadForm.add(new FileUploadField("fileUploader",
-		        new Model<FileUpload>()));
+				new ListModel<FileUpload>()));
 		add(uploadForm);
 
 	}

@@ -40,6 +40,8 @@ import com.tysanclan.site.projectewok.entities.dao.filters.ForumThreadFilter;
  * @author Jeroen Steenbeeke
  */
 public class NewsPage extends TysanPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private ForumService forumService;
 

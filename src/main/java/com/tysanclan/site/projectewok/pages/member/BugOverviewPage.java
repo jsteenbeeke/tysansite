@@ -17,7 +17,7 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import org.apache.wicket.PageParameters;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.ui.tabs.Tabs;
 
@@ -32,6 +32,11 @@ import com.tysanclan.site.projectewok.entities.dao.filters.BugFilter;
 
 @TysanMemberSecured
 public class BugOverviewPage extends AbstractMemberPage {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private static final String FEATURE_MODE = "requestfeature";
 
 	private static final String BUG_MODE = "reportbug";
@@ -40,7 +45,7 @@ public class BugOverviewPage extends AbstractMemberPage {
 	private BugTrackerService bugTrackerService;
 
 	public BugOverviewPage(PageParameters params) {
-		this(params.containsKey("mode") ? (String) params.get("mode") : null);
+		this(params.get("mode").toOptionalString());
 	}
 
 	public BugOverviewPage() {

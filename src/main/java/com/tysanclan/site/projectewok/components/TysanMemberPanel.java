@@ -24,7 +24,7 @@ import java.util.Set;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.link.Link;
@@ -141,7 +141,7 @@ public class TysanMemberPanel extends TysanTopPanel {
 		window.setOutputMarkupId(true);
 		window.setOutputMarkupPlaceholderTag(true);
 		window.setWidth(400);
-		
+
 		window.add(new OtterSniperPanel("otterSniperPanel", 4));
 
 		AjaxLink<Dialog> link = new AjaxLink<Dialog>("online",
@@ -151,7 +151,7 @@ public class TysanMemberPanel extends TysanTopPanel {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				if (target != null) {
-					target.appendJavascript(getModelObject().open().render()
+					target.appendJavaScript(getModelObject().open().render()
 							.toString());
 				}
 
@@ -260,7 +260,7 @@ public class TysanMemberPanel extends TysanTopPanel {
 		@Override
 		public Integer getObject() {
 			if (_service == null) {
-				InjectorHolder.getInjector().inject(this);
+				Injector.get().inject(this);
 			}
 
 			int count = 0;
@@ -315,7 +315,7 @@ public class TysanMemberPanel extends TysanTopPanel {
 		@Override
 		public Integer getObject() {
 			if (_service == null) {
-				InjectorHolder.getInjector().inject(this);
+				Injector.get().inject(this);
 			}
 
 			ConversationParticipationFilter filter = new ConversationParticipationFilter();

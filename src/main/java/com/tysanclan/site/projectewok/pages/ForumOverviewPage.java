@@ -27,6 +27,8 @@ import com.tysanclan.site.projectewok.entities.User;
  * @author Jeroen Steenbeeke
  */
 public class ForumOverviewPage extends TysanPage {
+	private static final long serialVersionUID = 1L;
+
 	public ForumOverviewPage() {
 		super("Forums");
 

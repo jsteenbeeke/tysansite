@@ -21,7 +21,7 @@ import com.jeroensteenbeeke.hyperion.data.SearchFilter;
 import com.tysanclan.site.projectewok.entities.MobileUserAgent;
 
 /**
- * @author jeroen
+ * @author Jeroen Steenbeeke
  */
 public class MobileUserAgentFilter extends SearchFilter<MobileUserAgent> {
 	private static final long serialVersionUID = 1L;

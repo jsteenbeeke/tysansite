@@ -41,25 +41,22 @@ import com.tysanclan.site.projectewok.pages.member.OverviewPage;
  */
 @TysanMemberSecured
 public class EditMOTDPage extends AbstractMemberPage {
-	/**
-     * 
-     */
+	private static final long serialVersionUID = 1L;
+
 	public EditMOTDPage(Group group) {
-		super("Edit message of the day - "
-		        + group.getName());
+		super("Edit message of the day - " + group.getName());
 
 		if (!group.getLeader().equals(getUser())) {
 			throw new RestartResponseAtInterceptPageException(
-			        new OverviewPage());
+					new OverviewPage());
 		}
 
 		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(
-		        new LiteralOption("h2")));
+		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
 
 		Form<Group> motdForm = new Form<Group>("motdForm",
-		        ModelMaker.wrap(group)) {
+				ModelMaker.wrap(group)) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -75,19 +72,16 @@ public class EditMOTDPage extends AbstractMemberPage {
 				TextArea<String> motdArea = (TextArea<String>) get("motd");
 				String motd = motdArea.getModelObject();
 
-				groupService.setGroupMOTD(getModelObject(),
-				        motd);
+				groupService.setGroupMOTD(getModelObject(), motd);
 
 				setResponsePage(new OverviewPage());
 			}
 
 		};
 
-		motdForm.add(new TextArea<String>("motd",
-		        new Model<String>(group
-		                .getMessageOfTheDay()))
-		        .add(new TinyMceBehavior(
-		                new TysanTinyMCESettings())));
+		motdForm.add(new TextArea<String>("motd", new Model<String>(group
+				.getMessageOfTheDay())).add(new TinyMceBehavior(
+				new TysanTinyMCESettings())));
 
 		accordion.add(motdForm);
 

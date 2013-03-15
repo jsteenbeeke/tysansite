@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * @author Jeroen
+ * @author Jeroen Steenbeeke
  */
 @XmlRootElement(name = "server")
 public class Server implements Serializable {

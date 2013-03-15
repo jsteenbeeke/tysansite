@@ -35,22 +35,18 @@ import com.tysanclan.site.projectewok.pages.member.OverviewPage;
  * @author Jeroen Steenbeeke
  */
 public class LeaveGroupPage extends AbstractMemberPage {
-	/**
-     * 
-     */
+	private static final long serialVersionUID = 1L;
+
 	public LeaveGroupPage(Group group) {
 		super("Leave " + group.getName());
 
 		Accordion accordion = new Accordion("accordion");
 		accordion.setAutoHeight(false);
-		accordion.setHeader(new AccordionHeader(
-		        new LiteralOption("h2")));
+		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 
-		accordion.add(new Label("title", "Leave "
-		        + group.getName()));
+		accordion.add(new Label("title", "Leave " + group.getName()));
 
-		Link<Group> yesLink = new Link<Group>("yes",
-		        ModelMaker.wrap(group)) {
+		Link<Group> yesLink = new Link<Group>("yes", ModelMaker.wrap(group)) {
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean
@@ -58,19 +54,16 @@ public class LeaveGroupPage extends AbstractMemberPage {
 
 			@Override
 			public void onClick() {
-				groupService.leaveGroup(getUser(),
-				        getModelObject());
+				groupService.leaveGroup(getUser(), getModelObject());
 
 				setResponsePage(new OverviewPage());
 			}
 
 		};
 
-		yesLink.add(new ContextImage("icon",
-		        "images/icons/tick.png"));
+		yesLink.add(new ContextImage("icon", "images/icons/tick.png"));
 
-		Link<Group> noLink = new Link<Group>("no",
-		        ModelMaker.wrap(group)) {
+		Link<Group> noLink = new Link<Group>("no", ModelMaker.wrap(group)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -80,8 +73,7 @@ public class LeaveGroupPage extends AbstractMemberPage {
 
 		};
 
-		noLink.add(new ContextImage("icon",
-		        "images/icons/cross.png"));
+		noLink.add(new ContextImage("icon", "images/icons/cross.png"));
 
 		accordion.add(yesLink);
 		accordion.add(noLink);

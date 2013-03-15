@@ -61,6 +61,7 @@ import com.tysanclan.site.projectewok.entities.dao.filters.UserGameRealmFilter;
 import com.tysanclan.site.projectewok.event.GameDeletionEvent;
 import com.tysanclan.site.projectewok.event.MembershipTerminatedEvent;
 import com.tysanclan.site.projectewok.util.ImageUtil;
+import com.tysanclan.site.projectewok.util.MemberUtil;
 
 /**
  * @author Jeroen Steenbeeke
@@ -677,4 +678,34 @@ class GameServiceImpl implements
 		}
 	}
 
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void setGameSupervisor(Game _game, User user) {
+		Game game = gameDAO.load(_game.getId());
+
+		if (MemberUtil.isMember(user) && user.getRank() != Rank.TRIAL) {
+			boolean wasReplaced = game.getCoordinator() == null;
+			if (game.getCoordinator() != null
+					&& !game.getCoordinator().equals(user)) {
+				notificationService.notifyUser(
+						game.getCoordinator(),
+						"You are no longer supervisor for the game "
+								+ game.getName());
+				wasReplaced = true;
+			}
+
+			game.setCoordinator(user);
+
+			if (wasReplaced) {
+				notificationService
+						.notifyUser(
+								game.getCoordinator(),
+								"You are now supervisor for the game "
+										+ game.getName());
+				logService.logUserAction(game.getCoordinator(), "Game",
+						"User is now supervisor for game " + game.getName());
+			}
+		}
+
+	}
 }

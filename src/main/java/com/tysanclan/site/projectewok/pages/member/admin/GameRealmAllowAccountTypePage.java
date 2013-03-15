@@ -44,6 +44,8 @@ import com.tysanclan.site.projectewok.pages.member.AbstractSingleAccordionMember
  */
 public class GameRealmAllowAccountTypePage extends
 		AbstractSingleAccordionMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private GameService gameService;
 

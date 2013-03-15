@@ -35,7 +35,6 @@ public abstract class AbstractOverviewLinksTest extends TysanPageTester {
 		getTester().assertVisible(id);
 
 		getTester().clickLink(id, false);
-		getTester().processRequestCycle();
 		getTester().assertRenderedPage(target);
 	}
 }

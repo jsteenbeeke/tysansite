@@ -42,6 +42,8 @@ import com.tysanclan.site.projectewok.entities.Rank;
  */
 @TysanRankSecured(Rank.CHANCELLOR)
 public class EditForumPage extends TysanPage {
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * 
 	 */

@@ -21,9 +21,9 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.wicket.Request;
 import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebSession;
+import org.apache.wicket.request.Request;
 
 import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.User;
@@ -49,11 +49,6 @@ public class TysanSession extends WebSession {
 		super(request);
 
 		seenNotifications = new HashSet<SiteWideNotification>();
-	}
-
-	@Override
-	protected void detach() {
-		super.detach();
 	}
 
 	/**

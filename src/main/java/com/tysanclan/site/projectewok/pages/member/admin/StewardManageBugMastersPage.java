@@ -42,6 +42,7 @@ import com.tysanclan.site.projectewok.pages.member.AbstractSingleAccordionMember
 @TysanMemberSecured
 public class StewardManageBugMastersPage extends
 		AbstractSingleAccordionMemberPage {
+	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private RoleService roleService;

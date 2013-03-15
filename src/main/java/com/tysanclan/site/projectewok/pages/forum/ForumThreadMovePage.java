@@ -36,6 +36,8 @@ import com.tysanclan.site.projectewok.pages.ForumPage;
 import com.tysanclan.site.projectewok.pages.ForumThreadPage;
 
 public class ForumThreadMovePage extends TysanPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private ForumService forumService;
 

@@ -21,7 +21,7 @@ import com.jeroensteenbeeke.hyperion.data.SearchFilter;
 import com.tysanclan.site.projectewok.entities.twitter.UnfollowAction;
 
 /**
- * @author jeroen
+ * @author Jeroen Steenbeeke
  */
 public class UnfollowActionFilter extends SearchFilter<UnfollowAction> {
 

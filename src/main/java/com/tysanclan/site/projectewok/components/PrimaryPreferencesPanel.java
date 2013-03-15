@@ -17,13 +17,21 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.TimeZone;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.*;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -125,11 +133,11 @@ public abstract class PrimaryPreferencesPanel extends Panel {
 					container.setVisible(false);
 
 				} else {
-					container.add(new SimpleAttributeModifier("src", newURL));
+					container.add(AttributeModifier.replace("src", newURL));
 					container.setVisible(true);
 				}
 				if (target != null) {
-					target.addComponent(getImage());
+					target.add(getImage());
 				}
 
 			}
@@ -145,7 +153,7 @@ public abstract class PrimaryPreferencesPanel extends Panel {
 		if (user.getImageURL() == null || user.getImageURL().isEmpty()) {
 			image.setVisible(false);
 		} else {
-			image.add(new SimpleAttributeModifier("src", user.getImageURL()));
+			image.add(AttributeModifier.replace("src", user.getImageURL()));
 		}
 
 		image.setOutputMarkupId(true);

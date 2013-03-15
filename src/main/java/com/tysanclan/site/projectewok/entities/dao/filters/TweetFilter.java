@@ -26,7 +26,7 @@ import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.twitter.Tweet;
 
 /**
- * @author jeroen
+ * @author Jeroen Steenbeeke
  */
 public class TweetFilter extends SearchFilter<Tweet> {
 

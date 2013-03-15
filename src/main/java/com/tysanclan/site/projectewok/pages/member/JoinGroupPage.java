@@ -40,13 +40,11 @@ import com.tysanclan.site.projectewok.entities.dao.GroupDAO;
  */
 @TysanMemberSecured
 public class JoinGroupPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private GroupDAO groupDAO;
 
-	/**
-	 * 
-	 */
 	public JoinGroupPage() {
 		super("Join group");
 
@@ -75,6 +73,7 @@ public class JoinGroupPage extends AbstractMemberPage {
 						case APPLICATION:
 							available.add(group);
 							break;
+						default:
 					}
 				}
 			}

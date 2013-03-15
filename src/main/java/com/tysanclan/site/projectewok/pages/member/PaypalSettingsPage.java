@@ -26,6 +26,8 @@ import com.tysanclan.site.projectewok.beans.UserService;
 import com.tysanclan.site.projectewok.entities.User;
 
 public class PaypalSettingsPage extends AbstractSingleAccordionMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	public PaypalSettingsPage(User user) {
 		super("PayPal settings");
 

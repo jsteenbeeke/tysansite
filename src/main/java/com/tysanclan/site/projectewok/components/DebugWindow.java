@@ -20,7 +20,7 @@ package com.tysanclan.site.projectewok.components;
 import java.util.List;
 
 import org.apache.wicket.Page;
-import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
@@ -47,14 +47,12 @@ import com.tysanclan.site.projectewok.util.scheduler.TysanTask;
 public class DebugWindow extends Panel {
 	private static final long serialVersionUID = 1L;
 
-	
 	public DebugWindow(String id, Class<? extends Page> page) {
 		super(id);
 
 		add(new Label("page", page.getName()));
 
-		Form<?> debugLoginForm = new Form<Void>(
-		        "debugLogin") {
+		Form<?> debugLoginForm = new Form<Void>("debugLogin") {
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean
@@ -73,32 +71,26 @@ public class DebugWindow extends Panel {
 				TextField<String> usernameField = (TextField<String>) get("username");
 				PasswordTextField passwordField = (PasswordTextField) get("password");
 
-				String devUsername = devUsernameField
-				        .getModelObject();
-				String username = usernameField
-				        .getModelObject();
-				String password = passwordField
-				        .getModelObject();
+				String devUsername = devUsernameField.getModelObject();
+				String username = usernameField.getModelObject();
+				String password = passwordField.getModelObject();
 
-				boolean validUser = authService
-				        .isValidUser(devUsername, password);
-				boolean validMember = authService
-				        .isValidMember(devUsername,
-				                password);
+				boolean validUser = authService.isValidUser(devUsername,
+						password);
+				boolean validMember = authService.isValidMember(devUsername,
+						password);
 
 				if (validUser || validMember) {
 					UserFilter filter = new UserFilter();
 					filter.setUsername(username);
 
-					List<User> users = userDAO
-					        .findByFilter(filter);
+					List<User> users = userDAO.findByFilter(filter);
 
 					if (!users.isEmpty()) {
 						User user = users.get(0);
 						TysanSession session = ((TysanPage) getPage())
-						        .getTysanSession();
-						session.setCurrentUserId(user
-						        .getId());
+								.getTysanSession();
+						session.setCurrentUserId(user.getId());
 						if (validMember) {
 							setResponsePage(new com.tysanclan.site.projectewok.pages.member.OverviewPage());
 						} else {
@@ -111,48 +103,43 @@ public class DebugWindow extends Panel {
 			}
 		};
 
-		debugLoginForm.add(new TextField<String>(
-		        "devusername", new Model<String>("")));
-		debugLoginForm.add(new TextField<String>(
-		        "username", new Model<String>("")));
-		debugLoginForm.add(new PasswordTextField(
-		        "password", new Model<String>("")));
+		debugLoginForm.add(new TextField<String>("devusername",
+				new Model<String>("")));
+		debugLoginForm.add(new TextField<String>("username", new Model<String>(
+				"")));
+		debugLoginForm.add(new PasswordTextField("password", new Model<String>(
+				"")));
 
 		add(debugLoginForm);
 
-		add(new ListView<Class<? extends TysanTask>>(
-		        "taskStarter", TysanScheduler
-		                .getScheduler()
-		                .getScheduledTaskTypes()) {
+		add(new ListView<Class<? extends TysanTask>>("taskStarter",
+				TysanScheduler.getScheduler().getScheduledTaskTypes()) {
 
 			/**
-             * 
-             */
+			 * 
+			 */
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void populateItem(
-			        ListItem<Class<? extends TysanTask>> item) {
+					ListItem<Class<? extends TysanTask>> item) {
 
 				Link<?> taskLink = new Link<Void>("task") {
 
 					/**
-                     * 
-                     */
+					 * 
+					 */
 					private static final long serialVersionUID = 1L;
 
 					@SuppressWarnings("unchecked")
 					@Override
 					public void onClick() {
 						ListItem<Class<?>> li = (ListItem<Class<?>>) getParent();
-						Class<?> clazz = li
-						        .getModelObject();
+						Class<?> clazz = li.getModelObject();
 
 						try {
-							TysanTask task = (TysanTask) clazz
-							        .newInstance();
-							InjectorHolder.getInjector()
-							        .inject(task);
+							TysanTask task = (TysanTask) clazz.newInstance();
+							Injector.get().inject(task);
 							task.run();
 						} catch (InstantiationException e) {
 							error(e.getMessage());
@@ -163,8 +150,8 @@ public class DebugWindow extends Panel {
 					}
 				};
 
-				taskLink.add(new Label("type", item
-				        .getModelObject().getSimpleName()));
+				taskLink.add(new Label("type", item.getModelObject()
+						.getSimpleName()));
 
 				item.add(taskLink);
 

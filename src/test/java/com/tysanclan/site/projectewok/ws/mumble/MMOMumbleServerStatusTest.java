@@ -27,7 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Jeroen
+ * @author Jeroen Steenbeeke
  */
 public class MMOMumbleServerStatusTest {
 	private static final String SECRET = "c7bd82f1e56b048be64682837e350c72b2eab1d0";

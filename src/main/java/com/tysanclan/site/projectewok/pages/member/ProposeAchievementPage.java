@@ -29,16 +29,17 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.markup.html.image.resource.DynamicImageResource;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.AchievementService;
+import com.tysanclan.site.projectewok.components.StoredImageResource;
 import com.tysanclan.site.projectewok.entities.AchievementIcon;
 import com.tysanclan.site.projectewok.entities.AchievementProposal;
 import com.tysanclan.site.projectewok.entities.Rank;
@@ -55,6 +56,8 @@ import com.tysanclan.site.projectewok.pages.member.admin.AutoSelectTabs;
 		Rank.REVERED_MEMBER, Rank.SENIOR_MEMBER, Rank.FULL_MEMBER,
 		Rank.JUNIOR_MEMBER })
 public class ProposeAchievementPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private AchievementProposalDAO achievementProposalDAO;
 
@@ -82,15 +85,8 @@ public class ProposeAchievementPage extends AbstractMemberPage {
 			protected void populateItem(final ListItem<AchievementProposal> item) {
 				AchievementProposal proposal = item.getModelObject();
 
-				item.add(new Image("icon", new DynamicImageResource() {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					protected byte[] getImageData() {
-						return item.getModelObject().getIcon().getImage();
-					}
-				}));
+				item.add(new Image("icon", new StoredImageResource(proposal
+						.getIcon().getImage())));
 
 				item.add(new Label("name", proposal.getName()));
 				item.add(new Label("description", proposal.getDescription())
@@ -135,7 +131,7 @@ public class ProposeAchievementPage extends AbstractMemberPage {
 				}));
 
 		final FileUploadField uploadField = new FileUploadField("file",
-				new Model<FileUpload>());
+				new ListModel<FileUpload>());
 		uploadField.setRequired(true);
 
 		final TextField<String> purposeField = new TextField<String>("purpose",
@@ -152,11 +148,12 @@ public class ProposeAchievementPage extends AbstractMemberPage {
 
 			@Override
 			protected void onSubmit() {
-				FileUpload upload = uploadField.getModelObject();
+				List<FileUpload> uploads = uploadField.getModelObject();
 				String purpose = purposeField.getModelObject();
 				Boolean privateIcon = privateIconBox.getModelObject();
 
-				if (upload != null) {
+				if (uploads != null && !uploads.isEmpty()) {
+					FileUpload upload = uploads.get(0);
 
 					AchievementIcon icon = achievementService
 							.uploadAchievementIcon(getUser(),
@@ -270,20 +267,8 @@ public class ProposeAchievementPage extends AbstractMemberPage {
 						iconLink.setEnabled(responder != null);
 						iconLink.setRenderBodyOnly(responder == null);
 
-						iconLink.add(new Image("icon",
-								new DynamicImageResource() {
-
-									private static final long serialVersionUID = 1L;
-
-									@Override
-									protected byte[] getImageData() {
-										AchievementIcon i = iconDAO
-												.load(innerItem
-														.getModelObject());
-
-										return i.getImage();
-									}
-								}));
+						iconLink.add(new Image("icon", new StoredImageResource(
+								icon.getImage())));
 
 						innerItem.add(iconLink);
 					}

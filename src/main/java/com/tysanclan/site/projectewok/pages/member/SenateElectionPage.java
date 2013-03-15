@@ -32,20 +32,20 @@ import com.tysanclan.site.projectewok.entities.User;
 /**
  * @author Jeroen Steenbeeke
  */
-@TysanRankSecured( { Rank.CHANCELLOR, Rank.SENATOR,
-        Rank.TRUTHSAYER, Rank.REVERED_MEMBER,
-        Rank.SENIOR_MEMBER, Rank.FULL_MEMBER,
-        Rank.JUNIOR_MEMBER })
-public class SenateElectionPage extends
-        AbstractElectionPage<SenateElection> {
+@TysanRankSecured({ Rank.CHANCELLOR, Rank.SENATOR, Rank.TRUTHSAYER,
+		Rank.REVERED_MEMBER, Rank.SENIOR_MEMBER, Rank.FULL_MEMBER,
+		Rank.JUNIOR_MEMBER })
+public class SenateElectionPage extends AbstractElectionPage<SenateElection> {
+	private static final long serialVersionUID = 1L;
+
 	private IModel<SenateElection> electionModel;
 
 	@SpringBean
 	private DemocracyService democracyService;
 
 	/**
-     * 
-     */
+	 * 
+	 */
 	public SenateElectionPage(SenateElection election) {
 		super("Senate election", election);
 
@@ -69,8 +69,7 @@ public class SenateElectionPage extends
 	public void onVoteSubmit(List<User> userList) {
 		SenateElection election = electionModel.getObject();
 
-		democracyService.createVote(getUser(), userList,
-		        election);
+		democracyService.createVote(getUser(), userList, election);
 
 		setResponsePage(new OverviewPage());
 
@@ -81,7 +80,7 @@ public class SenateElectionPage extends
 	 */
 	@Override
 	public AbstractManualElectionPage getInternetExplorerAlternativePage(
-	        SenateElection election) {
+			SenateElection election) {
 		return new SenateManualElectionPage(election);
 	}
 

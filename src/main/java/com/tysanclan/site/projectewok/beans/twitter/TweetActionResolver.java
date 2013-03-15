@@ -21,7 +21,7 @@ import com.tysanclan.site.projectewok.beans.ActionResolver;
 import com.tysanclan.site.projectewok.entities.twitter.TweetAction;
 
 /**
- * @author jeroen
+ * @author Jeroen Steenbeeke
  */
 public interface TweetActionResolver extends ActionResolver<TweetAction> {
 

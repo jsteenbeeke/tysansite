@@ -33,7 +33,7 @@ import com.tysanclan.site.projectewok.entities.twitter.SearchAction;
 import com.tysanclan.site.projectewok.entities.twitter.TwitterSearchResult;
 
 /**
- * @author jeroen
+ * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")

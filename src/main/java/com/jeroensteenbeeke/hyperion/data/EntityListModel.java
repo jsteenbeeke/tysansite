@@ -19,7 +19,7 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -83,7 +83,7 @@ class EntityListModel<T extends DomainObject> extends
 	@Override
 	protected List<T> load() {
 		if (entityFinder == null) {
-			InjectorHolder.getInjector().inject(this);
+			Injector.get().inject(this);
 		}
 
 		if (entityClass != null) {

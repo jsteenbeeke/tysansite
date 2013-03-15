@@ -36,6 +36,8 @@ import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
  * @author Jeroen Steenbeeke
  */
 public class TruthsayerAcceptancePage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private TruthsayerNominationDAO truthSayerNominationDAO;
 

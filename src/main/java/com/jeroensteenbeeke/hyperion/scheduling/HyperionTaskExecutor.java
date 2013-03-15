@@ -16,10 +16,11 @@
 package com.jeroensteenbeeke.hyperion.scheduling;
 
 import org.apache.wicket.Application;
-import org.apache.wicket.injection.web.InjectorHolder;
-import org.apache.wicket.protocol.http.MockHttpServletRequest;
-import org.apache.wicket.protocol.http.MockHttpSession;
-import org.apache.wicket.protocol.http.MockServletContext;
+import org.apache.wicket.ThreadContext;
+import org.apache.wicket.injection.Injector;
+import org.apache.wicket.protocol.http.mock.MockHttpServletRequest;
+import org.apache.wicket.protocol.http.mock.MockHttpSession;
+import org.apache.wicket.protocol.http.mock.MockServletContext;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -40,8 +41,8 @@ public class HyperionTaskExecutor implements Job {
 	}
 
 	/**
-	 * @see org.quartz.Job#execute(org.quartz.JobExecutionContext)
-	 */
+	* @see org.quartz.Job#execute(org.quartz.JobExecutionContext)
+	*/
 	@Override
 	public void execute(JobExecutionContext context)
 			throws JobExecutionException {
@@ -49,7 +50,7 @@ public class HyperionTaskExecutor implements Job {
 				TASK_KEY);
 		Application application = (Application) context.getMergedJobDataMap()
 				.get(APP_KEY);
-		Application.set(application);
+		ThreadContext.setApplication(application);
 
 		if (task != null) {
 			MockServletContext sctx = new MockServletContext(application,
@@ -59,7 +60,7 @@ public class HyperionTaskExecutor implements Job {
 			RequestAttributes attr = new ServletRequestAttributes(request);
 
 			RequestContextHolder.setRequestAttributes(attr);
-			InjectorHolder.getInjector().inject(task);
+			Injector.get().inject(task);
 			task.run();
 			task.cleanUp();
 			RequestContextHolder.resetRequestAttributes();

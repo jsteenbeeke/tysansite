@@ -20,10 +20,9 @@ package com.tysanclan.site.projectewok.components;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.apache.wicket.PageParameters;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -35,6 +34,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import wicket.contrib.tinymce.TinyMceBehavior;
@@ -59,22 +59,22 @@ public abstract class ProfilePanel extends Panel {
 	private Date selectedDate = null;
 
 	/**
-     * 
-     */
+	 * 
+	 */
 	public ProfilePanel(String id, User user) {
 		super(id);
 
 		PageParameters params = new PageParameters();
 		params.add("userid", user.getId().toString());
 
-		add(new BookmarkablePageLink<User>("profilelink",
-		        MemberPage.class, params));
+		add(new BookmarkablePageLink<User>("profilelink", MemberPage.class,
+				params));
 
 		Form<User> profileForm = new Form<User>("profile",
-		        ModelMaker.wrap(user)) {
+				ModelMaker.wrap(user)) {
 			/**
-             * 
-             */
+			 * 
+			 */
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean
@@ -99,78 +99,55 @@ public abstract class ProfilePanel extends Panel {
 				TextArea<String> publicdescField = (TextArea<String>) get("publicdesc");
 				TextArea<String> privatedescField = (TextArea<String>) get("privatedesc");
 
-				String realname = realnameField
-				        .getModelObject();
+				String realname = realnameField.getModelObject();
 				Date birthDate = getSelectedDate();
-				String photoURL = photoURLField
-				        .getModelObject();
-				Boolean photoPublic = photoPublicCheckbox
-				        .getModelObject();
-				Boolean aimPublic = aimPublicCheckbox
-				        .getModelObject();
-				String publicdesc = publicdescField
-				        .getModelObject();
-				String privatedesc = privatedescField
-				        .getModelObject();
-				String aimName = aimNameField
-				        .getModelObject();
-				String twitter = twitterField
-				        .getModelObject();
+				String photoURL = photoURLField.getModelObject();
+				Boolean photoPublic = photoPublicCheckbox.getModelObject();
+				Boolean aimPublic = aimPublicCheckbox.getModelObject();
+				String publicdesc = publicdescField.getModelObject();
+				String privatedesc = privatedescField.getModelObject();
+				String aimName = aimNameField.getModelObject();
+				String twitter = twitterField.getModelObject();
 
 				if (profile == null) {
-					profile = profileService
-					        .createProfile(u);
+					profile = profileService.createProfile(u);
 				}
 
-				if (!isBothNullOrEquals(realname, profile
-				        .getRealName())) {
-					profileService.setRealname(profile,
-					        realname);
+				if (!isBothNullOrEquals(realname, profile.getRealName())) {
+					profileService.setRealname(profile, realname);
 				}
-				if (!isBothNullOrEquals(birthDate, profile
-				        .getBirthDate())) {
-					profileService.setBirthDate(profile,
-					        birthDate);
+				if (!isBothNullOrEquals(birthDate, profile.getBirthDate())) {
+					profileService.setBirthDate(profile, birthDate);
 				}
-				if (!isBothNullOrEquals(twitter, profile
-				        .getTwitterUID())) {
-					profileService.setTwitterUID(profile,
-					        twitter);
+				if (!isBothNullOrEquals(twitter, profile.getTwitterUID())) {
+					profileService.setTwitterUID(profile, twitter);
 				}
 
-				if (!isBothNullOrEquals(aimName, profile
-				        .getInstantMessengerAddress())
-				        || !isBothNullOrEquals(
-				                aimPublic,
-				                profile
-				                        .isInstantMessengerPublic())) {
-					profileService.setAIMAddress(profile,
-					        aimName, aimPublic);
+				if (!isBothNullOrEquals(aimName,
+						profile.getInstantMessengerAddress())
+						|| !isBothNullOrEquals(aimPublic,
+								profile.isInstantMessengerPublic())) {
+					profileService.setAIMAddress(profile, aimName, aimPublic);
 				}
 
-				if (!isBothNullOrEquals(photoURL, profile
-				        .getPhotoURL())
-				        || !isBothNullOrEquals(photoPublic,
-				                profile.isPhotoPublic())) {
-					profileService.setPhotoURL(profile,
-					        photoURL, photoPublic);
+				if (!isBothNullOrEquals(photoURL, profile.getPhotoURL())
+						|| !isBothNullOrEquals(photoPublic,
+								profile.isPhotoPublic())) {
+					profileService.setPhotoURL(profile, photoURL, photoPublic);
 				}
-				if (!isBothNullOrEquals(publicdesc, profile
-				        .getPublicDescription())) {
-					profileService.setPublicDescription(
-					        profile, publicdesc);
+				if (!isBothNullOrEquals(publicdesc,
+						profile.getPublicDescription())) {
+					profileService.setPublicDescription(profile, publicdesc);
 				}
 				if (!isBothNullOrEquals(privatedesc,
-				        profile.getPrivateDescription())) {
-					profileService.setPrivateDescription(
-					        profile, privatedesc);
+						profile.getPrivateDescription())) {
+					profileService.setPrivateDescription(profile, privatedesc);
 				}
 
 				ProfilePanel.this.onUpdated();
 			}
 
-			public <T> boolean isBothNullOrEquals(T value1,
-			        T value2) {
+			public <T> boolean isBothNullOrEquals(T value1, T value2) {
 				if (value1 == null && value2 == null) {
 					return true;
 				}
@@ -186,9 +163,8 @@ public abstract class ProfilePanel extends Panel {
 
 		Profile profile = user.getProfile();
 
-		profileForm.add(new TextField<String>("realname",
-		        new Model<String>(profile != null ? profile
-		                .getRealName() : "")));
+		profileForm.add(new TextField<String>("realname", new Model<String>(
+				profile != null ? profile.getRealName() : "")));
 
 		Calendar cal = DateUtil.getCalendarInstance();
 		cal.add(Calendar.YEAR, -13);
@@ -199,16 +175,13 @@ public abstract class ProfilePanel extends Panel {
 		}
 
 		profileForm.add(new InlineDatePicker("birthdate",
-		        profile != null ? profile.getBirthDate()
-		                : null) {
+				profile != null ? profile.getBirthDate() : null) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onDateSelected(Date date,
-			        AjaxRequestTarget target) {
+			protected void onDateSelected(Date date, AjaxRequestTarget target) {
 				Label oldAge = getAge();
-				Label newAge = new Label("age",
-				        getAgeModel(date));
+				Label newAge = new Label("age", getAgeModel(date));
 				newAge.setOutputMarkupId(true);
 				newAge.setOutputMarkupPlaceholderTag(true);
 				oldAge.replaceWith(newAge);
@@ -217,21 +190,18 @@ public abstract class ProfilePanel extends Panel {
 				setSelectedDate(date);
 
 				if (target != null) {
-					target.addComponent(newAge);
+					target.add(newAge);
 				}
 
 			}
 		}.setChangeMonth(true).setChangeYear(true)
-		        .setYearRange("'1900:" + year + "'"));
+				.setYearRange("'1900:" + year + "'"));
 
-		profileForm.add(new TextField<String>("twitter",
-		        new Model<String>(profile != null ? profile
-		                .getTwitterUID() : "")));
+		profileForm.add(new TextField<String>("twitter", new Model<String>(
+				profile != null ? profile.getTwitterUID() : "")));
 
-		TextField<String> photoURLField = new TextField<String>(
-		        "photoURL", new Model<String>(
-		                profile != null ? profile
-		                        .getPhotoURL() : ""));
+		TextField<String> photoURLField = new TextField<String>("photoURL",
+				new Model<String>(profile != null ? profile.getPhotoURL() : ""));
 		photoURLField.setOutputMarkupId(true);
 		photoURLField.setOutputMarkupPlaceholderTag(true);
 
@@ -246,8 +216,7 @@ public abstract class ProfilePanel extends Panel {
 			protected void onUpdate(AjaxRequestTarget target) {
 				TextField<String> urlComponent = (TextField<String>) getComponent();
 
-				String newURL = urlComponent
-				        .getModelObject();
+				String newURL = urlComponent.getModelObject();
 
 				WebMarkupContainer container = getImage();
 
@@ -255,28 +224,23 @@ public abstract class ProfilePanel extends Panel {
 					container.setVisible(false);
 
 				} else {
-					container
-					        .add(new SimpleAttributeModifier(
-					                "src", newURL));
+					container.add(AttributeModifier.replace("src", newURL));
 					container.setVisible(true);
 				}
 				if (target != null) {
-					target.addComponent(getImage());
+					target.add(getImage());
 				}
 
 			}
 		});
 
-		String currentPhotoURL = profile != null ? profile
-		        .getPhotoURL() : null;
+		String currentPhotoURL = profile != null ? profile.getPhotoURL() : null;
 
 		image = new WebMarkupContainer("preview");
-		if (currentPhotoURL == null
-		        || currentPhotoURL.isEmpty()) {
+		if (currentPhotoURL == null || currentPhotoURL.isEmpty()) {
 			image.setVisible(false);
 		} else {
-			image.add(new SimpleAttributeModifier("src",
-			        currentPhotoURL));
+			image.add(AttributeModifier.replace("src", currentPhotoURL));
 		}
 
 		image.setOutputMarkupId(true);
@@ -289,35 +253,20 @@ public abstract class ProfilePanel extends Panel {
 		profileForm.add(age);
 
 		profileForm.add(image);
-		profileForm.add(new CheckBox("public",
-		        new Model<Boolean>(
-		                profile != null ? profile
-		                        .isPhotoPublic() : false)));
-		profileForm.add(new ContextImage("aimicon",
-		        "images/aim-icon.gif"));
-		profileForm.add(new CheckBox("aimpublic",
-		        new Model<Boolean>(
-		                profile != null ? profile
-		                        .isInstantMessengerPublic()
-		                        : false)));
-		profileForm
-		        .add(new TextField<String>(
-		                "aimname",
-		                new Model<String>(
-		                        profile != null ? profile
-		                                .getInstantMessengerAddress()
-		                                : "")));
+		profileForm.add(new CheckBox("public", new Model<Boolean>(
+				profile != null ? profile.isPhotoPublic() : false)));
+		profileForm.add(new ContextImage("aimicon", "images/aim-icon.gif"));
+		profileForm.add(new CheckBox("aimpublic", new Model<Boolean>(
+				profile != null ? profile.isInstantMessengerPublic() : false)));
+		profileForm.add(new TextField<String>("aimname", new Model<String>(
+				profile != null ? profile.getInstantMessengerAddress() : "")));
 
-		profileForm.add(new TextArea<String>("publicdesc",
-		        new Model<String>(profile != null ? profile
-		                .getPublicDescription() : ""))
-		        .add(new TinyMceBehavior(
-		                new TysanTinyMCESettings())));
-		profileForm.add(new TextArea<String>("privatedesc",
-		        new Model<String>(profile != null ? profile
-		                .getPrivateDescription() : ""))
-		        .add(new TinyMceBehavior(
-		                new TysanTinyMCESettings())));
+		profileForm.add(new TextArea<String>("publicdesc", new Model<String>(
+				profile != null ? profile.getPublicDescription() : ""))
+				.add(new TinyMceBehavior(new TysanTinyMCESettings())));
+		profileForm.add(new TextArea<String>("privatedesc", new Model<String>(
+				profile != null ? profile.getPrivateDescription() : ""))
+				.add(new TinyMceBehavior(new TysanTinyMCESettings())));
 
 		profileForm.add(photoURLField);
 
@@ -325,10 +274,8 @@ public abstract class ProfilePanel extends Panel {
 
 	}
 
-	
 	private IModel<?> getAgeModel(Profile profile) {
-		if (profile == null
-		        || profile.getBirthDate() == null) {
+		if (profile == null || profile.getBirthDate() == null) {
 			return new Model<String>("Unknown");
 		}
 

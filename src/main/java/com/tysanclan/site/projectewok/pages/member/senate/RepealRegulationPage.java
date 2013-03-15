@@ -44,8 +44,9 @@ import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
 /**
  * @author Jeroen Steenbeeke
  */
-@TysanRankSecured( { Rank.SENATOR, Rank.CHANCELLOR })
+@TysanRankSecured({ Rank.SENATOR, Rank.CHANCELLOR })
 public class RepealRegulationPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private RegulationDAO regulationDAO;
@@ -155,19 +156,19 @@ public class RepealRegulationPage extends AbstractMemberPage {
 
 							Component example2 = new Label("example",
 									new Model<String>(regulation.getContents()))
-									.setEscapeModelStrings(false).setVisible(
-											true).setOutputMarkupId(true)
+									.setEscapeModelStrings(false)
+									.setVisible(true).setOutputMarkupId(true)
 									.setOutputMarkupPlaceholderTag(true);
 
 							example.replaceWith(example2);
 
 							if (target != null) {
-								target.addComponent(example2);
+								target.add(example2);
 							}
 						} else {
 							example.setVisible(false);
 							if (target != null) {
-								target.addComponent(example);
+								target.add(example);
 							}
 						}
 					}

@@ -46,20 +46,21 @@ import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
  */
 @TysanRankSecured(Rank.CHANCELLOR)
 public class EditRealmSupervisorPage extends TysanPage {
+	private static final long serialVersionUID = 1L;
+
 	private DropDownChoice<User> userSelect;
 
 	@SpringBean
 	private UserDAO userDAO;
 
 	/**
-     * 
-     */
+	 * 
+	 */
 	public EditRealmSupervisorPage(Realm realm) {
 		super("Realm Supervisor for " + realm.getName());
 
 		Form<Realm> form = new Form<Realm>("form",
-		        new CompoundPropertyModel<Realm>(ModelMaker
-		                .wrap(realm))) {
+				new CompoundPropertyModel<Realm>(ModelMaker.wrap(realm))) {
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean
@@ -92,21 +93,18 @@ public class EditRealmSupervisorPage extends TysanPage {
 		filter.setRealm(realm);
 
 		List<User> users = userDAO.findByFilter(filter);
-		Collections.sort(users,
-		        new CaseInsensitiveUserComparator());
+		Collections.sort(users, new CaseInsensitiveUserComparator());
 
-		userSelect = new DropDownChoice<User>("overseer",
-		        users);
+		userSelect = new DropDownChoice<User>("overseer", users);
 
 		form.add(userSelect);
 
 		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(
-		        new LiteralOption("h2")));
+		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
 
-		accordion.add(new Label("title",
-		        "Realm Supervisor for " + realm.getName()));
+		accordion.add(new Label("title", "Realm Supervisor for "
+				+ realm.getName()));
 
 		add(accordion);
 

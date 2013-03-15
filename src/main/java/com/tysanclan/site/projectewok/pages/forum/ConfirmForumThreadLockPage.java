@@ -32,6 +32,8 @@ import com.tysanclan.site.projectewok.pages.ForumThreadPage;
 
 @TysanMemberSecured
 public class ConfirmForumThreadLockPage extends TysanPage {
+	private static final long serialVersionUID = 1L;
+
 	public ConfirmForumThreadLockPage(ForumThread thread) {
 		super("Lock thread: " + thread.getTitle());
 

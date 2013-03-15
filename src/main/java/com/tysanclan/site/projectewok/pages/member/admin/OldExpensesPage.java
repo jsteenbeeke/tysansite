@@ -27,6 +27,8 @@ import com.tysanclan.site.projectewok.tasks.CreatePaidExpensesTask;
 import com.tysanclan.site.projectewok.util.scheduler.TysanScheduler;
 
 public class OldExpensesPage extends TysanPage {
+	private static final long serialVersionUID = 1L;
+
 	public OldExpensesPage() {
 
 		super("Expense Transformer Page");

@@ -40,38 +40,36 @@ import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
 /**
  * @author Jeroen Steenbeeke
  */
-public class AcceptGroupApplicationPage extends
-        AbstractMemberPage {
+public class AcceptGroupApplicationPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	private IModel<Group> groupModel;
 
 	/**
-     * 
-     */
+	 * 
+	 */
 	public AcceptGroupApplicationPage(Group group) {
 		super("Accept group applications");
 
 		groupModel = ModelMaker.wrap(group);
 
 		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(
-		        new LiteralOption("h2")));
+		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
 
 		List<User> users = new LinkedList<User>();
 		users.addAll(group.getAppliedMembers());
 
-		accordion.add(new ListView<User>("applications",
-		        users) {
+		accordion.add(new ListView<User>("applications", users) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void populateItem(ListItem<User> item) {
 				User user = item.getModelObject();
-				item.add(new Label("name", user
-				        .getUsername()));
+				item.add(new Label("name", user.getUsername()));
 
-				Link<User> yesLink = new Link<User>("yes",
-				        ModelMaker.wrap(user)) {
+				Link<User> yesLink = new Link<User>("yes", ModelMaker
+						.wrap(user)) {
 					private static final long serialVersionUID = 1L;
 
 					@SpringBean
@@ -79,18 +77,14 @@ public class AcceptGroupApplicationPage extends
 
 					@Override
 					public void onClick() {
-						groupService
-						        .acceptGroupJoinRequest(
-						                getUser(),
-						                getGroup(),
-						                getModelObject());
+						groupService.acceptGroupJoinRequest(getUser(),
+								getGroup(), getModelObject());
 						setResponsePage(new AcceptGroupApplicationPage(
-						        getGroup()));
+								getGroup()));
 					}
 				};
 
-				Link<User> noLink = new Link<User>("no",
-				        ModelMaker.wrap(user)) {
+				Link<User> noLink = new Link<User>("no", ModelMaker.wrap(user)) {
 					private static final long serialVersionUID = 1L;
 
 					@SpringBean
@@ -98,20 +92,15 @@ public class AcceptGroupApplicationPage extends
 
 					@Override
 					public void onClick() {
-						groupService
-						        .declineGroupJoinRequest(
-						                getUser(),
-						                getGroup(),
-						                getModelObject());
+						groupService.declineGroupJoinRequest(getUser(),
+								getGroup(), getModelObject());
 						setResponsePage(new AcceptGroupApplicationPage(
-						        getGroup()));
+								getGroup()));
 					}
 				};
 
-				yesLink.add(new ContextImage("icon",
-				        "images/icons/tick.png"));
-				noLink.add(new ContextImage("icon",
-				        "images/icons/cross.png"));
+				yesLink.add(new ContextImage("icon", "images/icons/tick.png"));
+				noLink.add(new ContextImage("icon", "images/icons/cross.png"));
 
 				item.add(yesLink);
 				item.add(noLink);

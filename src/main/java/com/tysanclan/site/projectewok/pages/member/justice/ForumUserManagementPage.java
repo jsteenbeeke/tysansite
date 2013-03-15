@@ -44,8 +44,9 @@ import com.tysanclan.site.projectewok.util.DateUtil;
  * @author Jeroen Steenbeeke
  */
 @TysanRankSecured(Rank.TRUTHSAYER)
-public class ForumUserManagementPage extends
-        AbstractMemberPage {
+public class ForumUserManagementPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private UserDAO userDAO;
 
@@ -53,8 +54,7 @@ public class ForumUserManagementPage extends
 		this(true);
 	}
 
-	public ForumUserManagementPage(
-	        final boolean filterInactive) {
+	public ForumUserManagementPage(final boolean filterInactive) {
 		super("Manage Forum Users");
 
 		UserFilter filter = new UserFilter();
@@ -71,13 +71,11 @@ public class ForumUserManagementPage extends
 		filter.addOrderBy("username", true);
 
 		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(
-		        new LiteralOption("h2")));
+		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
 
-		PageableListView<User> users = new PageableListView<User>(
-		        "users", ModelMaker.wrap(userDAO
-		                .findByFilter(filter)), 20) {
+		PageableListView<User> users = new PageableListView<User>("users",
+				ModelMaker.wrap(userDAO.findByFilter(filter)), 20) {
 			private static final long serialVersionUID = 1L;
 
 			/**
@@ -87,49 +85,36 @@ public class ForumUserManagementPage extends
 			protected void populateItem(ListItem<User> item) {
 				User user = item.getModelObject();
 
-				item.add(new Label("username", user
-				        .getUsername()));
-				item
-				        .add(new Label("email", user
-				                .getEMail()));
+				item.add(new Label("username", user.getUsername()));
+				item.add(new Label("email", user.getEMail()));
 
-				item
-				        .add(new IconLink.Builder(
-				                "images/icons/delete.png",
-				                new BanClickResponder(user))
-				                .newInstance("ban")
-				                .setVisible(
-				                        user.getRank() == Rank.FORUM));
-				item
-				        .add(new IconLink.Builder(
-				                "images/icons/add.png",
-				                new UnbanClickResponder(
-				                        user))
-				                .newInstance("unban")
-				                .setVisible(
-				                        user.getRank() == Rank.BANNED));
+				item.add(new IconLink.Builder("images/icons/delete.png",
+						new BanClickResponder(user)).newInstance("ban")
+						.setVisible(user.getRank() == Rank.FORUM));
+				item.add(new IconLink.Builder("images/icons/add.png",
+						new UnbanClickResponder(user)).newInstance("unban")
+						.setVisible(user.getRank() == Rank.BANNED));
 			}
 		};
 
-		accordion
-		        .add(new AjaxPagingNavigator("nav", users));
+		accordion.add(new AjaxPagingNavigator("nav", users));
 
 		accordion.add(users);
 
 		IconLink.Builder inactiveLink = new IconLink.Builder(
-		        "images/icons/magnifier.png",
-		        new DefaultClickResponder<Void>() {
-			        private static final long serialVersionUID = 1L;
+				"images/icons/magnifier.png",
+				new DefaultClickResponder<Void>() {
+					private static final long serialVersionUID = 1L;
 
-			        /**
-			         * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
-			         */
-			        @Override
-			        public void onClick() {
-				        setResponsePage(new ForumUserManagementPage(
-				                !filterInactive));
-			        }
-		        });
+					/**
+					 * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
+					 */
+					@Override
+					public void onClick() {
+						setResponsePage(new ForumUserManagementPage(
+								!filterInactive));
+					}
+				});
 
 		if (filterInactive) {
 			inactiveLink.setText("Show inactive users");
@@ -137,23 +122,21 @@ public class ForumUserManagementPage extends
 			inactiveLink.setText("Hide inactive users");
 		}
 
-		accordion
-		        .add(inactiveLink.newInstance("inactives"));
+		accordion.add(inactiveLink.newInstance("inactives"));
 
 		add(accordion);
 
 	}
 
-	private class BanClickResponder extends
-	        DefaultClickResponder<User> {
+	private class BanClickResponder extends DefaultClickResponder<User> {
 		private static final long serialVersionUID = 1L;
 
 		@SpringBean
 		private UserService userService;
 
 		/**
-         * 
-         */
+		 * 
+		 */
 		public BanClickResponder(User user) {
 			super(ModelMaker.wrap(user));
 		}
@@ -171,16 +154,15 @@ public class ForumUserManagementPage extends
 		}
 	}
 
-	private class UnbanClickResponder extends
-	        DefaultClickResponder<User> {
+	private class UnbanClickResponder extends DefaultClickResponder<User> {
 		private static final long serialVersionUID = 1L;
 
 		@SpringBean
 		private UserService userService;
 
 		/**
-         * 
-         */
+		 * 
+		 */
 		public UnbanClickResponder(User user) {
 			super(ModelMaker.wrap(user));
 		}
@@ -192,8 +174,7 @@ public class ForumUserManagementPage extends
 		public void onClick() {
 			User unbanner = getUser();
 
-			userService.unbanUser(unbanner,
-			        getModelObject());
+			userService.unbanUser(unbanner, getModelObject());
 
 			setResponsePage(new ForumUserManagementPage());
 		}

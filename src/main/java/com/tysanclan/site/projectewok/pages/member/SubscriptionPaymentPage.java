@@ -3,8 +3,8 @@ package com.tysanclan.site.projectewok.pages.member;
 import java.math.BigDecimal;
 import java.util.Locale;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.HiddenField;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -28,6 +28,8 @@ import com.tysanclan.site.projectewok.model.DollarSignModel;
 
 @TysanMemberSecured
 public class SubscriptionPaymentPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private RoleService roleService;
 
@@ -74,19 +76,19 @@ public class SubscriptionPaymentPage extends AbstractMemberPage {
 						new Model<String>(
 								roleService.getTreasurer() != null ? roleService
 										.getTreasurer().getPaypalAddress()
-										: null))
-						.add(new SimpleAttributeModifier("name", "business")));
+										: null)).add(AttributeModifier.replace(
+						"name", "business")));
 				item.add(new HiddenField<String>("itemname", new Model<String>(
 						"The Tysan Clan - Subscription Payment - "
 								+ dateTimeStr)));
 
 				item.add(new HiddenField<String>("itemdesc", new Model<String>(
 						"The Tysan Clan - Subscription Payment - "
-								+ dateTimeStr))
-						.add(new SimpleAttributeModifier("name", "item_name"))); //
+								+ dateTimeStr)).add(AttributeModifier.replace(
+						"name", "item_name"))); //
 				item.add(new HiddenField<String>("amount2", new Model<String>(
 						payment.getSubscription().getAmount().toString()))
-						.add(new SimpleAttributeModifier("name", "amount")));
+						.add(AttributeModifier.replace("name", "amount")));
 				item.add(new HiddenField<String>("returnUrl",
 						new Model<String>(
 								"https://www.tysanclan.com/processSubscriptionPayment/"
@@ -94,8 +96,8 @@ public class SubscriptionPaymentPage extends AbstractMemberPage {
 										+ "/"
 										+ paymentDAO
 												.getConfirmationKey(payment)
-										+ "/"))
-						.add(new SimpleAttributeModifier("name", "return")));
+										+ "/")).add(AttributeModifier.replace(
+						"name", "return")));
 			}
 		});
 	}

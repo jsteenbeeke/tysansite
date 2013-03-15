@@ -24,9 +24,9 @@ import java.util.TimeZone;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.odlabs.wiquery.core.commons.IWiQueryPlugin;
-import org.odlabs.wiquery.core.commons.WiQueryResourceManager;
+import org.odlabs.wiquery.core.IWiQueryPlugin;
 import org.odlabs.wiquery.core.javascript.JsQuery;
 import org.odlabs.wiquery.core.javascript.JsScopeContext;
 import org.odlabs.wiquery.core.javascript.JsStatement;
@@ -96,14 +96,13 @@ public abstract class InlineDatePicker extends WebMarkupContainer implements
 		return this;
 	}
 
-	/**
-	 * @see org.odlabs.wiquery.core.commons.IWiQueryPlugin#contribute(org.odlabs.wiquery.core.commons.WiQueryResourceManager)
-	 */
 	@Override
-	public void contribute(WiQueryResourceManager wiQueryResourceManager) {
-		wiQueryResourceManager
-				.addJavaScriptResource(DatePickerJavaScriptResourceReference
-						.get());
+	public void renderHead(IHeaderResponse response) {
+
+		super.renderHead(response);
+
+		response.renderJavaScriptReference(DatePickerJavaScriptResourceReference
+				.get());
 	}
 
 	/**
@@ -155,7 +154,8 @@ public abstract class InlineDatePicker extends WebMarkupContainer implements
 		 */
 		@Override
 		protected void respond(AjaxRequestTarget target) {
-			String date = this.getComponent().getRequest().getParameter("date");
+			String date = this.getComponent().getRequest().getQueryParameters()
+					.getParameterValue("date").toString();
 
 			TysanSession session = (TysanSession) Session.get();
 			TimeZone tz = DateUtil.NEW_YORK;
@@ -210,7 +210,7 @@ public abstract class InlineDatePicker extends WebMarkupContainer implements
 					val = val.substring(0, val.length() - 1);
 				}
 
-				scopeContext.append("wicketAjaxGet('" + getCallbackUrl(true)
+				scopeContext.append("wicketAjaxGet('" + getCallbackUrl()
 						+ "&date='+" + val
 						+ ", null,null, function() {return true;})");
 

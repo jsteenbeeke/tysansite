@@ -41,24 +41,21 @@ import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
 /**
  * @author Jeroen Steenbeeke
  */
-public class InviteGroupMemberPage extends
-        AbstractMemberPage {
+public class InviteGroupMemberPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private UserDAO userDAO;
 
-	/**
-     * 
-     */
 	public InviteGroupMemberPage(Group group) {
 		super("Invite members to group");
 
 		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(
-		        new LiteralOption("h2")));
+		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
 
 		Form<Group> addForm = new Form<Group>("inviteForm",
-		        ModelMaker.wrap(group)) {
+				ModelMaker.wrap(group)) {
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean
@@ -77,8 +74,7 @@ public class InviteGroupMemberPage extends
 
 				groupService.inviteUserToGroup(user, gr);
 
-				setResponsePage(new InviteGroupMemberPage(
-				        gr));
+				setResponsePage(new InviteGroupMemberPage(gr));
 			}
 
 		};
@@ -105,16 +101,13 @@ public class InviteGroupMemberPage extends
 			@Override
 			public int compare(User o1, User o2) {
 				return o1.getUsername().toLowerCase()
-				        .compareTo(
-				                o2.getUsername()
-				                        .toLowerCase());
+						.compareTo(o2.getUsername().toLowerCase());
 			}
 
 		});
 
-		addForm.add(new DropDownChoice<User>("user",
-		        ModelMaker.wrap((User) null), ModelMaker
-		                .wrap(users)));
+		addForm.add(new DropDownChoice<User>("user", ModelMaker
+				.wrap((User) null), ModelMaker.wrap(users)));
 
 		accordion.add(addForm);
 

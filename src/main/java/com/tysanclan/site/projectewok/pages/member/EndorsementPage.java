@@ -17,7 +17,11 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -42,6 +46,8 @@ import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
  */
 @TysanMemberSecured
 public class EndorsementPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private UserDAO userDAO;
 

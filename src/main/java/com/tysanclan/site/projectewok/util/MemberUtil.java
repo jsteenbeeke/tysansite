@@ -96,6 +96,7 @@ public class MemberUtil {
 						visible = true;
 					}
 					break;
+				default:
 			}
 		}
 
@@ -116,6 +117,7 @@ public class MemberUtil {
 				case TRUTHSAYER:
 					visible = true;
 					break;
+				default:
 			}
 		}
 
@@ -194,6 +196,7 @@ public class MemberUtil {
 				case TRUTHSAYER:
 					visible = true;
 					break;
+				default:
 			}
 		}
 

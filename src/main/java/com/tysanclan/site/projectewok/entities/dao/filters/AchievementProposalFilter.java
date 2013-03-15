@@ -28,7 +28,7 @@ import com.tysanclan.site.projectewok.entities.AchievementProposal;
 import com.tysanclan.site.projectewok.entities.User;
 
 /**
- * @author jeroen
+ * @author Jeroen Steenbeeke
  */
 public class AchievementProposalFilter extends
 		SearchFilter<AchievementProposal> {

@@ -17,13 +17,13 @@
  */
 package com.tysanclan.site.projectewok.pages;
 
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.core.options.LiteralOption;
 import org.odlabs.wiquery.ui.accordion.Accordion;
@@ -42,6 +42,8 @@ import com.tysanclan.site.projectewok.entities.dao.RealmDAO;
  * @author Jeroen Steenbeeke
  */
 public class RealmPage extends TysanPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private RealmDAO realmDAO;
 
@@ -53,8 +55,7 @@ public class RealmPage extends TysanPage {
 	public RealmPage(PageParameters params) {
 		super("Realm overview");
 
-		Long id = Long.parseLong(params.get("id")
-		        .toString());
+		Long id = Long.parseLong(params.get("id").toString());
 
 		init(realmDAO.load(id));
 	}
@@ -62,32 +63,28 @@ public class RealmPage extends TysanPage {
 	public void init(Realm realm) {
 		setPageTitle("Realm overview - " + realm.getName());
 
-		add(new BookmarkablePageLink<Void>("back",
-		        AboutPage.class));
+		add(new BookmarkablePageLink<Void>("back", AboutPage.class));
 
 		realmModel = ModelMaker.wrap(realm);
 
 		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(
-		        new LiteralOption("h2")));
+		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
 
 		accordion.add(new Label("name", realm.getName()));
 
 		if (realm.getOverseer() != null) {
-			accordion.add(new MemberListItem("supervisor",
-			        realm.getOverseer()));
+			accordion
+					.add(new MemberListItem("supervisor", realm.getOverseer()));
 		} else {
 			accordion.add(new Label("supervisor", "-"));
 		}
-		accordion.add(new Label("playercount",
-		        new Model<Integer>(realmService
-		                .countActivePlayers(realm))));
+		accordion.add(new Label("playercount", new Model<Integer>(realmService
+				.countActivePlayers(realm))));
 
 		add(accordion);
 
-		add(new ListView<Game>("games", ModelMaker
-		        .wrap(realm.getGames())) {
+		add(new ListView<Game>("games", ModelMaker.wrap(realm.getGames())) {
 			private static final long serialVersionUID = 1L;
 
 			/**
@@ -98,8 +95,7 @@ public class RealmPage extends TysanPage {
 				Game game = item.getModelObject();
 				Realm rlm = getRealm();
 
-				item.add(new RealmGamePanel("game", rlm,
-				        game));
+				item.add(new RealmGamePanel("game", rlm, game));
 			}
 		});
 	}

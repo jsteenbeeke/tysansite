@@ -42,8 +42,8 @@ public abstract class CalendarPanel extends Panel {
 	private final Calendar calendar;
 
 	/**
-     * 
-     */
+	 * 
+	 */
 	public CalendarPanel(String id, final Calendar calendar) {
 		super(id);
 		this.calendar = calendar;
@@ -56,14 +56,11 @@ public abstract class CalendarPanel extends Panel {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void populateItem(
-			        ListItem<Integer> item) {
+			protected void populateItem(ListItem<Integer> item) {
 				SortedMap<Integer, List<Date>> calendarLayout = getCalendarLayout(calendar);
-				List<Date> days = calendarLayout.get(item
-				        .getModelObject());
+				List<Date> days = calendarLayout.get(item.getModelObject());
 
-				item.add(createDaysListView(days, item
-				        .getModelObject()));
+				item.add(createDaysListView(days, item.getModelObject()));
 
 			}
 
@@ -77,34 +74,28 @@ public abstract class CalendarPanel extends Panel {
 		return calendar;
 	}
 
-	private ListView<Date> createDaysListView(
-	        List<Date> days, final int week) {
+	private ListView<Date> createDaysListView(List<Date> days, final int week) {
 		return new ListView<Date>("days", days) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void populateItem(ListItem<Date> item) {
-				item.add(getDateComponent("content", item
-				        .getModelObject()));
+				item.add(getDateComponent("content", item.getModelObject()));
 				if (item.getModelObject() != null) {
-					item.add(new AttributeModifier("class",
-					        true, new Model<String>(
-					                "Calendar")));
+					item.add(AttributeModifier.replace("class",
+							new Model<String>("Calendar")));
 				}
 			}
 
 		};
 	}
 
-	public abstract Component getDateComponent(String id,
-	        Date date);
+	public abstract Component getDateComponent(String id, Date date);
 
 	private SortedMap<Integer, List<Date>> getCalendarLayout(
-	        Calendar originalCalendar) {
+			Calendar originalCalendar) {
 		Calendar cal = (Calendar) originalCalendar.clone();
-		cal
-		        .setTime(DateUtil.getMidnightDate(cal
-		                .getTime()));
+		cal.setTime(DateUtil.getMidnightDate(cal.getTime()));
 
 		cal.set(Calendar.DAY_OF_MONTH, 1);
 
@@ -137,10 +128,8 @@ public abstract class CalendarPanel extends Panel {
 
 			cal.add(Calendar.DAY_OF_MONTH, 1);
 
-			if (cal.get(Calendar.MONTH) != month
-			        && weeksMap.containsKey(week)) {
-				while (cal.get(Calendar.DAY_OF_WEEK) != cal
-				        .getFirstDayOfWeek()) {
+			if (cal.get(Calendar.MONTH) != month && weeksMap.containsKey(week)) {
+				while (cal.get(Calendar.DAY_OF_WEEK) != cal.getFirstDayOfWeek()) {
 					weeksMap.get(week).add(null);
 					cal.add(Calendar.DAY_OF_MONTH, 1);
 				}

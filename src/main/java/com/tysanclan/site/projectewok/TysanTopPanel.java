@@ -17,7 +17,6 @@
  */
 package com.tysanclan.site.projectewok;
 
-import org.apache.wicket.injection.web.InjectorHolder;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 
@@ -33,9 +32,5 @@ public abstract class TysanTopPanel extends Panel {
 
 	public TysanTopPanel(String id, IModel<?> model) {
 		super(id, model);
-	}
-
-	public void onAttachComponent() {
-		InjectorHolder.getInjector().inject(this);
 	}
 }

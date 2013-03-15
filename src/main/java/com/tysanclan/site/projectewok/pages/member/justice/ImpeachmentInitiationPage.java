@@ -42,8 +42,9 @@ import com.tysanclan.site.projectewok.pages.member.OverviewPage;
  * @author Jeroen Steenbeeke
  */
 @TysanRankSecured(Rank.TRUTHSAYER)
-public class ImpeachmentInitiationPage extends
-        AbstractMemberPage {
+public class ImpeachmentInitiationPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private UserDAO userDAO;
 
@@ -51,72 +52,58 @@ public class ImpeachmentInitiationPage extends
 	private ImpeachmentDAO impeachmentDAO;
 
 	/**
-     * 
-     */
+	 * 
+	 */
 	public ImpeachmentInitiationPage() {
 		super("Impeach Chancellor");
 
 		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(
-		        new LiteralOption("h2")));
+		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
 
 		UserFilter filter = new UserFilter();
 		filter.addRank(Rank.CHANCELLOR);
 
-		List<User> chancellors = userDAO
-		        .findByFilter(filter);
-		User chancellor = chancellors.isEmpty() ? null
-		        : chancellors.get(0);
+		List<User> chancellors = userDAO.findByFilter(filter);
+		User chancellor = chancellors.isEmpty() ? null : chancellors.get(0);
 
-		String chancellorName = chancellor != null ? chancellor
-		        .getUsername()
-		        : "Nobody";
+		String chancellorName = chancellor != null ? chancellor.getUsername()
+				: "Nobody";
 
-		accordion.add(new IconLink.Builder(
-		        "images/icons/tick.png",
-		        new DefaultClickResponder<User>(ModelMaker
-		                .wrap(getUser())) {
-			        private static final long serialVersionUID = 1L;
+		accordion.add(new IconLink.Builder("images/icons/tick.png",
+				new DefaultClickResponder<User>(ModelMaker.wrap(getUser())) {
+					private static final long serialVersionUID = 1L;
 
-			        @SpringBean
-			        private DemocracyService democracyService;
+					@SpringBean
+					private DemocracyService democracyService;
 
-			        /**
-			         * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
-			         */
-			        @Override
-			        public void onClick() {
-				        democracyService
-				                .createImpeachmentVote(getModelObject());
+					/**
+					 * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
+					 */
+					@Override
+					public void onClick() {
+						democracyService
+								.createImpeachmentVote(getModelObject());
 
-				        setResponsePage(new OverviewPage());
-			        }
-		        })
-		        .setText(
-		                "Yes, I want to start the impeachment procedure")
-		        .newInstance("yes").setVisible(
-		                impeachmentDAO.countAll() == 0));
-		accordion.add(new IconLink.Builder(
-		        "images/icons/cross.png",
-		        new DefaultClickResponder<User>(ModelMaker
-		                .wrap(getUser())) {
-			        private static final long serialVersionUID = 1L;
+						setResponsePage(new OverviewPage());
+					}
+				}).setText("Yes, I want to start the impeachment procedure")
+				.newInstance("yes").setVisible(impeachmentDAO.countAll() == 0));
+		accordion.add(new IconLink.Builder("images/icons/cross.png",
+				new DefaultClickResponder<User>(ModelMaker.wrap(getUser())) {
+					private static final long serialVersionUID = 1L;
 
-			        /**
-			         * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
-			         */
-			        @Override
-			        public void onClick() {
-				        setResponsePage(new OverviewPage());
-			        }
-		        }).setText(
-		        "No, I do not want to impeach "
-		                + chancellorName).newInstance("no")
-		        .setVisible(impeachmentDAO.countAll() == 0));
-		accordion.add(new WebMarkupContainer(
-		        "alreadyactive").setVisible(impeachmentDAO
-		        .countAll() != 0));
+					/**
+					 * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
+					 */
+					@Override
+					public void onClick() {
+						setResponsePage(new OverviewPage());
+					}
+				}).setText("No, I do not want to impeach " + chancellorName)
+				.newInstance("no").setVisible(impeachmentDAO.countAll() == 0));
+		accordion.add(new WebMarkupContainer("alreadyactive")
+				.setVisible(impeachmentDAO.countAll() != 0));
 
 		add(accordion);
 

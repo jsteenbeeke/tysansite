@@ -17,9 +17,9 @@
  */
 package com.tysanclan.site.projectewok;
 
-import org.apache.wicket.protocol.http.MockHttpServletRequest;
-import org.apache.wicket.protocol.http.MockHttpSession;
-import org.apache.wicket.protocol.http.MockServletContext;
+import org.apache.wicket.protocol.http.mock.MockHttpServletRequest;
+import org.apache.wicket.protocol.http.mock.MockHttpSession;
+import org.apache.wicket.protocol.http.mock.MockServletContext;
 import org.apache.wicket.util.tester.WicketTester;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -81,14 +81,14 @@ public abstract class TysanPageTester {
 	}
 
 	protected void logIn(Long userId) {
-		TysanSession session = (TysanSession) tester.getWicketSession();
+		TysanSession session = (TysanSession) tester.getSession();
 		if (session != null) {
 			session.setCurrentUserId(userId);
 		}
 	}
 
 	protected void logOut() {
-		TysanSession session = (TysanSession) tester.getWicketSession();
+		TysanSession session = (TysanSession) tester.getSession();
 		if (session != null) {
 			session.setCurrentUserId(null);
 		}

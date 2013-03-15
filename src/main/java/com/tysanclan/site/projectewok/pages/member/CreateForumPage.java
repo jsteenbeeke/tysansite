@@ -41,19 +41,17 @@ import com.tysanclan.site.projectewok.entities.Rank;
  */
 @TysanRankSecured(Rank.CHANCELLOR)
 public class CreateForumPage extends TysanPage {
-	/**
-     * 
-     */
+	private static final long serialVersionUID = 1L;
+
 	public CreateForumPage(ForumCategory category) {
 		super("Create Forum");
 
 		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(
-		        new LiteralOption("h2")));
+		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
 
-		Form<ForumCategory> createForm = new Form<ForumCategory>(
-		        "createform", ModelMaker.wrap(category)) {
+		Form<ForumCategory> createForm = new Form<ForumCategory>("createform",
+				ModelMaker.wrap(category)) {
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean
@@ -72,8 +70,7 @@ public class CreateForumPage extends TysanPage {
 				CheckBox membersOnlyBox = (CheckBox) get("membersonly");
 
 				String name = nameField.getModelObject();
-				String description = descriptionArea
-				        .getModelObject();
+				String description = descriptionArea.getModelObject();
 
 				boolean error = false;
 
@@ -81,8 +78,7 @@ public class CreateForumPage extends TysanPage {
 					error("Name must not be empty!");
 					error = true;
 				}
-				if (description == null
-				        || description.isEmpty()) {
+				if (description == null || description.isEmpty()) {
 					error("Description must not be empty!");
 					error = true;
 				}
@@ -90,20 +86,16 @@ public class CreateForumPage extends TysanPage {
 				if (error)
 					return;
 
-				Boolean publicAccess = publicAccessBox
-				        .getModelObject();
-				Boolean membersOnly = membersOnlyBox
-				        .getModelObject();
+				Boolean publicAccess = publicAccessBox.getModelObject();
+				Boolean membersOnly = membersOnlyBox.getModelObject();
 
 				ForumCategory cat = getModelObject();
 
-				Forum forum = forumService.createForum(
-				        name, description, publicAccess,
-				        cat, getUser());
+				Forum forum = forumService.createForum(name, description,
+						publicAccess, cat, getUser());
 
 				if (membersOnly) {
-					forumService.setMembersOnly(getUser(),
-					        forum, membersOnly);
+					forumService.setMembersOnly(getUser(), forum, membersOnly);
 				}
 
 				setResponsePage(new ForumManagementPage());
@@ -111,16 +103,13 @@ public class CreateForumPage extends TysanPage {
 
 		};
 
-		createForm.add(new TextField<String>("name",
-		        new Model<String>("")));
+		createForm.add(new TextField<String>("name", new Model<String>("")));
 
 		createForm.add(new TextArea<String>("description",
-		        new Model<String>("")));
+				new Model<String>("")));
 
-		createForm.add(new CheckBox("publicaccess",
-		        new Model<Boolean>(false)));
-		createForm.add(new CheckBox("membersonly",
-		        new Model<Boolean>(false)));
+		createForm.add(new CheckBox("publicaccess", new Model<Boolean>(false)));
+		createForm.add(new CheckBox("membersonly", new Model<Boolean>(false)));
 
 		accordion.add(createForm);
 

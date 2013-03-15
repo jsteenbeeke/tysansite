@@ -22,7 +22,7 @@ import java.io.Serializable;
 import javax.xml.bind.annotation.XmlElement;
 
 /**
- * @author Jeroen
+ * @author Jeroen Steenbeeke
  */
 public class Location implements Serializable {
 	private static final long serialVersionUID = 1L;

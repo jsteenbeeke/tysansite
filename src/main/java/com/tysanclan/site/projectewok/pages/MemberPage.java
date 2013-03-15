@@ -18,17 +18,21 @@
 package com.tysanclan.site.projectewok.pages;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
-import org.apache.wicket.PageParameters;
-import org.apache.wicket.RequestCycle;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.core.options.LiteralOption;
 import org.odlabs.wiquery.ui.accordion.Accordion;
@@ -39,9 +43,26 @@ import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.beans.ForumService;
 import com.tysanclan.site.projectewok.beans.TwitterService;
-import com.tysanclan.site.projectewok.components.*;
+import com.tysanclan.site.projectewok.components.AchievementsPanel;
+import com.tysanclan.site.projectewok.components.AutoGroupLink;
+import com.tysanclan.site.projectewok.components.AutoThreadLink;
+import com.tysanclan.site.projectewok.components.ChancellorElectedSincePanel;
+import com.tysanclan.site.projectewok.components.DateTimeLabel;
+import com.tysanclan.site.projectewok.components.GalleryPanel;
+import com.tysanclan.site.projectewok.components.IconLink;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
-import com.tysanclan.site.projectewok.entities.*;
+import com.tysanclan.site.projectewok.components.RankIcon;
+import com.tysanclan.site.projectewok.components.SenateElectedSincePanel;
+import com.tysanclan.site.projectewok.components.TwitterStatusPanel;
+import com.tysanclan.site.projectewok.components.YoutubeGalleryPanel;
+import com.tysanclan.site.projectewok.entities.ForumPost;
+import com.tysanclan.site.projectewok.entities.GameAccount;
+import com.tysanclan.site.projectewok.entities.Group;
+import com.tysanclan.site.projectewok.entities.Profile;
+import com.tysanclan.site.projectewok.entities.Rank;
+import com.tysanclan.site.projectewok.entities.Role;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.UserGameRealm;
 import com.tysanclan.site.projectewok.entities.dao.ForumPostDAO;
 import com.tysanclan.site.projectewok.entities.dao.GroupDAO;
 import com.tysanclan.site.projectewok.entities.dao.RoleDAO;
@@ -58,6 +79,9 @@ import com.tysanclan.site.projectewok.util.MemberUtil;
  * @author Jeroen Steenbeeke
  */
 public class MemberPage extends TysanPage {
+
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private UserDAO dao;
 
@@ -76,12 +100,10 @@ public class MemberPage extends TysanPage {
 	@SpringBean
 	private ForumService forumService;
 
-	public MemberPage() {
+	public MemberPage(PageParameters params) {
 		super("");
 
-		PageParameters params = RequestCycle.get().getPageParameters();
-		String uidStr = params.getString("userid");
-		User u = dao.get(Long.parseLong(uidStr));
+		User u = dao.get(params.get("userid").toLong());
 
 		if (!MemberUtil.isMember(u)) {
 			throw new RestartResponseAtInterceptPageException(
@@ -134,7 +156,8 @@ public class MemberPage extends TysanPage {
 
 		if (aimLabel.isVisible()) {
 
-			aimLabel.add(new SimpleAttributeModifier("href",
+			aimLabel.add(AttributeModifier.replace(
+					"href",
 					"aim:addbuddy?screenname="
 							+ (profile != null ? profile
 									.getInstantMessengerAddress() : "")));
@@ -143,7 +166,7 @@ public class MemberPage extends TysanPage {
 		accordion.add(photo);
 
 		if (profile != null && profile.getPhotoURL() != null) {
-			photo.add(new SimpleAttributeModifier("src", profile.getPhotoURL()));
+			photo.add(AttributeModifier.replace("src", profile.getPhotoURL()));
 			photo.setVisible(profile.isPhotoPublic()
 					|| (getUser() != null && MemberUtil.isMember(getUser())));
 		}
@@ -177,7 +200,7 @@ public class MemberPage extends TysanPage {
 						&& (profile.getPublicDescription() != null || (profile
 								.getPrivateDescription() != null
 								&& getUser() != null && MemberUtil
-								.isMember(getUser())))));
+									.isMember(getUser())))));
 
 		add(accordion);
 
@@ -325,8 +348,8 @@ public class MemberPage extends TysanPage {
 		String url = "http://twitter.com/"
 				+ (twitviz && profile != null ? profile.getTwitterUID() : "");
 
-		accordion.add(new Label("twitterprofile", url)
-				.add(new SimpleAttributeModifier("href", url)));
+		accordion.add(new Label("twitterprofile", url).add(AttributeModifier
+				.replace("href", url)));
 
 		List<ITweet> tweets = new LinkedList<ITweet>();
 

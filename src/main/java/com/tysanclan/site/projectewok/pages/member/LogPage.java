@@ -35,6 +35,8 @@ import com.tysanclan.site.projectewok.util.DateUtil;
  * @author Jeroen Steenbeeke
  */
 public class LogPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	public LogPage() {
 		super("Clan Log");
 

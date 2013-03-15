@@ -19,10 +19,10 @@ package com.tysanclan.site.projectewok.util;
 
 import java.util.Random;
 
-import org.apache.wicket.RedirectToUrlException;
+import org.apache.wicket.request.flow.RedirectToUrlException;
 
 /**
- * @author jeroen
+ * @author Jeroen Steenbeeke
  */
 public final class AprilFools {
 

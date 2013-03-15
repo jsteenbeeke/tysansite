@@ -31,6 +31,8 @@ import com.tysanclan.site.projectewok.pages.forum.OverviewPage;
  */
 public class ConfirmMembershipTerminationPage extends
 		AbstractSingleAccordionMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	public ConfirmMembershipTerminationPage() {
 		super("Terminate Membership");
 

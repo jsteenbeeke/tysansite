@@ -25,15 +25,12 @@ import com.tysanclan.site.projectewok.TysanPage;
  * @author Jeroen Steenbeeke
  */
 public class JoinOverviewPage extends TysanPage {
-	/**
-     * 
-     */
+	private static final long serialVersionUID = 1L;
+
 	public JoinOverviewPage() {
 		super("Join Tysan");
 
-		add(new BookmarkablePageLink<Void>("about",
-		        AboutPage.class));
-		add(new BookmarkablePageLink<Void>("register",
-		        RegistrationPage.class));
+		add(new BookmarkablePageLink<Void>("about", AboutPage.class));
+		add(new BookmarkablePageLink<Void>("register", RegistrationPage.class));
 	}
 }

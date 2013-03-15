@@ -28,7 +28,7 @@ import com.tysanclan.site.projectewok.entities.GameAccount.AccountType;
 import com.tysanclan.site.projectewok.entities.Realm;
 
 /**
- * @author jeroen
+ * @author Jeroen Steenbeeke
  */
 public class AllowedAccountTypeFilter extends SearchFilter<AllowedAccountType> {
 	private static final long serialVersionUID = 1L;

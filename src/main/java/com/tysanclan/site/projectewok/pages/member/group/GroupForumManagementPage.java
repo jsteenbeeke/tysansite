@@ -44,46 +44,41 @@ import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
  * @author Jeroen Steenbeeke
  */
 @TysanMemberSecured
-public class GroupForumManagementPage extends
-        AbstractMemberPage {
+public class GroupForumManagementPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private GroupForumDAO groupForumDAO;
 
 	/**
-     * 
-     */
+	 * 
+	 */
 	public GroupForumManagementPage(Group group) {
 		super("Forums for " + group.getName());
 
 		if (!group.getLeader().equals(getUser())) {
 			throw new RestartResponseAtInterceptPageException(
-			        AccessDeniedPage.class);
+					AccessDeniedPage.class);
 		}
 
 		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(
-		        new LiteralOption("h2")));
+		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
 
 		GroupForumFilter filter = new GroupForumFilter();
 		filter.setGroup(group);
 
-		List<GroupForum> forums = groupForumDAO
-		        .findByFilter(filter);
+		List<GroupForum> forums = groupForumDAO.findByFilter(filter);
 
-		accordion.add(new ListView<GroupForum>("forums",
-		        ModelMaker.wrap(forums)) {
+		accordion.add(new ListView<GroupForum>("forums", ModelMaker
+				.wrap(forums)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void populateItem(
-			        ListItem<GroupForum> item) {
+			protected void populateItem(ListItem<GroupForum> item) {
 				GroupForum forum = item.getModelObject();
 
-				item
-				        .add(new Label("name", forum
-				                .getName()));
+				item.add(new Label("name", forum.getName()));
 
 				addEditLink(item);
 				addModeratorLink(item);
@@ -91,58 +86,50 @@ public class GroupForumManagementPage extends
 
 			}
 
-			
-			private void addEditLink(
-			        ListItem<GroupForum> item) {
+			private void addEditLink(ListItem<GroupForum> item) {
 				GroupForum forum = item.getModelObject();
-				Link<GroupForum> editLink = new Link<GroupForum>(
-				        "edit", ModelMaker.wrap(forum)) {
+				Link<GroupForum> editLink = new Link<GroupForum>("edit",
+						ModelMaker.wrap(forum)) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void onClick() {
-						setResponsePage(new EditGroupForumPage(
-						        getModelObject()));
+						setResponsePage(new EditGroupForumPage(getModelObject()));
 					}
 
 				};
 
 				editLink.add(new ContextImage("icon",
-				        "images/icons/book_edit.png"));
+						"images/icons/book_edit.png"));
 
 				item.add(editLink);
 			}
 
-			
-			private void addModeratorLink(
-			        ListItem<GroupForum> item) {
+			private void addModeratorLink(ListItem<GroupForum> item) {
 				GroupForum forum = item.getModelObject();
 				Link<GroupForum> moderatorLink = new Link<GroupForum>(
-				        "moderators", ModelMaker
-				                .wrap(forum)) {
+						"moderators", ModelMaker.wrap(forum)) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void onClick() {
 						setResponsePage(new EditGroupForumModeratorPage(
-						        getModelObject()));
+								getModelObject()));
 					}
 
 				};
 
 				moderatorLink.add(new ContextImage("icon",
-				        "images/icons/group_edit.png"));
+						"images/icons/group_edit.png"));
 
 				item.add(moderatorLink);
 			}
 
-			
-			private void addDeleteLink(
-			        ListItem<GroupForum> item) {
+			private void addDeleteLink(ListItem<GroupForum> item) {
 				GroupForum forum = item.getModelObject();
 
-				Link<GroupForum> deleteLink = new Link<GroupForum>(
-				        "delete", ModelMaker.wrap(forum)) {
+				Link<GroupForum> deleteLink = new Link<GroupForum>("delete",
+						ModelMaker.wrap(forum)) {
 					private static final long serialVersionUID = 1L;
 
 					@SpringBean
@@ -150,44 +137,37 @@ public class GroupForumManagementPage extends
 
 					@Override
 					public void onClick() {
-						Group gr = getModelObject()
-						        .getGroup();
+						Group gr = getModelObject().getGroup();
 
-						if (!forumService
-						        .deleteForum(getUser(),
-						                getModelObject())) {
+						if (!forumService.deleteForum(getUser(),
+								getModelObject())) {
 							error("Could not delete non-empty forum!");
 						} else {
-							setResponsePage(new GroupForumManagementPage(
-							        gr));
+							setResponsePage(new GroupForumManagementPage(gr));
 						}
 					}
 
 				};
 				deleteLink.add(new ContextImage("icon",
-				        "images/icons/delete.png"));
+						"images/icons/delete.png"));
 
-				deleteLink.setVisible(forum.getThreads()
-				        .isEmpty());
+				deleteLink.setVisible(forum.getThreads().isEmpty());
 				item.add(deleteLink);
 			}
 
 		});
 
-		Link<Group> addLink = new Link<Group>("add",
-		        ModelMaker.wrap(group)) {
+		Link<Group> addLink = new Link<Group>("add", ModelMaker.wrap(group)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick() {
-				setResponsePage(new CreateGroupForumPage(
-				        getModelObject()));
+				setResponsePage(new CreateGroupForumPage(getModelObject()));
 			}
 
 		};
 
-		addLink.add(new ContextImage("icon",
-		        "images/icons/book_add.png"));
+		addLink.add(new ContextImage("icon", "images/icons/book_add.png"));
 
 		accordion.add(addLink);
 

@@ -41,11 +41,11 @@ import com.tysanclan.site.projectewok.entities.dao.RealmPetitionDAO;
 /**
  * @author Jeroen Steenbeeke
  */
-@TysanRankSecured( { Rank.CHANCELLOR, Rank.FULL_MEMBER,
-        Rank.SENIOR_MEMBER, Rank.SENATOR, Rank.TRUTHSAYER,
-        Rank.REVERED_MEMBER, Rank.JUNIOR_MEMBER })
-public class SignRealmPetitionsPage extends
-        AbstractMemberPage {
+@TysanRankSecured({ Rank.CHANCELLOR, Rank.FULL_MEMBER, Rank.SENIOR_MEMBER,
+		Rank.SENATOR, Rank.TRUTHSAYER, Rank.REVERED_MEMBER, Rank.JUNIOR_MEMBER })
+public class SignRealmPetitionsPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private RealmService realmService;
 
@@ -53,37 +53,32 @@ public class SignRealmPetitionsPage extends
 	private RealmPetitionDAO realmPetitionDAO;
 
 	/**
-     * 
-     */
+	 * 
+	 */
 	public SignRealmPetitionsPage() {
 		super("Sign realm petitions");
 
 		Accordion accordion = new Accordion("accordion");
 		accordion.setAutoHeight(false);
-		accordion.setHeader(new AccordionHeader(
-		        new LiteralOption("h2")));
+		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 
 		add(accordion);
 
-		accordion.add(new Label("count",
-		        new Model<Integer>(realmService
-		                .getRequiredPetitionSignatures())));
-		accordion.add(new ListView<RealmPetition>(
-		        "petitions", ModelMaker
-		                .wrap(realmPetitionDAO.findAll())) {
+		accordion.add(new Label("count", new Model<Integer>(realmService
+				.getRequiredPetitionSignatures())));
+		accordion.add(new ListView<RealmPetition>("petitions", ModelMaker
+				.wrap(realmPetitionDAO.findAll())) {
 			private static final long serialVersionUID = 1L;
 
 			/**
 			 * @see org.apache.wicket.markup.html.list.ListView#populateItem(org.apache.wicket.markup.html.list.ListItem)
 			 */
 			@Override
-			protected void populateItem(
-			        ListItem<RealmPetition> item) {
-				RealmPetition petition = item
-				        .getModelObject();
+			protected void populateItem(ListItem<RealmPetition> item) {
+				RealmPetition petition = item.getModelObject();
 
-				Form<RealmPetition> form = new Form<RealmPetition>(
-				        "form", ModelMaker.wrap(petition)) {
+				Form<RealmPetition> form = new Form<RealmPetition>("form",
+						ModelMaker.wrap(petition)) {
 					private static final long serialVersionUID = 1L;
 
 					/**
@@ -95,8 +90,7 @@ public class SignRealmPetitionsPage extends
 
 						RealmPetition rp = getModelObject();
 
-						realmService.signPetition(rp,
-						        getUser());
+						realmService.signPetition(rp, getUser());
 
 						setResponsePage(new SignRealmPetitionsPage());
 					}
@@ -104,35 +98,23 @@ public class SignRealmPetitionsPage extends
 
 				item.add(form);
 
-				item
-				        .add(new Label(
-				                "name",
-				                petition.getGame()
-				                        .getName()
-				                        + " on "
-				                        + (petition
-				                                .getName() != null ? petition
-				                                .getName()
-				                                : petition
-				                                        .getRealm()
-				                                        .getName())));
-				form.add(new Label("realm", petition
-				        .getName() != null ? petition
-				        .getName() : petition.getRealm()
-				        .getName()));
+				item.add(new Label("name", petition.getGame().getName()
+						+ " on "
+						+ (petition.getName() != null ? petition.getName()
+								: petition.getRealm().getName())));
+				form.add(new Label("realm",
+						petition.getName() != null ? petition.getName()
+								: petition.getRealm().getName()));
 
-				form.add(new Label("game", petition
-				        .getGame().getName()));
+				form.add(new Label("game", petition.getGame().getName()));
 
-				form.add(new Label("starter", petition
-				        .getRequester().getUsername()));
+				form.add(new Label("starter", petition.getRequester()
+						.getUsername()));
 
-				form.add(new DateLabel("expires", petition
-				        .getExpires()));
+				form.add(new DateLabel("expires", petition.getExpires()));
 
-				form.add(new ListView<User>("signatures",
-				        ModelMaker.wrap(petition
-				                .getSignatures())) {
+				form.add(new ListView<User>("signatures", ModelMaker
+						.wrap(petition.getSignatures())) {
 
 					private static final long serialVersionUID = 1L;
 
@@ -140,24 +122,15 @@ public class SignRealmPetitionsPage extends
 					 * @see org.apache.wicket.markup.html.list.ListView#populateItem(org.apache.wicket.markup.html.list.ListItem)
 					 */
 					@Override
-					protected void populateItem(
-					        ListItem<User> innerItem) {
-						User user = innerItem
-						        .getModelObject();
-						innerItem.add(new MemberListItem(
-						        "user", user));
+					protected void populateItem(ListItem<User> innerItem) {
+						User user = innerItem.getModelObject();
+						innerItem.add(new MemberListItem("user", user));
 					}
 				});
 
-				form
-				        .add(new WebMarkupContainer("sign")
-				                .setVisible(!petition
-				                        .getSignatures()
-				                        .contains(getUser())
-				                        && !petition
-				                                .getRequester()
-				                                .equals(
-				                                        getUser())));
+				form.add(new WebMarkupContainer("sign").setVisible(!petition
+						.getSignatures().contains(getUser())
+						&& !petition.getRequester().equals(getUser())));
 			}
 		});
 	}

@@ -19,8 +19,8 @@ package com.tysanclan.site.projectewok.pages.member.admin;
 
 import java.math.BigDecimal;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.HiddenField;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -41,6 +41,11 @@ import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
 import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
 
 public class PaymentRequestApprovalPage extends AbstractMemberPage {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private RoleService roleService;
 
@@ -78,17 +83,17 @@ public class PaymentRequestApprovalPage extends AbstractMemberPage {
 
 				item.add(new HiddenField<String>("paypalAddress",
 						new Model<String>(request.getRequester()
-								.getPaypalAddress()))
-						.add(new SimpleAttributeModifier("name", "business")));
+								.getPaypalAddress())).add(AttributeModifier
+						.replace("name", "business")));
 				item.add(new HiddenField<String>("itemname", new Model<String>(
 						request.getItem())));
 
 				item.add(new HiddenField<String>("itemdesc", new Model<String>(
 						"The Tysan Clan - " + request.getItem()))
-						.add(new SimpleAttributeModifier("name", "item_name"))); //
+						.add(AttributeModifier.replace("name", "item_name"))); //
 				item.add(new HiddenField<String>("amount2", new Model<String>(
-						request.getAmount().toString()))
-						.add(new SimpleAttributeModifier("name", "amount")));
+						request.getAmount().toString())).add(AttributeModifier
+						.replace("name", "amount")));
 				item.add(new HiddenField<String>("returnUrl",
 						new Model<String>(
 								"https://www.tysanclan.com/processPaymentRequest/"
@@ -96,8 +101,8 @@ public class PaymentRequestApprovalPage extends AbstractMemberPage {
 										+ "/"
 										+ requestDAO
 												.getConfirmationKey(request)
-										+ "/"))
-						.add(new SimpleAttributeModifier("name", "return")));
+										+ "/")).add(AttributeModifier.replace(
+						"name", "return")));
 			}
 		});
 	}

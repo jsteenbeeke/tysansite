@@ -25,19 +25,20 @@ import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 /**
  * @author Jeroen Steenbeeke
  */
-public abstract class AbstractSingleAccordionMemberPage
-        extends AbstractMemberPage {
+public abstract class AbstractSingleAccordionMemberPage extends
+		AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	private final Accordion accordion;
 
 	/**
-     * 
-     */
+	 * 
+	 */
 	public AbstractSingleAccordionMemberPage(String title) {
 		super(title);
 
 		accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(
-		        new LiteralOption("h2")));
+		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
 
 		accordion.add(new Label("title", title));

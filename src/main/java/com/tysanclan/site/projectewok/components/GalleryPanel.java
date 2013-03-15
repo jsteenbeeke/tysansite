@@ -19,8 +19,8 @@ package com.tysanclan.site.projectewok.components;
 
 import java.util.List;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ExternalLink;
@@ -76,8 +76,10 @@ public class GalleryPanel extends Panel {
 						galleryService.getUrlBase() + image.getImageFilename());
 
 				link.add(new WebMarkupContainer("thumbnail")
-						.add(new SimpleAttributeModifier("src", galleryService
-								.getUrlBase() + image.getThumbnailFilename())));
+						.add(AttributeModifier.replace(
+								"src",
+								galleryService.getUrlBase()
+										+ image.getThumbnailFilename())));
 
 				item.add(link);
 			}

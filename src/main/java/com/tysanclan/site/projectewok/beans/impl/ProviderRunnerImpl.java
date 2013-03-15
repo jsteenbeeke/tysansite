@@ -32,7 +32,7 @@ import com.tysanclan.site.projectewok.StartupResourceProvider;
 import com.tysanclan.site.projectewok.beans.ProviderRunner;
 
 /**
- * @author Jeroen
+ * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")

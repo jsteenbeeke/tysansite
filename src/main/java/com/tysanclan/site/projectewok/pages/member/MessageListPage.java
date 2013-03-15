@@ -54,10 +54,12 @@ import com.tysanclan.site.projectewok.entities.dao.ConversationDAO;
 import com.tysanclan.site.projectewok.entities.dao.filters.ConversationFilter;
 
 /**
- * @author jeroen
+ * @author Jeroen Steenbeeke
  */
 @TysanMemberSecured
 public class MessageListPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private UserService userService;
 

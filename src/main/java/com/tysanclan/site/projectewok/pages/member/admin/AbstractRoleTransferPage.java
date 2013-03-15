@@ -40,6 +40,8 @@ import com.tysanclan.site.projectewok.pages.member.AbstractSingleAccordionMember
 @TysanMemberSecured
 public abstract class AbstractRoleTransferPage extends
 		AbstractSingleAccordionMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private RoleService roleService;
 

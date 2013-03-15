@@ -21,7 +21,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -53,6 +53,8 @@ import com.tysanclan.site.projectewok.pages.member.admin.AutoSelectTabs;
  * @author Jeroen Steenbeeke
  */
 public class EditUserGalleryPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	private static final Logger log = LoggerFactory
 			.getLogger(EditUserGalleryPage.class);
 
@@ -157,8 +159,10 @@ public class EditUserGalleryPage extends AbstractMemberPage {
 				GalleryImage image = item.getModelObject();
 
 				item.add(new WebMarkupContainer("thumbnail")
-						.add(new SimpleAttributeModifier("src", galleryService
-								.getUrlBase() + image.getThumbnailFilename())));
+						.add(AttributeModifier.replace(
+								"src",
+								galleryService.getUrlBase()
+										+ image.getThumbnailFilename())));
 
 				item.add(new IconLink.Builder("images/icons/image_delete.png",
 						new DefaultClickResponder<GalleryImage>(ModelMaker

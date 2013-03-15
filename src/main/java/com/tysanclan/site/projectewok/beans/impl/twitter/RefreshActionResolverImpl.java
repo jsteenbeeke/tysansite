@@ -40,7 +40,7 @@ import com.tysanclan.site.projectewok.entities.twitter.RefreshAction;
 import com.tysanclan.site.projectewok.entities.twitter.Tweet;
 
 /**
- * @author jeroen
+ * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")

@@ -49,19 +49,20 @@ import com.tysanclan.site.projectewok.model.GameRealmCartesian;
  */
 @TysanMemberSecured
 public class EditAccountsPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private GameDAO gameDAO;
 
 	/**
-     * 
-     */
+	 * 
+	 */
 	public EditAccountsPage() {
 		super("Edit Accounts");
 
 		Accordion accordion = new Accordion("accordion");
 		accordion.setAutoHeight(false);
-		accordion.setHeader(new AccordionHeader(
-		        new LiteralOption("h2")));
+		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 
 		add(accordion);
 
@@ -78,12 +79,10 @@ public class EditAccountsPage extends AbstractMemberPage {
 			@Override
 			protected void onSubmit() {
 				DropDownChoice<GameRealmCartesian> cartesianChoice = (DropDownChoice<GameRealmCartesian>) get("choices");
-				GameRealmCartesian cartesian = cartesianChoice
-				        .getModelObject();
+				GameRealmCartesian cartesian = cartesianChoice.getModelObject();
 
-				gameService.addPlayedGame(getUser(),
-				        cartesian.getGame(), cartesian
-				                .getRealm());
+				gameService.addPlayedGame(getUser(), cartesian.getGame(),
+						cartesian.getRealm());
 
 				setResponsePage(new EditAccountsPage());
 			}
@@ -95,58 +94,49 @@ public class EditAccountsPage extends AbstractMemberPage {
 
 		for (Game game : gameDAO.findAll()) {
 			for (Realm realm : game.getRealms()) {
-				cartesians.add(new GameRealmCartesian(game,
-				        realm));
+				cartesians.add(new GameRealmCartesian(game, realm));
 			}
 		}
 
 		for (UserGameRealm ugr : getUser().getPlayedGames()) {
-			cartesians.remove(new GameRealmCartesian(ugr
-			        .getGame(), ugr.getRealm()));
+			cartesians.remove(new GameRealmCartesian(ugr.getGame(), ugr
+					.getRealm()));
 		}
 
 		accordion.setVisible(!cartesians.isEmpty());
 
-		form.add(new DropDownChoice<GameRealmCartesian>(
-		        "choices", new Model<GameRealmCartesian>(
-		                null), cartesians,
-		        new GameRealmCartesianRenderer()));
+		form.add(new DropDownChoice<GameRealmCartesian>("choices",
+				new Model<GameRealmCartesian>(null), cartesians,
+				new GameRealmCartesianRenderer()));
 
 		accordion.add(form);
 
 		List<UserGameRealm> played = new LinkedList<UserGameRealm>();
 		played.addAll(getUser().getPlayedGames());
 
-		Collections.sort(played,
-		        new Comparator<UserGameRealm>() {
-			        /**
-			         * @see java.util.Comparator#compare(java.lang.Object,
-			         *      java.lang.Object)
-			         */
-			        @Override
-			        public int compare(UserGameRealm o1,
-			                UserGameRealm o2) {
-				        return o1.getGame().getName()
-				                .compareToIgnoreCase(
-				                        o2.getGame()
-				                                .getName());
-			        }
-		        });
+		Collections.sort(played, new Comparator<UserGameRealm>() {
+			/**
+			 * @see java.util.Comparator#compare(java.lang.Object,
+			 *      java.lang.Object)
+			 */
+			@Override
+			public int compare(UserGameRealm o1, UserGameRealm o2) {
+				return o1.getGame().getName()
+						.compareToIgnoreCase(o2.getGame().getName());
+			}
+		});
 
-		add(new ListView<UserGameRealm>("played",
-		        ModelMaker.wrap(played)) {
+		add(new ListView<UserGameRealm>("played", ModelMaker.wrap(played)) {
 			private static final long serialVersionUID = 1L;
 
 			/**
 			 * @see org.apache.wicket.markup.html.list.ListView#populateItem(org.apache.wicket.markup.html.list.ListItem)
 			 */
 			@Override
-			protected void populateItem(
-			        ListItem<UserGameRealm> item) {
+			protected void populateItem(ListItem<UserGameRealm> item) {
 				UserGameRealm ugr = item.getModelObject();
 
-				item.add(new AccountPanel("accountpanel",
-				        ugr));
+				item.add(new AccountPanel("accountpanel", ugr));
 
 			}
 		});

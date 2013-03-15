@@ -18,7 +18,11 @@
 package com.tysanclan.site.projectewok.pages.member;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -58,6 +62,8 @@ import com.tysanclan.site.projectewok.util.DateUtil;
  */
 @TysanMemberSecured
 public class CalendarPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	private static final String EVENT_VIEW_ID = "today";
 	@SpringBean
 	private EventDAO eventDAO;
@@ -73,7 +79,7 @@ public class CalendarPage extends AbstractMemberPage {
 		add(tabs);
 
 		tabs.add(new OtterSniperPanel("otterSniperPanel", 2));
-		
+
 		WebMarkupContainer container = new WebMarkupContainer("container");
 		container.setOutputMarkupId(true);
 
@@ -117,11 +123,11 @@ public class CalendarPage extends AbstractMemberPage {
 						.setVisible(true);
 
 				if (target != null) {
-					target.appendJavascript("tinyMCE.execCommand('mceRemoveControl', false, '"
+					target.appendJavaScript("tinyMCE.execCommand('mceRemoveControl', false, '"
 							+ component.getMarkupId() + "')");
-					target.addComponent(getAccordion());
+					target.add(getAccordion());
 
-					target.appendJavascript("tinyMCE.execCommand('mceAddControl', false, '"
+					target.appendJavaScript("tinyMCE.execCommand('mceAddControl', false, '"
 							+ component.getMarkupId() + "')");
 				}
 			}
@@ -137,7 +143,7 @@ public class CalendarPage extends AbstractMemberPage {
 		accordion.setAutoHeight(true);
 		accordion.setOutputMarkupId(true);
 		accordion.setOutputMarkupPlaceholderTag(true);
-		
+
 		container.add(accordion);
 
 		ListView<Event> eventView = createListView(currTime);

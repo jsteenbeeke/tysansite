@@ -17,10 +17,10 @@
  */
 package com.tysanclan.site.projectewok.util;
 
-import org.mortbay.jetty.Connector;
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.security.SslSocketConnector;
-import org.mortbay.jetty.webapp.WebAppContext;
+import org.apache.wicket.util.time.Duration;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.bio.SocketConnector;
+import org.eclipse.jetty.webapp.WebAppContext;
 
 public class StartTysan {
 	/**
@@ -36,25 +36,41 @@ public class StartTysan {
 	 * @param args Program arguments
 	 */
 	public static void main(String[] args) {
-		Server server = new Server();
-		SslSocketConnector connector = new SslSocketConnector();
-		connector.setPort(8443);
-		connector.setPassword("jetty6");
-		connector.setKeystore("target/jetty-ssl.keystore");
-		connector.setKeyPassword("jetty6");
-		server.setConnectors(new Connector[] { connector });
+		int timeout = (int) Duration.ONE_HOUR.getMilliseconds();
 
-		WebAppContext web = new WebAppContext();
-		web.setContextPath("/ProjectEwok");
-		web.setWar("src/main/webapp");
-		server.addHandler(web);
+		Server server = new Server();
+		SocketConnector connector = new SocketConnector();
+
+		// Set some timeout options to make debugging easier.
+		connector.setMaxIdleTime(timeout);
+		connector.setSoLingerTime(-1);
+		connector.setPort(8081);
+		server.addConnector(connector);
+
+		WebAppContext bb = new WebAppContext();
+		bb.setServer(server);
+		bb.setContextPath("/projectewok");
+		bb.setWar("src/main/webapp");
+
+		// START JMX SERVER
+		// MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
+		// MBeanContainer mBeanContainer = new MBeanContainer(mBeanServer);
+		// server.getContainer().addEventListener(mBeanContainer);
+		// mBeanContainer.start();
+
+		server.setHandler(bb);
 
 		try {
+			System.out
+					.println(">>> STARTING EMBEDDED JETTY SERVER, PRESS ANY KEY TO STOP");
 			server.start();
+			System.in.read();
+			System.out.println(">>> STOPPING EMBEDDED JETTY SERVER");
+			server.stop();
 			server.join();
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.exit(100);
+			System.exit(1);
 		}
 	}
 }

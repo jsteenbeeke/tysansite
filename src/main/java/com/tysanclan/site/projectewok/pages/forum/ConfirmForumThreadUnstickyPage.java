@@ -32,6 +32,8 @@ import com.tysanclan.site.projectewok.pages.ForumThreadPage;
 
 @TysanMemberSecured
 public class ConfirmForumThreadUnstickyPage extends TysanPage {
+	private static final long serialVersionUID = 1L;
+
 	public ConfirmForumThreadUnstickyPage(ForumThread thread) {
 		super("Make sticky: " + thread.getTitle());
 

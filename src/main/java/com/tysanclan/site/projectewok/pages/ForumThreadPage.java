@@ -21,9 +21,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 
-import org.apache.wicket.PageParameters;
-import org.apache.wicket.RequestCycle;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -34,6 +33,7 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.core.options.LiteralOption;
 import org.odlabs.wiquery.ui.accordion.Accordion;
@@ -78,6 +78,8 @@ import com.tysanclan.site.projectewok.util.MemberUtil;
  */
 public class ForumThreadPage extends TysanPage {
 
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private ForumThreadDAO dao;
 
@@ -98,17 +100,18 @@ public class ForumThreadPage extends TysanPage {
 	@SpringBean
 	private ForumPostDAO forumPostDAO;
 
-	public ForumThreadPage() {
+	public ForumThreadPage(PageParameters params) {
 		super("");
-		PageParameters params = RequestCycle.get().getPageParameters();
 
-		if (!params.containsKey("threadid") || !params.containsKey("pageid")) {
+		Set<String> namedKeys = params.getNamedKeys();
+
+		if (!namedKeys.contains("threadid") || !namedKeys.contains("pageid")) {
 			throw new RestartResponseAtInterceptPageException(
 					AccessDeniedPage.class);
 		}
 
-		Long threadId = params.getAsLong("threadid");
-		Integer pageId = params.getAsInteger("pageid");
+		Long threadId = params.get("threadid").toOptionalLong();
+		Integer pageId = params.get("pageid").toOptionalInteger();
 
 		if (threadId == null || pageId == null) {
 			throw new RestartResponseAtInterceptPageException(

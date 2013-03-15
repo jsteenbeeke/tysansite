@@ -25,8 +25,8 @@ import java.util.List;
 import nl.topicus.wqplot.components.JQPlot;
 import nl.topicus.wqplot.data.AbstractSeries;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Page;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.HiddenField;
@@ -60,6 +60,8 @@ import com.tysanclan.site.projectewok.util.GraphUtil;
  */
 @TysanMemberSecured
 public class FinancePage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	private final static BigDecimal factor12 = new BigDecimal(12);
 	private final static BigDecimal factor4 = new BigDecimal(4);
 	private final static BigDecimal factor2 = new BigDecimal(2);
@@ -215,13 +217,13 @@ public class FinancePage extends AbstractMemberPage {
 				"Cash reserves by donator", timeline.getReservesAt(now)));
 
 		add(new BookmarkablePageLink<CharterPage>("charter", CharterPage.class));
-		add(new WebMarkupContainer("un").add(new SimpleAttributeModifier(
-				"value", "Tysan Donation by " + getUser().getUsername())));
+		add(new WebMarkupContainer("un").add(AttributeModifier.replace("value",
+				"Tysan Donation by " + getUser().getUsername())));
 		User treasurer = roleService.getTreasurer();
 
 		add(new HiddenField<String>("paypalAddress", new Model<String>(
 				treasurer != null ? treasurer.getPaypalAddress() : "disable"))
-				.add(new SimpleAttributeModifier("name", "business")));
+				.add(AttributeModifier.replace("name", "business")));
 
 		add(new ActivateSubscriptionPanel("activatesubscription", getUser(),
 				new FinancePageLink()));

@@ -18,14 +18,14 @@
 package com.tysanclan.site.projectewok.components;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.behavior.AbstractBehavior;
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.odlabs.wiquery.ui.tabs.Tabs;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public class TabShowRedrawBehavior extends AbstractBehavior {
+public class TabShowRedrawBehavior extends Behavior {
 	private static final long serialVersionUID = 1L;
 
 	private Tabs tabs;
@@ -54,8 +54,9 @@ public class TabShowRedrawBehavior extends AbstractBehavior {
 	}
 
 	@Override
-	public void renderHead(IHeaderResponse response) {
-		super.renderHead(response);
+	public void renderHead(Component component, IHeaderResponse response) {
+		super.renderHead(component, response);
+
 		StringBuilder javascript = new StringBuilder();
 		javascript.append("$('#" + getTabs().getMarkupId()
 				+ "').bind(\"tabsshow\", function(event, ui) {\n");
@@ -68,7 +69,7 @@ public class TabShowRedrawBehavior extends AbstractBehavior {
 		javascript.append("\t\t}\n");
 		javascript.append("\t});\n");
 		javascript.append("});\n");
-		response.renderJavascript(javascript.toString(), null);
+		response.renderJavaScript(javascript.toString(), null);
 
 	}
 

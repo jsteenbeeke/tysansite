@@ -23,6 +23,8 @@ import com.tysanclan.site.projectewok.entities.Role.RoleType;
 import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
 
 public class TransferInProgressPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	public TransferInProgressPage(RoleType type) {
 		super(type.toString() + " transfer");
 

@@ -39,9 +39,11 @@ import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
 import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
 
 /**
- * @author jeroen
+ * @author Jeroen Steenbeeke
  */
 public class MumbleServerAdminPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private RoleService roleService;
 

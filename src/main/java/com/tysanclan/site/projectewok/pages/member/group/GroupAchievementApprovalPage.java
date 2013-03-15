@@ -21,7 +21,6 @@ import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.markup.html.image.resource.DynamicImageResource;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
@@ -35,6 +34,7 @@ import com.tysanclan.site.projectewok.beans.AchievementService;
 import com.tysanclan.site.projectewok.components.IconLink;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
 import com.tysanclan.site.projectewok.components.MemberListItem;
+import com.tysanclan.site.projectewok.components.StoredImageResource;
 import com.tysanclan.site.projectewok.entities.AchievementRequest;
 import com.tysanclan.site.projectewok.entities.Group;
 import com.tysanclan.site.projectewok.entities.dao.AchievementRequestDAO;
@@ -45,6 +45,8 @@ import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
  * @author Jeroen Steenbeeke
  */
 public class GroupAchievementApprovalPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private AchievementService achievementService;
 
@@ -77,17 +79,8 @@ public class GroupAchievementApprovalPage extends AbstractMemberPage {
 				AchievementRequest request = item.getModelObject();
 
 				item.add(new Label("name", request.getAchievement().getName()));
-				item.add(new Image("icon", new DynamicImageResource() {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					protected byte[] getImageData() {
-						return item.getModelObject().getAchievement().getIcon()
-								.getImage();
-					}
-
-				}));
+				item.add(new Image("icon", new StoredImageResource(request
+						.getAchievement().getIcon().getImage())));
 
 				item.add(new Label("description", request.getAchievement()
 						.getDescription()).setEscapeModelStrings(false));
@@ -95,18 +88,10 @@ public class GroupAchievementApprovalPage extends AbstractMemberPage {
 						.getRequestedBy()));
 
 				if (request.getEvidencePicture() != null) {
-					item.add(new Image("screenshot",
-							new DynamicImageResource() {
+					byte[] evidence = request.getEvidencePicture();
 
-								private static final long serialVersionUID = 1L;
-
-								@Override
-								protected byte[] getImageData() {
-									return item.getModelObject()
-											.getEvidencePicture();
-								}
-
-							}));
+					item.add(new Image("screenshot", new StoredImageResource(
+							evidence)));
 				} else {
 					item.add(new WebMarkupContainer("screenshot")
 							.setVisible(false));

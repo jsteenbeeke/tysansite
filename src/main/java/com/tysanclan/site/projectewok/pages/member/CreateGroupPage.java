@@ -21,7 +21,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.*;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.IChoiceRenderer;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IDetachable;
@@ -37,7 +41,11 @@ import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.GameService;
 import com.tysanclan.site.projectewok.beans.GroupService;
 import com.tysanclan.site.projectewok.components.TysanTinyMCESettings;
-import com.tysanclan.site.projectewok.entities.*;
+import com.tysanclan.site.projectewok.entities.Game;
+import com.tysanclan.site.projectewok.entities.Group;
+import com.tysanclan.site.projectewok.entities.GroupCreationRequest;
+import com.tysanclan.site.projectewok.entities.Rank;
+import com.tysanclan.site.projectewok.entities.Realm;
 import com.tysanclan.site.projectewok.entities.dao.GroupCreationRequestDAO;
 import com.tysanclan.site.projectewok.entities.dao.filters.GroupCreationRequestFilter;
 
@@ -47,6 +55,8 @@ import com.tysanclan.site.projectewok.entities.dao.filters.GroupCreationRequestF
 @TysanRankSecured({ Rank.CHANCELLOR, Rank.FULL_MEMBER, Rank.REVERED_MEMBER,
 		Rank.SENATOR, Rank.TRUTHSAYER, Rank.SENIOR_MEMBER })
 public class CreateGroupPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private GameService gameService;
 

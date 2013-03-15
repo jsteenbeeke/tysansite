@@ -35,24 +35,21 @@ import com.tysanclan.site.projectewok.entities.dao.filters.JoinApplicationFilter
  */
 @TysanNonMemberSecured
 public class JoinPage extends TysanPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private JoinApplicationDAO joinApplicationDAO;
 
-	/**
-     * 
-     */
 	public JoinPage() {
 		super("Join Tysan");
 
-		WebMarkupContainer container = new WebMarkupContainer(
-		        "container");
-		WebMarkupContainer container2 = new WebMarkupContainer(
-		        "container2");
+		WebMarkupContainer container = new WebMarkupContainer("container");
+		WebMarkupContainer container2 = new WebMarkupContainer("container2");
 
 		JoinApplicationFilter filter = new JoinApplicationFilter();
 		filter.setApplicant(getUser());
 		List<JoinApplication> applications = joinApplicationDAO
-		        .findByFilter(filter);
+				.findByFilter(filter);
 
 		int count = applications.size();
 
@@ -71,9 +68,8 @@ public class JoinPage extends TysanPage {
 		add(container);
 		container.setVisible(count == 0);
 
-		container2.add(new ThreadLink("join", applications
-		        .isEmpty() ? null : applications.get(0)
-		        .getJoinThread()));
+		container2.add(new ThreadLink("join", applications.isEmpty() ? null
+				: applications.get(0).getJoinThread()));
 		add(container2);
 
 		container2.setVisible(count > 0);

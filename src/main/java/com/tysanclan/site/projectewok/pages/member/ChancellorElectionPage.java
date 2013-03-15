@@ -32,19 +32,19 @@ import com.tysanclan.site.projectewok.entities.User;
 /**
  * @author Jeroen Steenbeeke
  */
-@TysanRankSecured( {Rank.CHANCELLOR, Rank.SENATOR, Rank.TRUTHSAYER, Rank.REVERED_MEMBER,
-	Rank.SENIOR_MEMBER, Rank.FULL_MEMBER, Rank.JUNIOR_MEMBER})
-public class ChancellorElectionPage extends AbstractElectionPage<ChancellorElection>
-{
+@TysanRankSecured({ Rank.CHANCELLOR, Rank.SENATOR, Rank.TRUTHSAYER,
+		Rank.REVERED_MEMBER, Rank.SENIOR_MEMBER, Rank.FULL_MEMBER,
+		Rank.JUNIOR_MEMBER })
+public class ChancellorElectionPage extends
+		AbstractElectionPage<ChancellorElection> {
+	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private DemocracyService democracyService;
 
 	private IModel<ChancellorElection> electionModel;
 
-	
-	public ChancellorElectionPage(ChancellorElection election)
-	{
+	public ChancellorElectionPage(ChancellorElection election) {
 		super("Chancellor Election", election);
 
 		electionModel = ModelMaker.wrap(election);
@@ -54,8 +54,7 @@ public class ChancellorElectionPage extends AbstractElectionPage<ChancellorElect
 	 * @see org.apache.wicket.Page#onDetach()
 	 */
 	@Override
-	protected void onDetach()
-	{
+	protected void onDetach() {
 		super.onDetach();
 
 		electionModel.detach();
@@ -65,8 +64,7 @@ public class ChancellorElectionPage extends AbstractElectionPage<ChancellorElect
 	 * @see com.tysanclan.site.projectewok.pages.member.AbstractElectionPage#onVoteSubmit(java.util.List)
 	 */
 	@Override
-	public void onVoteSubmit(List<User> userList)
-	{
+	public void onVoteSubmit(List<User> userList) {
 		ChancellorElection election = electionModel.getObject();
 
 		democracyService.createVote(getUser(), userList, election);
@@ -79,8 +77,8 @@ public class ChancellorElectionPage extends AbstractElectionPage<ChancellorElect
 	 * @see com.tysanclan.site.projectewok.pages.member.AbstractElectionPage#getInternetExplorerAlternativePage(com.tysanclan.site.projectewok.entities.Election)
 	 */
 	@Override
-	public AbstractManualElectionPage getInternetExplorerAlternativePage(ChancellorElection election)
-	{
+	public AbstractManualElectionPage getInternetExplorerAlternativePage(
+			ChancellorElection election) {
 		return new ChancellorManualElectionPage(election);
 	}
 

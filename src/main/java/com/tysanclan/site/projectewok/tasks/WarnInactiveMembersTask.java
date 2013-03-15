@@ -26,7 +26,7 @@ import com.tysanclan.site.projectewok.entities.dao.InactivityNotificationDAO;
 import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 
 /**
- * @author jeroen
+ * @author Jeroen Steenbeeke
  */
 public class WarnInactiveMembersTask extends PeriodicTask {
 	@SpringBean

@@ -24,7 +24,7 @@ import com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType
 import com.tysanclan.site.projectewok.entities.User;
 
 /**
- * @author jeroen
+ * @author Jeroen Steenbeeke
  */
 public interface MembershipStatusBean {
 	void addStatus(ChangeType type, User user);

@@ -25,7 +25,7 @@ import org.hibernate.Session;
 import com.tysanclan.site.projectewok.entities.*;
 
 /**
- * @author jeroen
+ * @author Jeroen Steenbeeke
  */
 public interface ForumViewContext extends Serializable {
 	List<ForumCategory> getCategories(Session sess, User viewer, int offset,

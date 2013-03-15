@@ -42,6 +42,8 @@ import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
  */
 @TysanRankSecured(Rank.TRUTHSAYER)
 public class UntenabilityPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private RegulationDAO regulationDAO;
 

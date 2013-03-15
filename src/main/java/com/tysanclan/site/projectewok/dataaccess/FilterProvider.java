@@ -28,7 +28,7 @@ import com.jeroensteenbeeke.hyperion.data.SearchFilter;
 import com.tysanclan.site.projectewok.TysanApplication;
 
 /**
- * @author jeroen
+ * @author Jeroen Steenbeeke
  */
 public class FilterProvider<T extends DomainObject, D extends EwokDAO<T>>
 		implements IDataProvider<T> {

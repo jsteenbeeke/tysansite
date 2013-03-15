@@ -33,6 +33,8 @@ import com.tysanclan.site.projectewok.pages.ForumThreadPage;
 
 @TysanLoginSecured
 public class ConfirmForumThreadDeletePage extends TysanPage {
+	private static final long serialVersionUID = 1L;
+
 	public ConfirmForumThreadDeletePage(ForumThread thread) {
 		super("Confirm delete: " + thread.getTitle());
 

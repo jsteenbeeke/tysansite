@@ -34,6 +34,7 @@ import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
 
 public class TruthsayerComplaintPage extends AbstractSingleAccordionMemberPage {
+	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private UserDAO userDAO;

@@ -24,6 +24,8 @@ import com.tysanclan.site.projectewok.entities.User;
 
 @TysanMemberSecured
 public class StewardTransferPage extends AbstractRoleTransferPage {
+	private static final long serialVersionUID = 1L;
+
 	public StewardTransferPage() {
 		super(RoleType.STEWARD);
 	}

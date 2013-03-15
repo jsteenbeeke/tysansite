@@ -33,10 +33,9 @@ import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
-import com.tysanclan.site.projectewok.beans.RealmService;
+import com.tysanclan.site.projectewok.beans.GameService;
 import com.tysanclan.site.projectewok.entities.Game;
 import com.tysanclan.site.projectewok.entities.Rank;
-import com.tysanclan.site.projectewok.entities.Realm;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.User.CaseInsensitiveUserComparator;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
@@ -47,24 +46,25 @@ import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
  */
 @TysanRankSecured(Rank.CHANCELLOR)
 public class EditGameSupervisorPage extends TysanPage {
+	private static final long serialVersionUID = 1L;
+
 	private DropDownChoice<User> userSelect;
 
 	@SpringBean
 	private UserDAO userDAO;
 
 	/**
-     * 
-     */
+	 * 
+	 */
 	public EditGameSupervisorPage(Game game) {
 		super("Game Supervisor for " + game.getName());
 
-		Form<Realm> form = new Form<Realm>("form",
-		        new CompoundPropertyModel<Realm>(ModelMaker
-		                .wrap(game))) {
+		Form<Game> form = new Form<Game>("form",
+				new CompoundPropertyModel<Game>(ModelMaker.wrap(game))) {
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean
-			private RealmService realmService;
+			private GameService gameService;
 
 			/**
 			 * @see org.apache.wicket.markup.html.form.Form#onSubmit()
@@ -73,12 +73,12 @@ public class EditGameSupervisorPage extends TysanPage {
 			protected void onSubmit() {
 				super.onSubmit();
 
-				Realm realm = getModelObject();
+				Game game = getModelObject();
 				User user = userSelect.getModelObject();
 
-				realmService.setSupervisor(realm, user);
+				gameService.setGameSupervisor(game, user);
 
-				setResponsePage(new RealmManagementPage());
+				setResponsePage(new GameManagementPage());
 			}
 		};
 
@@ -93,21 +93,18 @@ public class EditGameSupervisorPage extends TysanPage {
 		filter.setGame(game);
 
 		List<User> users = userDAO.findByFilter(filter);
-		Collections.sort(users,
-		        new CaseInsensitiveUserComparator());
+		Collections.sort(users, new CaseInsensitiveUserComparator());
 
-		userSelect = new DropDownChoice<User>(
-		        "coordinator", users);
+		userSelect = new DropDownChoice<User>("coordinator", users);
 
 		form.add(userSelect);
 
 		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(
-		        new LiteralOption("h2")));
+		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
 
-		accordion.add(new Label("title",
-		        "Realm Supervisor for " + game.getName()));
+		accordion.add(new Label("title", "Realm Supervisor for "
+				+ game.getName()));
 
 		add(accordion);
 

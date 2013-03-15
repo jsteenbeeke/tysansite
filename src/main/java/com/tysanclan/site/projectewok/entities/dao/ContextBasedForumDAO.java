@@ -24,7 +24,7 @@ import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.util.forum.ForumViewContext;
 
 /**
- * @author jeroen
+ * @author Jeroen Steenbeeke
  */
 public interface ContextBasedForumDAO<T extends DomainObject, ContextType extends DomainObject> {
 

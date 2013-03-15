@@ -49,6 +49,8 @@ import com.tysanclan.site.projectewok.model.GameRealmCartesian;
 @TysanRankSecured({ Rank.CHANCELLOR, Rank.FULL_MEMBER, Rank.SENIOR_MEMBER,
 		Rank.SENATOR, Rank.TRUTHSAYER, Rank.REVERED_MEMBER })
 public class CreateRealmPetitionPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private GameDAO gameDAO;
 

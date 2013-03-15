@@ -40,7 +40,8 @@ public class OtterSniperPanel extends Panel {
 
 	private static final long serialVersionUID = 1L;
 
-	private String[] otters = new String[] { "seaotter1.jpg", "seaotter2.jpg", "seaotter3.jpg", "seaotter4.jpg" , "seaotter1.jpg" };
+	private String[] otters = new String[] { "seaotter1.jpg", "seaotter2.jpg",
+			"seaotter3.jpg", "seaotter4.jpg", "seaotter1.jpg" };
 
 	@SpringBean
 	private OtterSightingDAO otterSightDao;
@@ -94,8 +95,8 @@ public class OtterSniperPanel extends Panel {
 							otterId);
 					livingGnomeContainer.setVisible(false);
 					deadGnomeContainer.setVisible(true);
-					target.addComponent(deadGnomeContainer);
-					target.addComponent(livingGnomeContainer);
+					target.add(deadGnomeContainer);
+					target.add(livingGnomeContainer);
 				}
 			}
 		};

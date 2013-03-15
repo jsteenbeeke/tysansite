@@ -19,9 +19,9 @@ package com.tysanclan.site.projectewok.pages.member.senate;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.markup.html.image.resource.DynamicImageResource;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.request.resource.ByteArrayResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.jeroensteenbeeke.hyperion.data.FilterDataProvider;
@@ -30,12 +30,14 @@ import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.AchievementService;
 import com.tysanclan.site.projectewok.components.IconLink;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
+import com.tysanclan.site.projectewok.entities.AchievementIcon;
 import com.tysanclan.site.projectewok.entities.AchievementProposal;
 import com.tysanclan.site.projectewok.entities.AchievementProposalVote;
 import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.dao.AchievementProposalDAO;
 import com.tysanclan.site.projectewok.entities.dao.filters.AchievementProposalFilter;
 import com.tysanclan.site.projectewok.pages.member.AbstractSingleAccordionMemberPage;
+import com.tysanclan.site.projectewok.util.ImageUtil;
 
 /**
  * @author Jeroen Steenbeeke
@@ -43,6 +45,8 @@ import com.tysanclan.site.projectewok.pages.member.AbstractSingleAccordionMember
 @TysanRankSecured(Rank.SENATOR)
 public class AchievementProposalApprovalPage extends
 		AbstractSingleAccordionMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private AchievementProposalDAO achievementProposalDAO;
 
@@ -62,17 +66,10 @@ public class AchievementProposalApprovalPage extends
 							final Item<AchievementProposal> item) {
 						AchievementProposal proposal = item.getModelObject();
 
-						item.add(new Image("icon", new DynamicImageResource() {
-
-							private static final long serialVersionUID = 1L;
-
-							@Override
-							protected byte[] getImageData() {
-								return item.getModelObject().getIcon()
-										.getImage();
-							}
-						}));
-
+						AchievementIcon icon = proposal.getIcon();
+						item.add(new Image("icon", new ByteArrayResource(
+								ImageUtil.getMimeType(icon.getImage()), icon
+										.getImage())));
 						item.add(new Label("name", proposal.getName()));
 						item.add(new Label("description", proposal
 								.getDescription()).setEscapeModelStrings(false));

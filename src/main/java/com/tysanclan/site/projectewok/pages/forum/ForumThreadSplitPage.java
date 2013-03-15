@@ -51,9 +51,8 @@ import com.tysanclan.site.projectewok.pages.ForumThreadPage;
  * @author Jeroen Steenbeeke
  */
 public class ForumThreadSplitPage extends TysanPage {
-	/**
-	 * @author Jeroen Steenbeeke
-	 */
+	private static final long serialVersionUID = 1L;
+
 	public static class PostSelectionPair {
 		private ForumPost post;
 		private Boolean selected;

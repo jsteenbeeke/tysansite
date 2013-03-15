@@ -19,9 +19,8 @@ package com.tysanclan.site.projectewok.pages.member;
 
 import java.util.List;
 
-import org.apache.wicket.PageParameters;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -32,6 +31,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
@@ -50,7 +50,9 @@ import com.tysanclan.site.projectewok.entities.dao.filters.BugFilter;
 
 @TysanMemberSecured
 public class ViewBugPage extends AbstractSingleAccordionMemberPage {
-	public class BugRenderer implements IChoiceRenderer<Bug> {
+	private static final long serialVersionUID = 1L;
+
+	public static class BugRenderer implements IChoiceRenderer<Bug> {
 		private static final long serialVersionUID = 1L;
 
 		@Override
@@ -120,7 +122,7 @@ public class ViewBugPage extends AbstractSingleAccordionMemberPage {
 	public ViewBugPage(PageParameters params) {
 		super("Bug");
 
-		Long id = params.getAsLong("bug");
+		Long id = params.get("bug").toOptionalLong();
 
 		if (id == null)
 			throw new RestartResponseAtInterceptPageException(
@@ -156,7 +158,7 @@ public class ViewBugPage extends AbstractSingleAccordionMemberPage {
 		getAccordion().add(
 				new Label("permalink", "Link to this "
 						+ bug.getReportType().getDescription())
-						.add(new SimpleAttributeModifier("href", bug
+						.add(AttributeModifier.replace("href", bug
 								.getReportType().getUrl(bug.getId()))));
 
 		getAccordion().add(new Label("status", bug.getStatus().toString()));

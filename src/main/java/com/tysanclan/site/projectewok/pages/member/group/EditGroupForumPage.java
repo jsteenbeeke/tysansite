@@ -38,22 +38,19 @@ import com.tysanclan.site.projectewok.entities.GroupForum;
  * @author Jeroen Steenbeeke
  */
 public class EditGroupForumPage extends TysanPage {
-	/**
-     * 
-     */
+	private static final long serialVersionUID = 1L;
+
 	public EditGroupForumPage(GroupForum forum) {
 		super("Edit group forum - " + forum.getName());
 
 		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(
-		        new LiteralOption("h2")));
+		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
 
-		accordion.add(new Label("title", "Edit forum "
-		        + forum.getName()));
+		accordion.add(new Label("title", "Edit forum " + forum.getName()));
 
-		Form<GroupForum> editForm = new Form<GroupForum>(
-		        "editform", ModelMaker.wrap(forum)) {
+		Form<GroupForum> editForm = new Form<GroupForum>("editform",
+				ModelMaker.wrap(forum)) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -70,45 +67,39 @@ public class EditGroupForumPage extends TysanPage {
 				TextArea<String> descriptionArea = (TextArea<String>) get("description");
 
 				String name = nameField.getModelObject();
-				String description = descriptionArea
-				        .getModelObject();
+				String description = descriptionArea.getModelObject();
 
 				GroupForum gf = getModelObject();
 
 				if (!gf.getName().equals(name)) {
-					forumService.setForumName(gf, name,
-					        getUser());
+					forumService.setForumName(gf, name, getUser());
 				}
-				if (!gf.getDescription().equals(
-				        description)) {
-					forumService.setForumDescription(gf,
-					        description, getUser());
+				if (!gf.getDescription().equals(description)) {
+					forumService
+							.setForumDescription(gf, description, getUser());
 				}
 
-				setResponsePage(new GroupForumManagementPage(
-				        gf.getGroup()));
+				setResponsePage(new GroupForumManagementPage(gf.getGroup()));
 			}
 
 		};
 
-		editForm.add(new TextField<String>("name",
-		        new Model<String>(forum.getName())));
+		editForm.add(new TextField<String>("name", new Model<String>(forum
+				.getName())));
 
-		editForm.add(new TextArea<String>("description",
-		        new Model<String>(forum.getDescription())));
+		editForm.add(new TextArea<String>("description", new Model<String>(
+				forum.getDescription())));
 
 		accordion.add(editForm);
 
 		add(accordion);
 
-		add(new Link<Group>("back", ModelMaker.wrap(forum
-		        .getGroup())) {
+		add(new Link<Group>("back", ModelMaker.wrap(forum.getGroup())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick() {
-				setResponsePage(new GroupForumManagementPage(
-				        getModelObject()));
+				setResponsePage(new GroupForumManagementPage(getModelObject()));
 			}
 
 		});

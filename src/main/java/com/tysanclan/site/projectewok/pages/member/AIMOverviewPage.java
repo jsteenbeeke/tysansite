@@ -17,7 +17,7 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -36,6 +36,8 @@ import com.tysanclan.site.projectewok.entities.dao.ProfileDAO;
  */
 @TysanMemberSecured
 public class AIMOverviewPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private ProfileDAO profileDAO;
 
@@ -43,30 +45,25 @@ public class AIMOverviewPage extends AbstractMemberPage {
 		super("AIM accounts");
 
 		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(
-		        new LiteralOption("h2")));
+		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
 
 		add(accordion);
 
-		accordion.add(new ListView<User>("users",
-		        profileDAO.getAIMUsers()) {
+		accordion.add(new ListView<User>("users", profileDAO.getAIMUsers()) {
 
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void populateItem(ListItem<User> item) {
 				User user = item.getModelObject();
-				item.add(new MemberListItem("username",
-				        user));
+				item.add(new MemberListItem("username", user));
 				String aimAddress = user.getProfile()
-				        .getInstantMessengerAddress();
+						.getInstantMessengerAddress();
 
-				item.add(new Label("aim", aimAddress)
-				        .add(new SimpleAttributeModifier(
-				                "href",
-				                "aim:addbuddy?screenname="
-				                        + aimAddress)));
+				item.add(new Label("aim", aimAddress).add(AttributeModifier
+						.replace("href", "aim:addbuddy?screenname="
+								+ aimAddress)));
 			}
 
 		});

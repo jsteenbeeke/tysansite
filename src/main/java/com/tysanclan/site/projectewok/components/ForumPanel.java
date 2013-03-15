@@ -108,22 +108,22 @@ public class ForumPanel extends Panel {
 				if (ev != null) {
 					item.add(new ContextImage("thread",
 							"images/icons/clock.png").add(
-							new AttributeModifier("alt", new Model<String>(
+							AttributeModifier.replace("alt", new Model<String>(
 									"Event"))).add(
-							new AttributeModifier("title", true,
+							AttributeModifier.replace("title",
 									new Model<String>("Event"))));
 				} else if (ja != null) {
 					item.add(new ContextImage("thread",
 							"images/icons/user_add.png").add(
-							new AttributeModifier("alt", new Model<String>(
+							AttributeModifier.replace("alt", new Model<String>(
 									"Join Application"))).add(
-							new AttributeModifier("title", true,
+							AttributeModifier.replace("title",
 									new Model<String>("Join Application"))));
 				} else if (tr != null) {
 					item.add(new ContextImage("thread", "images/icons/bell.png")
 							.add(new AttributeModifier("alt",
 									new Model<String>("User Trial"))).add(
-									new AttributeModifier("title", true,
+									AttributeModifier.replace("title",
 											new Model<String>("User Trial"))));
 				} else {
 					item.add(new ContextImage("thread",

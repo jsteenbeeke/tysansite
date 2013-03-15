@@ -33,6 +33,9 @@ import com.tysanclan.site.projectewok.entities.User;
 
 @TysanRankSecured(Rank.CHANCELLOR)
 public class InactiveKeyRoleTransferPage extends AbstractMemberPage {
+
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private RoleService roleService;
 

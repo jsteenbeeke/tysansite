@@ -19,11 +19,10 @@ package com.tysanclan.site.projectewok.pages.forum;
 
 import java.util.List;
 
-import org.apache.wicket.PageParameters;
-import org.apache.wicket.RequestCycle;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
@@ -38,41 +37,37 @@ import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
  * @author Jeroen Steenbeeke
  */
 public class ActivationPage extends TysanPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private ActivationDAO activationDAO;
 
 	/**
-     * 
-     */
-	public ActivationPage() {
+	 * 
+	 */
+	public ActivationPage(PageParameters params) {
 		super("Account activation");
 
-		PageParameters params = RequestCycle.get()
-		        .getPageParameters();
-
-		String key = params.getString("key");
+		String key = params.get("key").toString();
 
 		ActivationFilter filter = new ActivationFilter();
 		filter.setKey(key);
-		List<Activation> activations = activationDAO
-		        .findByFilter(filter);
+		List<Activation> activations = activationDAO.findByFilter(filter);
 
 		if (activations.isEmpty()) {
 			throw new RestartResponseAtInterceptPageException(
-			        AccessDeniedPage.class);
+					AccessDeniedPage.class);
 		}
 
 		Activation activation = activations.get(0);
 
-		add(new Label("username", activation.getUser()
-		        .getUsername()));
+		add(new Label("username", activation.getUser().getUsername()));
 
-		add(new Form<Activation>("activation", ModelMaker
-		        .wrap(activation)) {
+		add(new Form<Activation>("activation", ModelMaker.wrap(activation)) {
 
 			/**
-             * 
-             */
+			 * 
+			 */
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean
@@ -83,10 +78,9 @@ public class ActivationPage extends TysanPage {
 			 */
 			@Override
 			protected void onSubmit() {
-				if (userService
-				        .activateAccount(getModelObject())) {
-					setResponsePage(new AccountActivePage(
-					        getModelObject().getUser()));
+				if (userService.activateAccount(getModelObject())) {
+					setResponsePage(new AccountActivePage(getModelObject()
+							.getUser()));
 				} else {
 					error("Could not activate account, perhaps it was already activated?");
 				}

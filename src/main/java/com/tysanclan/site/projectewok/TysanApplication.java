@@ -29,15 +29,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.Page;
-import org.apache.wicket.Request;
-import org.apache.wicket.RequestCycle;
-import org.apache.wicket.ResourceReference;
-import org.apache.wicket.Response;
 import org.apache.wicket.Session;
-import org.apache.wicket.markup.html.image.resource.BlobImageResource;
 import org.apache.wicket.protocol.http.WebApplication;
-import org.apache.wicket.protocol.http.WebRequest;
-import org.apache.wicket.request.target.coding.MixedParamUrlCodingStrategy;
+import org.apache.wicket.request.Request;
+import org.apache.wicket.request.Response;
+import org.apache.wicket.request.http.WebRequest;
+import org.apache.wicket.request.resource.CssResourceReference;
+import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.odlabs.wiquery.ui.themes.IThemableApplication;
 import org.quartz.Scheduler;
@@ -50,7 +48,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.tysanclan.site.projectewok.auth.TysanSecurity;
-import com.tysanclan.site.projectewok.entities.GalleryImage;
 import com.tysanclan.site.projectewok.pages.AboutPage;
 import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
 import com.tysanclan.site.projectewok.pages.CharterPage;
@@ -69,6 +66,7 @@ import com.tysanclan.site.projectewok.pages.RegistrationPage;
 import com.tysanclan.site.projectewok.pages.RegulationPage;
 import com.tysanclan.site.projectewok.pages.RosterPage;
 import com.tysanclan.site.projectewok.pages.SessionTimeoutPage;
+import com.tysanclan.site.projectewok.pages.TysanErrorPage;
 import com.tysanclan.site.projectewok.pages.VacationPage;
 import com.tysanclan.site.projectewok.pages.forum.ActivationPage;
 import com.tysanclan.site.projectewok.pages.member.BugOverviewPage;
@@ -193,18 +191,16 @@ public class TysanApplication extends WebApplication implements
 
 		ApplicationContext relevantCtx;
 
-		getSharedResources().putClassAlias(GalleryImage.class, "gallery");
-
-		addComponentInstantiationListener(new TysanSecurity());
+		getComponentInstantiationListeners().add(new TysanSecurity());
 		if (testMode) {
 			relevantCtx = new ClassPathXmlApplicationContext(
 					new String[] { "services-mock.xml" });
-			addComponentInstantiationListener(new SpringComponentInjector(this,
-					relevantCtx, true));
+			getComponentInstantiationListeners().add(
+					new SpringComponentInjector(this, relevantCtx, true));
 			testContext = relevantCtx;
 		} else {
 			SpringComponentInjector injector = new SpringComponentInjector(this);
-			addComponentInstantiationListener(injector);
+			getComponentInstantiationListeners().add(injector);
 		}
 
 		mountBookmarkablePages();
@@ -216,6 +212,10 @@ public class TysanApplication extends WebApplication implements
 		if (!testMode) {
 			scheduleDefaultTasks();
 		}
+
+		if (usesDeploymentConfig())
+			getApplicationSettings().setInternalErrorPage(TysanErrorPage.class);
+
 	}
 
 	/**
@@ -259,80 +259,53 @@ public class TysanApplication extends WebApplication implements
 	 * 
 	 */
 	private void mountBookmarkablePages() {
-		mount(new MixedParamUrlCodingStrategy("news", NewsPage.class,
-				new String[] {}));
-		mount(new MixedParamUrlCodingStrategy("charter", CharterPage.class,
-				new String[] {}));
-		mount(new MixedParamUrlCodingStrategy("about", AboutPage.class,
-				new String[] {}));
-		mount(new MixedParamUrlCodingStrategy("history", HistoryPage.class,
-				new String[] {}));
-		mount(new MixedParamUrlCodingStrategy("member", MemberPage.class,
-				new String[] { "userid" }));
-		mount(new MixedParamUrlCodingStrategy("members", RosterPage.class,
-				new String[] {}));
-		mount(new MixedParamUrlCodingStrategy("regulations",
-				RegulationPage.class, new String[] {}));
-		mount(new MixedParamUrlCodingStrategy("realm", RealmPage.class,
-				new String[] { "id" }));
 
-		mount(new MixedParamUrlCodingStrategy("groups", GroupsPage.class,
-				new String[] {}));
+		mountPage("/news", NewsPage.class);
+		mountPage("/charter", CharterPage.class);
+		mountPage("/about", AboutPage.class);
+		mountPage("/history", HistoryPage.class);
+		mountPage("/member/${userid}", MemberPage.class);
+		mountPage("/members", RosterPage.class);
+		mountPage("/regulations", RegulationPage.class);
+		mountPage("/realm/${id}", RealmPage.class);
 
-		mount(new MixedParamUrlCodingStrategy("join", JoinOverviewPage.class,
-				new String[] {}));
+		mountPage("groups", GroupsPage.class);
 
-		mount(new MixedParamUrlCodingStrategy("vacation", VacationPage.class,
-				new String[] {}));
+		mountPage("join", JoinOverviewPage.class);
 
-		mount(new MixedParamUrlCodingStrategy("threads", ForumThreadPage.class,
-				new String[] { "threadid", "pageid" }));
-		mount(new MixedParamUrlCodingStrategy("group", GroupPage.class,
-				new String[] { "groupid" }));
+		mountPage("vacation", VacationPage.class);
 
-		mount(new MixedParamUrlCodingStrategy("forums", ForumPage.class,
-				new String[] { "forumid", "pageid" }));
-		mount(new MixedParamUrlCodingStrategy("listforums",
-				ForumOverviewPage.class, new String[] {}));
-		mount(new MixedParamUrlCodingStrategy("register",
-				RegistrationPage.class, new String[] {}));
-		mount(new MixedParamUrlCodingStrategy("activation",
-				ActivationPage.class, new String[] { "key" }));
+		mountPage("/threads/${threadid/${pageid}", ForumThreadPage.class);
+		mountPage("/group/${groupid}", GroupPage.class);
 
-		mount(new MixedParamUrlCodingStrategy("resetpassword",
-				PasswordRequestConfirmationPage.class, new String[] { "key" }));
+		mountPage("/forums/${forumid}/${pageid}", ForumPage.class);
+		mountPage("/listforums", ForumOverviewPage.class);
+		mountPage("/register", RegistrationPage.class);
+		mountPage("/activation/${key}", ActivationPage.class);
 
-		mount(new MixedParamUrlCodingStrategy("accessdenied",
-				AccessDeniedPage.class, new String[] {}));
+		mountPage("/resetpassword/${key}",
+				PasswordRequestConfirmationPage.class);
 
-		mount(new MixedParamUrlCodingStrategy("mc-whitelist",
-				MinecraftWhiteListPage.class, new String[] {}));
+		mountPage("/accessdenied", AccessDeniedPage.class);
 
-		mount(new MixedParamUrlCodingStrategy("tracker", BugOverviewPage.class,
-				new String[] { "mode" }));
+		mountPage("/mc-whitelist", MinecraftWhiteListPage.class);
 
-		mount(new MixedParamUrlCodingStrategy("processPaymentRequest",
-				ProcessPaymentRequestPage.class, new String[] { "requestId",
-						"confirmationKey" }));
+		mountPage("/tracker/${mode}", BugOverviewPage.class);
 
-		mount(new MixedParamUrlCodingStrategy("processSubscriptionPayment",
-				SubscriptionPaymentResolvedPage.class, new String[] {
-						"paymentId", "confirmationKey" }));
+		mountPage("/processPaymentRequest/${requestId}/${confirmationKey}",
+				ProcessPaymentRequestPage.class);
 
-		mount(new MixedParamUrlCodingStrategy("bug", ViewBugPage.class,
-				new String[] { "id" }));
-		mount(new MixedParamUrlCodingStrategy("feature", ViewBugPage.class,
-				new String[] { "id" }));
+		mountPage(
+				"/processSubscriptionPayment/${paymentId}/${confirmationKey}",
+				SubscriptionPaymentResolvedPage.class);
 
-		getSharedResources().putClassAlias(BlobImageResource.class, "blob");
+		mountPage("/bug/${id}", ViewBugPage.class);
+		mountPage("/feature/${id}", ViewBugPage.class);
 
 		if (System.getProperty("tysan.install") != null) {
-			mount(new MixedParamUrlCodingStrategy("tangoimport",
-					TangoImporterPage.class, new String[] {}));
-			mount(new MixedParamUrlCodingStrategy("randomcontent",
-					RandomContentGenerationPage.class, new String[] {}));
-			mount(new MixedParamUrlCodingStrategy("oldexpenses",
-					OldExpensesPage.class, new String[0]));
+			mountPage("/tangoimport", TangoImporterPage.class);
+			mountPage("/randomcontent", RandomContentGenerationPage.class);
+			mountPage("/oldexpenses", OldExpensesPage.class);
 		}
 	}
 
@@ -348,25 +321,14 @@ public class TysanApplication extends WebApplication implements
 		return new TysanSession(request);
 	}
 
-	/**
-	 * @see org.apache.wicket.protocol.http.WebApplication#newRequestCycle(org.apache.wicket.Request,
-	 *      org.apache.wicket.Response)
-	 */
 	@Override
-	public RequestCycle newRequestCycle(Request request, Response response) {
-		return new TysanRequestCycle(this, (WebRequest) request, response);
-	}
-
-	/**
-	 * @see org.apache.wicket.protocol.http.WebApplication#newWebRequest(javax.servlet.http.HttpServletRequest)
-	 */
-	@Override
-	protected WebRequest newWebRequest(HttpServletRequest servletRequest) {
-		WebRequest request = super.newWebRequest(servletRequest);
+	protected WebRequest newWebRequest(HttpServletRequest servletRequest,
+			String filterPath) {
+		WebRequest request = super.newWebRequest(servletRequest, filterPath);
 		getSessionStore().setAttribute(
 				request,
 				"wickery-theme",
-				new ResourceReference(TysanApplication.class,
+				new CssResourceReference(TysanApplication.class,
 						"themes/ui-darkness/jquery-ui-1.7.2.custom.css"));
 
 		return request;
@@ -392,7 +354,7 @@ public class TysanApplication extends WebApplication implements
 	 */
 	@Override
 	public ResourceReference getTheme(Session session) {
-		return new ResourceReference(TysanApplication.class,
+		return new CssResourceReference(TysanApplication.class,
 				"themes/ui-darkness/jquery-ui-1.7.2.custom.css");
 	}
 

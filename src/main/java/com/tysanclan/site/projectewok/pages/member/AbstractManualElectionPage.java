@@ -42,42 +42,36 @@ import com.tysanclan.site.projectewok.entities.dao.UserDAO;
  * 
  * @author Jeroen Steenbeeke
  */
-public abstract class AbstractManualElectionPage extends
-        AbstractMemberPage {
+public abstract class AbstractManualElectionPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	private List<Long> preferences;
 
 	/**
-     * 
-     */
-	public AbstractManualElectionPage(String title,
-	        Election election) {
+	 * 
+	 */
+	public AbstractManualElectionPage(String title, Election election) {
 		super(title);
 
 		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(
-		        new LiteralOption("h2")));
+		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
 
-		accordion.add(new ContextImage("chrome",
-		        "images/browser/chrome.jpg"));
-		accordion.add(new ContextImage("firefox",
-		        "images/browser/firefox.png"));
-		accordion.add(new ContextImage("opera",
-		        "images/browser/opera.jpg"));
+		accordion.add(new ContextImage("chrome", "images/browser/chrome.jpg"));
+		accordion
+				.add(new ContextImage("firefox", "images/browser/firefox.png"));
+		accordion.add(new ContextImage("opera", "images/browser/opera.jpg"));
 
-		final boolean isNominationOpen = election
-		        .isNominationOpen();
-		final int totalSize = election.getCandidates()
-		        .size();
+		final boolean isNominationOpen = election.isNominationOpen();
+		final int totalSize = election.getCandidates().size();
 
-		accordion.add(new Label("label",
-		        isNominationOpen ? "Candidates"
-		                : "Cast your vote!"));
+		accordion.add(new Label("label", isNominationOpen ? "Candidates"
+				: "Cast your vote!"));
 
 		preferences = new LinkedList<Long>();
 
-		Form<Election> voteForm = new Form<Election>(
-		        "vote", ModelMaker.wrap(election)) {
+		Form<Election> voteForm = new Form<Election>("vote",
+				ModelMaker.wrap(election)) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -93,8 +87,7 @@ public abstract class AbstractManualElectionPage extends
 				DropDownChoice<User> userChoice = (DropDownChoice<User>) get("candidate");
 				Label positionLabel = (Label) get("position");
 
-				preferences.add(userChoice.getModelObject()
-				        .getId());
+				preferences.add(userChoice.getModelObject().getId());
 
 				if (preferences.size() == totalSize) {
 					List<User> users = new LinkedList<User>();
@@ -106,22 +99,14 @@ public abstract class AbstractManualElectionPage extends
 					onVoteSubmit(users);
 				} else {
 					List<User> remaining = new LinkedList<User>();
-					remaining.addAll(userChoice
-					        .getChoices());
-					remaining.remove(userChoice
-					        .getModelObject());
+					remaining.addAll(userChoice.getChoices());
+					remaining.remove(userChoice.getModelObject());
 
-					positionLabel
-					        .replaceWith(new Label(
-					                "position",
-					                new Model<Integer>(
-					                        preferences
-					                                .size() + 1)));
+					positionLabel.replaceWith(new Label("position",
+							new Model<Integer>(preferences.size() + 1)));
 
-					userChoice.setChoices(ModelMaker
-					        .wrapChoices(remaining));
-					userChoice.setModel(ModelMaker.wrap(
-					        (User) null, true));
+					userChoice.setChoices(ModelMaker.wrapChoices(remaining));
+					userChoice.setModel(ModelMaker.wrap((User) null, true));
 				}
 
 			}
@@ -130,26 +115,21 @@ public abstract class AbstractManualElectionPage extends
 
 		List<User> candidates = new LinkedList<User>();
 		candidates.addAll(election.getCandidates());
-		Collections.sort(candidates,
-		        new Comparator<User>() {
-			        /**
-			         * @see java.util.Comparator#compare(java.lang.Object,
-			         *      java.lang.Object)
-			         */
-			        @Override
-			        public int compare(User o1, User o2) {
-				        return o1.getUsername()
-				                .compareToIgnoreCase(
-				                        o2.getUsername());
-			        }
-		        });
+		Collections.sort(candidates, new Comparator<User>() {
+			/**
+			 * @see java.util.Comparator#compare(java.lang.Object,
+			 *      java.lang.Object)
+			 */
+			@Override
+			public int compare(User o1, User o2) {
+				return o1.getUsername().compareToIgnoreCase(o2.getUsername());
+			}
+		});
 
-		voteForm.add(new Label("position",
-		        new Model<Integer>(1)));
+		voteForm.add(new Label("position", new Model<Integer>(1)));
 
-		voteForm.add(new DropDownChoice<User>("candidate",
-		        ModelMaker.wrap((User) null, true),
-		        ModelMaker.wrapChoices(candidates)));
+		voteForm.add(new DropDownChoice<User>("candidate", ModelMaker.wrap(
+				(User) null, true), ModelMaker.wrapChoices(candidates)));
 
 		accordion.add(voteForm);
 		add(accordion);

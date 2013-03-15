@@ -43,21 +43,18 @@ import com.tysanclan.site.projectewok.entities.Role;
  */
 @TysanRankSecured(Rank.CHANCELLOR)
 public class EditRolePage extends TysanPage {
-	/**
-     * 
-     */
+	private static final long serialVersionUID = 1L;
+
 	public EditRolePage(Role role) {
 		super("Edit role - " + role.getName());
 
 		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(
-		        new LiteralOption("h2")));
+		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
 
 		accordion.add(new Label("title", role.getName()));
 
-		Form<Role> editForm = new Form<Role>("editForm",
-		        ModelMaker.wrap(role)) {
+		Form<Role> editForm = new Form<Role>("editForm", ModelMaker.wrap(role)) {
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean
@@ -73,18 +70,14 @@ public class EditRolePage extends TysanPage {
 				TextArea<String> descriptionArea = (TextArea<String>) get("description");
 
 				String name = nameField.getModelObject();
-				String description = descriptionArea
-				        .getModelObject();
+				String description = descriptionArea.getModelObject();
 
 				Role r = getModelObject();
 				if (!r.getName().equals(name)) {
-					roleService.setRoleName(getUser(),
-					        r, name);
+					roleService.setRoleName(getUser(), r, name);
 				}
-				if (!r.getDescription().equals(
-				        description)) {
-					roleService.setRoleDescription(
-					        getUser(), r, description);
+				if (!r.getDescription().equals(description)) {
+					roleService.setRoleDescription(getUser(), r, description);
 				}
 
 				setResponsePage(new RolesManagementPage());
@@ -92,12 +85,11 @@ public class EditRolePage extends TysanPage {
 
 		};
 
-		editForm.add(new TextField<String>("name",
-		        new Model<String>(role.getName())));
-		editForm.add(new TextArea<String>("description",
-		        new Model<String>(role.getDescription()))
-		        .add(new TinyMceBehavior(
-		                new TysanTinyMCESettings())));
+		editForm.add(new TextField<String>("name", new Model<String>(role
+				.getName())));
+		editForm.add(new TextArea<String>("description", new Model<String>(role
+				.getDescription())).add(new TinyMceBehavior(
+				new TysanTinyMCESettings())));
 
 		accordion.add(editForm);
 

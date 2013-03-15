@@ -25,7 +25,7 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.resource.ByteArrayResource;
+import org.apache.wicket.request.resource.ByteArrayResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.core.options.LiteralOption;
 import org.odlabs.wiquery.ui.accordion.Accordion;
@@ -43,71 +43,57 @@ import com.tysanclan.site.projectewok.entities.dao.GroupCreationRequestDAO;
  * @author Jeroen Steenbeeke
  */
 @TysanRankSecured(Rank.CHANCELLOR)
-public class GroupRequestApprovalPage extends
-        AbstractMemberPage {
+public class GroupRequestApprovalPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private GroupCreationRequestDAO groupCreationRequestDAO;
 
 	/**
-     * 
-     */
+	 * 
+	 */
 	public GroupRequestApprovalPage() {
 		super("Group Request Approval");
 
 		Accordion accordion = new Accordion("accordion");
 		accordion.setAutoHeight(false);
-		accordion.setHeader(new AccordionHeader(
-		        new LiteralOption("h2")));
+		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 
-		List<GroupCreationRequest> requests = groupCreationRequestDAO
-		        .findAll();
+		List<GroupCreationRequest> requests = groupCreationRequestDAO.findAll();
 
 		String intro = (requests.size() == 0) ? "There are no pending group creation requests"
-		        : "There are "
-		                + requests.size()
-		                + " pending group creation requests:";
+				: "There are " + requests.size()
+						+ " pending group creation requests:";
 
 		add(new Label("pendingtext", intro));
 
-		accordion.add(new ListView<GroupCreationRequest>(
-		        "pending", ModelMaker.wrap(requests)) {
+		accordion.add(new ListView<GroupCreationRequest>("pending", ModelMaker
+				.wrap(requests)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void populateItem(
-			        ListItem<GroupCreationRequest> item) {
-				GroupCreationRequest request = item
-				        .getModelObject();
+			protected void populateItem(ListItem<GroupCreationRequest> item) {
+				GroupCreationRequest request = item.getModelObject();
 
 				boolean social = request.getGame() == null;
 
-				item.add(new Label("name", request
-				        .getName()));
-				item.add(new Label("type",
-				        social ? "Social Group"
-				                : "Gaming Group"));
-				item.add(new MemberListItem("leader",
-				        request.getRequester()));
+				item.add(new Label("name", request.getName()));
+				item.add(new Label("type", social ? "Social Group"
+						: "Gaming Group"));
+				item.add(new MemberListItem("leader", request.getRequester()));
 				if (social) {
-					item.add(new ContextImage("icon",
-					        "images/icons/group.png"));
+					item.add(new ContextImage("icon", "images/icons/group.png"));
 				} else {
-					item.add(new Image("icon",
-					        new ByteArrayResource(
-					                "image/gif", request
-					                        .getGame()
-					                        .getImage())));
+					item.add(new Image("icon", new ByteArrayResource(
+							"image/gif", request.getGame().getImage())));
 				}
 
-				item.add(new Label("description", request
-				        .getDescription())
-				        .setEscapeModelStrings(false));
-				item.add(new Label("motivation", request
-				        .getMotivation())
-				        .setEscapeModelStrings(false));
+				item.add(new Label("description", request.getDescription())
+						.setEscapeModelStrings(false));
+				item.add(new Label("motivation", request.getMotivation())
+						.setEscapeModelStrings(false));
 				Link<GroupCreationRequest> yesLink = new Link<GroupCreationRequest>(
-				        "yes", ModelMaker.wrap(request)) {
+						"yes", ModelMaker.wrap(request)) {
 					private static final long serialVersionUID = 1L;
 
 					@SpringBean
@@ -118,14 +104,12 @@ public class GroupRequestApprovalPage extends
 					 */
 					@Override
 					public void onClick() {
-						groupService
-						        .acceptRequest(getUser(),
-						                getModelObject());
+						groupService.acceptRequest(getUser(), getModelObject());
 						setResponsePage(new GroupRequestApprovalPage());
 					}
 				};
 				Link<GroupCreationRequest> noLink = new Link<GroupCreationRequest>(
-				        "no", ModelMaker.wrap(request)) {
+						"no", ModelMaker.wrap(request)) {
 					private static final long serialVersionUID = 1L;
 
 					@SpringBean
@@ -137,16 +121,13 @@ public class GroupRequestApprovalPage extends
 					@Override
 					public void onClick() {
 						groupService
-						        .declineRequest(getUser(),
-						                getModelObject());
+								.declineRequest(getUser(), getModelObject());
 						setResponsePage(new GroupRequestApprovalPage());
 					}
 				};
 
-				yesLink.add(new ContextImage("icon",
-				        "images/icons/tick.png"));
-				noLink.add(new ContextImage("icon",
-				        "images/icons/cross.png"));
+				yesLink.add(new ContextImage("icon", "images/icons/tick.png"));
+				noLink.add(new ContextImage("icon", "images/icons/cross.png"));
 
 				item.add(yesLink);
 				item.add(noLink);

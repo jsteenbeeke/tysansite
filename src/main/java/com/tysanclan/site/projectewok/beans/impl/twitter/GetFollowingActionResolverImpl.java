@@ -35,7 +35,7 @@ import com.tysanclan.site.projectewok.entities.twitter.GetFollowingAction;
 import com.tysanclan.site.projectewok.entities.twitter.TwitterFollowing;
 
 /**
- * @author jeroen
+ * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")

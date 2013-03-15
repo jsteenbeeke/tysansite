@@ -29,7 +29,7 @@ import com.tysanclan.site.projectewok.entities.ForumThread;
 import com.tysanclan.site.projectewok.entities.User;
 
 /**
- * @author jeroen
+ * @author Jeroen Steenbeeke
  */
 public class MemberForumViewContext extends AbstractForumViewContext {
 	private static final long serialVersionUID = 1L;

@@ -19,7 +19,12 @@ package com.tysanclan.site.projectewok.pages.member;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -46,6 +51,8 @@ import com.tysanclan.site.projectewok.util.MemberUtil;
  * @author Jeroen Steenbeeke
  */
 public class RunForSenatorPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private DemocracyService democracyService;
 

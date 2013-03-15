@@ -48,12 +48,11 @@ import com.tysanclan.site.projectewok.util.StringUtil;
  */
 @TysanNonMemberSecured
 public class JoinPage2 extends TysanPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private GameService gameService;
 
-	/**
-	 * 
-	 */
 	public JoinPage2() {
 		super("Join Tysan");
 

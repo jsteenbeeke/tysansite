@@ -17,11 +17,12 @@
  */
 package com.tysanclan.site.projectewok.pages;
 
-import org.apache.wicket.PageParameters;
-import org.apache.wicket.RequestCycle;
+import java.util.Set;
+
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
@@ -35,6 +36,7 @@ import com.tysanclan.site.projectewok.entities.dao.ForumThreadDAO;
  * @author Jeroen Steenbeeke
  */
 public class ForumPage extends TysanPage {
+	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private ForumDAO forumDAO;
@@ -44,18 +46,18 @@ public class ForumPage extends TysanPage {
 
 	private IModel<Forum> forumModel;
 
-	public ForumPage() {
+	public ForumPage(PageParameters params) {
 		super("");
 
-		PageParameters params = RequestCycle.get().getPageParameters();
+		Set<String> namedKeys = params.getNamedKeys();
 
-		if (!params.containsKey("forumid") || !params.containsKey("pageid")) {
+		if (!namedKeys.contains("forumid") || !namedKeys.contains("pageid")) {
 			throw new RestartResponseAtInterceptPageException(
 					AccessDeniedPage.class);
 		}
 
-		Long id = params.getAsLong("forumid");
-		Long pageNumber = params.getAsLong("pageid");
+		Long id = params.get("forumid").toOptionalLong();
+		Long pageNumber = params.get("pageid").toOptionalLong();
 
 		if (id == null || pageNumber == null || pageNumber == 0) {
 			throw new RestartResponseAtInterceptPageException(

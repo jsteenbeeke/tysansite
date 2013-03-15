@@ -30,8 +30,8 @@ import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.DemocracyService;
 import com.tysanclan.site.projectewok.components.IconLink;
-import com.tysanclan.site.projectewok.components.MemberListItem;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
+import com.tysanclan.site.projectewok.components.MemberListItem;
 import com.tysanclan.site.projectewok.entities.Impeachment;
 import com.tysanclan.site.projectewok.entities.ImpeachmentVote;
 import com.tysanclan.site.projectewok.entities.Rank;
@@ -45,37 +45,33 @@ import com.tysanclan.site.projectewok.pages.member.OverviewPage;
  */
 @TysanRankSecured(Rank.SENATOR)
 public class ImpeachmentPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private ImpeachmentDAO impeachmentDAO;
 
-	/**
-     * 
-     */
 	public ImpeachmentPage() {
 		super("Impeach Chancellor");
 
 		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(
-		        new LiteralOption("h2")));
+		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
 
-		List<Impeachment> impeachments = impeachmentDAO
-		        .findAll();
+		List<Impeachment> impeachments = impeachmentDAO.findAll();
 
 		if (impeachments.isEmpty()) {
 			throw new RestartResponseAtInterceptPageException(
-			        new OverviewPage());
+					new OverviewPage());
 		}
 
 		Impeachment impeachment = impeachments.get(0);
 
-		String chancellor = impeachment.getChancellor()
-		        .getUsername();
+		String chancellor = impeachment.getChancellor().getUsername();
 
-		accordion.add(new MemberListItem("chancellor",
-		        impeachment.getChancellor()));
-		accordion.add(new MemberListItem("initiator",
-		        impeachment.getInitiator()));
+		accordion.add(new MemberListItem("chancellor", impeachment
+				.getChancellor()));
+		accordion.add(new MemberListItem("initiator", impeachment
+				.getInitiator()));
 
 		ImpeachmentVote myVote = null;
 
@@ -86,64 +82,50 @@ public class ImpeachmentPage extends AbstractMemberPage {
 			}
 		}
 
-		accordion
-		        .add(new Label(
-		                "vote",
-		                myVote == null ? "You have not yet voted"
-		                        : myVote.isInFavor() ? "You have voted to impeach "
-		                                + chancellor
-		                                : "You have voted not to impeach "
-		                                        + chancellor));
+		accordion.add(new Label("vote",
+				myVote == null ? "You have not yet voted"
+						: myVote.isInFavor() ? "You have voted to impeach "
+								+ chancellor : "You have voted not to impeach "
+								+ chancellor));
 
-		accordion.add(new IconLink.Builder(
-		        "images/icons/tick.png",
-		        new DefaultClickResponder<User>(ModelMaker
-		                .wrap(getUser())) {
-			        private static final long serialVersionUID = 1L;
+		accordion.add(new IconLink.Builder("images/icons/tick.png",
+				new DefaultClickResponder<User>(ModelMaker.wrap(getUser())) {
+					private static final long serialVersionUID = 1L;
 
-			        @SpringBean
-			        private DemocracyService democracyService;
+					@SpringBean
+					private DemocracyService democracyService;
 
-			        /**
-			         * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
-			         */
-			        @Override
-			        public void onClick() {
-				        democracyService
-				                .castImpeachmentVote(
-				                        getModelObject(),
-				                        true);
+					/**
+					 * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
+					 */
+					@Override
+					public void onClick() {
+						democracyService.castImpeachmentVote(getModelObject(),
+								true);
 
-				        setResponsePage(new ImpeachmentPage());
-			        }
-		        })
-		        .setText(
-		                "Yes, I want to start the impeachment procedure")
-		        .newInstance("yes"));
-		accordion.add(new IconLink.Builder(
-		        "images/icons/cross.png",
-		        new DefaultClickResponder<User>(ModelMaker
-		                .wrap(getUser())) {
-			        private static final long serialVersionUID = 1L;
+						setResponsePage(new ImpeachmentPage());
+					}
+				}).setText("Yes, I want to start the impeachment procedure")
+				.newInstance("yes"));
+		accordion.add(new IconLink.Builder("images/icons/cross.png",
+				new DefaultClickResponder<User>(ModelMaker.wrap(getUser())) {
+					private static final long serialVersionUID = 1L;
 
-			        @SpringBean
-			        private DemocracyService democracyService;
+					@SpringBean
+					private DemocracyService democracyService;
 
-			        /**
-			         * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
-			         */
-			        @Override
-			        public void onClick() {
-				        democracyService
-				                .castImpeachmentVote(
-				                        getModelObject(),
-				                        false);
+					/**
+					 * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
+					 */
+					@Override
+					public void onClick() {
+						democracyService.castImpeachmentVote(getModelObject(),
+								false);
 
-				        setResponsePage(new ImpeachmentPage());
-			        }
-		        }).setText(
-		        "No, I do not want to impeach "
-		                + chancellor).newInstance("no"));
+						setResponsePage(new ImpeachmentPage());
+					}
+				}).setText("No, I do not want to impeach " + chancellor)
+				.newInstance("no"));
 
 		add(accordion);
 

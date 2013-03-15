@@ -19,7 +19,7 @@ package com.tysanclan.site.projectewok.components;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.ContextImage;
@@ -114,7 +114,7 @@ public class IconLink extends Panel {
 				@Override
 				public void onClick(AjaxRequestTarget target) {
 					ClickResponder cr = getModelObject();
-					InjectorHolder.getInjector().inject(cr);
+					Injector.get().inject(cr);
 					cr.onClick(target);
 				}
 			};
@@ -126,7 +126,7 @@ public class IconLink extends Panel {
 				@Override
 				public void onClick() {
 					ClickResponder cr = getModelObject();
-					InjectorHolder.getInjector().inject(cr);
+					Injector.get().inject(cr);
 
 					cr.onClick(null);
 				}

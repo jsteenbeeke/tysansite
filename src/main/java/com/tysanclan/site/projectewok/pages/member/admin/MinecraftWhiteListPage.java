@@ -23,7 +23,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.request.target.basic.StringRequestTarget;
+import org.apache.wicket.request.IRequestHandler;
+import org.apache.wicket.request.handler.resource.ResourceRequestHandler;
+import org.apache.wicket.request.resource.ByteArrayResource;
+import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.tysanclan.site.projectewok.entities.Game;
@@ -34,6 +37,7 @@ import com.tysanclan.site.projectewok.entities.dao.GameDAO;
 import com.tysanclan.site.projectewok.util.MemberUtil;
 
 public class MinecraftWhiteListPage extends WebPage {
+	private static final long serialVersionUID = 1L;
 	@SpringBean
 	private GameDAO gameDAO;
 
@@ -66,9 +70,10 @@ public class MinecraftWhiteListPage extends WebPage {
 			whiteListBuilder.append(System.getProperty("line.separator"));
 		}
 
-		getRequestCycle().setRequestTarget(
-				new StringRequestTarget("text/plain", "UTF-8", whiteListBuilder
-						.toString()));
+		IResource wl = new ByteArrayResource("text/plain", whiteListBuilder
+				.toString().getBytes());
+		IRequestHandler requestHandler = new ResourceRequestHandler(wl, null);
+		requestHandler.respond(getRequestCycle());
 
 	}
 }

@@ -27,8 +27,8 @@ import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.beans.NotificationService;
 import com.tysanclan.site.projectewok.components.DateLabel;
 import com.tysanclan.site.projectewok.components.IconLink;
-import com.tysanclan.site.projectewok.components.OtterSniperPanel;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
+import com.tysanclan.site.projectewok.components.OtterSniperPanel;
 import com.tysanclan.site.projectewok.entities.Notification;
 
 /**
@@ -36,12 +36,11 @@ import com.tysanclan.site.projectewok.entities.Notification;
  */
 @TysanMemberSecured
 public class NotificationsPage extends AbstractSingleAccordionMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private NotificationService notificationService;
 
-	/**
-	 * 
-	 */
 	public NotificationsPage() {
 		super("Notifications");
 

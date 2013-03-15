@@ -20,9 +20,9 @@ package com.tysanclan.site.projectewok.components;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.wicket.Resource;
-import org.apache.wicket.ResourceReference;
-import org.apache.wicket.resource.ContextRelativeResource;
+import org.apache.wicket.request.resource.ContextRelativeResource;
+import org.apache.wicket.request.resource.IResource;
+import org.apache.wicket.request.resource.ResourceReference;
 
 import wicket.contrib.tinymce.settings.Button;
 import wicket.contrib.tinymce.settings.MediaPlugin;
@@ -64,25 +64,18 @@ public class TysanTinyMCESettings extends TinyMCESettings {
 		buttons.add(BlockQuoteButton.blockquote);
 		buttons.add(Button.undo);
 		setToolbarButtons(toolbar, buttons);
-		setToolbarButtons(Toolbar.second,
-		        new LinkedList<Button>());
-		setToolbarButtons(Toolbar.third,
-		        new LinkedList<Button>());
-		setToolbarButtons(Toolbar.fourth,
-		        new LinkedList<Button>());
+		setToolbarButtons(Toolbar.second, new LinkedList<Button>());
+		setToolbarButtons(Toolbar.third, new LinkedList<Button>());
+		setToolbarButtons(Toolbar.fourth, new LinkedList<Button>());
 
 		setConvertUrls(false);
 
 		setContentCss(new ResourceReference("mceCss") {
 			private static final long serialVersionUID = 1L;
 
-			/**
-			 * @see org.apache.wicket.ResourceReference#newResource()
-			 */
 			@Override
-			protected Resource newResource() {
-				return new ContextRelativeResource(
-				        "css/mce.css");
+			public IResource getResource() {
+				return new ContextRelativeResource("css/mce.css");
 			}
 
 		});

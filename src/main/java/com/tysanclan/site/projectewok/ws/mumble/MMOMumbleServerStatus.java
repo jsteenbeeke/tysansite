@@ -31,7 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Jeroen
+ * @author Jeroen Steenbeeke
  */
 public class MMOMumbleServerStatus {
 	private static final long FIVE_MINUTES = (60 * 5 * 1000);

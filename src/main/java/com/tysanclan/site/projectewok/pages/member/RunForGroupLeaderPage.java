@@ -28,58 +28,50 @@ import com.tysanclan.site.projectewok.entities.GroupLeaderElection;
 /**
  * @author Jeroen Steenbeeke
  */
-public class RunForGroupLeaderPage extends
-        AbstractMemberPage {
-	public RunForGroupLeaderPage(
-	        GroupLeaderElection election) {
-		super("Run for group leader for "
-		        + election.getGroup().getName());
+public class RunForGroupLeaderPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
 
-		add(new IconLink.Builder(
-		        "images/icons/tick.png",
-		        new DefaultClickResponder<GroupLeaderElection>(
-		                ModelMaker.wrap(election)) {
-			        private static final long serialVersionUID = 1L;
+	public RunForGroupLeaderPage(GroupLeaderElection election) {
+		super("Run for group leader for " + election.getGroup().getName());
 
-			        @SpringBean
-			        private DemocracyService democracyService;
+		add(new IconLink.Builder("images/icons/tick.png",
+				new DefaultClickResponder<GroupLeaderElection>(
+						ModelMaker.wrap(election)) {
+					private static final long serialVersionUID = 1L;
 
-			        /**
-			         * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
-			         */
-			        @Override
-			        public void onClick() {
-				        if (democracyService
-				                .addGroupLeaderCandidate(
-				                        getUser(),
-				                        getModelObject())) {
-					        setResponsePage(new OverviewPage());
-				        } else {
-					        error("Already a candidate or not eligible");
-				        }
+					@SpringBean
+					private DemocracyService democracyService;
 
-			        }
+					/**
+					 * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
+					 */
+					@Override
+					public void onClick() {
+						if (democracyService.addGroupLeaderCandidate(getUser(),
+								getModelObject())) {
+							setResponsePage(new OverviewPage());
+						} else {
+							error("Already a candidate or not eligible");
+						}
 
-		        }).setText(
-		        "Yes, I want to run for group leader")
-		        .newInstance("yes"));
-		add(new IconLink.Builder(
-		        "images/icons/cross.png",
-		        new DefaultClickResponder<GroupLeaderElection>(
-		                ModelMaker.wrap(election)) {
-			        private static final long serialVersionUID = 1L;
+					}
 
-			        /**
-			         * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
-			         */
-			        @Override
-			        public void onClick() {
-				        setResponsePage(new OverviewPage());
-			        }
+				}).setText("Yes, I want to run for group leader").newInstance(
+				"yes"));
+		add(new IconLink.Builder("images/icons/cross.png",
+				new DefaultClickResponder<GroupLeaderElection>(
+						ModelMaker.wrap(election)) {
+					private static final long serialVersionUID = 1L;
 
-		        })
-		        .setText(
-		                "No, I do not want to run for group leader")
-		        .newInstance("no"));
+					/**
+					 * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
+					 */
+					@Override
+					public void onClick() {
+						setResponsePage(new OverviewPage());
+					}
+
+				}).setText("No, I do not want to run for group leader")
+				.newInstance("no"));
 	}
 }

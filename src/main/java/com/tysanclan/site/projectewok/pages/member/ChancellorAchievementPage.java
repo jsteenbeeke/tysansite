@@ -19,9 +19,9 @@ package com.tysanclan.site.projectewok.pages.member;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.markup.html.image.resource.DynamicImageResource;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.request.resource.ByteArrayResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.core.options.LiteralOption;
 import org.odlabs.wiquery.ui.accordion.Accordion;
@@ -33,16 +33,21 @@ import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.AchievementService;
 import com.tysanclan.site.projectewok.components.IconLink;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
+import com.tysanclan.site.projectewok.entities.AchievementIcon;
 import com.tysanclan.site.projectewok.entities.AchievementProposal;
+import com.tysanclan.site.projectewok.entities.Game;
 import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.dao.AchievementProposalDAO;
 import com.tysanclan.site.projectewok.entities.dao.filters.AchievementProposalFilter;
+import com.tysanclan.site.projectewok.util.ImageUtil;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @TysanRankSecured(Rank.CHANCELLOR)
 public class ChancellorAchievementPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private AchievementProposalDAO achievementProposalDAO;
 
@@ -67,28 +72,19 @@ public class ChancellorAchievementPage extends AbstractMemberPage {
 			@Override
 			protected void populateItem(final Item<AchievementProposal> item) {
 				AchievementProposal proposal = item.getModelObject();
+				AchievementIcon icon = proposal.getIcon();
+				Game game = proposal.getGame();
 
 				item.add(new Label("name", proposal.getName()));
-				item.add(new Image("icon", new DynamicImageResource() {
 
-					private static final long serialVersionUID = 1L;
+				item.add(new Image("icon", new ByteArrayResource(ImageUtil
+						.getMimeType(icon.getImage()), icon.getImage())));
 
-					@Override
-					protected byte[] getImageData() {
-						return item.getModelObject().getIcon().getImage();
-					}
+				byte[] gameImage = game != null ? game.getImage() : new byte[0];
 
-				}));
-				item.add(new Image("game", new DynamicImageResource() {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					protected byte[] getImageData() {
-						return item.getModelObject().getGame().getImage();
-					}
-
-				}).setVisible(proposal.getGame() != null));
+				item.add(new Image("game", new ByteArrayResource(ImageUtil
+						.getMimeType(gameImage), gameImage))
+						.setVisible(game != null));
 
 				boolean hasGroup = proposal.getGroup() != null;
 

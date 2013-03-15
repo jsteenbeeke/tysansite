@@ -17,7 +17,13 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TimeZone;
+import java.util.TreeMap;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
@@ -28,7 +34,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.protocol.http.WebRequestCycle;
 import org.apache.wicket.protocol.http.request.WebClientInfo;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.core.javascript.JsQuery;
@@ -40,6 +45,7 @@ import org.odlabs.wiquery.ui.draggable.DraggableBehavior;
 import org.odlabs.wiquery.ui.droppable.DroppableAjaxBehavior;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.tysanclan.site.projectewok.TysanSession;
 import com.tysanclan.site.projectewok.components.MemberListItem;
 import com.tysanclan.site.projectewok.entities.Election;
 import com.tysanclan.site.projectewok.entities.User;
@@ -51,6 +57,8 @@ import com.tysanclan.site.projectewok.util.DateUtil;
  */
 public abstract class AbstractElectionPage<T extends Election> extends
 		AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	private final Map<Integer, Long> votes;
 	private final int candidates;
 
@@ -65,8 +73,7 @@ public abstract class AbstractElectionPage<T extends Election> extends
 
 		final boolean isNominationOpen = election.isNominationOpen();
 
-		WebClientInfo clientInfo = (WebClientInfo) WebRequestCycle.get()
-				.getClientInfo();
+		WebClientInfo clientInfo = TysanSession.get().getClientInfo();
 
 		// If user is using IE7, offer him an alternative
 		if (!isNominationOpen
@@ -203,14 +210,14 @@ public abstract class AbstractElectionPage<T extends Election> extends
 											"accordion:voteform:submit");
 									submit.setVisible(true);
 									if (target != null) {
-										target.addComponent(submit);
+										target.add(submit);
 									}
 								}
 
 								if (target != null) {
 
-									target.addComponent(mli);
-									target.addComponent(item2);
+									target.add(mli);
+									target.add(item2);
 								}
 							}
 

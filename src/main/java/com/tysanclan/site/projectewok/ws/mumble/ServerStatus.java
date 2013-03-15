@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * @author Jeroen
+ * @author Jeroen Steenbeeke
  */
 @XmlRootElement(name = "hash")
 public class ServerStatus implements Serializable {

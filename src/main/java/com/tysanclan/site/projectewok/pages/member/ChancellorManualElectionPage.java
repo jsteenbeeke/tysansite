@@ -30,8 +30,8 @@ import com.tysanclan.site.projectewok.entities.User;
 /**
  * @author Jeroen Steenbeeke
  */
-public class ChancellorManualElectionPage extends
-        AbstractManualElectionPage {
+public class ChancellorManualElectionPage extends AbstractManualElectionPage {
+	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private DemocracyService democracyService;
@@ -39,10 +39,9 @@ public class ChancellorManualElectionPage extends
 	private IModel<ChancellorElection> electionModel;
 
 	/**
-     * 
-     */
-	public ChancellorManualElectionPage(
-	        ChancellorElection election) {
+	 * 
+	 */
+	public ChancellorManualElectionPage(ChancellorElection election) {
 		super("Chancellor Election", election);
 
 		electionModel = ModelMaker.wrap(election);
@@ -53,11 +52,9 @@ public class ChancellorManualElectionPage extends
 	 */
 	@Override
 	public void onVoteSubmit(List<User> userList) {
-		ChancellorElection election = electionModel
-		        .getObject();
+		ChancellorElection election = electionModel.getObject();
 
-		democracyService.createVote(getUser(), userList,
-		        election);
+		democracyService.createVote(getUser(), userList, election);
 
 		setResponsePage(new OverviewPage());
 

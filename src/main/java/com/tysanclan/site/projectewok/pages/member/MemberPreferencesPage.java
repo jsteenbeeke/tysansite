@@ -41,9 +41,8 @@ import com.tysanclan.site.projectewok.pages.VacationPage;
  */
 @TysanMemberSecured
 public class MemberPreferencesPage extends AbstractMemberPage {
-	/**
-	 * 
-	 */
+	private static final long serialVersionUID = 1L;
+
 	public MemberPreferencesPage() {
 		super("Preferences");
 
@@ -110,6 +109,7 @@ public class MemberPreferencesPage extends AbstractMemberPage {
 					}
 				}
 				retireable = true;
+			default:
 		}
 
 		tabs.add(new WebMarkupContainer("no").setVisible(!retireable

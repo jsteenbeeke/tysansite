@@ -56,6 +56,8 @@ import com.tysanclan.site.projectewok.pages.member.group.DisbandGroupPage;
  */
 @TysanRankSecured(Rank.CHANCELLOR)
 public class CommitteePage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private UserService userService;
 

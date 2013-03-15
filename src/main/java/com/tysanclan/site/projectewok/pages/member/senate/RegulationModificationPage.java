@@ -43,6 +43,8 @@ import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
  */
 @TysanRankSecured(Rank.SENATOR)
 public class RegulationModificationPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private RegulationChangeDAO regulationChangeDAO;
 

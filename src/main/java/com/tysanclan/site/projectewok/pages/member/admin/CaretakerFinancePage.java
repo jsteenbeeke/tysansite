@@ -64,6 +64,8 @@ import com.tysanclan.site.projectewok.util.FinancialTimeline;
  * @author Jeroen Steenbeeke
  */
 public class CaretakerFinancePage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	private static final List<Integer> oneToAHundred;
 	private static final List<Integer> zeroToNinetyNine;
 

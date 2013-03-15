@@ -40,13 +40,11 @@ public abstract class CalendarPanelNavigator extends Panel {
 
 	private Date selectedDate;
 
-	public CalendarPanelNavigator(String id,
-	        CalendarPanel panel) {
+	public CalendarPanelNavigator(String id, CalendarPanel panel) {
 		super(id);
 		this.panel = panel;
 
-		selectedDate = DateUtil.getMidnightDate(panel
-		        .getCalendar().getTime());
+		selectedDate = DateUtil.getMidnightDate(panel.getCalendar().getTime());
 
 		add(createMonthLabel(selectedDate));
 
@@ -55,8 +53,7 @@ public abstract class CalendarPanelNavigator extends Panel {
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				Calendar cal = DateUtil
-				        .getCalendarInstance();
+				Calendar cal = DateUtil.getCalendarInstance();
 				cal.setTime(getSelectedDate());
 				cal.add(Calendar.MONTH, -1);
 				replacePanel(target, cal.getTime());
@@ -69,8 +66,7 @@ public abstract class CalendarPanelNavigator extends Panel {
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				Calendar cal = DateUtil
-				        .getCalendarInstance();
+				Calendar cal = DateUtil.getCalendarInstance();
 				cal.setTime(getSelectedDate());
 				cal.add(Calendar.MONTH, 1);
 				replacePanel(target, cal.getTime());
@@ -88,24 +84,20 @@ public abstract class CalendarPanelNavigator extends Panel {
 	}
 
 	public Label createMonthLabel(Date date) {
-		SimpleDateFormat format = new SimpleDateFormat(
-		        "MMMM yyyy", Locale.US);
+		SimpleDateFormat format = new SimpleDateFormat("MMMM yyyy", Locale.US);
 		format.setTimeZone(DateUtil.NEW_YORK);
 
-		Label label = new Label("month", format
-		        .format(date));
+		Label label = new Label("month", format.format(date));
 		label.setOutputMarkupId(true);
 		label.setOutputMarkupPlaceholderTag(true);
 
 		return label;
 	}
 
-	private void replacePanel(AjaxRequestTarget target,
-	        Date newDate) {
+	private void replacePanel(AjaxRequestTarget target, Date newDate) {
 		Calendar cal = DateUtil.getCalendarInstance();
 		cal.setTime(newDate);
-		CalendarPanel newPanel = createNewPanel(panel
-		        .getId(), cal);
+		CalendarPanel newPanel = createNewPanel(panel.getId(), cal);
 		panel.replaceWith(newPanel);
 		panel = newPanel;
 
@@ -114,13 +106,12 @@ public abstract class CalendarPanelNavigator extends Panel {
 		oldLabel.replaceWith(label);
 
 		if (target != null) {
-			target.addComponent(panel);
-			target.addComponent(label);
+			target.add(panel);
+			target.add(label);
 			selectedDate = newDate;
 		}
 	}
 
-	public abstract CalendarPanel createNewPanel(String id,
-	        Calendar calendar);
+	public abstract CalendarPanel createNewPanel(String id, Calendar calendar);
 
 }

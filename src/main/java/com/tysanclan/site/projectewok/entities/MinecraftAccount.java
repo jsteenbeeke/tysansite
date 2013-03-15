@@ -20,7 +20,7 @@ package com.tysanclan.site.projectewok.entities;
 import javax.persistence.Entity;
 
 /**
- * @author jeroen
+ * @author Jeroen Steenbeeke
  */
 @Entity
 public class MinecraftAccount extends GameAccount {

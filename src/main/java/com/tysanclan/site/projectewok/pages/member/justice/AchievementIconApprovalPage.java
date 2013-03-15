@@ -21,9 +21,9 @@ import java.util.List;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.markup.html.image.resource.DynamicImageResource;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.request.resource.ByteArrayResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
@@ -37,6 +37,7 @@ import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.dao.AchievementIconDAO;
 import com.tysanclan.site.projectewok.entities.dao.filters.AchievementIconFilter;
 import com.tysanclan.site.projectewok.pages.member.AbstractSingleAccordionMemberPage;
+import com.tysanclan.site.projectewok.util.ImageUtil;
 
 /**
  * @author Jeroen Steenbeeke
@@ -44,6 +45,9 @@ import com.tysanclan.site.projectewok.pages.member.AbstractSingleAccordionMember
 @TysanRankSecured(value = Rank.TRUTHSAYER)
 public class AchievementIconApprovalPage extends
 		AbstractSingleAccordionMemberPage {
+
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private AchievementIconDAO achievementIconDAO;
 
@@ -62,16 +66,10 @@ public class AchievementIconApprovalPage extends
 					@Override
 					protected void populateItem(
 							final ListItem<AchievementIcon> item) {
-						item.add(new Image("icon", new DynamicImageResource() {
-
-							private static final long serialVersionUID = 1L;
-
-							@Override
-							protected byte[] getImageData() {
-								return item.getModelObject().getImage();
-							}
-
-						}));
+						AchievementIcon icon = item.getModelObject();
+						item.add(new Image("icon", new ByteArrayResource(
+								ImageUtil.getMimeType(icon.getImage()), icon
+										.getImage())));
 						item.add(new Label("purpose", item.getModelObject()
 								.getPurpose()));
 						item.add(new MemberListItem("creator", item

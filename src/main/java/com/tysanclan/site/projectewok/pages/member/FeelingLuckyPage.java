@@ -19,10 +19,10 @@ package com.tysanclan.site.projectewok.pages.member;
 
 import java.util.Random;
 
-import org.apache.wicket.RedirectToUrlException;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
@@ -33,19 +33,20 @@ import com.tysanclan.site.projectewok.entities.User;
  * @author Jeroen Steenbeeke
  */
 @TysanMemberSecured
-public class FeelingLuckyPage extends
-        AbstractSingleAccordionMemberPage {
+public class FeelingLuckyPage extends AbstractSingleAccordionMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	private static final Random rand = new Random();
 
 	/**
-     * 
-     */
+	 * 
+	 */
 	public FeelingLuckyPage() {
 		super("Feeling lucky");
 
 		getAccordion().add(
-		        new Label("score", new Model<Integer>(
-		                getUser().getLuckyScore())));
+				new Label("score",
+						new Model<Integer>(getUser().getLuckyScore())));
 
 		getAccordion().add(new Form<User>("luckyForm") {
 			private static final long serialVersionUID = 1L;
@@ -64,39 +65,39 @@ public class FeelingLuckyPage extends
 
 				if (score < 4) {
 					throw new RedirectToUrlException(
-					        "http://www.youtube.com/watch?v=h1ZAXYyxd08");
+							"http://www.youtube.com/watch?v=h1ZAXYyxd08");
 				} else if (score < 8) {
 					throw new RedirectToUrlException(
-					        "http://www.youtube.com/watch?v=WQgLNUq0ktI");
+							"http://www.youtube.com/watch?v=WQgLNUq0ktI");
 				} else if (score < 12) {
 					throw new RedirectToUrlException(
-					        "http://www.youtube.com/watch?v=3KANI2dpXLw");
+							"http://www.youtube.com/watch?v=3KANI2dpXLw");
 				} else if (score < 16) {
 					throw new RedirectToUrlException(
-					        "http://www.youtube.com/watch?v=J_DV9b0x7v4");
+							"http://www.youtube.com/watch?v=J_DV9b0x7v4");
 				} else if (score < 20) {
 					throw new RedirectToUrlException(
-					        "http://www.youtube.com/watch?v=a-79sbicwTQ");
+							"http://www.youtube.com/watch?v=a-79sbicwTQ");
 				} else if (score < 24) {
 					setResponsePage(new PastElectionsPage());
 				} else if (score < 28) {
 					throw new RedirectToUrlException(
-					        "http://www.youtube.com/watch?v=Mo8Qls0HnWo");
+							"http://www.youtube.com/watch?v=Mo8Qls0HnWo");
 				} else if (score < 32) {
 					throw new RedirectToUrlException(
-					        "http://www.youtube.com/watch?v=nr_CJL1YQRc");
+							"http://www.youtube.com/watch?v=nr_CJL1YQRc");
 				} else if (score < 36) {
 					throw new RedirectToUrlException(
-					        "http://www.youtube.com/watch?v=uIg9VaMBi9o");
+							"http://www.youtube.com/watch?v=uIg9VaMBi9o");
 				} else if (score < 40) {
 					throw new RedirectToUrlException(
-					        "http://www.youtube.com/watch?v=QZtfphBDp-w");
+							"http://www.youtube.com/watch?v=QZtfphBDp-w");
 				} else if (score < 44) {
 					throw new RedirectToUrlException(
-					        "http://www.youtube.com/watch?v=dcXNXKtu8z4");
+							"http://www.youtube.com/watch?v=dcXNXKtu8z4");
 				} else if (score < 48) {
 					throw new RedirectToUrlException(
-					        "http://www.youtube.com/watch?v=CIZYqZrdwIM");
+							"http://www.youtube.com/watch?v=CIZYqZrdwIM");
 				} else {
 					setResponsePage(new OverviewPage());
 				}

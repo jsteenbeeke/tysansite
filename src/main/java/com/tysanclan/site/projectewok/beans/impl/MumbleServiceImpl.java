@@ -32,7 +32,7 @@ import com.tysanclan.site.projectewok.ws.mumble.MMOMumbleServerStatus;
 import com.tysanclan.site.projectewok.ws.mumble.ServerStatus;
 
 /**
- * @author jeroen
+ * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")

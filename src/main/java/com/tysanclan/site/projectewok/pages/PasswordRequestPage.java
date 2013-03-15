@@ -39,12 +39,11 @@ import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
  * @author Jeroen Steenbeeke
  */
 public class PasswordRequestPage extends TysanPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private UserDAO userDAO;
 
-	/**
-     * 
-     */
 	public PasswordRequestPage(String username) {
 		super("Request Password");
 
@@ -60,8 +59,8 @@ public class PasswordRequestPage extends TysanPage {
 			user = users.get(0);
 		}
 
-		Form<User> requestPasswordForm = new Form<User>(
-		        "requestpassword", ModelMaker.wrap(user)) {
+		Form<User> requestPasswordForm = new Form<User>("requestpassword",
+				ModelMaker.wrap(user)) {
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean
@@ -84,20 +83,17 @@ public class PasswordRequestPage extends TysanPage {
 				f.setUser(u);
 
 				List<PasswordRequest> requests = passwordRequestDAO
-				        .findByFilter(f);
+						.findByFilter(f);
 
 				if (u != null && requests.isEmpty()) {
 					PasswordRequest request = userService
-					        .generatePasswordRequest(u);
+							.generatePasswordRequest(u);
 
 					String requestBody = mailService
-					        .getPasswordRequestMailBody(
-					                u.getUsername(),
-					                request.getKey());
-					mailService.sendHTMLMail(u
-					        .getEMail(),
-					        "Tysan Clan Password Reset",
-					        requestBody);
+							.getPasswordRequestMailBody(u.getUsername(),
+									request.getKey());
+					mailService.sendHTMLMail(u.getEMail(),
+							"Tysan Clan Password Reset", requestBody);
 				}
 
 				info("Password reset mail sent!");
@@ -107,9 +103,8 @@ public class PasswordRequestPage extends TysanPage {
 
 		requestPasswordForm.setVisible(user != null);
 
-		requestPasswordForm.add(new TextField<String>(
-		        "username", new Model<String>(_username))
-		        .setEnabled(false));
+		requestPasswordForm.add(new TextField<String>("username",
+				new Model<String>(_username)).setEnabled(false));
 
 		add(requestPasswordForm);
 

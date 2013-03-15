@@ -18,6 +18,8 @@ import com.tysanclan.site.projectewok.pages.member.AbstractSingleAccordionMember
 
 public class GroupMemberManagementPage extends
 		AbstractSingleAccordionMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	public class DeleteResponder extends DefaultClickResponder<User> {
 		private static final long serialVersionUID = 1L;
 

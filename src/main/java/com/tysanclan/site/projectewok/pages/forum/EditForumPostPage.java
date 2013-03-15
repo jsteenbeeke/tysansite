@@ -32,6 +32,8 @@ import com.tysanclan.site.projectewok.entities.dao.ForumPostDAO;
 import com.tysanclan.site.projectewok.pages.ForumThreadPage;
 
 public class EditForumPostPage extends TysanPage {
+	private static final long serialVersionUID = 1L;
+
 	public EditForumPostPage(ForumPost post) {
 		super("Edit post");
 

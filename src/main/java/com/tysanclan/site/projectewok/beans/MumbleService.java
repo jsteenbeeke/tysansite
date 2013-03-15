@@ -21,7 +21,7 @@ import com.tysanclan.site.projectewok.entities.MumbleServer;
 import com.tysanclan.site.projectewok.ws.mumble.ServerStatus;
 
 /**
- * @author jeroen
+ * @author Jeroen Steenbeeke
  */
 public interface MumbleService {
 	MumbleServer createServer(int serverId, String name, String address,

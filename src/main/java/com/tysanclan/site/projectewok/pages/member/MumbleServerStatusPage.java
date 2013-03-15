@@ -17,7 +17,7 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -29,15 +29,15 @@ import com.tysanclan.site.projectewok.ws.mumble.MumbleUser;
 import com.tysanclan.site.projectewok.ws.mumble.ServerStatus;
 
 public class MumbleServerStatusPage extends AbstractSingleAccordionMemberPage {
+	private static final long serialVersionUID = 1L;
 
 	public MumbleServerStatusPage(MumbleServer server) {
 		super("Server Information: " + server.getName());
 
 		getAccordion().add(new Label("name", server.getName()));
 		getAccordion().add(
-				new Label("url", server.getUrl())
-						.add(new SimpleAttributeModifier("href", server
-								.getUrl())));
+				new Label("url", server.getUrl()).add(AttributeModifier
+						.replace("href", server.getUrl())));
 		getAccordion().add(new Label("password", server.getPassword()));
 
 		ServerStatus status = MMOMumbleServerStatus.getServerStatus(

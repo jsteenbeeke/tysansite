@@ -37,6 +37,8 @@ import com.tysanclan.site.projectewok.entities.dao.TruthsayerComplaintDAO;
 
 @TysanRankSecured(Rank.CHANCELLOR)
 public class ChancellorTruthsayerComplaintPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	public class DeferResponder extends
 			DefaultClickResponder<TruthsayerComplaint> {
 

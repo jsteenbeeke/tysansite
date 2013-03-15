@@ -43,6 +43,7 @@ import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
  * @author Jeroen Steenbeeke
  */
 public class CreateGroupForumPage extends TysanPage {
+	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private ForumCategoryDAO forumCategoryDAO;
@@ -50,25 +51,24 @@ public class CreateGroupForumPage extends TysanPage {
 	private IModel<ForumCategory> categoryModel;
 
 	/**
-     * 
-     */
+	 * 
+	 */
 	public CreateGroupForumPage(Group group) {
 		super("Add forum for group " + group.getName());
 
 		if (!group.getLeader().equals(getUser())) {
 			throw new RestartResponseAtInterceptPageException(
-			        AccessDeniedPage.class);
+					AccessDeniedPage.class);
 		}
 
 		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(
-		        new LiteralOption("h2")));
+		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
 
 		initCategoryModel(group);
 
-		Form<Group> createForm = new Form<Group>(
-		        "createform", ModelMaker.wrap(group)) {
+		Form<Group> createForm = new Form<Group>("createform",
+				ModelMaker.wrap(group)) {
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean
@@ -84,8 +84,7 @@ public class CreateGroupForumPage extends TysanPage {
 				TextArea<String> descriptionArea = (TextArea<String>) get("description");
 
 				String name = nameField.getModelObject();
-				String description = descriptionArea
-				        .getModelObject();
+				String description = descriptionArea.getModelObject();
 
 				boolean error = false;
 
@@ -93,8 +92,7 @@ public class CreateGroupForumPage extends TysanPage {
 					error("Name must not be empty!");
 					error = true;
 				}
-				if (description == null
-				        || description.isEmpty()) {
+				if (description == null || description.isEmpty()) {
 					error("Description must not be empty!");
 					error = true;
 				}
@@ -105,19 +103,16 @@ public class CreateGroupForumPage extends TysanPage {
 				ForumCategory category = getForumCategory();
 				Group gr = getModelObject();
 
-				forumService.createGroupForum(name,
-				        description, category, gr);
+				forumService.createGroupForum(name, description, category, gr);
 
-				setResponsePage(new GroupForumManagementPage(
-				        gr));
+				setResponsePage(new GroupForumManagementPage(gr));
 			}
 
 		};
 
-		createForm.add(new TextField<String>("name",
-		        new Model<String>("")));
+		createForm.add(new TextField<String>("name", new Model<String>("")));
 		createForm.add(new TextArea<String>("description",
-		        new Model<String>("")));
+				new Model<String>("")));
 
 		accordion.add(createForm);
 
@@ -126,7 +121,6 @@ public class CreateGroupForumPage extends TysanPage {
 		addBackLink(group);
 	}
 
-	
 	private void addBackLink(Group group) {
 		add(new Link<Group>("back", ModelMaker.wrap(group)) {
 			private static final long serialVersionUID = 1L;
@@ -136,17 +130,14 @@ public class CreateGroupForumPage extends TysanPage {
 			 */
 			@Override
 			public void onClick() {
-				setResponsePage(new GroupForumManagementPage(
-				        getModelObject()));
+				setResponsePage(new GroupForumManagementPage(getModelObject()));
 
 			}
 		});
 	}
 
-	
 	private void initCategoryModel(Group group) {
-		List<ForumCategory> categories = forumCategoryDAO
-		        .findAll();
+		List<ForumCategory> categories = forumCategoryDAO.findAll();
 		ForumCategory category = null;
 
 		for (ForumCategory next : categories) {
@@ -157,7 +148,7 @@ public class CreateGroupForumPage extends TysanPage {
 
 		if (category == null) {
 			throw new RestartResponseAtInterceptPageException(
-			        new GroupForumManagementPage(group));
+					new GroupForumManagementPage(group));
 		}
 
 		categoryModel = ModelMaker.wrap(category);

@@ -19,7 +19,6 @@ package com.tysanclan.site.projectewok.pages.member.justice;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.markup.html.image.resource.DynamicImageResource;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -33,6 +32,7 @@ import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.AchievementService;
 import com.tysanclan.site.projectewok.components.IconLink;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
+import com.tysanclan.site.projectewok.components.StoredImageResource;
 import com.tysanclan.site.projectewok.entities.AchievementProposal;
 import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.dao.AchievementProposalDAO;
@@ -44,6 +44,7 @@ import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
  */
 @TysanRankSecured(Rank.TRUTHSAYER)
 public class TruthsayerAchievementProposalPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private AchievementProposalDAO achievementProposalDAO;
@@ -71,26 +72,11 @@ public class TruthsayerAchievementProposalPage extends AbstractMemberPage {
 				AchievementProposal proposal = item.getModelObject();
 
 				item.add(new Label("name", proposal.getName()));
-				item.add(new Image("icon", new DynamicImageResource() {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					protected byte[] getImageData() {
-						return item.getModelObject().getIcon().getImage();
-					}
-
-				}));
-				item.add(new Image("game", new DynamicImageResource() {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					protected byte[] getImageData() {
-						return item.getModelObject().getGame().getImage();
-					}
-
-				}).setVisible(proposal.getGame() != null));
+				item.add(new Image("icon", new StoredImageResource(proposal
+						.getIcon().getImage())));
+				item.add(new Image("game", new StoredImageResource(proposal
+						.getGame() != null ? proposal.getGame().getImage()
+						: new byte[0])).setVisible(proposal.getGame() != null));
 
 				boolean hasGroup = proposal.getGroup() != null;
 

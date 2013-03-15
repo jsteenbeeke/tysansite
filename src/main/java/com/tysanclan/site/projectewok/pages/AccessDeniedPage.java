@@ -20,6 +20,8 @@ package com.tysanclan.site.projectewok.pages;
 import com.tysanclan.site.projectewok.TysanPage;
 
 public class AccessDeniedPage extends TysanPage {
+	private static final long serialVersionUID = 1L;
+
 	public AccessDeniedPage() {
 		super("Access denied");
 	}

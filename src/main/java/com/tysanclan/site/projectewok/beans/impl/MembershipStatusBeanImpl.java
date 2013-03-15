@@ -40,7 +40,7 @@ import com.tysanclan.site.projectewok.entities.dao.MembershipStatusChangeDAO;
 import com.tysanclan.site.projectewok.event.MemberStatusEvent;
 
 /**
- * @author jeroen
+ * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")

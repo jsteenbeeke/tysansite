@@ -30,7 +30,7 @@ import com.tysanclan.site.projectewok.beans.twitter.TweetActionResolver;
 import com.tysanclan.site.projectewok.entities.twitter.TweetAction;
 
 /**
- * @author jeroen
+ * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")

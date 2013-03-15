@@ -41,12 +41,11 @@ import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
  * @author Jeroen Steenbeeke
  */
 public class TruthsayerVotePage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private TruthsayerNominationDAO truthsayerNominationDAO;
 
-	/**
-	 * 
-	 */
 	public TruthsayerVotePage() {
 		super("Truthsayer votes");
 

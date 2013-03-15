@@ -20,9 +20,11 @@ import static org.junit.Assert.assertEquals;
 import java.io.Serializable;
 
 import org.apache.wicket.model.IModel;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.classic.Session;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.ServiceRegistryBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,12 +41,12 @@ public class TestPersistenceModel {
 
 		config = config.setProperty("hibernate.hbm2ddl.auto", "create");
 		config = config.setProperty("hibernate.dialect",
-				"org.hibernate.dialect.HSQLDialect");
+				"org.hibernate.dialect.H2Dialect");
 		config = config.setProperty("hibernate.show_sql", "true");
 		config = config.setProperty("hibernate.connection.driver_class",
-				"org.hsqldb.jdbcDriver");
+				"org.h2.Driver");
 		config = config.setProperty("hibernate.connection.url",
-				"jdbc:hsqldb:mem:hyperion");
+				"jdbc:h2:mem:tysan");
 		config = config.setProperty("hibernate.connection.username", "sa");
 		config = config.setProperty("hibernate.connection.password", "");
 		config = config.setProperty("hibernate.connection.pool_size", "50");
@@ -55,7 +57,10 @@ public class TestPersistenceModel {
 		// config = config.setProperty("hibernate.c3p0.timeout", "1800");
 		// config = config.setProperty("hibernate.c3p0.max_statements", "50");
 
-		sf = config.buildSessionFactory();
+		final ServiceRegistry serviceRegistry = new ServiceRegistryBuilder()
+				.applySettings(config.getProperties()).buildServiceRegistry();
+
+		sf = config.buildSessionFactory(serviceRegistry);
 	}
 
 	@Test

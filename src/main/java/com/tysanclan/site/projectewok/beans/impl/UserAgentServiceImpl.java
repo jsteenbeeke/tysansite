@@ -17,7 +17,6 @@
  */
 package com.tysanclan.site.projectewok.beans.impl;
 
-import org.apache.wicket.RequestCycle;
 import org.apache.wicket.protocol.http.request.WebClientInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fortuityframework.core.annotation.ioc.OnFortuityEvent;
 import com.fortuityframework.core.dispatch.EventContext;
+import com.tysanclan.site.projectewok.TysanSession;
 import com.tysanclan.site.projectewok.beans.UserAgentService;
 import com.tysanclan.site.projectewok.entities.MobileUserAgent;
 import com.tysanclan.site.projectewok.entities.dao.MobileUserAgentDAO;
@@ -69,7 +69,7 @@ class UserAgentServiceImpl implements UserAgentService {
 	@Transactional(propagation = Propagation.REQUIRED)
 	@OnFortuityEvent(LoginEvent.class)
 	public void checkUserAgent(EventContext<LoginEvent> context) {
-		WebClientInfo info = (WebClientInfo) RequestCycle.get().getClientInfo();
+		WebClientInfo info = TysanSession.get().getClientInfo();
 
 		String userAgent = info.getUserAgent();
 

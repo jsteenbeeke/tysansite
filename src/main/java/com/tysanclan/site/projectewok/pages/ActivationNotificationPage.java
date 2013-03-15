@@ -35,20 +35,17 @@ import com.tysanclan.site.projectewok.util.StringUtil;
  * @author Jeroen Steenbeeke
  */
 public class ActivationNotificationPage extends TysanPage {
-	/**
-     * 
-     */
+	private static final long serialVersionUID = 1L;
+
 	public ActivationNotificationPage(Activation activation) {
 		super("Account not yet active");
 
-		if (activation == null
-		        || activation.getUser() == null) {
-			throw new RestartResponseAtInterceptPageException(
-			        NewsPage.class);
+		if (activation == null || activation.getUser() == null) {
+			throw new RestartResponseAtInterceptPageException(NewsPage.class);
 		}
 
-		Form<Activation> activationForm = new Form<Activation>(
-		        "resendform", ModelMaker.wrap(activation)) {
+		Form<Activation> activationForm = new Form<Activation>("resendform",
+				ModelMaker.wrap(activation)) {
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean
@@ -65,24 +62,19 @@ public class ActivationNotificationPage extends TysanPage {
 			protected void onSubmit() {
 				TextField<String> mailField = (TextField<String>) get("email");
 
-				if (StringUtil.isValidEMail(mailField
-				        .getModelObject())) {
+				if (StringUtil.isValidEMail(mailField.getModelObject())) {
 
 					User user = getModelObject().getUser();
 
 					if (userService.setUserMail(user,
-					        mailField.getModelObject())) {
+							mailField.getModelObject())) {
 
-						mailService
-						        .sendHTMLMail(
-						                user.getEMail(),
-						                "Tysan Clan Forums",
-						                mailService
-						                        .getActivationMailBody(
-						                                user
-						                                        .getUsername(),
-						                                getModelObject()
-						                                        .getActivationKey()));
+						mailService.sendHTMLMail(user.getEMail(),
+								"Tysan Clan Forums", mailService
+										.getActivationMailBody(user
+												.getUsername(),
+												getModelObject()
+														.getActivationKey()));
 
 						info("Activation e-mail has been sent again!");
 					} else {
@@ -97,9 +89,8 @@ public class ActivationNotificationPage extends TysanPage {
 
 		};
 
-		activationForm.add(new TextField<String>("email",
-		        new Model<String>(activation.getUser()
-		                .getEMail())));
+		activationForm.add(new TextField<String>("email", new Model<String>(
+				activation.getUser().getEMail())));
 
 		add(activationForm);
 	}

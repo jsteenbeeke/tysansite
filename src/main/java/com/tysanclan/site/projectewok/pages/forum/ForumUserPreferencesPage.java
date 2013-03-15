@@ -28,16 +28,14 @@ import com.tysanclan.site.projectewok.components.PrimaryPreferencesPanel;
  * @author Jeroen Steenbeeke
  */
 public class ForumUserPreferencesPage extends TysanPage {
-	/**
-     * 
-     */
+	private static final long serialVersionUID = 1L;
+
 	public ForumUserPreferencesPage() {
 		super("User Preferences");
 
 		Tabs tabs = new Tabs("tabs");
 
-		tabs.add(new PrimaryPreferencesPanel("preferences",
-		        getUser()) {
+		tabs.add(new PrimaryPreferencesPanel("preferences", getUser()) {
 			private static final long serialVersionUID = 1L;
 
 			/**
@@ -49,8 +47,7 @@ public class ForumUserPreferencesPage extends TysanPage {
 			}
 		});
 
-		tabs.add(new ChangePasswordPanel("passwordchange",
-		        getUser()) {
+		tabs.add(new ChangePasswordPanel("passwordchange", getUser()) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -60,8 +57,7 @@ public class ForumUserPreferencesPage extends TysanPage {
 
 		});
 
-		tabs.add(new ChangeEmailPanel("emailchange",
-		        getUser()) {
+		tabs.add(new ChangeEmailPanel("emailchange", getUser()) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

@@ -30,8 +30,8 @@ import com.tysanclan.site.projectewok.entities.User;
 /**
  * @author Jeroen Steenbeeke
  */
-public class SenateManualElectionPage extends
-        AbstractManualElectionPage {
+public class SenateManualElectionPage extends AbstractManualElectionPage {
+	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private DemocracyService democracyService;
@@ -39,8 +39,8 @@ public class SenateManualElectionPage extends
 	private IModel<SenateElection> electionModel;
 
 	/**
-     * 
-     */
+	 * 
+	 */
 	public SenateManualElectionPage(SenateElection election) {
 		super("Senate Election", election);
 		electionModel = ModelMaker.wrap(election);
@@ -63,8 +63,7 @@ public class SenateManualElectionPage extends
 	public void onVoteSubmit(List<User> userList) {
 		SenateElection election = electionModel.getObject();
 
-		democracyService.createVote(getUser(), userList,
-		        election);
+		democracyService.createVote(getUser(), userList, election);
 
 		setResponsePage(new OverviewPage());
 

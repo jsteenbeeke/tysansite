@@ -41,6 +41,8 @@ import com.tysanclan.site.projectewok.entities.dao.SocialGroupDAO;
  * @author Jeroen Steenbeeke
  */
 public class GroupsPage extends TysanPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private SocialGroupDAO socialGroupDAO;
 

@@ -17,7 +17,7 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -45,7 +45,7 @@ public class UserContactInfoPanel extends Panel {
 				.getInstantMessengerAddress() : "";
 
 		add(new Label("aim", aimAddress).add(
-				new SimpleAttributeModifier("href", "aim:addbuddy?screenname="
+				AttributeModifier.replace("href", "aim:addbuddy?screenname="
 						+ aimAddress)).setVisible(
 				aimAddress != null && !aimAddress.isEmpty()));
 		add(new DateLabel("lastlogin", user.getLastAction()));

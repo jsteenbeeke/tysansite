@@ -20,7 +20,6 @@ package com.tysanclan.site.projectewok.pages.member;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.ContextImage;
@@ -28,6 +27,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.core.options.LiteralOption;
 import org.odlabs.wiquery.ui.accordion.Accordion;
@@ -37,9 +37,16 @@ import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.DemocracyService;
 import com.tysanclan.site.projectewok.beans.ForumService;
-import com.tysanclan.site.projectewok.components.*;
+import com.tysanclan.site.projectewok.components.AutoThreadLink;
+import com.tysanclan.site.projectewok.components.DateTimeLabel;
+import com.tysanclan.site.projectewok.components.IconLink;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
-import com.tysanclan.site.projectewok.entities.*;
+import com.tysanclan.site.projectewok.components.MemberListItem;
+import com.tysanclan.site.projectewok.entities.AcceptanceVote;
+import com.tysanclan.site.projectewok.entities.AcceptanceVoteVerdict;
+import com.tysanclan.site.projectewok.entities.ForumPost;
+import com.tysanclan.site.projectewok.entities.Rank;
+import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.AcceptanceVoteDAO;
 import com.tysanclan.site.projectewok.entities.dao.ForumPostDAO;
 import com.tysanclan.site.projectewok.entities.dao.filters.ForumPostFilter;
@@ -52,6 +59,8 @@ import com.tysanclan.site.projectewok.pages.MemberPage;
 		Rank.REVERED_MEMBER, Rank.SENIOR_MEMBER, Rank.FULL_MEMBER,
 		Rank.JUNIOR_MEMBER })
 public class AcceptanceVotePage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private AcceptanceVoteDAO acceptanceVoteDAO;
 

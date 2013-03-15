@@ -28,7 +28,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.markup.html.image.resource.DynamicImageResource;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -38,6 +37,7 @@ import wicket.contrib.tinymce.TinyMceBehavior;
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.AchievementService;
 import com.tysanclan.site.projectewok.beans.GameService;
+import com.tysanclan.site.projectewok.components.StoredImageResource;
 import com.tysanclan.site.projectewok.components.TysanTinyMCESettings;
 import com.tysanclan.site.projectewok.entities.AchievementIcon;
 import com.tysanclan.site.projectewok.entities.AchievementProposal;
@@ -48,6 +48,9 @@ import com.tysanclan.site.projectewok.entities.Group;
  * @author Jeroen Steenbeeke
  */
 public class ProposeAchievementPage2 extends AbstractSingleAccordionMemberPage {
+
+	private static final long serialVersionUID = 1L;
+
 	private static enum AchievementType {
 		NORMAL, GAME, GROUP;
 
@@ -144,8 +147,8 @@ public class ProposeAchievementPage2 extends AbstractSingleAccordionMemberPage {
 
 							gameChoice.setModelObject(null);
 							groupChoice.setModelObject(null);
-							target.addComponent(gameContainer);
-							target.addComponent(groupContainer);
+							target.add(gameContainer);
+							target.add(groupContainer);
 
 							break;
 						case GAME:
@@ -156,8 +159,8 @@ public class ProposeAchievementPage2 extends AbstractSingleAccordionMemberPage {
 							groupChoice.setRequired(false);
 
 							groupChoice.setModelObject(null);
-							target.addComponent(gameContainer);
-							target.addComponent(groupContainer);
+							target.add(gameContainer);
+							target.add(groupContainer);
 							break;
 						case GROUP:
 							gameContainer.setVisible(false);
@@ -167,8 +170,8 @@ public class ProposeAchievementPage2 extends AbstractSingleAccordionMemberPage {
 							groupChoice.setRequired(true);
 
 							gameChoice.setModelObject(null);
-							target.addComponent(gameContainer);
-							target.addComponent(groupContainer);
+							target.add(gameContainer);
+							target.add(groupContainer);
 
 							break;
 
@@ -229,16 +232,8 @@ public class ProposeAchievementPage2 extends AbstractSingleAccordionMemberPage {
 
 		};
 
-		proposalForm.add(new Image("icon", new DynamicImageResource() {
-
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected byte[] getImageData() {
-				return iconModel.getObject().getImage();
-			}
-
-		}));
+		proposalForm.add(new Image("icon", new StoredImageResource(icon
+				.getImage())));
 
 		proposalForm.add(typeChoice);
 		proposalForm.add(groupContainer);

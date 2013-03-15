@@ -30,6 +30,8 @@ import com.tysanclan.site.projectewok.entities.ForumThread;
 import com.tysanclan.site.projectewok.pages.ForumThreadPage;
 
 public class ConfirmForumThreadUnlockPage extends TysanPage {
+	private static final long serialVersionUID = 1L;
+
 	public ConfirmForumThreadUnlockPage(ForumThread thread) {
 		super("Unlock thread: " + thread.getTitle());
 

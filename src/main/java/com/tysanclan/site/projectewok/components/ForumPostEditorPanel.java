@@ -17,7 +17,6 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import org.apache.wicket.RequestCycle;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
@@ -26,6 +25,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import wicket.contrib.tinymce.TinyMceBehavior;
 
+import com.tysanclan.site.projectewok.TysanSession;
 import com.tysanclan.site.projectewok.entities.dao.MobileUserAgentDAO;
 import com.tysanclan.site.projectewok.entities.dao.filters.MobileUserAgentFilter;
 import com.tysanclan.site.projectewok.util.HTMLSanitizer;
@@ -48,7 +48,7 @@ public class ForumPostEditorPanel extends Panel {
 	public ForumPostEditorPanel(String id, String content) {
 		super(id);
 
-		WebClientInfo info = (WebClientInfo) RequestCycle.get().getClientInfo();
+		WebClientInfo info = TysanSession.get().getClientInfo();
 		mobile = isMobile(info.getUserAgent());
 
 		editor = new TextArea<String>("postcontent", new Model<String>(

@@ -17,7 +17,7 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
 
@@ -30,16 +30,10 @@ public class YoutubeVideo extends Panel {
 	public YoutubeVideo(String id, String videoURL) {
 		super(id);
 
-		add(new WebMarkupContainer("ref")
-		        .add(new SimpleAttributeModifier(
-		                "value",
-		                videoURL
-		                        + "&amp;hl=en_US&amp;fs=1?rel=0")));
+		add(new WebMarkupContainer("ref").add(AttributeModifier.replace(
+				"value", videoURL + "&amp;hl=en_US&amp;fs=1?rel=0")));
 
-		add(new WebMarkupContainer("ref2")
-		        .add(new SimpleAttributeModifier(
-		                "src",
-		                videoURL
-		                        + "&amp;hl=en_US&amp;fs=1?rel=0")));
+		add(new WebMarkupContainer("ref2").add(AttributeModifier.replace("src",
+				videoURL + "&amp;hl=en_US&amp;fs=1?rel=0")));
 	}
 }

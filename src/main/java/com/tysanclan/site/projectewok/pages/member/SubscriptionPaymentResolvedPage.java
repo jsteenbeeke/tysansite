@@ -1,8 +1,8 @@
 package com.tysanclan.site.projectewok.pages.member;
 
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.tysanclan.site.projectewok.beans.FinanceService;
@@ -11,6 +11,8 @@ import com.tysanclan.site.projectewok.entities.dao.SubscriptionPaymentDAO;
 import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
 
 public class SubscriptionPaymentResolvedPage extends WebPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private SubscriptionPaymentDAO subscriptionPaymentDAO;
 
@@ -19,8 +21,9 @@ public class SubscriptionPaymentResolvedPage extends WebPage {
 
 	public SubscriptionPaymentResolvedPage(PageParameters params) {
 
-		Long paymentId = params.getLong("paymentId");
-		String requestConfirmation = params.getString("confirmationKey");
+		Long paymentId = params.get("paymentId").toOptionalLong();
+		String requestConfirmation = params.get("confirmationKey")
+				.toOptionalString();
 
 		if (paymentId == null || requestConfirmation == null) {
 			throw new RestartResponseAtInterceptPageException(

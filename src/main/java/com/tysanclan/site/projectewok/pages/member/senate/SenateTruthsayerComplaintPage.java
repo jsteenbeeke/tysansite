@@ -40,6 +40,8 @@ import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
 
 @TysanRankSecured(Rank.SENATOR)
 public class SenateTruthsayerComplaintPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	public class ComplaintResponder extends
 			DefaultClickResponder<TruthsayerComplaint> {
 

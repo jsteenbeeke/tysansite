@@ -33,6 +33,8 @@ import com.tysanclan.site.projectewok.entities.Bug;
  * @author Jeroen Steenbeeke
  */
 public class TysanErrorPage extends TysanPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private BugTrackerService bugTrackerService;
 

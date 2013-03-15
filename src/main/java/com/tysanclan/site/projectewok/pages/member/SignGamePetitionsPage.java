@@ -24,7 +24,7 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.resource.ByteArrayResource;
+import org.apache.wicket.request.resource.ByteArrayResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.core.options.LiteralOption;
 import org.odlabs.wiquery.ui.accordion.Accordion;
@@ -44,11 +44,11 @@ import com.tysanclan.site.projectewok.util.ImageUtil;
 /**
  * @author Jeroen Steenbeeke
  */
-@TysanRankSecured( { Rank.CHANCELLOR, Rank.FULL_MEMBER,
-        Rank.SENIOR_MEMBER, Rank.SENATOR, Rank.TRUTHSAYER,
-        Rank.REVERED_MEMBER, Rank.JUNIOR_MEMBER })
-public class SignGamePetitionsPage extends
-        AbstractMemberPage {
+@TysanRankSecured({ Rank.CHANCELLOR, Rank.FULL_MEMBER, Rank.SENIOR_MEMBER,
+		Rank.SENATOR, Rank.TRUTHSAYER, Rank.REVERED_MEMBER, Rank.JUNIOR_MEMBER })
+public class SignGamePetitionsPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private GameService gameService;
 
@@ -56,37 +56,32 @@ public class SignGamePetitionsPage extends
 	private GamePetitionDAO gamePetitionDAO;
 
 	/**
-     * 
-     */
+	 * 
+	 */
 	public SignGamePetitionsPage() {
 		super("New game petitions");
 
 		Accordion accordion = new Accordion("accordion");
 		accordion.setAutoHeight(false);
-		accordion.setHeader(new AccordionHeader(
-		        new LiteralOption("h2")));
+		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 
 		add(accordion);
 
-		accordion.add(new Label("count",
-		        new Model<Integer>(gameService
-		                .getRequiredPetitionSignatures())));
-		accordion.add(new ListView<GamePetition>(
-		        "petitions", ModelMaker
-		                .wrap(gamePetitionDAO.findAll())) {
+		accordion.add(new Label("count", new Model<Integer>(gameService
+				.getRequiredPetitionSignatures())));
+		accordion.add(new ListView<GamePetition>("petitions", ModelMaker
+				.wrap(gamePetitionDAO.findAll())) {
 			private static final long serialVersionUID = 1L;
 
 			/**
 			 * @see org.apache.wicket.markup.html.list.ListView#populateItem(org.apache.wicket.markup.html.list.ListItem)
 			 */
 			@Override
-			protected void populateItem(
-			        ListItem<GamePetition> item) {
-				GamePetition petition = item
-				        .getModelObject();
+			protected void populateItem(ListItem<GamePetition> item) {
+				GamePetition petition = item.getModelObject();
 
-				Form<GamePetition> form = new Form<GamePetition>(
-				        "form", ModelMaker.wrap(petition)) {
+				Form<GamePetition> form = new Form<GamePetition>("form",
+						ModelMaker.wrap(petition)) {
 					private static final long serialVersionUID = 1L;
 
 					/**
@@ -98,8 +93,7 @@ public class SignGamePetitionsPage extends
 
 						GamePetition gp = getModelObject();
 
-						gameService.signPetition(gp,
-						        getUser());
+						gameService.signPetition(gp, getUser());
 
 						setResponsePage(new SignGamePetitionsPage());
 					}
@@ -107,26 +101,19 @@ public class SignGamePetitionsPage extends
 
 				item.add(form);
 
-				item.add(new Label("name", petition
-				        .getName()));
-				form.add(new Label("name2", petition
-				        .getName()));
+				item.add(new Label("name", petition.getName()));
+				form.add(new Label("name2", petition.getName()));
 
-				form.add(new Label("starter", petition
-				        .getRequester().getUsername()));
+				form.add(new Label("starter", petition.getRequester()
+						.getUsername()));
 
-				form.add(new Image("icon",
-				        new ByteArrayResource(ImageUtil
-				                .getMimeType(petition
-				                        .getImage()),
-				                petition.getImage())));
+				form.add(new Image("icon", new ByteArrayResource(ImageUtil
+						.getMimeType(petition.getImage()), petition.getImage())));
 
-				form.add(new DateLabel("expires", petition
-				        .getExpires()));
+				form.add(new DateLabel("expires", petition.getExpires()));
 
-				form.add(new ListView<User>("signatures",
-				        ModelMaker.wrap(petition
-				                .getSignatures())) {
+				form.add(new ListView<User>("signatures", ModelMaker
+						.wrap(petition.getSignatures())) {
 
 					private static final long serialVersionUID = 1L;
 
@@ -134,24 +121,15 @@ public class SignGamePetitionsPage extends
 					 * @see org.apache.wicket.markup.html.list.ListView#populateItem(org.apache.wicket.markup.html.list.ListItem)
 					 */
 					@Override
-					protected void populateItem(
-					        ListItem<User> innerItem) {
-						User user = innerItem
-						        .getModelObject();
-						innerItem.add(new MemberListItem(
-						        "user", user));
+					protected void populateItem(ListItem<User> innerItem) {
+						User user = innerItem.getModelObject();
+						innerItem.add(new MemberListItem("user", user));
 					}
 				});
 
-				form
-				        .add(new WebMarkupContainer("sign")
-				                .setVisible(!petition
-				                        .getSignatures()
-				                        .contains(getUser())
-				                        && !petition
-				                                .getRequester()
-				                                .equals(
-				                                        getUser())));
+				form.add(new WebMarkupContainer("sign").setVisible(!petition
+						.getSignatures().contains(getUser())
+						&& !petition.getRequester().equals(getUser())));
 			}
 		});
 

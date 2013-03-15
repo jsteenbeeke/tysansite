@@ -24,7 +24,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
-import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -46,7 +46,6 @@ public class DonatorPanel extends Panel {
 	@SpringBean
 	private DonationDAO donationDAO;
 
-	
 	public DonatorPanel(String id, User user) {
 		super(id);
 
@@ -85,8 +84,8 @@ public class DonatorPanel extends Panel {
 
 				item.add(new ContextImage("dollar",
 						"images/icons/money_dollar.png").add(
-						new SimpleAttributeModifier("alt", dollarLabel)).add(
-						new SimpleAttributeModifier("title", dollarLabel)));
+						AttributeModifier.replace("alt", dollarLabel)).add(
+						AttributeModifier.replace("title", dollarLabel)));
 			}
 
 		});

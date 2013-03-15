@@ -22,9 +22,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.Session;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.ContextImage;
@@ -33,6 +31,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.core.options.LiteralOption;
 import org.odlabs.wiquery.ui.accordion.Accordion;
@@ -42,7 +41,11 @@ import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanSession;
 import com.tysanclan.site.projectewok.beans.ForumService;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
-import com.tysanclan.site.projectewok.entities.*;
+import com.tysanclan.site.projectewok.entities.ForumPost;
+import com.tysanclan.site.projectewok.entities.GameAccount;
+import com.tysanclan.site.projectewok.entities.Rank;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.UserGameRealm;
 import com.tysanclan.site.projectewok.pages.MemberPage;
 import com.tysanclan.site.projectewok.pages.forum.ConfirmForumPostDeletePage;
 import com.tysanclan.site.projectewok.pages.forum.EditForumPostPage;
@@ -132,52 +135,60 @@ public class PostPanel extends Panel {
 					.getId() : null;
 
 			WebMarkupContainer poster = new WebMarkupContainer("poster");
-			poster.add(new SimpleAttributeModifier("name", post.getId()
+			poster.add(AttributeModifier.replace("name", post.getId()
 					.toString()));
 
 			poster.add(new Label("name", post.getPosterVisibleName())
 					.setRenderBodyOnly(true));
 
-			accordion.add(new IconLink.Builder("images/icons/email_add.png",
-					new DefaultClickResponder<User>(ModelMaker.wrap(post
-							.getPoster())) {
-						private static final long serialVersionUID = 1L;
+			accordion
+					.add(new IconLink.Builder("images/icons/email_add.png",
+							new DefaultClickResponder<User>(ModelMaker
+									.wrap(post.getPoster())) {
+								private static final long serialVersionUID = 1L;
 
-						@Override
-						public void onClick() {
-							setResponsePage(new MessageListPage(
-									getModelObject()));
+								@Override
+								public void onClick() {
+									setResponsePage(new MessageListPage(
+											getModelObject()));
 
-						}
-					})
-					.newInstance("sendMessage")
-					.setVisible(
-							u != null && MemberUtil.isMember(u)
-									&& MemberUtil.isMember(post.getPoster()))
-					.add(new SimpleAttributeModifier("style",
-							"display: inline;")));
+								}
+							})
+							.newInstance("sendMessage")
+							.setVisible(
+									u != null
+											&& MemberUtil.isMember(u)
+											&& MemberUtil.isMember(post
+													.getPoster()))
+							.add(AttributeModifier.replace("style",
+									"display: inline;")));
 
-			accordion.add(new IconLink.Builder("images/icons/vcard.png",
-					new DefaultClickResponder<User>(ModelMaker.wrap(u)) {
-						private static final long serialVersionUID = 1L;
+			accordion
+					.add(new IconLink.Builder(
+							"images/icons/vcard.png",
+							new DefaultClickResponder<User>(ModelMaker.wrap(u)) {
+								private static final long serialVersionUID = 1L;
 
-						@Override
-						public void onClick() {
+								@Override
+								public void onClick() {
 
-							PageParameters params = new PageParameters();
+									PageParameters params = new PageParameters();
 
-							params.add("userid", Long.toString(posterId));
+									params.add("userid",
+											Long.toString(posterId));
 
-							setResponsePage(MemberPage.class, params);
-						}
-					})
-					.newInstance("viewProfile")
-					.setVisible(
-							posterId != null && u != null
-									&& MemberUtil.isMember(u)
-									&& MemberUtil.isMember(post.getPoster()))
-					.add(new SimpleAttributeModifier("style",
-							"display: inline;")));
+									setResponsePage(MemberPage.class, params);
+								}
+							})
+							.newInstance("viewProfile")
+							.setVisible(
+									posterId != null
+											&& u != null
+											&& MemberUtil.isMember(u)
+											&& MemberUtil.isMember(post
+													.getPoster()))
+							.add(AttributeModifier.replace("style",
+									"display: inline;")));
 
 			accordion.add(poster);
 

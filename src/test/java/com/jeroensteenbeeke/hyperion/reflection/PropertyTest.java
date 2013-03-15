@@ -55,6 +55,8 @@ public class PropertyTest {
 		assertEquals(prop.name(), prop2.name());
 		assertEquals(prop.owningClass(), prop2.owningClass());
 
+		oos.close();
+
 	}
 
 	public String getField() {

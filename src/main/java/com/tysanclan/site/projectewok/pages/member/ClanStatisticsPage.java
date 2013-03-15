@@ -36,10 +36,12 @@ import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.GraphUtil;
 
 /**
- * @author jeroen
+ * @author Jeroen Steenbeeke
  */
 @TysanMemberSecured
 public class ClanStatisticsPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private MembershipStatusChangeDAO dao;
 
@@ -92,6 +94,7 @@ public class ClanStatisticsPage extends AbstractMemberPage {
 						votedout++;
 						lost++;
 						break;
+					default:
 				}
 			}
 		}

@@ -39,6 +39,8 @@ import com.tysanclan.site.projectewok.pages.member.AbstractSingleAccordionMember
  * @author Jeroen Steenbeeke
  */
 public class UserAgentPage extends AbstractSingleAccordionMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private RoleService roleService;
 

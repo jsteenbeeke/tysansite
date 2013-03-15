@@ -22,7 +22,7 @@ import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
-import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -76,7 +76,7 @@ public class ConversationContentPanel extends Panel {
 				.getMessages()) {
 			if (!getParticipation().getReadMessages().contains(message)) {
 				if (target != null) {
-					target.appendJavascript(accordion.activate(i).render()
+					target.appendJavaScript(accordion.activate(i).render()
 							.toString());
 				}
 				return;
@@ -85,7 +85,7 @@ public class ConversationContentPanel extends Panel {
 		}
 
 		if (target != null) {
-			target.appendJavascript(accordion.activate(i - 1).render()
+			target.appendJavaScript(accordion.activate(i - 1).render()
 					.toString());
 		}
 
@@ -253,7 +253,7 @@ public class ConversationContentPanel extends Panel {
 		@Override
 		public List<Message> getObject() {
 			if (conversationDAO == null) {
-				InjectorHolder.getInjector().inject(this);
+				Injector.get().inject(this);
 			}
 
 			return conversationDAO.load(conversationID).getMessages();

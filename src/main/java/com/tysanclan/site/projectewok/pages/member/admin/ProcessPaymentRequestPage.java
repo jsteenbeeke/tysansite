@@ -17,9 +17,9 @@
  */
 package com.tysanclan.site.projectewok.pages.member.admin;
 
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.tysanclan.site.projectewok.beans.FinanceService;
@@ -28,6 +28,8 @@ import com.tysanclan.site.projectewok.entities.dao.PaymentRequestDAO;
 import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
 
 public class ProcessPaymentRequestPage extends WebPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private PaymentRequestDAO paymentRequestDAO;
 
@@ -35,8 +37,9 @@ public class ProcessPaymentRequestPage extends WebPage {
 	private FinanceService financeService;
 
 	public ProcessPaymentRequestPage(PageParameters params) {
-		Long requestId = params.getLong("requestId");
-		String requestConfirmation = params.getString("confirmationKey");
+		Long requestId = params.get("requestId").toOptionalLong();
+		String requestConfirmation = params.get("confirmationKey")
+				.toOptionalString();
 
 		if (requestId == null || requestConfirmation == null) {
 			throw new RestartResponseAtInterceptPageException(

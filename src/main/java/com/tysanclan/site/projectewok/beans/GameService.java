@@ -85,4 +85,6 @@ public interface GameService {
 			String username);
 
 	GameAccount createLeagueOfLegendsAccount(UserGameRealm ugr, String name);
+
+	public void setGameSupervisor(Game game, User user);
 }

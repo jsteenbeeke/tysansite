@@ -39,67 +39,63 @@ import com.tysanclan.site.projectewok.pages.member.OverviewPage;
  */
 @TysanMemberSecured
 public class DisbandGroupPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	private IModel<Group> groupModel;
 
 	/**
-     * 
-     */
+	 * 
+	 */
 	public DisbandGroupPage(Group group) {
 		super("Disband " + group.getName());
 
-		if (((group instanceof Committee) && getUser()
-		        .getRank() != Rank.CHANCELLOR)
-		        || (!(group instanceof Committee) && !group
-		                .getLeader().equals(getUser()))) {
+		if (((group instanceof Committee) && getUser().getRank() != Rank.CHANCELLOR)
+				|| (!(group instanceof Committee) && !group.getLeader().equals(
+						getUser()))) {
 
 			throw new RestartResponseAtInterceptPageException(
-			        new AccessDeniedPage());
+					new AccessDeniedPage());
 		}
 
 		groupModel = ModelMaker.wrap(group);
 
 		add(new Label("name", group.getName()));
-		Builder builder = new IconLink.Builder(
-		        "images/icons/tick.png",
-		        new IconLink.DefaultClickResponder<Void>() {
-			        private static final long serialVersionUID = 1L;
+		Builder builder = new IconLink.Builder("images/icons/tick.png",
+				new IconLink.DefaultClickResponder<Void>() {
+					private static final long serialVersionUID = 1L;
 
-			        @SpringBean
-			        private GroupService groupService;
+					@SpringBean
+					private GroupService groupService;
 
-			        /**
-			         * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
-			         */
-			        @Override
-			        public void onClick() {
-				        groupService.disbandGroup(
-				                getUser(), getGroup());
-				        setResponsePage(new OverviewPage());
-			        }
+					/**
+					 * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
+					 */
+					@Override
+					public void onClick() {
+						groupService.disbandGroup(getUser(), getGroup());
+						setResponsePage(new OverviewPage());
+					}
 
-		        });
+				});
 
-		builder
-		        .setText("Yes, I understand the consequences and wish to proceed with disbanding this group");
+		builder.setText("Yes, I understand the consequences and wish to proceed with disbanding this group");
 
 		add(builder.newInstance("yes"));
 
-		builder = new IconLink.Builder(
-		        "images/icons/cross.png",
-		        new IconLink.DefaultClickResponder<Void>() {
-			        private static final long serialVersionUID = 1L;
+		builder = new IconLink.Builder("images/icons/cross.png",
+				new IconLink.DefaultClickResponder<Void>() {
+					private static final long serialVersionUID = 1L;
 
-			        /**
-			         * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
-			         */
-			        @Override
-			        public void onClick() {
-				        setResponsePage(new OverviewPage());
-			        }
-		        });
+					/**
+					 * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
+					 */
+					@Override
+					public void onClick() {
+						setResponsePage(new OverviewPage());
+					}
+				});
 
-		builder
-		        .setText("No, I have changed my mind and do not wish to disband this group");
+		builder.setText("No, I have changed my mind and do not wish to disband this group");
 
 		add(builder.newInstance("no"));
 

@@ -26,7 +26,7 @@ import com.tysanclan.site.projectewok.entities.Forum;
 import com.tysanclan.site.projectewok.entities.ForumThread;
 
 /**
- * @author jeroen
+ * @author Jeroen Steenbeeke
  */
 public class ForumThreadFilter extends SearchFilter<ForumThread> {
 

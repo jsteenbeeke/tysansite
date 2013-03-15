@@ -44,25 +44,22 @@ import com.tysanclan.site.projectewok.pages.member.OverviewPage;
  */
 @TysanMemberSecured
 public class GroupJoinPolicyPage extends AbstractMemberPage {
-	/**
-     * 
-     */
+	private static final long serialVersionUID = 1L;
+
 	public GroupJoinPolicyPage(Group group) {
 		super("Join policy for " + group.getName());
 
-		if (group instanceof Committee
-		        || !group.getLeader().equals(getUser())) {
+		if (group instanceof Committee || !group.getLeader().equals(getUser())) {
 			throw new RestartResponseAtInterceptPageException(
-			        new AccessDeniedPage());
+					new AccessDeniedPage());
 		}
 
 		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(
-		        new LiteralOption("h2")));
+		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
 
-		Form<Group> setPolicyForm = new Form<Group>(
-		        "setpolicy", ModelMaker.wrap(group)) {
+		Form<Group> setPolicyForm = new Form<Group>("setpolicy",
+				ModelMaker.wrap(group)) {
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean
@@ -76,52 +73,47 @@ public class GroupJoinPolicyPage extends AbstractMemberPage {
 			protected void onSubmit() {
 				Group gr = getModelObject();
 				DropDownChoice<JoinPolicy> policyChoice = (DropDownChoice<JoinPolicy>) get("policy");
-				JoinPolicy joinPolicy = policyChoice
-				        .getModelObject();
+				JoinPolicy joinPolicy = policyChoice.getModelObject();
 
-				groupService.setJoinPolicy(gr,
-				        joinPolicy);
+				groupService.setJoinPolicy(gr, joinPolicy);
 
 				setResponsePage(new OverviewPage());
 			}
 		};
 
-		setPolicyForm.add(new DropDownChoice<JoinPolicy>(
-		        "policy", new Model<JoinPolicy>(group
-		                .getJoinPolicy()), Arrays
-		                .asList(JoinPolicy.values()),
-		        new IChoiceRenderer<JoinPolicy>() {
-			        private static final long serialVersionUID = 1L;
+		setPolicyForm.add(new DropDownChoice<JoinPolicy>("policy",
+				new Model<JoinPolicy>(group.getJoinPolicy()), Arrays
+						.asList(JoinPolicy.values()),
+				new IChoiceRenderer<JoinPolicy>() {
+					private static final long serialVersionUID = 1L;
 
-			        /**
-			         * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(java.lang.Object)
-			         */
-			        @Override
-			        public Object getDisplayValue(
-			                JoinPolicy object) {
-				        switch (object) {
-					        case APPLICATION:
-						        return "Members must apply, and I must approve their application";
-					        case INVITATION:
-						        return "Only members I invite can join my group";
-					        case OPEN:
-						        return "Anyone can join my group at any time";
+					/**
+					 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(java.lang.Object)
+					 */
+					@Override
+					public Object getDisplayValue(JoinPolicy object) {
+						switch (object) {
+							case APPLICATION:
+								return "Members must apply, and I must approve their application";
+							case INVITATION:
+								return "Only members I invite can join my group";
+							case OPEN:
+								return "Anyone can join my group at any time";
 
-				        }
+						}
 
-				        return null;
-			        }
+						return null;
+					}
 
-			        /**
-			         * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getIdValue(java.lang.Object,
-			         *      int)
-			         */
-			        @Override
-			        public String getIdValue(
-			                JoinPolicy object, int index) {
-				        return object.name();
-			        }
-		        }));
+					/**
+					 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getIdValue(java.lang.Object,
+					 *      int)
+					 */
+					@Override
+					public String getIdValue(JoinPolicy object, int index) {
+						return object.name();
+					}
+				}));
 
 		accordion.add(setPolicyForm);
 

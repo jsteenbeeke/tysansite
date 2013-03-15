@@ -40,6 +40,7 @@ import com.tysanclan.site.projectewok.util.DateUtil;
 
 @TysanLoginSecured
 public class CreateThreadPage extends TysanPage {
+	private static final long serialVersionUID = 1L;
 
 	public CreateThreadPage(final Forum forum) {
 		super("Create new thread");

@@ -32,6 +32,8 @@ import com.tysanclan.site.projectewok.entities.RoleTransfer;
 @TysanRankSecured({ Rank.FULL_MEMBER, Rank.SENIOR_MEMBER, Rank.REVERED_MEMBER,
 		Rank.CHANCELLOR, Rank.TRUTHSAYER, Rank.SENATOR })
 public class KeyRoleNominationAcceptancePage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	private IModel<RoleTransfer> transferModel;
 
 	@SpringBean

@@ -30,8 +30,8 @@ import com.tysanclan.site.projectewok.entities.User;
 /**
  * @author Jeroen Steenbeeke
  */
-public class GroupLeaderManualElectionPage extends
-        AbstractManualElectionPage {
+public class GroupLeaderManualElectionPage extends AbstractManualElectionPage {
+	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private DemocracyService democracyService;
@@ -39,12 +39,10 @@ public class GroupLeaderManualElectionPage extends
 	private IModel<GroupLeaderElection> electionModel;
 
 	/**
-     * 
-     */
-	public GroupLeaderManualElectionPage(
-	        GroupLeaderElection election) {
-		super("Leader for group "
-		        + election.getGroup().getName(), election);
+	 * 
+	 */
+	public GroupLeaderManualElectionPage(GroupLeaderElection election) {
+		super("Leader for group " + election.getGroup().getName(), election);
 
 		electionModel = ModelMaker.wrap(election);
 	}
@@ -54,11 +52,9 @@ public class GroupLeaderManualElectionPage extends
 	 */
 	@Override
 	public void onVoteSubmit(List<User> userList) {
-		GroupLeaderElection election = electionModel
-		        .getObject();
+		GroupLeaderElection election = electionModel.getObject();
 
-		democracyService.createVote(getUser(), userList,
-		        election);
+		democracyService.createVote(getUser(), userList, election);
 
 		setResponsePage(new OverviewPage());
 

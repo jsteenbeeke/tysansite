@@ -17,8 +17,8 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.tysanclan.site.projectewok.entities.Forum;
 import com.tysanclan.site.projectewok.pages.ForumPage;
@@ -26,9 +26,8 @@ import com.tysanclan.site.projectewok.pages.ForumPage;
 /**
  * @author Jeroen Steenbeeke
  */
-public class AutoForumLink
-        extends
-        LoginAwareLink<ForumLink, BookmarkablePageLink<Forum>> {
+public class AutoForumLink extends
+		LoginAwareLink<ForumLink, BookmarkablePageLink<Forum>> {
 	private static final long serialVersionUID = 1L;
 
 	private final boolean condition;
@@ -37,8 +36,7 @@ public class AutoForumLink
 		this(id, forum, 1L);
 	}
 
-	public AutoForumLink(String id, Forum forum,
-	        long pageIndex) {
+	public AutoForumLink(String id, Forum forum, long pageIndex) {
 		this(id, forum, forum.getName(), 1L);
 	}
 
@@ -47,22 +45,19 @@ public class AutoForumLink
 	}
 
 	/**
-     * 
-     */
-	public AutoForumLink(String id, Forum forum,
-	        String text, long pageIndex) {
+	 * 
+	 */
+	public AutoForumLink(String id, Forum forum, String text, long pageIndex) {
 		super(id, text);
 
-		ForumLink llink = new ForumLink(LINK_LABEL, forum,
-		        pageIndex);
+		ForumLink llink = new ForumLink(LINK_LABEL, forum, pageIndex);
 		PageParameters params = new PageParameters();
 		params.add("forumid", Long.toString(forum.getId()));
 		params.add("pageid", Long.toString(pageIndex));
 		BookmarkablePageLink<Forum> ulink = new BookmarkablePageLink<Forum>(
-		        LINK_LABEL, ForumPage.class, params);
+				LINK_LABEL, ForumPage.class, params);
 
-		condition = super.isLoggedInCondition()
-		        && forum.isMembersOnly();
+		condition = super.isLoggedInCondition() && forum.isMembersOnly();
 
 		setLoggedInLink(llink);
 		setNotLoggedInLink(ulink);

@@ -44,12 +44,11 @@ import com.tysanclan.site.projectewok.util.GraphUtil;
 import com.tysanclan.site.projectewok.util.MemberUtil;
 
 public class RosterPage extends TysanPage {
+	private static final long serialVersionUID = 1L;
+
 	private static class MemberListView extends ListView<User> {
 		private static final long serialVersionUID = 1L;
 
-		/**
-		 * 
-		 */
 		public MemberListView(String id, List<User> users) {
 			super(id, ModelMaker.wrap(users));
 		}
@@ -180,6 +179,7 @@ public class RosterPage extends TysanPage {
 						if (o2.getRank() == Rank.JUNIOR_MEMBER) {
 							return -1;
 						}
+					default:
 				}
 
 				if (o1.getRank() == o2.getRank()) {

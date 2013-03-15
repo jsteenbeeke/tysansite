@@ -17,11 +17,11 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.tysanclan.site.projectewok.entities.ForumThread;
 
@@ -31,13 +31,12 @@ import com.tysanclan.site.projectewok.entities.ForumThread;
 public class NewsPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
-	public NewsPanel(String id, final ForumThread thread,
-	        boolean publicView) {
+	public NewsPanel(String id, final ForumThread thread, boolean publicView) {
 		super(id);
 
 		add(new Label("title", thread.getTitle()));
-		Label content = new Label("content", thread
-		        .getPosts().get(0).getContent());
+		Label content = new Label("content", thread.getPosts().get(0)
+				.getContent());
 		content.setEscapeModelStrings(false);
 		add(content);
 
@@ -45,19 +44,14 @@ public class NewsPanel extends Panel {
 		if (thread.getPoster() == null) {
 			add(new Label("poster", "System"));
 		} else {
-			add(new MemberListItem("poster", thread
-			        .getPoster()));
+			add(new MemberListItem("poster", thread.getPoster()));
 		}
 		PageParameters params = new PageParameters();
-		params.add("threadid", Long
-		        .toString(thread.getId()));
+		params.add("threadid", Long.toString(thread.getId()));
 
-		add(new AutoThreadLink("replylink", thread,
-		        "("
-		                + Integer.toString(thread
-		                        .getPosts().size() - 1)
-		                + ") replies"));
+		add(new AutoThreadLink("replylink", thread, "("
+				+ Integer.toString(thread.getPosts().size() - 1) + ") replies"));
 		add(new ContextImage("icon", new Model<String>(
-		        "images/icons/comments.png")));
+				"images/icons/comments.png")));
 	}
 }

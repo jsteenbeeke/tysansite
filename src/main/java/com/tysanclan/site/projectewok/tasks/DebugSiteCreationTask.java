@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
-import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.tysanclan.site.projectewok.beans.ForumService;
@@ -213,11 +213,11 @@ public class DebugSiteCreationTask extends SingleExecutionTask {
 		generateShadowThread(forum, ban);
 
 		SenateElectionChecker checker = new SenateElectionChecker();
-		InjectorHolder.getInjector().inject(checker);
+		Injector.get().inject(checker);
 		checker.run();
 
 		ChancellorElectionChecker checker2 = new ChancellorElectionChecker();
-		InjectorHolder.getInjector().inject(checker2);
+		Injector.get().inject(checker2);
 		checker2.run();
 
 	}

@@ -48,6 +48,8 @@ import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
  * @author Jeroen Steenbeeke
  */
 public class EditForumModeratorPage extends TysanPage {
+	private static final long serialVersionUID = 1L;
+
 	private IModel<Forum> forumModel;
 
 	@SpringBean

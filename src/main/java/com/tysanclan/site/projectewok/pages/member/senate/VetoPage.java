@@ -41,12 +41,11 @@ import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
  */
 @TysanRankSecured(Rank.CHANCELLOR)
 public class VetoPage extends AbstractMemberPage {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean
 	private RegulationChangeDAO regulationChangeDAO;
 
-	/**
-	 * 
-	 */
 	public VetoPage() {
 		super("Proposed regulation changes");
 

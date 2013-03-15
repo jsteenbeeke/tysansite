@@ -49,6 +49,8 @@ import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
  * @author Jeroen Steenbeeke
  */
 public class EditExpensePage extends TysanPage {
+	private static final long serialVersionUID = 1L;
+
 	private static final List<Integer> oneToAThousand;
 	private static final List<Integer> zeroToNinetyNine;
 

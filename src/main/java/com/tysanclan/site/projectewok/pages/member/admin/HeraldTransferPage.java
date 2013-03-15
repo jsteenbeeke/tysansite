@@ -24,6 +24,8 @@ import com.tysanclan.site.projectewok.entities.User;
 
 @TysanMemberSecured
 public class HeraldTransferPage extends AbstractRoleTransferPage {
+	private static final long serialVersionUID = 1L;
+
 	public HeraldTransferPage() {
 		super(RoleType.HERALD);
 	}
