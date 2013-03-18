@@ -137,8 +137,8 @@ class GalleryServiceImpl implements GalleryService {
 
 		long totalSpendableSize = totalSizeInMB - reservedSize;
 
-		int members = userService.countMembers();
-		int groups = groupDAO.countAll();
+		long members = userService.countMembers();
+		long groups = groupDAO.countAll();
 
 		return new BigDecimal(totalSpendableSize).divide(
 				new BigDecimal(2).multiply(new BigDecimal(members + groups)),

@@ -98,7 +98,7 @@ public class TysanLoginPanel extends TysanTopPanel {
 						ActivationFilter filter = new ActivationFilter();
 						filter.setUser(u);
 
-						int activationCount = activationDAO
+						long activationCount = activationDAO
 								.countByFilter(filter);
 
 						if (activationCount > 0) {

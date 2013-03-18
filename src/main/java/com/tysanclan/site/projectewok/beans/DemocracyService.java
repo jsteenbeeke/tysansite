@@ -104,9 +104,9 @@ public interface DemocracyService {
 
 	boolean isElectionCandidate(User user);
 
-	int getRequiredChancellorEndorsements();
+	long getRequiredChancellorEndorsements();
 
-	int getRequiredSenateEndorsements();
+	long getRequiredSenateEndorsements();
 
 	boolean isEligibleChancellorCandidate(User user);
 

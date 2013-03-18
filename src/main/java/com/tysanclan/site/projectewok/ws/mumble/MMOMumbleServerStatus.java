@@ -47,7 +47,7 @@ public class MMOMumbleServerStatus {
 		WebClient client = WebClient.create(url);
 
 		XMLSource source = client.get(XMLSource.class);
-		source.setBuffering(true);
+		source.setBuffering();
 
 		Response r = client.getResponse();
 
@@ -95,7 +95,7 @@ public class MMOMumbleServerStatus {
 
 			XMLSource source = client.get(XMLSource.class);
 
-			source.setBuffering(true);
+			source.setBuffering();
 
 			List<Channel> channels = new LinkedList<Channel>();
 			List<MumbleUser> users = new LinkedList<MumbleUser>();

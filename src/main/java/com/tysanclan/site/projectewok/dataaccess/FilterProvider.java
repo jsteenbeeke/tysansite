@@ -66,14 +66,14 @@ public class FilterProvider<T extends DomainObject, D extends EwokDAO<T>>
 	}
 
 	@Override
-	public Iterator<? extends T> iterator(int first, int count) {
+	public Iterator<? extends T> iterator(long first, long count) {
 		verifyDAO();
 
 		return dao.findByFilter(filter, first, count).iterator();
 	}
 
 	@Override
-	public int size() {
+	public long size() {
 		verifyDAO();
 
 		return dao.countByFilter(filter);

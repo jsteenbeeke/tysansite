@@ -23,8 +23,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.SimpleExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -73,7 +75,12 @@ class UserDAOImpl extends EwokHibernateDAO<User> implements
 	public User load(String username, String password) {
 		Criteria crit = getSession().createCriteria(User.class);
 
-		crit.add(Restrictions.eq("username", username).ignoreCase());
+		Criterion eq = Restrictions.eq("username", username);
+		if (eq instanceof SimpleExpression) {
+			eq = ((SimpleExpression) eq).ignoreCase();
+		}
+
+		crit.add(eq);
 		crit.add(Restrictions.eq("password", MemberUtil.hashPassword(password)));
 		return (User) crit.uniqueResult();
 	}
@@ -93,8 +100,13 @@ class UserDAOImpl extends EwokHibernateDAO<User> implements
 								.getId()));
 			}
 			if (userFilter.getUsername() != null) {
-				criteria.add(Restrictions.eq("username",
-						userFilter.getUsername()).ignoreCase());
+				Criterion eq = Restrictions.eq("username",
+						userFilter.getUsername());
+				if (eq instanceof SimpleExpression) {
+					eq = ((SimpleExpression) eq).ignoreCase();
+				}
+
+				criteria.add(eq);
 			}
 			if (userFilter.getRanks() != null) {
 				criteria.add(Restrictions.in("rank", userFilter.getRanks()));

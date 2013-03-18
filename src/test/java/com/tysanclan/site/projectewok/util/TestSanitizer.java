@@ -17,8 +17,7 @@
  */
 package com.tysanclan.site.projectewok.util;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 /**

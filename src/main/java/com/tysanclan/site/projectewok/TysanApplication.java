@@ -35,9 +35,7 @@ import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
 import org.apache.wicket.request.http.WebRequest;
 import org.apache.wicket.request.resource.CssResourceReference;
-import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
-import org.odlabs.wiquery.ui.themes.IThemableApplication;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.impl.StdSchedulerFactory;
@@ -110,8 +108,7 @@ import com.tysanclan.site.projectewok.util.scheduler.TysanTask;
 /**
  * @author Jeroen Steenbeeke
  */
-public class TysanApplication extends WebApplication implements
-		IThemableApplication {
+public class TysanApplication extends WebApplication {
 	private static Logger log = LoggerFactory.getLogger(TysanApplication.class);
 
 	private static String version = null;
@@ -322,7 +319,7 @@ public class TysanApplication extends WebApplication implements
 	}
 
 	@Override
-	protected WebRequest newWebRequest(HttpServletRequest servletRequest,
+	public WebRequest newWebRequest(HttpServletRequest servletRequest,
 			String filterPath) {
 		WebRequest request = super.newWebRequest(servletRequest, filterPath);
 		getSessionStore().setAttribute(
@@ -347,15 +344,6 @@ public class TysanApplication extends WebApplication implements
 		} catch (SchedulerException e) {
 			log.error("Could not stop Quartz Scheduler", e);
 		}
-	}
-
-	/**
-	 * @see org.odlabs.wiquery.ui.themes.IThemableApplication#getTheme(org.apache.wicket.Session)
-	 */
-	@Override
-	public ResourceReference getTheme(Session session) {
-		return new CssResourceReference(TysanApplication.class,
-				"themes/ui-darkness/jquery-ui-1.7.2.custom.css");
 	}
 
 	public void notify(SiteWideNotification notification) {

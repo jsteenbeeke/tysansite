@@ -22,29 +22,33 @@ import java.util.List;
 
 import org.hibernate.Session;
 
-import com.tysanclan.site.projectewok.entities.*;
+import com.tysanclan.site.projectewok.entities.Forum;
+import com.tysanclan.site.projectewok.entities.ForumCategory;
+import com.tysanclan.site.projectewok.entities.ForumPost;
+import com.tysanclan.site.projectewok.entities.ForumThread;
+import com.tysanclan.site.projectewok.entities.User;
 
 /**
  * @author Jeroen Steenbeeke
  */
 public interface ForumViewContext extends Serializable {
-	List<ForumCategory> getCategories(Session sess, User viewer, int offset,
-			int count);
+	List<ForumCategory> getCategories(Session sess, User viewer, long offset,
+			long count);
 
 	int countCategories(Session sess, User viewer);
 
 	List<Forum> getForums(Session sess, ForumCategory context, User viewer,
-			int offset, int count);
+			long offset, long count);
 
 	int countForums(Session sess, ForumCategory context, User viewer);
 
 	List<ForumThread> getThreads(Session sess, Forum context, User viewer,
-			int offset, int count);
+			long offset, long count);
 
 	int countThreads(Session sess, Forum context, User viewer);
 
 	List<ForumPost> getPosts(Session sess, ForumThread context, User viewer,
-			int offset, int count);
+			long offset, long count);
 
 	int countPosts(Session sess, ForumThread context, User viewer);
 

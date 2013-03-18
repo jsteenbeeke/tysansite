@@ -35,14 +35,14 @@ public class FilterDataProvider<S extends SearchFilter<T>, T extends DomainObjec
 	}
 
 	@Override
-	public Iterator<? extends T> iterator(int first, int count) {
+	public Iterator<? extends T> iterator(long first, long count) {
 		List<T> values = dao.findByFilter(filter, first, count);
 
 		return values.iterator();
 	}
 
 	@Override
-	public int size() {
+	public long size() {
 		return dao.countByFilter(filter);
 	}
 

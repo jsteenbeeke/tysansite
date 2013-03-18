@@ -237,7 +237,7 @@ class MembershipServiceImpl implements
 		if (_user.getRank() == Rank.SENATOR) {
 			UserFilter filter = new UserFilter();
 			filter.addRank(Rank.SENATOR);
-			int count = userDAO.countByFilter(filter);
+			long count = userDAO.countByFilter(filter);
 			// Only the current user is a Senator
 			if (count == 1) {
 				// User is the last senator, so prepare new elections
@@ -344,7 +344,7 @@ class MembershipServiceImpl implements
 		filter.setJoinApplication(_application);
 		filter.setSenator(_senator);
 
-		int count = joinVerdictDAO.countByFilter(filter);
+		long count = joinVerdictDAO.countByFilter(filter);
 		if (count == 0 && _senator.getRank() == Rank.SENATOR) {
 			JoinVerdict verdict = new JoinVerdict();
 			verdict.setApplication(_application);

@@ -121,7 +121,7 @@ public class ForumOverviewPanel extends Panel {
 						innerItem.add(new AutoForumLink("forumlink", forum));
 						innerItem.add(new Label("forumdescription",
 								new Model<String>(forum.getDescription())));
-						innerItem.add(new Label("total", new Model<Integer>(
+						innerItem.add(new Label("total", new Model<Long>(
 								ForumDataProvider.of(forum, forumThreadDAO)
 										.size())));
 

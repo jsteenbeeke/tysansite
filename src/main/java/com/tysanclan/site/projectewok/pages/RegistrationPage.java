@@ -128,7 +128,7 @@ public class RegistrationPage extends TysanPage {
 				if (valid) {
 					UserFilter filter = new UserFilter();
 					filter.setEmail(tfMail.getModelObject());
-					int users = userDAO.countByFilter(filter);
+					long users = userDAO.countByFilter(filter);
 					if (users != 0) {
 						valid = false;
 						RegistrationPage.this

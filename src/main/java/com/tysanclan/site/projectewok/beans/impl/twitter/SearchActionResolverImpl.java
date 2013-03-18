@@ -25,7 +25,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import twitter4j.*;
+import twitter4j.GeoLocation;
+import twitter4j.Query;
+import twitter4j.QueryResult;
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
 
 import com.tysanclan.site.projectewok.beans.twitter.SearchActionResolver;
 import com.tysanclan.site.projectewok.entities.dao.TwitterSearchResultDAO;
@@ -56,7 +61,7 @@ class SearchActionResolverImpl implements SearchActionResolver {
 
 		QueryResult res = twitter.search(q);
 
-		for (twitter4j.Tweet t : res.getTweets()) {
+		for (Status t : res.getTweets()) {
 			TwitterSearchResult result = new TwitterSearchResult();
 
 			GeoLocation loc = t.getGeoLocation();
@@ -68,7 +73,7 @@ class SearchActionResolverImpl implements SearchActionResolver {
 
 			result.setMessage(t.getText());
 			result.setTime(t.getCreatedAt());
-			result.setUserId(t.getFromUser());
+			result.setUserId(Long.toString(t.getUser().getId()));
 
 			resultDAO.save(result);
 

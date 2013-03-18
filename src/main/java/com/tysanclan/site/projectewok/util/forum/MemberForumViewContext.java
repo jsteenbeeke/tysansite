@@ -53,7 +53,7 @@ public class MemberForumViewContext extends AbstractForumViewContext {
 
 	@Override
 	public List<ForumCategory> getCategories(Session sess, User viewer,
-			int offset, int count) {
+			long offset, long count) {
 		StringBuilder q = new StringBuilder();
 		q.append("SELECT * FROM FORUMCATEGORY FC ");
 		q.append("WHERE EXISTS (");
@@ -64,8 +64,8 @@ public class MemberForumViewContext extends AbstractForumViewContext {
 		q.append(") ORDER BY id ASC LIMIT :count OFFSET :offset");
 
 		SQLQuery query = sess.createSQLQuery(q.toString());
-		query.setInteger("count", count);
-		query.setInteger("offset", offset);
+		query.setLong("count", count);
+		query.setLong("offset", offset);
 		query.setLong("viewer", viewer.getId());
 		query.addEntity(ForumCategory.class);
 
@@ -88,7 +88,7 @@ public class MemberForumViewContext extends AbstractForumViewContext {
 
 	@Override
 	public List<Forum> getForums(Session sess, ForumCategory context,
-			User viewer, int offset, int count) {
+			User viewer, long offset, long count) {
 		StringBuilder q = new StringBuilder();
 		q.append("SELECT * FROM FORUM f ");
 		q.append("WHERE (f.DTYPE!='GroupForum' OR f.group_id IN (SELECT group_id FROM groupmembers WHERE user_id = :viewer)) AND f.category_id = :cat ");
@@ -97,8 +97,8 @@ public class MemberForumViewContext extends AbstractForumViewContext {
 
 		SQLQuery query = sess.createSQLQuery(q.toString());
 		query.setLong("cat", context.getId());
-		query.setInteger("count", count);
-		query.setInteger("offset", offset);
+		query.setLong("count", count);
+		query.setLong("offset", offset);
 		query.setLong("viewer", viewer.getId());
 		query.addEntity(Forum.class);
 
@@ -127,7 +127,7 @@ public class MemberForumViewContext extends AbstractForumViewContext {
 
 	@Override
 	public List<ForumThread> getThreads(Session sess, Forum context,
-			User viewer, int offset, int count) {
+			User viewer, long offset, long count) {
 		StringBuilder q = new StringBuilder();
 
 		q.append("SELECT * FROM FORUMTHREAD FT WHERE ft.forum_id = :forum AND ft.shadow = false AND ");
@@ -140,8 +140,8 @@ public class MemberForumViewContext extends AbstractForumViewContext {
 
 		SQLQuery query = sess.createSQLQuery(q.toString());
 		query.setLong("forum", context.getId());
-		query.setInteger("count", count);
-		query.setInteger("offset", offset);
+		query.setLong("count", count);
+		query.setLong("offset", offset);
 		query.setLong("user1", viewer.getId());
 		query.setLong("user2", viewer.getId());
 		query.addEntity(ForumThread.class);
@@ -163,7 +163,7 @@ public class MemberForumViewContext extends AbstractForumViewContext {
 
 	@Override
 	public List<ForumPost> getPosts(Session sess, ForumThread context,
-			User viewer, int offset, int count) {
+			User viewer, long offset, long count) {
 		StringBuilder q = new StringBuilder();
 
 		q.append("SELECT * FROM FORUMPOST FP WHERE fp.shadow = false AND fp.thread_id = :thread ");
@@ -171,8 +171,8 @@ public class MemberForumViewContext extends AbstractForumViewContext {
 
 		SQLQuery query = sess.createSQLQuery(q.toString());
 		query.setLong("thread", context.getId());
-		query.setInteger("count", count);
-		query.setInteger("offset", offset);
+		query.setLong("count", count);
+		query.setLong("offset", offset);
 		query.addEntity(ForumPost.class);
 
 		return listOf(query);

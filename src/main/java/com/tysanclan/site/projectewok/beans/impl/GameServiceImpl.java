@@ -228,7 +228,7 @@ class GameServiceImpl implements
 	 */
 	@Override
 	public int getRequiredPetitionSignatures() {
-		int mcount = userService.countMembers();
+		long mcount = userService.countMembers();
 
 		return petitionFormula(mcount);
 	}
@@ -316,14 +316,14 @@ class GameServiceImpl implements
 		return null;
 	}
 
-	static int petitionFormula(int mcount) {
+	static int petitionFormula(long mcount) {
 		if (mcount > 75) {
 			return 9;
 		} else if (mcount < 25) {
 			return 4;
 		}
 
-		return ((mcount - 25) / 10) + 4;
+		return (int) (((mcount - 25) / 10) + 4);
 	}
 
 	/**

@@ -162,7 +162,7 @@ public class ForumPanel extends Panel {
 				item.add(new Label("poster",
 						current.getPoster() != null ? current.getPoster()
 								.getUsername() : "System"));
-				item.add(new Label("postcount", new Model<Integer>(
+				item.add(new Label("postcount", new Model<Long>(
 						ForumDataProvider.of(current, forumPostDAO).size())));
 
 				if (current.getPosts().size() > 0) {

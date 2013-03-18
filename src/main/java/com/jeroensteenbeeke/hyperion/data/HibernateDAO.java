@@ -53,10 +53,10 @@ public abstract class HibernateDAO<T extends DomainObject> implements DAO<T> {
 	/**
 	 * @return The total number of items of this type
 	 */
-	public int countAll() {
+	public long countAll() {
 		Criteria crit = getSession().createCriteria(domainClass);
 		crit.setProjection(Projections.rowCount());
-		return ((Number) crit.uniqueResult()).intValue();
+		return ((Number) crit.uniqueResult()).longValue();
 	}
 
 	@Override
@@ -86,12 +86,12 @@ public abstract class HibernateDAO<T extends DomainObject> implements DAO<T> {
 	}
 
 	@Override
-	public int countByFilter(SearchFilter<T> filter) {
+	public long countByFilter(SearchFilter<T> filter) {
 		Criteria crit = createCriteria(filter);
 		if (crit != null) {
 			crit.setProjection(Projections.rowCount());
 
-			return ((Number) crit.uniqueResult()).intValue();
+			return ((Number) crit.uniqueResult()).longValue();
 		}
 
 		return 0;
@@ -121,12 +121,12 @@ public abstract class HibernateDAO<T extends DomainObject> implements DAO<T> {
 	}
 
 	@Override
-	public List<T> findByFilter(SearchFilter<T> filter, int offset, int count) {
+	public List<T> findByFilter(SearchFilter<T> filter, long offset, long count) {
 		Criteria crit = applyOrderBy(createCriteria(filter), filter);
 
 		if (crit != null) {
-			crit.setMaxResults(count);
-			crit.setFirstResult(offset);
+			crit.setMaxResults((int) count);
+			crit.setFirstResult((int) offset);
 
 			return crit.list();
 		}

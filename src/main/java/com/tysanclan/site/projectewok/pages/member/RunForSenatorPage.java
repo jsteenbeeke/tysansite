@@ -70,10 +70,10 @@ public class RunForSenatorPage extends AbstractMemberPage {
 		accordion.setAutoHeight(false);
 
 		int gained = getUser().getEndorsedForSenateBy().size();
-		int requiredEndorsements = democracyService
+		long requiredEndorsements = democracyService
 				.getRequiredSenateEndorsements();
 
-		accordion.add(new Label("required", new Model<Integer>(
+		accordion.add(new Label("required", new Model<Long>(
 				requiredEndorsements)));
 
 		accordion.add(new Label("gained", new Model<Integer>(gained)));

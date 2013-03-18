@@ -168,7 +168,7 @@ public class ChancellorPanel extends TysanOverviewPanel<Void> {
 
 		@Override
 		public AttentionType requiresAttention() {
-			int requests = groupCreationRequestDAO.countAll();
+			long requests = groupCreationRequestDAO.countAll();
 
 			if (requests > 0) {
 				return AttentionType.WARNING;

@@ -125,14 +125,6 @@ public class ForumThreadSplitPage extends TysanPage {
 		}
 
 		/**
-		 * @see org.apache.wicket.model.LoadableDetachableModel#getObject()
-		 */
-		@Override
-		public List<PostSelectionPair> getObject() {
-			return load();
-		}
-
-		/**
 		 * @see org.apache.wicket.model.LoadableDetachableModel#load()
 		 */
 		@Override

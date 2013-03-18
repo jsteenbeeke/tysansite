@@ -550,7 +550,7 @@ class UserServiceImpl implements
 	 * @see com.tysanclan.site.projectewok.beans.UserService#countMembers()
 	 */
 	@Override
-	public int countMembers() {
+	public long countMembers() {
 		UserFilter userFilter = getMemberFilter();
 
 		return userDAO.countByFilter(userFilter);

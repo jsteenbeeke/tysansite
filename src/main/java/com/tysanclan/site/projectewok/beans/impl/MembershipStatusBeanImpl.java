@@ -76,16 +76,16 @@ class MembershipStatusBeanImpl implements MembershipStatusBean {
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
-	public Map<Date, Integer> getHistoricMemberCounts(Date start, Date end) {
-		SortedMap<Date, Integer> mutations = membershipStatusChangeDAO
+	public Map<Date, Long> getHistoricMemberCounts(Date start, Date end) {
+		SortedMap<Date, Long> mutations = membershipStatusChangeDAO
 				.getMutationsByDate(start, end);
 
-		Map<Date, Integer> historicCounts = new TreeMap<Date, Integer>();
+		Map<Date, Long> historicCounts = new TreeMap<Date, Long>();
 
-		int current = membershipService.countMembers();
+		long current = membershipService.countMembers();
 		historicCounts.put(new Date(), current);
 
-		for (Entry<Date, Integer> next : mutations.entrySet()) {
+		for (Entry<Date, Long> next : mutations.entrySet()) {
 			current = current - next.getValue();
 			historicCounts.put(next.getKey(), current);
 		}

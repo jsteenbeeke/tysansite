@@ -24,14 +24,13 @@ import java.util.TimeZone;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.odlabs.wiquery.core.IWiQueryPlugin;
 import org.odlabs.wiquery.core.javascript.JsQuery;
 import org.odlabs.wiquery.core.javascript.JsScopeContext;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 import org.odlabs.wiquery.core.options.Options;
-import org.odlabs.wiquery.ui.commons.WiQueryUIPlugin;
 import org.odlabs.wiquery.ui.datepicker.DatePickerJavaScriptResourceReference;
 import org.odlabs.wiquery.ui.datepicker.scope.JsScopeUiDatePickerDateTextEvent;
 
@@ -44,9 +43,7 @@ import com.tysanclan.site.projectewok.util.DateUtil;
  * 
  * @author Jeroen Steenbeeke
  */
-@WiQueryUIPlugin
-public abstract class InlineDatePicker extends WebMarkupContainer implements
-		IWiQueryPlugin {
+public abstract class InlineDatePicker extends WebMarkupContainer {
 	private static final long serialVersionUID = 1L;
 
 	private Options options;
@@ -101,15 +98,8 @@ public abstract class InlineDatePicker extends WebMarkupContainer implements
 
 		super.renderHead(response);
 
-		response.renderJavaScriptReference(DatePickerJavaScriptResourceReference
-				.get());
-	}
-
-	/**
-	 * @see org.odlabs.wiquery.core.commons.IWiQueryPlugin#statement()
-	 */
-	@Override
-	public JsStatement statement() {
+		response.render(JavaScriptHeaderItem
+				.forReference(DatePickerJavaScriptResourceReference.get()));
 
 		JsStatement statement = new JsStatement();
 
@@ -127,8 +117,8 @@ public abstract class InlineDatePicker extends WebMarkupContainer implements
 
 		statement.append(statement2.render());
 
-		return statement;
-
+		response.render(JavaScriptHeaderItem.forScript(statement2.render(),
+				String.format("datepicker-%s", getMarkupId())));
 	}
 
 	protected abstract void onDateSelected(Date date, AjaxRequestTarget target);

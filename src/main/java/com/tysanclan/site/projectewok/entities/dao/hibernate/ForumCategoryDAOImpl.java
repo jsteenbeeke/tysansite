@@ -65,7 +65,7 @@ class ForumCategoryDAOImpl extends EwokHibernateDAO<ForumCategory> implements
 
 	@Override
 	public List<ForumCategory> findByContext(User user, User contextObject,
-			ForumViewContext context, int first, int count) {
+			ForumViewContext context, long first, long count) {
 		return context.getCategories(getSession(), user, first, count);
 	}
 }

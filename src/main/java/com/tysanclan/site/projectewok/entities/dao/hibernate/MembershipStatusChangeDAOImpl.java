@@ -50,7 +50,7 @@ class MembershipStatusChangeDAOImpl extends
 	}
 
 	@Override
-	public SortedMap<Date, Integer> getMutationsByDate(Date start, Date end) {
+	public SortedMap<Date, Long> getMutationsByDate(Date start, Date end) {
 		Criteria criteria = getSession().createCriteria(
 				MembershipStatusChange.class);
 
@@ -66,7 +66,7 @@ class MembershipStatusChangeDAOImpl extends
 
 		List<Object[]> results = listOf(criteria);
 
-		SortedMap<Date, Integer> map = new TreeMap<Date, Integer>(
+		SortedMap<Date, Long> map = new TreeMap<Date, Long>(
 				new Comparator<Date>() {
 					@Override
 					public int compare(Date d1, Date d2) {
@@ -76,7 +76,7 @@ class MembershipStatusChangeDAOImpl extends
 
 		for (Object[] res : results) {
 			Date date = (Date) res[0];
-			Integer sum = (Integer) res[1];
+			Long sum = (Long) res[1];
 
 			map.put(date, sum);
 		}

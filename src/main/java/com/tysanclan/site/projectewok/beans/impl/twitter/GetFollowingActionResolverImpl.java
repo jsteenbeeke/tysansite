@@ -68,10 +68,6 @@ class GetFollowingActionResolverImpl implements GetFollowingActionResolver {
 			following.setUserId(id);
 			following.setUsername(user.getName());
 			followingDAO.save(following);
-
-			if (user.getRateLimitStatus().getRemainingHits() == 0) {
-				break;
-			}
 		}
 	}
 }

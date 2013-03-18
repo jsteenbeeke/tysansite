@@ -188,14 +188,14 @@ public abstract class AbstractElectionPage<T extends Election> extends
 						.setOutputMarkupPlaceholderTag(true);
 
 				if (!isNominationOpen) {
-					DroppableAjaxBehavior<WebMarkupContainer> behavior = new DroppableAjaxBehavior<WebMarkupContainer>() {
+					DroppableAjaxBehavior behavior = new DroppableAjaxBehavior() {
 						private static final long serialVersionUID = 1L;
 
-						@Override
-						public void onDrop(WebMarkupContainer component,
-								AjaxRequestTarget target) {
-							if (component instanceof MemberListItem) {
-								MemberListItem mli = (MemberListItem) component;
+						protected void drop(AjaxRequestTarget target,
+								Component source, Component dropped) {
+
+							if (dropped instanceof MemberListItem) {
+								MemberListItem mli = (MemberListItem) dropped;
 
 								MemberListItem item2 = new MemberListItem(
 										"target", mli.getUser());
@@ -224,8 +224,7 @@ public abstract class AbstractElectionPage<T extends Election> extends
 						}
 					};
 
-					behavior.getDroppableBehavior().setHoverClass(
-							"election-hover");
+					behavior.setHoverClass("election-hover");
 
 					container.add(behavior);
 				}

@@ -29,5 +29,5 @@ import com.tysanclan.site.projectewok.entities.User;
 public interface MembershipStatusBean {
 	void addStatus(ChangeType type, User user);
 
-	Map<Date, Integer> getHistoricMemberCounts(Date start, Date end);
+	Map<Date, Long> getHistoricMemberCounts(Date start, Date end);
 }

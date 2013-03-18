@@ -50,6 +50,8 @@
 		<spring.version>3.2.2.RELEASE</spring.version>
 		<twitter4j.version>3.0.3</twitter4j.version>
 		<wicket.version>6.6.0</wicket.version>
+		<wicketstuff.tinymce.version>6.5.0</wicketstuff.tinymce.version>
+		<wqplot.version>1.6-SNAPSHOT</wqplot.version>
 	</properties>
 
 
@@ -188,12 +190,12 @@
 		<dependency>
 			<groupId>org.wicketstuff</groupId>
 			<artifactId>wicketstuff-tinymce</artifactId>
-			<version>${wicket.version}</version>
+			<version>${wicketstuff.tinymce.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>nl.topicus</groupId>
         		<artifactId>wqplot</artifactId>
-	        	<version>${wicket.version}</version>
+	        	<version>${wqplot.version}</version>
 	       	</dependency>
 
 		<dependency>

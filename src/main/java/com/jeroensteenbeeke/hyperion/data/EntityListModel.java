@@ -72,15 +72,6 @@ class EntityListModel<T extends DomainObject> extends
 	}
 
 	@Override
-	public List<T> getObject() {
-		if (list == null) {
-			list = load();
-		}
-
-		return list;
-	}
-
-	@Override
 	protected List<T> load() {
 		if (entityFinder == null) {
 			Injector.get().inject(this);

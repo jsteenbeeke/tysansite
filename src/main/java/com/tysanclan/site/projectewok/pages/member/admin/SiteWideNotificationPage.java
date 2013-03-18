@@ -26,7 +26,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.time.Duration;
-import org.apache.wicket.validation.validator.MinimumValidator;
+import org.apache.wicket.validation.validator.RangeValidator;
 
 import com.tysanclan.site.projectewok.SiteWideNotification;
 import com.tysanclan.site.projectewok.SiteWideNotification.Category;
@@ -115,7 +115,7 @@ public class SiteWideNotificationPage extends AbstractSingleAccordionMemberPage 
 
 		final TextField<Integer> durationField = new TextField<Integer>(
 				"duration", new Model<Integer>(1), Integer.class);
-		durationField.add(new MinimumValidator<Integer>(1));
+		durationField.add(RangeValidator.minimum(1));
 		durationField.setRequired(true);
 
 		Form<SiteWideNotification> notificationForm = new Form<SiteWideNotification>(

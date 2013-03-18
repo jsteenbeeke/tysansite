@@ -29,7 +29,7 @@ public interface DAO<T extends DomainObject> {
 	/**
 	 * @return The total number of items of this type
 	 */
-	public abstract int countAll();
+	public abstract long countAll();
 
 	/**
 	 * Delete the indicated object
@@ -75,9 +75,9 @@ public interface DAO<T extends DomainObject> {
 
 	T getUniqueByFilter(SearchFilter<T> filter);
 
-	int countByFilter(SearchFilter<T> filter);
+	long countByFilter(SearchFilter<T> filter);
 
 	List<T> findByFilter(SearchFilter<T> filter);
 
-	List<T> findByFilter(SearchFilter<T> filter, int offset, int count);
+	List<T> findByFilter(SearchFilter<T> filter, long offset, long count);
 }

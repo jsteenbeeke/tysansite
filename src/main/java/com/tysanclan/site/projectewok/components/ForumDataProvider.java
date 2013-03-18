@@ -65,7 +65,7 @@ public class ForumDataProvider<T extends DomainObject, C extends DomainObject, D
 	}
 
 	@Override
-	public Iterator<? extends T> iterator(int first, int count) {
+	public Iterator<? extends T> iterator(long first, long count) {
 		TysanSession session = TysanSession.get();
 		User user = session != null ? session.getUser() : null;
 
@@ -76,7 +76,7 @@ public class ForumDataProvider<T extends DomainObject, C extends DomainObject, D
 	}
 
 	@Override
-	public int size() {
+	public long size() {
 
 		TysanSession session = TysanSession.get();
 		User user = session != null ? session.getUser() : null;

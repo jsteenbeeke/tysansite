@@ -113,7 +113,7 @@ public interface UserService {
 
 	/**
 	 	 */
-	int countMembers();
+	long countMembers();
 
 	public void setUserTimezone(Long userId, String timezone);
 

@@ -593,7 +593,7 @@ class DemocracyServiceImpl implements
 		filter.addRank(Rank.TRIAL);
 		filter.setRetired(false);
 
-		int memberCount = userDAO.countByFilter(filter);
+		long memberCount = userDAO.countByFilter(filter);
 		int seats = calculateSenateSeats(memberCount);
 
 		SenateElection election = new SenateElection();
@@ -870,7 +870,7 @@ class DemocracyServiceImpl implements
 		AcceptanceVoteFilter filter = new AcceptanceVoteFilter();
 		filter.setTrialMember(user);
 
-		int count = acceptanceVoteDAO.countByFilter(filter);
+		long count = acceptanceVoteDAO.countByFilter(filter);
 
 		if (count == 0) {
 			AcceptanceVote acceptanceVote = new AcceptanceVote();
@@ -1112,9 +1112,9 @@ class DemocracyServiceImpl implements
 	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS)
-	public int getRequiredChancellorEndorsements() {
-		int memberCount = userService.countMembers();
-		int required = (5 * memberCount) / 100;
+	public long getRequiredChancellorEndorsements() {
+		long memberCount = userService.countMembers();
+		long required = (5 * memberCount) / 100;
 
 		if (required == 0) {
 			required = 1;
@@ -1128,9 +1128,9 @@ class DemocracyServiceImpl implements
 	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS)
-	public int getRequiredSenateEndorsements() {
-		int memberCount = userService.countMembers();
-		int required = (3 * memberCount) / 100;
+	public long getRequiredSenateEndorsements() {
+		long memberCount = userService.countMembers();
+		long required = (3 * memberCount) / 100;
 
 		if (required == 0) {
 			required = 1;
@@ -1708,7 +1708,7 @@ class DemocracyServiceImpl implements
 		UserFilter filter = new UserFilter();
 		filter.addRank(Rank.SENATOR);
 
-		int total = _change.isVeto() ? userDAO.countByFilter(filter) : _change
+		long total = _change.isVeto() ? userDAO.countByFilter(filter) : _change
 				.getVotes().size();
 		int required_factor = _change.isVeto() ? 66 : 51;
 
@@ -1720,7 +1720,7 @@ class DemocracyServiceImpl implements
 			}
 		}
 
-		int factor = (100 * inFavor) / total;
+		long factor = (100 * inFavor) / total;
 
 		if (factor >= required_factor) {
 			// Execute regulation change
@@ -1767,7 +1767,7 @@ class DemocracyServiceImpl implements
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	private void repealRegulation(RegulationChange _change, int factor) {
+	private void repealRegulation(RegulationChange _change, long factor) {
 		Regulation regulation = _change.getRegulation();
 
 		logService.logSystemAction("Regulations",
@@ -1777,7 +1777,7 @@ class DemocracyServiceImpl implements
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	private void modifyRegulation(RegulationChange _change, int factor) {
+	private void modifyRegulation(RegulationChange _change, long factor) {
 		Regulation regulation = _change.getRegulation();
 
 		logService.logSystemAction("Regulations",
@@ -1791,7 +1791,7 @@ class DemocracyServiceImpl implements
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	private void createRegulation(RegulationChange _change, int factor) {
+	private void createRegulation(RegulationChange _change, long factor) {
 		Regulation regulation = new Regulation();
 
 		logService.logSystemAction("Regulations",
@@ -1887,7 +1887,7 @@ class DemocracyServiceImpl implements
 
 	}
 
-	public static int calculateSenateSeats(int memberCount) {
-		return Math.max(2, 1 + (memberCount / 20));
+	public static int calculateSenateSeats(long memberCount) {
+		return (int) Math.max(2, 1 + (memberCount / 20));
 	}
 }

@@ -28,6 +28,6 @@ import com.tysanclan.site.projectewok.entities.MembershipStatusChange;
  */
 public interface MembershipStatusChangeDAO extends DAO<MembershipStatusChange> {
 
-	SortedMap<Date, Integer> getMutationsByDate(Date start, Date end);
+	SortedMap<Date, Long> getMutationsByDate(Date start, Date end);
 
 }

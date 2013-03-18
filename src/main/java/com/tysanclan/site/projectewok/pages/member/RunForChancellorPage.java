@@ -73,10 +73,10 @@ public class RunForChancellorPage extends AbstractMemberPage {
 		accordion.setAutoHeight(false);
 
 		int gained = getUser().getEndorsedBy().size();
-		int requiredEndorsements = democracyService
+		long requiredEndorsements = democracyService
 				.getRequiredChancellorEndorsements();
 
-		accordion.add(new Label("required", new Model<Integer>(
+		accordion.add(new Label("required", new Model<Long>(
 				requiredEndorsements)));
 
 		accordion.add(new Label("gained", new Model<Integer>(gained)));

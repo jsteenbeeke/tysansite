@@ -191,7 +191,7 @@ public class AboutPage extends TysanPage {
 		filter3.addRank(Rank.TRIAL);
 		filter3.setRetired(false);
 
-		add(new Label("activecount", new Model<Integer>(
+		add(new Label("activecount", new Model<Long>(
 				userDAO.countByFilter(filter3))));
 
 		UserFilter filter4 = new UserFilter();
@@ -204,7 +204,7 @@ public class AboutPage extends TysanPage {
 		filter4.addRank(Rank.JUNIOR_MEMBER);
 		filter4.addRank(Rank.TRIAL);
 
-		add(new Label("membercount", new Model<Integer>(
+		add(new Label("membercount", new Model<Long>(
 				userDAO.countByFilter(filter4))));
 
 		addRank(Rank.CHANCELLOR, "The leader of the Clan, has executive power");

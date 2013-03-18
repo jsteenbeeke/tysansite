@@ -81,7 +81,7 @@ class ForumThreadDAOImpl extends EwokHibernateDAO<ForumThread> implements
 
 	@Override
 	public List<ForumThread> findByContext(User user, Forum contextObject,
-			ForumViewContext context, int first, int count) {
+			ForumViewContext context, long first, long count) {
 		return context.getThreads(getSession(), contextObject, user, first,
 				count);
 	}

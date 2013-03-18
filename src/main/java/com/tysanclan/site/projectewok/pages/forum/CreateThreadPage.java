@@ -78,7 +78,7 @@ public class CreateThreadPage extends TysanPage {
 					filter.setRestrained(true);
 					filter.setAccused(u);
 
-					int count = trialDAO.countByFilter(filter);
+					long count = trialDAO.countByFilter(filter);
 
 					if (count == 0) {
 						ForumThread thread = forumService.createForumThread(

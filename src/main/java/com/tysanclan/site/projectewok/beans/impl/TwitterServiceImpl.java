@@ -40,11 +40,26 @@ import com.tysanclan.site.projectewok.beans.ActionResolver;
 import com.tysanclan.site.projectewok.beans.TwitterService;
 import com.tysanclan.site.projectewok.entities.Profile;
 import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.*;
+import com.tysanclan.site.projectewok.entities.dao.TweetDAO;
+import com.tysanclan.site.projectewok.entities.dao.TwitterActionDAO;
+import com.tysanclan.site.projectewok.entities.dao.TwitterFollowingDAO;
+import com.tysanclan.site.projectewok.entities.dao.TwitterQueryDAO;
+import com.tysanclan.site.projectewok.entities.dao.TwitterSearchResultDAO;
 import com.tysanclan.site.projectewok.entities.dao.filters.TweetFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.TwitterActionFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.TwitterSearchResultFilter;
-import com.tysanclan.site.projectewok.entities.twitter.*;
+import com.tysanclan.site.projectewok.entities.twitter.FollowAction;
+import com.tysanclan.site.projectewok.entities.twitter.GetFollowingAction;
+import com.tysanclan.site.projectewok.entities.twitter.HomeUpdateAction;
+import com.tysanclan.site.projectewok.entities.twitter.RefreshAction;
+import com.tysanclan.site.projectewok.entities.twitter.SearchAction;
+import com.tysanclan.site.projectewok.entities.twitter.Tweet;
+import com.tysanclan.site.projectewok.entities.twitter.TweetAction;
+import com.tysanclan.site.projectewok.entities.twitter.TwitterAction;
+import com.tysanclan.site.projectewok.entities.twitter.TwitterFollowing;
+import com.tysanclan.site.projectewok.entities.twitter.TwitterQuery;
+import com.tysanclan.site.projectewok.entities.twitter.TwitterSearchResult;
+import com.tysanclan.site.projectewok.entities.twitter.UnfollowAction;
 import com.tysanclan.site.projectewok.event.TwitterEvent;
 
 @Component
@@ -151,25 +166,18 @@ class TwitterServiceImpl implements TwitterService, ApplicationContextAware {
 
 		List<TwitterAction> actions = twitterActionDAO.findByFilter(filter);
 
-		int max = 175;
-		try {
-			max = twitter.getRateLimitStatus().getHourlyLimit();
-		} catch (TwitterException te) {
-			log.error("Could not determine rate limit status, using default 175");
-		}
-		int i = 0;
-
 		for (TwitterAction action : actions) {
 			try {
-				if (i++ > max) {
-					break;
-				}
 
 				resolveAction(action);
 
 				twitterActionDAO.delete(action);
 			} catch (TwitterException e) {
 				log.error(e.getMessage(), e);
+
+				if (e.exceededRateLimitation()) {
+					return;
+				}
 			}
 		}
 	}

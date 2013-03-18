@@ -27,7 +27,7 @@ import org.apache.wicket.markup.html.link.IPageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.validation.validator.MinimumValidator;
+import org.apache.wicket.validation.validator.RangeValidator;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.FinanceService;
@@ -54,7 +54,7 @@ public class ActivateSubscriptionPanel extends Panel {
 
 		final TextField<BigDecimal> amountField = new TextField<BigDecimal>(
 				"amount", new Model<BigDecimal>(TWO), BigDecimal.class);
-		amountField.add(new MinimumValidator<BigDecimal>(TWO));
+		amountField.add(RangeValidator.minimum(TWO));
 		amountField.setRequired(true);
 
 		final DropDownChoice<ExpensePeriod> expenseSelect = new DropDownChoice<ExpensePeriod>(

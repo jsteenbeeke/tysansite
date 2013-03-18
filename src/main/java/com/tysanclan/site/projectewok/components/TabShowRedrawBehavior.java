@@ -19,7 +19,8 @@ package com.tysanclan.site.projectewok.components;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.Behavior;
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.odlabs.wiquery.ui.tabs.Tabs;
 
 /**
@@ -69,7 +70,8 @@ public class TabShowRedrawBehavior extends Behavior {
 		javascript.append("\t\t}\n");
 		javascript.append("\t});\n");
 		javascript.append("});\n");
-		response.renderJavaScript(javascript.toString(), null);
+		response.render(JavaScriptHeaderItem.forScript(javascript.toString(),
+				String.format("tabbind-%s", tabs.getMarkupId())));
 
 	}
 
