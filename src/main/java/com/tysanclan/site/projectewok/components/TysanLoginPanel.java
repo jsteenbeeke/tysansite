@@ -137,39 +137,4 @@ public class TysanLoginPanel extends TysanTopPanel {
 		form.add(submit);
 	}
 
-	/**
-	 * @return The authentication service used by this panel
-	 */
-	public AuthenticationService getAuthenticationService() {
-		return authenticationService;
-	}
-
-	/**
-	 * @return the userDAO
-	 */
-	public UserDAO getUserDAO() {
-		return userDAO;
-	}
-
-	@Override
-	protected void onDetach() {
-		super.onDetach();
-
-		authenticationService = null;
-		userDAO = null;
-	}
-
-	public void setAuthenticationService(
-			AuthenticationService authenticationService) {
-		this.authenticationService = authenticationService;
-	}
-
-	/**
-	 * @param userDAO
-	 *            the userDAO to set
-	 */
-	public void setUserDAO(UserDAO userDAO) {
-		this.userDAO = userDAO;
-	}
-
 }

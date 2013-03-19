@@ -22,7 +22,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import org.hibernate.annotations.AccessType;
-import org.hibernate.annotations.Cache;
 
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 
@@ -32,16 +31,15 @@ import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
  */
 @Entity
 @AccessType("field")
-@Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class GlobalSetting extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;
 
-	public enum GlobalSettings {
+	public static enum GlobalSettings {
 		DEFAULT {
 			@Override
 			public GlobalSetting getNewDefaultGlobalSetting() {
 				GlobalSetting setting = new GlobalSetting();
-				setting.setId(this.toString());
+				setting.setId(name());
 				setting.setValue("");
 				return setting;
 			}
@@ -50,7 +48,7 @@ public class GlobalSetting extends BaseDomainObject {
 			@Override
 			public GlobalSetting getNewDefaultGlobalSetting() {
 				GlobalSetting setting = new GlobalSetting();
-				setting.setId(this.toString());
+				setting.setId(name());
 				setting.setValue("no");
 				return setting;
 			}

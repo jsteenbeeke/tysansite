@@ -17,7 +17,10 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
+import java.util.List;
+
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -51,13 +54,34 @@ class GlobalSettingDAOImpl extends EwokHibernateDAO<GlobalSetting> implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public GlobalSetting getGlobalSetting(GlobalSettings id) {
-		Criteria criteria = getSession().createCriteria(GlobalSetting.class);
-		criteria.add(Restrictions.idEq(id.toString()));
-		GlobalSetting setting = unique(criteria);
-		if (setting == null) {
-			setting = id.getNewDefaultGlobalSetting();
+		Criteria criteria = createIdCriteria(id);
+		criteria.setProjection(Projections.rowCount());
+
+		Number count = unique(criteria);
+		if (count.intValue() == 0) {
+			GlobalSetting setting = id.getNewDefaultGlobalSetting();
 			save(setting);
+			getSession().flush();
+			return setting;
+
+		} else if (count.intValue() == 1) {
+			return unique(createIdCriteria(id));
+		} else {
+			// Two entries?? WTF
+			List<GlobalSetting> gs = listOf(createIdCriteria(id));
+			return gs.get(0);
 		}
-		return setting;
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public void save(GlobalSetting object) {
+		super.save(object);
+	}
+
+	private Criteria createIdCriteria(GlobalSettings type) {
+		Criteria criteria = getSession().createCriteria(GlobalSetting.class);
+		criteria.add(Restrictions.eq("id", type.name()));
+		return criteria;
 	}
 }

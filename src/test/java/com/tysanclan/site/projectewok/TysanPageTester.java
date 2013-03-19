@@ -27,14 +27,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.orm.hibernate3.SessionFactoryUtils;
-import org.springframework.orm.hibernate3.SessionHolder;
+import org.springframework.orm.hibernate4.SessionFactoryUtils;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.RequestScope;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.context.request.SessionScope;
 
 /**
  * @author Jeroen Steenbeeke
@@ -47,13 +45,14 @@ public abstract class TysanPageTester {
 	@BeforeClass
 	public static void setUp() {
 		tester = WicketTesterProvider.INST.getTester();
+		tester.getRequestCycle();
 	}
 
 	@Before
 	public void startRequest() {
 		ConfigurableBeanFactory configurableBeanFactory = (ConfigurableBeanFactory) TysanApplication
 				.getApplicationContext().getAutowireCapableBeanFactory();
-		configurableBeanFactory.registerScope("session", new SessionScope());
+		// configurableBeanFactory.registerScope("session", new SessionScope());
 		configurableBeanFactory.registerScope("request", new RequestScope());
 
 		MockServletContext sctx = new MockServletContext(
@@ -67,17 +66,16 @@ public abstract class TysanPageTester {
 		sessionFactory = (SessionFactory) configurableBeanFactory
 				.getBean("sessionFactory");
 
-		Session session = SessionFactoryUtils.getSession(sessionFactory, true);
-		TransactionSynchronizationManager.bindResource(sessionFactory,
-				new SessionHolder(session));
+		Session session = sessionFactory.openSession();
+		TransactionSynchronizationManager.bindResource(sessionFactory, session);
 	}
 
 	@After
 	public void endRequest() {
 		RequestContextHolder.resetRequestAttributes();
-		SessionHolder sessionHolder = (SessionHolder) TransactionSynchronizationManager
+		Session session = (Session) TransactionSynchronizationManager
 				.unbindResource(sessionFactory);
-		SessionFactoryUtils.closeSession(sessionHolder.getSession());
+		SessionFactoryUtils.closeSession(session);
 	}
 
 	protected void logIn(Long userId) {

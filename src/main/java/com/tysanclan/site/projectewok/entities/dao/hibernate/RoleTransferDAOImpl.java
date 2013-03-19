@@ -29,7 +29,7 @@ import com.tysanclan.site.projectewok.entities.dao.RoleTransferDAO;
 import com.tysanclan.site.projectewok.entities.dao.filters.RoleTransferFilter;
 
 @Component
-@Scope("session")
+@Scope("request")
 public class RoleTransferDAOImpl extends EwokHibernateDAO<RoleTransfer>
 		implements RoleTransferDAO {
 

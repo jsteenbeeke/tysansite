@@ -74,9 +74,9 @@ public class MockObjectRepository implements InitializingBean {
 	/**
 	 * 
 	 */
-	@Transactional(propagation = Propagation.REQUIRED)
 	private void init() {
 		Session sess = factory.openSession();
+		sess.beginTransaction();
 
 		ForumCategory fc = new ForumCategory();
 		fc.setId(1L);
@@ -222,6 +222,7 @@ public class MockObjectRepository implements InitializingBean {
 		addObject(sess, expense);
 
 		sess.flush();
+		sess.getTransaction().commit();
 		sess.close();
 
 	}
