@@ -36,6 +36,7 @@ import org.apache.wicket.request.Response;
 import org.apache.wicket.request.http.WebRequest;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
+import org.odlabs.wiquery.ui.themes.WiQueryCoreThemeResourceReference;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.impl.StdSchedulerFactory;
@@ -213,6 +214,9 @@ public class TysanApplication extends WebApplication {
 		if (usesDeploymentConfig())
 			getApplicationSettings().setInternalErrorPage(TysanErrorPage.class);
 
+		addResourceReplacement(WiQueryCoreThemeResourceReference.get(),
+				new CssResourceReference(TysanApplication.class,
+						"themes/ui-darkness/jquery-ui-1.10.2.custom.css"));
 	}
 
 	/**
