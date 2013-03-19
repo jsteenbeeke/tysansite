@@ -17,15 +17,10 @@
  */
 package com.tysanclan.site.projectewok.tasks;
 
-import java.util.Calendar;
-
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.tysanclan.site.projectewok.beans.RoleService;
-import com.tysanclan.site.projectewok.entities.RoleTransfer;
 import com.tysanclan.site.projectewok.entities.dao.RoleTransferDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.RoleTransferFilter;
-import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 
 public class ResolveRoleTransferTask extends PeriodicTask {
@@ -42,24 +37,7 @@ public class ResolveRoleTransferTask extends PeriodicTask {
 
 	@Override
 	public void run() {
-		Calendar cal = DateUtil.getCalendarInstance();
-		cal.add(Calendar.WEEK_OF_YEAR, -1);
-
-		RoleTransferFilter filter = new RoleTransferFilter();
-		filter.setAccepted(true);
-		filter.setStartBefore(cal.getTime());
-
-		for (RoleTransfer transfer : roleTransferDAO.findByFilter(filter)) {
-			roleService.resolveTransfer(transfer);
-		}
-
-		filter = new RoleTransferFilter();
-		filter.setAccepted(false);
-		filter.setStartBefore(cal.getTime());
-
-		for (RoleTransfer transfer : roleTransferDAO.findByFilter(filter)) {
-			roleService.rejectNomination(transfer);
-		}
+		roleService.resolveTransfers();
 
 	}
 }

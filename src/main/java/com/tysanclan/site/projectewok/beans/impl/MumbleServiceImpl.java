@@ -75,4 +75,14 @@ class MumbleServiceImpl implements MumbleService {
 			return new ServerStatus();
 		}
 	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public void updateStatuses() {
+		for (MumbleServer server : mumbleServerDAO.findAll()) {
+			MMOMumbleServerStatus.fetchStatus(server.getId(),
+					server.getApiToken(), server.getApiSecret());
+		}
+
+	}
 }

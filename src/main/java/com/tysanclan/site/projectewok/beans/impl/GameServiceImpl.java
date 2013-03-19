@@ -708,4 +708,13 @@ class GameServiceImpl implements
 		}
 
 	}
+
+	@Transactional(propagation = Propagation.REQUIRED)
+	@Override
+	public void expirePetitions() {
+		for (GamePetition petition : gamePetitionDAO.findAll()) {
+			checkPetitionExpired(petition);
+		}
+
+	}
 }

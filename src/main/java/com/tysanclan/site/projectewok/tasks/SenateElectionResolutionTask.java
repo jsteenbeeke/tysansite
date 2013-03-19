@@ -17,25 +17,15 @@
  */
 package com.tysanclan.site.projectewok.tasks;
 
-import java.util.Calendar;
-import java.util.List;
-
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.tysanclan.site.projectewok.beans.DemocracyService;
-import com.tysanclan.site.projectewok.entities.SenateElection;
-import com.tysanclan.site.projectewok.entities.dao.SenateElectionDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.SenateElectionFilter;
-import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 
 /**
  * @author Jeroen Steenbeeke
  */
 public class SenateElectionResolutionTask extends PeriodicTask {
-	@SpringBean
-	private SenateElectionDAO senateElectionDAO;
-
 	@SpringBean
 	private DemocracyService democracyService;
 
@@ -52,18 +42,7 @@ public class SenateElectionResolutionTask extends PeriodicTask {
 	 */
 	@Override
 	public void run() {
-		SenateElectionFilter filter = new SenateElectionFilter();
-		Calendar twoWeeksAgo = DateUtil.getCalendarInstance();
-		Calendar threeWeeksAgo = DateUtil.getCalendarInstance();
-		twoWeeksAgo.add(Calendar.WEEK_OF_YEAR, -2);
-		threeWeeksAgo.add(Calendar.WEEK_OF_YEAR, -3);
-		filter.setStartBefore(twoWeeksAgo.getTime());
-		filter.setStartAfter(threeWeeksAgo.getTime());
-		List<SenateElection> elections = senateElectionDAO.findByFilter(filter);
-		for (SenateElection election : elections) {
-			democracyService.resolveSenateElection(election);
-		}
-
+		democracyService.resolveSenatorElections();
 	}
 
 }

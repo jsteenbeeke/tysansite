@@ -17,29 +17,21 @@
  */
 package com.tysanclan.site.projectewok.tasks;
 
-import java.util.Calendar;
-import java.util.List;
-
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.tysanclan.site.projectewok.beans.UserService;
-import com.tysanclan.site.projectewok.entities.PasswordRequest;
 import com.tysanclan.site.projectewok.entities.dao.PasswordRequestDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.PasswordRequestFilter;
-import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public class PasswordRequestExpirationTask extends
-        PeriodicTask {
+public class PasswordRequestExpirationTask extends PeriodicTask {
 	/**
-     * 
-     */
+	 * 
+	 */
 	public PasswordRequestExpirationTask() {
-		super("Password expiration cleanup", "Expiration",
-		        ExecutionMode.DAILY);
+		super("Password expiration cleanup", "Expiration", ExecutionMode.DAILY);
 
 	}
 
@@ -54,17 +46,7 @@ public class PasswordRequestExpirationTask extends
 	 */
 	@Override
 	public void run() {
-		Calendar cal = DateUtil.getCalendarInstance();
-		cal.add(Calendar.DAY_OF_YEAR, -3);
-
-		PasswordRequestFilter filter = new PasswordRequestFilter();
-		filter.setDateBefore(cal.getTime());
-
-		List<PasswordRequest> expiredRequests = passwordRequestDAO
-		        .findByFilter(filter);
-		for (PasswordRequest passwordRequest : expiredRequests) {
-			userService.expireRequest(passwordRequest);
-		}
+		userService.expirePasswordRequests();
 	}
 
 }

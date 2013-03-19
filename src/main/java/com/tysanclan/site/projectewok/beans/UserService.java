@@ -128,4 +128,12 @@ public interface UserService {
 	void setUserCollapseForums(Long user_id, boolean collapse);
 
 	public void setPaypalAddress(User user, String paypalAddress);
+
+	public void expireActivations();
+
+	public void expireConfirmations();
+
+	public void expirePasswordRequests();
+
+	public void warnInactives();
 }

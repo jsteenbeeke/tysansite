@@ -17,24 +17,15 @@
  */
 package com.tysanclan.site.projectewok.tasks;
 
-import java.util.Calendar;
-
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.tysanclan.site.projectewok.beans.DemocracyService;
-import com.tysanclan.site.projectewok.entities.RegulationChange;
-import com.tysanclan.site.projectewok.entities.dao.RegulationChangeDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.RegulationChangeFilter;
-import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 
 /**
  * @author Jeroen Steenbeeke
  */
 public class RegulationChangeResolutionTask extends PeriodicTask {
-	@SpringBean
-	private RegulationChangeDAO regulationChangeDAO;
-
 	@SpringBean
 	private DemocracyService democracyService;
 
@@ -51,14 +42,7 @@ public class RegulationChangeResolutionTask extends PeriodicTask {
 	 */
 	@Override
 	public void run() {
-		RegulationChangeFilter filter = new RegulationChangeFilter();
-		Calendar cal = DateUtil.getMidnightCalendarInstance();
-		cal.add(Calendar.WEEK_OF_YEAR, -1);
-		filter.setStartBefore(cal.getTime());
-
-		for (RegulationChange change : regulationChangeDAO.findByFilter(filter)) {
-			democracyService.resolveRegulationVote(change);
-		}
+		democracyService.resolveRegulationVotes();
 
 	}
 

@@ -20,7 +20,6 @@ package com.tysanclan.site.projectewok.tasks;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.tysanclan.site.projectewok.beans.FinanceService;
-import com.tysanclan.site.projectewok.entities.Subscription;
 import com.tysanclan.site.projectewok.entities.dao.SubscriptionDAO;
 import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 
@@ -38,9 +37,7 @@ public class CheckSubscriptionsDueTask extends PeriodicTask {
 
 	@Override
 	public void run() {
-		for (Subscription s : subscriptionDAO.findAll()) {
-			financeService.checkDue(s);
-		}
+		financeService.checkSubscriptionsDue();
 
 	}
 }

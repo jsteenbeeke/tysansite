@@ -17,25 +17,15 @@
  */
 package com.tysanclan.site.projectewok.tasks;
 
-import java.util.Calendar;
-import java.util.List;
-
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.tysanclan.site.projectewok.beans.DemocracyService;
-import com.tysanclan.site.projectewok.entities.UntenabilityVote;
-import com.tysanclan.site.projectewok.entities.dao.UntenabilityVoteDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.UntenabilityVoteFilter;
-import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 
 /**
  * @author Jeroen Steenbeeke
  */
 public class UntenabilityVoteResolutionTask extends PeriodicTask {
-
-	@SpringBean
-	private UntenabilityVoteDAO untenabilityVoteDAO;
 
 	@SpringBean
 	private DemocracyService democracyService;
@@ -52,18 +42,7 @@ public class UntenabilityVoteResolutionTask extends PeriodicTask {
 	 */
 	@Override
 	public void run() {
-		Calendar cal = DateUtil.getCalendarInstance();
-		cal.add(Calendar.WEEK_OF_YEAR, 1);
-
-		UntenabilityVoteFilter filter = new UntenabilityVoteFilter();
-		filter.setStartBefore(cal.getTime());
-
-		List<UntenabilityVote> votes = untenabilityVoteDAO.findByFilter(filter);
-
-		for (UntenabilityVote vote : votes) {
-			democracyService.resolveUntenabilityVote(vote);
-		}
-
+		democracyService.resolveUntenabilityVotes();
 	}
 
 }

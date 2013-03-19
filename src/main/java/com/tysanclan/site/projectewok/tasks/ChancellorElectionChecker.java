@@ -17,18 +17,9 @@
  */
 package com.tysanclan.site.projectewok.tasks;
 
-import java.util.Calendar;
-
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.tysanclan.site.projectewok.beans.DemocracyService;
-import com.tysanclan.site.projectewok.entities.ChancellorElection;
-import com.tysanclan.site.projectewok.entities.Rank;
-import com.tysanclan.site.projectewok.entities.dao.ChancellorElectionDAO;
-import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.ChancellorElectionFilter;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
-import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 
 /**
@@ -38,18 +29,8 @@ public class ChancellorElectionChecker extends PeriodicTask {
 	@SpringBean
 	private DemocracyService democracyService;
 
-	@SpringBean
-	private ChancellorElectionDAO chancellorElectionDAO;
-
-	@SpringBean
-	private UserDAO userDAO;
-
-	/**
-     * 
-     */
 	public ChancellorElectionChecker() {
-		super("Chancellor election", "Democracy",
-		        ExecutionMode.DAILY);
+		super("Chancellor election", "Democracy", ExecutionMode.DAILY);
 
 	}
 
@@ -58,31 +39,7 @@ public class ChancellorElectionChecker extends PeriodicTask {
 	 */
 	@Override
 	public void run() {
-		Calendar calendar = DateUtil.getCalendarInstance();
-		calendar.add(Calendar.MONTH, -6);
-
-		ChancellorElectionFilter filter = new ChancellorElectionFilter();
-		filter.setStartBefore(calendar.getTime());
-		filter.addOrderBy("start", false);
-
-		ChancellorElectionFilter filter2 = new ChancellorElectionFilter();
-		filter2.setStartAfter(calendar.getTime());
-		filter2.addOrderBy("start", false);
-
-		ChancellorElection current = democracyService
-		        .getCurrentChancellorElection();
-
-		UserFilter ufilter = new UserFilter();
-		ufilter.addRank(Rank.CHANCELLOR);
-
-		if (chancellorElectionDAO.countAll() == 0
-		        || (chancellorElectionDAO
-		                .countByFilter(filter) > 0
-		                && chancellorElectionDAO
-		                        .countByFilter(filter2) == 0 && current == null)
-		        || userDAO.countByFilter(ufilter) == 0) {
-			democracyService.createChancellorElection();
-		}
+		democracyService.checkChancellorElections();
 	}
 
 }

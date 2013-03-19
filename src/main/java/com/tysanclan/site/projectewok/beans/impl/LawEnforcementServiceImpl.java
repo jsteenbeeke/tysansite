@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -53,6 +54,7 @@ import com.tysanclan.site.projectewok.entities.dao.TruthsayerNominationDAO;
 import com.tysanclan.site.projectewok.entities.dao.TruthsayerNominationVoteDAO;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import com.tysanclan.site.projectewok.entities.dao.filters.PenaltyPointFilter;
+import com.tysanclan.site.projectewok.entities.dao.filters.TruthsayerComplaintFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.TruthsayerNominationFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
 import com.tysanclan.site.projectewok.event.MemberStatusEvent;
@@ -709,6 +711,7 @@ class LawEnforcementServiceImpl implements
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
 	public void resolveComplaint(TruthsayerComplaint complaint) {
 		UserFilter filter = new UserFilter();
 		filter.addRank(Rank.SENATOR);
@@ -765,4 +768,39 @@ class LawEnforcementServiceImpl implements
 		truthsayerComplaintDAO.delete(complaint);
 	}
 
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void resolveComplaints() {
+		TruthsayerComplaintFilter filter = new TruthsayerComplaintFilter();
+		filter.setMediated(true);
+		filter.setStartBefore(new DateTime().minusWeeks(1).toDate());
+		for (TruthsayerComplaint complaint : truthsayerComplaintDAO
+				.findByFilter(filter)) {
+			resolveComplaint(complaint);
+		}
+
+		filter.setMediated(false);
+		for (TruthsayerComplaint complaint : truthsayerComplaintDAO
+				.findByFilter(filter)) {
+			complaintToSenate(complaint, false);
+		}
+
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void resolveNominations() {
+		Calendar calendar = DateUtil.getCalendarInstance();
+		calendar.add(Calendar.WEEK_OF_YEAR, -1);
+
+		TruthsayerNominationFilter filter = new TruthsayerNominationFilter();
+		filter.setStartBefore(calendar.getTime());
+
+		List<TruthsayerNomination> nominations = truthsayerNominationDAO
+				.findByFilter(filter);
+
+		for (TruthsayerNomination nomination : nominations) {
+			resolveNomination(nomination);
+		}
+	}
 }

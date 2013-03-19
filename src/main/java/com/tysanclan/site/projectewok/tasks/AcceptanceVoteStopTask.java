@@ -17,16 +17,10 @@
  */
 package com.tysanclan.site.projectewok.tasks;
 
-import java.util.Calendar;
-import java.util.List;
-
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.tysanclan.site.projectewok.beans.DemocracyService;
-import com.tysanclan.site.projectewok.entities.AcceptanceVote;
 import com.tysanclan.site.projectewok.entities.dao.AcceptanceVoteDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.AcceptanceVoteFilter;
-import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 
 /**
@@ -52,17 +46,7 @@ public class AcceptanceVoteStopTask extends PeriodicTask {
 	 */
 	@Override
 	public void run() {
-		Calendar threeDaysAgo = DateUtil.getCalendarInstance();
-
-		threeDaysAgo.add(Calendar.DAY_OF_YEAR, -3);
-
-		AcceptanceVoteFilter filter = new AcceptanceVoteFilter();
-		filter.setStartBefore(threeDaysAgo.getTime());
-
-		List<AcceptanceVote> eligibles = acceptanceVoteDAO.findByFilter(filter);
-		for (AcceptanceVote vote : eligibles) {
-			democracyService.resolveAcceptanceVote(vote);
-		}
+		democracyService.resolveAcceptanceVotes();
 
 	}
 

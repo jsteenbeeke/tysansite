@@ -17,23 +17,16 @@
  */
 package com.tysanclan.site.projectewok.tasks;
 
-import java.util.Calendar;
-import java.util.List;
-
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.tysanclan.site.projectewok.beans.DemocracyService;
-import com.tysanclan.site.projectewok.entities.JoinApplication;
 import com.tysanclan.site.projectewok.entities.dao.JoinApplicationDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.JoinApplicationFilter;
-import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public class MemberApplicationResolutionTask extends
-        PeriodicTask {
+public class MemberApplicationResolutionTask extends PeriodicTask {
 
 	@SpringBean
 	private JoinApplicationDAO joinApplicationDAO;
@@ -42,11 +35,10 @@ public class MemberApplicationResolutionTask extends
 	private DemocracyService democracyService;
 
 	/**
-     * 
-     */
+	 * 
+	 */
 	public MemberApplicationResolutionTask() {
-		super("Application resolution", "Members",
-		        ExecutionMode.HOURLY);
+		super("Application resolution", "Members", ExecutionMode.HOURLY);
 	}
 
 	/**
@@ -54,18 +46,7 @@ public class MemberApplicationResolutionTask extends
 	 */
 	@Override
 	public void run() {
-		Calendar cal = DateUtil.getCalendarInstance();
-		cal.add(Calendar.DAY_OF_YEAR, -3);
-
-		JoinApplicationFilter filter = new JoinApplicationFilter();
-		filter.setDateBefore(cal.getTime());
-
-		List<JoinApplication> applications = joinApplicationDAO
-		        .findByFilter(filter);
-		for (JoinApplication application : applications) {
-			democracyService
-			        .resolveJoinApplication(application);
-		}
+		democracyService.resolveJoinApplications();
 	}
 
 }

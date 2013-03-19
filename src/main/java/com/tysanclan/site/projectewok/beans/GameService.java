@@ -87,4 +87,6 @@ public interface GameService {
 	GameAccount createLeagueOfLegendsAccount(UserGameRealm ugr, String name);
 
 	public void setGameSupervisor(Game game, User user);
+
+	public void expirePetitions();
 }

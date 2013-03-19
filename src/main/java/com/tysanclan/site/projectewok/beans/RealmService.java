@@ -56,4 +56,7 @@ public interface RealmService {
 	void addPlayedGame(User user, Game game, Realm realm);
 
 	int getRequiredPetitionSignatures();
+
+	void expirePetitions();
+
 }

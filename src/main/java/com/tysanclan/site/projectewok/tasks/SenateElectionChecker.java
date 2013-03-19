@@ -17,20 +17,9 @@
  */
 package com.tysanclan.site.projectewok.tasks;
 
-import java.util.Calendar;
-import java.util.List;
-
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.tysanclan.site.projectewok.beans.DemocracyService;
-import com.tysanclan.site.projectewok.beans.WrapperService;
-import com.tysanclan.site.projectewok.entities.Rank;
-import com.tysanclan.site.projectewok.entities.SenateElection;
-import com.tysanclan.site.projectewok.entities.dao.SenateElectionDAO;
-import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.SenateElectionFilter;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
-import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 
 /**
@@ -41,18 +30,6 @@ public class SenateElectionChecker extends PeriodicTask {
 	@SpringBean
 	private DemocracyService democracyService;
 
-	@SpringBean
-	private SenateElectionDAO senateElectionDAO;
-
-	@SpringBean
-	private WrapperService wrapperService;
-
-	@SpringBean
-	private UserDAO userDAO;
-
-	/**
-	 * 
-	 */
 	public SenateElectionChecker() {
 		super("Senate election", "Democracy", ExecutionMode.DAILY);
 	}
@@ -62,48 +39,7 @@ public class SenateElectionChecker extends PeriodicTask {
 	 */
 	@Override
 	public void run() {
-		Calendar calendar = DateUtil.getCalendarInstance();
-		calendar.add(Calendar.MONTH, -6);
-
-		SenateElectionFilter filter = new SenateElectionFilter();
-		filter.setStartBefore(calendar.getTime());
-		filter.addOrderBy("start", false);
-
-		SenateElectionFilter filter2 = new SenateElectionFilter();
-		filter2.setStartAfter(calendar.getTime());
-		filter2.addOrderBy("start", false);
-
-		SenateElection current = democracyService.getCurrentSenateElection();
-
-		if (senateElectionDAO.countAll() == 0
-				|| (senateElectionDAO.countByFilter(filter) > 0
-						&& senateElectionDAO.countByFilter(filter2) == 0 && current == null)) {
-			democracyService.createSenateElection();
-		} else {
-			SenateElectionFilter filter3 = new SenateElectionFilter();
-			filter3.addOrderBy("start", false);
-			List<SenateElection> elections = senateElectionDAO
-					.findByFilter(filter3);
-
-			UserFilter filter4 = new UserFilter();
-			filter4.addRank(Rank.SENATOR);
-
-			for (SenateElection election : elections) {
-				int seats = wrapperService.countElectionWinner(election);
-
-				if (seats > 0) {
-					long senators = userDAO.countByFilter(filter4);
-
-					int fraction = (int) ((senators * 100) / seats);
-
-					if (fraction < 40) {
-						democracyService.createSenateElection();
-					}
-				}
-				break;
-
-			}
-		}
+		democracyService.checkSenatorElections();
 
 	}
 }

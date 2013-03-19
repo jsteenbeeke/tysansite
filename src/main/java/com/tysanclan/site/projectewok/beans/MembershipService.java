@@ -78,4 +78,10 @@ public interface MembershipService {
 	public void feelLucky(User luckyOne);
 
 	void onLogin(User u);
+
+	void expireMembers();
+
+	void determinePromotions();
+
+	void bumpAccounts();
 }

@@ -18,12 +18,9 @@
 package com.tysanclan.site.projectewok.tasks;
 
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.joda.time.DateTime;
 
 import com.tysanclan.site.projectewok.beans.LawEnforcementService;
-import com.tysanclan.site.projectewok.entities.TruthsayerComplaint;
 import com.tysanclan.site.projectewok.entities.dao.TruthsayerComplaintDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.TruthsayerComplaintFilter;
 import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 
 public class ResolveTruthsayerComplaintTask extends PeriodicTask {
@@ -40,19 +37,6 @@ public class ResolveTruthsayerComplaintTask extends PeriodicTask {
 
 	@Override
 	public void run() {
-		TruthsayerComplaintFilter filter = new TruthsayerComplaintFilter();
-		filter.setMediated(true);
-		filter.setStartBefore(new DateTime().minusWeeks(1).toDate());
-		for (TruthsayerComplaint complaint : truthsayerComplaintDAO
-				.findByFilter(filter)) {
-			lawEnforcementService.resolveComplaint(complaint);
-		}
-
-		filter.setMediated(false);
-		for (TruthsayerComplaint complaint : truthsayerComplaintDAO
-				.findByFilter(filter)) {
-			lawEnforcementService.complaintToSenate(complaint, false);
-		}
-
+		lawEnforcementService.resolveComplaints();
 	}
 }

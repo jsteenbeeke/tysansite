@@ -17,16 +17,9 @@
  */
 package com.tysanclan.site.projectewok.tasks;
 
-import java.util.List;
-
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.fortuityframework.core.dispatch.IEventBroker;
-import com.tysanclan.site.projectewok.beans.MailService;
 import com.tysanclan.site.projectewok.beans.MembershipService;
-import com.tysanclan.site.projectewok.beans.UserService;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.event.MemberStatusEvent;
 import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 
 /**
@@ -34,15 +27,7 @@ import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
  */
 public class MembershipExpirationTask extends PeriodicTask {
 	@SpringBean
-	private UserService userService;
-	@SpringBean
 	private MembershipService membershipService;
-
-	@SpringBean
-	private MailService mailService;
-
-	@SpringBean
-	private IEventBroker broker;
 
 	/**
 	 * Creates a new task that checks for expired memberships
@@ -56,17 +41,6 @@ public class MembershipExpirationTask extends PeriodicTask {
 	 */
 	@Override
 	public void run() {
-		List<User> expiredMembers = userService.getInactiveMembers();
-		for (User user : expiredMembers) {
-			membershipService.terminateMembership(user);
-			String mailBody = mailService.getInactivityExpirationMail(user);
-
-			mailService.sendHTMLMail(user.getEMail(),
-					"Tysan Clan Membership Expired", mailBody);
-
-			broker.dispatchEvent(new MemberStatusEvent(
-					com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.INACTIVITY_TIMEOUT,
-					user));
-		}
+		membershipService.expireMembers();
 	}
 }

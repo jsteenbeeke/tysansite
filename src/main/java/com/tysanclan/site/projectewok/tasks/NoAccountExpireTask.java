@@ -20,8 +20,6 @@ package com.tysanclan.site.projectewok.tasks;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.tysanclan.site.projectewok.beans.MembershipService;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 
 /**
@@ -34,15 +32,11 @@ public class NoAccountExpireTask extends PeriodicTask {
 	@SpringBean
 	private MembershipService membershipService;
 
-	@SpringBean
-	private UserDAO userDAO;
-
 	/**
-     * 
-     */
+	 * 
+	 */
 	public NoAccountExpireTask() {
-		super("Account bumper", "Debug",
-		        ExecutionMode.HOURLY);
+		super("Account bumper", "Debug", ExecutionMode.HOURLY);
 	}
 
 	/**
@@ -50,9 +44,7 @@ public class NoAccountExpireTask extends PeriodicTask {
 	 */
 	@Override
 	public void run() {
-		for (User user : userDAO.findAll()) {
-			membershipService.registerAction(user);
-		}
+		membershipService.bumpAccounts();
 
 	}
 

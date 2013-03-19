@@ -17,31 +17,22 @@
  */
 package com.tysanclan.site.projectewok.tasks;
 
-import java.util.List;
-
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.tysanclan.site.projectewok.beans.MembershipService;
-import com.tysanclan.site.projectewok.entities.Rank;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
-import com.tysanclan.site.projectewok.util.MemberUtil;
 import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 
 /**
  * @author Jeroen Steenbeeke
  */
 public class AutomaticPromotionTask extends PeriodicTask {
-	@SpringBean
-	private UserDAO userDAO;
 
 	@SpringBean
 	private MembershipService membershipService;
 
 	/**
-     * 
-     */
+	 * 
+	 */
 	public AutomaticPromotionTask() {
 		super("Promotion", "Members", ExecutionMode.DAILY);
 	}
@@ -51,20 +42,7 @@ public class AutomaticPromotionTask extends PeriodicTask {
 	 */
 	@Override
 	public void run() {
-		UserFilter filter = new UserFilter();
-		filter.addRank(Rank.JUNIOR_MEMBER);
-		filter.addRank(Rank.FULL_MEMBER);
-		filter.addRank(Rank.SENIOR_MEMBER);
-
-		List<User> users = userDAO.findByFilter(filter);
-		for (User user : users) {
-			if (MemberUtil.determineRankByJoinDate(user
-			        .getJoinDate()) != user.getRank()) {
-				membershipService
-				        .performAutoPromotion(user);
-			}
-		}
-
+		membershipService.determinePromotions();
 	}
 
 }

@@ -28,4 +28,6 @@ public interface MumbleService {
 			String password, String apiToken, String apiSecret);
 
 	ServerStatus getServerStatus(MumbleServer server);
+
+	void updateStatuses();
 }

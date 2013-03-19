@@ -71,4 +71,8 @@ public interface LawEnforcementService {
 	public void resolveComplaint(TruthsayerComplaint complaint);
 
 	public void setComplaintObserved(TruthsayerComplaint c);
+
+	public void resolveComplaints();
+
+	public void resolveNominations();
 }

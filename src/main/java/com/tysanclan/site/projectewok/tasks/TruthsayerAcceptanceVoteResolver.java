@@ -17,16 +17,10 @@
  */
 package com.tysanclan.site.projectewok.tasks;
 
-import java.util.Calendar;
-import java.util.List;
-
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.tysanclan.site.projectewok.beans.LawEnforcementService;
-import com.tysanclan.site.projectewok.entities.TruthsayerNomination;
 import com.tysanclan.site.projectewok.entities.dao.TruthsayerNominationDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.TruthsayerNominationFilter;
-import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 
 /**
@@ -52,18 +46,7 @@ public class TruthsayerAcceptanceVoteResolver extends PeriodicTask {
 	 */
 	@Override
 	public void run() {
-		Calendar calendar = DateUtil.getCalendarInstance();
-		calendar.add(Calendar.WEEK_OF_YEAR, -1);
-
-		TruthsayerNominationFilter filter = new TruthsayerNominationFilter();
-		filter.setStartBefore(calendar.getTime());
-
-		List<TruthsayerNomination> nominations = truthsayerNominationDAO
-				.findByFilter(filter);
-
-		for (TruthsayerNomination nomination : nominations) {
-			lawEnforcementService.resolveNomination(nomination);
-		}
+		lawEnforcementService.resolveNominations();
 
 	}
 

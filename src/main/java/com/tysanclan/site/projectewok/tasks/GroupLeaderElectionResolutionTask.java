@@ -17,36 +17,25 @@
  */
 package com.tysanclan.site.projectewok.tasks;
 
-import java.util.Calendar;
-import java.util.List;
-
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.tysanclan.site.projectewok.beans.DemocracyService;
-import com.tysanclan.site.projectewok.entities.GroupLeaderElection;
-import com.tysanclan.site.projectewok.entities.dao.GroupLeaderElectionDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.GroupLeaderElectionFilter;
-import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public class GroupLeaderElectionResolutionTask extends
-        PeriodicTask {
-
-	@SpringBean
-	private GroupLeaderElectionDAO groupLeaderElectionDAO;
+public class GroupLeaderElectionResolutionTask extends PeriodicTask {
 
 	@SpringBean
 	private DemocracyService democracyService;
 
 	/**
-     * 
-     */
+	 * 
+	 */
 	public GroupLeaderElectionResolutionTask() {
-		super("Group Leader Election Resolution",
-		        "Democracy", ExecutionMode.DAILY);
+		super("Group Leader Election Resolution", "Democracy",
+				ExecutionMode.DAILY);
 	}
 
 	/**
@@ -54,22 +43,7 @@ public class GroupLeaderElectionResolutionTask extends
 	 */
 	@Override
 	public void run() {
-		GroupLeaderElectionFilter filter = new GroupLeaderElectionFilter();
-		Calendar twoWeeksAgo = DateUtil
-		        .getCalendarInstance();
-		Calendar threeWeeksAgo = DateUtil
-		        .getCalendarInstance();
-		twoWeeksAgo.add(Calendar.WEEK_OF_YEAR, -2);
-		threeWeeksAgo.add(Calendar.WEEK_OF_YEAR, -3);
-		filter.setStartBefore(twoWeeksAgo.getTime());
-		filter.setStartAfter(threeWeeksAgo.getTime());
-
-		List<GroupLeaderElection> elections = groupLeaderElectionDAO
-		        .findByFilter(filter);
-		for (GroupLeaderElection election : elections) {
-			democracyService
-			        .resolveGroupLeaderElection(election);
-		}
+		democracyService.resolveGroupLeaderElections();
 	}
 
 }

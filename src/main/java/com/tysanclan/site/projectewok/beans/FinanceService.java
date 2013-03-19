@@ -72,4 +72,6 @@ public interface FinanceService {
 
 	public boolean paySubscriptionDue(SubscriptionPayment payment);
 
+	public void checkSubscriptionsDue();
+
 }

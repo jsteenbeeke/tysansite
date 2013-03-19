@@ -460,4 +460,13 @@ class RealmServiceImpl implements
 			realmDAO.update(realm);
 		}
 	}
+
+	@Transactional(propagation = Propagation.REQUIRED)
+	@Override
+	public void expirePetitions() {
+		for (RealmPetition petition : realmPetitionDAO.findAll()) {
+			checkPetitionExpired(petition);
+		}
+
+	}
 }

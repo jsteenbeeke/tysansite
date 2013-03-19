@@ -95,10 +95,22 @@ class MembershipServiceImpl implements
 	@Autowired
 	private com.tysanclan.site.projectewok.beans.NotificationService notificationService;
 
-	/**
-	 * @param broker
-	 *            the broker to set
-	 */
+	@Autowired
+	private com.tysanclan.site.projectewok.beans.UserService userService;
+
+	@Autowired
+	private com.tysanclan.site.projectewok.beans.MailService mailService;
+
+	public void setMailService(
+			com.tysanclan.site.projectewok.beans.MailService mailService) {
+		this.mailService = mailService;
+	}
+
+	public void setUserService(
+			com.tysanclan.site.projectewok.beans.UserService userService) {
+		this.userService = userService;
+	}
+
 	public void setBroker(IEventBroker broker) {
 		this.broker = broker;
 	}
@@ -425,4 +437,46 @@ class MembershipServiceImpl implements
 		broker.dispatchEvent(new LoginEvent(u));
 	}
 
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void expireMembers() {
+		List<User> expiredMembers = userService.getInactiveMembers();
+		for (User user : expiredMembers) {
+			terminateMembership(user);
+			String mailBody = mailService.getInactivityExpirationMail(user);
+
+			mailService.sendHTMLMail(user.getEMail(),
+					"Tysan Clan Membership Expired", mailBody);
+
+			broker.dispatchEvent(new MemberStatusEvent(
+					com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.INACTIVITY_TIMEOUT,
+					user));
+		}
+
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void determinePromotions() {
+		UserFilter filter = new UserFilter();
+		filter.addRank(Rank.JUNIOR_MEMBER);
+		filter.addRank(Rank.FULL_MEMBER);
+		filter.addRank(Rank.SENIOR_MEMBER);
+
+		List<User> users = userDAO.findByFilter(filter);
+		for (User user : users) {
+			if (MemberUtil.determineRankByJoinDate(user.getJoinDate()) != user
+					.getRank()) {
+				performAutoPromotion(user);
+			}
+		}
+
+	}
+
+	@Override
+	public void bumpAccounts() {
+		for (User user : userDAO.findAll()) {
+			registerAction(user);
+		}
+	}
 }

@@ -21,10 +21,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.tysanclan.site.projectewok.beans.GameService;
 import com.tysanclan.site.projectewok.beans.RealmService;
-import com.tysanclan.site.projectewok.entities.GamePetition;
-import com.tysanclan.site.projectewok.entities.RealmPetition;
-import com.tysanclan.site.projectewok.entities.dao.GamePetitionDAO;
-import com.tysanclan.site.projectewok.entities.dao.RealmPetitionDAO;
 import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 
 /**
@@ -32,38 +28,19 @@ import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
  */
 public class PetitionExpireTask extends PeriodicTask {
 	@SpringBean
-	private GamePetitionDAO gamePetitionDAO;
-
-	@SpringBean
 	private GameService gameService;
-
-	@SpringBean
-	private RealmPetitionDAO realmPetitionDAO;
 
 	@SpringBean
 	private RealmService realmService;
 
-	/**
-     * 
-     */
 	public PetitionExpireTask() {
 		super("Expires", "Petitions", ExecutionMode.DAILY);
 	}
 
-	/**
-	 * @see com.tysanclan.site.projectewok.util.scheduler.TysanTask#run()
-	 */
 	@Override
 	public void run() {
-		for (GamePetition petition : gamePetitionDAO
-		        .findAll()) {
-			gameService.checkPetitionExpired(petition);
-		}
-
-		for (RealmPetition petition : realmPetitionDAO
-		        .findAll()) {
-			realmService.checkPetitionExpired(petition);
-		}
+		gameService.expirePetitions();
+		realmService.expirePetitions();
 
 	}
 

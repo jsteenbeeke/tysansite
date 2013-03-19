@@ -83,6 +83,9 @@ import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import com.tysanclan.site.projectewok.entities.dao.filters.AcceptanceVoteFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.ChancellorElectionFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.DonationFilter;
+import com.tysanclan.site.projectewok.entities.dao.filters.GroupLeaderElectionFilter;
+import com.tysanclan.site.projectewok.entities.dao.filters.JoinApplicationFilter;
+import com.tysanclan.site.projectewok.entities.dao.filters.RegulationChangeFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.SenateElectionFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.UntenabilityVoteFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
@@ -1889,5 +1892,204 @@ class DemocracyServiceImpl implements
 
 	public static int calculateSenateSeats(long memberCount) {
 		return (int) Math.max(2, 1 + (memberCount / 20));
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void checkAcceptanceVotes() {
+
+		for (User user : userDAO.getTrialMembersReadyForVote()) {
+			checkAcceptanceVote(user);
+		}
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void resolveAcceptanceVotes() {
+		Calendar threeDaysAgo = DateUtil.getCalendarInstance();
+
+		threeDaysAgo.add(Calendar.DAY_OF_YEAR, -3);
+
+		AcceptanceVoteFilter filter = new AcceptanceVoteFilter();
+		filter.setStartBefore(threeDaysAgo.getTime());
+
+		List<AcceptanceVote> eligibles = acceptanceVoteDAO.findByFilter(filter);
+		for (AcceptanceVote vote : eligibles) {
+			resolveAcceptanceVote(vote);
+		}
+
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void checkChancellorElections() {
+		Calendar calendar = DateUtil.getCalendarInstance();
+		calendar.add(Calendar.MONTH, -6);
+
+		ChancellorElectionFilter filter = new ChancellorElectionFilter();
+		filter.setStartBefore(calendar.getTime());
+		filter.addOrderBy("start", false);
+
+		ChancellorElectionFilter filter2 = new ChancellorElectionFilter();
+		filter2.setStartAfter(calendar.getTime());
+		filter2.addOrderBy("start", false);
+
+		ChancellorElection current = getCurrentChancellorElection();
+
+		UserFilter ufilter = new UserFilter();
+		ufilter.addRank(Rank.CHANCELLOR);
+
+		if (chancellorElectionDAO.countAll() == 0
+				|| (chancellorElectionDAO.countByFilter(filter) > 0
+						&& chancellorElectionDAO.countByFilter(filter2) == 0 && current == null)
+				|| userDAO.countByFilter(ufilter) == 0) {
+			createChancellorElection();
+		}
+
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void resolveChancellorElections() {
+		ChancellorElectionFilter filter = new ChancellorElectionFilter();
+		Calendar cal = DateUtil.getCalendarInstance();
+		cal.add(Calendar.WEEK_OF_YEAR, -2);
+		filter.setStartBefore(cal.getTime());
+		filter.setNoWinner(true);
+		List<ChancellorElection> elections = chancellorElectionDAO
+				.findByFilter(filter);
+		for (ChancellorElection election : elections) {
+			resolveChancellorElection(election);
+		}
+
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void checkSenatorElections() {
+		Calendar calendar = DateUtil.getCalendarInstance();
+		calendar.add(Calendar.MONTH, -6);
+
+		SenateElectionFilter filter = new SenateElectionFilter();
+		filter.setStartBefore(calendar.getTime());
+		filter.addOrderBy("start", false);
+
+		SenateElectionFilter filter2 = new SenateElectionFilter();
+		filter2.setStartAfter(calendar.getTime());
+		filter2.addOrderBy("start", false);
+
+		SenateElection current = getCurrentSenateElection();
+
+		if (senateElectionDAO.countAll() == 0
+				|| (senateElectionDAO.countByFilter(filter) > 0
+						&& senateElectionDAO.countByFilter(filter2) == 0 && current == null)) {
+			createSenateElection();
+		} else {
+			SenateElectionFilter filter3 = new SenateElectionFilter();
+			filter3.addOrderBy("start", false);
+			List<SenateElection> elections = senateElectionDAO
+					.findByFilter(filter3);
+
+			UserFilter filter4 = new UserFilter();
+			filter4.addRank(Rank.SENATOR);
+
+			for (SenateElection election : elections) {
+				int seats = election.getWinners().size();
+
+				if (seats > 0) {
+					long senators = userDAO.countByFilter(filter4);
+
+					int fraction = (int) ((senators * 100) / seats);
+
+					if (fraction < 40) {
+						createSenateElection();
+					}
+				}
+				break;
+
+			}
+		}
+
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void resolveSenatorElections() {
+		SenateElectionFilter filter = new SenateElectionFilter();
+		Calendar twoWeeksAgo = DateUtil.getCalendarInstance();
+		Calendar threeWeeksAgo = DateUtil.getCalendarInstance();
+		twoWeeksAgo.add(Calendar.WEEK_OF_YEAR, -2);
+		threeWeeksAgo.add(Calendar.WEEK_OF_YEAR, -3);
+		filter.setStartBefore(twoWeeksAgo.getTime());
+		filter.setStartAfter(threeWeeksAgo.getTime());
+		List<SenateElection> elections = senateElectionDAO.findByFilter(filter);
+		for (SenateElection election : elections) {
+			resolveSenateElection(election);
+		}
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void resolveGroupLeaderElections() {
+		GroupLeaderElectionFilter filter = new GroupLeaderElectionFilter();
+		Calendar twoWeeksAgo = DateUtil.getCalendarInstance();
+		Calendar threeWeeksAgo = DateUtil.getCalendarInstance();
+		twoWeeksAgo.add(Calendar.WEEK_OF_YEAR, -2);
+		threeWeeksAgo.add(Calendar.WEEK_OF_YEAR, -3);
+		filter.setStartBefore(twoWeeksAgo.getTime());
+		filter.setStartAfter(threeWeeksAgo.getTime());
+
+		List<GroupLeaderElection> elections = groupLeaderElectionDAO
+				.findByFilter(filter);
+		for (GroupLeaderElection election : elections) {
+			resolveGroupLeaderElection(election);
+		}
+
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED)
+	@Override
+	public void resolveJoinApplications() {
+		Calendar cal = DateUtil.getCalendarInstance();
+		cal.add(Calendar.DAY_OF_YEAR, -3);
+
+		JoinApplicationFilter filter = new JoinApplicationFilter();
+		filter.setDateBefore(cal.getTime());
+
+		List<JoinApplication> applications = joinApplicationDAO
+				.findByFilter(filter);
+		for (JoinApplication application : applications) {
+			resolveJoinApplication(application);
+		}
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED)
+	@Override
+	public void resolveRegulationVotes() {
+		RegulationChangeFilter filter = new RegulationChangeFilter();
+		Calendar cal = DateUtil.getMidnightCalendarInstance();
+		cal.add(Calendar.WEEK_OF_YEAR, -1);
+		filter.setStartBefore(cal.getTime());
+
+		for (RegulationChange change : regulationChangeDAO.findByFilter(filter)) {
+			resolveRegulationVote(change);
+		}
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void resolveUntenabilityVotes() {
+		Calendar cal = DateUtil.getCalendarInstance();
+		cal.add(Calendar.WEEK_OF_YEAR, 1);
+
+		UntenabilityVoteFilter filter = new UntenabilityVoteFilter();
+		filter.setStartBefore(cal.getTime());
+
+		List<UntenabilityVote> votes = untenabilityVoteDAO.findByFilter(filter);
+
+		for (UntenabilityVote vote : votes) {
+			resolveUntenabilityVote(vote);
+		}
+
 	}
 }

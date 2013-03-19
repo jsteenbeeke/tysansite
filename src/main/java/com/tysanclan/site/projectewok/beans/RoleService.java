@@ -58,4 +58,6 @@ public interface RoleService {
 	Role getRoleByType(RoleType type);
 
 	void approveCandidate(RoleTransfer object, User user);
+
+	public void resolveTransfers();
 }

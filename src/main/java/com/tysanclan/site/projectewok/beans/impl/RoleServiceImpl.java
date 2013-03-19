@@ -17,6 +17,7 @@
  */
 package com.tysanclan.site.projectewok.beans.impl;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -41,6 +42,7 @@ import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import com.tysanclan.site.projectewok.entities.dao.filters.RoleFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.RoleTransferFilter;
 import com.tysanclan.site.projectewok.event.MembershipTerminatedEvent;
+import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.HTMLSanitizer;
 
 /**
@@ -429,5 +431,27 @@ class RoleServiceImpl implements
 		approval.setApprovesOf(transfer);
 
 		roleTransferApprovalDAO.save(approval);
+	}
+
+	@Override
+	public void resolveTransfers() {
+		Calendar cal = DateUtil.getCalendarInstance();
+		cal.add(Calendar.WEEK_OF_YEAR, -1);
+
+		RoleTransferFilter filter = new RoleTransferFilter();
+		filter.setAccepted(true);
+		filter.setStartBefore(cal.getTime());
+
+		for (RoleTransfer transfer : roleTransferDAO.findByFilter(filter)) {
+			resolveTransfer(transfer);
+		}
+
+		filter = new RoleTransferFilter();
+		filter.setAccepted(false);
+		filter.setStartBefore(cal.getTime());
+
+		for (RoleTransfer transfer : roleTransferDAO.findByFilter(filter)) {
+			rejectNomination(transfer);
+		}
 	}
 }

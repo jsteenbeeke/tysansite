@@ -214,6 +214,8 @@ public class TysanApplication extends WebApplication {
 		if (usesDeploymentConfig())
 			getApplicationSettings().setInternalErrorPage(TysanErrorPage.class);
 
+		getResourceSettings().setUseMinifiedResources(false);
+
 		addResourceReplacement(WiQueryCoreThemeResourceReference.get(),
 				new CssResourceReference(TysanApplication.class,
 						"themes/ui-darkness/jquery-ui-1.10.2.custom.css"));

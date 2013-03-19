@@ -20,7 +20,6 @@ package com.tysanclan.site.projectewok.tasks;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.tysanclan.site.projectewok.beans.DemocracyService;
-import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 
@@ -35,11 +34,10 @@ public class AcceptanceVoteStartTask extends PeriodicTask {
 	private DemocracyService democracyService;
 
 	/**
-     * 
-     */
+	 * 
+	 */
 	public AcceptanceVoteStartTask() {
-		super("Acceptance vote start", "Members",
-		        ExecutionMode.DAILY);
+		super("Acceptance vote start", "Members", ExecutionMode.DAILY);
 	}
 
 	/**
@@ -47,10 +45,7 @@ public class AcceptanceVoteStartTask extends PeriodicTask {
 	 */
 	@Override
 	public void run() {
-		for (User user : userDAO
-		        .getTrialMembersReadyForVote()) {
-			democracyService.checkAcceptanceVote(user);
-		}
+		democracyService.checkAcceptanceVotes();
 
 	}
 

@@ -155,4 +155,24 @@ public interface DemocracyService {
 	void vetoRegulationChange(User chancellor, RegulationChange regulationChange);
 
 	void resolveRegulationVote(RegulationChange change);
+
+	void checkAcceptanceVotes();
+
+	void resolveAcceptanceVotes();
+
+	void checkChancellorElections();
+
+	void resolveChancellorElections();
+
+	void checkSenatorElections();
+
+	void resolveSenatorElections();
+
+	void resolveGroupLeaderElections();
+
+	void resolveJoinApplications();
+
+	void resolveRegulationVotes();
+
+	void resolveUntenabilityVotes();
 }

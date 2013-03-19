@@ -17,16 +17,9 @@
  */
 package com.tysanclan.site.projectewok.tasks;
 
-import java.util.Calendar;
-import java.util.List;
-
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.tysanclan.site.projectewok.beans.DemocracyService;
-import com.tysanclan.site.projectewok.entities.ChancellorElection;
-import com.tysanclan.site.projectewok.entities.dao.ChancellorElectionDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.ChancellorElectionFilter;
-import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 
 /**
@@ -35,9 +28,6 @@ import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 public class ChancellorElectionResolutionTask extends PeriodicTask {
 	@SpringBean
 	private DemocracyService democracyService;
-
-	@SpringBean
-	private ChancellorElectionDAO chancellorElectionDAO;
 
 	/**
 	 * 
@@ -52,17 +42,7 @@ public class ChancellorElectionResolutionTask extends PeriodicTask {
 	 */
 	@Override
 	public void run() {
-		ChancellorElectionFilter filter = new ChancellorElectionFilter();
-		Calendar cal = DateUtil.getCalendarInstance();
-		cal.add(Calendar.WEEK_OF_YEAR, -2);
-		filter.setStartBefore(cal.getTime());
-		filter.setNoWinner(true);
-		List<ChancellorElection> elections = chancellorElectionDAO
-				.findByFilter(filter);
-		for (ChancellorElection election : elections) {
-			democracyService.resolveChancellorElection(election);
-		}
+		democracyService.resolveChancellorElections();
 
 	}
-
 }

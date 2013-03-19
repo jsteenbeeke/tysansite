@@ -45,6 +45,8 @@ import com.tysanclan.site.projectewok.entities.dao.InactivityNotificationDAO;
 import com.tysanclan.site.projectewok.entities.dao.PasswordRequestDAO;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import com.tysanclan.site.projectewok.entities.dao.filters.ActivationFilter;
+import com.tysanclan.site.projectewok.entities.dao.filters.EmailChangeConfirmationFilter;
+import com.tysanclan.site.projectewok.entities.dao.filters.PasswordRequestFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
 import com.tysanclan.site.projectewok.event.LoginEvent;
 import com.tysanclan.site.projectewok.util.DateUtil;
@@ -679,5 +681,66 @@ class UserServiceImpl implements
 		InactivityNotification notification = new InactivityNotification();
 		notification.setUser(u);
 		inactivityDAO.save(notification);
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void expireActivations() {
+		Calendar cal = DateUtil.getCalendarInstance();
+		cal.add(Calendar.DAY_OF_YEAR, -3);
+
+		ActivationFilter filter = new ActivationFilter();
+		filter.setDateBefore(cal.getTime());
+
+		List<Activation> expiredActivations = activationDAO
+				.findByFilter(filter);
+		for (Activation activation : expiredActivations) {
+			expireActivation(activation);
+		}
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void expireConfirmations() {
+		Calendar cal = DateUtil.getCalendarInstance();
+		cal.add(Calendar.DAY_OF_YEAR, -1);
+
+		EmailChangeConfirmationFilter filter = new EmailChangeConfirmationFilter();
+		filter.setDateBefore(cal.getTime());
+
+		List<EmailChangeConfirmation> expiredConfirmations = emailChangeConfirmationDAO
+				.findByFilter(filter);
+		for (EmailChangeConfirmation confirmation : expiredConfirmations) {
+			expireConfirmation(confirmation);
+		}
+
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void expirePasswordRequests() {
+		Calendar cal = DateUtil.getCalendarInstance();
+		cal.add(Calendar.DAY_OF_YEAR, -3);
+
+		PasswordRequestFilter filter = new PasswordRequestFilter();
+		filter.setDateBefore(cal.getTime());
+
+		List<PasswordRequest> expiredRequests = passwordRequestDAO
+				.findByFilter(filter);
+		for (PasswordRequest passwordRequest : expiredRequests) {
+			expireRequest(passwordRequest);
+		}
+
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void warnInactives() {
+		List<Long> inactives = inactivityDAO.getUnnotifiedInactiveUsers();
+
+		for (Long userId : inactives) {
+			warnUserForInactivity(userId);
+		}
+
 	}
 }

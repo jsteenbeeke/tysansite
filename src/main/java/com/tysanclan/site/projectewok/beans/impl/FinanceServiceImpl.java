@@ -520,4 +520,12 @@ class FinanceServiceImpl implements
 		}
 
 	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void checkSubscriptionsDue() {
+		for (Subscription s : subscriptionDAO.findAll()) {
+			checkDue(s);
+		}
+	}
 }

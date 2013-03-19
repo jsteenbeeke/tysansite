@@ -34,7 +34,7 @@ public abstract class PeriodicTask extends TysanTask {
 				"0 0 */4 * * ?"), ONCE_EVERY_SIX_HOURS("0 0 */6 * * ?"), ONCE_EVERY_TWELVE_HOURS(
 				"0 0 */12 * * ?"), DAILY("0 0 6 * * ?"), WEEKLY("0 0 6 * * SUN"), MONTHLY(
 				"0 0 6 1 * ?"), ANNUALLY("0 0 6 1 1 ?"), EVERY_FIVE_MINUTES(
-				"*/5 * * * * ?"), DEBUG("*/30 * * * * ?");
+				"* */5 * * * ?"), DEBUG("* */1 * * * ?");
 
 		/**
 		 * 
