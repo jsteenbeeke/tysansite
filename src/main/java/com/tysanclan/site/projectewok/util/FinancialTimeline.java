@@ -17,6 +17,7 @@
  */
 package com.tysanclan.site.projectewok.util;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,6 +40,8 @@ import org.joda.time.DateTime;
 import com.google.common.base.Function;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Maps;
@@ -60,6 +63,47 @@ import com.tysanclan.site.projectewok.entities.dao.filters.DonationFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.PaidExpenseFilter;
 
 public class FinancialTimeline {
+
+	private static class SerializableEntry<K, V> implements Serializable,
+			Entry<K, V> {
+		private static final long serialVersionUID = 1L;
+
+		private K k;
+
+		private V v;
+
+		public SerializableEntry(K k, V v) {
+			super();
+			this.k = k;
+			this.v = v;
+		}
+
+		@Override
+		public K getKey() {
+			return k;
+		}
+
+		@Override
+		public V getValue() {
+
+			return v;
+		}
+
+		@Override
+		public V setValue(V value) {
+			// Immutable
+			return v;
+		}
+	}
+
+	private static class EntryCopy implements
+			Function<Entry<DateTime, BigDecimal>, Entry<DateTime, BigDecimal>> {
+		public Entry<DateTime, BigDecimal> apply(
+				Entry<DateTime, BigDecimal> input) {
+			return new SerializableEntry<DateTime, BigDecimal>(input.getKey(),
+					input.getValue());
+		}
+	}
 
 	public static class SpendingComparator implements
 			Comparator<Entry<DateTime, BigDecimal>> {
@@ -276,7 +320,7 @@ public class FinancialTimeline {
 			SortedSet<Entry<DateTime, BigDecimal>> entries = Sets
 					.newTreeSet(new SpendingComparator());
 
-			entries.addAll(Maps
+			Map<DateTime, BigDecimal> transformed = Maps
 					.transformEntries(
 							spendings,
 							new EntryTransformer<DateTime, List<BigDecimal>, BigDecimal>() {
@@ -287,7 +331,10 @@ public class FinancialTimeline {
 										List<BigDecimal> value) {
 									return function.apply(value);
 								}
-							}).entrySet());
+							});
+
+			entries.addAll(ImmutableList.copyOf(Iterables.transform(
+					transformed.entrySet(), new EntryCopy())));
 
 			// Loop through actual expenses and subtract from existing reserves
 			spendings: for (Entry<DateTime, BigDecimal> e : entries) {

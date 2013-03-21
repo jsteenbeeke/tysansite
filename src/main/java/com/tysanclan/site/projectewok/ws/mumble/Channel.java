@@ -17,6 +17,8 @@
  */
 package com.tysanclan.site.projectewok.ws.mumble;
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -24,7 +26,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Jeroen Steenbeeke
  */
 @XmlRootElement(name = "channel")
-public class Channel {
+public class Channel implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	private int id;
 

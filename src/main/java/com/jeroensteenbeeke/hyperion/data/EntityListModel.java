@@ -45,18 +45,25 @@ class EntityListModel<T extends DomainObject> extends
 	public EntityListModel(List<T> list) {
 		this.list = list;
 		this.ids = new LinkedList<Serializable>();
-		this.entityClass = list != null && list.isEmpty() ? null : Hibernate
-				.getClass(list.get(0));
-		for (T t : list) {
-			Class<T> tClass = Hibernate.getClass(t);
-			if (!entityClass.isAssignableFrom(tClass)) {
-				if (entityClass.getSuperclass() != null
-						&& entityClass.getSuperclass().isAssignableFrom(tClass)) {
-					entityClass = (Class<T>) entityClass.getSuperclass();
+		if (list != null) {
+			if (!list.isEmpty()) {
+				this.entityClass = Hibernate.getClass(list.get(0));
+
+				for (T t : list) {
+					Class<T> tClass = Hibernate.getClass(t);
+					if (!entityClass.isAssignableFrom(tClass)) {
+						if (entityClass.getSuperclass() != null
+								&& entityClass.getSuperclass()
+										.isAssignableFrom(tClass)) {
+							entityClass = (Class<T>) entityClass
+									.getSuperclass();
+						}
+					}
+
+					ids.add(t.getId());
+
 				}
 			}
-
-			ids.add(t.getId());
 
 		}
 

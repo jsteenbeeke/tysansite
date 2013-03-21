@@ -591,7 +591,7 @@ class GameServiceImpl implements
 		Game game = gameDAO.load(_game.getId());
 
 		realm.getGames().remove(game);
-		game.getRealms().remove(game);
+		game.getRealms().remove(realm);
 
 		logService.logUserAction(user, "Games", game.getName()
 				+ " is no longer played on " + realm.getName());
