@@ -57,7 +57,8 @@ class AuthenticationServiceImpl implements
 		User u = userDAO.load(username, password);
 
 		if (u != null) {
-			return u.getRank() != Rank.BANNED && u.getRank() != Rank.FORUM;
+			return u.getRank() != Rank.BANNED && u.getRank() != Rank.FORUM
+					&& u.getRank() != Rank.HERO;
 		}
 
 		return false;
@@ -72,7 +73,8 @@ class AuthenticationServiceImpl implements
 		User u = userDAO.load(username, password);
 
 		if (u != null) {
-			return u.getRank() == Rank.BANNED || u.getRank() == Rank.FORUM;
+			return u.getRank() == Rank.BANNED || u.getRank() == Rank.FORUM
+					&& u.getRank() != Rank.HERO;
 		}
 
 		return false;

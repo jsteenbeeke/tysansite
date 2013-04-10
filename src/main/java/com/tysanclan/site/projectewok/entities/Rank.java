@@ -22,9 +22,10 @@ package com.tysanclan.site.projectewok.entities;
  */
 public enum Rank {
 	BANNED("Forum User"), FORUM("Forum User"), TRIAL("Trial member"), JUNIOR_MEMBER(
-	        "Junior Member"), FULL_MEMBER("Full Member"), SENIOR_MEMBER(
-	        "Senior Member"), REVERED_MEMBER("Revered Member"), TRUTHSAYER(
-	        "Truthsayer"), SENATOR("Senator"), CHANCELLOR("Chancellor");
+			"Junior Member"), FULL_MEMBER("Full Member"), SENIOR_MEMBER(
+			"Senior Member"), REVERED_MEMBER("Revered Member"), TRUTHSAYER(
+			"Truthsayer"), SENATOR("Senator"), CHANCELLOR("Chancellor"), HERO(
+			"Hero");
 
 	private String niceName;
 
