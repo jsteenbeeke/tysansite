@@ -127,8 +127,9 @@ public class MemberPage extends TysanPage {
 		accordion.add(new Label("membersince", new Model<String>(sdf.format(u
 				.getJoinDate()))));
 
-		accordion.add(new Label("lastlogin", new Model<String>(sdf.format(u
-				.getLastAction()))));
+		accordion.add(new Label("lastlogin",
+				new Model<String>(u.getLastAction() != null ? sdf.format(u
+						.getLastAction()) : null)));
 
 		Profile profile = u.getProfile();
 
