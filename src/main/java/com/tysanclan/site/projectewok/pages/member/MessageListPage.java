@@ -76,7 +76,7 @@ public class MessageListPage extends AbstractMemberPage {
 
 		Tabs tabs = new Tabs("tabs");
 		if (recipient != null) {
-			tabs.setDefaultSelectedTabIndex(1);
+			tabs.setDefaultSelectedTabIndex(0);
 		}
 
 		ConversationFilter filter = new ConversationFilter();
