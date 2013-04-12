@@ -454,6 +454,6 @@ div.CalendarPanelNavigator {
 .bordered { border: 1px dotted #f90; display: inline; padding: 2px; }
 
 .gameimageicon {
-	width:300px;
-	height:100px;
+	max-width:300px;
+	max-height:100px;
 }
