@@ -10,34 +10,35 @@
 				<div wicket:id="otterSniperPanel"></div>
 				<table>
 					<tr>
-						<th colspan="2">Website Users</th>
+						<th colspan="3">Website Users</th>
 					</tr>
 					<tr wicket:id="members">
-						<td colspan="2">
+						<td colspan="3">
 							<span wicket:id="link"></span>
 						</td>
 					</tr>
 					<tr>
-						<td colspan="2">&nbsp;</td>
+						<td colspan="3">&nbsp;</td>
 					</tr>
 					
+					
 					<tr>
-						<th colspan="2">Voice Chat Users</th>
+						<th colspan="3">Voice Chat Users</th>
 					</tr>
 					<wicket:container  wicket:id="servers">
 					
 					<tr>
-						<td colspan="2"><span wicket:id="name">USEast</span> <span wicket:id="info"></span></td>
+						<td colspan="3">
+						
+							<div id="murmur-server-status" class="mumble-viewer" wicket:id="server" data-token="ae027122cda7a0c27f8c725e27fcd909d90e7153" data-id="1538"></div>
+						</td>
 					</tr>
-					
-					<tr wicket:id="users">
-						<td><img wicket:id="icon" alt="Mumble" title="Mumble User" /></td>
-						<td wicket:id="name"></td>
-					</tr>
-					
 					<tr>
-						<td colspan="2"></td>
+						<td><a wicket:id="url"></a></td>
+						<th>Password</th>
+						<td wicket:id="password"></td>
 					</tr>
+					
 					</wicket:container>
 				</table>
 			</div>

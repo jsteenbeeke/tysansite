@@ -21,12 +21,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.injection.Injector;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.ContextImage;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -42,7 +48,6 @@ import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.beans.ForumService;
 import com.tysanclan.site.projectewok.beans.MembershipService;
 import com.tysanclan.site.projectewok.beans.UserService;
-import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
 import com.tysanclan.site.projectewok.entities.ConversationParticipation;
 import com.tysanclan.site.projectewok.entities.Message;
 import com.tysanclan.site.projectewok.entities.MumbleServer;
@@ -52,10 +57,8 @@ import com.tysanclan.site.projectewok.entities.dao.MumbleServerDAO;
 import com.tysanclan.site.projectewok.entities.dao.filters.ConversationParticipationFilter;
 import com.tysanclan.site.projectewok.pages.ForumOverviewPage;
 import com.tysanclan.site.projectewok.pages.member.MessageListPage;
-import com.tysanclan.site.projectewok.pages.member.MumbleServerStatusPage;
 import com.tysanclan.site.projectewok.pages.member.OverviewPage;
 import com.tysanclan.site.projectewok.ws.mumble.MMOMumbleServerStatus;
-import com.tysanclan.site.projectewok.ws.mumble.MumbleUser;
 import com.tysanclan.site.projectewok.ws.mumble.ServerStatus;
 
 /**
@@ -92,6 +95,19 @@ public class TysanMemberPanel extends TysanTopPanel {
 		addMessageLink(user);
 
 		add(new LogoutLink("logout"));
+
+		add(new Behavior() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void renderHead(Component component, IHeaderResponse response) {
+
+				super.renderHead(component, response);
+
+				response.render(JavaScriptHeaderItem
+						.forUrl("http://static.mmo-mumble.com/javascripts/loader.min.js"));
+			}
+		});
 	}
 
 	private void addMessageLink(User user) {
@@ -185,40 +201,16 @@ public class TysanMemberPanel extends TysanTopPanel {
 			protected void populateItem(ListItem<MumbleServer> item) {
 				MumbleServer server = item.getModelObject();
 
-				ServerStatus status = MMOMumbleServerStatus.getServerStatus(
-						server.getServerID(), server.getApiToken(),
-						server.getApiSecret());
-				List<MumbleUser> users = status.getUsers();
+				item.add(new WebMarkupContainer("server").add(
+						AttributeModifier.replace("data-token",
+								server.getApiToken())).add(
+						AttributeModifier.replace("data-id",
+								server.getServerID())));
 
-				item.add(new Label("name", server.getName()));
+				item.add(new ExternalLink("url", server.getUrl()).setBody(Model
+						.of(server.getUrl())));
+				item.add(new Label("password", server.getPassword()));
 
-				item.add(new IconLink.Builder("images/icons/information.png",
-						new DefaultClickResponder<MumbleServer>(ModelMaker
-								.wrap(server)) {
-
-							private static final long serialVersionUID = 1L;
-
-							@Override
-							public void onClick() {
-								setResponsePage(new MumbleServerStatusPage(
-										getModelObject()));
-							}
-
-						}).newInstance("info"));
-
-				item.add(new ListView<MumbleUser>("users", users) {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					protected void populateItem(ListItem<MumbleUser> mui) {
-						MumbleUser mu = mui.getModelObject();
-						mui.add(new ContextImage("icon",
-								"images/icons/mumble.png"));
-						mui.add(new Label("name", mu.getName()));
-					}
-
-				});
 			}
 
 		});
