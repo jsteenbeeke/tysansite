@@ -25,7 +25,7 @@ public enum Rank {
 			"Junior Member"), FULL_MEMBER("Full Member"), SENIOR_MEMBER(
 			"Senior Member"), REVERED_MEMBER("Revered Member"), TRUTHSAYER(
 			"Truthsayer"), SENATOR("Senator"), CHANCELLOR("Chancellor"), HERO(
-			"Hero");
+			"Fallen Hero");
 
 	private String niceName;
 

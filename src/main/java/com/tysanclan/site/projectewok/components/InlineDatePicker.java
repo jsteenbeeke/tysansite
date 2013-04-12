@@ -17,6 +17,7 @@
  */
 package com.tysanclan.site.projectewok.components;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
@@ -26,6 +27,7 @@ import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.odlabs.wiquery.core.javascript.JsQuery;
 import org.odlabs.wiquery.core.javascript.JsScopeContext;
@@ -61,6 +63,8 @@ public abstract class InlineDatePicker extends WebMarkupContainer {
 		options = new Options();
 		options.put("onSelect", behavior.getInnerEvent());
 		options.put("dateFormat", "'mm/dd/yy'");
+		options.put("defaultDate",
+				new SimpleDateFormat("MM/dd/yy").format(selectedDate));
 	}
 
 	/**
@@ -105,20 +109,23 @@ public abstract class InlineDatePicker extends WebMarkupContainer {
 
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(selectedDate);
-		statement.append("bDate = new Date(); bDate.setFullYear("
-				+ calendar.get(Calendar.YEAR) + ", "
-				+ calendar.get(Calendar.MONTH) + ", "
-				+ calendar.get(Calendar.DAY_OF_MONTH) + ");");
+		statement
+				.append("var bDate")
+				.append(getMarkupId())
+				.append(" = new Date(); bDate")
+				.append(getMarkupId())
+				.append(".setFullYear(" + calendar.get(Calendar.YEAR) + ", "
+						+ calendar.get(Calendar.MONTH) + ", "
+						+ calendar.get(Calendar.DAY_OF_MONTH) + ");");
 
-		options.put("defaultDate", "bDate");
+		options.put("defaultDate", String.format("bDate%s", getMarkupId()));
 
 		JsStatement statement2 = new JsQuery(this).$().chain("datepicker",
 				options.getJavaScriptOptions());
 
 		statement.append(statement2.render());
 
-		response.render(JavaScriptHeaderItem.forScript(statement2.render(),
-				String.format("datepicker-%s", getMarkupId())));
+		response.render(OnDomReadyHeaderItem.forScript(statement.render()));
 	}
 
 	protected abstract void onDateSelected(Date date, AjaxRequestTarget target);
