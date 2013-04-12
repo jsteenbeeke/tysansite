@@ -452,3 +452,8 @@ div.CalendarPanelNavigator {
 
 .messagetree .highlight { color: #f00; }
 .bordered { border: 1px dotted #f90; display: inline; padding: 2px; }
+
+.gameimageicon {
+	width:300px;
+	height:100px;
+}
