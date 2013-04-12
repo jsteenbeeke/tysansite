@@ -36,6 +36,7 @@ import com.tysanclan.site.projectewok.components.StoredImageResource;
 import com.tysanclan.site.projectewok.components.TysanTinyMCESettings;
 import com.tysanclan.site.projectewok.entities.Achievement;
 import com.tysanclan.site.projectewok.entities.AchievementRequest;
+import com.tysanclan.site.projectewok.entities.Game;
 import com.tysanclan.site.projectewok.util.ImageUtil;
 
 /**
@@ -104,11 +105,12 @@ public class RequestAchievementPage2 extends AbstractSingleAccordionMemberPage {
 
 		form.add(new Label("name", achievement.getName()));
 
-		form.add(new Image("icon", new StoredImageResource(achievementModel
-				.getObject().getIcon().getImage())));
-		form.add(new Image("game", new StoredImageResource(achievementModel
-				.getObject().getGame().getImage())).setVisible(achievement
-				.getGame() != null));
+		Game game = achievement.getGame();
+
+		form.add(new Image("icon", new StoredImageResource(achievement
+				.getIcon().getImage())));
+		form.add(new Image("game", new StoredImageResource(game != null ? game
+				.getImage() : new byte[0])).setVisible(game != null));
 
 		boolean hasGroup = achievement.getGroup() != null;
 

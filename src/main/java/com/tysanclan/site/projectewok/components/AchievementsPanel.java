@@ -60,8 +60,9 @@ public class AchievementsPanel extends Panel {
 				Achievement a = item.getModelObject();
 				AchievementIcon icon = a.getIcon();
 
-				item.add(new Image("icon", new ByteArrayResource(ImageUtil
-						.getMimeType(icon.getImage()), icon.getImage())));
+				item.add(new Image("achievement",
+						new ByteArrayResource(ImageUtil.getMimeType(icon
+								.getImage()), icon.getImage())));
 
 				item.add(new Label("name", a.getName()));
 
