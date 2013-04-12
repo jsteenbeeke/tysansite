@@ -230,7 +230,7 @@ public class ForumThreadPage extends TysanPage {
 
 		};
 
-		postView.setItemsPerPage(20);
+		postView.setItemsPerPage(ForumThread.POSTS_PER_PAGE);
 		postView.setCurrentPage(pageId - 1);
 
 		add(postView);
