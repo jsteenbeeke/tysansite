@@ -71,7 +71,7 @@ public class AchievementsPanel extends Panel {
 				Game game = a.getGame();
 				byte[] gameImage = game != null ? game.getImage() : new byte[0];
 
-				item.add(new Image("icon", new ByteArrayResource(ImageUtil
+				item.add(new Image("game", new ByteArrayResource(ImageUtil
 						.getMimeType(gameImage), gameImage))
 						.setVisible(game != null));
 
