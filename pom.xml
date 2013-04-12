@@ -23,7 +23,7 @@
 
 	<properties>
 		<site.version>${projectewok.majorVersion}.${projectewok.minorVersion}.${maven.build.timestamp}</site.version>
-		<projectewok.minorVersion>4</projectewok.minorVersion>
+		<projectewok.minorVersion>5</projectewok.minorVersion>
 		<projectewok.majorVersion>1</projectewok.majorVersion>
 		<maven.build.timestamp.format>yyMMdd.HHmm</maven.build.timestamp.format>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
