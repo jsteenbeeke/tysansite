@@ -69,7 +69,8 @@ public class TysanTinyMCESettings extends TinyMCESettings {
 		setToolbarButtons(Toolbar.fourth, new LinkedList<Button>());
 
 		setConvertUrls(false);
-
+		setStatusbarLocation(null);
+		addCustomSetting("theme_advanced_statusbar_location : \"none\"");
 		setContentCss(new ResourceReference("mceCss") {
 			private static final long serialVersionUID = 1L;
 
