@@ -67,10 +67,10 @@ public class AboutPage extends TysanPage {
 	public AboutPage() {
 		super("About");
 
-		UserFilter filter = new UserFilter();
-		filter.addRank(Rank.CHANCELLOR);
+		UserFilter chancellorFilter = new UserFilter();
+		chancellorFilter.addRank(Rank.CHANCELLOR);
 
-		List<User> users = userDAO.findByFilter(filter);
+		List<User> users = userDAO.findByFilter(chancellorFilter);
 
 		User leader = null;
 		if (!users.isEmpty()) {
@@ -80,10 +80,10 @@ public class AboutPage extends TysanPage {
 			add(new Label("leader", "<i>None</i>").setEscapeModelStrings(false));
 		}
 
-		UserFilter filter2 = new UserFilter();
-		filter2.addRank(Rank.SENATOR);
+		UserFilter senateFilter = new UserFilter();
+		senateFilter.addRank(Rank.SENATOR);
 
-		List<User> senate = userDAO.findByFilter(filter2);
+		List<User> senate = userDAO.findByFilter(senateFilter);
 		add(new ListView<User>("senate", ModelMaker.wrap(senate)) {
 			private static final long serialVersionUID = 1L;
 
@@ -180,32 +180,32 @@ public class AboutPage extends TysanPage {
 			}
 		});
 
-		UserFilter filter3 = new UserFilter();
-		filter3.addRank(Rank.CHANCELLOR);
-		filter3.addRank(Rank.SENATOR);
-		filter3.addRank(Rank.TRUTHSAYER);
-		filter3.addRank(Rank.REVERED_MEMBER);
-		filter3.addRank(Rank.SENIOR_MEMBER);
-		filter3.addRank(Rank.FULL_MEMBER);
-		filter3.addRank(Rank.JUNIOR_MEMBER);
-		filter3.addRank(Rank.TRIAL);
-		filter3.setRetired(false);
+		UserFilter activeMemberFilter = new UserFilter();
+		activeMemberFilter.addRank(Rank.CHANCELLOR);
+		activeMemberFilter.addRank(Rank.SENATOR);
+		activeMemberFilter.addRank(Rank.TRUTHSAYER);
+		activeMemberFilter.addRank(Rank.REVERED_MEMBER);
+		activeMemberFilter.addRank(Rank.SENIOR_MEMBER);
+		activeMemberFilter.addRank(Rank.FULL_MEMBER);
+		activeMemberFilter.addRank(Rank.JUNIOR_MEMBER);
+		activeMemberFilter.addRank(Rank.TRIAL);
+		activeMemberFilter.setRetired(false);
 
 		add(new Label("activecount", new Model<Long>(
-				userDAO.countByFilter(filter3))));
+				userDAO.countByFilter(activeMemberFilter))));
 
-		UserFilter filter4 = new UserFilter();
-		filter4.addRank(Rank.CHANCELLOR);
-		filter4.addRank(Rank.SENATOR);
-		filter4.addRank(Rank.TRUTHSAYER);
-		filter4.addRank(Rank.REVERED_MEMBER);
-		filter4.addRank(Rank.SENIOR_MEMBER);
-		filter4.addRank(Rank.FULL_MEMBER);
-		filter4.addRank(Rank.JUNIOR_MEMBER);
-		filter4.addRank(Rank.TRIAL);
+		UserFilter allMemberFilter = new UserFilter();
+		allMemberFilter.addRank(Rank.CHANCELLOR);
+		allMemberFilter.addRank(Rank.SENATOR);
+		allMemberFilter.addRank(Rank.TRUTHSAYER);
+		allMemberFilter.addRank(Rank.REVERED_MEMBER);
+		allMemberFilter.addRank(Rank.SENIOR_MEMBER);
+		allMemberFilter.addRank(Rank.FULL_MEMBER);
+		allMemberFilter.addRank(Rank.JUNIOR_MEMBER);
+		allMemberFilter.addRank(Rank.TRIAL);
 
 		add(new Label("membercount", new Model<Long>(
-				userDAO.countByFilter(filter4))));
+				userDAO.countByFilter(allMemberFilter))));
 
 		addRank(Rank.CHANCELLOR, "The leader of the Clan, has executive power");
 		addRank(Rank.SENATOR, "A member of the Senate, has legislative power");
@@ -233,6 +233,20 @@ public class AboutPage extends TysanPage {
 			}
 
 		});
+
+		UserFilter heroFilter = new UserFilter();
+		heroFilter.addRank(Rank.HERO);
+
+		List<User> heroes = userDAO.findByFilter(heroFilter);
+
+		add(new ListView<User>("heroes", heroes) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void populateItem(ListItem<User> item) {
+				item.add(new MemberListItem("user", item.getModelObject()));
+			}
+		}.setVisible(!heroes.isEmpty()));
 
 	}
 

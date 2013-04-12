@@ -38,6 +38,10 @@ public class TysanErrorPage extends TysanPage {
 	@SpringBean
 	private BugTrackerService bugTrackerService;
 
+	public TysanErrorPage() {
+		this(null, null);
+	}
+
 	/**
 	 * @param originalPage
 	 *            The page we were trying to view

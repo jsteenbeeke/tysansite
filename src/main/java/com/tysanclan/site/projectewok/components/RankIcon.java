@@ -52,6 +52,9 @@ public class RankIcon extends Panel {
 		if (rank == Rank.FORUM || rank == Rank.BANNED) {
 			imageLocation = "images/icons/script.png";
 		}
+		if (rank == Rank.HERO) {
+			imageLocation = "images/icons/rosette.png";
+		}
 
 		ContextImage img = new ContextImage("icon", new Model<String>(
 				imageLocation));

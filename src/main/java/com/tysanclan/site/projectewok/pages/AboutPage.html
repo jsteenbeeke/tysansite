@@ -152,7 +152,18 @@
         	Our banner was created by Merlin. To see more of her work please visit <a href="http://butterfly20.deviantart.com/">Merlin's page on DeviantArt</a>.
         </p>
         
-        
+        <wicket:enclosure child="heroes">
+        <h2>Fallen Heroes</h2>
+        <p>
+        	The following names belong to members who have passed away during their membership of Tysan, who should never be forgotten:
+        	
+        	<table>
+	        	<tr wicket:id="heroes">
+	        		<td><span wicket:id="user"></span></td>
+	        	</tr>
+	        </table>
+        </p>
+        </wicket:enclosure>
         
     </wicket:extend>
 </html>
