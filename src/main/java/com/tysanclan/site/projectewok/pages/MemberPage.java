@@ -175,7 +175,8 @@ public class MemberPage extends TysanPage {
 		accordion.add(new Label("age", profile != null
 				&& profile.getBirthDate() != null ? Integer.toString(DateUtil
 				.calculateAge(profile.getBirthDate())) : "Unknown")
-				.setVisible(profile != null && profile.getBirthDate() != null));
+				.setVisible(profile != null && profile.getBirthDate() != null
+						&& u.getRank() != Rank.HERO));
 		accordion.add(new Label("username", u.getUsername()));
 
 		WebMarkupContainer aboutMe = new WebMarkupContainer("aboutme");
