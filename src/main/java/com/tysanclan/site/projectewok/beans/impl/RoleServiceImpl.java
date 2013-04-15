@@ -434,6 +434,7 @@ class RoleServiceImpl implements
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
 	public void resolveTransfers() {
 		Calendar cal = DateUtil.getCalendarInstance();
 		cal.add(Calendar.WEEK_OF_YEAR, -1);
