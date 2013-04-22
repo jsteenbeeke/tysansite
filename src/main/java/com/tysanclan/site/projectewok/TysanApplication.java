@@ -278,7 +278,7 @@ public class TysanApplication extends WebApplication {
 
 		mountPage("vacation", VacationPage.class);
 
-		mountPage("/threads/${threadid/${pageid}", ForumThreadPage.class);
+		mountPage("/threads/${threadid}/${pageid}", ForumThreadPage.class);
 		mountPage("/group/${groupid}", GroupPage.class);
 
 		mountPage("/forums/${forumid}/${pageid}", ForumPage.class);
