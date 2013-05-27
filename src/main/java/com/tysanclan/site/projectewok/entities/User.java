@@ -61,7 +61,6 @@ import org.hibernate.annotations.Where;
 import com.fortuityframework.core.annotation.jpa.FortuityProperty;
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 import com.jeroensteenbeeke.hyperion.data.DomainObject;
-import com.tysanclan.site.projectewok.entities.twitter.Tweet;
 import com.tysanclan.site.projectewok.event.RankChangeEvent;
 import com.tysanclan.site.projectewok.util.DateUtil;
 
@@ -204,10 +203,6 @@ public class User extends BaseDomainObject implements DomainObject {
 	@OneToMany(mappedBy = "mentor", fetch = FetchType.LAZY)
 	@Where(clause = "rank = 'TRIAL'")
 	private List<User> pupils;
-
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-	@OrderBy(value = "posted desc")
-	private List<Tweet> tweets;
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private List<YoutubeGalleryItem> youtubeGalleryItems;
@@ -623,21 +618,6 @@ public class User extends BaseDomainObject implements DomainObject {
 	 */
 	public void setLoginCount(int loginCount) {
 		this.loginCount = loginCount;
-	}
-
-	/**
-	 * @param tweets
-	 *            the tweets to set
-	 */
-	public void setTweets(List<Tweet> tweets) {
-		this.tweets = tweets;
-	}
-
-	/**
-	 * @return the tweets
-	 */
-	public List<Tweet> getTweets() {
-		return tweets;
 	}
 
 	/**
