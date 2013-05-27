@@ -42,7 +42,6 @@ import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.beans.ForumService;
-import com.tysanclan.site.projectewok.beans.TwitterService;
 import com.tysanclan.site.projectewok.components.AchievementsPanel;
 import com.tysanclan.site.projectewok.components.AutoGroupLink;
 import com.tysanclan.site.projectewok.components.AutoThreadLink;
@@ -53,7 +52,6 @@ import com.tysanclan.site.projectewok.components.IconLink;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
 import com.tysanclan.site.projectewok.components.RankIcon;
 import com.tysanclan.site.projectewok.components.SenateElectedSincePanel;
-import com.tysanclan.site.projectewok.components.TwitterStatusPanel;
 import com.tysanclan.site.projectewok.components.YoutubeGalleryPanel;
 import com.tysanclan.site.projectewok.entities.ForumPost;
 import com.tysanclan.site.projectewok.entities.GameAccount;
@@ -70,7 +68,6 @@ import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import com.tysanclan.site.projectewok.entities.dao.filters.ForumPostFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.GroupFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.RoleFilter;
-import com.tysanclan.site.projectewok.entities.twitter.ITweet;
 import com.tysanclan.site.projectewok.pages.member.MessageListPage;
 import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.MemberUtil;
@@ -93,9 +90,6 @@ public class MemberPage extends TysanPage {
 
 	@SpringBean
 	private RoleDAO roleDAO;
-
-	@SpringBean
-	private TwitterService twitter;
 
 	@SpringBean
 	private ForumService forumService;
@@ -353,12 +347,6 @@ public class MemberPage extends TysanPage {
 		accordion.add(new Label("twitterprofile", url).add(AttributeModifier
 				.replace("href", url)));
 
-		List<ITweet> tweets = new LinkedList<ITweet>();
-
-		if (twitviz) {
-			tweets.addAll(twitter.getPublicMessages(u, 10));
-		}
-
 		accordion.add(new Label("galleryhead", "Image Gallery of "
 				+ u.getUsername()).setVisible(!u.getGalleryImages().isEmpty()));
 
@@ -368,8 +356,6 @@ public class MemberPage extends TysanPage {
 
 		accordion.add(new GalleryPanel("gallery", u));
 		accordion.add(new YoutubeGalleryPanel("ygallery", u));
-
-		accordion.add(new TwitterStatusPanel("tweets", tweets, false));
 
 		accordion.add(new AchievementsPanel("achievements", u));
 

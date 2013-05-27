@@ -48,7 +48,6 @@
 		<slf4j.version>1.7.3</slf4j.version>
 		<quartz.version>1.5.2</quartz.version>
 		<spring.version>3.2.2.RELEASE</spring.version>
-		<twitter4j.version>3.0.3</twitter4j.version>
 		<wicket.version>6.6.0</wicket.version>
 		<wicketstuff.tinymce.version>6.5.0</wicketstuff.tinymce.version>
 		<wqplot.version>1.6-SNAPSHOT</wqplot.version>
@@ -543,12 +542,6 @@
 			<type>pom</type>
 		</dependency>
 
-		<!-- Twitter Dependencies -->
-		<dependency>
-			<groupId>org.twitter4j</groupId>
-			<artifactId>twitter4j-core</artifactId>
-			<version>${twitter4j.version}</version>
-		</dependency>
 	</dependencies>
 	<build>
 		<finalName>${project.artifactId}-${site.version}</finalName>

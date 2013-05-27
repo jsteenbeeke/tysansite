@@ -98,9 +98,6 @@ import com.tysanclan.site.projectewok.tasks.ResolveTruthsayerComplaintTask;
 import com.tysanclan.site.projectewok.tasks.SenateElectionChecker;
 import com.tysanclan.site.projectewok.tasks.SenateElectionResolutionTask;
 import com.tysanclan.site.projectewok.tasks.TruthsayerAcceptanceVoteResolver;
-import com.tysanclan.site.projectewok.tasks.TwitterQueueTask;
-import com.tysanclan.site.projectewok.tasks.TwitterSearchTask;
-import com.tysanclan.site.projectewok.tasks.TwitterTimelineTask;
 import com.tysanclan.site.projectewok.tasks.UntenabilityVoteResolutionTask;
 import com.tysanclan.site.projectewok.tasks.WarnInactiveMembersTask;
 import com.tysanclan.site.projectewok.util.scheduler.TysanScheduler;
@@ -240,8 +237,7 @@ public class TysanApplication extends WebApplication {
 				new ResolveImpeachmentTask(), new SenateElectionChecker(),
 				new SenateElectionResolutionTask(),
 				new TruthsayerAcceptanceVoteResolver(),
-				new UntenabilityVoteResolutionTask(), new TwitterQueueTask(),
-				new TwitterTimelineTask(), new TwitterSearchTask(),
+				new UntenabilityVoteResolutionTask(),
 				new AchievementProposalTask(), new WarnInactiveMembersTask(),
 				new ResolveRoleTransferTask(), new CheckSubscriptionsDueTask(),
 				new ResolveTruthsayerComplaintTask(),
