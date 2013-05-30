@@ -30,6 +30,18 @@
         <param-value>classpath:services-hibernate.xml</param-value>
     </context-param>
     
+    <!-- Do not put session ID in URL, Jetty 7+ -->
+    <context-param>
+		<param-name>org.eclipse.jetty.servlet.SessionIdPathParameterName</param-name>
+		<param-value>none</param-value>
+	</context-param>
+	
+	<!-- Do not put session ID in URL, Jetty 6 -->
+	 <context-param>
+		<param-name>org.mortbay.jetty.servlet.SessionIdPathParameterName</param-name>
+		<param-value>none</param-value>
+	</context-param>
+    
      <filter>
         <filter-name>opensessioninview</filter-name>
         <filter-class>org.springframework.orm.hibernate4.support.OpenSessionInViewFilter</filter-class>
