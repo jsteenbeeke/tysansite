@@ -623,65 +623,73 @@ class DemocracyServiceImpl implements
 		Map<User, Integer> scores = determineUserScoreTotals(election);
 
 		Set<User> winners = determineBordaWinners(scores, 1);
+		if (winners.isEmpty()) {
+			// Restart election
+			election.setStart(new Date());
+			chancellorElectionDAO.update(election);
 
-		election.setWinner(winners.iterator().next());
-		chancellorElectionDAO.update(election);
-
-		if (election.getWinner() != null) {
-			StringBuilder baseMessage = new StringBuilder();
-
-			baseMessage.append(election.getWinner().getUsername());
-			baseMessage.append(" was elected Chancellor");
-			baseMessage.append(" ");
-
-			String url = "https://www.tysanclan.com/members/"
-					+ election.getWinner().getId().toString();
-
-			Event<?> e;
-
-			if (url.length() + baseMessage.length() > 140) {
-				e = new TwitterEvent(baseMessage.toString().substring(0,
-						140 - url.length()));
-			} else {
-				baseMessage.append(url);
-				e = new TwitterEvent(baseMessage.toString());
-			}
-
-			broker.dispatchEvent(e);
-		}
-
-		UserFilter filter = new UserFilter();
-		filter.addRank(Rank.CHANCELLOR);
-
-		List<User> chancellors = userDAO.findByFilter(filter);
-		// Should only be 0 or 1, but hey, who knows!
-		for (User chancellor : chancellors) {
-			if (!election.getWinner().equals(chancellor)) {
-				logService.logUserAction(chancellor, "Election",
-						"Has not been reelected as Chancellor, and has assumed the rank of "
-								+ chancellor.getRank().toString());
-				notificationService.notifyUser(chancellor,
-						"You were not reelected as Chancellor");
-			}
-			chancellor.setRank(MemberUtil.determineRankByJoinDate(chancellor
-					.getJoinDate()));
-			userDAO.update(chancellor);
-
-		}
-
-		election.getWinner().setRank(Rank.CHANCELLOR);
-		userDAO.update(election.getWinner());
-
-		if (chancellors.contains(election.getWinner())) {
-			logService.logUserAction(election.getWinner(), "Election",
-					"Has been reelected as Chancellor");
-			notificationService.notifyUser(election.getWinner(),
-					"You were reelected as Chancellor");
+			logService.logSystemAction("Democracy",
+					"Chancellor election restarted due to lack of winners");
 		} else {
-			logService.logUserAction(election.getWinner(), "Election",
-					"Has been elected as Chancellor");
-			notificationService.notifyUser(election.getWinner(),
-					"You were elected as Chancellor");
+			election.setWinner(winners.iterator().next());
+			chancellorElectionDAO.update(election);
+
+			if (election.getWinner() != null) {
+				StringBuilder baseMessage = new StringBuilder();
+
+				baseMessage.append(election.getWinner().getUsername());
+				baseMessage.append(" was elected Chancellor");
+				baseMessage.append(" ");
+
+				String url = "https://www.tysanclan.com/members/"
+						+ election.getWinner().getId().toString();
+
+				Event<?> e;
+
+				if (url.length() + baseMessage.length() > 140) {
+					e = new TwitterEvent(baseMessage.toString().substring(0,
+							140 - url.length()));
+				} else {
+					baseMessage.append(url);
+					e = new TwitterEvent(baseMessage.toString());
+				}
+
+				broker.dispatchEvent(e);
+			}
+
+			UserFilter filter = new UserFilter();
+			filter.addRank(Rank.CHANCELLOR);
+
+			List<User> chancellors = userDAO.findByFilter(filter);
+			// Should only be 0 or 1, but hey, who knows!
+			for (User chancellor : chancellors) {
+				if (!election.getWinner().equals(chancellor)) {
+					logService.logUserAction(chancellor, "Election",
+							"Has not been reelected as Chancellor, and has assumed the rank of "
+									+ chancellor.getRank().toString());
+					notificationService.notifyUser(chancellor,
+							"You were not reelected as Chancellor");
+				}
+				chancellor.setRank(MemberUtil
+						.determineRankByJoinDate(chancellor.getJoinDate()));
+				userDAO.update(chancellor);
+
+			}
+
+			election.getWinner().setRank(Rank.CHANCELLOR);
+			userDAO.update(election.getWinner());
+
+			if (chancellors.contains(election.getWinner())) {
+				logService.logUserAction(election.getWinner(), "Election",
+						"Has been reelected as Chancellor");
+				notificationService.notifyUser(election.getWinner(),
+						"You were reelected as Chancellor");
+			} else {
+				logService.logUserAction(election.getWinner(), "Election",
+						"Has been elected as Chancellor");
+				notificationService.notifyUser(election.getWinner(),
+						"You were elected as Chancellor");
+			}
 		}
 
 	}
@@ -699,21 +707,31 @@ class DemocracyServiceImpl implements
 
 		Set<User> winners = determineBordaWinners(scores, 1);
 
-		election.setWinner(winners.iterator().next());
+		if (winners.isEmpty()) {
+			// Restart election
+			election.setStart(new Date());
+			groupLeaderElectionDAO.update(election);
 
-		groupLeaderElectionDAO.update(election);
+			logService.logSystemAction("Democracy",
+					"Group leader election for "
+							+ election.getGroup().getName()
+							+ " restarted due to lack of winners");
+		} else {
+			election.setWinner(winners.iterator().next());
 
-		election.getGroup().setLeader(election.getWinner());
+			groupLeaderElectionDAO.update(election);
 
-		logService
-				.logUserAction(election.getWinner(), "Election",
-						"Has become the new leader of "
-								+ election.getGroup().getName());
-		notificationService.notifyUser(election.getWinner(),
-				"You were elected as leader of "
-						+ election.getGroup().getName());
+			election.getGroup().setLeader(election.getWinner());
 
-		groupDAO.update(election.getGroup());
+			logService.logUserAction(election.getWinner(), "Election",
+					"Has become the new leader of "
+							+ election.getGroup().getName());
+			notificationService.notifyUser(election.getWinner(),
+					"You were elected as leader of "
+							+ election.getGroup().getName());
+
+			groupDAO.update(election.getGroup());
+		}
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -823,44 +841,50 @@ class DemocracyServiceImpl implements
 			}
 
 			broker.dispatchEvent(new TwitterEvent(winnerString.toString()));
-		}
 
-		election.setWinners(winners);
-		senateElectionDAO.update(election);
+			election.setWinners(winners);
+			senateElectionDAO.update(election);
 
-		UserFilter filter = new UserFilter();
-		filter.addRank(Rank.SENATOR);
+			UserFilter filter = new UserFilter();
+			filter.addRank(Rank.SENATOR);
 
-		List<User> senators = userDAO.findByFilter(filter);
-		for (User senator : senators) {
-			senator.setRank(MemberUtil.determineRankByJoinDate(senator
-					.getJoinDate()));
-			if (!winners.contains(senator)) {
-				logService.logUserAction(senator, "Election",
-						"Has not been reelected as Senator, and has assumed the rank of "
-								+ senator.getRank().toString());
-				notificationService.notifyUser(senator,
-						"You were not reelected as Senator");
-			} else {
-				logService.logUserAction(senator, "Election",
-						"Has been reelected as Senator");
-				notificationService.notifyUser(senator,
-						"You were reelected as Senator");
+			List<User> senators = userDAO.findByFilter(filter);
+			for (User senator : senators) {
+				senator.setRank(MemberUtil.determineRankByJoinDate(senator
+						.getJoinDate()));
+				if (!winners.contains(senator)) {
+					logService.logUserAction(senator, "Election",
+							"Has not been reelected as Senator, and has assumed the rank of "
+									+ senator.getRank().toString());
+					notificationService.notifyUser(senator,
+							"You were not reelected as Senator");
+				} else {
+					logService.logUserAction(senator, "Election",
+							"Has been reelected as Senator");
+					notificationService.notifyUser(senator,
+							"You were reelected as Senator");
+				}
+
+				userDAO.update(senator);
 			}
 
-			userDAO.update(senator);
-		}
+			for (User senator : election.getWinners()) {
+				senator.setRank(Rank.SENATOR);
+				userDAO.update(senator);
 
-		for (User senator : election.getWinners()) {
-			senator.setRank(Rank.SENATOR);
-			userDAO.update(senator);
-
-			if (!senators.contains(senator)) {
-				logService.logUserAction(senator, "Election",
-						"Has been elected as Senator");
-				notificationService.notifyUser(senator,
-						"You were elected as Senator");
+				if (!senators.contains(senator)) {
+					logService.logUserAction(senator, "Election",
+							"Has been elected as Senator");
+					notificationService.notifyUser(senator,
+							"You were elected as Senator");
+				}
 			}
+		} else {
+			election.setStart(new Date());
+			senateElectionDAO.update(election);
+
+			logService.logSystemAction("Democracy",
+					"Senate election restarted due to lack of winners");
 		}
 
 	}
