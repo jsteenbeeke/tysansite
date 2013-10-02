@@ -28,6 +28,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
@@ -163,6 +164,7 @@ public class Role extends BaseDomainObject {
 	/**
 	 * @return the reassignable
 	 */
+	@Transient
 	public boolean isReassignable() {
 		return getRoleType().isReassignable();
 	}

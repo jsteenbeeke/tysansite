@@ -71,7 +71,7 @@ public class RolesManagementPage extends AbstractMemberPage {
 		Tabs tabs = new Tabs("tabs");
 
 		RoleFilter filter = new RoleFilter();
-		filter.addOrderBy("reassignable", true);
+		filter.addOrderBy("roleType", true);
 		filter.addOrderBy("name", true);
 
 		List<Role> roles = roleDAO.findByFilter(filter);
