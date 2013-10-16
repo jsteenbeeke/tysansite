@@ -71,7 +71,7 @@ public class ForumPanel extends Panel {
 		Accordion accordion = new Accordion("accordion");
 		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "content");
+		accordion.getOptions().put("heightStyle", "'content'");
 
 		add(accordion);
 

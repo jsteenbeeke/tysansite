@@ -76,7 +76,7 @@ public class CommitteePage extends AbstractMemberPage {
 		Accordion accordion = new Accordion("accordion");
 		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "content");
+		accordion.getOptions().put("heightStyle", "'content'");
 
 		Form<Committee> createForm = new Form<Committee>("committeeform") {
 			private static final long serialVersionUID = 1L;

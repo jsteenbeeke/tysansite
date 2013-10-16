@@ -274,7 +274,7 @@ public class ForumThreadPage extends TysanPage {
 		Accordion joinMessages = new Accordion("joinMessages");
 		joinMessages.setAutoHeight(false);
 		joinMessages.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		joinMessages.getOptions().put("heightStyle", "content");
+		joinMessages.getOptions().put("heightStyle", "'content'");
 
 		joinMessages
 				.add(new Label(
@@ -339,7 +339,7 @@ public class ForumThreadPage extends TysanPage {
 		Accordion mentorBox = new Accordion("mentorApplication");
 		mentorBox.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		mentorBox.setAutoHeight(false);
-		mentorBox.getOptions().put("heightStyle", "content");
+		mentorBox.getOptions().put("heightStyle", "'content'");
 
 		boolean realmInCommon = false;
 
@@ -408,7 +408,7 @@ public class ForumThreadPage extends TysanPage {
 		senatorBox.setAutoHeight(false);
 		senatorBox.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		senatorBox.setVisible(visible);
-		senatorBox.getOptions().put("heightStyle", "content");
+		senatorBox.getOptions().put("heightStyle", "'content'");
 
 		Boolean inFavor = null;
 		if (app != null) {

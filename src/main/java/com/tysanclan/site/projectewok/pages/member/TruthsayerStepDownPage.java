@@ -43,7 +43,7 @@ public class TruthsayerStepDownPage extends AbstractMemberPage {
 		Accordion accordion = new Accordion("accordion");
 		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "content");
+		accordion.getOptions().put("heightStyle", "'content'");
 
 		accordion.add(new IconLink.Builder("images/icons/tick.png",
 				new DefaultClickResponder<User>(ModelMaker.wrap(getUser())) {

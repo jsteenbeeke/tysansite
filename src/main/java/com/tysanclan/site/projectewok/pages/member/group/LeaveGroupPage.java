@@ -43,7 +43,7 @@ public class LeaveGroupPage extends AbstractMemberPage {
 		Accordion accordion = new Accordion("accordion");
 		accordion.setAutoHeight(false);
 		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.getOptions().put("heightStyle", "content");
+		accordion.getOptions().put("heightStyle", "'content'");
 
 		accordion.add(new Label("title", "Leave " + group.getName()));
 

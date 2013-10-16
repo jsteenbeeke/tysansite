@@ -61,7 +61,7 @@ public class NewsPage extends TysanPage {
 		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAnimated(new AccordionAnimated("slide"));
 		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "content");
+		accordion.getOptions().put("heightStyle", "'content'");
 
 		DataView<ForumThread> newsItems = new DataView<ForumThread>(
 				"newsitems", FilterDataProvider.of(filter, forumThreadDAO)) {

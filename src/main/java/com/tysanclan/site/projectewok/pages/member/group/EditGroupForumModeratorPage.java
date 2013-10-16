@@ -69,7 +69,7 @@ public class EditGroupForumModeratorPage extends TysanPage {
 		Accordion accordion = new Accordion("accordion");
 		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "content");
+		accordion.getOptions().put("heightStyle", "'content'");
 
 		accordion.add(new Label("title", "Moderators for forum "
 				+ groupForum.getName()));

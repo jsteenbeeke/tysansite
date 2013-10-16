@@ -64,7 +64,7 @@ public class GroupPage extends TysanPage {
 
 		Accordion accordion = new Accordion("accordion");
 		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "content");
+		accordion.getOptions().put("heightStyle", "'content'");
 
 		add(accordion);
 

@@ -104,7 +104,7 @@ public class PostPanel extends Panel {
 			User u = sess != null ? sess.getUser() : null;
 
 			Accordion accordion = new Accordion("accordion");
-			accordion.getOptions().put("heightStyle", "content");
+			accordion.getOptions().put("heightStyle", "'content'");
 			accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 			accordion.setAutoHeight(false);
 

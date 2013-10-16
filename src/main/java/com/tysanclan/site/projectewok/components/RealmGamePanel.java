@@ -64,7 +64,7 @@ public class RealmGamePanel extends Panel {
 		super(id);
 
 		Accordion accordion = new Accordion("accordion");
-		accordion.getOptions().put("heightStyle", "content");
+		accordion.getOptions().put("heightStyle", "'content'");
 		accordion.setAutoHeight(false);
 		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 

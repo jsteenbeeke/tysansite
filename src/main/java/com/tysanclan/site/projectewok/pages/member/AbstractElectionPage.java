@@ -89,7 +89,7 @@ public abstract class AbstractElectionPage<T extends Election> extends
 		Accordion accordion = new Accordion("accordion");
 		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "content");
+		accordion.getOptions().put("heightStyle", "'content'");
 
 		List<User> users = new LinkedList<User>();
 		users.addAll(election.getCandidates());

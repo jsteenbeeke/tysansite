@@ -61,7 +61,7 @@ public class AchievementApprovalPage extends AbstractMemberPage {
 		Accordion acc = new Accordion("accordion");
 		acc.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		acc.setAutoHeight(false);
-		acc.getOptions().put("heightStyle", "content");
+		acc.getOptions().put("heightStyle", "'content'");
 
 		acc.add(new ListView<AchievementRequest>("requests", ModelMaker
 				.wrap(requestDAO.getNonGroupPendingAchievementRequests())) {

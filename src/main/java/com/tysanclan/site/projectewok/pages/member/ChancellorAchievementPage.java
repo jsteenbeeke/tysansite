@@ -63,7 +63,7 @@ public class ChancellorAchievementPage extends AbstractMemberPage {
 		Accordion acc = new Accordion("accordion");
 		acc.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		acc.setAutoHeight(false);
-		acc.getOptions().put("heightStyle", "content");
+		acc.getOptions().put("heightStyle", "'content'");
 
 		acc.add(new DataView<AchievementProposal>("proposals",
 				FilterDataProvider.of(filter, achievementProposalDAO)) {

@@ -47,7 +47,7 @@ public class RegulationPage extends TysanPage {
 		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAnimated(new AccordionAnimated("slide"));
 		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "content");
+		accordion.getOptions().put("heightStyle", "'content'");
 
 		accordion.add(new ListView<Regulation>("regulations", ModelMaker
 				.wrap(dao.findAll())) {

@@ -84,7 +84,7 @@ public class EditExpensePage extends TysanPage {
 		Accordion accordion = new Accordion("accordion");
 		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "content");
+		accordion.getOptions().put("heightStyle", "'content'");
 
 		final TextField<String> nameTextField = new TextField<String>("name",
 				new Model<String>(expense.getName()));

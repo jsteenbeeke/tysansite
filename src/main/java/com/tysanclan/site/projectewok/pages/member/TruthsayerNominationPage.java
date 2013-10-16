@@ -52,7 +52,7 @@ public class TruthsayerNominationPage extends AbstractMemberPage {
 		Accordion accordion = new Accordion("accordion");
 		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "content");
+		accordion.getOptions().put("heightStyle", "'content'");
 
 		Form<?> nominateForm = new Form<Void>("nominateform") {
 			private static final long serialVersionUID = 1L;

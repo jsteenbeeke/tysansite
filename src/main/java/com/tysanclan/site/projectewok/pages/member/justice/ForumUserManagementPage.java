@@ -73,7 +73,7 @@ public class ForumUserManagementPage extends AbstractMemberPage {
 		Accordion accordion = new Accordion("accordion");
 		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "content");
+		accordion.getOptions().put("heightStyle", "'content'");
 
 		PageableListView<User> users = new PageableListView<User>("users",
 				ModelMaker.wrap(userDAO.findByFilter(filter)), 20) {
