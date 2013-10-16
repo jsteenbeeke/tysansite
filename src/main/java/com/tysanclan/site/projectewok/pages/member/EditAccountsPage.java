@@ -63,6 +63,7 @@ public class EditAccountsPage extends AbstractMemberPage {
 		Accordion accordion = new Accordion("accordion");
 		accordion.setAutoHeight(false);
 		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
+		accordion.getOptions().put("heightStyle", "content");
 
 		add(accordion);
 

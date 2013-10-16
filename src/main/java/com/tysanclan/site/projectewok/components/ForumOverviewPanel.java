@@ -90,6 +90,8 @@ public class ForumOverviewPanel extends Panel {
 				accordion
 						.setHeader(new AccordionHeader(new LiteralOption("h2")));
 				accordion.setAutoHeight(false);
+				accordion.getOptions().put("heightStyle", "content");
+
 				boolean collapse = user != null && user.isCollapseForums();
 
 				if (collapse && !active) {

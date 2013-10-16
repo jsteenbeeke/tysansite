@@ -58,6 +58,7 @@ public class GroupsPage extends TysanPage {
 		Accordion accordion = new Accordion("accordion");
 		accordion.setAutoHeight(false);
 		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
+		accordion.getOptions().put("heightStyle", "content");
 
 		accordion.add(new GroupLister<SocialGroup>("social", socialGroupDAO
 				.findAll()));

@@ -63,6 +63,7 @@ public class TrialPanel extends Panel {
 		Accordion accordion = new Accordion("accordion");
 		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAnimated(new AccordionAnimated("slide"));
+		accordion.getOptions().put("heightStyle", "content");
 		accordion.setAutoHeight(false);
 
 		if (MemberUtil.isMember(trial.getAccused())) {

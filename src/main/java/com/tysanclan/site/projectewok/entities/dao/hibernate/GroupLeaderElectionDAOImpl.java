@@ -56,4 +56,9 @@ class GroupLeaderElectionDAOImpl extends EwokHibernateDAO<GroupLeaderElection>
 
 		return criteria;
 	}
+
+	@Override
+	public void flush() {
+		getSession().flush();
+	}
 }

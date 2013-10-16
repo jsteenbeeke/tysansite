@@ -79,6 +79,7 @@ public class OverviewPage extends TysanPage {
 		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAnimated(new AccordionAnimated("slide"));
 		accordion.setAutoHeight(false);
+		accordion.getOptions().put("heightStyle", "content");
 
 		accordion.add(new MentorPanel("pupils", getUser()));
 		accordion.add(new PupilPanel("mentor", getUser()));

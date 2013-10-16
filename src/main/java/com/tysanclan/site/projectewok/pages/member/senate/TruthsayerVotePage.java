@@ -52,6 +52,7 @@ public class TruthsayerVotePage extends AbstractMemberPage {
 		Accordion accordion = new Accordion("accordion");
 		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
+		accordion.getOptions().put("heightStyle", "content");
 
 		TruthsayerNominationFilter filter = new TruthsayerNominationFilter();
 		filter.setStartSet(true);

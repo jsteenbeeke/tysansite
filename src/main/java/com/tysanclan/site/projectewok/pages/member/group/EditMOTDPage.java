@@ -54,6 +54,7 @@ public class EditMOTDPage extends AbstractMemberPage {
 		Accordion accordion = new Accordion("accordion");
 		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
+		accordion.getOptions().put("heightStyle", "content");
 
 		Form<Group> motdForm = new Form<Group>("motdForm",
 				ModelMaker.wrap(group)) {

@@ -26,4 +26,6 @@ import com.tysanclan.site.projectewok.entities.GroupLeaderElection;
  */
 public interface GroupLeaderElectionDAO extends EwokDAO<GroupLeaderElection> {
 
+	void flush();
+
 }

@@ -152,6 +152,7 @@ public class RosterPage extends TysanPage {
 		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAnimated(new AccordionAnimated("slide"));
 		accordion.setAutoHeight(false);
+		accordion.getOptions().put("heightStyle", "content");
 
 		if (chancellor != null) {
 			accordion.add(new MemberListItem("chancellor", chancellor));

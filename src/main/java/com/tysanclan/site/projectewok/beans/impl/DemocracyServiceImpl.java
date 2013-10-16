@@ -1299,7 +1299,7 @@ class DemocracyServiceImpl implements
 	 *      com.tysanclan.site.projectewok.entities.GroupLeaderElection)
 	 */
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED)
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public boolean addGroupLeaderCandidate(User user,
 			GroupLeaderElection election) {
 		GroupLeaderElection _election = groupLeaderElectionDAO.load(election
@@ -1311,6 +1311,7 @@ class DemocracyServiceImpl implements
 					&& _election.isNominationOpen()) {
 				_election.getCandidates().add(_user);
 				groupLeaderElectionDAO.update(_election);
+				groupLeaderElectionDAO.flush();
 
 				return true;
 			}

@@ -60,6 +60,7 @@ public class ImpeachmentInitiationPage extends AbstractMemberPage {
 		Accordion accordion = new Accordion("accordion");
 		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
+		accordion.getOptions().put("heightStyle", "content");
 
 		UserFilter filter = new UserFilter();
 		filter.addRank(Rank.CHANCELLOR);

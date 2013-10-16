@@ -73,6 +73,7 @@ public class AcceptanceVotePage extends AbstractMemberPage {
 		Accordion accordion = new Accordion("accordion");
 		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
 		accordion.setAutoHeight(false);
+		accordion.getOptions().put("heightStyle", "content");
 
 		accordion.add(new ListView<AcceptanceVote>("members", ModelMaker
 				.wrap(acceptanceVoteDAO.findAll())) {

@@ -143,6 +143,7 @@ public class CalendarPage extends AbstractMemberPage {
 		accordion.setAutoHeight(true);
 		accordion.setOutputMarkupId(true);
 		accordion.setOutputMarkupPlaceholderTag(true);
+		accordion.getOptions().put("heightStyle", "content");
 
 		container.add(accordion);
 
