@@ -58,10 +58,13 @@ public class MentorPanel extends TysanOverviewPanel<User> {
 
 		Date previousLogin = TysanSession.get().getPreviousLogin();
 
-		for (User pupil : getUser().getPupils()) {
-			if (pupil.getJoinDate().after(previousLogin)) {
-				super.requiresAttention();
-				break;
+		if (previousLogin != null) {
+			for (User pupil : getUser().getPupils()) {
+				if (pupil.getJoinDate() != null
+						&& pupil.getJoinDate().after(previousLogin)) {
+					super.requiresAttention();
+					break;
+				}
 			}
 		}
 	}

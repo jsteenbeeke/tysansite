@@ -22,14 +22,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.Component;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.injection.Injector;
-import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ExternalLink;
@@ -95,19 +91,6 @@ public class TysanMemberPanel extends TysanTopPanel {
 		addMessageLink(user);
 
 		add(new LogoutLink("logout"));
-
-		add(new Behavior() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void renderHead(Component component, IHeaderResponse response) {
-
-				super.renderHead(component, response);
-
-				response.render(JavaScriptHeaderItem
-						.forUrl("http://static.mmo-mumble.com/javascripts/loader.min.js"));
-			}
-		});
 	}
 
 	private void addMessageLink(User user) {

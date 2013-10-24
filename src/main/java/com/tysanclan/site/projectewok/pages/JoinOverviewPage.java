@@ -20,6 +20,8 @@ package com.tysanclan.site.projectewok.pages;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 
 import com.tysanclan.site.projectewok.TysanPage;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.util.MemberUtil;
 
 /**
  * @author Jeroen Steenbeeke
@@ -28,9 +30,22 @@ public class JoinOverviewPage extends TysanPage {
 	private static final long serialVersionUID = 1L;
 
 	public JoinOverviewPage() {
-		super("Join Tysan");
+		super("Register");
 
-		add(new BookmarkablePageLink<Void>("about", AboutPage.class));
+		User user = getUser();
+
+		if (user != null) {
+			if (MemberUtil.isMember(user)) {
+				setResponsePage(com.tysanclan.site.projectewok.pages.member.OverviewPage.class);
+			} else {
+				setResponsePage(com.tysanclan.site.projectewok.pages.forum.OverviewPage.class);
+			}
+		}
+
+		add(new BookmarkablePageLink<Void>("joinapply",
+				RegisterAndApplyPage.class));
 		add(new BookmarkablePageLink<Void>("register", RegistrationPage.class));
+		// add(new BookmarkablePageLink<Void>("register",
+		// RegistrationPage.class));
 	}
 }

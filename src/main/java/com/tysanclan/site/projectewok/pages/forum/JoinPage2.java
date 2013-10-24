@@ -26,13 +26,10 @@ import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import wicket.contrib.tinymce.TinyMceBehavior;
-
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.auth.TysanNonMemberSecured;
 import com.tysanclan.site.projectewok.beans.GameService;
 import com.tysanclan.site.projectewok.beans.MembershipService;
-import com.tysanclan.site.projectewok.components.TysanTinyMCESettings;
 import com.tysanclan.site.projectewok.components.renderer.GameRealmCartesianRenderer;
 import com.tysanclan.site.projectewok.entities.ForumThread;
 import com.tysanclan.site.projectewok.entities.Game;
@@ -69,6 +66,20 @@ public class JoinPage2 extends TysanPage {
 		final DropDownChoice<GameRealmCartesian> realmChoice = new DropDownChoice<GameRealmCartesian>(
 				"gamerealm", new Model<GameRealmCartesian>(null), grlms,
 				new GameRealmCartesianRenderer());
+		realmChoice.setRequired(true);
+		realmChoice.setNullValid(false);
+
+		final TextArea<String> otherGamesDescription = new TextArea<String>(
+				"othergames", new Model<String>(""));
+		otherGamesDescription.setRequired(true);
+
+		final TextArea<String> sortOfPersonArea = new TextArea<String>(
+				"sortofperson", new Model<String>(""));
+		sortOfPersonArea.setRequired(true);
+
+		final TextArea<String> lookingForArea = new TextArea<String>(
+				"lookingfor", new Model<String>(""));
+		lookingForArea.setRequired(true);
 
 		Form<User> joinForm = new Form<User>("joinform") {
 			private static final long serialVersionUID = 1L;
@@ -79,12 +90,9 @@ public class JoinPage2 extends TysanPage {
 			/**
 			 * @see org.apache.wicket.markup.html.form.Form#onSubmit()
 			 */
-			@SuppressWarnings("unchecked")
 			@Override
 			protected void onSubmit() {
 				User user = getUser();
-				TextArea<String> motivationArea = (TextArea<String>) get("motivation");
-				String motivation = motivationArea.getModelObject();
 				GameRealmCartesian cart = realmChoice.getModelObject();
 				Game game = null;
 				Realm realm = null;
@@ -94,30 +102,46 @@ public class JoinPage2 extends TysanPage {
 					realm = cart.getRealm();
 				}
 
-				List<String> words = new LinkedList<String>();
-				String consider = HTMLSanitizer.stripTags(motivation);
-				String current = "";
-				for (int i = 0; i < consider.length(); i++) {
-					char c = consider.charAt(i);
-					if (Character.isWhitespace(c) && !current.isEmpty()) {
-						words.add(current);
-						current = "";
-					} else {
-						current += c;
-					}
-				}
-				if (!current.isEmpty()) {
-					words.add(current);
+				String otherGames = HTMLSanitizer
+						.stripTags(otherGamesDescription.getModelObject());
+				String sortOfPerson = HTMLSanitizer.stripTags(sortOfPersonArea
+						.getModelObject());
+				String lookingFor = HTMLSanitizer.stripTags(lookingForArea
+						.getModelObject());
+
+				boolean valid = true;
+
+				if (StringUtil.countWords(sortOfPerson) < 30) {
+					JoinPage2.this
+							.error("Please describe the sort of person you are in at least 30 words");
+					valid = false;
 				}
 
-				if (words.size() < 75) {
-					error(StringUtil
-							.combineStrings(
-									"Your join application should contain at least 75 words. You currently only have ",
-									words.size(), " words"));
-				} else {
+				if (StringUtil.countWords(lookingFor) < 30) {
+					JoinPage2.this
+							.error("Please describe the sort of clan you are looking for you are in at least 30 words");
+					valid = false;
+				}
+
+				if (valid) {
+					StringBuilder motivation = new StringBuilder();
+					motivation
+							.append("<strong>What sort of person are you?</strong><br />\n");
+					motivation.append(sortOfPerson);
+					motivation.append("<br /><br />");
+
+					motivation
+							.append("<strong>What are you looking for in a clan?</strong><br />\n");
+					motivation.append(lookingFor);
+					motivation.append("<br /><br />");
+
+					motivation
+							.append("<strong>What other games do you play?</strong><br />\n");
+					motivation.append(otherGames);
+					motivation.append("<br /><br />");
+
 					ForumThread thread = membershipService.applyForMembership(
-							user, motivation, game, realm);
+							user, motivation.toString(), game, realm);
 
 					membershipService.registerAction(user);
 
@@ -131,11 +155,10 @@ public class JoinPage2 extends TysanPage {
 
 		add(joinForm);
 
-		TextArea<String> motivationArea = new TextArea<String>("motivation",
-				new Model<String>(""));
-		motivationArea.add(new TinyMceBehavior(new TysanTinyMCESettings()));
-
 		joinForm.add(realmChoice);
+		joinForm.add(otherGamesDescription);
+		joinForm.add(sortOfPersonArea);
+		joinForm.add(lookingForArea);
 
 		if (grlms.isEmpty()) {
 			realmChoice.setVisible(false);
@@ -144,8 +167,6 @@ public class JoinPage2 extends TysanPage {
 			realmChoice.setRequired(true);
 			realmChoice.setNullValid(false);
 		}
-
-		joinForm.add(motivationArea);
 
 	}
 }

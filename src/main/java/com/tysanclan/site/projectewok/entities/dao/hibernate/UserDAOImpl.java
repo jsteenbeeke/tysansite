@@ -72,6 +72,14 @@ class UserDAOImpl extends EwokHibernateDAO<User> implements
 	}
 
 	@Override
+	public List<User> findByRank(Rank rank) {
+		Criteria crit = getSession().createCriteria(User.class);
+		crit.add(Restrictions.eq("rank", rank));
+
+		return listOf(crit);
+	}
+
+	@Override
 	public User load(String username, String password) {
 		Criteria crit = getSession().createCriteria(User.class);
 

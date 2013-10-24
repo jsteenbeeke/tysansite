@@ -20,6 +20,8 @@ package com.tysanclan.site.projectewok.util;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 import java.util.StringTokenizer;
 
@@ -31,7 +33,7 @@ import org.slf4j.LoggerFactory;
  */
 public class StringUtil {
 	private static final Logger logger = LoggerFactory
-	        .getLogger(StringUtil.class);
+			.getLogger(StringUtil.class);
 
 	private static final Random random = new Random();
 
@@ -46,8 +48,7 @@ public class StringUtil {
 
 	public static String sha1Hash(String input) {
 		try {
-			MessageDigest sha1Digest = MessageDigest
-			        .getInstance("SHA-1");
+			MessageDigest sha1Digest = MessageDigest.getInstance("SHA-1");
 			sha1Digest.update(input.getBytes());
 			return byteArrayToString(sha1Digest.digest());
 		} catch (Exception e) {
@@ -57,7 +58,6 @@ public class StringUtil {
 		return "";
 	}
 
-	
 	private static String byteArrayToString(byte[] array) {
 		StringBuilder builder = new StringBuilder();
 
@@ -74,13 +74,11 @@ public class StringUtil {
 	}
 
 	public static boolean isValidEMail(String email) {
-		return !(email.length() < 10
-		        || email.indexOf('@') == -1
-		        || email.indexOf('.') == -1 || email
-		        .indexOf('@') > email.lastIndexOf('.'));
+		return !(email.length() < 10 || email.indexOf('@') == -1
+				|| email.indexOf('.') == -1 || email.indexOf('@') > email
+				.lastIndexOf('.'));
 	}
 
-	
 	private static char getHexChar(byte convertible) {
 		// System.out.println(convertible);
 
@@ -98,12 +96,10 @@ public class StringUtil {
 			case 15:
 				return 'f';
 			default:
-				return combineStrings("", (int) convertible)
-				        .charAt(0);
+				return combineStrings("", (int) convertible).charAt(0);
 		}
 	}
 
-	
 	public static String generateRequestKey() {
 		StringBuilder key = new StringBuilder();
 		int size = random.nextInt(5) + 17;
@@ -113,21 +109,15 @@ public class StringUtil {
 			switch (mode) {
 				case 0:
 					// Getal
-					key
-					        .append((char) (random
-					                .nextInt(10) + 48));
+					key.append((char) (random.nextInt(10) + 48));
 					break;
 				case 1:
 					// UPPERCASE CHAR
-					key
-					        .append((char) (random
-					                .nextInt(26) + 65));
+					key.append((char) (random.nextInt(26) + 65));
 					break;
 				case 2:
 					// lowercase char
-					key
-					        .append((char) (random
-					                .nextInt(26) + 97));
+					key.append((char) (random.nextInt(26) + 97));
 					break;
 			}
 		}
@@ -138,8 +128,7 @@ public class StringUtil {
 		return twitterify(message, false);
 	}
 
-	public static String twitterify(String message,
-	        boolean convertLinks) {
+	public static String twitterify(String message, boolean convertLinks) {
 		StringBuilder result = new StringBuilder();
 
 		int mode = 0; // 0 = normal, 1 = parsing user link, 2 = parsing group
@@ -160,8 +149,7 @@ public class StringUtil {
 					}
 					break;
 				case 1:
-					if (Character.isLetterOrDigit(next)
-					        || next == '_') {
+					if (Character.isLetterOrDigit(next) || next == '_') {
 						currLink.append(next);
 					} else {
 						mode1Resolve(result, currLink);
@@ -191,8 +179,8 @@ public class StringUtil {
 
 		StringBuilder res2 = new StringBuilder();
 		if (convertLinks) {
-			StringTokenizer tokenizer = new StringTokenizer(
-			        result.toString(), " ");
+			StringTokenizer tokenizer = new StringTokenizer(result.toString(),
+					" ");
 			while (tokenizer.hasMoreTokens()) {
 				String token = tokenizer.nextToken();
 
@@ -200,10 +188,8 @@ public class StringUtil {
 					res2.append(" ");
 				}
 
-				if (token.startsWith("http://")
-				        || token.startsWith("https://")) {
-					res2
-					        .append("<a class=\"Yellow\" href=\"");
+				if (token.startsWith("http://") || token.startsWith("https://")) {
+					res2.append("<a class=\"Yellow\" href=\"");
 					res2.append(token);
 					res2.append("\">");
 					res2.append(token);
@@ -220,22 +206,18 @@ public class StringUtil {
 		return res2.toString();
 	}
 
-	
 	private static void mode2Resolve(StringBuilder result,
-	        StringBuilder currLink) {
-		result
-		        .append("<a class=\"Yellow\" href=\"http://twitter.com/#search?q=%23");
+			StringBuilder currLink) {
+		result.append("<a class=\"Yellow\" href=\"http://twitter.com/#search?q=%23");
 		result.append(urlEncode(currLink.substring(1)));
 		result.append("\">");
 		result.append(currLink.toString());
 		result.append("</a>");
 	}
 
-	
 	private static void mode1Resolve(StringBuilder result,
-	        StringBuilder currLink) {
-		result
-		        .append("<a class=\"Yellow\" href=\"http://twitter.com/");
+			StringBuilder currLink) {
+		result.append("<a class=\"Yellow\" href=\"http://twitter.com/");
 		result.append(urlEncode(currLink.substring(1)));
 		result.append("\">");
 		result.append(currLink.toString());
@@ -250,11 +232,9 @@ public class StringUtil {
 		}
 	}
 
-	
 	public static String md5hash(String input) {
 		try {
-			MessageDigest sha1Digest = MessageDigest
-			        .getInstance("MD5");
+			MessageDigest sha1Digest = MessageDigest.getInstance("MD5");
 			sha1Digest.update(input.getBytes());
 			return byteArrayToString(sha1Digest.digest());
 		} catch (Exception e) {
@@ -262,6 +242,25 @@ public class StringUtil {
 		}
 
 		return "";
+	}
+
+	public static int countWords(String input) {
+		List<String> words = new LinkedList<String>();
+		String current = "";
+		for (int i = 0; i < input.length(); i++) {
+			char c = input.charAt(i);
+			if (Character.isWhitespace(c) && !current.isEmpty()) {
+				words.add(current);
+				current = "";
+			} else {
+				current += c;
+			}
+		}
+		if (!current.isEmpty()) {
+			words.add(current);
+		}
+
+		return words.size();
 	}
 
 }
