@@ -1,28 +1,29 @@
 <html xmlns:wicket>
 	<wicket:extend>
 		<form wicket:id="joinform">
-			To join Tysan, you need to write a short motivation about why
-			you wish to join. This motivation should be at least 75 words. 
-			If you are unsure what to put here, tell us something about the following:
-			<ul>
-				<li>What games do you play, and what you enjoy about them?</li>
-				<li>What kind of person are you?</li>
-				<li>How long have you been playing online?</li>
-				<li>What are you looking for in a clan?</li> 
-			</ul>
-			
-			<textarea wicket:id="motivation" rows="10" cols="60"></textarea>
-			
-			<br />
-			
-			In addition, we would like to know what your primary game is. This will make it easier
-			for us to find a suitable mentor. <br />
-			
-			<select wicket:id="gamerealm"></select>
-			
-			<br />
-			
-			<input type="submit" value="Submit" class="SubmitButton" />
+			<table>
+				<tr>
+					<th>Primary Clan Game</th>
+					<td><select wicket:id="gamerealm"></select></td>
+				</tr>
+				<tr>
+					<th>What other games do you play?</th>
+					<td><textarea wicket:id="othergames" cols="80" rows="8"></textarea></td>
+				</tr>
+				<tr>
+					<th>What kind of person are you?</th>
+					<td><textarea wicket:id="sortofperson" cols="80" rows="8"></textarea></td>
+				</tr>
+				<tr>
+					<th>What are you looking for in a clan?</th>
+					<td><textarea wicket:id="lookingfor" cols="80" rows="8"></textarea></td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align: center;">
+						<input type="submit" value="Apply" class="SubmitButton" />
+					</td>
+				</tr>
+			</table>
 			
 		</form>
 	</wicket:extend>

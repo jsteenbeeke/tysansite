@@ -47,8 +47,9 @@ public interface UserDAO extends EwokDAO<User> {
 	 *            The password of the requested user
 	 * @return The requested user, or <code>null</code> if not found
 	 */
-	public abstract User load(String username,
-	        String password);
+	public abstract User load(String username, String password);
 
 	public abstract List<User> getTrialMembersReadyForVote();
+
+	public List<User> findByRank(Rank senator);
 }

@@ -20,6 +20,7 @@ package com.tysanclan.site.projectewok.beans.impl;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fortuityframework.core.annotation.ioc.OnFortuityEvent;
 import com.fortuityframework.core.dispatch.EventContext;
 import com.fortuityframework.core.dispatch.IEventBroker;
+import com.google.common.collect.Sets;
 import com.tysanclan.site.projectewok.beans.ForumService;
 import com.tysanclan.site.projectewok.entities.Forum;
 import com.tysanclan.site.projectewok.entities.ForumThread;
@@ -327,17 +329,23 @@ class MembershipServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void setMentor(JoinApplication application, User mentor) {
-		User _mentor = userDAO.load(mentor.getId());
-		if (MemberUtil.canUserBeMentor(mentor)) {
-			JoinApplication _application = joinApplicationDAO.load(application
-					.getId());
-			_application.setMentor(_mentor);
-			joinApplicationDAO.update(_application);
 
-			logService.logUserAction(_mentor, "Membership",
-					"Has become Mentor of "
-							+ application.getApplicant().getUsername());
+		if (application.getMentor() == null) {
+			User _mentor = userDAO.load(mentor.getId());
+			if (MemberUtil.canUserBeMentor(mentor)) {
+				JoinApplication _application = joinApplicationDAO
+						.load(application.getId());
+				_application.setMentor(_mentor);
+				joinApplicationDAO.update(_application);
+
+				logService.logUserAction(_mentor, "Membership",
+						"Has become Mentor of "
+								+ application.getApplicant().getUsername());
+
+				checkResolved(application);
+			}
 		}
+
 	}
 
 	/**
@@ -370,6 +378,31 @@ class MembershipServiceImpl implements
 			joinVerdictDAO.update(verdict);
 		}
 
+		checkResolved(application);
+
+	}
+
+	private void checkResolved(JoinApplication application) {
+		if (application.getMentor() != null) {
+			Set<User> negatives = Sets.newHashSet();
+			for (JoinVerdict verdict : application.getVerdicts()) {
+				if (verdict.isInFavor()) {
+					democracyService.resolveJoinApplication(application);
+
+					return;
+				}
+
+				negatives.add(verdict.getUser());
+			}
+
+			Set<User> notYetVoted = Sets.newHashSet(userDAO
+					.findByRank(Rank.SENATOR));
+			notYetVoted.removeAll(negatives);
+
+			if (notYetVoted.isEmpty()) {
+				democracyService.resolveJoinApplication(application);
+			}
+		}
 	}
 
 	/**

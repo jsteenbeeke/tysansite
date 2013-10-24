@@ -66,6 +66,7 @@ public class RegistrationPage extends TysanPage {
 
 		final TextField<String> tfCaptcha = new TextField<String>(
 				"captchaResponse", new Model<String>(""));
+		tfCaptcha.setRequired(true);
 
 		Form<?> registrationForm = new Form<Void>("registerform") {
 			private static final long serialVersionUID = 1L;

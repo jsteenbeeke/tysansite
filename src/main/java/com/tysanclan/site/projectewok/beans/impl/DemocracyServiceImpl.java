@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -973,54 +974,74 @@ class DemocracyServiceImpl implements
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
-	public void resolveJoinApplication(JoinApplication application) {
-		JoinApplication _application = joinApplicationDAO.load(application
+	public void resolveJoinApplication(JoinApplication _application) {
+		JoinApplication application = joinApplicationDAO.load(_application
 				.getId());
-		if (_application != null) {
+		if (application != null) {
 			int inFavor = 0, total = 0;
-			for (JoinVerdict verdict : _application.getVerdicts()) {
+			for (JoinVerdict verdict : application.getVerdicts()) {
 				if (verdict.isInFavor()) {
 					inFavor++;
 				}
 				total++;
 			}
 
-			Integer factor = total > 0 ? (100 * inFavor) / total : null;
+			User mentor = application.getMentor();
+			Date startDate = application.getStartDate();
+			LocalDate start = new LocalDate(startDate);
+			LocalDate now = LocalDate.now();
+
+			boolean have3DaysPassed = start.plusDays(3).isBefore(now);
 
 			boolean accepted = false;
 
-			User applicant = _application.getApplicant();
-
-			if (factor != null
-					&& factor >= TRIAL_ACCEPTANCE_VOTE_PERCENTAGE_REQUIRED) {
-				if (_application.getMentor() != null
-						&& MemberUtil.isMember(_application.getMentor())) {
-
-					applicant.setMentor(_application.getMentor());
-					applicant.setRank(Rank.TRIAL);
-					applicant.setJoinDate(new Date());
-					applicant.setLoginCount(0);
-					applicant.setLastAction(new Date());
-					userDAO.update(applicant);
-
+			if (have3DaysPassed) {
+				// If we managed to let 3 days pass without the member getting
+				// accepted,
+				// check for mentor is no longer relevant, all we need to know
+				// is if a Senator
+				// voted against
+				if (total == 0) {
 					accepted = true;
 				} else {
-					return; // Postpone if percentage is high enough but no
-					// mentor exists
+					if (inFavor == 0) {
+						accepted = false;
+					} else {
+						accepted = true;
+					}
+				}
+			} else {
+				// If this method gets invoked earlier, however, then member
+				// needs a mentor and 1
+				// vote in favor - otherwise do not resolve
+				if (inFavor > 0 && mentor != null) {
+					accepted = true;
+				} else {
+					return;
 				}
 			}
 
-			joinApplicationDAO.delete(_application);
+			User applicant = application.getApplicant();
+
+			if (accepted) {
+				applicant.setMentor(application.getMentor());
+				applicant.setRank(Rank.TRIAL);
+				applicant.setJoinDate(new Date());
+				applicant.setLoginCount(0);
+				applicant.setLastAction(new Date());
+				userDAO.update(applicant);
+			}
+
+			joinApplicationDAO.delete(application);
 
 			mailService.sendHTMLMail(applicant.getEMail(),
 					"Result of your Tysan Clan Application", mailService
-							.getJoinApplicationMail(_application, accepted,
+							.getJoinApplicationMail(application, accepted,
 									inFavor, total));
 
 			logService.logUserAction(applicant, "Membership", "User has "
 					+ (accepted ? "been" : "not been")
-					+ " granted a trial membership ("
-					+ (factor != null ? factor : 0) + "%)");
+					+ " granted a trial membership");
 
 			if (accepted) {
 				notificationService.notifyUser(applicant,

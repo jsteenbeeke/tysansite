@@ -61,6 +61,7 @@ import com.tysanclan.site.projectewok.pages.MemberPage;
 import com.tysanclan.site.projectewok.pages.NewsPage;
 import com.tysanclan.site.projectewok.pages.PasswordRequestConfirmationPage;
 import com.tysanclan.site.projectewok.pages.RealmPage;
+import com.tysanclan.site.projectewok.pages.RegisterAndApplyPage;
 import com.tysanclan.site.projectewok.pages.RegistrationPage;
 import com.tysanclan.site.projectewok.pages.RegulationPage;
 import com.tysanclan.site.projectewok.pages.RosterPage;
@@ -270,7 +271,7 @@ public class TysanApplication extends WebApplication {
 
 		mountPage("groups", GroupsPage.class);
 
-		mountPage("join", JoinOverviewPage.class);
+		mountPage("/register", JoinOverviewPage.class);
 
 		mountPage("vacation", VacationPage.class);
 
@@ -279,7 +280,8 @@ public class TysanApplication extends WebApplication {
 
 		mountPage("/forums/${forumid}/${pageid}", ForumPage.class);
 		mountPage("/listforums", ForumOverviewPage.class);
-		mountPage("/register", RegistrationPage.class);
+		mountPage("/register/application", RegisterAndApplyPage.class);
+		mountPage("/register/forums", RegistrationPage.class);
 		mountPage("/activation/${key}", ActivationPage.class);
 
 		mountPage("/resetpassword/${key}",

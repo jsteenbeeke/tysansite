@@ -38,7 +38,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.core.options.LiteralOption;
 import org.odlabs.wiquery.ui.accordion.Accordion;
 import org.odlabs.wiquery.ui.accordion.AccordionHeader;
-import org.odlabs.wiquery.ui.progressbar.ProgressBar;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
@@ -321,14 +320,11 @@ public class ForumThreadPage extends TysanPage {
 								: DateUtil.NEW_YORK.getID()))
 				.setVisible(app != null));
 
-		int percentage = total == 0 ? 0 : (100 * infavor) / total;
+		int against = total - infavor;
 
-		ProgressBar bar = new ProgressBar("progressbar");
-		bar.setValue(percentage);
-		joinMessages.add(bar);
-
-		joinMessages
-				.add(new Label("score", new Model<String>(percentage + "%")));
+		joinMessages.add(new Label("senatestatus", new Model<String>(String
+				.format("%d Senators voted in favor, %d voted against",
+						infavor, against))));
 
 		joinMessages.setVisible(app != null);
 
