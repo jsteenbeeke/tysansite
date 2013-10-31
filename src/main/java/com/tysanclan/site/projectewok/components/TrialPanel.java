@@ -40,6 +40,7 @@ import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.LawEnforcementService;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
 import com.tysanclan.site.projectewok.entities.ForumThread;
+import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.Regulation;
 import com.tysanclan.site.projectewok.entities.Trial;
 import com.tysanclan.site.projectewok.entities.Trial.Verdict;
@@ -109,6 +110,11 @@ public class TrialPanel extends Panel {
 		cal.set(Calendar.MONTH, cal2.get(Calendar.MONTH));
 		cal.set(Calendar.YEAR, cal2.get(Calendar.YEAR));
 
+		boolean canVerdictBePassed = trial.getAccused().getRank() == Rank.TRIAL
+				|| new Date().after(cal.getTime());
+		boolean hasVerdict = trial.getVerdict() != null;
+		boolean isJudge = user != null && user.equals(trial.getJudge());
+
 		Form<Trial> verdictForm = new Form<Trial>("verdictForm",
 				ModelMaker.wrap(trial)) {
 			private static final long serialVersionUID = 1L;
@@ -168,9 +174,7 @@ public class TrialPanel extends Panel {
 					}
 				}));
 
-		verdictForm.setVisible(new Date().after(cal.getTime())
-				&& trial.getVerdict() == null && user != null
-				&& user.equals(trial.getJudge()));
+		verdictForm.setVisible(canVerdictBePassed && !hasVerdict && isJudge);
 
 		accordion.add(new IconLink.Builder(
 				trial.isRestrained() ? "images/icons/lock_delete.png"
@@ -202,10 +206,9 @@ public class TrialPanel extends Panel {
 				.setText(
 						trial.isRestrained() ? "Lift restraint"
 								: "Restrain the accused")
-				.newInstance("restrain")
-				.setVisible(user != null && user.equals(trial.getJudge())));
+				.newInstance("restrain").setVisible(isJudge));
 
-		if (trial.getVerdict() != null) {
+		if (hasVerdict) {
 			switch (trial.getVerdict()) {
 				case MAJOR:
 					accordion
