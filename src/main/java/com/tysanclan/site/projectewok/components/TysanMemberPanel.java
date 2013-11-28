@@ -54,8 +54,6 @@ import com.tysanclan.site.projectewok.entities.dao.filters.ConversationParticipa
 import com.tysanclan.site.projectewok.pages.ForumOverviewPage;
 import com.tysanclan.site.projectewok.pages.member.MessageListPage;
 import com.tysanclan.site.projectewok.pages.member.OverviewPage;
-import com.tysanclan.site.projectewok.ws.mumble.MMOMumbleServerStatus;
-import com.tysanclan.site.projectewok.ws.mumble.ServerStatus;
 
 /**
  * @author Jeroen Steenbeeke
@@ -238,16 +236,7 @@ public class TysanMemberPanel extends TysanTopPanel {
 				Injector.get().inject(this);
 			}
 
-			int count = 0;
-
-			for (MumbleServer server : mumbleDAO.findAll()) {
-				ServerStatus status = MMOMumbleServerStatus.getServerStatus(
-						server.getServerID(), server.getApiToken(),
-						server.getApiSecret());
-				count += status.getUsers().size();
-			}
-
-			return _service.getMembersOnline().size() + count;
+			return _service.getMembersOnline().size();
 		}
 
 		/**

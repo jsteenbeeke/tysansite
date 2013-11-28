@@ -89,7 +89,6 @@ import com.tysanclan.site.projectewok.tasks.EmailChangeConfirmationExpirationTas
 import com.tysanclan.site.projectewok.tasks.GroupLeaderElectionResolutionTask;
 import com.tysanclan.site.projectewok.tasks.MemberApplicationResolutionTask;
 import com.tysanclan.site.projectewok.tasks.MembershipExpirationTask;
-import com.tysanclan.site.projectewok.tasks.MumbleServerUpdateTask;
 import com.tysanclan.site.projectewok.tasks.NoAccountExpireTask;
 import com.tysanclan.site.projectewok.tasks.PasswordRequestExpirationTask;
 import com.tysanclan.site.projectewok.tasks.RegulationChangeResolutionTask;
@@ -241,8 +240,7 @@ public class TysanApplication extends WebApplication {
 				new UntenabilityVoteResolutionTask(),
 				new AchievementProposalTask(), new WarnInactiveMembersTask(),
 				new ResolveRoleTransferTask(), new CheckSubscriptionsDueTask(),
-				new ResolveTruthsayerComplaintTask(),
-				new MumbleServerUpdateTask() };
+				new ResolveTruthsayerComplaintTask() };
 
 		for (TysanTask task : tasks) {
 			TysanScheduler.getScheduler().scheduleTask(task);

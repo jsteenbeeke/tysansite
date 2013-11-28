@@ -19,14 +19,8 @@ package com.tysanclan.site.projectewok.pages.member;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.ContextImage;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
 
 import com.tysanclan.site.projectewok.entities.MumbleServer;
-import com.tysanclan.site.projectewok.ws.mumble.MMOMumbleServerStatus;
-import com.tysanclan.site.projectewok.ws.mumble.MumbleUser;
-import com.tysanclan.site.projectewok.ws.mumble.ServerStatus;
 
 public class MumbleServerStatusPage extends AbstractSingleAccordionMemberPage {
 	private static final long serialVersionUID = 1L;
@@ -39,25 +33,6 @@ public class MumbleServerStatusPage extends AbstractSingleAccordionMemberPage {
 				new Label("url", server.getUrl()).add(AttributeModifier
 						.replace("href", server.getUrl())));
 		getAccordion().add(new Label("password", server.getPassword()));
-
-		ServerStatus status = MMOMumbleServerStatus.getServerStatus(
-				server.getServerID(), server.getApiToken(),
-				server.getApiSecret());
-
-		getAccordion().add(
-				new ListView<MumbleUser>("users", status.getUsers()) {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					protected void populateItem(ListItem<MumbleUser> mui) {
-						MumbleUser mu = mui.getModelObject();
-						mui.add(new ContextImage("icon",
-								"images/icons/mumble.png"));
-						mui.add(new Label("name", mu.getName()));
-					}
-
-				});
 	}
 
 }

@@ -17,8 +17,6 @@
  */
 package com.tysanclan.site.projectewok.beans.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -28,8 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.tysanclan.site.projectewok.beans.MumbleService;
 import com.tysanclan.site.projectewok.entities.MumbleServer;
 import com.tysanclan.site.projectewok.entities.dao.MumbleServerDAO;
-import com.tysanclan.site.projectewok.ws.mumble.MMOMumbleServerStatus;
-import com.tysanclan.site.projectewok.ws.mumble.ServerStatus;
 
 /**
  * @author Jeroen Steenbeeke
@@ -37,9 +33,6 @@ import com.tysanclan.site.projectewok.ws.mumble.ServerStatus;
 @Component
 @Scope("request")
 class MumbleServiceImpl implements MumbleService {
-	private static final Logger log = LoggerFactory
-			.getLogger(MumbleServiceImpl.class);
-
 	@Autowired
 	private MumbleServerDAO mumbleServerDAO;
 
@@ -65,24 +58,4 @@ class MumbleServiceImpl implements MumbleService {
 		return server;
 	}
 
-	@Override
-	public ServerStatus getServerStatus(MumbleServer server) {
-		try {
-			return MMOMumbleServerStatus.getServerStatus(server.getServerID(),
-					server.getApiToken(), server.getApiSecret());
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			return new ServerStatus();
-		}
-	}
-
-	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public void updateStatuses() {
-		for (MumbleServer server : mumbleServerDAO.findAll()) {
-			MMOMumbleServerStatus.fetchStatus(server.getId(),
-					server.getApiToken(), server.getApiSecret());
-		}
-
-	}
 }
