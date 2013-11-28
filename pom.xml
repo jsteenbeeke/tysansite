@@ -45,6 +45,7 @@
 		<log4j.version>1.2.17</log4j.version>
 		<mockito.version>1.9.5</mockito.version>
 		<postgres.version>9.1-901-1.jdbc4</postgres.version>
+		<resteasy.version>3.0.5.Final</resteasy.version>
 		<slf4j.version>1.7.5</slf4j.version>
 		<quartz.version>1.5.2</quartz.version>
 		<spring.version>3.2.4.RELEASE</spring.version>
@@ -225,7 +226,12 @@
 		</dependency>
 
 		<!-- Web service dependencies -->
-		
+
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jaxrs</artifactId>
+			<version>${resteasy.version}</version>
+		</dependency>
 		
 		<!-- General purpose dependencies -->
 		<dependency>

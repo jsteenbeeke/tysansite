@@ -41,6 +41,11 @@
 		<param-name>org.mortbay.jetty.servlet.SessionIdPathParameterName</param-name>
 		<param-value>none</param-value>
 	</context-param>
+	
+	<filter>
+		<filter-name>rest</filter-name>
+		<filter-class>org.jboss.resteasy.plugins.server.servlet.FilterDispatcher</filter-class>
+	</filter>
     
      <filter>
         <filter-name>opensessioninview</filter-name>
@@ -60,29 +65,12 @@
 		</init-param>
     </filter>
     
-<!--	<security-constraint>-->
-<!--    	<web-resource-collection>-->
-<!--    		<web-resource-name>Automatic SSL redirect</web-resource-name>-->
-<!--    		<url-pattern>/*</url-pattern>-->
-<!--    	</web-resource-collection>-->
-<!--    	<user-data-constraint>-->
-<!--    		<transport-guarantee>CONFIDENTIAL</transport-guarantee>-->
-<!--    	</user-data-constraint>-->
-<!--    </security-constraint>-->
+	<filter-mapping>
+		<filter-name>rest</filter-name>
+		<url-pattern>/rs/*</url-pattern>
+	</filter-mapping>
     
-	<servlet>
-		<servlet-name>CXFServlet</servlet-name>
-		<servlet-class>
-			org.apache.cxf.transport.servlet.CXFServlet
-		</servlet-class>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>CXFServlet</servlet-name>
-		<url-pattern>/ws/*</url-pattern>
-	</servlet-mapping>	  
-
-    <filter-mapping>
+	<filter-mapping>
         <filter-name>opensessioninview</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
@@ -91,6 +79,12 @@
         <filter-name>Tysan</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+   
+	<listener>
+		<listener-class>
+			org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap
+		</listener-class>
+	</listener>
 
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
