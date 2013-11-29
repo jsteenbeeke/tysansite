@@ -17,6 +17,7 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -145,6 +146,10 @@ public class Bug extends BaseDomainObject {
 	 * Returns the ID of this Bug
 	 */
 	@Override
+	public Serializable getDomainObjectId() {
+		return getId();
+	}
+
 	public Long getId() {
 		return this.id;
 	}

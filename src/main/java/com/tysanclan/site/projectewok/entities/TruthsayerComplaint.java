@@ -79,6 +79,10 @@ public class TruthsayerComplaint extends BaseDomainObject {
 	}
 
 	@Override
+	public Serializable getDomainObjectId() {
+		return getId();
+	}
+
 	public Serializable getId() {
 		return id;
 	}

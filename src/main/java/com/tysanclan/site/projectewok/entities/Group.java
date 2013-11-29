@@ -17,6 +17,7 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -142,6 +143,10 @@ public abstract class Group extends BaseDomainObject {
 	}
 
 	@Override
+	public Serializable getDomainObjectId() {
+		return getId();
+	}
+
 	public Long getId() {
 		return id;
 	}

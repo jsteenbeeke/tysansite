@@ -17,6 +17,7 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -114,6 +115,10 @@ public class Forum extends BaseDomainObject {
 	}
 
 	@Override
+	public Serializable getDomainObjectId() {
+		return getId();
+	}
+
 	public Long getId() {
 		return id;
 	}

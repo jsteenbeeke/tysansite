@@ -17,6 +17,8 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -43,6 +45,10 @@ public class RoleTransferApproval extends BaseDomainObject {
 	private User approvedBy;
 
 	@Override
+	public Serializable getDomainObjectId() {
+		return getId();
+	}
+
 	public Long getId() {
 		return id;
 	}

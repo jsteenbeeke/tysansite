@@ -59,7 +59,7 @@ class PersistenceModel<T extends DomainObject> implements IModel<T> {
 	@Override
 	public final void detach() {
 		dao = null;
-		if (object != null && object.getId() != null) {
+		if (object != null && object.getDomainObjectId() != null) {
 			object = null;
 		}
 	}
@@ -75,7 +75,7 @@ class PersistenceModel<T extends DomainObject> implements IModel<T> {
 	@Override
 	public void setObject(T object) {
 		if (object != null) {
-			this.id = object.getId();
+			this.id = object.getDomainObjectId();
 			this.object = object;
 			this.entityClass = Hibernate.getClass(object);
 		}

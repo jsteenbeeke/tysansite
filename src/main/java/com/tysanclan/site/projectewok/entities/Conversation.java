@@ -17,9 +17,23 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
-import java.util.*;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
@@ -68,6 +82,10 @@ public class Conversation extends BaseDomainObject {
 	 * Returns the ID of this Conversation
 	 */
 	@Override
+	public Serializable getDomainObjectId() {
+		return getId();
+	}
+
 	public Long getId() {
 		return this.id;
 	}

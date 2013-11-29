@@ -17,6 +17,8 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -51,6 +53,10 @@ public class TruthsayerComplaintVote extends BaseDomainObject {
 	private User caster;
 
 	@Override
+	public Serializable getDomainObjectId() {
+		return getId();
+	}
+
 	public Long getId() {
 		return id;
 	}

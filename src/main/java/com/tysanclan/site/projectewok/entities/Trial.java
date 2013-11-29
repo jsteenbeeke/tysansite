@@ -17,6 +17,7 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -106,6 +107,10 @@ public class Trial extends BaseDomainObject {
 	 * Returns the ID of this Trial
 	 */
 	@Override
+	public Serializable getDomainObjectId() {
+		return getId();
+	}
+
 	public Long getId() {
 		return this.id;
 	}

@@ -20,8 +20,7 @@ import org.hibernate.Hibernate;
 /**
  * @author Jeroen Steenbeeke
  */
-public abstract class BaseDomainObject implements
-        DomainObject {
+public abstract class BaseDomainObject implements DomainObject {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -32,9 +31,9 @@ public abstract class BaseDomainObject implements
 		final int prime = 31;
 		int result = 1;
 		result = prime
-		        * result
-		        + ((getId() == null) ? 0 : getId()
-		                .hashCode());
+				* result
+				+ ((getDomainObjectId() == null) ? 0 : getDomainObjectId()
+						.hashCode());
 		return result;
 	}
 
@@ -49,16 +48,15 @@ public abstract class BaseDomainObject implements
 		if (obj == null) {
 			return false;
 		}
-		if (Hibernate.getClass(this) != Hibernate
-		        .getClass(obj)) {
+		if (Hibernate.getClass(this) != Hibernate.getClass(obj)) {
 			return false;
 		}
 		BaseDomainObject other = (BaseDomainObject) obj;
-		if (getId() == null) {
-			if (other.getId() != null) {
+		if (getDomainObjectId() == null) {
+			if (other.getDomainObjectId() != null) {
 				return false;
 			}
-		} else if (!getId().equals(other.getId())) {
+		} else if (!getDomainObjectId().equals(other.getDomainObjectId())) {
 			return false;
 		}
 		return true;

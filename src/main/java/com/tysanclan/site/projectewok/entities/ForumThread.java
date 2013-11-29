@@ -17,11 +17,22 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
@@ -99,6 +110,10 @@ public class ForumThread extends BaseDomainObject {
 	}
 
 	@Override
+	public Serializable getDomainObjectId() {
+		return getId();
+	}
+
 	public Long getId() {
 		return id;
 	}

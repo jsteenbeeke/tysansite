@@ -60,7 +60,7 @@ class EntityListModel<T extends DomainObject> extends
 						}
 					}
 
-					ids.add(t.getId());
+					ids.add(t.getDomainObjectId());
 
 				}
 			}

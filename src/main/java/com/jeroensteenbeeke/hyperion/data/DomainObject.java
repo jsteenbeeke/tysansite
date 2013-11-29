@@ -25,5 +25,5 @@ public interface DomainObject extends Serializable {
 	/**
 	 * @return Get the Id of this object
 	 */
-	public abstract Serializable getId();
+	public abstract Serializable getDomainObjectId();
 }

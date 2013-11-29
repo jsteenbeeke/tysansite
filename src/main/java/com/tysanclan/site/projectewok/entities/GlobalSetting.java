@@ -17,6 +17,8 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -76,6 +78,10 @@ public class GlobalSetting extends BaseDomainObject {
 	 * Returns the ID of this GlobalSetting
 	 */
 	@Override
+	public Serializable getDomainObjectId() {
+		return getId();
+	}
+
 	public String getId() {
 		return this.id;
 	}

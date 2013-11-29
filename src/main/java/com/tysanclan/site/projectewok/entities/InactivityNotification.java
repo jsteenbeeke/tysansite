@@ -17,7 +17,15 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
-import javax.persistence.*;
+import java.io.Serializable;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.Index;
 import org.hibernate.annotations.OnDelete;
@@ -58,6 +66,10 @@ public class InactivityNotification extends BaseDomainObject {
 	 * Returns the ID of this InactivityNotification
 	 */
 	@Override
+	public Serializable getDomainObjectId() {
+		return getId();
+	}
+
 	public Long getId() {
 		return this.id;
 	}

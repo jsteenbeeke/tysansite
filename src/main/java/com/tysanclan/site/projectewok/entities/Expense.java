@@ -17,6 +17,7 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
@@ -185,6 +186,10 @@ public class Expense extends BaseDomainObject {
 	 * Returns the ID of this Expense
 	 */
 	@Override
+	public Serializable getDomainObjectId() {
+		return getId();
+	}
+
 	public Long getId() {
 		return this.id;
 	}

@@ -15,6 +15,7 @@
  */
 package com.jeroensteenbeeke.hyperion.data;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -40,6 +41,10 @@ public class Lolcat extends BaseDomainObject {
 	private List<Lolcat> children;
 
 	@Override
+	public Serializable getDomainObjectId() {
+		return getId();
+	}
+
 	public Long getId() {
 		return id;
 	}

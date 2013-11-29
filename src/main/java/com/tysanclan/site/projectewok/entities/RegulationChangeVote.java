@@ -17,7 +17,15 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
-import javax.persistence.*;
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.Index;
 import org.hibernate.annotations.OnDelete;
@@ -64,6 +72,10 @@ public class RegulationChangeVote extends BaseDomainObject {
 	 * Returns the ID of this RegulationChangeVote
 	 */
 	@Override
+	public Serializable getDomainObjectId() {
+		return getId();
+	}
+
 	public Long getId() {
 		return this.id;
 	}

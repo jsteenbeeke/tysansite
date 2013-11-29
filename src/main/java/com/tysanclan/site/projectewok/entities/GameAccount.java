@@ -17,6 +17,8 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
@@ -140,6 +142,10 @@ public abstract class GameAccount implements DomainObject {
 	 * Returns the ID of this GameAccount
 	 */
 	@Override
+	public Serializable getDomainObjectId() {
+		return getId();
+	}
+
 	public Long getId() {
 		return this.id;
 	}

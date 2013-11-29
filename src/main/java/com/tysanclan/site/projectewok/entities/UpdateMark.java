@@ -17,6 +17,8 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -65,6 +67,10 @@ public class UpdateMark implements DomainObject {
 	 * Returns the ID of this UpdateMark
 	 */
 	@Override
+	public Serializable getDomainObjectId() {
+		return getId();
+	}
+
 	public Long getId() {
 		return this.id;
 	}

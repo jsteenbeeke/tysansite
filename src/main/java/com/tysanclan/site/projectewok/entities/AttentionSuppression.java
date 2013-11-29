@@ -53,7 +53,11 @@ public class AttentionSuppression extends BaseDomainObject {
 	private User user;
 
 	@Override
-	public Serializable getId() {
+	public Serializable getDomainObjectId() {
+		return getId();
+	}
+
+	public Long getId() {
 		return id;
 	}
 

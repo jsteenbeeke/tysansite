@@ -53,6 +53,10 @@ public class PaymentRequest extends BaseDomainObject {
 	private BigDecimal amount;
 
 	@Override
+	public Serializable getDomainObjectId() {
+		return getId();
+	}
+
 	public Serializable getId() {
 		return id;
 	}

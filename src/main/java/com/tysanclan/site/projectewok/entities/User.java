@@ -286,6 +286,10 @@ public class User extends BaseDomainObject implements DomainObject {
 	}
 
 	@Override
+	public Serializable getDomainObjectId() {
+		return getId();
+	}
+
 	public Long getId() {
 		return id;
 	}
