@@ -1,11 +1,8 @@
-package com.tysanclan.site.projectewok.rs;
-
-import java.net.HttpURLConnection;
+package com.tysanclan.site.projectewok.rs.services;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.WebApplicationException;
 
 import org.springframework.context.annotation.Scope;
 
@@ -15,6 +12,7 @@ import com.tysanclan.site.projectewok.entities.RestToken;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.RestTokenDAO;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
+import com.tysanclan.site.projectewok.rs.HttpStatusException;
 
 @Named
 @Scope("request")
@@ -36,16 +34,18 @@ public class RestTokenService implements TokenService {
 	@Override
 	public Token getToken(@QueryParam("u") String username,
 			@QueryParam("p") String password) {
-		User user = userDAO.load(username, password);
+		if (username != null && password != null) {
+			User user = userDAO.load(username, password);
 
-		if (user != null) {
-			RestToken token = new RestToken(user);
-			tokenDAO.save(token);
+			if (user != null) {
+				RestToken token = new RestToken(user);
+				tokenDAO.save(token);
 
-			return new Token(token.getUser().getUsername(), token.getHash(),
-					token.getExpires());
+				return new Token(token.getUser().getUsername(),
+						token.getHash(), token.getExpires());
+			}
 		}
 
-		throw new WebApplicationException(HttpURLConnection.HTTP_UNAUTHORIZED);
+		throw new HttpStatusException(401, "Invalid Username and/or Password");
 	}
 }

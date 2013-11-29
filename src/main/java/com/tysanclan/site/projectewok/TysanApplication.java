@@ -95,6 +95,7 @@ import com.tysanclan.site.projectewok.tasks.RegulationChangeResolutionTask;
 import com.tysanclan.site.projectewok.tasks.ResolveImpeachmentTask;
 import com.tysanclan.site.projectewok.tasks.ResolveRoleTransferTask;
 import com.tysanclan.site.projectewok.tasks.ResolveTruthsayerComplaintTask;
+import com.tysanclan.site.projectewok.tasks.RestTokenCleanupTask;
 import com.tysanclan.site.projectewok.tasks.SenateElectionChecker;
 import com.tysanclan.site.projectewok.tasks.SenateElectionResolutionTask;
 import com.tysanclan.site.projectewok.tasks.TruthsayerAcceptanceVoteResolver;
@@ -240,7 +241,8 @@ public class TysanApplication extends WebApplication {
 				new UntenabilityVoteResolutionTask(),
 				new AchievementProposalTask(), new WarnInactiveMembersTask(),
 				new ResolveRoleTransferTask(), new CheckSubscriptionsDueTask(),
-				new ResolveTruthsayerComplaintTask() };
+				new ResolveTruthsayerComplaintTask(),
+				new RestTokenCleanupTask() };
 
 		for (TysanTask task : tasks) {
 			TysanScheduler.getScheduler().scheduleTask(task);
