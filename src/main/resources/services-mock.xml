@@ -33,9 +33,7 @@
    <context:component-scan
       base-package="com.tysanclan.site.projectewok.beans.impl" />
       
-      <bean id="eventBroker" class="com.tysanclan.site.projectewok.beans.mock.MockEventBroker">
-      </bean>
-      
+	<bean id="eventBroker" class="com.tysanclan.site.projectewok.beans.mock.MockEventBroker" />      
       
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="mail.tysanclan.com"/>

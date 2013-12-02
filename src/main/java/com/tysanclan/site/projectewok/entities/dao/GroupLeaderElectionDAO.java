@@ -19,6 +19,7 @@ package com.tysanclan.site.projectewok.entities.dao;
 
 import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
 import com.tysanclan.site.projectewok.entities.GroupLeaderElection;
+import com.tysanclan.site.projectewok.entities.User;
 
 /**
  *
@@ -27,5 +28,7 @@ import com.tysanclan.site.projectewok.entities.GroupLeaderElection;
 public interface GroupLeaderElectionDAO extends EwokDAO<GroupLeaderElection> {
 
 	void flush();
+
+	void restartElectionsWithParticipant(User participant);
 
 }

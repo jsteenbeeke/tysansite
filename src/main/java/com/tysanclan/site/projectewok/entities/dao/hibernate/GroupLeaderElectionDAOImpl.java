@@ -17,6 +17,8 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
+import java.util.Date;
+
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Scope;
@@ -25,6 +27,7 @@ import org.springframework.stereotype.Component;
 import com.jeroensteenbeeke.hyperion.data.SearchFilter;
 import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
 import com.tysanclan.site.projectewok.entities.GroupLeaderElection;
+import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.filters.GroupLeaderElectionFilter;
 
 /**
@@ -55,6 +58,17 @@ class GroupLeaderElectionDAOImpl extends EwokHibernateDAO<GroupLeaderElection>
 		}
 
 		return criteria;
+	}
+
+	@Override
+	public void restartElectionsWithParticipant(User participant) {
+		for (GroupLeaderElection ge : findAll()) {
+			if (ge.getCandidates().contains(participant)) {
+				ge.getCandidates().clear();
+				ge.setStart(new Date());
+				update(ge);
+			}
+		}
 	}
 
 	@Override

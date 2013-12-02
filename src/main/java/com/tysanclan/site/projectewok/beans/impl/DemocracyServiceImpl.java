@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.naming.event.EventContext;
+
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -36,10 +38,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fortuityframework.core.annotation.ioc.OnFortuityEvent;
-import com.fortuityframework.core.dispatch.EventContext;
-import com.fortuityframework.core.dispatch.IEventBroker;
-import com.fortuityframework.core.event.Event;
+import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
 import com.tysanclan.site.projectewok.beans.MailService;
 import com.tysanclan.site.projectewok.entities.AcceptanceVote;
 import com.tysanclan.site.projectewok.entities.AcceptanceVoteVerdict;
@@ -93,7 +92,7 @@ import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
 import com.tysanclan.site.projectewok.event.GroupWithoutLeaderEvent;
 import com.tysanclan.site.projectewok.event.MemberStatusEvent;
 import com.tysanclan.site.projectewok.event.MembershipTerminatedEvent;
-import com.tysanclan.site.projectewok.event.TwitterEvent;
+import com.tysanclan.site.projectewok.event.RankChangeEvent;
 import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.HTMLSanitizer;
 import com.tysanclan.site.projectewok.util.MemberUtil;
@@ -171,13 +170,13 @@ class DemocracyServiceImpl implements
 	private com.tysanclan.site.projectewok.beans.NotificationService notificationService;
 
 	@Autowired
-	private IEventBroker broker;
+	private IEventDispatcher broker;
 
 	/**
 	 * @param broker
 	 *            the broker to set
 	 */
-	public void setBroker(IEventBroker broker) {
+	public void setBroker(IEventDispatcher broker) {
 		this.broker = broker;
 	}
 
@@ -421,59 +420,6 @@ class DemocracyServiceImpl implements
 
 	}
 
-	@OnFortuityEvent(MembershipTerminatedEvent.class)
-	@Transactional(propagation = Propagation.REQUIRED)
-	public void onMembershipTerminatedEventCheckSenate(
-			EventContext<MembershipTerminatedEvent> context) {
-		User user = context.getEvent().getSource();
-
-		SenateElection election = getCurrentSenateElection();
-		if (election != null) {
-			if (election.isNominationOpen()
-					&& election.getCandidates().contains(user)) {
-				election.getCandidates().remove(user);
-
-			} else if (election.getCandidates().contains(user)) {
-				// Reset election to nomination period
-				election.setStart(new Date());
-				for (CompoundVote vote : election.getVotes()) {
-					for (CompoundVoteChoice choice : vote.getChoices()) {
-						compoundVoteChoiceDAO.delete(choice);
-					}
-					compoundVoteDAO.delete(vote);
-
-					notificationService
-							.notifyUser(
-									vote.getCaster(),
-									"The Senate election was restarted due to a candidate's membership being terminated. You will need to vote again in a week");
-
-				}
-
-				logService
-						.logSystemAction("Democracy",
-								"Senate election restarted due to candidate membership termination");
-			}
-
-			senateElectionDAO.update(election);
-		}
-
-	}
-
-	@OnFortuityEvent(MembershipTerminatedEvent.class)
-	@Transactional(propagation = Propagation.REQUIRED)
-	public void onMembershipTerminatedEventCheckGroupElection(
-			EventContext<MembershipTerminatedEvent> context) {
-		User user = context.getEvent().getSource();
-
-		for (GroupLeaderElection ge : groupLeaderElectionDAO.findAll()) {
-			if (ge.getCandidates().contains(user)) {
-				ge.getCandidates().clear();
-				ge.setStart(new Date());
-				groupLeaderElectionDAO.update(ge);
-			}
-		}
-	}
-
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.DemocracyService#isEligibleChancellorCandidate(com.tysanclan.site.projectewok.entities.User)
 	 */
@@ -635,29 +581,6 @@ class DemocracyServiceImpl implements
 			election.setWinner(winners.iterator().next());
 			chancellorElectionDAO.update(election);
 
-			if (election.getWinner() != null) {
-				StringBuilder baseMessage = new StringBuilder();
-
-				baseMessage.append(election.getWinner().getUsername());
-				baseMessage.append(" was elected Chancellor");
-				baseMessage.append(" ");
-
-				String url = "https://www.tysanclan.com/members/"
-						+ election.getWinner().getId().toString();
-
-				Event<?> e;
-
-				if (url.length() + baseMessage.length() > 140) {
-					e = new TwitterEvent(baseMessage.toString().substring(0,
-							140 - url.length()));
-				} else {
-					baseMessage.append(url);
-					e = new TwitterEvent(baseMessage.toString());
-				}
-
-				broker.dispatchEvent(e);
-			}
-
 			UserFilter filter = new UserFilter();
 			filter.addRank(Rank.CHANCELLOR);
 
@@ -673,11 +596,13 @@ class DemocracyServiceImpl implements
 				}
 				chancellor.setRank(MemberUtil
 						.determineRankByJoinDate(chancellor.getJoinDate()));
+				broker.dispatchEvent(new RankChangeEvent(chancellor));
 				userDAO.update(chancellor);
 
 			}
 
 			election.getWinner().setRank(Rank.CHANCELLOR);
+			broker.dispatchEvent(new RankChangeEvent(election.getWinner()));
 			userDAO.update(election.getWinner());
 
 			if (chancellors.contains(election.getWinner())) {
@@ -841,8 +766,6 @@ class DemocracyServiceImpl implements
 				winnerString.append(winner.getUsername());
 			}
 
-			broker.dispatchEvent(new TwitterEvent(winnerString.toString()));
-
 			election.setWinners(winners);
 			senateElectionDAO.update(election);
 
@@ -943,6 +866,7 @@ class DemocracyServiceImpl implements
 				"Your Tysan Clan trial period is over", body);
 
 		user.setRank(accepted ? Rank.JUNIOR_MEMBER : Rank.FORUM);
+		broker.dispatchEvent(new RankChangeEvent(user));
 
 		if (accepted) {
 			notificationService.notifyUser(user, "You are now a Junior Member");
@@ -950,8 +874,6 @@ class DemocracyServiceImpl implements
 			broker.dispatchEvent(new MemberStatusEvent(
 					com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.MEMBERSHIP_GRANTED,
 					user));
-			broker.dispatchEvent(new TwitterEvent(user.getUsername()
-					+ " passed his acceptance vote"));
 
 		} else {
 			broker.dispatchEvent(new MemberStatusEvent(
@@ -1030,6 +952,7 @@ class DemocracyServiceImpl implements
 				applicant.setLoginCount(0);
 				applicant.setLastAction(new Date());
 				userDAO.update(applicant);
+				broker.dispatchEvent(new RankChangeEvent(applicant));
 			}
 
 			joinApplicationDAO.delete(application);
@@ -1050,8 +973,6 @@ class DemocracyServiceImpl implements
 				broker.dispatchEvent(new MemberStatusEvent(
 						com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.TRIAL_GRANTED,
 						applicant));
-				broker.dispatchEvent(new TwitterEvent("New member: "
-						+ applicant.getUsername()));
 			} else {
 				broker.dispatchEvent(new MemberStatusEvent(
 						com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.TRIAL_DENIED,

@@ -28,11 +28,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.w3c.dom.events.EventException;
 
-import com.fortuityframework.core.annotation.ioc.OnFortuityEvent;
-import com.fortuityframework.core.dispatch.EventContext;
-import com.fortuityframework.core.dispatch.EventException;
-import com.fortuityframework.core.dispatch.IEventBroker;
+import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
 import com.tysanclan.site.projectewok.entities.AllowedAccountType;
 import com.tysanclan.site.projectewok.entities.Diablo2Account;
 import com.tysanclan.site.projectewok.entities.Game;
@@ -59,7 +57,6 @@ import com.tysanclan.site.projectewok.entities.dao.filters.AllowedAccountTypeFil
 import com.tysanclan.site.projectewok.entities.dao.filters.GameFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.UserGameRealmFilter;
 import com.tysanclan.site.projectewok.event.GameDeletionEvent;
-import com.tysanclan.site.projectewok.event.MembershipTerminatedEvent;
 import com.tysanclan.site.projectewok.util.ImageUtil;
 import com.tysanclan.site.projectewok.util.MemberUtil;
 
@@ -107,18 +104,14 @@ class GameServiceImpl implements
 	private GroupDAO groupDAO;
 
 	@Autowired
-	private IEventBroker broker;
+	private IEventDispatcher dispatcher;
 
 	public void setGroupDAO(GroupDAO groupDAO) {
 		this.groupDAO = groupDAO;
 	}
 
-	/**
-	 * @param broker
-	 *            the broker to set
-	 */
-	public void setBroker(IEventBroker broker) {
-		this.broker = broker;
+	public void setDispatcher(IEventDispatcher dispatcher) {
+		this.dispatcher = dispatcher;
 	}
 
 	/**
@@ -571,7 +564,7 @@ class GameServiceImpl implements
 			logService.logUserAction(user, "Realm", "Realm was removed");
 
 			try {
-				broker.dispatchEvent(new GameDeletionEvent(game));
+				dispatcher.dispatchEvent(new GameDeletionEvent(game));
 			} catch (EventException e) {
 				log.error(e.getMessage(), e);
 			}
@@ -629,23 +622,6 @@ class GameServiceImpl implements
 									+ " no longer has any active realms and has therefore been removed");
 
 			gameDAO.delete(game);
-		}
-	}
-
-	@OnFortuityEvent(MembershipTerminatedEvent.class)
-	@Transactional(propagation = Propagation.REQUIRED)
-	public void onMembershipTerminatedEvent(
-			EventContext<MembershipTerminatedEvent> context) {
-		User user = context.getEvent().getSource();
-
-		GameFilter gfilter = new GameFilter();
-		gfilter.setCoordinator(user);
-
-		List<Game> games = gameDAO.findByFilter(gfilter);
-		for (Game game : games) {
-			game.setCoordinator(null);
-
-			gameDAO.update(game);
 		}
 	}
 

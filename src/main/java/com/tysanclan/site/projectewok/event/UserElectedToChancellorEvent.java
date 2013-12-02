@@ -17,14 +17,12 @@
  */
 package com.tysanclan.site.projectewok.event;
 
-import com.fortuityframework.core.event.jpa.JPAEntityEvent;
 import com.tysanclan.site.projectewok.entities.User;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public class UserElectedToChancellorEvent extends
-        JPAEntityEvent<User> {
+public class UserElectedToChancellorEvent extends SubjectEvent<User> {
 
 	public UserElectedToChancellorEvent(User entity) {
 		super(entity);

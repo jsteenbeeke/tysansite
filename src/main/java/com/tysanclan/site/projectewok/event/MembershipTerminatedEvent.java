@@ -17,14 +17,12 @@
  */
 package com.tysanclan.site.projectewok.event;
 
-import com.fortuityframework.core.event.jpa.JPAEntityEvent;
 import com.tysanclan.site.projectewok.entities.User;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public class MembershipTerminatedEvent extends
-        JPAEntityEvent<User> {
+public class MembershipTerminatedEvent extends SubjectEvent<User> {
 
 	public MembershipTerminatedEvent(User entity) {
 		super(entity);

@@ -29,16 +29,14 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.fortuityframework.core.annotation.ioc.OnFortuityEvent;
-import com.fortuityframework.core.dispatch.EventContext;
 import com.jeroensteenbeeke.hyperion.data.SearchFilter;
 import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
 import com.tysanclan.site.projectewok.entities.InactivityNotification;
 import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.event.LoginEvent;
-import com.tysanclan.site.projectewok.event.MembershipTerminatedEvent;
 import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.MemberUtil;
 
@@ -66,21 +64,9 @@ class InactivityNotificationDAOImpl extends
 		return criteria;
 	}
 
-	@OnFortuityEvent(MembershipTerminatedEvent.class)
-	public void deleteOnMembershipExpired(
-			EventContext<MembershipTerminatedEvent> context) {
-		MembershipTerminatedEvent event = context.getEvent();
-		User user = event.getSource();
-
-		String hql = "delete from InactivityNotification where user = :user";
-		getSession().createQuery(hql).setEntity("user", user).executeUpdate();
-	}
-
-	@OnFortuityEvent(LoginEvent.class)
-	public void deleteOnLogin(EventContext<LoginEvent> context) {
-		LoginEvent event = context.getEvent();
-		User user = event.getSource();
-
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public void deleteNotificationForUser(User user) {
 		String hql = "delete from InactivityNotification where user = :user";
 		getSession().createQuery(hql).setEntity("user", user).executeUpdate();
 	}

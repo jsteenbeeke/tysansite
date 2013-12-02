@@ -17,13 +17,12 @@
  */
 package com.tysanclan.site.projectewok.event;
 
-import com.fortuityframework.core.event.jpa.JPAEntityEvent;
 import com.tysanclan.site.projectewok.entities.User;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public class UserPromotedEvent extends JPAEntityEvent<User> {
+public class UserPromotedEvent extends SubjectEvent<User> {
 	public UserPromotedEvent(User entity) {
 		super(entity);
 	}

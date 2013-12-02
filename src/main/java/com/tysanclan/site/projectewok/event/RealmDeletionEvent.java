@@ -17,14 +17,12 @@
  */
 package com.tysanclan.site.projectewok.event;
 
-import com.fortuityframework.core.event.jpa.JPAEntityEvent;
 import com.tysanclan.site.projectewok.entities.Realm;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public class RealmDeletionEvent extends
-        JPAEntityEvent<Realm> {
+public class RealmDeletionEvent extends SubjectEvent<Realm> {
 
 	public RealmDeletionEvent(Realm entity) {
 		super(entity);

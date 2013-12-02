@@ -17,14 +17,12 @@
  */
 package com.tysanclan.site.projectewok.event;
 
-import com.fortuityframework.core.event.jpa.JPAEntityEvent;
 import com.tysanclan.site.projectewok.entities.Group;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public class GroupWithoutLeaderEvent extends
-        JPAEntityEvent<Group> {
+public class GroupWithoutLeaderEvent extends SubjectEvent<Group> {
 
 	public GroupWithoutLeaderEvent(Group entity) {
 		super(entity);

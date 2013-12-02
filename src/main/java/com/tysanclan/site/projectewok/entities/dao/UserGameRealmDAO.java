@@ -28,13 +28,14 @@ import com.tysanclan.site.projectewok.entities.UserGameRealm;
 /**
  * @author Jeroen Steenbeeke
  */
-public interface UserGameRealmDAO extends
-        EwokDAO<UserGameRealm> {
+public interface UserGameRealmDAO extends EwokDAO<UserGameRealm> {
 	List<User> getActiveUsers(Game game, Realm realm);
 
-	
 	int countActivePlayers(Realm realm);
 
-	
 	int countActivePlayers(Game game);
+
+	void removeUserGameRealmsByRealm(Realm realm);
+
+	void removeUserGameRealmsByGame(Game game);
 }

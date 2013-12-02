@@ -21,6 +21,7 @@ import java.util.List;
 
 import com.jeroensteenbeeke.hyperion.data.DAO;
 import com.tysanclan.site.projectewok.entities.InactivityNotification;
+import com.tysanclan.site.projectewok.entities.User;
 
 /**
  *
@@ -28,4 +29,6 @@ import com.tysanclan.site.projectewok.entities.InactivityNotification;
  */
 public interface InactivityNotificationDAO extends DAO<InactivityNotification> {
 	List<Long> getUnnotifiedInactiveUsers();
+
+	void deleteNotificationForUser(User user);
 }

@@ -17,13 +17,12 @@
  */
 package com.tysanclan.site.projectewok.event;
 
-import com.fortuityframework.core.event.jpa.JPAEntityEvent;
 import com.tysanclan.site.projectewok.entities.User;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public class LoginEvent extends JPAEntityEvent<User> {
+public class LoginEvent extends SubjectEvent<User> {
 
 	public LoginEvent(User user) {
 		super(user);

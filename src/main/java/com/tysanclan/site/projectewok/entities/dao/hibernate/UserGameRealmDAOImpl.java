@@ -26,8 +26,6 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.fortuityframework.core.annotation.ioc.OnFortuityEvent;
-import com.fortuityframework.core.dispatch.EventContext;
 import com.jeroensteenbeeke.hyperion.data.SearchFilter;
 import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
 import com.tysanclan.site.projectewok.entities.Game;
@@ -35,8 +33,6 @@ import com.tysanclan.site.projectewok.entities.Realm;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.UserGameRealm;
 import com.tysanclan.site.projectewok.entities.dao.filters.UserGameRealmFilter;
-import com.tysanclan.site.projectewok.event.GameDeletionEvent;
-import com.tysanclan.site.projectewok.event.RealmDeletionEvent;
 import com.tysanclan.site.projectewok.util.MemberUtil;
 
 /**
@@ -110,20 +106,19 @@ class UserGameRealmDAOImpl extends EwokHibernateDAO<UserGameRealm> implements
 		return ((Number) criteria.uniqueResult()).intValue();
 	}
 
-	@OnFortuityEvent(RealmDeletionEvent.class)
-	public void onRealmDelete(EventContext<RealmDeletionEvent> context) {
+	@Override
+	public void removeUserGameRealmsByRealm(Realm realm) {
 		Query query = getSession().createQuery(
 				"delete from UserGameRealm where realm = :realm");
-		query.setEntity("realm", context.getEvent().getSource());
+		query.setEntity("realm", realm);
 		query.executeUpdate();
 	}
 
-	@OnFortuityEvent(GameDeletionEvent.class)
-	public void onGameDelete(EventContext<GameDeletionEvent> context) {
+	@Override
+	public void removeUserGameRealmsByGame(Game game) {
 		Query query = getSession().createQuery(
 				"delete from UserGameRealm where game = :game");
-		query.setEntity("game", context.getEvent().getSource());
+		query.setEntity("game", game);
 		query.executeUpdate();
-
 	}
 }

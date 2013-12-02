@@ -49,6 +49,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.hibernate.annotations.AccessType;
@@ -58,10 +59,8 @@ import org.hibernate.annotations.Index;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.Where;
 
-import com.fortuityframework.core.annotation.jpa.FortuityProperty;
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 import com.jeroensteenbeeke.hyperion.data.DomainObject;
-import com.tysanclan.site.projectewok.event.RankChangeEvent;
 import com.tysanclan.site.projectewok.util.DateUtil;
 
 /**
@@ -125,9 +124,11 @@ public class User extends BaseDomainObject implements DomainObject {
 
 	@Column
 	@Enumerated(EnumType.STRING)
-	@FortuityProperty(onChange = RankChangeEvent.class)
 	@Index(name = "IDX_TUSER_RANK")
 	private Rank rank;
+
+	@Transient
+	private Rank oldRank;
 
 	@Column
 	@Type(type = "org.hibernate.type.StringClobType")
@@ -277,6 +278,11 @@ public class User extends BaseDomainObject implements DomainObject {
 		this.luckyScore = 0;
 	}
 
+	@Transient
+	public Rank getOldRank() {
+		return oldRank;
+	}
+
 	public String getCustomTitle() {
 		return customTitle;
 	}
@@ -350,6 +356,7 @@ public class User extends BaseDomainObject implements DomainObject {
 	}
 
 	public void setRank(Rank rank) {
+		this.oldRank = this.rank;
 		this.rank = rank;
 	}
 

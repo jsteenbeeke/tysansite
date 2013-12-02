@@ -17,19 +17,18 @@
  */
 package com.tysanclan.site.projectewok.event;
 
-import com.fortuityframework.core.event.jpa.JPAEntityEvent;
 import com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType;
 import com.tysanclan.site.projectewok.entities.User;
 
-public class MemberStatusEvent extends JPAEntityEvent<User> {
-	private ChangeType type;
+public class MemberStatusEvent extends SubjectEvent<User> {
+	private final ChangeType type;
 
 	public MemberStatusEvent(ChangeType type, User user) {
 		super(user);
 		this.type = type;
 	}
 
-	public ChangeType getType() {
+	public final ChangeType getType() {
 		return type;
 	}
 

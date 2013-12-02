@@ -27,11 +27,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.w3c.dom.events.EventException;
 
-import com.fortuityframework.core.annotation.ioc.OnFortuityEvent;
-import com.fortuityframework.core.dispatch.EventContext;
-import com.fortuityframework.core.dispatch.EventException;
-import com.fortuityframework.core.dispatch.IEventBroker;
+import com.google.common.collect.Lists;
+import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
 import com.tysanclan.site.projectewok.entities.Committee;
 import com.tysanclan.site.projectewok.entities.Game;
 import com.tysanclan.site.projectewok.entities.GamingGroup;
@@ -51,7 +50,6 @@ import com.tysanclan.site.projectewok.entities.dao.filters.GroupCreationRequestF
 import com.tysanclan.site.projectewok.entities.dao.filters.GroupForumFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
 import com.tysanclan.site.projectewok.event.GroupWithoutLeaderEvent;
-import com.tysanclan.site.projectewok.event.MembershipTerminatedEvent;
 import com.tysanclan.site.projectewok.util.HTMLSanitizer;
 
 /**
@@ -65,7 +63,7 @@ class GroupServiceImpl implements
 			.getLogger(GroupServiceImpl.class);
 
 	@Autowired
-	private IEventBroker eventBroker;
+	private IEventDispatcher dispatcher;
 
 	@Autowired
 	private GroupDAO groupDAO;
@@ -90,6 +88,10 @@ class GroupServiceImpl implements
 		this.notificationService = notificationService;
 	}
 
+	public void setDispatcher(IEventDispatcher dispatcher) {
+		this.dispatcher = dispatcher;
+	}
+
 	/**
 	 * @param groupForumDAO
 	 *            the groupForumDAO to set
@@ -106,24 +108,9 @@ class GroupServiceImpl implements
 		this.groupDAO = groupDAO;
 	}
 
-	public void setEventBroker(IEventBroker eventBroker) {
-		this.eventBroker = eventBroker;
-	}
-
-	@OnFortuityEvent(MembershipTerminatedEvent.class)
 	@Transactional(propagation = Propagation.REQUIRED)
-	public void onMembershipTerminatedGroupOperations(
-			EventContext<MembershipTerminatedEvent> context) {
-		User user = context.getEvent().getSource();
-
-		clearGroupLeaderStatus(user, context);
-		clearRequestedGroups(user);
-		clearGroupMemberships(user);
-
-	}
-
-	@Transactional(propagation = Propagation.REQUIRED)
-	private void clearRequestedGroups(User user) {
+	@Override
+	public void clearRequestedGroups(User user) {
 		GroupCreationRequestFilter filter = new GroupCreationRequestFilter();
 		filter.setRequester(user);
 
@@ -136,21 +123,26 @@ class GroupServiceImpl implements
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	private void clearGroupLeaderStatus(User _user, EventContext<?> ctx) {
+	@Override
+	public List<Group> clearGroupLeaderStatus(User _user) {
+		List<Group> leaderless = Lists.newArrayList();
 		List<Group> groups = _user.getGroups();
 		for (Group group : groups) {
 			if (group.getLeader() != null && group.getLeader().equals(_user)) {
 				group.setLeader(null);
 				groupDAO.update(group);
 
-				ctx.triggerEvent(new GroupWithoutLeaderEvent(group));
+				leaderless.add(group);
 
 			}
 		}
+
+		return leaderless;
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	private void clearGroupMemberships(User user) {
+	@Override
+	public void clearGroupMemberships(User user) {
 		for (Group group : groupDAO.findAll()) {
 			if (group.getAppliedMembers().contains(user)) {
 				group.getAppliedMembers().remove(user);
@@ -372,7 +364,7 @@ class GroupServiceImpl implements
 			}
 			if (size > 1 && wasLeader) {
 				try {
-					eventBroker
+					dispatcher
 							.dispatchEvent(new GroupWithoutLeaderEvent(group));
 				} catch (EventException e) {
 					logger.error(e.getMessage(), e);

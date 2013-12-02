@@ -17,18 +17,13 @@
  */
 package com.tysanclan.site.projectewok.event;
 
-import com.fortuityframework.core.event.jpa.JPAPreviousValueAwarePropertyChangeEvent;
 import com.tysanclan.site.projectewok.entities.User;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public class RankChangeEvent extends
-        JPAPreviousValueAwarePropertyChangeEvent<User> {
-
-	public RankChangeEvent(User entity,
-	        String propertyName, Object newValue,
-	        Object oldValue) {
-		super(entity, propertyName, newValue, oldValue);
+public class RankChangeEvent extends SubjectEvent<User> {
+	public RankChangeEvent(User entity) {
+		super(entity);
 	}
 }

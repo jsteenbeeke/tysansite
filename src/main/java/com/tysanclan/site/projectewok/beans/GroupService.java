@@ -17,6 +17,8 @@
  */
 package com.tysanclan.site.projectewok.beans;
 
+import java.util.List;
+
 import com.tysanclan.site.projectewok.entities.Committee;
 import com.tysanclan.site.projectewok.entities.Game;
 import com.tysanclan.site.projectewok.entities.GamingGroup;
@@ -82,4 +84,10 @@ public interface GroupService {
 	public void setGalleryAccess(Group group, boolean allow);
 
 	public void removeFromGroup(User modelObject, Group object);
+
+	void clearRequestedGroups(User user);
+
+	List<Group> clearGroupLeaderStatus(User user);
+
+	void clearGroupMemberships(User user);
 }

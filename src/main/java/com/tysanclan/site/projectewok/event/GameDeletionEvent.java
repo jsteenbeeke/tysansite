@@ -17,13 +17,12 @@
  */
 package com.tysanclan.site.projectewok.event;
 
-import com.fortuityframework.core.event.jpa.JPAEntityEvent;
 import com.tysanclan.site.projectewok.entities.Game;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public class GameDeletionEvent extends JPAEntityEvent<Game> {
+public class GameDeletionEvent extends SubjectEvent<Game> {
 
 	public GameDeletionEvent(Game entity) {
 		super(entity);

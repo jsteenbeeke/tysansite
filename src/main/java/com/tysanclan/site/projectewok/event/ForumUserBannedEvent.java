@@ -17,14 +17,12 @@
  */
 package com.tysanclan.site.projectewok.event;
 
-import com.fortuityframework.core.event.jpa.JPAEntityEvent;
 import com.tysanclan.site.projectewok.entities.User;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public class ForumUserBannedEvent extends
-        JPAEntityEvent<User> {
+public class ForumUserBannedEvent extends SubjectEvent<User> {
 
 	public ForumUserBannedEvent(User entity) {
 		super(entity);

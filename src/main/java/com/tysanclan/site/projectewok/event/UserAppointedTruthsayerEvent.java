@@ -17,14 +17,12 @@
  */
 package com.tysanclan.site.projectewok.event;
 
-import com.fortuityframework.core.event.jpa.JPAEntityEvent;
 import com.tysanclan.site.projectewok.entities.User;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public class UserAppointedTruthsayerEvent extends
-        JPAEntityEvent<User> {
+public class UserAppointedTruthsayerEvent extends SubjectEvent<User> {
 
 	public UserAppointedTruthsayerEvent(User entity) {
 		super(entity);

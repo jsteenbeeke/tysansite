@@ -33,10 +33,10 @@
 		<cxf.version>2.7.7</cxf.version>
 		<dbcp.version>1.4</dbcp.version>
 		<ehcache.version>2.7.4</ehcache.version>
-		<fortuity.version>1.0.7</fortuity.version>
 		<guava.version>15.0</guava.version>
 		<h2.version>1.3.173</h2.version>
 		<hibernate.version>4.2.0.Final</hibernate.version>
+		<hyperion.events.version>1.0-SNAPSHOT</hyperion.events.version>
 		<jetty.version>8.1.13.v20130916</jetty.version>
 		<java.mail.version>1.4.7</java.mail.version>
 		<java.ws.version>2.2.11</java.ws.version>
@@ -266,19 +266,9 @@
 
 		<!-- Event dependencies -->
 		<dependency>
-			<groupId>com.fortuityframework</groupId>
-			<artifactId>fortuity-spring</artifactId>
-			<version>${fortuity.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fortuityframework</groupId>
-			<artifactId>fortuity-hibernate</artifactId>
-			<version>${fortuity.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fortuityframework</groupId>
-			<artifactId>fortuity-wicket</artifactId>
-			<version>${fortuity.version}</version>
+			<groupId>com.jeroensteenbeeke.hyperion</groupId>
+        	<artifactId>events</artifactId>
+        	<version>${hyperion.events.version}</version>
 		</dependency>
 
 
