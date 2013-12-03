@@ -31,8 +31,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fortuityframework.core.annotation.ioc.OnFortuityEvent;
-import com.fortuityframework.core.dispatch.EventContext;
+import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
 import com.tysanclan.site.projectewok.entities.Activation;
 import com.tysanclan.site.projectewok.entities.EmailChangeConfirmation;
 import com.tysanclan.site.projectewok.entities.InactivityNotification;
@@ -48,7 +47,7 @@ import com.tysanclan.site.projectewok.entities.dao.filters.ActivationFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.EmailChangeConfirmationFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.PasswordRequestFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
-import com.tysanclan.site.projectewok.event.LoginEvent;
+import com.tysanclan.site.projectewok.event.RankChangeEvent;
 import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.HTMLSanitizer;
 import com.tysanclan.site.projectewok.util.MemberUtil;
@@ -86,6 +85,13 @@ class UserServiceImpl implements
 
 	@Autowired
 	private InactivityNotificationDAO inactivityDAO;
+
+	@Autowired
+	private IEventDispatcher dispatcher;
+
+	public void setDispatcher(IEventDispatcher dispatcher) {
+		this.dispatcher = dispatcher;
+	}
 
 	public void setInactivityDAO(InactivityNotificationDAO inactivityDAO) {
 		this.inactivityDAO = inactivityDAO;
@@ -363,17 +369,6 @@ class UserServiceImpl implements
 		return request;
 	}
 
-	@Transactional(propagation = Propagation.REQUIRED)
-	@OnFortuityEvent(LoginEvent.class)
-	public void onLoginEvent(EventContext<LoginEvent> context) {
-		LoginEvent event = context.getEvent();
-		User user = event.getSource();
-		if (MemberUtil.isMember(user)) {
-			user.setLoginCount(user.getLoginCount() + 1);
-			userDAO.update(user);
-		}
-	}
-
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.UserService#processPasswordReset(com.tysanclan.site.projectewok.entities.PasswordRequest,
 	 *      java.lang.String)
@@ -637,6 +632,7 @@ class UserServiceImpl implements
 		User _user = userDAO.load(user.getId());
 		if (_user.getRank() == Rank.FORUM) {
 			_user.setRank(Rank.BANNED);
+			dispatcher.dispatchEvent(new RankChangeEvent(user));
 			userDAO.update(_user);
 
 			logService.logUserAction(banner, "Forums",
@@ -657,6 +653,7 @@ class UserServiceImpl implements
 		User _user = userDAO.load(user.getId());
 		if (_user.getRank() == Rank.BANNED) {
 			_user.setRank(Rank.FORUM);
+			dispatcher.dispatchEvent(new RankChangeEvent(_user));
 			userDAO.update(_user);
 
 			logService.logUserAction(unbanner, "Forums",

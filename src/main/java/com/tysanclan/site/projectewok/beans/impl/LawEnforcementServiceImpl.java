@@ -33,7 +33,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fortuityframework.core.dispatch.IEventBroker;
+import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
 import com.tysanclan.site.projectewok.entities.ForumThread;
 import com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType;
 import com.tysanclan.site.projectewok.entities.PenaltyPoint;
@@ -58,6 +58,7 @@ import com.tysanclan.site.projectewok.entities.dao.filters.TruthsayerComplaintFi
 import com.tysanclan.site.projectewok.entities.dao.filters.TruthsayerNominationFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
 import com.tysanclan.site.projectewok.event.MemberStatusEvent;
+import com.tysanclan.site.projectewok.event.RankChangeEvent;
 import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.HTMLSanitizer;
 import com.tysanclan.site.projectewok.util.MemberUtil;
@@ -97,7 +98,7 @@ class LawEnforcementServiceImpl implements
 	private PenaltyPointDAO penaltyPointDAO;
 
 	@Autowired
-	private IEventBroker eventBroker;
+	private IEventDispatcher dispatcher;
 
 	@Autowired
 	private TruthsayerComplaintDAO truthsayerComplaintDAO;
@@ -347,6 +348,7 @@ class LawEnforcementServiceImpl implements
 
 		if (verdict) {
 			user.setRank(Rank.TRUTHSAYER);
+			dispatcher.dispatchEvent(new RankChangeEvent(user));
 
 			userDAO.update(user);
 
@@ -536,6 +538,8 @@ class LawEnforcementServiceImpl implements
 					trial.getAccused().setRank(
 							MemberUtil.determineRankByJoinDate(trial
 									.getAccused().getJoinDate()));
+					dispatcher.dispatchEvent(new RankChangeEvent(trial
+							.getAccused()));
 					userDAO.update(trial.getAccused());
 					logService
 							.logUserAction(trial.getJudge(), "Justice",
@@ -548,6 +552,8 @@ class LawEnforcementServiceImpl implements
 					break;
 				case TRUTHSAYER:
 					trial.getAccused().setRank(Rank.FORUM);
+					dispatcher.dispatchEvent(new RankChangeEvent(trial
+							.getAccused()));
 					userDAO.update(trial.getAccused());
 					logService
 							.logUserAction(trial.getJudge(), "Justice",
@@ -589,7 +595,7 @@ class LawEnforcementServiceImpl implements
 
 				membershipService.terminateMembership(user);
 
-				eventBroker.dispatchEvent(new MemberStatusEvent(
+				dispatcher.dispatchEvent(new MemberStatusEvent(
 						ChangeType.FORCED_OUT, user));
 
 				userService.banUser(null, user);
@@ -741,6 +747,7 @@ class LawEnforcementServiceImpl implements
 
 		if (percentage >= 66) {
 			user.setRank(MemberUtil.determineRankByJoinDate(user.getJoinDate()));
+			dispatcher.dispatchEvent(new RankChangeEvent(user));
 			logService.logUserAction(user, "Justice",
 					"Has been stripped of Truthsayer privileges by the Senate ("
 							+ percentage + "%)");

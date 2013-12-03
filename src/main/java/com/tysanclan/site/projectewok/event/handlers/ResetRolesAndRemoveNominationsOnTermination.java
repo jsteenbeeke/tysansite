@@ -1,25 +1,30 @@
 package com.tysanclan.site.projectewok.event.handlers;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.jeroensteenbeeke.hyperion.events.EventHandler;
 import com.jeroensteenbeeke.hyperion.events.EventResult;
-import com.tysanclan.site.projectewok.beans.DemocracyService;
+import com.tysanclan.site.projectewok.beans.RoleService;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.event.MembershipTerminatedEvent;
 
-public class CheckChancellorElectionOnMembershipTermination implements
+public class ResetRolesAndRemoveNominationsOnTermination implements
 		EventHandler<MembershipTerminatedEvent> {
-	private DemocracyService democracyService;
+	@Autowired
+	private RoleService roleService;
 
-	public void setDemocracyService(DemocracyService democracyService) {
-		this.democracyService = democracyService;
+	public void setRoleService(RoleService roleService) {
+		this.roleService = roleService;
 	}
 
 	@Override
 	public EventResult onEvent(MembershipTerminatedEvent event) {
 		User user = event.getSubject();
 
-		democracyService.resetChancellorElectionIfUserIsParticipating(user);
+		roleService.removeRoles(user);
+		roleService.removeTransfers(user);
 
 		return EventResult.ok();
 	}
+
 }

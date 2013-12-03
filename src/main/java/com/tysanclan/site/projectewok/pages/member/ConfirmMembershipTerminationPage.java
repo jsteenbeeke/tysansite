@@ -20,7 +20,7 @@ package com.tysanclan.site.projectewok.pages.member;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.fortuityframework.core.dispatch.IEventBroker;
+import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
 import com.tysanclan.site.projectewok.beans.MembershipService;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.event.MemberStatusEvent;
@@ -43,7 +43,7 @@ public class ConfirmMembershipTerminationPage extends
 			private MembershipService membershipService;
 
 			@SpringBean
-			private IEventBroker broker;
+			private IEventDispatcher dispatcher;
 
 			/**
 			 * @see org.apache.wicket.markup.html.form.Form#onSubmit()
@@ -52,9 +52,10 @@ public class ConfirmMembershipTerminationPage extends
 			protected void onSubmit() {
 				membershipService.terminateMembership(getUser());
 
-				broker.dispatchEvent(new MemberStatusEvent(
-						com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.LEFT_VOLUNTARILY,
-						getUser()));
+				dispatcher
+						.dispatchEvent(new MemberStatusEvent(
+								com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.LEFT_VOLUNTARILY,
+								getUser()));
 
 				setResponsePage(new OverviewPage());
 			}

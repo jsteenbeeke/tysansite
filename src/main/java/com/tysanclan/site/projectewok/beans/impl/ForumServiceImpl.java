@@ -32,7 +32,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fortuityframework.core.dispatch.IEventBroker;
 import com.tysanclan.site.projectewok.entities.Event;
 import com.tysanclan.site.projectewok.entities.Forum;
 import com.tysanclan.site.projectewok.entities.ForumCategory;
@@ -57,7 +56,6 @@ import com.tysanclan.site.projectewok.entities.dao.UnreadForumPostDAO;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import com.tysanclan.site.projectewok.entities.dao.filters.ForumFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.ForumPostFilter;
-import com.tysanclan.site.projectewok.event.TwitterEvent;
 import com.tysanclan.site.projectewok.util.HTMLSanitizer;
 import com.tysanclan.site.projectewok.util.MemberUtil;
 import com.tysanclan.site.projectewok.util.StringUtil;
@@ -86,8 +84,6 @@ class ForumServiceImpl implements
 	private GroupDAO groupDAO;
 	@Autowired
 	private TrialDAO trialDAO;
-	@Autowired
-	private IEventBroker eventBroker;
 
 	@Autowired
 	private UserDAO userDAO;
@@ -123,10 +119,6 @@ class ForumServiceImpl implements
 	public void setLogService(
 			com.tysanclan.site.projectewok.beans.LogService logService) {
 		this.logService = logService;
-	}
-
-	public void setEventBroker(IEventBroker eventBroker) {
-		this.eventBroker = eventBroker;
 	}
 
 	public ForumServiceImpl() {
@@ -196,26 +188,6 @@ class ForumServiceImpl implements
 		forumDAO.update(f2);
 		forumThreadDAO.update(nt);
 		forumPostDAO.save(post);
-
-		if (f2.equals(getNewsForum())) {
-			StringBuilder messageBuilder = new StringBuilder();
-
-			String url = "https://www.tysanclan.com/threads/"
-					+ Long.toString(nt.getId()) + "/1";
-
-			int maxlen = 140 - url.length() - 1;
-
-			if (title.length() > maxlen) {
-				messageBuilder.append(title.substring(0, maxlen));
-			} else {
-				messageBuilder.append(title);
-			}
-			messageBuilder.append(" ");
-			messageBuilder.append(url);
-
-			eventBroker.dispatchEvent(new TwitterEvent(messageBuilder
-					.toString()));
-		}
 
 		return nt;
 	}
@@ -1142,7 +1114,8 @@ class ForumServiceImpl implements
 			Forum forum = thread.getForum();
 
 			if (forum.canView(user)) {
-				if (post.getPoster() == null || !(post.getPoster().equals(user))) {
+				if (post.getPoster() == null
+						|| !(post.getPoster().equals(user))) {
 					UnreadForumPost upost = new UnreadForumPost(user, post);
 					unreadForumPostDAO.save(upost);
 					user.getUnreadForumPosts().add(upost);

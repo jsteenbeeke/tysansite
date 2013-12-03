@@ -175,4 +175,10 @@ public interface DemocracyService {
 	void resolveRegulationVotes();
 
 	void resolveUntenabilityVotes();
+
+	void removeAcceptanceVotes(User user);
+
+	void resetChancellorElectionIfUserIsParticipating(User user);
+
+	void resetSenateElectionIfUserIsParticipating(User user);
 }

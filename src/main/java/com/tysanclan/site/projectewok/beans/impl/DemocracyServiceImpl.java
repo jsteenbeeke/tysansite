@@ -29,8 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.naming.event.EventContext;
-
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -89,9 +87,7 @@ import com.tysanclan.site.projectewok.entities.dao.filters.RegulationChangeFilte
 import com.tysanclan.site.projectewok.entities.dao.filters.SenateElectionFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.UntenabilityVoteFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
-import com.tysanclan.site.projectewok.event.GroupWithoutLeaderEvent;
 import com.tysanclan.site.projectewok.event.MemberStatusEvent;
-import com.tysanclan.site.projectewok.event.MembershipTerminatedEvent;
 import com.tysanclan.site.projectewok.event.RankChangeEvent;
 import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.HTMLSanitizer;
@@ -170,14 +166,10 @@ class DemocracyServiceImpl implements
 	private com.tysanclan.site.projectewok.beans.NotificationService notificationService;
 
 	@Autowired
-	private IEventDispatcher broker;
+	private IEventDispatcher dispatcher;
 
-	/**
-	 * @param broker
-	 *            the broker to set
-	 */
-	public void setBroker(IEventDispatcher broker) {
-		this.broker = broker;
+	public void setDispatcher(IEventDispatcher dispatcher) {
+		this.dispatcher = dispatcher;
 	}
 
 	/**
@@ -340,21 +332,9 @@ class DemocracyServiceImpl implements
 		this.untenabilityVoteDAO = untenabilityVoteDAO;
 	}
 
-	@OnFortuityEvent(GroupWithoutLeaderEvent.class)
 	@Transactional(propagation = Propagation.REQUIRED)
-	public void onGroupWithoutLeaderEvent(
-			EventContext<GroupWithoutLeaderEvent> context) {
-		Group group = context.getEvent().getSource();
-
-		createGroupLeaderElection(group);
-	}
-
-	@OnFortuityEvent(MembershipTerminatedEvent.class)
-	@Transactional(propagation = Propagation.REQUIRED)
-	public void onMembershipTerminatedCheckAcceptance(
-			EventContext<MembershipTerminatedEvent> context) {
-		User user = context.getEvent().getSource();
-
+	@Override
+	public void removeAcceptanceVotes(User user) {
 		AcceptanceVoteFilter filter = new AcceptanceVoteFilter();
 		filter.setTrialMember(user);
 
@@ -364,30 +344,41 @@ class DemocracyServiceImpl implements
 		}
 	}
 
-	@OnFortuityEvent(MembershipTerminatedEvent.class)
-	@Transactional(propagation = Propagation.REQUIRED)
-	public void onMembershipTerminatedUnsetMentor(
-			EventContext<MembershipTerminatedEvent> context) {
-		User user = context.getEvent().getSource();
+	@Override
+	public void resetSenateElectionIfUserIsParticipating(User user) {
+		SenateElection election = getCurrentSenateElection();
+		if (election != null) {
+			if (election.isNominationOpen()
+					&& election.getCandidates().contains(user)) {
+				election.getCandidates().remove(user);
 
-		if (user.getMentor() != null) {
-			user.getMentor().getPupils().remove(user);
+			} else if (election.getCandidates().contains(user)) {
+				// Reset election to nomination period
+				election.setStart(new Date());
+				for (CompoundVote vote : election.getVotes()) {
+					for (CompoundVoteChoice choice : vote.getChoices()) {
+						compoundVoteChoiceDAO.delete(choice);
+					}
+					compoundVoteDAO.delete(vote);
 
-			userDAO.update(user.getMentor());
+					notificationService
+							.notifyUser(
+									vote.getCaster(),
+									"The Senate election was restarted due to a candidate's membership being terminated. You will need to vote again in a week");
 
-			user.setMentor(null);
+				}
 
-			userDAO.update(user);
+				logService
+						.logSystemAction("Democracy",
+								"Senate election restarted due to candidate membership termination");
+			}
 
+			senateElectionDAO.update(election);
 		}
 	}
 
-	@OnFortuityEvent(MembershipTerminatedEvent.class)
-	@Transactional(propagation = Propagation.REQUIRED)
-	public void onMembershipTerminatedEventCheckChancellor(
-			EventContext<MembershipTerminatedEvent> context) {
-		User user = context.getEvent().getSource();
-
+	@Override
+	public void resetChancellorElectionIfUserIsParticipating(User user) {
 		ChancellorElection election = getCurrentChancellorElection();
 		if (election != null) {
 			if (election.isNominationOpen()
@@ -417,7 +408,6 @@ class DemocracyServiceImpl implements
 
 			chancellorElectionDAO.update(election);
 		}
-
 	}
 
 	/**
@@ -596,13 +586,13 @@ class DemocracyServiceImpl implements
 				}
 				chancellor.setRank(MemberUtil
 						.determineRankByJoinDate(chancellor.getJoinDate()));
-				broker.dispatchEvent(new RankChangeEvent(chancellor));
+				dispatcher.dispatchEvent(new RankChangeEvent(chancellor));
 				userDAO.update(chancellor);
 
 			}
 
 			election.getWinner().setRank(Rank.CHANCELLOR);
-			broker.dispatchEvent(new RankChangeEvent(election.getWinner()));
+			dispatcher.dispatchEvent(new RankChangeEvent(election.getWinner()));
 			userDAO.update(election.getWinner());
 
 			if (chancellors.contains(election.getWinner())) {
@@ -776,6 +766,7 @@ class DemocracyServiceImpl implements
 			for (User senator : senators) {
 				senator.setRank(MemberUtil.determineRankByJoinDate(senator
 						.getJoinDate()));
+				dispatcher.dispatchEvent(new RankChangeEvent(senator));
 				if (!winners.contains(senator)) {
 					logService.logUserAction(senator, "Election",
 							"Has not been reelected as Senator, and has assumed the rank of "
@@ -794,6 +785,7 @@ class DemocracyServiceImpl implements
 
 			for (User senator : election.getWinners()) {
 				senator.setRank(Rank.SENATOR);
+				dispatcher.dispatchEvent(new RankChangeEvent(senator));
 				userDAO.update(senator);
 
 				if (!senators.contains(senator)) {
@@ -866,19 +858,21 @@ class DemocracyServiceImpl implements
 				"Your Tysan Clan trial period is over", body);
 
 		user.setRank(accepted ? Rank.JUNIOR_MEMBER : Rank.FORUM);
-		broker.dispatchEvent(new RankChangeEvent(user));
+		dispatcher.dispatchEvent(new RankChangeEvent(user));
 
 		if (accepted) {
 			notificationService.notifyUser(user, "You are now a Junior Member");
 
-			broker.dispatchEvent(new MemberStatusEvent(
-					com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.MEMBERSHIP_GRANTED,
-					user));
+			dispatcher
+					.dispatchEvent(new MemberStatusEvent(
+							com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.MEMBERSHIP_GRANTED,
+							user));
 
 		} else {
-			broker.dispatchEvent(new MemberStatusEvent(
-					com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.MEMBERSHIP_DENIED,
-					user));
+			dispatcher
+					.dispatchEvent(new MemberStatusEvent(
+							com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.MEMBERSHIP_DENIED,
+							user));
 		}
 
 		user.setMentor(null);
@@ -951,8 +945,9 @@ class DemocracyServiceImpl implements
 				applicant.setJoinDate(new Date());
 				applicant.setLoginCount(0);
 				applicant.setLastAction(new Date());
+				dispatcher.dispatchEvent(new RankChangeEvent(applicant));
 				userDAO.update(applicant);
-				broker.dispatchEvent(new RankChangeEvent(applicant));
+
 			}
 
 			joinApplicationDAO.delete(application);
@@ -970,13 +965,15 @@ class DemocracyServiceImpl implements
 				notificationService.notifyUser(applicant,
 						"You are now a Trial Member");
 
-				broker.dispatchEvent(new MemberStatusEvent(
-						com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.TRIAL_GRANTED,
-						applicant));
+				dispatcher
+						.dispatchEvent(new MemberStatusEvent(
+								com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.TRIAL_GRANTED,
+								applicant));
 			} else {
-				broker.dispatchEvent(new MemberStatusEvent(
-						com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.TRIAL_DENIED,
-						applicant));
+				dispatcher
+						.dispatchEvent(new MemberStatusEvent(
+								com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.TRIAL_DENIED,
+								applicant));
 			}
 		}
 
@@ -1434,6 +1431,7 @@ class DemocracyServiceImpl implements
 
 					chancellor.setRank(MemberUtil
 							.determineRankByJoinDate(chancellor.getJoinDate()));
+					dispatcher.dispatchEvent(new RankChangeEvent(chancellor));
 					userDAO.update(chancellor);
 				}
 
@@ -1451,6 +1449,7 @@ class DemocracyServiceImpl implements
 		User user = userDAO.load(chancellor.getId());
 
 		user.setRank(MemberUtil.determineRankByJoinDate(user.getJoinDate()));
+		dispatcher.dispatchEvent(new RankChangeEvent(user));
 
 		logService.logUserAction(user, "Democracy",
 				"User has stepped down as Chancellor");
@@ -1468,6 +1467,7 @@ class DemocracyServiceImpl implements
 		User user = userDAO.load(senator.getId());
 
 		user.setRank(MemberUtil.determineRankByJoinDate(user.getJoinDate()));
+		dispatcher.dispatchEvent(new RankChangeEvent(user));
 
 		logService.logUserAction(user, "Democracy",
 				"User has stepped down as Senator");
@@ -1484,6 +1484,7 @@ class DemocracyServiceImpl implements
 		User user = userDAO.load(truthsayer.getId());
 
 		user.setRank(MemberUtil.determineRankByJoinDate(user.getJoinDate()));
+		dispatcher.dispatchEvent(new RankChangeEvent(user));
 
 		logService.logUserAction(user, "Democracy",
 				"User has stepped down as Truthsayer");

@@ -22,18 +22,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fortuityframework.core.annotation.ioc.OnFortuityEvent;
-import com.fortuityframework.core.dispatch.EventContext;
-import com.fortuityframework.core.dispatch.IEventBroker;
 import com.google.common.collect.Sets;
+import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
 import com.tysanclan.site.projectewok.beans.ForumService;
 import com.tysanclan.site.projectewok.entities.Forum;
 import com.tysanclan.site.projectewok.entities.ForumThread;
@@ -49,16 +45,9 @@ import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import com.tysanclan.site.projectewok.entities.dao.filters.JoinApplicationFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.JoinVerdictFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
-import com.tysanclan.site.projectewok.event.ForumUserBannedEvent;
 import com.tysanclan.site.projectewok.event.LoginEvent;
 import com.tysanclan.site.projectewok.event.MemberStatusEvent;
-import com.tysanclan.site.projectewok.event.MembershipTerminatedEvent;
 import com.tysanclan.site.projectewok.event.RankChangeEvent;
-import com.tysanclan.site.projectewok.event.UserAppointedTruthsayerEvent;
-import com.tysanclan.site.projectewok.event.UserElectedToChancellorEvent;
-import com.tysanclan.site.projectewok.event.UserElectedToSenateEvent;
-import com.tysanclan.site.projectewok.event.UserPromotedEvent;
-import com.tysanclan.site.projectewok.event.UserUnbannedEvent;
 import com.tysanclan.site.projectewok.util.MemberUtil;
 
 /**
@@ -70,11 +59,8 @@ class MembershipServiceImpl implements
 		com.tysanclan.site.projectewok.beans.MembershipService {
 	private static final Random random = new Random();
 
-	private static final Logger log = LoggerFactory
-			.getLogger(MembershipServiceImpl.class);
-
 	@Autowired
-	private IEventBroker broker;
+	private IEventDispatcher dispatcher;
 
 	@Autowired
 	private UserDAO userDAO;
@@ -111,10 +97,6 @@ class MembershipServiceImpl implements
 	public void setUserService(
 			com.tysanclan.site.projectewok.beans.UserService userService) {
 		this.userService = userService;
-	}
-
-	public void setBroker(IEventBroker broker) {
-		this.broker = broker;
 	}
 
 	public void setNotificationService(
@@ -172,48 +154,8 @@ class MembershipServiceImpl implements
 		this.joinVerdictDAO = joinVerdictDAO;
 	}
 
-	@OnFortuityEvent(RankChangeEvent.class)
-	public void onRankChanged(EventContext<RankChangeEvent> context) {
-		RankChangeEvent event = context.getEvent();
-
-		User user = event.getSource();
-
-		Rank oldRank = (Rank) event.getOldValue();
-		Rank newRank = (Rank) event.getNewValue();
-
-		if (newRank == Rank.FORUM || newRank == Rank.BANNED) {
-			if (oldRank == Rank.FORUM && newRank == Rank.BANNED) {
-				// Forum user was banned from forum
-				context.triggerEvent(new ForumUserBannedEvent(user));
-			} else if (oldRank == Rank.BANNED && newRank == Rank.FORUM) {
-				// User was unbanned
-				context.triggerEvent(new UserUnbannedEvent(user));
-			} else {
-				// Membership terminated
-				log.info("Terminated membership of member "
-						+ user.getUsername());
-				context.triggerEvent(new MembershipTerminatedEvent(user));
-			}
-		} else {
-			// Otherwise, we don't give a crap about the old rank
-			switch (newRank) {
-				case CHANCELLOR:
-					// Elected
-					context.triggerEvent(new UserElectedToChancellorEvent(user));
-					break;
-				case SENATOR:
-					// Elected
-					context.triggerEvent(new UserElectedToSenateEvent(user));
-					break;
-				case TRUTHSAYER:
-					// Appointed and approved
-					context.triggerEvent(new UserAppointedTruthsayerEvent(user));
-					break;
-				default:
-					// Promoted, since demotion is impossible
-					context.triggerEvent(new UserPromotedEvent(user));
-			}
-		}
+	public void setDispatcher(IEventDispatcher dispatcher) {
+		this.dispatcher = dispatcher;
 	}
 
 	/**
@@ -221,18 +163,19 @@ class MembershipServiceImpl implements
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
-	public void terminateMembership(User user) {
-		User _user = userDAO.load(user.getId());
+	public void terminateMembership(User _user) {
+		User user = userDAO.load(_user.getId());
 
-		if (_user != null) {
-			clearMentorStatus(_user);
-			clearSenatorStatus(_user);
-			clearChancellorStatus(_user);
-			clearEndorsements(_user);
-			_user.setRank(Rank.FORUM);
+		if (user != null) {
+			clearMentorStatus(user);
+			clearSenatorStatus(user);
+			clearChancellorStatus(user);
+			clearEndorsements(user);
+			user.setRank(Rank.FORUM);
+			dispatcher.dispatchEvent(new RankChangeEvent(user));
 		}
 
-		logService.logUserAction(_user, "Membership",
+		logService.logUserAction(user, "Membership",
 				"Membership has been terminated");
 	}
 
@@ -314,9 +257,10 @@ class MembershipServiceImpl implements
 		logService.logUserAction(user, "Membership",
 				"Has applied for membership");
 
-		broker.dispatchEvent(new MemberStatusEvent(
-				com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.APPLIED,
-				user));
+		dispatcher
+				.dispatchEvent(new MemberStatusEvent(
+						com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.APPLIED,
+						user));
 
 		return joinThread;
 
@@ -410,17 +354,18 @@ class MembershipServiceImpl implements
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
-	public void performAutoPromotion(User user) {
-		User _user = userDAO.load(user.getId());
+	public void performAutoPromotion(User _user) {
+		User user = userDAO.load(_user.getId());
 		Rank newRank = MemberUtil.determineRankByJoinDate(_user.getJoinDate());
 
-		_user.setRank(newRank);
+		user.setRank(newRank);
+		dispatcher.dispatchEvent(new RankChangeEvent(user));
 
-		userDAO.update(_user);
+		userDAO.update(user);
 
-		logService.logUserAction(_user, "Membership",
+		logService.logUserAction(user, "Membership",
 				"User has been promoted to " + newRank.toString());
-		notificationService.notifyUser(_user, "You now have the rank of "
+		notificationService.notifyUser(user, "You now have the rank of "
 				+ newRank.toString());
 
 	}
@@ -467,7 +412,7 @@ class MembershipServiceImpl implements
 	 */
 	@Override
 	public void onLogin(User u) {
-		broker.dispatchEvent(new LoginEvent(u));
+		dispatcher.dispatchEvent(new LoginEvent(u));
 	}
 
 	@Override
@@ -481,9 +426,10 @@ class MembershipServiceImpl implements
 			mailService.sendHTMLMail(user.getEMail(),
 					"Tysan Clan Membership Expired", mailBody);
 
-			broker.dispatchEvent(new MemberStatusEvent(
-					com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.INACTIVITY_TIMEOUT,
-					user));
+			dispatcher
+					.dispatchEvent(new MemberStatusEvent(
+							com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.INACTIVITY_TIMEOUT,
+							user));
 		}
 
 	}

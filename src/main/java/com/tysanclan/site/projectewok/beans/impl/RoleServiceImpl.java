@@ -27,8 +27,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fortuityframework.core.annotation.ioc.OnFortuityEvent;
-import com.fortuityframework.core.dispatch.EventContext;
 import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.Role;
 import com.tysanclan.site.projectewok.entities.Role.RoleType;
@@ -41,7 +39,6 @@ import com.tysanclan.site.projectewok.entities.dao.RoleTransferDAO;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import com.tysanclan.site.projectewok.entities.dao.filters.RoleFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.RoleTransferFilter;
-import com.tysanclan.site.projectewok.event.MembershipTerminatedEvent;
 import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.HTMLSanitizer;
 
@@ -258,21 +255,23 @@ class RoleServiceImpl implements
 
 	}
 
-	@OnFortuityEvent(MembershipTerminatedEvent.class)
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public void onTerminatedRemoveNomination(
-			EventContext<MembershipTerminatedEvent> context) {
-
+	@Override
+	public void removeRoles(User user) {
 		RoleFilter rfilter = new RoleFilter();
-		rfilter.setUser(context.getEvent().getSource());
+		rfilter.setUser(user);
 
 		for (Role role : roleDAO.findByFilter(rfilter)) {
 			role.setAssignedTo(null);
 			roleDAO.update(role);
 		}
+	}
 
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	@Override
+	public void removeTransfers(User user) {
 		RoleTransferFilter filter = new RoleTransferFilter();
-		filter.setUser(context.getEvent().getSource());
+		filter.setUser(user);
 
 		for (RoleTransfer transfer : roleTransferDAO.findByFilter(filter)) {
 			roleTransferDAO.delete(transfer);
@@ -292,6 +291,7 @@ class RoleServiceImpl implements
 							+ " due to membership termination");
 
 		}
+
 	}
 
 	@Override

@@ -27,11 +27,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.w3c.dom.events.EventException;
 
-import com.fortuityframework.core.annotation.ioc.OnFortuityEvent;
-import com.fortuityframework.core.dispatch.EventContext;
-import com.fortuityframework.core.dispatch.EventException;
-import com.fortuityframework.core.dispatch.IEventBroker;
+import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
 import com.tysanclan.site.projectewok.beans.LogService;
 import com.tysanclan.site.projectewok.beans.NotificationService;
 import com.tysanclan.site.projectewok.entities.Game;
@@ -43,9 +41,7 @@ import com.tysanclan.site.projectewok.entities.UserGameRealm;
 import com.tysanclan.site.projectewok.entities.dao.RealmDAO;
 import com.tysanclan.site.projectewok.entities.dao.RealmPetitionDAO;
 import com.tysanclan.site.projectewok.entities.dao.UserGameRealmDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.RealmFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.UserGameRealmFilter;
-import com.tysanclan.site.projectewok.event.MembershipTerminatedEvent;
 import com.tysanclan.site.projectewok.event.RealmDeletionEvent;
 import com.tysanclan.site.projectewok.util.MemberUtil;
 
@@ -78,14 +74,10 @@ class RealmServiceImpl implements
 	private com.tysanclan.site.projectewok.beans.UserService userService;
 
 	@Autowired
-	private IEventBroker broker;
+	private IEventDispatcher dispatcher;
 
-	/**
-	 * @param broker
-	 *            the broker to set
-	 */
-	public void setBroker(IEventBroker broker) {
-		this.broker = broker;
+	public void setDispatcher(IEventDispatcher dispatcher) {
+		this.dispatcher = dispatcher;
 	}
 
 	/**
@@ -328,7 +320,7 @@ class RealmServiceImpl implements
 			logService.logUserAction(user, "Realm", "Realm was removed");
 
 			try {
-				broker.dispatchEvent(new RealmDeletionEvent(realm));
+				dispatcher.dispatchEvent(new RealmDeletionEvent(realm));
 			} catch (EventException e) {
 				log.error(e.getMessage(), e);
 			}
@@ -442,23 +434,6 @@ class RealmServiceImpl implements
 		}
 
 		return (int) (((mcount - 25) / 10) + 4);
-	}
-
-	@OnFortuityEvent(MembershipTerminatedEvent.class)
-	@Transactional(propagation = Propagation.REQUIRED)
-	public void onMembershipTerminatedEvent(
-			EventContext<MembershipTerminatedEvent> context) {
-		User user = context.getEvent().getSource();
-
-		RealmFilter rfilter = new RealmFilter();
-		rfilter.setOverseer(user);
-
-		List<Realm> realms = realmDAO.findByFilter(rfilter);
-		for (Realm realm : realms) {
-			realm.setOverseer(null);
-
-			realmDAO.update(realm);
-		}
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)

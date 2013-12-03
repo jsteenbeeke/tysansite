@@ -60,4 +60,8 @@ public interface RoleService {
 	void approveCandidate(RoleTransfer object, User user);
 
 	public void resolveTransfers();
+
+	public void removeRoles(User user);
+
+	public void removeTransfers(User user);
 }

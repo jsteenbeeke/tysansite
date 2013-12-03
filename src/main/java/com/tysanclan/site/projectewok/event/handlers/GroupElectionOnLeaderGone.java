@@ -1,13 +1,17 @@
 package com.tysanclan.site.projectewok.event.handlers;
 
+import javax.annotation.Nonnull;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.jeroensteenbeeke.hyperion.events.EventHandler;
 import com.jeroensteenbeeke.hyperion.events.EventResult;
 import com.tysanclan.site.projectewok.beans.DemocracyService;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.event.MembershipTerminatedEvent;
+import com.tysanclan.site.projectewok.event.GroupWithoutLeaderEvent;
 
-public class CheckChancellorElectionOnMembershipTermination implements
-		EventHandler<MembershipTerminatedEvent> {
+public class GroupElectionOnLeaderGone implements
+		EventHandler<GroupWithoutLeaderEvent> {
+	@Autowired
 	private DemocracyService democracyService;
 
 	public void setDemocracyService(DemocracyService democracyService) {
@@ -15,10 +19,10 @@ public class CheckChancellorElectionOnMembershipTermination implements
 	}
 
 	@Override
-	public EventResult onEvent(MembershipTerminatedEvent event) {
-		User user = event.getSubject();
+	@Nonnull
+	public EventResult onEvent(@Nonnull GroupWithoutLeaderEvent event) {
 
-		democracyService.resetChancellorElectionIfUserIsParticipating(user);
+		democracyService.createGroupLeaderElection(event.getSubject());
 
 		return EventResult.ok();
 	}

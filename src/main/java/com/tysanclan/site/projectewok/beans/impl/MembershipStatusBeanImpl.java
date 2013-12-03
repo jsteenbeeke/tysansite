@@ -29,15 +29,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fortuityframework.core.annotation.ioc.OnFortuityEvent;
-import com.fortuityframework.core.dispatch.EventContext;
 import com.tysanclan.site.projectewok.beans.MembershipStatusBean;
 import com.tysanclan.site.projectewok.beans.UserService;
 import com.tysanclan.site.projectewok.entities.MembershipStatusChange;
 import com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.MembershipStatusChangeDAO;
-import com.tysanclan.site.projectewok.event.MemberStatusEvent;
 
 /**
  * @author Jeroen Steenbeeke
@@ -54,13 +51,6 @@ class MembershipStatusBeanImpl implements MembershipStatusBean {
 	public void setMembershipStatusChangeDAO(
 			MembershipStatusChangeDAO membershipStatusChangeDAO) {
 		this.membershipStatusChangeDAO = membershipStatusChangeDAO;
-	}
-
-	@OnFortuityEvent(MemberStatusEvent.class)
-	public void onStatusEvent(EventContext<MemberStatusEvent> context) {
-		MemberStatusEvent event = context.getEvent();
-
-		addStatus(event.getType(), event.getSource());
 	}
 
 	@Override
