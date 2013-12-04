@@ -1883,23 +1883,22 @@ class DemocracyServiceImpl implements
 		Calendar calendar = DateUtil.getCalendarInstance();
 		calendar.add(Calendar.MONTH, -6);
 
-		ChancellorElectionFilter filter = new ChancellorElectionFilter();
-		filter.setStartBefore(calendar.getTime());
-		filter.addOrderBy("start", false);
-
-		ChancellorElectionFilter filter2 = new ChancellorElectionFilter();
-		filter2.setStartAfter(calendar.getTime());
-		filter2.addOrderBy("start", false);
+		ChancellorElectionFilter electionsLessThanSixMonthsAgo = new ChancellorElectionFilter();
+		electionsLessThanSixMonthsAgo.setStartAfter(calendar.getTime());
+		electionsLessThanSixMonthsAgo.addOrderBy("start", false);
 
 		ChancellorElection current = getCurrentChancellorElection();
 
-		UserFilter ufilter = new UserFilter();
-		ufilter.addRank(Rank.CHANCELLOR);
+		UserFilter chancellorFilter = new UserFilter();
+		chancellorFilter.addRank(Rank.CHANCELLOR);
 
-		if (chancellorElectionDAO.countAll() == 0
-				|| (chancellorElectionDAO.countByFilter(filter) > 0
-						&& chancellorElectionDAO.countByFilter(filter2) == 0 && current == null)
-				|| userDAO.countByFilter(ufilter) == 0) {
+		boolean noChancellor = userDAO.countByFilter(chancellorFilter) == 0;
+		boolean noElectionInPastSixMonths = chancellorElectionDAO
+				.countByFilter(electionsLessThanSixMonthsAgo) == 0;
+		boolean noElectionCurrently = current == null;
+
+		if ((noElectionCurrently && noChancellor)
+				|| (noElectionInPastSixMonths && noElectionCurrently)) {
 			createChancellorElection();
 		}
 
