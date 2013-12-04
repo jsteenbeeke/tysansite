@@ -30,8 +30,11 @@ import org.hibernate.criterion.SimpleExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.jeroensteenbeeke.hyperion.data.SearchFilter;
+import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
 import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
 import com.tysanclan.site.projectewok.entities.AcceptanceVote;
 import com.tysanclan.site.projectewok.entities.Rank;
@@ -39,6 +42,7 @@ import com.tysanclan.site.projectewok.entities.TruthsayerNomination;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.TruthsayerNominationDAO;
 import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
+import com.tysanclan.site.projectewok.event.RankChangeEvent;
 import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.MemberUtil;
 
@@ -51,6 +55,13 @@ class UserDAOImpl extends EwokHibernateDAO<User> implements
 		com.tysanclan.site.projectewok.entities.dao.UserDAO {
 	@Autowired
 	private TruthsayerNominationDAO truthsayerNominationDAO;
+
+	@Autowired
+	private IEventDispatcher dispatcher;
+
+	public void setDispatcher(IEventDispatcher dispatcher) {
+		this.dispatcher = dispatcher;
+	}
 
 	/**
 	 * @param truthsayerNominationDAO
@@ -200,5 +211,18 @@ class UserDAOImpl extends EwokHibernateDAO<User> implements
 		}
 
 		return criteria.list();
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public void update(User object) {
+		Rank oldRank = object.getOldRank();
+		Rank newRank = object.getRank();
+
+		if (oldRank != null && newRank != null && oldRank != newRank) {
+			dispatcher.dispatchEvent(new RankChangeEvent(object));
+		}
+
+		super.update(object);
 	}
 }

@@ -47,7 +47,6 @@ import com.tysanclan.site.projectewok.entities.dao.filters.JoinVerdictFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
 import com.tysanclan.site.projectewok.event.LoginEvent;
 import com.tysanclan.site.projectewok.event.MemberStatusEvent;
-import com.tysanclan.site.projectewok.event.RankChangeEvent;
 import com.tysanclan.site.projectewok.util.MemberUtil;
 
 /**
@@ -172,7 +171,6 @@ class MembershipServiceImpl implements
 			clearChancellorStatus(user);
 			clearEndorsements(user);
 			user.setRank(Rank.FORUM);
-			dispatcher.dispatchEvent(new RankChangeEvent(user));
 		}
 
 		logService.logUserAction(user, "Membership",
@@ -359,7 +357,6 @@ class MembershipServiceImpl implements
 		Rank newRank = MemberUtil.determineRankByJoinDate(_user.getJoinDate());
 
 		user.setRank(newRank);
-		dispatcher.dispatchEvent(new RankChangeEvent(user));
 
 		userDAO.update(user);
 

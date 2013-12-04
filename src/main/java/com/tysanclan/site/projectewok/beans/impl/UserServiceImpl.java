@@ -47,7 +47,6 @@ import com.tysanclan.site.projectewok.entities.dao.filters.ActivationFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.EmailChangeConfirmationFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.PasswordRequestFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
-import com.tysanclan.site.projectewok.event.RankChangeEvent;
 import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.HTMLSanitizer;
 import com.tysanclan.site.projectewok.util.MemberUtil;
@@ -632,7 +631,6 @@ class UserServiceImpl implements
 		User _user = userDAO.load(user.getId());
 		if (_user.getRank() == Rank.FORUM) {
 			_user.setRank(Rank.BANNED);
-			dispatcher.dispatchEvent(new RankChangeEvent(user));
 			userDAO.update(_user);
 
 			logService.logUserAction(banner, "Forums",
@@ -653,7 +651,6 @@ class UserServiceImpl implements
 		User _user = userDAO.load(user.getId());
 		if (_user.getRank() == Rank.BANNED) {
 			_user.setRank(Rank.FORUM);
-			dispatcher.dispatchEvent(new RankChangeEvent(_user));
 			userDAO.update(_user);
 
 			logService.logUserAction(unbanner, "Forums",
