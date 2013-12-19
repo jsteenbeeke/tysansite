@@ -61,7 +61,7 @@ public class UserAgentPage extends AbstractSingleAccordionMemberPage {
 		MobileUserAgentFilter filter = new MobileUserAgentFilter();
 		filter.addOrderBy("identifier", true);
 
-		getAccordion().add(
+		add(
 				new DataView<MobileUserAgent>("agents", FilterDataProvider.of(
 						filter, userAgentDAO)) {
 

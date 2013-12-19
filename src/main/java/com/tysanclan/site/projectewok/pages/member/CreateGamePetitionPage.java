@@ -57,7 +57,7 @@ public class CreateGamePetitionPage extends AbstractSingleAccordionMemberPage {
 	public CreateGamePetitionPage() {
 		super("Create Game Petition");
 
-		getAccordion().add(
+		add(
 				new Label("count", new Model<Integer>(gameService
 						.getRequiredPetitionSignatures())));
 
@@ -103,7 +103,7 @@ public class CreateGamePetitionPage extends AbstractSingleAccordionMemberPage {
 
 		form.setMultiPart(true);
 
-		getAccordion().add(form);
+		add(form);
 
 		form.add(new TextField<String>("name", new Model<String>(""))
 				.setRequired(true));

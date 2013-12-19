@@ -101,7 +101,7 @@ public class AchievementRejectionPage extends AbstractSingleAccordionMemberPage 
 		rejectForm.add(regulationChoice);
 		rejectForm.add(charterCheckBox);
 
-		getAccordion().add(rejectForm);
+		add(rejectForm);
 
 	}
 }

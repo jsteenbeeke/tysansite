@@ -69,7 +69,8 @@ import com.tysanclan.site.projectewok.pages.SessionTimeoutPage;
 import com.tysanclan.site.projectewok.pages.TysanErrorPage;
 import com.tysanclan.site.projectewok.pages.VacationPage;
 import com.tysanclan.site.projectewok.pages.forum.ActivationPage;
-import com.tysanclan.site.projectewok.pages.member.BugOverviewPage;
+import com.tysanclan.site.projectewok.pages.member.ReportBugPage;
+import com.tysanclan.site.projectewok.pages.member.RequestFeaturePage;
 import com.tysanclan.site.projectewok.pages.member.SubscriptionPaymentResolvedPage;
 import com.tysanclan.site.projectewok.pages.member.ViewBugPage;
 import com.tysanclan.site.projectewok.pages.member.admin.MinecraftWhiteListPage;
@@ -291,7 +292,8 @@ public class TysanApplication extends WebApplication {
 
 		mountPage("/mc-whitelist", MinecraftWhiteListPage.class);
 
-		mountPage("/tracker/${mode}", BugOverviewPage.class);
+		mountPage("/tracker/reportbug", ReportBugPage.class);
+		mountPage("/tracker/requestfeature", RequestFeaturePage.class);
 
 		mountPage("/processPaymentRequest/${requestId}/${confirmationKey}",
 				ProcessPaymentRequestPage.class);

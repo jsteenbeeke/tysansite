@@ -156,12 +156,12 @@ public class TruthSayerEditUserPage extends AbstractSingleAccordionMemberPage {
 		removeCustomTitleLink.add(new ContextImage("delete",
 				"images/icons/delete.png"));
 
-		getAccordion().add(
+		add(
 				new Label("username", new Model<String>(
 						givenUser != null ? givenUser.getUsername() : "")));
-		getAccordion().add(removeAvatarLink);
-		getAccordion().add(removeSignatureLink);
-		getAccordion().add(removeCustomTitleLink);
-		getAccordion().add(form);
+		add(removeAvatarLink);
+		add(removeSignatureLink);
+		add(removeCustomTitleLink);
+		add(form);
 	}
 }

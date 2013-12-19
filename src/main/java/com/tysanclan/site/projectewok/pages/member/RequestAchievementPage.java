@@ -88,7 +88,7 @@ public class RequestAchievementPage extends AbstractSingleAccordionMemberPage {
 
 		Collections.sort(available, AchievementComparator.INSTANCE);
 
-		getAccordion().add(
+		add(
 				new ListView<Achievement>("achievements", ModelMaker
 						.wrap(available)) {
 

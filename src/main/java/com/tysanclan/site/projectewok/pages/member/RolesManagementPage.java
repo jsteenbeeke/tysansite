@@ -34,7 +34,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.ui.dialog.Dialog;
-import org.odlabs.wiquery.ui.tabs.Tabs;
 
 import wicket.contrib.tinymce.TinyMceBehavior;
 
@@ -68,15 +67,13 @@ public class RolesManagementPage extends AbstractMemberPage {
 	public RolesManagementPage() {
 		super("Roles management");
 
-		Tabs tabs = new Tabs("tabs");
-
 		RoleFilter filter = new RoleFilter();
 		filter.addOrderBy("roleType", true);
 		filter.addOrderBy("name", true);
 
 		List<Role> roles = roleDAO.findByFilter(filter);
 
-		tabs.add(new ListView<Role>("roles", ModelMaker.wrap(roles)) {
+		add(new ListView<Role>("roles", ModelMaker.wrap(roles)) {
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean
@@ -96,8 +93,8 @@ public class RolesManagementPage extends AbstractMemberPage {
 
 				Dialog reassignDialog = new Dialog("assigndialog");
 
-				Form<Role> reassignForm = new Form<Role>("assign", ModelMaker
-						.wrap(role)) {
+				Form<Role> reassignForm = new Form<Role>("assign",
+						ModelMaker.wrap(role)) {
 					private static final long serialVersionUID = 1L;
 
 					@SpringBean
@@ -166,8 +163,8 @@ public class RolesManagementPage extends AbstractMemberPage {
 
 				reassignLink.setVisible(role.isReassignable());
 
-				Link<Role> editLink = new Link<Role>("edit", ModelMaker
-						.wrap(role)) {
+				Link<Role> editLink = new Link<Role>("edit",
+						ModelMaker.wrap(role)) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -189,8 +186,8 @@ public class RolesManagementPage extends AbstractMemberPage {
 
 				deletedialog.add(new Label("name", role.getName()));
 
-				Link<Role> yesDeleteLink = new Link<Role>("yes", ModelMaker
-						.wrap(role)) {
+				Link<Role> yesDeleteLink = new Link<Role>("yes",
+						ModelMaker.wrap(role)) {
 					private static final long serialVersionUID = 1L;
 
 					@SpringBean
@@ -299,8 +296,6 @@ public class RolesManagementPage extends AbstractMemberPage {
 		addRoleForm.add(new TextArea<String>("description", new Model<String>(
 				"")).add(new TinyMceBehavior(new TysanTinyMCESettings())));
 
-		tabs.add(addRoleForm);
-
-		add(tabs);
+		add(addRoleForm);
 	}
 }

@@ -20,7 +20,6 @@ package com.tysanclan.site.projectewok.pages.member;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.ui.tabs.Tabs;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
@@ -46,11 +45,9 @@ public class MemberPreferencesPage extends AbstractMemberPage {
 	public MemberPreferencesPage() {
 		super("Preferences");
 
-		Tabs tabs = new Tabs("tabs");
-
 		User user = getUser();
 
-		tabs.add(new PrimaryPreferencesPanel("prefPanel", user) {
+		add(new PrimaryPreferencesPanel("prefPanel", user) {
 			private static final long serialVersionUID = 1L;
 
 			/**
@@ -62,7 +59,7 @@ public class MemberPreferencesPage extends AbstractMemberPage {
 			}
 		});
 
-		tabs.add(new ChangeEmailPanel("mailPanel", user) {
+		add(new ChangeEmailPanel("mailPanel", user) {
 			private static final long serialVersionUID = 1L;
 
 			/**
@@ -73,7 +70,7 @@ public class MemberPreferencesPage extends AbstractMemberPage {
 				setResponsePage(new MemberPreferencesPage());
 			}
 		});
-		tabs.add(new ChangePasswordPanel("passwordPanel", user) {
+		add(new ChangePasswordPanel("passwordPanel", user) {
 			private static final long serialVersionUID = 1L;
 
 			/**
@@ -85,7 +82,7 @@ public class MemberPreferencesPage extends AbstractMemberPage {
 			}
 		});
 
-		tabs.add(new ProfilePanel("profilePanel", user) {
+		add(new ProfilePanel("profilePanel", user) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -112,10 +109,10 @@ public class MemberPreferencesPage extends AbstractMemberPage {
 			default:
 		}
 
-		tabs.add(new WebMarkupContainer("no").setVisible(!retireable
+		add(new WebMarkupContainer("no").setVisible(!retireable
 				&& !user.isRetired()));
 
-		tabs.add(new Form<User>("unretire", ModelMaker.wrap(user)) {
+		add(new Form<User>("unretire", ModelMaker.wrap(user)) {
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean
@@ -135,7 +132,7 @@ public class MemberPreferencesPage extends AbstractMemberPage {
 
 		}.setVisible(user.isRetired()));
 
-		tabs.add(new Form<User>("retire", ModelMaker.wrap(user)) {
+		add(new Form<User>("retire", ModelMaker.wrap(user)) {
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean
@@ -156,10 +153,10 @@ public class MemberPreferencesPage extends AbstractMemberPage {
 
 		}.setVisible(!user.isRetired() && retireable));
 
-		tabs.add(new WebMarkupContainer("trialwarning").setVisible(user
-				.getRank() == Rank.TRIAL));
+		add(new WebMarkupContainer("trialwarning")
+				.setVisible(user.getRank() == Rank.TRIAL));
 
-		tabs.add(new Form<User>("vacation", ModelMaker.wrap(user)) {
+		add(new Form<User>("vacation", ModelMaker.wrap(user)) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -179,7 +176,7 @@ public class MemberPreferencesPage extends AbstractMemberPage {
 			}
 		});
 
-		tabs.add(new Form<User>("terminate", ModelMaker.wrap(user)) {
+		add(new Form<User>("terminate", ModelMaker.wrap(user)) {
 			private static final long serialVersionUID = 1L;
 
 			/**
@@ -190,8 +187,6 @@ public class MemberPreferencesPage extends AbstractMemberPage {
 				setResponsePage(new ConfirmMembershipTerminationPage());
 			}
 		});
-
-		add(tabs);
 	}
 
 }

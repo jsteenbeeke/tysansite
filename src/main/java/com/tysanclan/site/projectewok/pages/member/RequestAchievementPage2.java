@@ -101,7 +101,7 @@ public class RequestAchievementPage2 extends AbstractSingleAccordionMemberPage {
 		form.add(uploadField);
 		form.add(evidenceField);
 
-		getAccordion().add(form);
+		add(form);
 
 		form.add(new Label("name", achievement.getName()));
 

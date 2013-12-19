@@ -82,7 +82,7 @@ public class DeadRealmRemovalPage extends AbstractSingleAccordionMemberPage {
 	}
 
 	private void init(List<GameRealmCartesian> cartesians) {
-		getAccordion().add(
+		add(
 				new ListView<GameRealmCartesian>("deadrealms", cartesians) {
 					private static final long serialVersionUID = 1L;
 

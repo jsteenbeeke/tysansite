@@ -53,91 +53,84 @@ public class GameManagementPage extends AbstractSingleAccordionMemberPage {
 	public GameManagementPage() {
 		super("Game Management");
 
-		getAccordion()
-				.add(new ListView<Game>("games", ModelMaker.wrap(gameDAO
-						.findAll())) {
-					private static final long serialVersionUID = 1L;
+		add(new ListView<Game>("games", ModelMaker.wrap(gameDAO.findAll())) {
+			private static final long serialVersionUID = 1L;
 
-					@Override
-					protected void populateItem(ListItem<Game> item) {
-						Game game = item.getModelObject();
+			@Override
+			protected void populateItem(ListItem<Game> item) {
+				Game game = item.getModelObject();
 
-						item.add(new Label("name", game.getName()));
-						item.add(new Image("icon", new ByteArrayResource(
-								ImageUtil.getMimeType(game.getImage()), game
-										.getImage())));
-						if (game.getCoordinator() != null) {
-							item.add(new MemberListItem("coordinator", game
-									.getCoordinator()));
-							IconLink.Builder builder = new IconLink.Builder(
-									"images/icons/user_edit.png",
-									new DefaultClickResponder<Game>(ModelMaker
-											.wrap(game)) {
-										private static final long serialVersionUID = 1L;
+				item.add(new Label("name", game.getName()));
+				item.add(new Image("icon", new ByteArrayResource(ImageUtil
+						.getMimeType(game.getImage()), game.getImage())));
+				if (game.getCoordinator() != null) {
+					item.add(new MemberListItem("coordinator", game
+							.getCoordinator()));
+					IconLink.Builder builder = new IconLink.Builder(
+							"images/icons/user_edit.png",
+							new DefaultClickResponder<Game>(
+									ModelMaker.wrap(game)) {
+								private static final long serialVersionUID = 1L;
 
-										@Override
-										public void onClick() {
-											setResponsePage(new EditGameSupervisorPage(
-													getModelObject()));
-										}
-									});
+								@Override
+								public void onClick() {
+									setResponsePage(new EditGameSupervisorPage(
+											getModelObject()));
+								}
+							});
 
-							item.add(builder.newInstance("edit"));
-						} else {
-							item.add(new WebMarkupContainer("edit")
-									.setVisible(false));
-							IconLink.Builder builder = new IconLink.Builder(
-									"images/icons/user_add.png",
-									new DefaultClickResponder<Game>(ModelMaker
-											.wrap(game)) {
-										private static final long serialVersionUID = 1L;
+					item.add(builder.newInstance("edit"));
+				} else {
+					item.add(new WebMarkupContainer("edit").setVisible(false));
+					IconLink.Builder builder = new IconLink.Builder(
+							"images/icons/user_add.png",
+							new DefaultClickResponder<Game>(
+									ModelMaker.wrap(game)) {
+								private static final long serialVersionUID = 1L;
 
-										@Override
-										public void onClick() {
-											setResponsePage(new EditGameSupervisorPage(
-													getModelObject()));
-										}
-									});
+								@Override
+								public void onClick() {
+									setResponsePage(new EditGameSupervisorPage(
+											getModelObject()));
+								}
+							});
 
-							item.add(builder.newInstance("coordinator"));
-						}
-						item.add(new Label("realmcount", new Model<Integer>(
-								game.getRealms().size())));
-						item.add(new Label("playercount", new Model<Integer>(
-								gameService.countActivePlayers(game))));
-						item.add(new Label("groupcount", new Model<Integer>(
-								game.getGroups().size())));
+					item.add(builder.newInstance("coordinator"));
+				}
+				item.add(new Label("realmcount", new Model<Integer>(game
+						.getRealms().size())));
+				item.add(new Label("playercount", new Model<Integer>(
+						gameService.countActivePlayers(game))));
+				item.add(new Label("groupcount", new Model<Integer>(game
+						.getGroups().size())));
 
-						IconLink.Builder builder = new IconLink.Builder(
-								"images/icons/cross.png",
-								new DefaultClickResponder<Game>(ModelMaker
-										.wrap(game)) {
-									private static final long serialVersionUID = 1L;
+				IconLink.Builder builder = new IconLink.Builder(
+						"images/icons/cross.png",
+						new DefaultClickResponder<Game>(ModelMaker.wrap(game)) {
+							private static final long serialVersionUID = 1L;
 
-									/**
-									 * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
-									 */
-									@Override
-									public void onClick() {
-										Game g = getModelObject();
+							/**
+							 * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
+							 */
+							@Override
+							public void onClick() {
+								Game g = getModelObject();
 
-										if (gameService.isGameInactive(g)) {
-											gameService
-													.deleteGame(getUser(), g);
-										}
+								if (gameService.isGameInactive(g)) {
+									gameService.deleteGame(getUser(), g);
+								}
 
-										setResponsePage(new RealmManagementPage());
-									}
+								setResponsePage(new RealmManagementPage());
+							}
 
-								});
+						});
 
-						builder.setImageVisible(gameService
-								.isGameInactive(game));
+				builder.setImageVisible(gameService.isGameInactive(game));
 
-						item.add(builder.newInstance("remove"));
-					}
+				item.add(builder.newInstance("remove"));
+			}
 
-				});
+		});
 
 	}
 }

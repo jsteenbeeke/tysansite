@@ -26,7 +26,6 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.ui.tabs.Tabs;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
@@ -47,8 +46,6 @@ public class JoinGroupPage extends AbstractMemberPage {
 
 	public JoinGroupPage() {
 		super("Join group");
-
-		Tabs tabs = new Tabs("tabs");
 
 		List<Group> groups = groupDAO.findAll();
 		List<Group> currentGroups = getUser().getGroups();
@@ -86,19 +83,18 @@ public class JoinGroupPage extends AbstractMemberPage {
 		String availableDescription = available.isEmpty() ? "There are no groups available for you to join"
 				: "You can apply to join the following groups: ";
 
-		tabs.add(new Label("applied-description", appliedDescription));
-		tabs.add(new Label("invited-description", invitedDescription));
-		tabs.add(new Label("can-apply-description", availableDescription));
-		tabs.add(new ListView<Group>("applyToGroups", ModelMaker
-				.wrap(available)) {
+		add(new Label("applied-description", appliedDescription));
+		add(new Label("invited-description", invitedDescription));
+		add(new Label("can-apply-description", availableDescription));
+		add(new ListView<Group>("applyToGroups", ModelMaker.wrap(available)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void populateItem(ListItem<Group> item) {
 				Group group = item.getModelObject();
 
-				Link<Group> applyLink = new Link<Group>("apply", ModelMaker
-						.wrap(group)) {
+				Link<Group> applyLink = new Link<Group>("apply",
+						ModelMaker.wrap(group)) {
 
 					private static final long serialVersionUID = 1L;
 
@@ -129,7 +125,7 @@ public class JoinGroupPage extends AbstractMemberPage {
 
 		}.setVisible(!available.isEmpty()));
 
-		tabs.add(new ListView<Group>("appliedGroups", ModelMaker.wrap(applied)) {
+		add(new ListView<Group>("appliedGroups", ModelMaker.wrap(applied)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -147,15 +143,15 @@ public class JoinGroupPage extends AbstractMemberPage {
 
 		}.setVisible(!applied.isEmpty()));
 
-		tabs.add(new ListView<Group>("invited", ModelMaker.wrap(invited)) {
+		add(new ListView<Group>("invited", ModelMaker.wrap(invited)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void populateItem(ListItem<Group> item) {
 				Group group = item.getModelObject();
 
-				Link<Group> yesLink = new Link<Group>("yes", ModelMaker
-						.wrap(group)) {
+				Link<Group> yesLink = new Link<Group>("yes",
+						ModelMaker.wrap(group)) {
 
 					private static final long serialVersionUID = 1L;
 
@@ -176,8 +172,8 @@ public class JoinGroupPage extends AbstractMemberPage {
 
 				item.add(yesLink);
 
-				Link<Group> noLink = new Link<Group>("no", ModelMaker
-						.wrap(group)) {
+				Link<Group> noLink = new Link<Group>("no",
+						ModelMaker.wrap(group)) {
 
 					private static final long serialVersionUID = 1L;
 
@@ -208,7 +204,5 @@ public class JoinGroupPage extends AbstractMemberPage {
 			}
 
 		}.setVisible(!invited.isEmpty()));
-
-		add(tabs);
 	}
 }

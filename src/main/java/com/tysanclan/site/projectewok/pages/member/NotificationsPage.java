@@ -44,9 +44,9 @@ public class NotificationsPage extends AbstractSingleAccordionMemberPage {
 	public NotificationsPage() {
 		super("Notifications");
 
-		getAccordion().add(new OtterSniperPanel("otterSniperPanel", 0));
+		add(new OtterSniperPanel("otterSniperPanel", 0));
 
-		getAccordion().add(
+		add(
 				new ListView<Notification>("notifications", ModelMaker
 						.wrap(notificationService
 								.getNotificationsForUser(getUser()))) {

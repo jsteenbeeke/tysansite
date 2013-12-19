@@ -60,7 +60,7 @@ public class StewardManageBugMastersPage extends
 			throw new RestartResponseAtInterceptPageException(
 					AccessDeniedPage.class);
 
-		getAccordion().add(
+		add(
 				new DataView<User>("current", FilterDataProvider.of(
 						getFilter(true, true), userDAO)) {
 					private static final long serialVersionUID = 1L;
@@ -97,7 +97,7 @@ public class StewardManageBugMastersPage extends
 
 		addMasterForm.add(userChoice);
 
-		getAccordion().add(addMasterForm);
+		add(addMasterForm);
 
 	}
 

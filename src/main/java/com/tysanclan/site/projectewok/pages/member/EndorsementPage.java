@@ -30,7 +30,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.ui.tabs.Tabs;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
@@ -57,15 +56,13 @@ public class EndorsementPage extends AbstractMemberPage {
 	public EndorsementPage() {
 		super("Endorsements");
 
-		Tabs tabs = new Tabs("tabs");
-
 		Set<User> endorsements = getUser().getEndorsedBy();
 		Set<User> endorsements2 = getUser().getEndorsedForSenateBy();
 
-		tabs.add(new WebMarkupContainer("nousers").setVisible(endorsements
-				.isEmpty()));
+		add(new WebMarkupContainer("nousers")
+				.setVisible(endorsements.isEmpty()));
 
-		tabs.add(new WebMarkupContainer("nousers3").setVisible(endorsements2
+		add(new WebMarkupContainer("nousers3").setVisible(endorsements2
 				.isEmpty()));
 
 		List<User> endorsers = new ArrayList<User>();
@@ -90,7 +87,7 @@ public class EndorsementPage extends AbstractMemberPage {
 
 		});
 
-		tabs.add(new ListView<User>("users", ModelMaker.wrap(endorsers)) {
+		add(new ListView<User>("users", ModelMaker.wrap(endorsers)) {
 
 			/**
 			 * 
@@ -104,7 +101,7 @@ public class EndorsementPage extends AbstractMemberPage {
 
 		}.setVisible(!endorsements.isEmpty()));
 
-		tabs.add(new ListView<User>("users2", ModelMaker.wrap(endorsers2)) {
+		add(new ListView<User>("users2", ModelMaker.wrap(endorsers2)) {
 
 			/**
 			 * 
@@ -122,13 +119,12 @@ public class EndorsementPage extends AbstractMemberPage {
 		String endorsesName = endorses == null ? "Nobody" : endorses
 				.getUsername();
 
-		tabs.add(new WebMarkupContainer("nousers2")
-				.setVisible(endorses == null));
+		add(new WebMarkupContainer("nousers2").setVisible(endorses == null));
 		WebMarkupContainer container = new WebMarkupContainer("endorsed");
 		container.add(new Label("user", endorsesName));
 		container.setVisible(endorses != null);
 
-		tabs.add(container);
+		add(container);
 
 		Form<User> endorsementForm = new Form<User>("endorseform") {
 			private static final long serialVersionUID = 1L;
@@ -175,7 +171,7 @@ public class EndorsementPage extends AbstractMemberPage {
 		endorsementForm.add(new DropDownChoice<User>("targetUser", ModelMaker
 				.wrap(endorses), ModelMaker.wrap(eligible)).setNullValid(true));
 
-		tabs.add(endorsementForm);
+		add(endorsementForm);
 
 		Form<User> endorsementForm2 = new Form<User>("endorseform2") {
 			private static final long serialVersionUID = 1L;
@@ -226,16 +222,14 @@ public class EndorsementPage extends AbstractMemberPage {
 				.wrap(endorsesForSenate), ModelMaker.wrap(eligible))
 				.setNullValid(true));
 
-		tabs.add(endorsementForm2);
+		add(endorsementForm2);
 
-		tabs.add(new WebMarkupContainer("nousers4")
+		add(new WebMarkupContainer("nousers4")
 				.setVisible(endorsesForSenate == null));
 		WebMarkupContainer container2 = new WebMarkupContainer("endorsed2");
 		container2.add(new Label("user", endorsesForSenateName));
 		container2.setVisible(endorsesForSenate != null);
 
-		tabs.add(container2);
-
-		add(tabs);
+		add(container2);
 	}
 }

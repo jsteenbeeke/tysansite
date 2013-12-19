@@ -28,7 +28,7 @@ import com.tysanclan.site.projectewok.entities.Bug.ReportType;
 import com.tysanclan.site.projectewok.entities.dao.filters.BugFilter;
 
 @TysanMemberSecured
-public class BugOverviewPage extends AbstractMemberPage {
+public class FeatureOverviewPage extends AbstractMemberPage {
 	/**
 	 * 
 	 */
@@ -37,20 +37,19 @@ public class BugOverviewPage extends AbstractMemberPage {
 	@SpringBean
 	private BugTrackerService bugTrackerService;
 
-	public BugOverviewPage() {
-		super("Bugs Overview");
+	public FeatureOverviewPage() {
+		super("Feature Requests");
 
 		BugFilter filter = new BugFilter();
-		filter.addReportType(ReportType.BUGREPORT);
-		filter.addReportType(ReportType.CRASHREPORT);
+
+		filter.addReportType(ReportType.FEATUREREQUEST);
 		filter.addAllowedStatus(BugStatus.NEW);
 		filter.addAllowedStatus(BugStatus.ACKNOWLEDGED);
-
 		filter.addOrderBy("status", true);
 		filter.addOrderBy("updated", false);
 		filter.addOrderBy("reported", false);
 
-		add(new BugListPanel("bugs", "Bug", filter) {
+		add(new BugListPanel("features", "Feature", filter) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -60,16 +59,14 @@ public class BugOverviewPage extends AbstractMemberPage {
 		});
 
 		filter = new BugFilter();
-		filter.addReportType(ReportType.BUGREPORT);
-		filter.addReportType(ReportType.CRASHREPORT);
+		filter.addReportType(ReportType.FEATUREREQUEST);
 		filter.addAllowedStatus(BugStatus.RESOLVED);
 		filter.addAllowedStatus(BugStatus.CLOSED);
-
 		filter.addOrderBy("status", false);
 		filter.addOrderBy("updated", false);
 		filter.addOrderBy("reported", false);
 
-		add(new BugListPanel("rbugs", "Bug", filter) {
+		add(new BugListPanel("rfeatures", "Feature", filter) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

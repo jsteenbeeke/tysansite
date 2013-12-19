@@ -79,6 +79,6 @@ public class TruthsayerComplaintPage extends AbstractSingleAccordionMemberPage {
 		complaintForm.add(userChoice);
 		complaintForm.add(motivationArea);
 
-		getAccordion().add(complaintForm);
+		add(complaintForm);
 	}
 }

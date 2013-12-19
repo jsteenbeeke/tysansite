@@ -35,7 +35,6 @@ import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.ui.tabs.Tabs;
 
 import wicket.contrib.tinymce.TinyMceBehavior;
 
@@ -65,6 +64,8 @@ public class MessageListPage extends AbstractMemberPage {
 
 	private IModel<User> firstSelect;
 
+	private int selectedTab;
+
 	public MessageListPage() {
 		this(null);
 	}
@@ -74,10 +75,7 @@ public class MessageListPage extends AbstractMemberPage {
 
 		firstSelect = ModelMaker.wrap(recipient);
 
-		Tabs tabs = new Tabs("tabs");
-		if (recipient != null) {
-			tabs.setDefaultSelectedTabIndex(0);
-		}
+		this.selectedTab = recipient != null ? 1 : 0;
 
 		ConversationFilter filter = new ConversationFilter();
 		filter.addParticipant(getUser());
@@ -157,13 +155,16 @@ public class MessageListPage extends AbstractMemberPage {
 
 		messageView.setItemsPerPage(15);
 
-		tabs.add(messageView);
+		add(messageView);
 
-		tabs.add(new PagingNavigator("paging", messageView));
+		add(new PagingNavigator("paging", messageView));
 
-		tabs.add(createNewMessageForm("newMessageForm"));
+		add(createNewMessageForm("newMessageForm"));
+	}
 
-		add(tabs);
+	@Override
+	protected Integer getAutoTabIndex() {
+		return selectedTab;
 	}
 
 	private Form<Conversation> createNewMessageForm(String id) {

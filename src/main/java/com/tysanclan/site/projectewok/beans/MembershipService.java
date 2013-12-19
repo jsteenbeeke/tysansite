@@ -29,13 +29,6 @@ import com.tysanclan.site.projectewok.entities.User;
  * @author Jeroen Steenbeeke
  */
 public interface MembershipService {
-	/**
-	 * Terminates the membership of the given user
-	 * 
-	 * @param user
-	 *            The User to terminate the membership for
-	 */
-	void terminateMembership(User user);
 
 	/**
 	 * Indicates that the given user has just done something
@@ -84,4 +77,6 @@ public interface MembershipService {
 	void determinePromotions();
 
 	void bumpAccounts();
+
+	void terminateMembership(User _user, boolean judicial);
 }

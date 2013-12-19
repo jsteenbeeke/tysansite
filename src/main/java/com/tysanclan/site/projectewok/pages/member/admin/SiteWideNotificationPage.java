@@ -155,6 +155,6 @@ public class SiteWideNotificationPage extends AbstractSingleAccordionMemberPage 
 		notificationForm.add(durationTypeSelect);
 		notificationForm.add(durationField);
 
-		getAccordion().add(notificationForm);
+		add(notificationForm);
 	}
 }

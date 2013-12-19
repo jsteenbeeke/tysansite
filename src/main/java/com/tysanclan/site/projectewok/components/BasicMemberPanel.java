@@ -43,6 +43,7 @@ import com.tysanclan.site.projectewok.components.RequiresAttentionLink.IRequires
 import com.tysanclan.site.projectewok.entities.AcceptanceVote;
 import com.tysanclan.site.projectewok.entities.AcceptanceVoteVerdict;
 import com.tysanclan.site.projectewok.entities.Bug;
+import com.tysanclan.site.projectewok.entities.Bug.ReportType;
 import com.tysanclan.site.projectewok.entities.ChancellorElection;
 import com.tysanclan.site.projectewok.entities.CompoundVote;
 import com.tysanclan.site.projectewok.entities.Event;
@@ -89,6 +90,7 @@ import com.tysanclan.site.projectewok.pages.member.CreateRealmPetitionPage;
 import com.tysanclan.site.projectewok.pages.member.EditAccountsPage;
 import com.tysanclan.site.projectewok.pages.member.EditUserGalleryPage;
 import com.tysanclan.site.projectewok.pages.member.EndorsementPage;
+import com.tysanclan.site.projectewok.pages.member.FeatureOverviewPage;
 import com.tysanclan.site.projectewok.pages.member.FeelingLuckyPage;
 import com.tysanclan.site.projectewok.pages.member.FinancePage;
 import com.tysanclan.site.projectewok.pages.member.JoinGroupPage;
@@ -149,7 +151,30 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 		public AttentionType requiresAttention() {
 			if (getUser().isBugReportMaster()) {
 				for (Bug b : bugDAO.findAll()) {
-					if (b.getAssignedTo() == null)
+					if (b.getAssignedTo() == null
+							&& b.getReportType() != ReportType.FEATUREREQUEST)
+						return AttentionType.WARNING;
+				}
+
+			}
+			return null;
+		}
+
+		@Override
+		public Long getDismissableId() {
+			return null;
+		}
+	}
+
+	public class FeatureCondition implements IRequiresAttentionCondition {
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public AttentionType requiresAttention() {
+			if (getUser().isBugReportMaster()) {
+				for (Bug b : bugDAO.findAll()) {
+					if (b.getAssignedTo() == null
+							&& b.getReportType() == ReportType.FEATUREREQUEST)
 						return AttentionType.WARNING;
 				}
 
@@ -521,8 +546,10 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 	}
 
 	private void addBugLink() {
-		add(createLink("bugs", BugOverviewPage.class,
-				"Bugs and Feature Requests", new BugCondition()));
+		add(createLink("bugs", BugOverviewPage.class, "Bugs Reports",
+				new BugCondition()));
+		add(createLink("features", FeatureOverviewPage.class,
+				"FeatureRequests", new FeatureCondition()));
 	}
 
 	private void addGalleryLink(User user) {

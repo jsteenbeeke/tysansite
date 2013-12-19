@@ -22,7 +22,11 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
 import java.sql.Blob;
 import java.sql.SQLException;
 
@@ -106,7 +110,7 @@ public class ImageUtil implements Serializable {
 	 *         otherwise
 	 */
 	public static boolean isGIFImage(byte[] image) {
-		return image.length > 6 && image[0] == (byte) 0x47
+		return image != null && image.length > 6 && image[0] == (byte) 0x47
 				&& image[1] == (byte) 0x49 && image[2] == (byte) 0x46
 				&& image[3] == (byte) 0x38
 				&& (image[4] == (byte) 0x39 || image[4] == (byte) 0x37)
@@ -114,14 +118,15 @@ public class ImageUtil implements Serializable {
 	}
 
 	public static boolean isJPEGImage(byte[] image) {
-		return image.length > 2 && image[0] == (byte) 0xFF
+		return image != null && image.length > 2 && image[0] == (byte) 0xFF
 				&& image[1] == (byte) 0xD8;
 	}
 
 	public static boolean isPNGImage(byte[] image) {
-		return image.length > 8 && image[0] == -119 && image[1] == 80
-				&& image[2] == 78 && image[3] == 71 && image[4] == 13
-				&& image[5] == 10 && image[6] == 26 && image[7] == 10;
+		return image != null && image.length > 8 && image[0] == -119
+				&& image[1] == 80 && image[2] == 78 && image[3] == 71
+				&& image[4] == 13 && image[5] == 10 && image[6] == 26
+				&& image[7] == 10;
 	}
 
 	public static Dimension getImageDimensions(byte[] image) {

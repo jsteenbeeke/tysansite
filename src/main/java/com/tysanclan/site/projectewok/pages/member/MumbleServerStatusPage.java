@@ -28,11 +28,11 @@ public class MumbleServerStatusPage extends AbstractSingleAccordionMemberPage {
 	public MumbleServerStatusPage(MumbleServer server) {
 		super("Server Information: " + server.getName());
 
-		getAccordion().add(new Label("name", server.getName()));
-		getAccordion().add(
+		add(new Label("name", server.getName()));
+		add(
 				new Label("url", server.getUrl()).add(AttributeModifier
 						.replace("href", server.getUrl())));
-		getAccordion().add(new Label("password", server.getPassword()));
+		add(new Label("password", server.getPassword()));
 	}
 
 }

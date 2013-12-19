@@ -56,7 +56,7 @@ public class AchievementProposalApprovalPage extends
 		AchievementProposalFilter filter = new AchievementProposalFilter();
 		filter.addOrderBy("name", true);
 
-		getAccordion().add(
+		add(
 				new DataView<AchievementProposal>("proposals",
 						FilterDataProvider.of(filter, achievementProposalDAO)) {
 					private static final long serialVersionUID = 1L;

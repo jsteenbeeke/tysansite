@@ -32,7 +32,6 @@ import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.ui.tabs.Tabs;
 
 import wicket.contrib.tinymce.TinyMceBehavior;
 
@@ -69,16 +68,12 @@ public class CreateGroupPage extends AbstractMemberPage {
 	public CreateGroupPage() {
 		super("Create Group");
 
-		Tabs tabs = new Tabs("tabs");
-
-		tabs.add(createGamingGroupForm());
-		tabs.add(createSocialGroupForm());
-		addPendingRequests(tabs);
-
-		add(tabs);
+		add(createGamingGroupForm());
+		add(createSocialGroupForm());
+		addPendingRequests();
 	}
 
-	private void addPendingRequests(Tabs tabs) {
+	private void addPendingRequests() {
 		GroupCreationRequestFilter filter = new GroupCreationRequestFilter();
 		filter.setRequester(getUser());
 
@@ -88,9 +83,9 @@ public class CreateGroupPage extends AbstractMemberPage {
 		String intro = (requests.size() == 0) ? "You have no pending group creation requests"
 				: "You have " + requests.size()
 						+ " pending group creation requests:";
-		tabs.add(new Label("pendingtext", intro));
-		tabs.add(new ListView<GroupCreationRequest>("requests", ModelMaker
-				.wrap(requests)) {
+		add(new Label("pendingtext", intro));
+		add(new ListView<GroupCreationRequest>("requests",
+				ModelMaker.wrap(requests)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

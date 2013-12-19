@@ -25,7 +25,6 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.ui.tabs.Tabs;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.MumbleService;
@@ -61,10 +60,8 @@ public class MumbleServerAdminPage extends AbstractMemberPage {
 					AccessDeniedPage.class);
 		}
 
-		Tabs tabs = new Tabs("tabs");
-
-		tabs.add(new ListView<MumbleServer>("servers", ModelMaker
-				.wrap(mumbleServerDAO.findAll())) {
+		add(new ListView<MumbleServer>("servers",
+				ModelMaker.wrap(mumbleServerDAO.findAll())) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -131,9 +128,7 @@ public class MumbleServerAdminPage extends AbstractMemberPage {
 		addForm.add(tokenField);
 		addForm.add(secretField);
 
-		tabs.add(addForm);
-
-		add(tabs);
+		add(addForm);
 
 	}
 }

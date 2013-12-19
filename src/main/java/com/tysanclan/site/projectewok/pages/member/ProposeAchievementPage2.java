@@ -241,7 +241,7 @@ public class ProposeAchievementPage2 extends AbstractSingleAccordionMemberPage {
 		proposalForm.add(nameField);
 		proposalForm.add(descriptionArea);
 
-		getAccordion().add(proposalForm);
+		add(proposalForm);
 
 	}
 

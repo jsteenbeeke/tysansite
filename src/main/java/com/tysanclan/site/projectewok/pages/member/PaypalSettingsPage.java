@@ -50,7 +50,7 @@ public class PaypalSettingsPage extends AbstractSingleAccordionMemberPage {
 
 		settingsForm.add(paypalAddress);
 
-		getAccordion().add(settingsForm);
+		add(settingsForm);
 
 	}
 }

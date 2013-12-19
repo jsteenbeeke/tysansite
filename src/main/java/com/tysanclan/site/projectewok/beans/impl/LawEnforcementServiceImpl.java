@@ -587,7 +587,7 @@ class LawEnforcementServiceImpl implements
 				logService.logUserAction(user, "Justice",
 						"User was banned for misconduct");
 
-				membershipService.terminateMembership(user);
+				membershipService.terminateMembership(user, true);
 
 				dispatcher.dispatchEvent(new MemberStatusEvent(
 						ChangeType.FORCED_OUT, user));

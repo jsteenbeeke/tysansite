@@ -47,7 +47,6 @@ import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.AchievementIconDAO;
 import com.tysanclan.site.projectewok.entities.dao.AchievementProposalDAO;
 import com.tysanclan.site.projectewok.entities.dao.filters.AchievementIconFilter;
-import com.tysanclan.site.projectewok.pages.member.admin.AutoSelectTabs;
 
 /**
  * @author Jeroen Steenbeeke
@@ -71,13 +70,15 @@ public class ProposeAchievementPage extends AbstractMemberPage {
 		this(0);
 	}
 
+	private final int tabIndex;
+
 	public ProposeAchievementPage(int tabIndex) {
 		super("Propose Achievement");
 
-		AutoSelectTabs tabs = new AutoSelectTabs("tabs", tabIndex);
+		this.tabIndex = tabIndex;
 
-		tabs.add(new ListView<AchievementProposal>("proposals", ModelMaker
-				.wrap(achievementProposalDAO.findAll())) {
+		add(new ListView<AchievementProposal>("proposals",
+				ModelMaker.wrap(achievementProposalDAO.findAll())) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -104,7 +105,7 @@ public class ProposeAchievementPage extends AbstractMemberPage {
 		List<AchievementIcon> icons = achievementService
 				.getAvailableIcons(getUser());
 
-		tabs.add(getIconListview("icons", icons, new IconClickResponder() {
+		add(getIconListview("icons", icons, new IconClickResponder() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -113,12 +114,12 @@ public class ProposeAchievementPage extends AbstractMemberPage {
 			}
 		}));
 
-		tabs.add(new WebMarkupContainer("noIcons").setVisible(icons.isEmpty()));
+		add(new WebMarkupContainer("noIcons").setVisible(icons.isEmpty()));
 
-		tabs.add(getIconListview("approved", getApprovedIcons(getUser()), null));
-		tabs.add(getIconListview("pending", getPendingIcons(getUser()), null));
+		add(getIconListview("approved", getApprovedIcons(getUser()), null));
+		add(getIconListview("pending", getPendingIcons(getUser()), null));
 
-		tabs.add(getIconListview("rejected", getRejectedIcons(getUser()),
+		add(getIconListview("rejected", getRejectedIcons(getUser()),
 				new IconClickResponder() {
 					private static final long serialVersionUID = 1L;
 
@@ -178,10 +179,13 @@ public class ProposeAchievementPage extends AbstractMemberPage {
 		uploadForm.add(purposeField);
 		uploadForm.add(privateIconBox);
 
-		tabs.add(uploadForm);
+		add(uploadForm);
 
-		add(tabs);
+	}
 
+	@Override
+	protected Integer getAutoTabIndex() {
+		return tabIndex;
 	}
 
 	private List<AchievementIcon> getRejectedIcons(User user) {

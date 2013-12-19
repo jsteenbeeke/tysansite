@@ -25,6 +25,9 @@ import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
@@ -267,6 +270,27 @@ public class TysanPage extends WebPage {
 		} else {
 			add(new WebMarkupContainer("animals").setVisible(false));
 		}
+	}
+
+	@Override
+	public void renderHead(IHeaderResponse response) {
+		super.renderHead(response);
+
+		response.render(JavaScriptHeaderItem
+				.forReference(TysanJQueryUIInitialisationResourceReference
+						.get()));
+
+		Integer autoTabIndex = getAutoTabIndex();
+
+		if (autoTabIndex != null) {
+			response.render(OnDomReadyHeaderItem.forScript(String
+					.format("$('jqui-tabs-auto').tabs({ selected: %d });",
+							autoTabIndex)));
+		}
+	}
+
+	protected Integer getAutoTabIndex() {
+		return null;
 	}
 
 	private class AnimalOptionListView extends ListView<String> {

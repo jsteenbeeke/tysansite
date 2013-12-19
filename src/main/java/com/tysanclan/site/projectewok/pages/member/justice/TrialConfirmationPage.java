@@ -54,7 +54,7 @@ public class TrialConfirmationPage extends AbstractSingleAccordionMemberPage {
 		TrialFilter filter = new TrialFilter();
 		filter.setWithTrialThread(false);
 
-		getAccordion().add(
+		add(
 				new ListView<Trial>("trials", ModelMaker.wrap(trialDAO
 						.findByFilter(filter))) {
 					private static final long serialVersionUID = 1L;

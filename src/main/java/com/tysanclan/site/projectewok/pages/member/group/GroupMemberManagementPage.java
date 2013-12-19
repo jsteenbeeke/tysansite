@@ -53,7 +53,7 @@ public class GroupMemberManagementPage extends
 
 		this.groupModel = ModelMaker.wrap(group);
 
-		getAccordion().add(
+		add(
 				new ListView<User>("members", ModelMaker.wrap(group
 						.getGroupMembers())) {
 					private static final long serialVersionUID = 1L;

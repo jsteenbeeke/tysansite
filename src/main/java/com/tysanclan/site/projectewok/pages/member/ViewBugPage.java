@@ -30,6 +30,7 @@ import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -119,6 +120,8 @@ public class ViewBugPage extends AbstractSingleAccordionMemberPage {
 	@SpringBean
 	private BugDAO bugDAO;
 
+	private IModel<Bug> bugModel;
+
 	public ViewBugPage(PageParameters params) {
 		super("Bug");
 
@@ -144,64 +147,64 @@ public class ViewBugPage extends AbstractSingleAccordionMemberPage {
 
 	}
 
+	@Override
+	protected void onDetach() {
+		super.onDetach();
+
+		bugModel.detach();
+	}
+
 	/**
 	 * @param bug
 	 */
 	private void initPage(Bug bug) {
+		bugModel = ModelMaker.wrap(bug);
+
 		setPageTitle(bug.getTitle() + " - "
 				+ bug.getReportType().getDescription());
 
-		getAccordion().add(
-				new Label("description", bug.getDescription())
-						.setEscapeModelStrings(true));
+		add(new Label("description", bug.getDescription())
+				.setEscapeModelStrings(true));
 
-		getAccordion().add(
-				new Label("permalink", "Link to this "
-						+ bug.getReportType().getDescription())
-						.add(AttributeModifier.replace("href", bug
-								.getReportType().getUrl(bug.getId()))));
+		add(new Label("permalink", "Link to this "
+				+ bug.getReportType().getDescription()).add(AttributeModifier
+				.replace("href", bug.getReportType().getUrl(bug.getId()))));
 
-		getAccordion().add(new Label("status", bug.getStatus().toString()));
+		add(new Label("status", bug.getStatus().toString()));
 
-		getAccordion().add(new DateLabel("created", bug.getReported()));
+		add(new DateLabel("created", bug.getReported()));
 
-		getAccordion().add(new DateLabel("updated", bug.getUpdated()));
+		add(new DateLabel("updated", bug.getUpdated()));
 
 		if (bug.getReporter() != null) {
-			getAccordion().add(
-					new MemberListItem("reportedBy", bug.getReporter()));
+			add(new MemberListItem("reportedBy", bug.getReporter()));
 		} else {
-			getAccordion().add(
-					new Label("reportedBy", "<i>Someone not logged in</i>")
-							.setEscapeModelStrings(false));
+			add(new Label("reportedBy", "<i>Someone not logged in</i>")
+					.setEscapeModelStrings(false));
 		}
 
-		getAccordion().add(
-				new Label("fixedIn", bug.getResolutionVersion()).setVisible(bug
-						.getResolutionVersion() != null));
+		add(new Label("fixedIn", bug.getResolutionVersion()).setVisible(bug
+				.getResolutionVersion() != null));
 
-		getAccordion().add(
-				new ListView<BugComment>("comments", ModelMaker.wrap(bug
-						.getComments())) {
-					private static final long serialVersionUID = 1L;
+		add(new ListView<BugComment>("comments", ModelMaker.wrap(bug
+				.getComments())) {
+			private static final long serialVersionUID = 1L;
 
-					@Override
-					protected void populateItem(ListItem<BugComment> item) {
-						BugComment comment = item.getModelObject();
+			@Override
+			protected void populateItem(ListItem<BugComment> item) {
+				BugComment comment = item.getModelObject();
 
-						if (comment.getCommenter() != null) {
-							item.add(new MemberListItem("user", comment
-									.getCommenter()));
-						} else {
-							item.add(new Label("user",
-									"<i>Non-logged in user</i>")
-									.setEscapeModelStrings(false));
-						}
+				if (comment.getCommenter() != null) {
+					item.add(new MemberListItem("user", comment.getCommenter()));
+				} else {
+					item.add(new Label("user", "<i>Non-logged in user</i>")
+							.setEscapeModelStrings(false));
+				}
 
-						item.add(new Label("comment", comment.getDescription())
-								.setEscapeModelStrings(false));
-					}
-				});
+				item.add(new Label("comment", comment.getDescription())
+						.setEscapeModelStrings(false));
+			}
+		});
 
 		final TextArea<String> descriptionArea = new TextArea<String>(
 				"descriptionArea", new Model<String>(""));
@@ -223,36 +226,31 @@ public class ViewBugPage extends AbstractSingleAccordionMemberPage {
 
 		createCommentForm.add(descriptionArea);
 
-		getAccordion().add(createCommentForm);
+		add(createCommentForm);
 
-		getAccordion().add(
-				new IconLink.Builder("images/icons/bug_go.png",
-						new AcceptResponder(bug))
-						.setText("I will fix this bug")
-						.newInstance("accept")
-						.setVisible(
-								getUser().isBugReportMaster()
-										&& !getUser().equals(
-												bug.getAssignedTo())));
+		add(new IconLink.Builder("images/icons/bug_go.png",
+				new AcceptResponder(bug))
+				.setText("I will fix this bug")
+				.newInstance("accept")
+				.setVisible(
+						getUser().isBugReportMaster()
+								&& !getUser().equals(bug.getAssignedTo())));
 
-		getAccordion()
-				.add(new IconLink.Builder("images/icons/bug_delete.png",
-						new CloseResponder(bug))
-						.setText(
-								"This bug/feature is fixed/realized in the current version, and can be closed")
-						.newInstance("close")
-						.setVisible(
-								getUser().isBugReportMaster()
-										&& bug.getStatus() == BugStatus.RESOLVED));
-
-		getAccordion()
-				.add(new IconLink.Builder("images/icons/bug_add.png",
-						new ReopenResponder(bug))
-						.setText("This bug still occurs")
-						.newInstance("reopen")
-						.setVisible(
-								bug.getStatus() == BugStatus.CLOSED
-										&& bug.getReportType() != ReportType.FEATUREREQUEST));
+		add(new IconLink.Builder("images/icons/bug_delete.png",
+				new CloseResponder(bug))
+				.setText(
+						"This bug/feature is fixed/realized in the current version, and can be closed")
+				.newInstance("close")
+				.setVisible(
+						getUser().isBugReportMaster()
+								&& bug.getStatus() == BugStatus.RESOLVED));
+		add(new IconLink.Builder("images/icons/bug_add.png",
+				new ReopenResponder(bug))
+				.setText("This bug still occurs")
+				.newInstance("reopen")
+				.setVisible(
+						bug.getStatus() == BugStatus.CLOSED
+								&& bug.getReportType() != ReportType.FEATUREREQUEST));
 
 		WebMarkupContainer masterPanel = new WebMarkupContainer("masterPanel");
 
@@ -318,11 +316,17 @@ public class ViewBugPage extends AbstractSingleAccordionMemberPage {
 
 		masterPanel.add(resolveBugForm);
 
-		getAccordion().add(masterPanel);
+		add(masterPanel);
 	}
 
 	@Override
 	protected void onClickBackToOverview() {
-		setResponsePage(new BugOverviewPage());
+		Bug bug = bugModel.getObject();
+
+		if (bug != null) {
+			setResponsePage(bug.getReportType().getOverviewPage());
+		} else {
+			setResponsePage(new BugOverviewPage());
+		}
 	}
 }

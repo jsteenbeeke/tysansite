@@ -17,8 +17,6 @@
  */
 package com.tysanclan.site.projectewok.pages.forum;
 
-import org.odlabs.wiquery.ui.tabs.Tabs;
-
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.components.ChangeEmailPanel;
 import com.tysanclan.site.projectewok.components.ChangePasswordPanel;
@@ -33,9 +31,7 @@ public class ForumUserPreferencesPage extends TysanPage {
 	public ForumUserPreferencesPage() {
 		super("User Preferences");
 
-		Tabs tabs = new Tabs("tabs");
-
-		tabs.add(new PrimaryPreferencesPanel("preferences", getUser()) {
+		add(new PrimaryPreferencesPanel("preferences", getUser()) {
 			private static final long serialVersionUID = 1L;
 
 			/**
@@ -47,7 +43,7 @@ public class ForumUserPreferencesPage extends TysanPage {
 			}
 		});
 
-		tabs.add(new ChangePasswordPanel("passwordchange", getUser()) {
+		add(new ChangePasswordPanel("passwordchange", getUser()) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -57,7 +53,7 @@ public class ForumUserPreferencesPage extends TysanPage {
 
 		});
 
-		tabs.add(new ChangeEmailPanel("emailchange", getUser()) {
+		add(new ChangeEmailPanel("emailchange", getUser()) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -65,8 +61,5 @@ public class ForumUserPreferencesPage extends TysanPage {
 				setResponsePage(new ForumUserPreferencesPage());
 			}
 		});
-
-		add(tabs);
-
 	}
 }

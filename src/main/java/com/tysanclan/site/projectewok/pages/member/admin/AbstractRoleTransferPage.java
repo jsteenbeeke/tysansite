@@ -97,7 +97,7 @@ public abstract class AbstractRoleTransferPage extends
 
 		transferForm.add(userChoice);
 
-		getAccordion().add(transferForm);
+		add(transferForm);
 	}
 
 	public abstract User getRole(RoleService service);

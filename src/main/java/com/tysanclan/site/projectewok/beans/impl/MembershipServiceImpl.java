@@ -162,7 +162,7 @@ class MembershipServiceImpl implements
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
-	public void terminateMembership(User _user) {
+	public void terminateMembership(User _user, boolean judicial) {
 		User user = userDAO.load(_user.getId());
 
 		if (user != null) {
@@ -170,7 +170,8 @@ class MembershipServiceImpl implements
 			clearSenatorStatus(user);
 			clearChancellorStatus(user);
 			clearEndorsements(user);
-			user.setRank(Rank.FORUM);
+			user.setRank(judicial ? Rank.BANNED : Rank.FORUM);
+			userDAO.update(user);
 		}
 
 		logService.logUserAction(user, "Membership",
@@ -417,7 +418,7 @@ class MembershipServiceImpl implements
 	public void expireMembers() {
 		List<User> expiredMembers = userService.getInactiveMembers();
 		for (User user : expiredMembers) {
-			terminateMembership(user);
+			terminateMembership(user, false);
 			String mailBody = mailService.getInactivityExpirationMail(user);
 
 			mailService.sendHTMLMail(user.getEMail(),

@@ -40,7 +40,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.core.options.LiteralOption;
 import org.odlabs.wiquery.ui.accordion.Accordion;
 import org.odlabs.wiquery.ui.accordion.AccordionHeader;
-import org.odlabs.wiquery.ui.tabs.Tabs;
 
 import wicket.contrib.tinymce.TinyMceBehavior;
 
@@ -74,11 +73,7 @@ public class CalendarPage extends AbstractMemberPage {
 	public CalendarPage() {
 		super("Calendar");
 
-		Tabs tabs = new Tabs("tabs");
-		tabs.setOutputMarkupId(true);
-		add(tabs);
-
-		tabs.add(new OtterSniperPanel("otterSniperPanel", 2));
+		add(new OtterSniperPanel("otterSniperPanel", 2));
 
 		WebMarkupContainer container = new WebMarkupContainer("container");
 		container.setOutputMarkupId(true);
@@ -119,8 +114,8 @@ public class CalendarPage extends AbstractMemberPage {
 				oldEventView.replaceWith(eventView);
 				oldTitle.replaceWith(newTitle);
 
-				Component component = getTabs().get("schedule:description")
-						.setVisible(true);
+				Component component = get("schedule:description").setVisible(
+						true);
 
 				if (target != null) {
 					target.appendJavaScript("tinyMCE.execCommand('mceRemoveControl', false, '"
@@ -136,7 +131,7 @@ public class CalendarPage extends AbstractMemberPage {
 
 		container.add(calendar);
 
-		tabs.add(container);
+		add(container);
 
 		Accordion accordion = new Accordion("accordion");
 		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
@@ -232,7 +227,7 @@ public class CalendarPage extends AbstractMemberPage {
 		scheduleEventForm.add(new Label("timezone", tz.getDisplayName(false,
 				TimeZone.LONG, Locale.US)));
 
-		tabs.add(scheduleEventForm);
+		add(scheduleEventForm);
 	}
 
 	public ListView<Event> createListView(Date date) {
@@ -266,23 +261,19 @@ public class CalendarPage extends AbstractMemberPage {
 		return result;
 	}
 
-	Tabs getTabs() {
-		return (Tabs) get("tabs");
-	}
-
 	Component getContainer() {
-		return getTabs().get("container");
+		return get("container");
 	}
 
 	Component getAccordion() {
-		return getTabs().get("container:accordion");
+		return get("container:accordion");
 	}
 
 	Component getTitleComponent() {
-		return getTabs().get("container:accordion:title");
+		return get("container:accordion:title");
 	}
 
 	Component getEventViewComponent() {
-		return getTabs().get("container:accordion:" + EVENT_VIEW_ID);
+		return get("container:accordion:" + EVENT_VIEW_ID);
 	}
 }

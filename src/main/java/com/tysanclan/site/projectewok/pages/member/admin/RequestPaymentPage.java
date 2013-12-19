@@ -57,7 +57,7 @@ public class RequestPaymentPage extends AbstractSingleAccordionMemberPage {
 					AccessDeniedPage.class);
 		}
 
-		getAccordion().add(
+		add(
 				new ListView<PaymentRequest>("pending", user
 						.getPaymentRequests()) {
 					private static final long serialVersionUID = 1L;
@@ -124,7 +124,7 @@ public class RequestPaymentPage extends AbstractSingleAccordionMemberPage {
 		requestForm.add(itemDescriptionField);
 		requestForm.add(amountField);
 
-		getAccordion().add(requestForm);
+		add(requestForm);
 
 	}
 }

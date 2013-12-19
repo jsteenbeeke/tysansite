@@ -33,7 +33,6 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.ui.tabs.Tabs;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.FinanceService;
@@ -111,12 +110,10 @@ public class CaretakerFinancePage extends AbstractMemberPage {
 					AccessDeniedPage.class);
 		}
 
-		Tabs tabs = new Tabs("tabs");
-
 		ExpenseFilter efilter = new ExpenseFilter();
 		efilter.addOrderBy("start", true);
 
-		tabs.add(new ListView<Expense>("expenses", ModelMaker.wrap(expenseDAO
+		add(new ListView<Expense>("expenses", ModelMaker.wrap(expenseDAO
 				.findByFilter(efilter))) {
 
 			/**
@@ -174,8 +171,8 @@ public class CaretakerFinancePage extends AbstractMemberPage {
 		DonationFilter filter = new DonationFilter();
 		filter.addOrderBy("donationTime", true);
 
-		tabs.add(new ListView<Donation>("donations", ModelMaker
-				.wrap(donationDAO.findByFilter(filter))) {
+		add(new ListView<Donation>("donations", ModelMaker.wrap(donationDAO
+				.findByFilter(filter))) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -212,22 +209,20 @@ public class CaretakerFinancePage extends AbstractMemberPage {
 
 		});
 
-		tabs.add(createDonationForm());
+		add(createDonationForm());
 
-		tabs.add(createExpenseForm());
+		add(createExpenseForm());
 
 		FinancialTimeline t = new FinancialTimeline(expenseDAO, donationDAO,
 				subscriptionDAO, paidExpenseDAO);
 
-		tabs.add(new Label("currentReserve", new DollarSignModel(
+		add(new Label("currentReserve", new DollarSignModel(
 				new Model<BigDecimal>(t.getReservesToday()))));
 
-		tabs.add(new Label(
+		add(new Label(
 				"exhaustion",
 				t.getExhaustionPoint() == null ? "for the foreseeable future (at least 3 years)"
 						: t.getExhaustionPoint()));
-
-		add(tabs);
 	}
 
 	/**

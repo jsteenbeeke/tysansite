@@ -57,7 +57,7 @@ public class AchievementIconApprovalPage extends
 	public AchievementIconApprovalPage() {
 		super("Achievement Icons");
 
-		getAccordion().add(
+		add(
 				new ListView<AchievementIcon>("pendingIcons", ModelMaker
 						.wrap(getPendingIcons())) {
 

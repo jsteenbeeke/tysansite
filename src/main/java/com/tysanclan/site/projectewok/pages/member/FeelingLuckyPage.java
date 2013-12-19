@@ -44,11 +44,11 @@ public class FeelingLuckyPage extends AbstractSingleAccordionMemberPage {
 	public FeelingLuckyPage() {
 		super("Feeling lucky");
 
-		getAccordion().add(
+		add(
 				new Label("score",
 						new Model<Integer>(getUser().getLuckyScore())));
 
-		getAccordion().add(new Form<User>("luckyForm") {
+		add(new Form<User>("luckyForm") {
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean

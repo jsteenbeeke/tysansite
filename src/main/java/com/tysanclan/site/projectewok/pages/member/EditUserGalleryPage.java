@@ -33,7 +33,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.ui.progressbar.ProgressBar;
-import org.odlabs.wiquery.ui.tabs.Tabs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,7 +46,6 @@ import com.tysanclan.site.projectewok.entities.GalleryImage;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.YoutubeGalleryItem;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.pages.member.admin.AutoSelectTabs;
 
 /**
  * @author Jeroen Steenbeeke
@@ -61,7 +59,7 @@ public class EditUserGalleryPage extends AbstractMemberPage {
 	@SpringBean
 	private GalleryService galleryService;
 
-	private Tabs tabs;
+	private int tabIndex;
 
 	public EditUserGalleryPage(User user) {
 		this(user, 0);
@@ -70,17 +68,21 @@ public class EditUserGalleryPage extends AbstractMemberPage {
 	public EditUserGalleryPage(User user, int selectedTab) {
 		super("User Gallery");
 
-		tabs = new AutoSelectTabs("tabs", selectedTab);
+		this.tabIndex = selectedTab;
 
 		addImageManager(user);
 		addYoutubeManager(user);
 
-		add(tabs);
+	}
+
+	@Override
+	protected Integer getAutoTabIndex() {
+		return tabIndex;
 	}
 
 	private void addYoutubeManager(User user) {
-		tabs.add(new ListView<YoutubeGalleryItem>("gallery", ModelMaker
-				.wrap(user.getYoutubeGalleryItems())) {
+		add(new ListView<YoutubeGalleryItem>("gallery", ModelMaker.wrap(user
+				.getYoutubeGalleryItems())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -139,9 +141,6 @@ public class EditUserGalleryPage extends AbstractMemberPage {
 		addForm.add(urlField);
 
 		addForm.add(descriptionField);
-
-		tabs.add(addForm);
-
 	}
 
 	private void addImageManager(User user) {
@@ -197,7 +196,7 @@ public class EditUserGalleryPage extends AbstractMemberPage {
 			}
 		});
 
-		tabs.add(slider);
+		add(slider);
 
 		ProgressBar bar = new ProgressBar("space");
 
@@ -209,10 +208,10 @@ public class EditUserGalleryPage extends AbstractMemberPage {
 
 		bar.setValue(value);
 
-		tabs.add(bar);
+		add(bar);
 
-		tabs.add(new Label("curr", new Model<BigDecimal>(current)));
-		tabs.add(new Label("max", new Model<BigDecimal>(max)));
+		add(new Label("curr", new Model<BigDecimal>(current)));
+		add(new Label("max", new Model<BigDecimal>(max)));
 
 		final FileUploadField imageUploadField = new FileUploadField("file");
 		final TextField<String> imageDescriptionField = new TextField<String>(
@@ -258,6 +257,6 @@ public class EditUserGalleryPage extends AbstractMemberPage {
 
 		uploadForm.setMultiPart(true);
 
-		tabs.add(uploadForm);
+		add(uploadForm);
 	}
 }

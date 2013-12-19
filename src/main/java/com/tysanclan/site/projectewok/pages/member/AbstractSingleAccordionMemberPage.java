@@ -18,9 +18,6 @@
 package com.tysanclan.site.projectewok.pages.member;
 
 import org.apache.wicket.markup.html.basic.Label;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 /**
  * @author Jeroen Steenbeeke
@@ -29,28 +26,12 @@ public abstract class AbstractSingleAccordionMemberPage extends
 		AbstractMemberPage {
 	private static final long serialVersionUID = 1L;
 
-	private final Accordion accordion;
-
 	/**
 	 * 
 	 */
 	public AbstractSingleAccordionMemberPage(String title) {
 		super(title);
 
-		accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
-
-		accordion.add(new Label("title", title));
-
-		add(accordion);
-	}
-
-	/**
-	 * @return the accordion
-	 */
-	public Accordion getAccordion() {
-		return accordion;
+		add(new Label("atitle", title));
 	}
 }

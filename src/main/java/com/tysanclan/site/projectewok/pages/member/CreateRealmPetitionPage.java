@@ -27,7 +27,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.ui.tabs.Tabs;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
@@ -85,8 +84,6 @@ public class CreateRealmPetitionPage extends AbstractMemberPage {
 			}
 		}
 
-		Tabs tabs = new Tabs("tabs");
-
 		Form<RealmPetition> newRealm = new Form<RealmPetition>("new") {
 			private static final long serialVersionUID = 1L;
 
@@ -121,7 +118,7 @@ public class CreateRealmPetitionPage extends AbstractMemberPage {
 				.wrap((Game) null), ModelMaker.wrapChoices(games),
 				new GameChoiceRenderer()).setRequired(true));
 
-		tabs.add(newRealm);
+		add(newRealm);
 
 		Form<RealmPetition> existing = new Form<RealmPetition>("existing") {
 			private static final long serialVersionUID = 1L;
@@ -152,12 +149,10 @@ public class CreateRealmPetitionPage extends AbstractMemberPage {
 
 		existing.add(new Button("submit").setVisible(!allCombinations.isEmpty()));
 
-		tabs.add(new WebMarkupContainer("tab2").setVisible(!allCombinations
-				.isEmpty()));
+		add(new WebMarkupContainer("existingRealmsHeader")
+				.setVisible(!allCombinations.isEmpty()));
 
-		tabs.add(existing);
-
-		add(tabs);
+		add(existing);
 	}
 
 }

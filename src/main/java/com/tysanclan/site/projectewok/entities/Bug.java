@@ -41,6 +41,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.apache.wicket.Page;
 import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.Type;
@@ -48,6 +49,8 @@ import org.hibernate.annotations.Type;
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 import com.tysanclan.site.projectewok.TysanApplication;
 import com.tysanclan.site.projectewok.TysanApplication.VersionDescriptor;
+import com.tysanclan.site.projectewok.pages.member.BugOverviewPage;
+import com.tysanclan.site.projectewok.pages.member.FeatureOverviewPage;
 
 /**
  *
@@ -61,13 +64,29 @@ public class Bug extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;
 
 	public static enum ReportType {
-		BUGREPORT("Bug Report"), FEATUREREQUEST("Feature Request") {
+		BUGREPORT("Bug Report") {
+			@Override
+			public Page getOverviewPage() {
+				return new BugOverviewPage();
+			}
+		},
+		FEATUREREQUEST("Feature Request") {
 			public String getUrl(Long id) {
 				return "https://www.tysanclan.com/feature/" + id.toString()
 						+ "/";
 			}
+
+			@Override
+			public Page getOverviewPage() {
+				return new FeatureOverviewPage();
+			}
 		},
-		CRASHREPORT("Crash Report");
+		CRASHREPORT("Crash Report") {
+			@Override
+			public Page getOverviewPage() {
+				return new BugOverviewPage();
+			}
+		};
 
 		private final String description;
 
@@ -82,6 +101,8 @@ public class Bug extends BaseDomainObject {
 		public String getUrl(Long id) {
 			return "https://www.tysanclan.com/bug/" + id.toString() + "/";
 		}
+
+		public abstract Page getOverviewPage();
 	}
 
 	public static enum BugStatus {

@@ -50,7 +50,7 @@ public class RealmManagementPage extends AbstractSingleAccordionMemberPage {
 	public RealmManagementPage() {
 		super("Realm Management");
 
-		getAccordion().add(
+		add(
 				new ListView<Realm>("realms", ModelMaker.wrap(realmDAO
 						.findAll())) {
 					private static final long serialVersionUID = 1L;

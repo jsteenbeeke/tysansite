@@ -70,7 +70,7 @@ public class GameRealmAllowAccountTypePage extends
 			}
 		}
 
-		getAccordion().add(
+		add(
 				new ListView<AccountType>("types", Arrays.asList(AccountType
 						.values())) {
 
@@ -88,7 +88,7 @@ public class GameRealmAllowAccountTypePage extends
 
 				});
 
-		getAccordion().add(
+		add(
 				new ListView<GameRealmCartesian>("realms", gameRealms) {
 
 					private static final long serialVersionUID = 1L;

@@ -36,7 +36,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.ui.progressbar.ProgressBar;
-import org.odlabs.wiquery.ui.tabs.Tabs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,7 +54,6 @@ import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
 import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
 import com.tysanclan.site.projectewok.pages.member.EditUserGalleryPage;
 import com.tysanclan.site.projectewok.pages.member.YouTubeUrlValidator;
-import com.tysanclan.site.projectewok.pages.member.admin.AutoSelectTabs;
 
 /**
  * @author Jeroen Steenbeeke
@@ -70,7 +68,7 @@ public class EditGroupGalleryPage extends AbstractMemberPage {
 	@SpringBean
 	private GalleryService galleryService;
 
-	private Tabs tabs;
+	private int selectedTab;
 
 	public EditGroupGalleryPage(Group group) {
 		this(group, 0);
@@ -79,24 +77,27 @@ public class EditGroupGalleryPage extends AbstractMemberPage {
 	public EditGroupGalleryPage(Group group, int selectedTab) {
 		super("Group Gallery");
 
+		this.selectedTab = selectedTab;
+
 		if (!group.isAllowMemberGalleryAccess()
 				&& !getUser().equals(group.getLeader())) {
 			throw new RestartResponseAtInterceptPageException(
 					AccessDeniedPage.class);
 		}
 
-		tabs = new AutoSelectTabs("tabs", selectedTab);
-
 		addYoutubeManager(group);
 		addImageManager(group);
 
-		add(tabs);
+	}
 
+	@Override
+	protected Integer getAutoTabIndex() {
+		return selectedTab;
 	}
 
 	private void addYoutubeManager(Group group) {
-		tabs.add(new ListView<YoutubeGalleryItem>("gallery", ModelMaker
-				.wrap(group.getYoutubeGalleryItems())) {
+		add(new ListView<YoutubeGalleryItem>("gallery", ModelMaker.wrap(group
+				.getYoutubeGalleryItems())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -156,7 +157,7 @@ public class EditGroupGalleryPage extends AbstractMemberPage {
 
 		addForm.add(descriptionField);
 
-		tabs.add(addForm);
+		add(addForm);
 
 	}
 
@@ -213,7 +214,7 @@ public class EditGroupGalleryPage extends AbstractMemberPage {
 			}
 		});
 
-		tabs.add(slider);
+		add(slider);
 
 		ProgressBar bar = new ProgressBar("space");
 
@@ -225,10 +226,10 @@ public class EditGroupGalleryPage extends AbstractMemberPage {
 
 		bar.setValue(value);
 
-		tabs.add(bar);
+		add(bar);
 
-		tabs.add(new Label("curr", new Model<BigDecimal>(current)));
-		tabs.add(new Label("max", new Model<BigDecimal>(max)));
+		add(new Label("curr", new Model<BigDecimal>(current)));
+		add(new Label("max", new Model<BigDecimal>(max)));
 
 		final FileUploadField imageUploadField = new FileUploadField("file");
 		final TextField<String> imageDescriptionField = new TextField<String>(
@@ -277,7 +278,7 @@ public class EditGroupGalleryPage extends AbstractMemberPage {
 
 		uploadForm.setMultiPart(true);
 
-		tabs.add(uploadForm);
+		add(uploadForm);
 
 		final CheckBox allowBox = new CheckBox("allow", new Model<Boolean>(
 				group.isAllowMemberGalleryAccess()));
@@ -313,8 +314,8 @@ public class EditGroupGalleryPage extends AbstractMemberPage {
 
 		setUserAccessForm.setVisible(getUser().equals(group.getLeader()));
 
-		tabs.add(setUserAccessForm);
-		tabs.add(new WebMarkupContainer("permissions")
-				.setVisible(setUserAccessForm.isVisible()));
+		add(setUserAccessForm);
+		add(new WebMarkupContainer("permissions").setVisible(setUserAccessForm
+				.isVisible()));
 	}
 }

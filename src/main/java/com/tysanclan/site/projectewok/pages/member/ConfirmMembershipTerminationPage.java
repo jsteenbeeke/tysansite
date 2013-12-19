@@ -36,7 +36,7 @@ public class ConfirmMembershipTerminationPage extends
 	public ConfirmMembershipTerminationPage() {
 		super("Terminate Membership");
 
-		getAccordion().add(new Form<User>("terminate") {
+		add(new Form<User>("terminate") {
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean
@@ -50,7 +50,7 @@ public class ConfirmMembershipTerminationPage extends
 			 */
 			@Override
 			protected void onSubmit() {
-				membershipService.terminateMembership(getUser());
+				membershipService.terminateMembership(getUser(), false);
 
 				dispatcher
 						.dispatchEvent(new MemberStatusEvent(
