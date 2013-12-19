@@ -40,6 +40,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.time.Duration;
+import org.joda.time.LocalDate;
 import org.odlabs.wiquery.ui.dialog.Dialog;
 
 import com.tysanclan.site.projectewok.components.DebugWindow;
@@ -192,6 +193,9 @@ public class TysanPage extends WebPage {
 
 		}
 		addAnimalPanel();
+
+		add(new Label("year", LocalDate.now().getYear())
+				.setRenderBodyOnly(true));
 	}
 
 	public User getUser() {
