@@ -89,6 +89,7 @@ import com.tysanclan.site.projectewok.pages.member.CreateRealmPetitionPage;
 import com.tysanclan.site.projectewok.pages.member.EditAccountsPage;
 import com.tysanclan.site.projectewok.pages.member.EditUserGalleryPage;
 import com.tysanclan.site.projectewok.pages.member.EndorsementPage;
+import com.tysanclan.site.projectewok.pages.member.FeatureOverviewPage;
 import com.tysanclan.site.projectewok.pages.member.FeelingLuckyPage;
 import com.tysanclan.site.projectewok.pages.member.FinancePage;
 import com.tysanclan.site.projectewok.pages.member.JoinGroupPage;
@@ -101,7 +102,9 @@ import com.tysanclan.site.projectewok.pages.member.NotificationsPage;
 import com.tysanclan.site.projectewok.pages.member.OverviewPage;
 import com.tysanclan.site.projectewok.pages.member.PastElectionsPage;
 import com.tysanclan.site.projectewok.pages.member.ProposeAchievementPage;
+import com.tysanclan.site.projectewok.pages.member.ReportBugPage;
 import com.tysanclan.site.projectewok.pages.member.RequestAchievementPage;
+import com.tysanclan.site.projectewok.pages.member.RequestFeaturePage;
 import com.tysanclan.site.projectewok.pages.member.RunForChancellorPage;
 import com.tysanclan.site.projectewok.pages.member.RunForSenatorPage;
 import com.tysanclan.site.projectewok.pages.member.SenateElectionPage;
@@ -255,8 +258,11 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 		}
 	}
 
-	public class NeverTrueCondition implements IRequiresAttentionCondition {
+	public static class NeverTrueCondition implements
+			IRequiresAttentionCondition {
 		private static final long serialVersionUID = 1L;
+
+		private static final IRequiresAttentionCondition INSTANCE = new NeverTrueCondition();
 
 		@Override
 		public AttentionType requiresAttention() {
@@ -267,6 +273,11 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 		public Long getDismissableId() {
 			return null;
 		}
+
+		public static IRequiresAttentionCondition get() {
+			return INSTANCE;
+		}
+
 	}
 
 	public class VoteForSenatorCondition implements IRequiresAttentionCondition {
