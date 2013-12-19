@@ -67,32 +67,35 @@ public class PostPanel extends Panel {
 		super(id, ModelMaker.wrap(post));
 
 		if (post == null) {
-			WebMarkupContainer accordion = new WebMarkupContainer("accordion");
-			accordion.setVisible(false);
+			WebMarkupContainer container = new WebMarkupContainer("container");
+			container.setVisible(false);
 
-			addRealms(accordion, null);
+			addRealms(container, null);
 
-			add(new WebMarkupContainer("lucky").setVisible(false));
-			add(new WebMarkupContainer("poster").setVisible(false));
-			add(new WebMarkupContainer("customtitle").setVisible(false));
-			add(new WebMarkupContainer("posttime").setVisible(false));
-			add(new WebMarkupContainer("rank").setVisible(false));
-			accordion
+			container.add(new WebMarkupContainer("lucky").setVisible(false));
+			container.add(new WebMarkupContainer("poster").setVisible(false));
+			container.add(new WebMarkupContainer("customtitle")
+					.setVisible(false));
+			container.add(new WebMarkupContainer("posttime").setVisible(false));
+			container.add(new WebMarkupContainer("rank").setVisible(false));
+			container
 					.add(new WebMarkupContainer("donations").setVisible(false));
-			add(new WebMarkupContainer("rankname").setVisible(false));
-			add(new WebMarkupContainer("avatar").setVisible(false));
-			add(new WebMarkupContainer("body").setVisible(false));
+			container.add(new WebMarkupContainer("rankname").setVisible(false));
+			container.add(new WebMarkupContainer("avatar").setVisible(false));
+			container.add(new WebMarkupContainer("body").setVisible(false));
 
 			WebMarkupContainer branchNote = new WebMarkupContainer("branchnote");
 			branchNote.add(new WebMarkupContainer("source").setVisible(false));
 
-			add(branchNote);
+			container.add(branchNote);
 
-			accordion
+			container
 					.add(new WebMarkupContainer("signature").setVisible(false));
-			add(new WebMarkupContainer("icon").setVisible(false));
-			add(new WebMarkupContainer("edit").setVisible(false));
-			add(new WebMarkupContainer("delete").setVisible(false));
+			container.add(new WebMarkupContainer("icon").setVisible(false));
+			container.add(new WebMarkupContainer("edit").setVisible(false));
+			container.add(new WebMarkupContainer("delete").setVisible(false));
+
+			add(container);
 
 		} else {
 			TysanSession sess = (TysanSession) Session.get();
@@ -120,7 +123,7 @@ public class PostPanel extends Panel {
 
 					));
 
-			add(lucky);
+			container.add(lucky);
 
 			final Long posterId = post.getPoster() != null ? post.getPoster()
 					.getId() : null;
@@ -181,13 +184,14 @@ public class PostPanel extends Panel {
 							.add(AttributeModifier.replace("style",
 									"display: inline;")));
 
-			add(poster);
+			container.add(poster);
 
-			add(new Label("customtitle", post.getPoster() != null ? post
-					.getPoster().getCustomTitle() : "")
+			container.add(new Label("customtitle",
+					post.getPoster() != null ? post.getPoster()
+							.getCustomTitle() : "")
 					.setEscapeModelStrings(false));
 
-			add(new DateTimeLabel("posttime", post.getTime()));
+			container.add(new DateTimeLabel("posttime", post.getTime()));
 
 			container
 					.add(new RankIcon("rank", post.getPoster() != null ? post
@@ -195,8 +199,8 @@ public class PostPanel extends Panel {
 							.getPoster() != null ? post.getPoster().getRank() != Rank.FORUM
 							&& post.getPoster().getRank() != Rank.BANNED
 							: false));
-			add(new DonatorPanel("donations", post.getPoster()));
-			add(new Label("rankName", post.getPoster() != null ? post
+			container.add(new DonatorPanel("donations", post.getPoster()));
+			container.add(new Label("rankName", post.getPoster() != null ? post
 					.getPoster().getRank().toString() : "Forum User"));
 
 			WebMarkupContainer image = new WebMarkupContainer("avatar");
@@ -207,7 +211,7 @@ public class PostPanel extends Panel {
 			} else {
 				image.add(new AttributeModifier("src", new Model<String>(url)));
 			}
-			add(image);
+			container.add(image);
 
 			Label body = new Label("body", new Model<String>(
 					aprilFilter(post.getContent())));
@@ -222,15 +226,15 @@ public class PostPanel extends Panel {
 			}
 
 			branchnote.setVisible(post.getBranchTo() != null);
-			add(branchnote);
+			container.add(branchnote);
 
-			add(body);
-			add(new Label("signature", post.getPoster() != null ? post
-					.getPoster().getSignature() : "").setEscapeModelStrings(
-					false).setVisible(
+			container.add(body);
+			container.add(new Label("signature",
+					post.getPoster() != null ? post.getPoster().getSignature()
+							: "").setEscapeModelStrings(false).setVisible(
 					post.getPoster() != null
 							&& !post.getPoster().getSignature().isEmpty()));
-			add(new ContextImage("icon", "images/icons/new.png")
+			container.add(new ContextImage("icon", "images/icons/new.png")
 					.setVisible(sess != null ? forumService.isPostUnread(u,
 							post) : false));
 
@@ -252,9 +256,9 @@ public class PostPanel extends Panel {
 			};
 
 			edit.setVisible(canEdit);
-			add(edit);
+			container.add(edit);
 
-			add(new Link<ForumPost>("delete", ModelMaker.wrap(post)) {
+			container.add(new Link<ForumPost>("delete", ModelMaker.wrap(post)) {
 				/**
 				 * 
 				 */
@@ -267,6 +271,8 @@ public class PostPanel extends Panel {
 
 				}
 			});
+
+			add(container);
 		}
 
 	}
