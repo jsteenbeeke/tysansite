@@ -26,19 +26,17 @@ public class JuniorMemberLinksTest extends AbstractOverviewLinksTest {
 
 	@Test
 	public void testMessagesLink() {
-		verifyIconLink("accordion:basicpanel:messages", MessageListPage.class);
+		verifyIconLink("basicpanel:messages", MessageListPage.class);
 	}
 
 	@Test
 	public void testNotificationLink() {
-		verifyIconLink("accordion:basicpanel:notification",
-				NotificationsPage.class);
+		verifyIconLink("basicpanel:notification", NotificationsPage.class);
 	}
 
 	@Test
 	public void testPreferencesLink() {
-		verifyLink("accordion:basicpanel:preferences",
-				MemberPreferencesPage.class);
+		verifyLink("basicpanel:preferences", MemberPreferencesPage.class);
 	}
 
 	/*
