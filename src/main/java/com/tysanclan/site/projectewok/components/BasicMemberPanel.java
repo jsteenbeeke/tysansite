@@ -526,7 +526,7 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 		add(createLink("newbug", ReportBugPage.class, "Report new bug",
 				new BugCondition()));
 		add(createLink("features", FeatureOverviewPage.class,
-				"FeatureRequests", NeverTrueCondition.get()));
+				"Feature Requests", NeverTrueCondition.get()));
 		add(createLink("newfeature", RequestFeaturePage.class,
 				"Request new feature", NeverTrueCondition.get()));
 	}
