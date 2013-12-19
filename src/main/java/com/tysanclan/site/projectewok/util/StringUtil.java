@@ -25,8 +25,12 @@ import java.util.List;
 import java.util.Random;
 import java.util.StringTokenizer;
 
+import javax.annotation.Nullable;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Function;
 
 /**
  * @author Jeroen Steenbeeke
@@ -263,4 +267,18 @@ public class StringUtil {
 		return words.size();
 	}
 
+	public static Function<String, String> capitalizeFirstFunction() {
+		return new CapitalizeFirstFunction();
+	}
+
+	private static final class CapitalizeFirstFunction implements
+			Function<String, String> {
+		@Override
+		@Nullable
+		public String apply(@Nullable String input) {
+
+			return input != null ? String.format("%s%s", input.substring(0, 1)
+					.toUpperCase(), input.substring(1)) : null;
+		}
+	}
 }

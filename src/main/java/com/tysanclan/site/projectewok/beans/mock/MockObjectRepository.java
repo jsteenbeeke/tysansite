@@ -100,6 +100,7 @@ public class MockObjectRepository implements InitializingBean {
 		f2.setPublicAccess(true);
 		addObject(sess, f2);
 
+		// 1
 		User prospero = genUser(sess, "Prospero", Rank.REVERED_MEMBER);
 
 		Committee web = new Committee();
@@ -110,21 +111,37 @@ public class MockObjectRepository implements InitializingBean {
 		web.setJoinPolicy(JoinPolicy.INVITATION);
 		web.setDescription("The committee in charge of developing new features for the website as well as ensuring the current site stays operational");
 
+		// 2
 		genUser(sess, "LordInfiniti", Rank.TRUTHSAYER);
+		// 3
 		genUser(sess, "Thalos", Rank.SENATOR);
+		// 4
 		genUser(sess, "SilentPothead", Rank.CHANCELLOR);
+		// 5
 		genUser(sess, "Aragorn", Rank.SENIOR_MEMBER);
+		// 6
 		genUser(sess, "GreenfireStorm", Rank.REVERED_MEMBER);
+		// 7
 		genUser(sess, "Mach114", Rank.REVERED_MEMBER);
+		// 8
 		genUser(sess, "Rene", Rank.SENIOR_MEMBER);
+		// 9
 		genUser(sess, "Arclizes", Rank.SENIOR_MEMBER);
+		// 10
 		genUser(sess, "Kali", Rank.FULL_MEMBER);
+		// 11
 		genUser(sess, "Wolfie", Rank.FULL_MEMBER);
+		// 12
 		genUser(sess, "tobymanc", Rank.JUNIOR_MEMBER);
+		// 13
 		genUser(sess, "James", Rank.JUNIOR_MEMBER);
+		// 14
 		genUser(sess, "Strike", Rank.FULL_MEMBER);
+		// 15
 		User archonares = genUser(sess, "ArchonAres", Rank.FULL_MEMBER);
+		// 16
 		genUser(sess, "sukhoi", Rank.TRIAL);
+		// 17
 		genUser(sess, "firecrackerd", Rank.TRIAL);
 
 		web.getGroupMembers().add(archonares);

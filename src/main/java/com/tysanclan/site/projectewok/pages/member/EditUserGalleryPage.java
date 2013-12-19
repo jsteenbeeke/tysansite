@@ -141,6 +141,8 @@ public class EditUserGalleryPage extends AbstractMemberPage {
 		addForm.add(urlField);
 
 		addForm.add(descriptionField);
+
+		add(addForm);
 	}
 
 	private void addImageManager(User user) {
