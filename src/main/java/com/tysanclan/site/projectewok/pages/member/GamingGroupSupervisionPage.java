@@ -30,9 +30,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.util.ListModel;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.entities.Game;
@@ -72,24 +69,18 @@ public class GamingGroupSupervisionPage extends AbstractMemberPage {
 	}
 
 	private void initComponents(String name, List<GamingGroup> groups) {
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
-
 		List<User> users = new LinkedList<User>();
 		for (GamingGroup group : groups) {
 			users.addAll(group.getGroupMembers());
 		}
 
-		accordion.add(GraphUtil.makePieChart("rankcomposition",
+		add(GraphUtil.makePieChart("rankcomposition",
 				"Overall rank composition", createCompositionChart(users))
 				.setVisible(!users.isEmpty()));
-		accordion.add(GraphUtil.makeBarChart("groupsize", "Group sizes",
+		add(GraphUtil.makeBarChart("groupsize", "Group sizes",
 				createGroupSizeChart(groups)).setVisible(!users.isEmpty()));
 
-		accordion.add(new ListView<GamingGroup>("groups", ModelMaker
-				.wrap(groups)) {
+		add(new ListView<GamingGroup>("groups", ModelMaker.wrap(groups)) {
 			private static final long serialVersionUID = 1L;
 
 			/**
@@ -110,7 +101,6 @@ public class GamingGroupSupervisionPage extends AbstractMemberPage {
 			}
 		});
 
-		add(accordion);
 	}
 
 	private ListModel<BaseSeries<String, Integer>> createGroupSizeChart(

@@ -24,9 +24,6 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.LawEnforcementService;
@@ -49,15 +46,10 @@ public class TruthsayerVotePage extends AbstractMemberPage {
 	public TruthsayerVotePage() {
 		super("Truthsayer votes");
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
-
 		TruthsayerNominationFilter filter = new TruthsayerNominationFilter();
 		filter.setStartSet(true);
 
-		accordion.add(new ListView<TruthsayerNomination>("nominations",
+		add(new ListView<TruthsayerNomination>("nominations",
 				ModelMaker.wrap(truthsayerNominationDAO.findByFilter(filter))) {
 			private static final long serialVersionUID = 1L;
 
@@ -149,8 +141,6 @@ public class TruthsayerVotePage extends AbstractMemberPage {
 			}
 
 		});
-
-		add(accordion);
 
 	}
 }

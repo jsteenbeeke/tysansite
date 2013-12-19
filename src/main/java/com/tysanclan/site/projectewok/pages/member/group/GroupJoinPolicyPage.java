@@ -25,9 +25,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
@@ -53,11 +50,6 @@ public class GroupJoinPolicyPage extends AbstractMemberPage {
 			throw new RestartResponseAtInterceptPageException(
 					new AccessDeniedPage());
 		}
-
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
 
 		Form<Group> setPolicyForm = new Form<Group>("setpolicy",
 				ModelMaker.wrap(group)) {
@@ -116,9 +108,7 @@ public class GroupJoinPolicyPage extends AbstractMemberPage {
 					}
 				}));
 
-		accordion.add(setPolicyForm);
-
-		add(accordion);
+		add(setPolicyForm);
 
 	}
 }

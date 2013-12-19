@@ -28,9 +28,6 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import wicket.contrib.tinymce.TinyMceBehavior;
 
@@ -72,11 +69,6 @@ public class CommitteePage extends AbstractMemberPage {
 	 */
 	public CommitteePage() {
 		super("Committee Management");
-
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
 
 		Form<Committee> createForm = new Form<Committee>("committeeform") {
 			private static final long serialVersionUID = 1L;
@@ -129,12 +121,12 @@ public class CommitteePage extends AbstractMemberPage {
 				new TysanTinyMCESettings())));
 		createForm.add(new TextField<String>("name", new Model<String>("")));
 
-		accordion.add(createForm);
+		add(createForm);
 
 		CommitteeFilter filter = new CommitteeFilter();
 		filter.addOrderBy("name", true);
 
-		accordion.add(new ListView<Committee>("committees", ModelMaker
+		add(new ListView<Committee>("committees", ModelMaker
 				.wrap(committeeDAO.findByFilter(filter))) {
 			private static final long serialVersionUID = 1L;
 
@@ -173,6 +165,5 @@ public class CommitteePage extends AbstractMemberPage {
 
 		});
 
-		add(accordion);
 	}
 }

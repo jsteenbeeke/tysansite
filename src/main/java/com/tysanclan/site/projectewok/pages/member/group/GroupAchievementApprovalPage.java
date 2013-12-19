@@ -25,9 +25,6 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.AchievementService;
@@ -65,13 +62,8 @@ public class GroupAchievementApprovalPage extends AbstractMemberPage {
 
 		groupModel = ModelMaker.wrap(group);
 
-		Accordion acc = new Accordion("accordion");
-		acc.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		acc.setAutoHeight(false);
-		acc.getOptions().put("heightStyle", "'content'");
-
-		acc.add(new ListView<AchievementRequest>("requests", ModelMaker
-				.wrap(requestDAO.getPendingGroupRequests(group))) {
+		add(new ListView<AchievementRequest>("requests",
+				ModelMaker.wrap(requestDAO.getPendingGroupRequests(group))) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -141,9 +133,6 @@ public class GroupAchievementApprovalPage extends AbstractMemberPage {
 			}
 
 		});
-
-		add(acc);
-
 	}
 
 	@Override

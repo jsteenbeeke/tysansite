@@ -34,9 +34,6 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanSession;
@@ -67,13 +64,6 @@ public class ForumPanel extends Panel {
 	public ForumPanel(String id, final Forum forum, final long pageId,
 			final boolean publicView) {
 		super(id);
-
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
-
-		add(accordion);
 
 		DataView<ForumThread> threads = new DataView<ForumThread>("threads",
 				ForumDataProvider.of(forum, forumThreadDAO), 10) {
@@ -227,9 +217,9 @@ public class ForumPanel extends Panel {
 
 		markAsReadLink.setVisible(user != null);
 
-		accordion.add(markAsReadLink);
+		add(markAsReadLink);
 
-		accordion.add(threads);
+		add(threads);
 
 		Link<Forum> createThread = new Link<Forum>("threadlink",
 				ModelMaker.wrap(forum)) {
@@ -243,9 +233,9 @@ public class ForumPanel extends Panel {
 
 		createThread.setVisible(!publicView && forum.canCreateThread(user));
 
-		accordion.add(createThread);
+		add(createThread);
 
-		accordion.add(new PagingNavigator("navigation", threads));
+		add(new PagingNavigator("navigation", threads));
 	}
 
 	/**

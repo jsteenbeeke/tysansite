@@ -26,10 +26,6 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionActive;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.tysanclan.site.projectewok.TysanSession;
 import com.tysanclan.site.projectewok.beans.ForumService;
@@ -84,30 +80,13 @@ public class ForumOverviewPanel extends Panel {
 					}
 				}
 
-				// item.add(item);
-
-				Accordion accordion = new Accordion("accordion");
-				accordion
-						.setHeader(new AccordionHeader(new LiteralOption("h2")));
-				accordion.setAutoHeight(false);
-				accordion.getOptions().put("heightStyle", "'content'");
-
-				boolean collapse = user != null && user.isCollapseForums();
-
-				if (collapse && !active) {
-					accordion.setCollapsible(collapse);
-					accordion.setActive(new AccordionActive(active));
-				}
-
-				item.add(accordion);
-
-				accordion.add(new WebMarkupContainer("unread")
+				item.add(new WebMarkupContainer("unread")
 						.setVisible(session != null
 								&& session.getUser() != null));
 
 				Label label = new Label("cattitle", catName);
 
-				accordion.add(label);
+				item.add(label);
 
 				DataView<Forum> forums = new DataView<Forum>("forums",
 						ForumDataProvider.of(cat, forumDAO)) {
@@ -156,7 +135,7 @@ public class ForumOverviewPanel extends Panel {
 
 				};
 
-				accordion.add(forums);
+				item.add(forums);
 
 			}
 		};

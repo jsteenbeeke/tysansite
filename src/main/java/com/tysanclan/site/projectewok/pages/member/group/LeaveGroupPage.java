@@ -21,9 +21,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.GroupService;
@@ -40,12 +37,7 @@ public class LeaveGroupPage extends AbstractMemberPage {
 	public LeaveGroupPage(Group group) {
 		super("Leave " + group.getName());
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setAutoHeight(false);
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.getOptions().put("heightStyle", "'content'");
-
-		accordion.add(new Label("title", "Leave " + group.getName()));
+		add(new Label("title", "Leave " + group.getName()));
 
 		Link<Group> yesLink = new Link<Group>("yes", ModelMaker.wrap(group)) {
 			private static final long serialVersionUID = 1L;
@@ -76,11 +68,10 @@ public class LeaveGroupPage extends AbstractMemberPage {
 
 		noLink.add(new ContextImage("icon", "images/icons/cross.png"));
 
-		accordion.add(yesLink);
-		accordion.add(noLink);
+		add(yesLink);
+		add(noLink);
 
-		accordion.add(new Label("name", group.getName()));
+		add(new Label("name", group.getName()));
 
-		add(accordion);
 	}
 }

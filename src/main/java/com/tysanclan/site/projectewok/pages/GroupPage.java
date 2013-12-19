@@ -27,7 +27,6 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.ui.accordion.Accordion;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
@@ -62,18 +61,12 @@ public class GroupPage extends TysanPage {
 	private void initComponents(Group group) {
 		setPageTitle(group.getName());
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
-
-		add(accordion);
-
-		accordion.add(new Label("description", group.getDescription())
+		add(new Label("description", group.getDescription())
 				.setEscapeModelStrings(false));
 		if (group.getLeader() != null) {
-			accordion.add(new MemberListItem("leader", group.getLeader()));
+			add(new MemberListItem("leader", group.getLeader()));
 		} else {
-			accordion.add(new WebMarkupContainer("leader").setVisible(false));
+			add(new WebMarkupContainer("leader").setVisible(false));
 		}
 
 		List<User> users = new LinkedList<User>();
@@ -83,7 +76,7 @@ public class GroupPage extends TysanPage {
 			users.remove(group.getLeader());
 		}
 
-		accordion.add(new ListView<User>("members", ModelMaker.wrap(users)) {
+		add(new ListView<User>("members", ModelMaker.wrap(users)) {
 			private static final long serialVersionUID = 1L;
 
 			/**
@@ -96,8 +89,8 @@ public class GroupPage extends TysanPage {
 			}
 		});
 
-		accordion.add(new GalleryPanel("gallery", group));
-		accordion.add(new YoutubeGalleryPanel("ygallery", group));
+		add(new GalleryPanel("gallery", group));
+		add(new YoutubeGalleryPanel("ygallery", group));
 
 	}
 

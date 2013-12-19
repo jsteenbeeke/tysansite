@@ -18,9 +18,6 @@
 package com.tysanclan.site.projectewok.pages.member.senate;
 
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.RoleService;
@@ -39,18 +36,12 @@ public class KeyRoleNominationApprovalPage extends AbstractMemberPage {
 	public KeyRoleNominationApprovalPage() {
 		super("Key role nominations");
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
-
-		accordion.add(new KeyRoleNominationApprovalPanel("herald", roleService
-				.getCurrentTransfer(RoleType.HERALD)));
-		accordion.add(new KeyRoleNominationApprovalPanel("steward", roleService
-				.getCurrentTransfer(RoleType.STEWARD)));
-		accordion.add(new KeyRoleNominationApprovalPanel("treasurer",
+		add(new KeyRoleNominationApprovalPanel("herald",
+				roleService.getCurrentTransfer(RoleType.HERALD)));
+		add(new KeyRoleNominationApprovalPanel("steward",
+				roleService.getCurrentTransfer(RoleType.STEWARD)));
+		add(new KeyRoleNominationApprovalPanel("treasurer",
 				roleService.getCurrentTransfer(RoleType.TREASURER)));
 
-		add(accordion);
 	}
 }

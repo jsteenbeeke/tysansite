@@ -28,9 +28,6 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
@@ -60,13 +57,6 @@ public class EditAccountsPage extends AbstractMemberPage {
 	public EditAccountsPage() {
 		super("Edit Accounts");
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setAutoHeight(false);
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.getOptions().put("heightStyle", "'content'");
-
-		add(accordion);
-
 		Form<User> form = new Form<User>("gameform") {
 			private static final long serialVersionUID = 1L;
 
@@ -89,7 +79,7 @@ public class EditAccountsPage extends AbstractMemberPage {
 			}
 		};
 
-		accordion.add(form);
+		add(form);
 
 		List<GameRealmCartesian> cartesians = new LinkedList<GameRealmCartesian>();
 
@@ -104,13 +94,11 @@ public class EditAccountsPage extends AbstractMemberPage {
 					.getRealm()));
 		}
 
-		accordion.setVisible(!cartesians.isEmpty());
-
 		form.add(new DropDownChoice<GameRealmCartesian>("choices",
 				new Model<GameRealmCartesian>(null), cartesians,
 				new GameRealmCartesianRenderer()));
 
-		accordion.add(form);
+		add(form);
 
 		List<UserGameRealm> played = new LinkedList<UserGameRealm>();
 		played.addAll(getUser().getPlayedGames());

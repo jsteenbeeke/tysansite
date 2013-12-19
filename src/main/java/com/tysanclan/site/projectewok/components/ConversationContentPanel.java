@@ -20,7 +20,6 @@ package com.tysanclan.site.projectewok.components;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -34,9 +33,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.time.Duration;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import wicket.contrib.tinymce.TinyMceBehavior;
 
@@ -67,30 +63,6 @@ public class ConversationContentPanel extends Panel {
 	@SpringBean
 	private ConversationParticipationDAO conversationParticipationDAO;
 
-	public void activate(AjaxRequestTarget target) {
-		Accordion accordion = (Accordion) get("accordion");
-
-		int i = 0;
-
-		for (Message message : getParticipation().getConversation()
-				.getMessages()) {
-			if (!getParticipation().getReadMessages().contains(message)) {
-				if (target != null) {
-					target.appendJavaScript(accordion.activate(i).render()
-							.toString());
-				}
-				return;
-			}
-			i++;
-		}
-
-		if (target != null) {
-			target.appendJavaScript(accordion.activate(i - 1).render()
-					.toString());
-		}
-
-	}
-
 	@SpringBean
 	private MessageService service;
 
@@ -116,21 +88,12 @@ public class ConversationContentPanel extends Panel {
 			protected void populateItem(ListItem<Message> item) {
 				Message message = item.getModelObject();
 
-				Accordion accordion = new Accordion("accordion");
-				accordion
-						.setHeader(new AccordionHeader(new LiteralOption("h2")));
-				accordion.setAutoHeight(false);
-				accordion.getOptions().put("heightStyle", "'content'");
-
-				item.add(accordion);
-
-				accordion.add(new Label("user",
+				item.add(new Label("user",
 						message.getSender() != null ? message.getSender()
 								.getUsername() : "System"));
-				accordion.add(new Label("time", DateUtil
-						.getTimezoneFormattedString(message.getSendTime(),
-								getUser().getTimezone())));
-				accordion.add(new Label("content", message.getContent())
+				item.add(new Label("time", DateUtil.getTimezoneFormattedString(
+						message.getSendTime(), getUser().getTimezone())));
+				item.add(new Label("content", message.getContent())
 						.setEscapeModelStrings(false));
 			}
 
@@ -140,11 +103,7 @@ public class ConversationContentPanel extends Panel {
 		List<ConversationParticipation> plist = new LinkedList<ConversationParticipation>();
 		plist.addAll(participation.getConversation().getParticipants());
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-
-		accordion.add(new ListView<ConversationParticipation>("participants",
+		add(new ListView<ConversationParticipation>("participants",
 				ModelMaker.wrap(plist)) {
 			private static final long serialVersionUID = 1L;
 
@@ -156,12 +115,6 @@ public class ConversationContentPanel extends Panel {
 			}
 
 		});
-
-		add(accordion);
-
-		Accordion accordion2 = new Accordion("accordion2");
-		accordion2.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion2.setAutoHeight(false);
 
 		Form<ConversationParticipation> respondForm = new Form<ConversationParticipation>(
 				"respondForm", ModelMaker.wrap(participation)) {
@@ -186,8 +139,7 @@ public class ConversationContentPanel extends Panel {
 		editorVisible = participation.getConversation().getParticipants()
 				.size() > 1;
 
-		accordion2.add(new WebMarkupContainer("respondheader")
-				.setVisible(editorVisible));
+		add(new WebMarkupContainer("respondheader").setVisible(editorVisible));
 
 		respondForm.setVisible(editorVisible);
 
@@ -198,9 +150,7 @@ public class ConversationContentPanel extends Panel {
 
 		respondForm.add(editor);
 
-		accordion2.add(respondForm);
-
-		add(accordion2);
+		add(respondForm);
 	}
 
 	public ConversationParticipation getParticipation() {

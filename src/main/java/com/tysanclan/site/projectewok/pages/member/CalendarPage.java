@@ -37,9 +37,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import wicket.contrib.tinymce.TinyMceBehavior;
 
@@ -103,7 +100,7 @@ public class CalendarPage extends AbstractMemberPage {
 
 				ListView<Event> eventView = createListView(cal.getTime());
 
-				getAccordion()
+				getContainer()
 						.setVisible(!eventView.getModelObject().isEmpty());
 
 				Label newTitle = new Label("title",
@@ -120,7 +117,7 @@ public class CalendarPage extends AbstractMemberPage {
 				if (target != null) {
 					target.appendJavaScript("tinyMCE.execCommand('mceRemoveControl', false, '"
 							+ component.getMarkupId() + "')");
-					target.add(getAccordion());
+					target.add(getContainer());
 
 					target.appendJavaScript("tinyMCE.execCommand('mceAddControl', false, '"
 							+ component.getMarkupId() + "')");
@@ -133,19 +130,10 @@ public class CalendarPage extends AbstractMemberPage {
 
 		add(container);
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(true);
-		accordion.setOutputMarkupId(true);
-		accordion.setOutputMarkupPlaceholderTag(true);
-		accordion.getOptions().put("heightStyle", "'content'");
-
-		container.add(accordion);
-
 		ListView<Event> eventView = createListView(currTime);
-		accordion.add(eventView);
-		accordion.setVisible(!eventView.getModelObject().isEmpty());
-		accordion.add(new Label("title", "Events for "
+		container.add(eventView);
+		container.setVisible(!eventView.getModelObject().isEmpty());
+		container.add(new Label("title", "Events for "
 				+ new SimpleDateFormat("EEEE d MMMM yyyy", Locale.US)
 						.format(currTime)));
 
@@ -265,15 +253,11 @@ public class CalendarPage extends AbstractMemberPage {
 		return get("container");
 	}
 
-	Component getAccordion() {
-		return get("container:accordion");
-	}
-
 	Component getTitleComponent() {
-		return get("container:accordion:title");
+		return get("container:title");
 	}
 
 	Component getEventViewComponent() {
-		return get("container:accordion:" + EVENT_VIEW_ID);
+		return get("container:" + EVENT_VIEW_ID);
 	}
 }

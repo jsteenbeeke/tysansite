@@ -24,9 +24,6 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import wicket.contrib.tinymce.TinyMceBehavior;
 
@@ -48,12 +45,7 @@ public class EditRolePage extends TysanPage {
 	public EditRolePage(Role role) {
 		super("Edit role - " + role.getName());
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
-
-		accordion.add(new Label("title", role.getName()));
+		add(new Label("title", role.getName()));
 
 		Form<Role> editForm = new Form<Role>("editForm", ModelMaker.wrap(role)) {
 			private static final long serialVersionUID = 1L;
@@ -92,9 +84,7 @@ public class EditRolePage extends TysanPage {
 				.getDescription())).add(new TinyMceBehavior(
 				new TysanTinyMCESettings())));
 
-		accordion.add(editForm);
-
-		add(accordion);
+		add(editForm);
 
 		add(new Link<Void>("back") {
 			private static final long serialVersionUID = 1L;

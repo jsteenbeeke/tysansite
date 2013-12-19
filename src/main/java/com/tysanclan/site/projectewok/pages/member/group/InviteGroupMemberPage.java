@@ -25,9 +25,6 @@ import java.util.List;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.GroupService;
@@ -49,11 +46,6 @@ public class InviteGroupMemberPage extends AbstractMemberPage {
 
 	public InviteGroupMemberPage(Group group) {
 		super("Invite members to group");
-
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
 
 		Form<Group> addForm = new Form<Group>("inviteForm",
 				ModelMaker.wrap(group)) {
@@ -110,9 +102,7 @@ public class InviteGroupMemberPage extends AbstractMemberPage {
 		addForm.add(new DropDownChoice<User>("user", ModelMaker
 				.wrap((User) null), ModelMaker.wrap(users)));
 
-		accordion.add(addForm);
-
-		add(accordion);
+		add(addForm);
 
 	}
 }

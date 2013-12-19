@@ -78,6 +78,8 @@ public class TysanPage extends WebPage {
 
 	private final Dialog notificationWindow;
 
+	private boolean autoCollapse = false;
+
 	public TysanPage(String title) {
 		this(title, null);
 	}
@@ -198,6 +200,10 @@ public class TysanPage extends WebPage {
 				.setRenderBodyOnly(true));
 	}
 
+	public void setAutoCollapse(boolean autoCollapse) {
+		this.autoCollapse = autoCollapse;
+	}
+
 	public User getUser() {
 		return getTysanSession() != null ? getTysanSession().getUser() : null;
 	}
@@ -291,6 +297,22 @@ public class TysanPage extends WebPage {
 					.format("$('jqui-tabs-auto').tabs({ selected: %d });",
 							autoTabIndex)));
 		}
+
+		StringBuilder collapsibles = new StringBuilder();
+		collapsibles.append("$('.jqui-accordion-collapsible').accordion({\n");
+		collapsibles.append("\tautoHeight: true,\n");
+		collapsibles.append("\theader: 'h2',\n");
+		collapsibles.append("\theightStyle: 'content',\n");
+		collapsibles.append("\tcollapsible: true,\n");
+		if (autoCollapse) {
+			collapsibles.append("\tactive: false\n");
+		} else {
+			collapsibles.append("\tactive: 0\n");
+		}
+		collapsibles.append("});");
+
+		response.render(OnDomReadyHeaderItem.forScript(collapsibles));
+
 	}
 
 	protected Integer getAutoTabIndex() {

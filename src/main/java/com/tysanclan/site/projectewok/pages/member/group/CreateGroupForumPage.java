@@ -27,9 +27,6 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
@@ -60,11 +57,6 @@ public class CreateGroupForumPage extends TysanPage {
 			throw new RestartResponseAtInterceptPageException(
 					AccessDeniedPage.class);
 		}
-
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
 
 		initCategoryModel(group);
 
@@ -115,9 +107,7 @@ public class CreateGroupForumPage extends TysanPage {
 		createForm.add(new TextArea<String>("description",
 				new Model<String>("")));
 
-		accordion.add(createForm);
-
-		add(accordion);
+		add(createForm);
 
 		addBackLink(group);
 	}

@@ -22,9 +22,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.components.MemberListItem;
@@ -44,14 +41,7 @@ public class AIMOverviewPage extends AbstractMemberPage {
 	public AIMOverviewPage() {
 		super("AIM accounts");
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
-
-		add(accordion);
-
-		accordion.add(new ListView<User>("users", profileDAO.getAIMUsers()) {
+		add(new ListView<User>("users", profileDAO.getAIMUsers()) {
 
 			private static final long serialVersionUID = 1L;
 

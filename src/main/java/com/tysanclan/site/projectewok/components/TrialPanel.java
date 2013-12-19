@@ -31,10 +31,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionAnimated;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.LawEnforcementService;
@@ -61,21 +57,14 @@ public class TrialPanel extends Panel {
 	public TrialPanel(String id, Trial trial, User user) {
 		super(id);
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAnimated(new AccordionAnimated("slide"));
-		accordion.getOptions().put("heightStyle", "'content'");
-		accordion.setAutoHeight(false);
-
 		if (MemberUtil.isMember(trial.getAccused())) {
-			accordion.add(new MemberListItem("accused", trial.getAccused()));
+			add(new MemberListItem("accused", trial.getAccused()));
 		} else {
-			accordion
-					.add(new Label("accused", trial.getAccused().getUsername()));
+			add(new Label("accused", trial.getAccused().getUsername()));
 		}
 
-		accordion.add(new ListView<Regulation>("regulations", ModelMaker
-				.wrap(trial.getRegulations())) {
+		add(new ListView<Regulation>("regulations", ModelMaker.wrap(trial
+				.getRegulations())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -88,15 +77,13 @@ public class TrialPanel extends Panel {
 		});
 
 		if (MemberUtil.isMember(trial.getAccused())) {
-			accordion.add(new MemberListItem("truthsayer", trial.getJudge()));
+			add(new MemberListItem("truthsayer", trial.getJudge()));
 		} else {
-			accordion.add(new Label("truthsayer", trial.getJudge()
-					.getUsername()));
+			add(new Label("truthsayer", trial.getJudge().getUsername()));
 		}
 
-		accordion.add(new Label("evidence", trial.getMotivation())
-				.setEscapeModelStrings(false).setVisible(
-						trial.getJudge().equals(user)));
+		add(new Label("evidence", trial.getMotivation()).setEscapeModelStrings(
+				false).setVisible(trial.getJudge().equals(user)));
 
 		ForumThread thread = trial.getTrialThread();
 
@@ -176,7 +163,7 @@ public class TrialPanel extends Panel {
 
 		verdictForm.setVisible(canVerdictBePassed && !hasVerdict && isJudge);
 
-		accordion.add(new IconLink.Builder(
+		add(new IconLink.Builder(
 				trial.isRestrained() ? "images/icons/lock_delete.png"
 						: "images/icons/lock.png",
 				new DefaultClickResponder<Trial>(ModelMaker.wrap(trial)) {
@@ -211,32 +198,27 @@ public class TrialPanel extends Panel {
 		if (hasVerdict) {
 			switch (trial.getVerdict()) {
 				case MAJOR:
-					accordion
-							.add(new Label("verdict",
-									"Member was found guilty, and removed from the clan"));
+					add(new Label("verdict",
+							"Member was found guilty, and removed from the clan"));
 					break;
 				case MEDIUM:
-					accordion.add(new Label("verdict",
+					add(new Label("verdict",
 							"Member was found guilty, and given a reprimand"));
 					break;
 				case MINOR:
-					accordion.add(new Label("verdict",
+					add(new Label("verdict",
 							"Member was found guilty, and given a warning"));
 					break;
 				case INNOCENT:
-					accordion.add(new Label("verdict",
-							"Member was found innocent"));
+					add(new Label("verdict", "Member was found innocent"));
 					break;
 				default:
-					accordion.add(new WebMarkupContainer("verdict")
-							.setVisible(false));
+					add(new WebMarkupContainer("verdict").setVisible(false));
 			}
 		} else {
-			accordion.add(new WebMarkupContainer("verdict").setVisible(false));
+			add(new WebMarkupContainer("verdict").setVisible(false));
 		}
 
-		accordion.add(verdictForm);
-
-		add(accordion);
+		add(verdictForm);
 	}
 }

@@ -22,9 +22,6 @@ import java.util.List;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
@@ -53,11 +50,6 @@ public class ImpeachmentPage extends AbstractMemberPage {
 	public ImpeachmentPage() {
 		super("Impeach Chancellor");
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
-
 		List<Impeachment> impeachments = impeachmentDAO.findAll();
 
 		if (impeachments.isEmpty()) {
@@ -69,10 +61,8 @@ public class ImpeachmentPage extends AbstractMemberPage {
 
 		String chancellor = impeachment.getChancellor().getUsername();
 
-		accordion.add(new MemberListItem("chancellor", impeachment
-				.getChancellor()));
-		accordion.add(new MemberListItem("initiator", impeachment
-				.getInitiator()));
+		add(new MemberListItem("chancellor", impeachment.getChancellor()));
+		add(new MemberListItem("initiator", impeachment.getInitiator()));
 
 		ImpeachmentVote myVote = null;
 
@@ -83,13 +73,12 @@ public class ImpeachmentPage extends AbstractMemberPage {
 			}
 		}
 
-		accordion.add(new Label("vote",
-				myVote == null ? "You have not yet voted"
-						: myVote.isInFavor() ? "You have voted to impeach "
-								+ chancellor : "You have voted not to impeach "
-								+ chancellor));
+		add(new Label("vote", myVote == null ? "You have not yet voted"
+				: myVote.isInFavor() ? "You have voted to impeach "
+						+ chancellor : "You have voted not to impeach "
+						+ chancellor));
 
-		accordion.add(new IconLink.Builder("images/icons/tick.png",
+		add(new IconLink.Builder("images/icons/tick.png",
 				new DefaultClickResponder<User>(ModelMaker.wrap(getUser())) {
 					private static final long serialVersionUID = 1L;
 
@@ -108,7 +97,7 @@ public class ImpeachmentPage extends AbstractMemberPage {
 					}
 				}).setText("Yes, I want to start the impeachment procedure")
 				.newInstance("yes"));
-		accordion.add(new IconLink.Builder("images/icons/cross.png",
+		add(new IconLink.Builder("images/icons/cross.png",
 				new DefaultClickResponder<User>(ModelMaker.wrap(getUser())) {
 					private static final long serialVersionUID = 1L;
 
@@ -127,8 +116,6 @@ public class ImpeachmentPage extends AbstractMemberPage {
 					}
 				}).setText("No, I do not want to impeach " + chancellor)
 				.newInstance("no"));
-
-		add(accordion);
 
 	}
 }

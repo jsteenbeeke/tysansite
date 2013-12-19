@@ -19,9 +19,6 @@ package com.tysanclan.site.projectewok.pages.member;
 
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.RoleService;
@@ -63,22 +60,13 @@ public class InactiveKeyRoleTransferPage extends AbstractMemberPage {
 					OverviewPage.class);
 		}
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
+		add(new InactiveKeyRoleTransferPanel("herald", RoleType.HERALD)
+				.setVisible(herald == null && heraldTransfer == null));
+		add(new InactiveKeyRoleTransferPanel("steward", RoleType.STEWARD)
+				.setVisible(steward == null && stewardTransfer == null));
+		add(new InactiveKeyRoleTransferPanel("treasurer", RoleType.TREASURER)
+				.setVisible(treasurer == null && treasurerTransfer == null));
 
-		accordion.add(new InactiveKeyRoleTransferPanel("herald",
-				RoleType.HERALD).setVisible(herald == null
-				&& heraldTransfer == null));
-		accordion.add(new InactiveKeyRoleTransferPanel("steward",
-				RoleType.STEWARD).setVisible(steward == null
-				&& stewardTransfer == null));
-		accordion.add(new InactiveKeyRoleTransferPanel("treasurer",
-				RoleType.TREASURER).setVisible(treasurer == null
-				&& treasurerTransfer == null));
-
-		add(accordion);
 	}
 
 }

@@ -34,10 +34,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionAnimated;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
@@ -110,56 +106,27 @@ public class MemberPage extends TysanPage {
 	private void initComponents(User u) {
 		super.setPageTitle(u.getUsername() + " - Member");
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAnimated(new AccordionAnimated("slide"));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
-
 		TimeZone tz = TimeZone.getTimeZone("America/New_York");
 		SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy", Locale.US);
 		sdf.setTimeZone(tz);
-		accordion.add(new Label("membersince", new Model<String>(sdf.format(u
+		add(new Label("membersince", new Model<String>(sdf.format(u
 				.getJoinDate()))));
 
-		accordion.add(new Label("lastlogin",
-				new Model<String>(u.getLastAction() != null ? sdf.format(u
-						.getLastAction()) : null)));
+		add(new Label("lastlogin", new Model<String>(
+				u.getLastAction() != null ? sdf.format(u.getLastAction())
+						: null)));
 
 		Profile profile = u.getProfile();
 
-		accordion
-				.add(new Label("realname", profile != null
-						&& profile.getRealName() != null ? profile
-						.getRealName() : "").setVisible(profile != null
-						&& profile.getRealName() != null && getUser() != null
-						&& MemberUtil.isMember(getUser())));
+		add(new Label("realname", profile != null
+				&& profile.getRealName() != null ? profile.getRealName() : "")
+				.setVisible(profile != null && profile.getRealName() != null
+						&& getUser() != null && MemberUtil.isMember(getUser())));
 
 		WebMarkupContainer photo = new WebMarkupContainer("photo");
 		photo.setVisible(false);
 
-		Label aimLabel = new Label(
-				"aim",
-				profile != null && profile.getInstantMessengerAddress() != null ? profile
-						.getInstantMessengerAddress() : "");
-
-		aimLabel.setVisible(profile != null ? profile
-				.isInstantMessengerPublic()
-				|| (getUser() != null && MemberUtil.isMember(getUser()))
-				: false);
-
-		accordion.add(aimLabel);
-
-		if (aimLabel.isVisible()) {
-
-			aimLabel.add(AttributeModifier.replace(
-					"href",
-					"aim:addbuddy?screenname="
-							+ (profile != null ? profile
-									.getInstantMessengerAddress() : "")));
-		}
-
-		accordion.add(photo);
+		add(photo);
 
 		if (profile != null && profile.getPhotoURL() != null) {
 			photo.add(AttributeModifier.replace("src", profile.getPhotoURL()));
@@ -167,12 +134,13 @@ public class MemberPage extends TysanPage {
 					|| (getUser() != null && MemberUtil.isMember(getUser())));
 		}
 
-		accordion.add(new Label("age", profile != null
-				&& profile.getBirthDate() != null ? Integer.toString(DateUtil
-				.calculateAge(profile.getBirthDate())) : "Unknown")
-				.setVisible(profile != null && profile.getBirthDate() != null
-						&& u.getRank() != Rank.HERO));
-		accordion.add(new Label("username", u.getUsername()));
+		add(new Label(
+				"age",
+				profile != null && profile.getBirthDate() != null ? Integer
+						.toString(DateUtil.calculateAge(profile.getBirthDate()))
+						: "Unknown").setVisible(profile != null
+				&& profile.getBirthDate() != null && u.getRank() != Rank.HERO));
+		add(new Label("username", u.getUsername()));
 
 		WebMarkupContainer aboutMe = new WebMarkupContainer("aboutme");
 
@@ -192,20 +160,18 @@ public class MemberPage extends TysanPage {
 								&& getUser() != null
 								&& MemberUtil.isMember(getUser())));
 
-		accordion
-				.add(aboutMe.setVisible(profile != null
+		add(aboutMe
+				.setVisible(profile != null
 						&& (profile.getPublicDescription() != null || (profile
 								.getPrivateDescription() != null
 								&& getUser() != null && MemberUtil
 									.isMember(getUser())))));
 
-		add(accordion);
-
 		GroupFilter gfilter = new GroupFilter();
 		gfilter.addIncludedMember(u);
 		List<Group> groups = groupDAO.findByFilter(gfilter);
 
-		accordion.add(new ListView<Group>("groups", ModelMaker.wrap(groups)) {
+		add(new ListView<Group>("groups", ModelMaker.wrap(groups)) {
 			private static final long serialVersionUID = 1L;
 
 			/**
@@ -222,11 +188,11 @@ public class MemberPage extends TysanPage {
 		RoleFilter rfilter = new RoleFilter();
 		rfilter.setUser(u);
 
-		accordion.add(new Label("usernameroles", u.getUsername()));
+		add(new Label("usernameroles", u.getUsername()));
 
 		List<Role> roles = roleDAO.findByFilter(rfilter);
 
-		accordion.add(new ListView<Role>("roles", ModelMaker.wrap(roles)) {
+		add(new ListView<Role>("roles", ModelMaker.wrap(roles)) {
 			private static final long serialVersionUID = 1L;
 
 			/**
@@ -242,20 +208,17 @@ public class MemberPage extends TysanPage {
 			}
 		}.setVisible(!roles.isEmpty()));
 
-		accordion.add(new RankIcon("rank", u.getRank()));
-		accordion.add(new Label("rankName", u.getRank().toString()));
+		add(new RankIcon("rank", u.getRank()));
+		add(new Label("rankName", u.getRank().toString()));
 
 		if (u.getRank() == Rank.CHANCELLOR || u.getRank() == Rank.SENATOR) {
 			if (u.getRank() == Rank.CHANCELLOR) {
-				accordion.add(new ChancellorElectedSincePanel(
-						"electionDatePanel", u));
+				add(new ChancellorElectedSincePanel("electionDatePanel", u));
 			} else {
-				accordion.add(new SenateElectedSincePanel("electionDatePanel",
-						u));
+				add(new SenateElectedSincePanel("electionDatePanel", u));
 			}
 		} else {
-			accordion.add(new WebMarkupContainer("electionDatePanel")
-					.setVisible(false));
+			add(new WebMarkupContainer("electionDatePanel").setVisible(false));
 		}
 
 		ForumPostFilter filter = new ForumPostFilter();
@@ -287,7 +250,7 @@ public class MemberPage extends TysanPage {
 
 		};
 
-		accordion.add(lastPosts.setVisible(!topPosts.isEmpty()));
+		add(lastPosts.setVisible(!topPosts.isEmpty()));
 
 		WebMarkupContainer container = new WebMarkupContainer("gamescontainer");
 
@@ -335,30 +298,29 @@ public class MemberPage extends TysanPage {
 
 		});
 
-		accordion.add(container);
+		add(container);
 
 		boolean twitviz = profile != null && profile.getTwitterUID() != null;
 
-		accordion.add(new Label("twitterhead", u.getUsername() + " on Twitter")
+		add(new Label("twitterhead", u.getUsername() + " on Twitter")
 				.setVisible(twitviz));
 
 		String url = "http://twitter.com/"
 				+ (twitviz && profile != null ? profile.getTwitterUID() : "");
 
-		accordion.add(new Label("twitterprofile", url).add(AttributeModifier
-				.replace("href", url)));
+		add(new Label("twitterprofile", url).add(AttributeModifier.replace(
+				"href", url)));
 
-		accordion.add(new Label("galleryhead", "Image Gallery of "
-				+ u.getUsername()).setVisible(!u.getGalleryImages().isEmpty()));
+		add(new Label("galleryhead", "Image Gallery of " + u.getUsername())
+				.setVisible(!u.getGalleryImages().isEmpty()));
 
-		accordion.add(new Label("ygalleryhead", "Youtube Gallery of "
-				+ u.getUsername()).setVisible(!u.getYoutubeGalleryItems()
-				.isEmpty()));
+		add(new Label("ygalleryhead", "Youtube Gallery of " + u.getUsername())
+				.setVisible(!u.getYoutubeGalleryItems().isEmpty()));
 
-		accordion.add(new GalleryPanel("gallery", u));
-		accordion.add(new YoutubeGalleryPanel("ygallery", u));
+		add(new GalleryPanel("gallery", u));
+		add(new YoutubeGalleryPanel("ygallery", u));
 
-		accordion.add(new AchievementsPanel("achievements", u));
+		add(new AchievementsPanel("achievements", u));
 
 		add(new IconLink.Builder("images/icons/email_add.png",
 				new DefaultClickResponder<User>(ModelMaker.wrap(u)) {

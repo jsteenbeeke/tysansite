@@ -32,9 +32,6 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.DemocracyService;
@@ -65,32 +62,25 @@ public class RunForSenatorPage extends AbstractMemberPage {
 	public RunForSenatorPage() {
 		super("Run for Senator");
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
-
 		int gained = getUser().getEndorsedForSenateBy().size();
 		long requiredEndorsements = democracyService
 				.getRequiredSenateEndorsements();
 
-		accordion.add(new Label("required", new Model<Long>(
-				requiredEndorsements)));
+		add(new Label("required", new Model<Long>(requiredEndorsements)));
 
-		accordion.add(new Label("gained", new Model<Integer>(gained)));
+		add(new Label("gained", new Model<Integer>(gained)));
 
 		BigDecimal value = getDonatedAmount();
 
-		accordion.add(new Label("donated", NumberFormat.getCurrencyInstance(
-				Locale.US).format(value.doubleValue())));
+		add(new Label("donated", NumberFormat.getCurrencyInstance(Locale.US)
+				.format(value.doubleValue())));
 
 		List<User> endorsers = new LinkedList<User>();
 		Set<User> endorsements = getUser().getEndorsedForSenateBy();
 		endorsers.addAll(endorsements);
 		Collections.sort(endorsers, new User.CaseInsensitiveUserComparator());
 
-		accordion.add(new ListView<User>("endorsers", ModelMaker
-				.wrap(endorsers)) {
+		add(new ListView<User>("endorsers", ModelMaker.wrap(endorsers)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -101,8 +91,7 @@ public class RunForSenatorPage extends AbstractMemberPage {
 
 		});
 
-		accordion.add(new Form<User>("runForSenatorForm", ModelMaker
-				.wrap(getUser())) {
+		add(new Form<User>("runForSenatorForm", ModelMaker.wrap(getUser())) {
 			private static final long serialVersionUID = 1L;
 
 			/**
@@ -114,8 +103,8 @@ public class RunForSenatorPage extends AbstractMemberPage {
 
 				if (MemberUtil.isEligibleForElectedRank(user, Rank.SENATOR)) {
 					if (democracyService.addSenateCandidate(user)) {
-						setResponsePage(new SenateElectionPage(democracyService
-								.getCurrentSenateElection()));
+						setResponsePage(new SenateElectionPage(
+								democracyService.getCurrentSenateElection()));
 					} else {
 						error("Failed to finalize candidacy");
 					}
@@ -123,8 +112,6 @@ public class RunForSenatorPage extends AbstractMemberPage {
 			}
 
 		}.setVisible(democracyService.isEligibleSenateCandidate(getUser())));
-
-		add(accordion);
 
 	}
 

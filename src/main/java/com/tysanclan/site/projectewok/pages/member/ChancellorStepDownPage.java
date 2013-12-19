@@ -18,9 +18,6 @@
 package com.tysanclan.site.projectewok.pages.member;
 
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
@@ -40,12 +37,7 @@ public class ChancellorStepDownPage extends AbstractMemberPage {
 	public ChancellorStepDownPage() {
 		super("Step down");
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
-
-		accordion.add(new IconLink.Builder("images/icons/tick.png",
+		add(new IconLink.Builder("images/icons/tick.png",
 				new DefaultClickResponder<User>(ModelMaker.wrap(getUser())) {
 					private static final long serialVersionUID = 1L;
 
@@ -63,7 +55,7 @@ public class ChancellorStepDownPage extends AbstractMemberPage {
 					}
 				}).setText("Yes, I want to stop being a Chancellor")
 				.newInstance("yes"));
-		accordion.add(new IconLink.Builder("images/icons/cross.png",
+		add(new IconLink.Builder("images/icons/cross.png",
 				new DefaultClickResponder<User>(ModelMaker.wrap(getUser())) {
 					private static final long serialVersionUID = 1L;
 
@@ -76,6 +68,5 @@ public class ChancellorStepDownPage extends AbstractMemberPage {
 					}
 				}).setText("No, I do not want to step down").newInstance("no"));
 
-		add(accordion);
 	}
 }

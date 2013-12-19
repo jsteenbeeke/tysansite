@@ -32,9 +32,6 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
@@ -66,13 +63,7 @@ public class EditGroupForumModeratorPage extends TysanPage {
 					AccessDeniedPage.class);
 		}
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
-
-		accordion.add(new Label("title", "Moderators for forum "
-				+ groupForum.getName()));
+		add(new Label("title", "Moderators for forum " + groupForum.getName()));
 
 		List<User> moderators = new LinkedList<User>();
 		moderators.addAll(groupForum.getModerators());
@@ -86,8 +77,7 @@ public class EditGroupForumModeratorPage extends TysanPage {
 
 		});
 
-		accordion.add(new ListView<User>("moderators", ModelMaker
-				.wrap(moderators)) {
+		add(new ListView<User>("moderators", ModelMaker.wrap(moderators)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -95,8 +85,8 @@ public class EditGroupForumModeratorPage extends TysanPage {
 				User user = item.getModelObject();
 				item.add(new Label("user", user.getUsername()));
 
-				Link<User> deleteLink = new Link<User>("remove", ModelMaker
-						.wrap(user)) {
+				Link<User> deleteLink = new Link<User>("remove",
+						ModelMaker.wrap(user)) {
 					private static final long serialVersionUID = 1L;
 
 					@SpringBean
@@ -168,9 +158,7 @@ public class EditGroupForumModeratorPage extends TysanPage {
 
 		addModeratorForm.setVisible(!users.isEmpty());
 
-		accordion.add(addModeratorForm);
-
-		add(accordion);
+		add(addModeratorForm);
 
 		addBackLink(group);
 	}

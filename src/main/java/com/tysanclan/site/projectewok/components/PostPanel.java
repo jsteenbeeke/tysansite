@@ -33,9 +33,6 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanSession;
@@ -72,45 +69,38 @@ public class PostPanel extends Panel {
 		if (post == null) {
 			WebMarkupContainer accordion = new WebMarkupContainer("accordion");
 			accordion.setVisible(false);
-			add(accordion);
 
 			addRealms(accordion, null);
 
-			accordion.add(new WebMarkupContainer("lucky").setVisible(false));
-			accordion.add(new WebMarkupContainer("poster").setVisible(false));
-			accordion.add(new WebMarkupContainer("customtitle")
-					.setVisible(false));
-			accordion.add(new WebMarkupContainer("posttime").setVisible(false));
-			accordion.add(new WebMarkupContainer("rank").setVisible(false));
+			add(new WebMarkupContainer("lucky").setVisible(false));
+			add(new WebMarkupContainer("poster").setVisible(false));
+			add(new WebMarkupContainer("customtitle").setVisible(false));
+			add(new WebMarkupContainer("posttime").setVisible(false));
+			add(new WebMarkupContainer("rank").setVisible(false));
 			accordion
 					.add(new WebMarkupContainer("donations").setVisible(false));
-			accordion.add(new WebMarkupContainer("rankname").setVisible(false));
-			accordion.add(new WebMarkupContainer("avatar").setVisible(false));
-			accordion.add(new WebMarkupContainer("body").setVisible(false));
+			add(new WebMarkupContainer("rankname").setVisible(false));
+			add(new WebMarkupContainer("avatar").setVisible(false));
+			add(new WebMarkupContainer("body").setVisible(false));
 
 			WebMarkupContainer branchNote = new WebMarkupContainer("branchnote");
 			branchNote.add(new WebMarkupContainer("source").setVisible(false));
 
-			accordion.add(branchNote);
+			add(branchNote);
 
 			accordion
 					.add(new WebMarkupContainer("signature").setVisible(false));
-			accordion.add(new WebMarkupContainer("icon").setVisible(false));
-			accordion.add(new WebMarkupContainer("edit").setVisible(false));
-			accordion.add(new WebMarkupContainer("delete").setVisible(false));
+			add(new WebMarkupContainer("icon").setVisible(false));
+			add(new WebMarkupContainer("edit").setVisible(false));
+			add(new WebMarkupContainer("delete").setVisible(false));
 
 		} else {
 			TysanSession sess = (TysanSession) Session.get();
 			User u = sess != null ? sess.getUser() : null;
 
-			Accordion accordion = new Accordion("accordion");
-			accordion.getOptions().put("heightStyle", "'content'");
-			accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-			accordion.setAutoHeight(false);
+			WebMarkupContainer container = new WebMarkupContainer("container");
 
-			add(accordion);
-
-			addRealms(accordion, post.getPoster());
+			addRealms(container, post.getPoster());
 
 			Integer luckyScore = post.getPoster() != null
 					&& post.getPoster().getLuckyScore() != null ? post
@@ -130,7 +120,7 @@ public class PostPanel extends Panel {
 
 					));
 
-			accordion.add(lucky);
+			add(lucky);
 
 			final Long posterId = post.getPoster() != null ? post.getPoster()
 					.getId() : null;
@@ -142,7 +132,7 @@ public class PostPanel extends Panel {
 			poster.add(new Label("name", post.getPosterVisibleName())
 					.setRenderBodyOnly(true));
 
-			accordion
+			container
 					.add(new IconLink.Builder("images/icons/email_add.png",
 							new DefaultClickResponder<User>(ModelMaker
 									.wrap(post.getPoster())) {
@@ -164,7 +154,7 @@ public class PostPanel extends Panel {
 							.add(AttributeModifier.replace("style",
 									"display: inline;")));
 
-			accordion
+			container
 					.add(new IconLink.Builder(
 							"images/icons/vcard.png",
 							new DefaultClickResponder<User>(ModelMaker.wrap(u)) {
@@ -191,23 +181,22 @@ public class PostPanel extends Panel {
 							.add(AttributeModifier.replace("style",
 									"display: inline;")));
 
-			accordion.add(poster);
+			add(poster);
 
-			accordion.add(new Label("customtitle",
-					post.getPoster() != null ? post.getPoster()
-							.getCustomTitle() : "")
+			add(new Label("customtitle", post.getPoster() != null ? post
+					.getPoster().getCustomTitle() : "")
 					.setEscapeModelStrings(false));
 
-			accordion.add(new DateTimeLabel("posttime", post.getTime()));
+			add(new DateTimeLabel("posttime", post.getTime()));
 
-			accordion
+			container
 					.add(new RankIcon("rank", post.getPoster() != null ? post
 							.getPoster().getRank() : Rank.FORUM).setVisible(post
 							.getPoster() != null ? post.getPoster().getRank() != Rank.FORUM
 							&& post.getPoster().getRank() != Rank.BANNED
 							: false));
-			accordion.add(new DonatorPanel("donations", post.getPoster()));
-			accordion.add(new Label("rankName", post.getPoster() != null ? post
+			add(new DonatorPanel("donations", post.getPoster()));
+			add(new Label("rankName", post.getPoster() != null ? post
 					.getPoster().getRank().toString() : "Forum User"));
 
 			WebMarkupContainer image = new WebMarkupContainer("avatar");
@@ -218,7 +207,7 @@ public class PostPanel extends Panel {
 			} else {
 				image.add(new AttributeModifier("src", new Model<String>(url)));
 			}
-			accordion.add(image);
+			add(image);
 
 			Label body = new Label("body", new Model<String>(
 					aprilFilter(post.getContent())));
@@ -233,15 +222,15 @@ public class PostPanel extends Panel {
 			}
 
 			branchnote.setVisible(post.getBranchTo() != null);
-			accordion.add(branchnote);
+			add(branchnote);
 
-			accordion.add(body);
-			accordion.add(new Label("signature",
-					post.getPoster() != null ? post.getPoster().getSignature()
-							: "").setEscapeModelStrings(false).setVisible(
+			add(body);
+			add(new Label("signature", post.getPoster() != null ? post
+					.getPoster().getSignature() : "").setEscapeModelStrings(
+					false).setVisible(
 					post.getPoster() != null
 							&& !post.getPoster().getSignature().isEmpty()));
-			accordion.add(new ContextImage("icon", "images/icons/new.png")
+			add(new ContextImage("icon", "images/icons/new.png")
 					.setVisible(sess != null ? forumService.isPostUnread(u,
 							post) : false));
 
@@ -263,9 +252,9 @@ public class PostPanel extends Panel {
 			};
 
 			edit.setVisible(canEdit);
-			accordion.add(edit);
+			add(edit);
 
-			accordion.add(new Link<ForumPost>("delete", ModelMaker.wrap(post)) {
+			add(new Link<ForumPost>("delete", ModelMaker.wrap(post)) {
 				/**
 				 * 
 				 */

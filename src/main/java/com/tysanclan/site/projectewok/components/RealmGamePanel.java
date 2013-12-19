@@ -33,9 +33,6 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.resource.ByteArrayResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.entities.Game;
@@ -63,16 +60,9 @@ public class RealmGamePanel extends Panel {
 	public RealmGamePanel(String id, Realm realm, Game game) {
 		super(id);
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.getOptions().put("heightStyle", "'content'");
-		accordion.setAutoHeight(false);
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-
-		add(accordion);
-
-		accordion.add(new Label("name", game.getName()));
-		accordion.add(new Image("icon", new ByteArrayResource(ImageUtil
-				.getMimeType(game.getImage()), game.getImage())));
+		add(new Label("name", game.getName()));
+		add(new Image("icon", new ByteArrayResource(ImageUtil.getMimeType(game
+				.getImage()), game.getImage())));
 
 		UserGameRealmFilter filter = new UserGameRealmFilter();
 		filter.setRealm(realm);
@@ -106,10 +96,9 @@ public class RealmGamePanel extends Panel {
 			}
 		});
 
-		accordion.add(new Label("count", new Model<Integer>(ugrs.size())));
+		add(new Label("count", new Model<Integer>(ugrs.size())));
 
-		accordion.add(new ListView<UserGameRealm>("members", ModelMaker
-				.wrap(ugrs)) {
+		add(new ListView<UserGameRealm>("members", ModelMaker.wrap(ugrs)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -141,7 +130,7 @@ public class RealmGamePanel extends Panel {
 		WebMarkupContainer container = new WebMarkupContainer("container");
 		container.setVisible(!groups.isEmpty());
 
-		accordion.add(container);
+		add(container);
 
 		container.add(new ListView<GamingGroup>("gaminggroups", ModelMaker
 				.wrap(groups)) {

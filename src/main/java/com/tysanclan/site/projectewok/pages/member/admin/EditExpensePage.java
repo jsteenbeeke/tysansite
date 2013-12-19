@@ -32,9 +32,6 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
@@ -80,11 +77,6 @@ public class EditExpensePage extends TysanPage {
 			throw new RestartResponseAtInterceptPageException(
 					AccessDeniedPage.class);
 		}
-
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
 
 		final TextField<String> nameTextField = new TextField<String>("name",
 				new Model<String>(expense.getName()));
@@ -155,9 +147,7 @@ public class EditExpensePage extends TysanPage {
 		expenseForm.add(currencyMajorExpense);
 		expenseForm.add(currencyMinorExpense);
 
-		accordion.add(expenseForm);
-
-		add(accordion);
+		add(expenseForm);
 
 		add(new Link<Void>("back") {
 			private static final long serialVersionUID = 1L;

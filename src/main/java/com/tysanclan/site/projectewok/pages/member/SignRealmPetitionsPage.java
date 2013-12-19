@@ -24,9 +24,6 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
@@ -58,17 +55,10 @@ public class SignRealmPetitionsPage extends AbstractMemberPage {
 	public SignRealmPetitionsPage() {
 		super("Sign realm petitions");
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setAutoHeight(false);
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.getOptions().put("heightStyle", "'content'");
-
-		add(accordion);
-
-		accordion.add(new Label("count", new Model<Integer>(realmService
-				.getRequiredPetitionSignatures())));
-		accordion.add(new ListView<RealmPetition>("petitions", ModelMaker
-				.wrap(realmPetitionDAO.findAll())) {
+		add(new Label("count", new Model<Integer>(
+				realmService.getRequiredPetitionSignatures())));
+		add(new ListView<RealmPetition>("petitions",
+				ModelMaker.wrap(realmPetitionDAO.findAll())) {
 			private static final long serialVersionUID = 1L;
 
 			/**

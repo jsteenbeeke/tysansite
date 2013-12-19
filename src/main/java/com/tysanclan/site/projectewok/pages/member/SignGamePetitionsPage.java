@@ -26,9 +26,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.resource.ByteArrayResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
@@ -61,17 +58,10 @@ public class SignGamePetitionsPage extends AbstractMemberPage {
 	public SignGamePetitionsPage() {
 		super("New game petitions");
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setAutoHeight(false);
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.getOptions().put("heightStyle", "'content'");
-
-		add(accordion);
-
-		accordion.add(new Label("count", new Model<Integer>(gameService
-				.getRequiredPetitionSignatures())));
-		accordion.add(new ListView<GamePetition>("petitions", ModelMaker
-				.wrap(gamePetitionDAO.findAll())) {
+		add(new Label("count", new Model<Integer>(
+				gameService.getRequiredPetitionSignatures())));
+		add(new ListView<GamePetition>("petitions",
+				ModelMaker.wrap(gamePetitionDAO.findAll())) {
 			private static final long serialVersionUID = 1L;
 
 			/**

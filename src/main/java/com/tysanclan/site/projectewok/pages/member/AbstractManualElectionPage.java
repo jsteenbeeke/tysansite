@@ -28,9 +28,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.entities.Election;
@@ -53,20 +50,14 @@ public abstract class AbstractManualElectionPage extends AbstractMemberPage {
 	public AbstractManualElectionPage(String title, Election election) {
 		super(title);
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
-
-		accordion.add(new ContextImage("chrome", "images/browser/chrome.jpg"));
-		accordion
-				.add(new ContextImage("firefox", "images/browser/firefox.png"));
-		accordion.add(new ContextImage("opera", "images/browser/opera.jpg"));
+		add(new ContextImage("chrome", "images/browser/chrome.jpg"));
+		add(new ContextImage("firefox", "images/browser/firefox.png"));
+		add(new ContextImage("opera", "images/browser/opera.jpg"));
 
 		final boolean isNominationOpen = election.isNominationOpen();
 		final int totalSize = election.getCandidates().size();
 
-		accordion.add(new Label("label", isNominationOpen ? "Candidates"
+		add(new Label("label", isNominationOpen ? "Candidates"
 				: "Cast your vote!"));
 
 		preferences = new LinkedList<Long>();
@@ -132,9 +123,7 @@ public abstract class AbstractManualElectionPage extends AbstractMemberPage {
 		voteForm.add(new DropDownChoice<User>("candidate", ModelMaker.wrap(
 				(User) null, true), ModelMaker.wrapChoices(candidates)));
 
-		accordion.add(voteForm);
-		add(accordion);
-
+		add(voteForm);
 	}
 
 	public abstract void onVoteSubmit(List<User> userList);

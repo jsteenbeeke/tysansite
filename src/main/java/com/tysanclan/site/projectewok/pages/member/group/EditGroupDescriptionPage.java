@@ -22,9 +22,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import wicket.contrib.tinymce.TinyMceBehavior;
 
@@ -50,11 +47,6 @@ public class EditGroupDescriptionPage extends AbstractMemberPage {
 			throw new RestartResponseAtInterceptPageException(
 					new OverviewPage());
 		}
-
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
 
 		Form<Group> descriptionForm = new Form<Group>("descriptionForm",
 				ModelMaker.wrap(group)) {
@@ -84,8 +76,7 @@ public class EditGroupDescriptionPage extends AbstractMemberPage {
 				new Model<String>(group.getDescription()))
 				.add(new TinyMceBehavior(new TysanTinyMCESettings())));
 
-		accordion.add(descriptionForm);
+		add(descriptionForm);
 
-		add(accordion);
 	}
 }

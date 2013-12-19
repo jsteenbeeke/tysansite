@@ -38,9 +38,6 @@ import org.apache.wicket.protocol.http.request.WebClientInfo;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.core.javascript.JsQuery;
 import org.odlabs.wiquery.core.javascript.JsStatement;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 import org.odlabs.wiquery.ui.draggable.DraggableBehavior;
 import org.odlabs.wiquery.ui.droppable.DroppableAjaxBehavior;
 
@@ -86,11 +83,6 @@ public abstract class AbstractElectionPage<T extends Election> extends
 		votes = new TreeMap<Integer, Long>();
 		candidates = election.getCandidates().size();
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
-
 		List<User> users = new LinkedList<User>();
 		users.addAll(election.getCandidates());
 
@@ -126,7 +118,7 @@ public abstract class AbstractElectionPage<T extends Election> extends
 
 		};
 
-		accordion.add(new Label("label", isNominationOpen ? "Candidates"
+		add(new Label("label", isNominationOpen ? "Candidates"
 				: "Cast your vote!"));
 
 		TimeZone tz = getUser().getTimezone() != null ? TimeZone
@@ -237,13 +229,11 @@ public abstract class AbstractElectionPage<T extends Election> extends
 
 		});
 
-		accordion.add(explanation);
-		accordion.add(castVoteForm);
+		add(explanation);
+		add(castVoteForm);
 		castVoteForm.add(new WebMarkupContainer("submit")
 				.setOutputMarkupId(true).setOutputMarkupPlaceholderTag(true)
 				.setVisible(false));
-		add(accordion);
-
 	}
 
 	/**

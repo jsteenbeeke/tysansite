@@ -30,9 +30,6 @@ import org.apache.wicket.markup.html.form.ListMultipleChoice;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import wicket.contrib.tinymce.TinyMceBehavior;
 
@@ -66,11 +63,6 @@ public class StartTrialPage extends AbstractMemberPage {
 	 */
 	public StartTrialPage() {
 		super("Report rules violation");
-
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
 
 		Form<Trial> accuseForm = new Form<Trial>("accuse") {
 			private static final long serialVersionUID = 1L;
@@ -149,7 +141,7 @@ public class StartTrialPage extends AbstractMemberPage {
 					}
 				}).setRequired(true));
 
-		accordion.add(accuseForm);
-		add(accordion);
+		add(accuseForm);
+
 	}
 }

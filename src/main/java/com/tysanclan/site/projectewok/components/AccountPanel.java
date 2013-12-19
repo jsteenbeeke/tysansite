@@ -25,9 +25,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.GameService;
@@ -56,16 +53,11 @@ public class AccountPanel extends Panel {
 
 		ugrModel = ModelMaker.wrap(userGameRealm);
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setAutoHeight(false);
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.getOptions().put("heightStyle", "'content'");
+		add(new Label("realmgamename", userGameRealm.getGame().getName()
+				+ " on " + userGameRealm.getRealm().getName()));
 
-		accordion.add(new Label("realmgamename", userGameRealm.getGame()
-				.getName() + " on " + userGameRealm.getRealm().getName()));
-
-		accordion.add(new ListView<GameAccount>("accounts", ModelMaker
-				.wrap(userGameRealm.getAccounts())) {
+		add(new ListView<GameAccount>("accounts", ModelMaker.wrap(userGameRealm
+				.getAccounts())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -95,8 +87,8 @@ public class AccountPanel extends Panel {
 
 		});
 
-		accordion.add(new ListView<AccountType>("addAccountForms", Arrays
-				.asList(AccountType.values())) {
+		add(new ListView<AccountType>("addAccountForms",
+				Arrays.asList(AccountType.values())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -107,11 +99,9 @@ public class AccountPanel extends Panel {
 			}
 		});
 
-		add(accordion);
-
-		accordion.add(new IconLink.Builder("images/icons/cross.png",
-				new DefaultClickResponder<UserGameRealm>(ModelMaker
-						.wrap(userGameRealm)) {
+		add(new IconLink.Builder("images/icons/cross.png",
+				new DefaultClickResponder<UserGameRealm>(
+						ModelMaker.wrap(userGameRealm)) {
 					private static final long serialVersionUID = 1L;
 
 					/**

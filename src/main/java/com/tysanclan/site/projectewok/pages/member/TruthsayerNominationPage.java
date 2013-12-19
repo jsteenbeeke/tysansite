@@ -21,9 +21,6 @@ import java.util.List;
 
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.LawEnforcementService;
@@ -48,11 +45,6 @@ public class TruthsayerNominationPage extends AbstractMemberPage {
 	 */
 	public TruthsayerNominationPage() {
 		super("Nominate Truthsayer");
-
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
 
 		Form<?> nominateForm = new Form<Void>("nominateform") {
 			private static final long serialVersionUID = 1L;
@@ -99,8 +91,7 @@ public class TruthsayerNominationPage extends AbstractMemberPage {
 			info("There are no users who qualify to become a Truthsayer");
 		}
 
-		accordion.add(nominateForm);
+		add(nominateForm);
 
-		add(accordion);
 	}
 }

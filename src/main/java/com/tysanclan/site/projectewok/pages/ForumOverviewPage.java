@@ -34,6 +34,8 @@ public class ForumOverviewPage extends TysanPage {
 
 		User u = getTysanSession() != null ? getTysanSession().getUser() : null;
 
+		setAutoCollapse(u != null && u.isCollapseForums());
+
 		add(new ForumOverviewPanel("forums"));
 
 		add(new BookmarkablePageLink<Void>("register", RegistrationPage.class)

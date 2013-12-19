@@ -21,9 +21,6 @@ import java.util.List;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
@@ -57,11 +54,6 @@ public class ImpeachmentInitiationPage extends AbstractMemberPage {
 	public ImpeachmentInitiationPage() {
 		super("Impeach Chancellor");
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
-
 		UserFilter filter = new UserFilter();
 		filter.addRank(Rank.CHANCELLOR);
 
@@ -71,7 +63,7 @@ public class ImpeachmentInitiationPage extends AbstractMemberPage {
 		String chancellorName = chancellor != null ? chancellor.getUsername()
 				: "Nobody";
 
-		accordion.add(new IconLink.Builder("images/icons/tick.png",
+		add(new IconLink.Builder("images/icons/tick.png",
 				new DefaultClickResponder<User>(ModelMaker.wrap(getUser())) {
 					private static final long serialVersionUID = 1L;
 
@@ -90,7 +82,7 @@ public class ImpeachmentInitiationPage extends AbstractMemberPage {
 					}
 				}).setText("Yes, I want to start the impeachment procedure")
 				.newInstance("yes").setVisible(impeachmentDAO.countAll() == 0));
-		accordion.add(new IconLink.Builder("images/icons/cross.png",
+		add(new IconLink.Builder("images/icons/cross.png",
 				new DefaultClickResponder<User>(ModelMaker.wrap(getUser())) {
 					private static final long serialVersionUID = 1L;
 
@@ -103,10 +95,8 @@ public class ImpeachmentInitiationPage extends AbstractMemberPage {
 					}
 				}).setText("No, I do not want to impeach " + chancellorName)
 				.newInstance("no").setVisible(impeachmentDAO.countAll() == 0));
-		accordion.add(new WebMarkupContainer("alreadyactive")
-				.setVisible(impeachmentDAO.countAll() != 0));
-
-		add(accordion);
+		add(new WebMarkupContainer("alreadyactive").setVisible(impeachmentDAO
+				.countAll() != 0));
 
 	}
 }

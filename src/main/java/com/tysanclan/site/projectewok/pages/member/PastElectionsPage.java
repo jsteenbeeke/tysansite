@@ -36,9 +36,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.hibernate.Hibernate;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.components.MemberListItem;
@@ -78,12 +75,7 @@ public class PastElectionsPage extends AbstractMemberPage {
 	public PastElectionsPage() {
 		super("Past Elections");
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
-
-		accordion.add(new OtterSniperPanel("otterSniperPanel", 3));
+		add(new OtterSniperPanel("otterSniperPanel", 3));
 
 		Calendar calendar = DateUtil.getCalendarInstance();
 		calendar.add(Calendar.WEEK_OF_YEAR, -2);
@@ -101,8 +93,7 @@ public class PastElectionsPage extends AbstractMemberPage {
 			}
 		}
 
-		accordion.add(new ListView<Election>("elections", ModelMaker
-				.wrap(elections)) {
+		add(new ListView<Election>("elections", ModelMaker.wrap(elections)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -150,7 +141,8 @@ public class PastElectionsPage extends AbstractMemberPage {
 				} else if (electionClass == SenateElection.class) {
 					type = "Senate";
 					winnersLabel = "Winners:";
-					SenateElection se = senateElectionDAO.load(election.getId());
+					SenateElection se = senateElectionDAO
+							.load(election.getId());
 					winners.addAll(se.getWinners());
 				}
 
@@ -296,7 +288,6 @@ public class PastElectionsPage extends AbstractMemberPage {
 
 		});
 
-		add(accordion);
 	}
 
 	private String getScrambledUsername(CompoundVote vote) {

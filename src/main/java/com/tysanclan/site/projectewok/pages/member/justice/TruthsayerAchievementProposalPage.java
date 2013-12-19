@@ -22,9 +22,6 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.FilterDataProvider;
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
@@ -58,12 +55,7 @@ public class TruthsayerAchievementProposalPage extends AbstractMemberPage {
 		AchievementProposalFilter filter = new AchievementProposalFilter();
 		filter.setTruthsayerReviewed(false);
 
-		Accordion acc = new Accordion("accordion");
-		acc.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		acc.setAutoHeight(false);
-		acc.getOptions().put("heightStyle", "'content'");
-
-		acc.add(new DataView<AchievementProposal>("proposals",
+		add(new DataView<AchievementProposal>("proposals",
 				FilterDataProvider.of(filter, achievementProposalDAO)) {
 
 			private static final long serialVersionUID = 1L;
@@ -120,7 +112,5 @@ public class TruthsayerAchievementProposalPage extends AbstractMemberPage {
 			}
 
 		});
-
-		add(acc);
 	}
 }

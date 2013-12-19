@@ -29,9 +29,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.joda.time.DateTime;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
@@ -64,15 +61,8 @@ public class SubscriptionPaymentPage extends AbstractMemberPage {
 			throw new RestartResponseAtInterceptPageException(p);
 		}
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
-
-		add(accordion);
-
-		accordion.add(new ListView<SubscriptionPayment>("requests", ModelMaker
-				.wrap(ImmutableList.copyOf(Iterables.filter(getUser()
+		add(new ListView<SubscriptionPayment>("requests",
+				ModelMaker.wrap(ImmutableList.copyOf(Iterables.filter(getUser()
 						.getPayments(), new UnpaidFilter())))) {
 			private static final long serialVersionUID = 1L;
 

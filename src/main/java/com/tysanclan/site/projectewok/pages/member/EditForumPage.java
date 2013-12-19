@@ -25,9 +25,6 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
@@ -50,12 +47,7 @@ public class EditForumPage extends TysanPage {
 	public EditForumPage(Forum forum) {
 		super("Edit forum");
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
-
-		accordion.add(new Label("title", "Edit forum " + forum.getName()));
+		add(new Label("title", "Edit forum " + forum.getName()));
 
 		Form<Forum> editForm = new Form<Forum>("editform",
 				ModelMaker.wrap(forum)) {
@@ -122,9 +114,7 @@ public class EditForumPage extends TysanPage {
 		editForm.add(new CheckBox("membersonly", new Model<Boolean>(forum
 				.isMembersOnly())).setEnabled(!(forum instanceof NewsForum)));
 
-		accordion.add(editForm);
-
-		add(accordion);
+		add(editForm);
 
 		add(new Link<Void>("back") {
 			private static final long serialVersionUID = 1L;

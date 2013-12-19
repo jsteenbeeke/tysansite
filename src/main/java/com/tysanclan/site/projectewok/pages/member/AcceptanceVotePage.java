@@ -29,9 +29,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
@@ -70,13 +67,8 @@ public class AcceptanceVotePage extends AbstractMemberPage {
 	public AcceptanceVotePage() {
 		super("Acceptance votes");
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
-
-		accordion.add(new ListView<AcceptanceVote>("members", ModelMaker
-				.wrap(acceptanceVoteDAO.findAll())) {
+		add(new ListView<AcceptanceVote>("members",
+				ModelMaker.wrap(acceptanceVoteDAO.findAll())) {
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean
@@ -154,7 +146,8 @@ public class AcceptanceVotePage extends AbstractMemberPage {
 
 				item.add(mentorWarning);
 
-				profileLink.add(new Label("username", trialMember.getUsername()));
+				profileLink
+						.add(new Label("username", trialMember.getUsername()));
 
 				item.add(profileLink);
 
@@ -277,8 +270,6 @@ public class AcceptanceVotePage extends AbstractMemberPage {
 			}
 
 		});
-
-		add(accordion);
 
 	}
 }

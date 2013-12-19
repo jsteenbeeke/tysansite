@@ -24,9 +24,6 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
@@ -43,12 +40,7 @@ public class EditGroupForumPage extends TysanPage {
 	public EditGroupForumPage(GroupForum forum) {
 		super("Edit group forum - " + forum.getName());
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
-
-		accordion.add(new Label("title", "Edit forum " + forum.getName()));
+		add(new Label("title", "Edit forum " + forum.getName()));
 
 		Form<GroupForum> editForm = new Form<GroupForum>("editform",
 				ModelMaker.wrap(forum)) {
@@ -91,9 +83,7 @@ public class EditGroupForumPage extends TysanPage {
 		editForm.add(new TextArea<String>("description", new Model<String>(
 				forum.getDescription())));
 
-		accordion.add(editForm);
-
-		add(accordion);
+		add(editForm);
 
 		add(new Link<Group>("back", ModelMaker.wrap(forum.getGroup())) {
 			private static final long serialVersionUID = 1L;

@@ -24,9 +24,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PageableListView;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
@@ -70,11 +67,6 @@ public class ForumUserManagementPage extends AbstractMemberPage {
 
 		filter.addOrderBy("username", true);
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
-
 		PageableListView<User> users = new PageableListView<User>("users",
 				ModelMaker.wrap(userDAO.findByFilter(filter)), 20) {
 			private static final long serialVersionUID = 1L;
@@ -98,9 +90,9 @@ public class ForumUserManagementPage extends AbstractMemberPage {
 			}
 		};
 
-		accordion.add(new AjaxPagingNavigator("nav", users));
+		add(new AjaxPagingNavigator("nav", users));
 
-		accordion.add(users);
+		add(users);
 
 		IconLink.Builder inactiveLink = new IconLink.Builder(
 				"images/icons/magnifier.png",
@@ -123,9 +115,7 @@ public class ForumUserManagementPage extends AbstractMemberPage {
 			inactiveLink.setText("Hide inactive users");
 		}
 
-		accordion.add(inactiveLink.newInstance("inactives"));
-
-		add(accordion);
+		add(inactiveLink.newInstance("inactives"));
 
 	}
 

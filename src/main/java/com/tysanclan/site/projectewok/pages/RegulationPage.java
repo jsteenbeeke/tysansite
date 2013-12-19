@@ -21,10 +21,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionAnimated;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
@@ -43,14 +39,8 @@ public class RegulationPage extends TysanPage {
 	public RegulationPage() {
 		super("Regulations");
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAnimated(new AccordionAnimated("slide"));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
-
-		accordion.add(new ListView<Regulation>("regulations", ModelMaker
-				.wrap(dao.findAll())) {
+		add(new ListView<Regulation>("regulations", ModelMaker.wrap(dao
+				.findAll())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -63,8 +53,5 @@ public class RegulationPage extends TysanPage {
 			}
 
 		});
-
-		add(accordion);
-
 	}
 }

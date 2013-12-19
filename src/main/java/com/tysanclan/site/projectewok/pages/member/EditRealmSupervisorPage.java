@@ -26,9 +26,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
@@ -99,17 +96,9 @@ public class EditRealmSupervisorPage extends TysanPage {
 
 		form.add(userSelect);
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
+		add(new Label("title", "Realm Supervisor for " + realm.getName()));
 
-		accordion.add(new Label("title", "Realm Supervisor for "
-				+ realm.getName()));
-
-		add(accordion);
-
-		accordion.add(form);
+		add(form);
 
 		add(new Link<Void>("back") {
 			private static final long serialVersionUID = 1L;

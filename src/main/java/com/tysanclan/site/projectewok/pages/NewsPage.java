@@ -20,10 +20,6 @@ package com.tysanclan.site.projectewok.pages;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionAnimated;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.FilterDataProvider;
 import com.tysanclan.site.projectewok.TysanPage;
@@ -57,12 +53,6 @@ public class NewsPage extends TysanPage {
 		filter.setForum(forum);
 		filter.addOrderBy("postTime", false);
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAnimated(new AccordionAnimated("slide"));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
-
 		DataView<ForumThread> newsItems = new DataView<ForumThread>(
 				"newsitems", FilterDataProvider.of(filter, forumThreadDAO)) {
 			private static final long serialVersionUID = 1L;
@@ -78,9 +68,7 @@ public class NewsPage extends TysanPage {
 		};
 		newsItems.setItemsPerPage(5);
 
-		accordion.add(newsItems);
-
-		add(accordion);
+		add(newsItems);
 
 		add(new AutoForumLink("navigation", forum, "View news archives"));
 	}

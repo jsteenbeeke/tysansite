@@ -27,9 +27,6 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.request.resource.ByteArrayResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
@@ -55,11 +52,6 @@ public class GroupRequestApprovalPage extends AbstractMemberPage {
 	public GroupRequestApprovalPage() {
 		super("Group Request Approval");
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setAutoHeight(false);
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.getOptions().put("heightStyle", "'content'");
-
 		List<GroupCreationRequest> requests = groupCreationRequestDAO.findAll();
 
 		String intro = (requests.size() == 0) ? "There are no pending group creation requests"
@@ -68,8 +60,8 @@ public class GroupRequestApprovalPage extends AbstractMemberPage {
 
 		add(new Label("pendingtext", intro));
 
-		accordion.add(new ListView<GroupCreationRequest>("pending", ModelMaker
-				.wrap(requests)) {
+		add(new ListView<GroupCreationRequest>("pending",
+				ModelMaker.wrap(requests)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -136,6 +128,5 @@ public class GroupRequestApprovalPage extends AbstractMemberPage {
 
 		});
 
-		add(accordion);
 	}
 }

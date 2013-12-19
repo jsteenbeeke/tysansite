@@ -23,9 +23,6 @@ import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
@@ -55,11 +52,6 @@ public class UntenabilityPage extends AbstractMemberPage {
 	 */
 	public UntenabilityPage() {
 		super("Untenability Vote");
-
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
 
 		Form<?> initiateForm = new Form<Void>("initiateForm") {
 			private static final long serialVersionUID = 1L;
@@ -110,8 +102,7 @@ public class UntenabilityPage extends AbstractMemberPage {
 					}
 				}));
 
-		accordion.add(initiateForm);
+		add(initiateForm);
 
-		add(accordion);
 	}
 }

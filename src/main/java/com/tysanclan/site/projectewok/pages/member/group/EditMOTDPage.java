@@ -22,9 +22,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import wicket.contrib.tinymce.TinyMceBehavior;
 
@@ -50,11 +47,6 @@ public class EditMOTDPage extends AbstractMemberPage {
 			throw new RestartResponseAtInterceptPageException(
 					new OverviewPage());
 		}
-
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
 
 		Form<Group> motdForm = new Form<Group>("motdForm",
 				ModelMaker.wrap(group)) {
@@ -84,9 +76,7 @@ public class EditMOTDPage extends AbstractMemberPage {
 				.getMessageOfTheDay())).add(new TinyMceBehavior(
 				new TysanTinyMCESettings())));
 
-		accordion.add(motdForm);
-
-		add(accordion);
+		add(motdForm);
 
 	}
 }

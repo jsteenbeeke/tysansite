@@ -22,9 +22,6 @@ import java.util.List;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
@@ -55,19 +52,10 @@ public class GroupsPage extends TysanPage {
 	public GroupsPage() {
 		super("Groups");
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setAutoHeight(false);
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.getOptions().put("heightStyle", "'content'");
+		add(new GroupLister<SocialGroup>("social", socialGroupDAO.findAll()));
+		add(new GroupLister<GamingGroup>("gaming", gamingGroupDAO.findAll()));
+		add(new GroupLister<Committee>("committee", commiteeDAO.findAll()));
 
-		accordion.add(new GroupLister<SocialGroup>("social", socialGroupDAO
-				.findAll()));
-		accordion.add(new GroupLister<GamingGroup>("gaming", gamingGroupDAO
-				.findAll()));
-		accordion.add(new GroupLister<Committee>("committee", commiteeDAO
-				.findAll()));
-
-		add(accordion);
 	}
 
 	private static class GroupLister<T extends Group> extends ListView<T> {

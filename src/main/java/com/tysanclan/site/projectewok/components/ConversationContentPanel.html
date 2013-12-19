@@ -1,6 +1,6 @@
 <html xmlns:wicket>
 <wicket:panel>
-	<div wicket:id="accordion">
+	<div class="jqui-accordion">
 		<h2><a>Participants</a></h2>
 		<div>
 			<wicket:container wicket:id="participants">
@@ -11,7 +11,7 @@
 	<br />
 	
 	<wicket:container wicket:id="messages">
-		<div wicket:id="accordion">
+		<div class="jqui-accordion">
 			<h2><a>From <span wicket:id="user"></span> at <span wicket:id="time"></span></a></h2>
 				<div>
 				<div wicket:id="content"></div>
@@ -20,7 +20,7 @@
 		<br />
 	</wicket:container>
 		
-	<div wicket:id="accordion2">
+	<div class="jqui-accordion">
 		<wicket:enclosure child="respondForm">
 			<h2><a wicket:id="respondheader" >Respond</a></h2>
 			<div>

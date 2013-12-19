@@ -25,9 +25,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
@@ -67,23 +64,15 @@ public class RealmPage extends TysanPage {
 
 		realmModel = ModelMaker.wrap(realm);
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
-
-		accordion.add(new Label("name", realm.getName()));
+		add(new Label("name", realm.getName()));
 
 		if (realm.getOverseer() != null) {
-			accordion
-					.add(new MemberListItem("supervisor", realm.getOverseer()));
+			add(new MemberListItem("supervisor", realm.getOverseer()));
 		} else {
-			accordion.add(new Label("supervisor", "-"));
+			add(new Label("supervisor", "-"));
 		}
-		accordion.add(new Label("playercount", new Model<Integer>(realmService
-				.countActivePlayers(realm))));
-
-		add(accordion);
+		add(new Label("playercount", new Model<Integer>(
+				realmService.countActivePlayers(realm))));
 
 		add(new ListView<Game>("games", ModelMaker.wrap(realm.getGames())) {
 			private static final long serialVersionUID = 1L;

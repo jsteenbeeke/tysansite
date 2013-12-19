@@ -24,9 +24,6 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
@@ -45,11 +42,6 @@ public class CreateForumPage extends TysanPage {
 
 	public CreateForumPage(ForumCategory category) {
 		super("Create Forum");
-
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
 
 		Form<ForumCategory> createForm = new Form<ForumCategory>("createform",
 				ModelMaker.wrap(category)) {
@@ -112,9 +104,7 @@ public class CreateForumPage extends TysanPage {
 		createForm.add(new CheckBox("publicaccess", new Model<Boolean>(false)));
 		createForm.add(new CheckBox("membersonly", new Model<Boolean>(false)));
 
-		accordion.add(createForm);
-
-		add(accordion);
+		add(createForm);
 
 		add(new Link<Void>("back") {
 			private static final long serialVersionUID = 1L;

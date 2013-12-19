@@ -25,10 +25,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.options.LiteralOption;
-import org.odlabs.wiquery.ui.accordion.Accordion;
-import org.odlabs.wiquery.ui.accordion.AccordionAnimated;
-import org.odlabs.wiquery.ui.accordion.AccordionHeader;
 
 import com.jeroensteenbeeke.hyperion.data.FilterDataProvider;
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
@@ -75,31 +71,25 @@ public class OverviewPage extends TysanPage {
 	public OverviewPage() {
 		super("Member overview");
 
-		Accordion accordion = new Accordion("accordion");
-		accordion.setHeader(new AccordionHeader(new LiteralOption("h2")));
-		accordion.setAnimated(new AccordionAnimated("slide"));
-		accordion.setAutoHeight(false);
-		accordion.getOptions().put("heightStyle", "'content'");
+		add(new MentorPanel("pupils", getUser()));
+		add(new PupilPanel("mentor", getUser()));
 
-		accordion.add(new MentorPanel("pupils", getUser()));
-		accordion.add(new PupilPanel("mentor", getUser()));
-
-		accordion.add(new BasicMemberPanel("basicpanel", getUser()));
-		accordion.add(new TruthsayerPanel("truthsayerpanel")
-				.setVisible(getUser().getRank().equals(Rank.TRUTHSAYER)));
-		accordion.add(new SenatorPanel("senatorpanel").setVisible(getUser()
-				.getRank().equals(Rank.SENATOR)));
-		accordion.add(new ChancellorPanel("chancellorpanel")
-				.setVisible(getUser().getRank().equals(Rank.CHANCELLOR)));
-		accordion.add(new TreasurerPanel("treasurerpanel", getUser()));
-		accordion.add(new StewardPanel("stewardpanel", getUser()));
-		accordion.add(new HeraldPanel("heraldpanel", getUser()));
+		add(new BasicMemberPanel("basicpanel", getUser()));
+		add(new TruthsayerPanel("truthsayerpanel").setVisible(getUser()
+				.getRank().equals(Rank.TRUTHSAYER)));
+		add(new SenatorPanel("senatorpanel").setVisible(getUser().getRank()
+				.equals(Rank.SENATOR)));
+		add(new ChancellorPanel("chancellorpanel").setVisible(getUser()
+				.getRank().equals(Rank.CHANCELLOR)));
+		add(new TreasurerPanel("treasurerpanel", getUser()));
+		add(new StewardPanel("stewardpanel", getUser()));
+		add(new HeraldPanel("heraldpanel", getUser()));
 
 		User user = getUser();
 		List<Group> groups = new LinkedList<Group>();
 		groups.addAll(user.getGroups());
 
-		accordion.add(new ListView<Group>("groups", ModelMaker.wrap(groups)) {
+		add(new ListView<Group>("groups", ModelMaker.wrap(groups)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -114,8 +104,7 @@ public class OverviewPage extends TysanPage {
 		GameFilter gfilter = new GameFilter();
 		gfilter.setCoordinator(user);
 
-		accordion.add(new DataView<Game>("games", FilterDataProvider.of(
-				gfilter, gameDAO)) {
+		add(new DataView<Game>("games", FilterDataProvider.of(gfilter, gameDAO)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -130,8 +119,8 @@ public class OverviewPage extends TysanPage {
 		RealmFilter rfilter = new RealmFilter();
 		rfilter.setOverseer(user);
 
-		accordion.add(new DataView<Realm>("realms", FilterDataProvider.of(
-				rfilter, realmDAO)) {
+		add(new DataView<Realm>("realms", FilterDataProvider.of(rfilter,
+				realmDAO)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -142,7 +131,5 @@ public class OverviewPage extends TysanPage {
 
 			}
 		});
-
-		add(accordion);
 	}
 }
