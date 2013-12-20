@@ -33,13 +33,11 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import wicket.contrib.tinymce.TinyMceBehavior;
-
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.GameService;
 import com.tysanclan.site.projectewok.beans.GroupService;
-import com.tysanclan.site.projectewok.components.TysanTinyMCESettings;
+import com.tysanclan.site.projectewok.components.BBCodeTextArea;
 import com.tysanclan.site.projectewok.entities.Game;
 import com.tysanclan.site.projectewok.entities.Group;
 import com.tysanclan.site.projectewok.entities.GroupCreationRequest;
@@ -141,12 +139,10 @@ public class CreateGroupPage extends AbstractMemberPage {
 				.add(new TextField<String>("name", new Model<String>(""))
 						.setRequired(true));
 
-		socialGroupForm.add(new TextArea<String>("publicdescription",
-				new Model<String>("")).setRequired(true).add(
-				new TinyMceBehavior(new TysanTinyMCESettings())));
-		socialGroupForm.add(new TextArea<String>("motivation",
-				new Model<String>("")).setRequired(true).add(
-				new TinyMceBehavior(new TysanTinyMCESettings())));
+		socialGroupForm.add(new BBCodeTextArea("publicdescription", "")
+				.setRequired(true));
+		socialGroupForm.add(new BBCodeTextArea("motivation", "")
+				.setRequired(true));
 
 		return socialGroupForm;
 	}
@@ -224,12 +220,10 @@ public class CreateGroupPage extends AbstractMemberPage {
 				.add(new TextField<String>("name", new Model<String>(""))
 						.setRequired(true));
 
-		gamingGroupForm.add(new TextArea<String>("publicdescription",
-				new Model<String>("")).setRequired(true).add(
-				new TinyMceBehavior(new TysanTinyMCESettings())));
-		gamingGroupForm.add(new TextArea<String>("motivation",
-				new Model<String>("")).setRequired(true).add(
-				new TinyMceBehavior(new TysanTinyMCESettings())));
+		gamingGroupForm.add(new BBCodeTextArea("publicdescription", "")
+				.setRequired(true));
+		gamingGroupForm.add(new BBCodeTextArea("motivation", "")
+				.setRequired(true));
 
 		return gamingGroupForm;
 	}

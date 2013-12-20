@@ -29,7 +29,7 @@ import com.tysanclan.site.projectewok.entities.Profile;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.ProfileDAO;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.util.HTMLSanitizer;
+import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
 
 /**
  * @author Jeroen Steenbeeke
@@ -89,7 +89,7 @@ class ProfileServiceImpl implements
 			boolean publiclyViewable) {
 		Profile _profile = profileDAO.load(profile.getId());
 
-		_profile.setPhotoURL(HTMLSanitizer.filterURL(url));
+		_profile.setPhotoURL(BBCodeUtil.filterURL(url));
 		_profile.setPhotoPublic(publiclyViewable);
 
 		profileDAO.update(_profile);
@@ -119,7 +119,7 @@ class ProfileServiceImpl implements
 	public void setPrivateDescription(Profile profile, String description) {
 		Profile _profile = profileDAO.load(profile.getId());
 
-		_profile.setPrivateDescription(HTMLSanitizer.sanitize(description));
+		_profile.setPrivateDescription(BBCodeUtil.stripTags(description));
 
 		profileDAO.update(_profile);
 	}
@@ -133,7 +133,7 @@ class ProfileServiceImpl implements
 	public void setPublicDescription(Profile profile, String description) {
 		Profile _profile = profileDAO.load(profile.getId());
 
-		_profile.setPublicDescription(HTMLSanitizer.sanitize(description));
+		_profile.setPublicDescription(BBCodeUtil.stripTags(description));
 
 		profileDAO.update(_profile);
 	}
@@ -147,7 +147,7 @@ class ProfileServiceImpl implements
 	public void setRealname(Profile profile, String realname) {
 		Profile _profile = profileDAO.load(profile.getId());
 
-		_profile.setRealName(HTMLSanitizer.stripTags(realname));
+		_profile.setRealName(BBCodeUtil.stripTags(realname));
 
 		profileDAO.update(_profile);
 	}

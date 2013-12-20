@@ -20,7 +20,6 @@ package com.tysanclan.site.projectewok.components;
 import java.util.Calendar;
 import java.util.List;
 
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -245,10 +244,9 @@ public class GroupOverviewPanel extends TysanOverviewPanel<Group> {
 				}).newInstance("editmotd").setVisible(
 				user.equals(group.getLeader())));
 
-		add(new Label("motd", group.getMessageOfTheDay())
-				.setEscapeModelStrings(false).setVisible(
-						group.getMessageOfTheDay() != null
-								&& !group.getMessageOfTheDay().isEmpty()));
+		add(new BBCodePanel("motd", group.getMessageOfTheDay())
+				.setVisible(group.getMessageOfTheDay() != null
+						&& !group.getMessageOfTheDay().isEmpty()));
 
 		add(new Link<Group>("invite", ModelMaker.wrap(group)) {
 			private static final long serialVersionUID = 1L;

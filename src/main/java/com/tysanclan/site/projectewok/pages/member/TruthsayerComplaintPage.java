@@ -20,14 +20,11 @@ package com.tysanclan.site.projectewok.pages.member;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import wicket.contrib.tinymce.TinyMceBehavior;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.LawEnforcementService;
-import com.tysanclan.site.projectewok.components.TysanTinyMCESettings;
+import com.tysanclan.site.projectewok.components.BBCodeTextArea;
 import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
@@ -52,10 +49,9 @@ public class TruthsayerComplaintPage extends AbstractSingleAccordionMemberPage {
 		userChoice.setRequired(true);
 		userChoice.setNullValid(true);
 
-		final TextArea<String> motivationArea = new TextArea<String>(
-				"motivation", new Model<String>(""));
+		final TextArea<String> motivationArea = new BBCodeTextArea(
+				"motivation", "");
 		motivationArea.setRequired(true);
-		motivationArea.add(new TinyMceBehavior(new TysanTinyMCESettings()));
 
 		Form<User> complaintForm = new Form<User>("complaintForm") {
 

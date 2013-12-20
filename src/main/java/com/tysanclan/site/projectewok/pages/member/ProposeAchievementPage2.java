@@ -32,13 +32,11 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import wicket.contrib.tinymce.TinyMceBehavior;
-
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.AchievementService;
 import com.tysanclan.site.projectewok.beans.GameService;
+import com.tysanclan.site.projectewok.components.BBCodeTextArea;
 import com.tysanclan.site.projectewok.components.StoredImageResource;
-import com.tysanclan.site.projectewok.components.TysanTinyMCESettings;
 import com.tysanclan.site.projectewok.entities.AchievementIcon;
 import com.tysanclan.site.projectewok.entities.AchievementProposal;
 import com.tysanclan.site.projectewok.entities.Game;
@@ -123,10 +121,9 @@ public class ProposeAchievementPage2 extends AbstractSingleAccordionMemberPage {
 				new Model<String>(""));
 		nameField.setRequired(true);
 
-		final TextArea<String> descriptionArea = new TextArea<String>(
-				"description", new Model<String>(""));
+		final TextArea<String> descriptionArea = new BBCodeTextArea(
+				"description", "");
 		descriptionArea.setRequired(true);
-		descriptionArea.add(new TinyMceBehavior(new TysanTinyMCESettings()));
 
 		typeChoice.add(new AjaxFormComponentUpdatingBehavior("onchange") {
 

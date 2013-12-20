@@ -76,8 +76,7 @@ public class AchievementsPanel extends Panel {
 						.getMimeType(gameImage), gameImage))
 						.setVisible(game != null));
 
-				item.add(new Label("description", a.getDescription())
-						.setEscapeModelStrings(false));
+				item.add(new BBCodePanel("description", a.getDescription()));
 			}
 		});
 

@@ -24,16 +24,13 @@ import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import wicket.contrib.tinymce.TinyMceBehavior;
-
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.AchievementService;
+import com.tysanclan.site.projectewok.components.BBCodeTextArea;
 import com.tysanclan.site.projectewok.components.StoredImageResource;
-import com.tysanclan.site.projectewok.components.TysanTinyMCESettings;
 import com.tysanclan.site.projectewok.entities.Achievement;
 import com.tysanclan.site.projectewok.entities.AchievementRequest;
 import com.tysanclan.site.projectewok.entities.Game;
@@ -55,9 +52,8 @@ public class RequestAchievementPage2 extends AbstractSingleAccordionMemberPage {
 
 		final FileUploadField uploadField = new FileUploadField("screenshot",
 				new ListModel<FileUpload>());
-		final TextArea<String> evidenceField = new TextArea<String>("evidence",
-				new Model<String>());
-		evidenceField.add(new TinyMceBehavior(new TysanTinyMCESettings()));
+		final TextArea<String> evidenceField = new BBCodeTextArea("evidence",
+				"");
 
 		Form<Achievement> form = new Form<Achievement>("evidenceForm") {
 			private static final long serialVersionUID = 1L;

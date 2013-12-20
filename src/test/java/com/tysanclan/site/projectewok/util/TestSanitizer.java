@@ -20,6 +20,8 @@ package com.tysanclan.site.projectewok.util;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
+
 /**
  * @author Jeroen Steenbeeke
  */
@@ -323,24 +325,10 @@ public class TestSanitizer {
 			String input = pair[0];
 			String expected = pair[1];
 
-			String actual = HTMLSanitizer.sanitize(input);
+			String actual = BBCodeUtil.stripTags(input);
 
 			Assert.assertEquals(expected, actual);
 		}
 	}
 
-	@Test
-	public void testMobileConversion() {
-		Assert.assertEquals(
-				"Paragraphs to newlines",
-				"Jouw moeder is fucking lelijk\nEcht waar\n",
-				HTMLSanitizer
-						.paragraphsToNewlines("<p>Jouw moeder is fucking lelijk</p><p>Echt waar</p>"));
-		Assert.assertEquals(
-				"Newlines to paragraphs",
-				"<p>Jouw moeder is fucking lelijk</p><p>Echt waar</p>",
-
-				HTMLSanitizer
-						.newlinesToParagraphs("Jouw moeder is fucking lelijk\nEcht waar"));
-	}
 }

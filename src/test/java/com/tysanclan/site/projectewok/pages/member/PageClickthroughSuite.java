@@ -5,8 +5,8 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ TrialMemberTest.class, JuniorMemberTest.class,
-		FullMemberTest.class, SeniorMemberTest.class, TruthsayerTest.class,
-		SenatorTest.class, ChancellorTest.class })
+		FullMemberTest.class, SeniorMemberTest.class, ReveredMemberTest.class,
+		TruthsayerTest.class, SenatorTest.class, ChancellorTest.class })
 public class PageClickthroughSuite {
 
 }

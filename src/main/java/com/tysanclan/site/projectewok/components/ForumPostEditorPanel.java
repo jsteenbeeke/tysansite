@@ -19,16 +19,6 @@ package com.tysanclan.site.projectewok.components;
 
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.protocol.http.request.WebClientInfo;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import wicket.contrib.tinymce.TinyMceBehavior;
-
-import com.tysanclan.site.projectewok.TysanSession;
-import com.tysanclan.site.projectewok.entities.dao.MobileUserAgentDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.MobileUserAgentFilter;
-import com.tysanclan.site.projectewok.util.HTMLSanitizer;
 
 /**
  * A panel to edit a forum post
@@ -40,39 +30,12 @@ public class ForumPostEditorPanel extends Panel {
 
 	private TextArea<String> editor;
 
-	@SpringBean
-	private MobileUserAgentDAO mobileUserAgentDAO;
-
-	private final boolean mobile;
-
 	public ForumPostEditorPanel(String id, String content) {
 		super(id);
 
-		WebClientInfo info = TysanSession.get().getClientInfo();
-		mobile = isMobile(info.getUserAgent());
-
-		editor = new TextArea<String>("postcontent", new Model<String>(
-				mobile ? HTMLSanitizer.paragraphsToNewlines(content) : content));
-
-		if (!mobile) {
-			editor.add(new TinyMceBehavior(new TysanTinyMCESettings()));
-		}
+		editor = new BBCodeTextArea("postcontent", content);
 
 		add(editor);
-	}
-
-	private boolean isMobile(String userAgent) {
-		MobileUserAgentFilter filter = new MobileUserAgentFilter();
-		MobileUserAgentFilter filter2 = new MobileUserAgentFilter();
-
-		filter.setIdentifier(userAgent);
-		filter.setMobile(true);
-
-		filter2.setIdentifier(userAgent);
-		filter2.setMobile(false);
-
-		return mobileUserAgentDAO.countByFilter(filter) > 0
-				&& mobileUserAgentDAO.countByFilter(filter2) == 0;
 	}
 
 	public String getEditorContent() {
@@ -80,10 +43,7 @@ public class ForumPostEditorPanel extends Panel {
 		if (content == null)
 			content = "";
 
-		if (!mobile) {
-			return content;
-		}
-		return HTMLSanitizer.newlinesToParagraphs(content);
+		return content;
 
 	}
 }

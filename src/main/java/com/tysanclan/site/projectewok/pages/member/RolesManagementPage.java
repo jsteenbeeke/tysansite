@@ -35,13 +35,11 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.ui.dialog.Dialog;
 
-import wicket.contrib.tinymce.TinyMceBehavior;
-
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.RoleService;
+import com.tysanclan.site.projectewok.components.BBCodeTextArea;
 import com.tysanclan.site.projectewok.components.MemberListItem;
-import com.tysanclan.site.projectewok.components.TysanTinyMCESettings;
 import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.Role;
 import com.tysanclan.site.projectewok.entities.Role.RoleType;
@@ -293,8 +291,8 @@ public class RolesManagementPage extends AbstractMemberPage {
 		};
 
 		addRoleForm.add(new TextField<String>("name", new Model<String>("")));
-		addRoleForm.add(new TextArea<String>("description", new Model<String>(
-				"")).add(new TinyMceBehavior(new TysanTinyMCESettings())));
+		addRoleForm
+				.add(new BBCodeTextArea("description", ""));
 
 		add(addRoleForm);
 	}

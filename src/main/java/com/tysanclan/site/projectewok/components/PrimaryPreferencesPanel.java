@@ -37,8 +37,6 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
 
-import wicket.contrib.tinymce.TinyMceBehavior;
-
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.UserService;
 import com.tysanclan.site.projectewok.entities.User;
@@ -104,9 +102,8 @@ public abstract class PrimaryPreferencesPanel extends Panel {
 		settingsForm.add(new DropDownChoice<String>("timezone",
 				new Model<String>(user.getTimezone()), timezones));
 		settingsForm.add(new TextField<String>("customTitle",
-				new Model<String>(user.getCustomTitle())).add(
-				StringValidator.maximumLength(255))
-				.setEscapeModelStrings(false));
+				new Model<String>(user.getCustomTitle())).add(StringValidator
+				.maximumLength(255)));
 
 		TextField<String> urlField = new TextField<String>("imageURL",
 				new Model<String>(user.getImageURL()));
@@ -145,9 +142,7 @@ public abstract class PrimaryPreferencesPanel extends Panel {
 
 		settingsForm.add(urlField);
 
-		settingsForm.add(new TextArea<String>("signature", new Model<String>(
-				user.getSignature())).add(new TinyMceBehavior(
-				new TysanTinyMCESettings())));
+		settingsForm.add(new BBCodeTextArea("signature", user.getSignature()));
 
 		image = new WebMarkupContainer("preview");
 		if (user.getImageURL() == null || user.getImageURL().isEmpty()) {

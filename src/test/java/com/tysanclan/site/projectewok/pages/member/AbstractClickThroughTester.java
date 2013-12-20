@@ -208,26 +208,33 @@ public abstract class AbstractClickThroughTester extends TysanPageTester {
 		logOut();
 	}
 
-	/*
-	 * 
-	 * 
-	 * 
-	 * @Test public void dumpLinks() throws IOException { PrintWriter pw = new
-	 * PrintWriter(new FileWriter("generated.java"));
-	 * 
-	 * pw.println("");
-	 * 
-	 * for (String link : generateLinks()) { if (link.endsWith("icon:link"))
-	 * continue;
-	 * 
-	 * pw.println("\t@Test"); pw.printf( "\tpublic void test%s() {",
-	 * Joiner.on("").join( Iterables.transform(
-	 * Lists.newArrayList(link.split(":")),
-	 * StringUtil.capitalizeFirstFunction()))); pw.println();
-	 * pw.println("\t\toverview();"); pw.println("\t\tgetTester().clickLink(\""
-	 * + link + "\");"); pw.println("\t\tgetTester().assertRenderedPage();");
-	 * pw.println("\t}"); pw.println(""); }
-	 * 
-	 * pw.flush(); pw.close(); }
-	 */
+	// @Test
+	// public void dumpLinks() throws IOException {
+	// PrintStream pw = System.out;
+	//
+	// pw.println("");
+	//
+	// for (String link : generateLinks()) {
+	// if (link.endsWith("icon:link"))
+	// continue;
+	//
+	// pw.println("\t@Test");
+	// pw.printf(
+	// "\tpublic void test%s() {",
+	// Joiner.on("").join(
+	// Iterables.transform(
+	// Lists.newArrayList(link.split(":")),
+	// StringUtil.capitalizeFirstFunction())));
+	// pw.println();
+	// pw.println("\t\toverview();");
+	// pw.println("\t\tgetTester().clickLink(\"" + link + "\");");
+	// pw.println("\t\tgetTester().assertRenderedPage();");
+	// pw.println("\t}");
+	// pw.println("");
+	// }
+	//
+	// pw.flush();
+	// pw.close();
+	// }
+
 }

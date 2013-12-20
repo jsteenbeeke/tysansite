@@ -59,8 +59,8 @@ import com.tysanclan.site.projectewok.entities.dao.filters.TruthsayerNominationF
 import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
 import com.tysanclan.site.projectewok.event.MemberStatusEvent;
 import com.tysanclan.site.projectewok.util.DateUtil;
-import com.tysanclan.site.projectewok.util.HTMLSanitizer;
 import com.tysanclan.site.projectewok.util.MemberUtil;
+import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
 
 /**
  * @author Jeroen Steenbeeke
@@ -385,7 +385,7 @@ class LawEnforcementServiceImpl implements
 		trial.setAccused(_accused);
 		trial.setAccuser(_accuser);
 		trial.setTrialThread(null);
-		trial.setMotivation(HTMLSanitizer.sanitize(motivation));
+		trial.setMotivation(BBCodeUtil.stripTags(motivation));
 		List<Regulation> _regulations = new LinkedList<Regulation>();
 		_regulations.addAll(regulations);
 
@@ -675,7 +675,7 @@ class LawEnforcementServiceImpl implements
 		complaint.setMediated(false);
 		complaint.setStart(new Date());
 		complaint.setTruthsayer(truthsayer);
-		complaint.setComplaint(HTMLSanitizer.sanitize(motivation));
+		complaint.setComplaint(BBCodeUtil.stripTags(motivation));
 		truthsayerComplaintDAO.save(complaint);
 
 		notificationService.notifyUser(truthsayer,

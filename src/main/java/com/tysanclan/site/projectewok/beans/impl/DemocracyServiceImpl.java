@@ -89,8 +89,8 @@ import com.tysanclan.site.projectewok.entities.dao.filters.UntenabilityVoteFilte
 import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
 import com.tysanclan.site.projectewok.event.MemberStatusEvent;
 import com.tysanclan.site.projectewok.util.DateUtil;
-import com.tysanclan.site.projectewok.util.HTMLSanitizer;
 import com.tysanclan.site.projectewok.util.MemberUtil;
+import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
 
 /**
  * @author Jeroen Steenbeeke
@@ -1596,8 +1596,8 @@ class DemocracyServiceImpl implements
 
 		RegulationChange change = new RegulationChange();
 		change.setChangeType(ChangeType.ADD);
-		change.setTitle(HTMLSanitizer.stripTags(title));
-		change.setDescription(HTMLSanitizer.sanitize(description));
+		change.setTitle(BBCodeUtil.stripTags(title));
+		change.setDescription(BBCodeUtil.stripTags(description));
 		change.setStart(new Date());
 		change.setVeto(false);
 		change.setRegulation(null);
@@ -1622,8 +1622,8 @@ class DemocracyServiceImpl implements
 
 		RegulationChange change = new RegulationChange();
 		change.setChangeType(ChangeType.MODIFY);
-		change.setTitle(HTMLSanitizer.stripTags(newTitle));
-		change.setDescription(HTMLSanitizer.sanitize(newDescription));
+		change.setTitle(BBCodeUtil.stripTags(newTitle));
+		change.setDescription(BBCodeUtil.stripTags(newDescription));
 		change.setStart(new Date());
 		change.setVeto(false);
 		change.setRegulation(_regulation);

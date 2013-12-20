@@ -25,13 +25,11 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import wicket.contrib.tinymce.TinyMceBehavior;
-
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.RoleService;
-import com.tysanclan.site.projectewok.components.TysanTinyMCESettings;
+import com.tysanclan.site.projectewok.components.BBCodeTextArea;
 import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.Role;
 
@@ -80,9 +78,7 @@ public class EditRolePage extends TysanPage {
 
 		editForm.add(new TextField<String>("name", new Model<String>(role
 				.getName())));
-		editForm.add(new TextArea<String>("description", new Model<String>(role
-				.getDescription())).add(new TinyMceBehavior(
-				new TysanTinyMCESettings())));
+		editForm.add(new BBCodeTextArea("description", role.getDescription()));
 
 		add(editForm);
 

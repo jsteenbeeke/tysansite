@@ -37,8 +37,8 @@ import com.tysanclan.site.projectewok.entities.Realm;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.model.GameRealmCartesian;
 import com.tysanclan.site.projectewok.pages.ForumThreadPage;
-import com.tysanclan.site.projectewok.util.HTMLSanitizer;
 import com.tysanclan.site.projectewok.util.StringUtil;
+import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
 
 /**
  * @author Jeroen Steenbeeke
@@ -102,11 +102,11 @@ public class JoinPage2 extends TysanPage {
 					realm = cart.getRealm();
 				}
 
-				String otherGames = HTMLSanitizer
-						.stripTags(otherGamesDescription.getModelObject());
-				String sortOfPerson = HTMLSanitizer.stripTags(sortOfPersonArea
+				String otherGames = BBCodeUtil.stripTags(otherGamesDescription
 						.getModelObject());
-				String lookingFor = HTMLSanitizer.stripTags(lookingForArea
+				String sortOfPerson = BBCodeUtil.stripTags(sortOfPersonArea
+						.getModelObject());
+				String lookingFor = BBCodeUtil.stripTags(lookingForArea
 						.getModelObject());
 
 				boolean valid = true;

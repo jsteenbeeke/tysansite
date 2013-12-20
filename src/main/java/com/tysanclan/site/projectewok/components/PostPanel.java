@@ -186,10 +186,9 @@ public class PostPanel extends Panel {
 
 			container.add(poster);
 
-			container.add(new Label("customtitle",
+			container.add(new BBCodePanel("customtitle",
 					post.getPoster() != null ? post.getPoster()
-							.getCustomTitle() : "")
-					.setEscapeModelStrings(false));
+							.getCustomTitle() : ""));
 
 			container.add(new DateTimeLabel("posttime", post.getTime()));
 
@@ -213,9 +212,8 @@ public class PostPanel extends Panel {
 			}
 			container.add(image);
 
-			Label body = new Label("body", new Model<String>(
+			BBCodePanel body = new BBCodePanel("body", new Model<String>(
 					aprilFilter(post.getContent())));
-			body.setEscapeModelStrings(false);
 
 			WebMarkupContainer branchnote = new WebMarkupContainer("branchnote");
 			if (post.getBranchTo() != null) {
@@ -229,11 +227,10 @@ public class PostPanel extends Panel {
 			container.add(branchnote);
 
 			container.add(body);
-			container.add(new Label("signature",
+			container.add(new BBCodePanel("signature",
 					post.getPoster() != null ? post.getPoster().getSignature()
-							: "").setEscapeModelStrings(false).setVisible(
-					post.getPoster() != null
-							&& !post.getPoster().getSignature().isEmpty()));
+							: "").setVisible(post.getPoster() != null
+					&& !post.getPoster().getSignature().isEmpty()));
 			container.add(new ContextImage("icon", "images/icons/new.png")
 					.setVisible(sess != null ? forumService.isPostUnread(u,
 							post) : false));

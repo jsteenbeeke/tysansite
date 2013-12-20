@@ -36,15 +36,13 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import wicket.contrib.tinymce.TinyMceBehavior;
-
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.beans.MessageService;
 import com.tysanclan.site.projectewok.beans.UserService;
+import com.tysanclan.site.projectewok.components.BBCodeTextArea;
 import com.tysanclan.site.projectewok.components.IconLink;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
-import com.tysanclan.site.projectewok.components.TysanTinyMCESettings;
 import com.tysanclan.site.projectewok.dataaccess.FilterProvider;
 import com.tysanclan.site.projectewok.entities.Conversation;
 import com.tysanclan.site.projectewok.entities.ConversationParticipation;
@@ -213,8 +211,7 @@ public class MessageListPage extends AbstractMemberPage {
 
 				}, ModelMaker.wrap(users));
 
-		final TextArea<String> editor = new TextArea<String>("messagecontent",
-				new Model<String>(""));
+		final TextArea<String> editor = new BBCodeTextArea("messagecontent", "");
 		editor.setRequired(true);
 
 		Form<Conversation> newMessageForm = new Form<Conversation>(id) {
@@ -243,7 +240,6 @@ public class MessageListPage extends AbstractMemberPage {
 
 		newMessageForm.add(titleField);
 
-		editor.add(new TinyMceBehavior(new TysanTinyMCESettings()));
 		editor.setOutputMarkupId(true);
 		editor.setMarkupId("editor");
 		newMessageForm.add(editor);

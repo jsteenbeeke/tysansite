@@ -23,11 +23,9 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import wicket.contrib.tinymce.TinyMceBehavior;
-
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.DemocracyService;
-import com.tysanclan.site.projectewok.components.TysanTinyMCESettings;
+import com.tysanclan.site.projectewok.components.BBCodeTextArea;
 import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.RegulationChange;
 import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
@@ -84,9 +82,7 @@ public class AddRegulationPage extends AbstractMemberPage {
 
 		form.add(new TextField<String>("newTitle", new Model<String>("")));
 
-		form.add(new TextArea<String>("description", new Model<String>(""))
-				.setRequired(true).add(
-						new TinyMceBehavior(new TysanTinyMCESettings())));
+		form.add(new BBCodeTextArea("description", "").setRequired(true));
 
 		return form;
 	}

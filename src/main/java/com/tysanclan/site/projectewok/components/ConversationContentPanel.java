@@ -30,11 +30,8 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.time.Duration;
-
-import wicket.contrib.tinymce.TinyMceBehavior;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
@@ -93,8 +90,7 @@ public class ConversationContentPanel extends Panel {
 								.getUsername() : "System"));
 				item.add(new Label("time", DateUtil.getTimezoneFormattedString(
 						message.getSendTime(), getUser().getTimezone())));
-				item.add(new Label("content", message.getContent())
-						.setEscapeModelStrings(false));
+				item.add(new BBCodePanel("content", message.getContent()));
 			}
 
 		}.setOutputMarkupId(true).add(
@@ -143,8 +139,7 @@ public class ConversationContentPanel extends Panel {
 
 		respondForm.setVisible(editorVisible);
 
-		editor = new TextArea<String>("messagecontent", new Model<String>(""));
-		editor.add(new TinyMceBehavior(new TysanTinyMCESettings()));
+		editor = new BBCodeTextArea("messagecontent", "");
 		editor.setOutputMarkupId(true);
 		editor.setOutputMarkupPlaceholderTag(true);
 

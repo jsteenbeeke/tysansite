@@ -56,9 +56,9 @@ import com.tysanclan.site.projectewok.entities.dao.UnreadForumPostDAO;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import com.tysanclan.site.projectewok.entities.dao.filters.ForumFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.ForumPostFilter;
-import com.tysanclan.site.projectewok.util.HTMLSanitizer;
 import com.tysanclan.site.projectewok.util.MemberUtil;
 import com.tysanclan.site.projectewok.util.StringUtil;
+import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
 
 @Component
 @Scope("request")
@@ -173,7 +173,7 @@ class ForumServiceImpl implements
 
 		ForumPost post = new ForumPost();
 		post.setPoster(user);
-		post.setContent(HTMLSanitizer.sanitize(content));
+		post.setContent(BBCodeUtil.stripTags(content));
 		post.setShadow(user != null && user.getRank() == Rank.BANNED);
 		post.setTime(new Date());
 		post.setThread(nt);
@@ -201,7 +201,7 @@ class ForumServiceImpl implements
 		nt.setPoster(user);
 		nt.setShadow(user != null && user.getRank() == Rank.BANNED);
 		nt.setPostTime(new Date());
-		nt.setTitle(HTMLSanitizer.stripTags(title));
+		nt.setTitle(BBCodeUtil.stripTags(title));
 		forumThreadDAO.save(nt);
 		return nt;
 	}
@@ -267,7 +267,7 @@ class ForumServiceImpl implements
 				|| post.getThread().getForum().getModerators()
 						.contains(currentUser)
 				|| currentUser.getRank() == Rank.TRUTHSAYER) {
-			post.setContent(HTMLSanitizer.sanitize(content));
+			post.setContent(BBCodeUtil.stripTags(content));
 			forumPostDAO.update(post);
 		}
 	}
@@ -408,7 +408,7 @@ class ForumServiceImpl implements
 	public ForumPost replyToThread(ForumThread thread, String content, User user) {
 		ForumPost post = new ForumPost();
 		post.setPoster(user);
-		post.setContent(HTMLSanitizer.sanitize(content));
+		post.setContent(BBCodeUtil.stripTags(content));
 		post.setShadow(user != null && user.getRank() == Rank.BANNED);
 		post.setTime(new Date());
 		post.setThread(thread);
@@ -804,7 +804,7 @@ class ForumServiceImpl implements
 	public void setForumDescription(Forum forum, String description, User user) {
 		Forum _forum = forumDAO.load(forum.getId());
 
-		_forum.setDescription(HTMLSanitizer.stripTags(description));
+		_forum.setDescription(BBCodeUtil.stripTags(description));
 		forumDAO.update(_forum);
 
 		logService.logUserAction(user, "Forum", "Description of forum "

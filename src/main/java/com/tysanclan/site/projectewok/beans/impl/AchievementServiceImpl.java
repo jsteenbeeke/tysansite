@@ -49,9 +49,9 @@ import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import com.tysanclan.site.projectewok.entities.dao.filters.AchievementIconFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.AchievementProposalFilter;
 import com.tysanclan.site.projectewok.util.DateUtil;
-import com.tysanclan.site.projectewok.util.HTMLSanitizer;
 import com.tysanclan.site.projectewok.util.ImageUtil;
 import com.tysanclan.site.projectewok.util.MemberUtil;
+import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
 
 /**
  * @author Jeroen Steenbeeke
@@ -76,7 +76,7 @@ class AchievementServiceImpl implements AchievementService {
 
 	@Autowired
 	private com.tysanclan.site.projectewok.beans.NotificationService notificationService;
- 
+
 	@Autowired
 	private UserDAO userDAO;
 
@@ -145,8 +145,8 @@ class AchievementServiceImpl implements AchievementService {
 
 			AchievementProposal proposal = new AchievementProposal();
 			proposal.setSuggestor(proposer);
-			proposal.setName(HTMLSanitizer.stripTags(name));
-			proposal.setDescription(HTMLSanitizer.sanitize(description));
+			proposal.setName(BBCodeUtil.stripTags(name));
+			proposal.setDescription(BBCodeUtil.stripTags(description));
 			proposal.setIcon(icon);
 			proposal.setStartDate(new Date());
 			proposal.setGame(game);

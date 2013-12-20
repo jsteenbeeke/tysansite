@@ -48,9 +48,9 @@ import com.tysanclan.site.projectewok.entities.dao.filters.EmailChangeConfirmati
 import com.tysanclan.site.projectewok.entities.dao.filters.PasswordRequestFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
 import com.tysanclan.site.projectewok.util.DateUtil;
-import com.tysanclan.site.projectewok.util.HTMLSanitizer;
 import com.tysanclan.site.projectewok.util.MemberUtil;
 import com.tysanclan.site.projectewok.util.StringUtil;
+import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
 
 /**
  * Various general user-related actions (non-member)
@@ -208,7 +208,7 @@ class UserServiceImpl implements
 		User user = userDAO.load(user_id);
 
 		if (user != null) {
-			user.setImageURL(HTMLSanitizer.filterURL(avatarURL));
+			user.setImageURL(BBCodeUtil.filterURL(avatarURL));
 			userDAO.update(user);
 
 			return true;
@@ -227,7 +227,7 @@ class UserServiceImpl implements
 		User user = userDAO.load(user_id);
 
 		if (user != null) {
-			user.setCustomTitle(HTMLSanitizer.stripTags(customTitle));
+			user.setCustomTitle(BBCodeUtil.stripTags(customTitle));
 			userDAO.update(user);
 
 			return true;
@@ -246,7 +246,7 @@ class UserServiceImpl implements
 		User user = userDAO.load(user_id);
 
 		if (user != null) {
-			user.setSignature(HTMLSanitizer.sanitize(signature));
+			user.setSignature(BBCodeUtil.stripTags(signature));
 			userDAO.update(user);
 
 			return true;
@@ -562,7 +562,7 @@ class UserServiceImpl implements
 		User user = userDAO.load(userId);
 
 		if (user != null) {
-			user.setTimezone(HTMLSanitizer.stripTags(timezone));
+			user.setTimezone(BBCodeUtil.stripTags(timezone));
 			userDAO.update(user);
 		}
 	}

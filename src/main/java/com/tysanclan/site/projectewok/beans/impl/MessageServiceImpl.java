@@ -34,7 +34,7 @@ import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.ConversationDAO;
 import com.tysanclan.site.projectewok.entities.dao.ConversationParticipationDAO;
 import com.tysanclan.site.projectewok.entities.dao.MessageDAO;
-import com.tysanclan.site.projectewok.util.HTMLSanitizer;
+import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
 
 /**
  * @author Jeroen Steenbeeke
@@ -107,11 +107,11 @@ class MessageServiceImpl implements
 		}
 
 		Conversation conversation = new Conversation();
-		conversation.setTitle(HTMLSanitizer.stripTags(title));
+		conversation.setTitle(BBCodeUtil.stripTags(title));
 		conversationDAO.save(conversation);
 
 		Message message = new Message();
-		message.setContent(HTMLSanitizer.sanitize(text));
+		message.setContent(BBCodeUtil.stripTags(text));
 		message.setConversation(conversation);
 		message.setSender(sender);
 		message.setSendTime(new Date());

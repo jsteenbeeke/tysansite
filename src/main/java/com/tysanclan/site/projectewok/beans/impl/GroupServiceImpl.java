@@ -50,7 +50,7 @@ import com.tysanclan.site.projectewok.entities.dao.filters.GroupCreationRequestF
 import com.tysanclan.site.projectewok.entities.dao.filters.GroupForumFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
 import com.tysanclan.site.projectewok.event.GroupWithoutLeaderEvent;
-import com.tysanclan.site.projectewok.util.HTMLSanitizer;
+import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
 
 /**
  * @author Jeroen Steenbeeke
@@ -452,12 +452,12 @@ class GroupServiceImpl implements
 			Game game, Realm realm, String name, String description,
 			String motivation) {
 		GroupCreationRequest request = new GroupCreationRequest();
-		request.setName(HTMLSanitizer.stripTags(name));
+		request.setName(BBCodeUtil.stripTags(name));
 		request.setRequester(requester);
 		request.setGame(game);
 		request.setRealm(realm);
-		request.setDescription(HTMLSanitizer.sanitize(description));
-		request.setMotivation(HTMLSanitizer.sanitize(motivation));
+		request.setDescription(BBCodeUtil.stripTags(description));
+		request.setMotivation(BBCodeUtil.stripTags(motivation));
 
 		groupCreationRequestDAO.save(request);
 
@@ -487,11 +487,11 @@ class GroupServiceImpl implements
 	public GroupCreationRequest createSocialGroupRequest(User requester,
 			String name, String description, String motivation) {
 		GroupCreationRequest request = new GroupCreationRequest();
-		request.setName(HTMLSanitizer.stripTags(name));
+		request.setName(BBCodeUtil.stripTags(name));
 		request.setRequester(requester);
 		request.setGame(null);
-		request.setDescription(HTMLSanitizer.sanitize(description));
-		request.setMotivation(HTMLSanitizer.sanitize(motivation));
+		request.setDescription(BBCodeUtil.stripTags(description));
+		request.setMotivation(BBCodeUtil.stripTags(motivation));
 
 		groupCreationRequestDAO.save(request);
 
@@ -654,7 +654,7 @@ class GroupServiceImpl implements
 	public void setGroupMOTD(Group group, String motd) {
 		Group _group = groupDAO.load(group.getId());
 
-		_group.setMessageOfTheDay(HTMLSanitizer.sanitize(motd));
+		_group.setMessageOfTheDay(BBCodeUtil.stripTags(motd));
 
 		groupDAO.update(_group);
 
@@ -669,7 +669,7 @@ class GroupServiceImpl implements
 	public void setGroupDescription(Group group, String description) {
 		Group _group = groupDAO.load(group.getId());
 
-		_group.setDescription(HTMLSanitizer.sanitize(description));
+		_group.setDescription(BBCodeUtil.stripTags(description));
 
 		groupDAO.update(_group);
 

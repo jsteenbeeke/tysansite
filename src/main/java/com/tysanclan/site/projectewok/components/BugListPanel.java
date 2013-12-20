@@ -70,16 +70,14 @@ public abstract class BugListPanel extends Panel {
 				if (bug.getReporter() != null) {
 					item.add(new MemberListItem("reportedBy", bug.getReporter()));
 				} else {
-					item.add(new Label("reportedBy",
-							"<i>Someone not logged in</i>")
-							.setEscapeModelStrings(false));
+					item.add(new BBCodePanel("reportedBy",
+							"[i]Someone not logged in[/i]"));
 				}
 				if (bug.getAssignedTo() != null) {
 					item.add(new MemberListItem("assignedTo", bug
 							.getAssignedTo()));
 				} else {
-					item.add(new Label("assignedTo", "<i>Nobody</i>")
-							.setEscapeModelStrings(false));
+					item.add(new BBCodePanel("assignedTo", "[i]Nobody[/i]"));
 				}
 				item.add(new Label("status", new Model<BugStatus>(bug
 						.getStatus())));

@@ -29,17 +29,15 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import wicket.contrib.tinymce.TinyMceBehavior;
-
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.GroupService;
 import com.tysanclan.site.projectewok.beans.LogService;
 import com.tysanclan.site.projectewok.beans.UserService;
+import com.tysanclan.site.projectewok.components.BBCodeTextArea;
 import com.tysanclan.site.projectewok.components.IconLink;
 import com.tysanclan.site.projectewok.components.IconLink.Builder;
 import com.tysanclan.site.projectewok.components.MemberListItem;
-import com.tysanclan.site.projectewok.components.TysanTinyMCESettings;
 import com.tysanclan.site.projectewok.entities.Committee;
 import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.User;
@@ -116,9 +114,8 @@ public class CommitteePage extends AbstractMemberPage {
 						(User) null, true), ModelMaker.wrap(users))
 						.setNullValid(false));
 
-		createForm.add(new TextArea<String>("description",
-				new Model<String>("")).add(new TinyMceBehavior(
-				new TysanTinyMCESettings())));
+		createForm
+				.add(new BBCodeTextArea("description", ""));
 		createForm.add(new TextField<String>("name", new Model<String>("")));
 
 		add(createForm);
@@ -126,8 +123,8 @@ public class CommitteePage extends AbstractMemberPage {
 		CommitteeFilter filter = new CommitteeFilter();
 		filter.addOrderBy("name", true);
 
-		add(new ListView<Committee>("committees", ModelMaker
-				.wrap(committeeDAO.findByFilter(filter))) {
+		add(new ListView<Committee>("committees", ModelMaker.wrap(committeeDAO
+				.findByFilter(filter))) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

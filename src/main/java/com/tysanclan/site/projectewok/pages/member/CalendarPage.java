@@ -38,16 +38,14 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import wicket.contrib.tinymce.TinyMceBehavior;
-
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.beans.EventService;
 import com.tysanclan.site.projectewok.components.AutoThreadLink;
+import com.tysanclan.site.projectewok.components.BBCodeTextArea;
 import com.tysanclan.site.projectewok.components.DatePickerPanel;
 import com.tysanclan.site.projectewok.components.InlineDatePicker;
 import com.tysanclan.site.projectewok.components.OtterSniperPanel;
-import com.tysanclan.site.projectewok.components.TysanTinyMCESettings;
 import com.tysanclan.site.projectewok.entities.Event;
 import com.tysanclan.site.projectewok.entities.dao.EventDAO;
 import com.tysanclan.site.projectewok.entities.dao.filters.EventFilter;
@@ -184,11 +182,9 @@ public class CalendarPage extends AbstractMemberPage {
 
 		scheduleEventForm.add(new TextField<String>("title", new Model<String>(
 				"")).setRequired(true));
-		TextArea<String> descriptionEditor = new TextArea<String>(
-				"description", new Model<String>(""));
+		TextArea<String> descriptionEditor = new BBCodeTextArea("description",
+				"");
 		descriptionEditor.setRequired(true);
-
-		descriptionEditor.add(new TinyMceBehavior(new TysanTinyMCESettings()));
 
 		scheduleEventForm.add(descriptionEditor);
 

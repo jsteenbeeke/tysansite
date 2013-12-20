@@ -45,7 +45,10 @@ import com.tysanclan.site.projectewok.entities.MessageFolder;
 import com.tysanclan.site.projectewok.entities.NewsForum;
 import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.Regulation;
+import com.tysanclan.site.projectewok.entities.Role;
+import com.tysanclan.site.projectewok.entities.Role.RoleType;
 import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.util.StringUtil;
 
 /**
  * @author Jeroen Steenbeeke
@@ -238,10 +241,28 @@ public class MockObjectRepository implements InitializingBean {
 		expense.setPeriod(ExpensePeriod.MONTHLY);
 		addObject(sess, expense);
 
+		createRole(sess, RoleType.TREASURER);
+		createRole(sess, RoleType.HERALD);
+		createRole(sess, RoleType.STEWARD);
+
 		sess.flush();
 		sess.getTransaction().commit();
 		sess.close();
 
+	}
+
+	private Role createRole(Session sess, RoleType type) {
+		final String prettyName = StringUtil.capitalizeFirstFunction().apply(
+				type.name().toLowerCase());
+
+		Role role = new Role();
+		role.setAssignedTo(null);
+		role.setDescription(prettyName);
+		role.setName(prettyName);
+		role.setRoleType(type);
+		addObject(sess, role);
+
+		return role;
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)

@@ -37,8 +37,6 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import wicket.contrib.tinymce.TinyMceBehavior;
-
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.ProfileService;
 import com.tysanclan.site.projectewok.entities.Profile;
@@ -261,12 +259,10 @@ public abstract class ProfilePanel extends Panel {
 		profileForm.add(new TextField<String>("aimname", new Model<String>(
 				profile != null ? profile.getInstantMessengerAddress() : "")));
 
-		profileForm.add(new TextArea<String>("publicdesc", new Model<String>(
-				profile != null ? profile.getPublicDescription() : ""))
-				.add(new TinyMceBehavior(new TysanTinyMCESettings())));
-		profileForm.add(new TextArea<String>("privatedesc", new Model<String>(
-				profile != null ? profile.getPrivateDescription() : ""))
-				.add(new TinyMceBehavior(new TysanTinyMCESettings())));
+		profileForm.add(new BBCodeTextArea("publicdesc",
+				profile != null ? profile.getPublicDescription() : ""));
+		profileForm.add(new BBCodeTextArea("privatedesc",
+				profile != null ? profile.getPrivateDescription() : ""));
 
 		profileForm.add(photoURLField);
 

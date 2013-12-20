@@ -35,9 +35,8 @@ public class NewsPanel extends Panel {
 		super(id);
 
 		add(new Label("title", thread.getTitle()));
-		Label content = new Label("content", thread.getPosts().get(0)
-				.getContent());
-		content.setEscapeModelStrings(false);
+		BBCodePanel content = new BBCodePanel("content", thread.getPosts()
+				.get(0).getContent());
 		add(content);
 
 		add(new DateLabel("postdate", thread.getPostTime()));

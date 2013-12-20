@@ -28,16 +28,13 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.form.ListMultipleChoice;
 import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import wicket.contrib.tinymce.TinyMceBehavior;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.beans.LawEnforcementService;
 import com.tysanclan.site.projectewok.beans.UserService;
-import com.tysanclan.site.projectewok.components.TysanTinyMCESettings;
+import com.tysanclan.site.projectewok.components.BBCodeTextArea;
 import com.tysanclan.site.projectewok.entities.Regulation;
 import com.tysanclan.site.projectewok.entities.Trial;
 import com.tysanclan.site.projectewok.entities.User;
@@ -116,10 +113,7 @@ public class StartTrialPage extends AbstractMemberPage {
 				(User) null, true), ModelMaker.wrapChoices(users))
 				.setRequired(true));
 
-		accuseForm
-				.add(new TextArea<String>("motivation", new Model<String>(""))
-						.setRequired(true)
-						.add(new TinyMceBehavior(new TysanTinyMCESettings())));
+		accuseForm.add(new BBCodeTextArea("motivation", "").setRequired(true));
 
 		accuseForm.add(new ListMultipleChoice<Regulation>("regulations",
 				ModelMaker.wrapAsCollection(new LinkedList<Regulation>()),

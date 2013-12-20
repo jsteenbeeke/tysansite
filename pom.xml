@@ -51,7 +51,6 @@
 		<tysan.rest.version>1.0-SNAPSHOT</tysan.rest.version>
 		<spring.version>3.2.5.RELEASE</spring.version>
 		<wicket.version>6.12.0</wicket.version>
-		<wicketstuff.tinymce.version>6.12.0</wicketstuff.tinymce.version>
 		<wiquery.version>6.9.2</wiquery.version>
 		<wqplot.version>1.6-SNAPSHOT</wqplot.version>
 	</properties>
@@ -189,11 +188,6 @@
 		</dependency>
 
 		<!-- UI Dependencies -->
-		<dependency>
-			<groupId>org.wicketstuff</groupId>
-			<artifactId>wicketstuff-tinymce</artifactId>
-			<version>${wicketstuff.tinymce.version}</version>
-		</dependency>
 		<dependency>
 			<groupId>nl.topicus</groupId>
         		<artifactId>wqplot</artifactId>

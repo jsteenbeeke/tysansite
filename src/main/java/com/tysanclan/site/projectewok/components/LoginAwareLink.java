@@ -97,8 +97,7 @@ public abstract class LoginAwareLink<L extends Link<?>, U extends Link<?>>
 		this.loggedInLink = loggedInLink;
 		if (isLoggedInCondition()) {
 			add(loggedInLink);
-			loggedInLink.add(new Label("name", text)
-					.setEscapeModelStrings(false));
+			loggedInLink.add(new BBCodePanel("name", text));
 		}
 	}
 
@@ -110,8 +109,7 @@ public abstract class LoginAwareLink<L extends Link<?>, U extends Link<?>>
 		this.notLoggedInLink = notLoggedInLink;
 		if (!isLoggedInCondition()) {
 			add(notLoggedInLink);
-			notLoggedInLink.add(new Label("name", text)
-					.setEscapeModelStrings(false));
+			notLoggedInLink.add(new BBCodePanel("name", text));
 		}
 	}
 

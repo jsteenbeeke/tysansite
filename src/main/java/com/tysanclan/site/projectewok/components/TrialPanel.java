@@ -82,8 +82,8 @@ public class TrialPanel extends Panel {
 			add(new Label("truthsayer", trial.getJudge().getUsername()));
 		}
 
-		add(new Label("evidence", trial.getMotivation()).setEscapeModelStrings(
-				false).setVisible(trial.getJudge().equals(user)));
+		add(new BBCodePanel("evidence", trial.getMotivation()).setVisible(trial
+				.getJudge().equals(user)));
 
 		ForumThread thread = trial.getTrialThread();
 

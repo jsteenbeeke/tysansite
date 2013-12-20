@@ -40,7 +40,7 @@ import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import com.tysanclan.site.projectewok.entities.dao.filters.RoleFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.RoleTransferFilter;
 import com.tysanclan.site.projectewok.util.DateUtil;
-import com.tysanclan.site.projectewok.util.HTMLSanitizer;
+import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
 
 /**
  * @author Jeroen Steenbeeke
@@ -86,7 +86,7 @@ class RoleServiceImpl implements
 			RoleType type) {
 		Role role = new Role();
 		role.setName(name);
-		role.setDescription(HTMLSanitizer.sanitize(description));
+		role.setDescription(BBCodeUtil.stripTags(description));
 		role.setRoleType(type);
 		role.setAssignedTo(null);
 		roleDAO.save(role);
