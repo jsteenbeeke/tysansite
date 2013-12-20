@@ -177,13 +177,20 @@ public abstract class AbstractClickThroughTester extends TysanPageTester {
 	}
 
 	protected List<String> generateLinks() {
+		return generateLinks(null);
+	}
+
+	protected List<String> generateLinks(String prefix) {
 		overview();
-		List<String> paths = Lists.newArrayList();
-		List<String> links = Lists.newArrayList();
+		final List<String> paths = Lists.newArrayList();
+		final List<String> links = Lists.newArrayList();
 
 		for (WicketTesterHelper.ComponentData obj : WicketTesterHelper
 				.getComponentData(getTester().getLastRenderedPage())) {
-			paths.add(obj.path);
+			final String path = obj.path;
+			if (prefix == null || path.startsWith(prefix)) {
+				paths.add(obj.path);
+			}
 		}
 
 		for (String path : paths) {
