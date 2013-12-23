@@ -23,6 +23,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -330,7 +332,8 @@ public class ForumThreadPage extends TysanPage {
 				"mentorApplication");
 
 		boolean realmInCommon = false;
-		final boolean activated = app.getApplicant().getActivation() == null;
+		final boolean activated = app != null ? app.getApplicant()
+				.getActivation() == null : false;
 
 		if (app != null && getUser() != null) {
 			Game game = app.getPrimaryGame();
@@ -395,7 +398,7 @@ public class ForumThreadPage extends TysanPage {
 		add(mentorBox);
 	}
 
-	private void addSenatorBox(JoinApplication app) {
+	private void addSenatorBox(@Nullable JoinApplication app) {
 		boolean visible = getUser() != null
 				&& getUser().getRank() == Rank.SENATOR && app != null;
 
@@ -403,7 +406,8 @@ public class ForumThreadPage extends TysanPage {
 				"senatorApproval");
 		senatorBox.setVisible(visible);
 
-		final boolean activated = app.getApplicant().getActivation() == null;
+		final boolean activated = visible ? app.getApplicant().getActivation() == null
+				: false;
 
 		Boolean inFavor = null;
 		final String status;
