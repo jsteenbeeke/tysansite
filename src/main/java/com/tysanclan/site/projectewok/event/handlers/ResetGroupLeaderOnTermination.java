@@ -33,6 +33,9 @@ public class ResetGroupLeaderOnTermination implements
 		EventHandler<MembershipTerminatedEvent> {
 	private GroupService groupService;
 
+	protected ResetGroupLeaderOnTermination() {
+	}
+
 	@Autowired
 	public ResetGroupLeaderOnTermination(GroupService groupService) {
 		this.groupService = groupService;

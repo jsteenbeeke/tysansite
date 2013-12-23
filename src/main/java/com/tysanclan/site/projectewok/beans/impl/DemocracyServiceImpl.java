@@ -907,7 +907,7 @@ class DemocracyServiceImpl implements
 			boolean accepted = false;
 
 			if (have3DaysPassed) {
-				if (applicant.getActivation() == null) {
+				if (applicant.getActivations().isEmpty()) {
 					// If we managed to let 3 days pass without the member
 					// getting
 					// accepted,
@@ -930,7 +930,7 @@ class DemocracyServiceImpl implements
 			} else {
 				// This really shouldn't happen, but don't resolve unactivated
 				// users prior to 3 days
-				if (applicant.getActivation() != null) {
+				if (!applicant.getActivations().isEmpty()) {
 					return;
 				}
 

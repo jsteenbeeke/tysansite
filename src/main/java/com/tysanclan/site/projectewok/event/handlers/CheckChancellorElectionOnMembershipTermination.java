@@ -31,6 +31,9 @@ public class CheckChancellorElectionOnMembershipTermination implements
 		this.democracyService = democracyService;
 	}
 
+	public CheckChancellorElectionOnMembershipTermination() {
+	}
+
 	@Override
 	public EventResult onEvent(MembershipTerminatedEvent event) {
 		User user = event.getSubject();

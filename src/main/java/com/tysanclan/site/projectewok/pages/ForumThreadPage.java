@@ -333,7 +333,7 @@ public class ForumThreadPage extends TysanPage {
 
 		boolean realmInCommon = false;
 		final boolean activated = app != null ? app.getApplicant()
-				.getActivation() == null : false;
+				.getActivations().isEmpty() : false;
 
 		if (app != null && getUser() != null) {
 			Game game = app.getPrimaryGame();
@@ -406,8 +406,8 @@ public class ForumThreadPage extends TysanPage {
 				"senatorApproval");
 		senatorBox.setVisible(visible);
 
-		final boolean activated = visible ? app.getApplicant().getActivation() == null
-				: false;
+		final boolean activated = visible ? app.getApplicant().getActivations()
+				.isEmpty() : false;
 
 		Boolean inFavor = null;
 		final String status;
@@ -520,6 +520,8 @@ public class ForumThreadPage extends TysanPage {
 	protected void onDetach() {
 		super.onDetach();
 
-		threadModel.detach();
+		if (threadModel != null) {
+			threadModel.detach();
+		}
 	}
 }

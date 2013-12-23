@@ -91,10 +91,9 @@ public class ForumPanel extends Panel {
 						.getForumThreadUnreadCount(session.getUser(), current)
 						: 0;
 
-				Event ev = eventDAO.getEventByThread(current);
-				Trial tr = trialDAO.getTrialByThread(current);
-				JoinApplication ja = joinApplicationDAO
-						.getJoinApplicationByThread(current);
+				Event ev = current.getEvent();
+				Trial tr = current.getTrial();
+				JoinApplication ja = current.getApplication();
 
 				if (ev != null) {
 					item.add(new ContextImage("thread",

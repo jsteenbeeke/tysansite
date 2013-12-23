@@ -59,6 +59,7 @@ import org.hibernate.annotations.Index;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.Where;
 
+import com.google.common.collect.Lists;
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 import com.jeroensteenbeeke.hyperion.data.DomainObject;
 import com.tysanclan.site.projectewok.util.DateUtil;
@@ -226,8 +227,8 @@ public class User extends BaseDomainObject implements DomainObject {
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private List<SubscriptionPayment> payments;
 
-	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
-	private Activation activation;
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	private List<Activation> activations;
 
 	/**
 	 * @return the mentor
@@ -254,12 +255,16 @@ public class User extends BaseDomainObject implements DomainObject {
 		return pupils;
 	}
 
-	public Activation getActivation() {
-		return activation;
+	public List<Activation> getActivations() {
+		if (activations == null) {
+			activations = Lists.newArrayList();
+		}
+
+		return activations;
 	}
 
-	public void setActivation(Activation activation) {
-		this.activation = activation;
+	public void setActivations(List<Activation> activations) {
+		this.activations = activations;
 	}
 
 	/**

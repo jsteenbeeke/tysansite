@@ -31,6 +31,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 
@@ -88,11 +89,44 @@ public class ForumThread extends BaseDomainObject {
 	@Column
 	private String title;
 
+	@OneToOne(mappedBy = "joinThread", fetch = FetchType.EAGER, optional = true)
+	private JoinApplication application;
+
+	@OneToOne(mappedBy = "trialThread", fetch = FetchType.EAGER, optional = true)
+	private Trial trial;
+
+	@OneToOne(mappedBy = "eventThread", fetch = FetchType.EAGER, optional = true)
+	private Event event;
+
 	// $P$
 
 	public ForumThread() {
 		posts = new LinkedList<ForumPost>();
 		// $H$
+	}
+
+	public JoinApplication getApplication() {
+		return application;
+	}
+
+	public void setApplication(JoinApplication application) {
+		this.application = application;
+	}
+
+	public Trial getTrial() {
+		return trial;
+	}
+
+	public void setTrial(Trial trial) {
+		this.trial = trial;
+	}
+
+	public Event getEvent() {
+		return event;
+	}
+
+	public void setEvent(Event event) {
+		this.event = event;
 	}
 
 	/**

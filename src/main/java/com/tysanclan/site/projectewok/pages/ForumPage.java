@@ -145,7 +145,10 @@ public class ForumPage extends TysanPage {
 	@Override
 	protected void onDetach() {
 		super.onDetach();
-		forumModel.detach();
+		if (forumModel != null) {
+			forumModel.detach();
+
+		}
 	}
 
 	public Forum getForum() {

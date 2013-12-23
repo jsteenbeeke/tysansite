@@ -34,6 +34,9 @@ public class ResetGroupMembershipsOnTermination implements
 		this.groupService = groupService;
 	}
 
+	protected ResetGroupMembershipsOnTermination() {
+	}
+
 	@Override
 	public EventResult onEvent(MembershipTerminatedEvent event) {
 		User user = event.getSubject();
