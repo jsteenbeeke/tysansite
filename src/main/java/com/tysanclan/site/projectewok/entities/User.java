@@ -226,6 +226,9 @@ public class User extends BaseDomainObject implements DomainObject {
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private List<SubscriptionPayment> payments;
 
+	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+	private Activation activation;
+
 	/**
 	 * @return the mentor
 	 */
@@ -249,6 +252,14 @@ public class User extends BaseDomainObject implements DomainObject {
 			pupils = new LinkedList<User>();
 
 		return pupils;
+	}
+
+	public Activation getActivation() {
+		return activation;
+	}
+
+	public void setActivation(Activation activation) {
+		this.activation = activation;
 	}
 
 	/**

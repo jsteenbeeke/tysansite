@@ -313,20 +313,6 @@ class UserServiceImpl implements
 	}
 
 	/**
-	 * @see com.tysanclan.site.projectewok.beans.UserService#expireActivation(com.tysanclan.site.projectewok.entities.Activation)
-	 */
-	@Override
-	@Transactional(propagation = Propagation.REQUIRED)
-	public void expireActivation(Activation activation) {
-		Activation _activation = activationDAO.load(activation.getId());
-
-		User user = _activation.getUser();
-		activationDAO.delete(_activation);
-		userDAO.delete(user);
-
-	}
-
-	/**
 	 * @see com.tysanclan.site.projectewok.beans.UserService#setUserMail(com.tysanclan.site.projectewok.entities.User,
 	 *      java.lang.String)
 	 */
@@ -675,22 +661,6 @@ class UserServiceImpl implements
 		InactivityNotification notification = new InactivityNotification();
 		notification.setUser(u);
 		inactivityDAO.save(notification);
-	}
-
-	@Override
-	@Transactional(propagation = Propagation.REQUIRED)
-	public void expireActivations() {
-		Calendar cal = DateUtil.getCalendarInstance();
-		cal.add(Calendar.DAY_OF_YEAR, -3);
-
-		ActivationFilter filter = new ActivationFilter();
-		filter.setDateBefore(cal.getTime());
-
-		List<Activation> expiredActivations = activationDAO
-				.findByFilter(filter);
-		for (Activation activation : expiredActivations) {
-			expireActivation(activation);
-		}
 	}
 
 	@Override

@@ -896,31 +896,44 @@ class DemocracyServiceImpl implements
 				total++;
 			}
 
-			User mentor = application.getMentor();
+			final User mentor = application.getMentor();
+			final User applicant = application.getApplicant();
 			Date startDate = application.getStartDate();
 			LocalDate start = new LocalDate(startDate);
 			LocalDate now = LocalDate.now();
 
-			boolean have3DaysPassed = start.plusDays(3).isBefore(now);
+			final boolean have3DaysPassed = start.plusDays(3).isBefore(now);
 
 			boolean accepted = false;
 
 			if (have3DaysPassed) {
-				// If we managed to let 3 days pass without the member getting
-				// accepted,
-				// check for mentor is no longer relevant, all we need to know
-				// is if a Senator
-				// voted against
-				if (total == 0) {
-					accepted = true;
-				} else {
-					if (inFavor == 0) {
-						accepted = false;
-					} else {
+				if (applicant.getActivation() == null) {
+					// If we managed to let 3 days pass without the member
+					// getting
+					// accepted,
+					// check for mentor is no longer relevant, all we need to
+					// know
+					// is if a Senator
+					// voted against
+					if (total == 0) {
 						accepted = true;
+					} else {
+						if (inFavor == 0) {
+							accepted = false;
+						} else {
+							accepted = true;
+						}
 					}
+				} else {
+					accepted = false;
 				}
 			} else {
+				// This really shouldn't happen, but don't resolve unactivated
+				// users prior to 3 days
+				if (applicant.getActivation() != null) {
+					return;
+				}
+
 				// If this method gets invoked earlier, however, then member
 				// needs a mentor and 1
 				// vote in favor - otherwise do not resolve
@@ -930,8 +943,6 @@ class DemocracyServiceImpl implements
 					return;
 				}
 			}
-
-			User applicant = application.getApplicant();
 
 			if (accepted) {
 				applicant.setMentor(application.getMentor());

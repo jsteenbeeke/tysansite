@@ -330,6 +330,7 @@ public class ForumThreadPage extends TysanPage {
 				"mentorApplication");
 
 		boolean realmInCommon = false;
+		final boolean activated = app.getApplicant().getActivation() == null;
 
 		if (app != null && getUser() != null) {
 			Game game = app.getPrimaryGame();
@@ -372,7 +373,7 @@ public class ForumThreadPage extends TysanPage {
 				"images/icons/tick.png")));
 		yesLink.add(new Label("username", app != null ? app.getApplicant()
 				.getUsername() : "-"));
-		yesLink.setVisible(realmInCommon);
+		yesLink.setVisible(realmInCommon && activated);
 		mentorBox.add(yesLink);
 
 		mentorBox
@@ -380,6 +381,12 @@ public class ForumThreadPage extends TysanPage {
 						"realmWarning",
 						"You cannot be Mentor of this applicant, as you do not have a realm and game in common")
 						.setVisible(!realmInCommon));
+
+		mentorBox
+				.add(new Label(
+						"activationWarning",
+						"You cannot volunteer to mentor for this applicant until his or her account is activated")
+						.setVisible(realmInCommon && !activated));
 
 		mentorBox.setVisible(app != null
 				&& MemberUtil.canUserBeMentor(getUser())
@@ -396,7 +403,11 @@ public class ForumThreadPage extends TysanPage {
 				"senatorApproval");
 		senatorBox.setVisible(visible);
 
+		final boolean activated = app.getApplicant().getActivation() == null;
+
 		Boolean inFavor = null;
+		final String status;
+
 		if (app != null) {
 			for (JoinVerdict verdict : app.getVerdicts()) {
 				if (verdict.getUser().equals(getUser())) {
@@ -407,9 +418,22 @@ public class ForumThreadPage extends TysanPage {
 			}
 		}
 
-		senatorBox.add(new Label("status", inFavor != null ? "You have voted "
-				+ (inFavor ? "in favor" : "against") + " this candidate"
-				: "You have not yet cast your vote"));
+		if (activated) {
+			if (inFavor != null) {
+				if (inFavor.booleanValue()) {
+					status = "You have voted in favor of this candidate";
+				} else {
+					status = "You have voted against this candidate";
+				}
+			} else {
+				status = "You have not yet cast your vote";
+			}
+
+		} else {
+			status = "You cannot vote until the applicant activates his account";
+		}
+
+		senatorBox.add(new Label("status", status));
 
 		Link<JoinApplication> yesLink = new Link<JoinApplication>("clickYes",
 				ModelMaker.wrap(app)) {
@@ -466,6 +490,9 @@ public class ForumThreadPage extends TysanPage {
 				"images/icons/cross.png")));
 
 		senatorBox.add(noLink);
+
+		yesLink.setVisible(activated);
+		noLink.setVisible(activated);
 
 		add(senatorBox);
 	}

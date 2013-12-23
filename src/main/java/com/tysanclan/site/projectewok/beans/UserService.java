@@ -88,8 +88,6 @@ public interface UserService {
 
 	public boolean activateAccount(Activation activation);
 
-	public void expireActivation(Activation activation);
-
 	public boolean setUserMail(User user, String mail);
 
 	public PasswordRequest generatePasswordRequest(User user);
@@ -128,8 +126,6 @@ public interface UserService {
 	void setUserCollapseForums(Long user_id, boolean collapse);
 
 	public void setPaypalAddress(User user, String paypalAddress);
-
-	public void expireActivations();
 
 	public void expireConfirmations();
 

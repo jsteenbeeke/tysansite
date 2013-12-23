@@ -81,7 +81,6 @@ import com.tysanclan.site.projectewok.pages.member.admin.TangoImporterPage;
 import com.tysanclan.site.projectewok.tasks.AcceptanceVoteStartTask;
 import com.tysanclan.site.projectewok.tasks.AcceptanceVoteStopTask;
 import com.tysanclan.site.projectewok.tasks.AchievementProposalTask;
-import com.tysanclan.site.projectewok.tasks.ActivationExpirationTask;
 import com.tysanclan.site.projectewok.tasks.AutomaticPromotionTask;
 import com.tysanclan.site.projectewok.tasks.ChancellorElectionChecker;
 import com.tysanclan.site.projectewok.tasks.ChancellorElectionResolutionTask;
@@ -227,8 +226,8 @@ public class TysanApplication extends WebApplication {
 		TysanScheduler.getScheduler().setApplication(this);
 
 		TysanTask[] tasks = { new AcceptanceVoteStartTask(),
-				new AcceptanceVoteStopTask(), new ActivationExpirationTask(),
-				new AutomaticPromotionTask(), new ChancellorElectionChecker(),
+				new AcceptanceVoteStopTask(), new AutomaticPromotionTask(),
+				new ChancellorElectionChecker(),
 				new ChancellorElectionResolutionTask(),
 				new EmailChangeConfirmationExpirationTask(),
 				new GroupLeaderElectionResolutionTask(),
