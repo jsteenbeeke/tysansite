@@ -128,7 +128,7 @@ public class ShadowForumViewContext extends AbstractForumViewContext {
 		q.append("SELECT * FROM FORUMTHREAD FT WHERE ft.forum_id = :forum AND ");
 		q.append("EXISTS (SELECT * FROM FORUMPOST FP WHERE (fp.shadow = false OR fp.poster_id = :viewer ) AND fp.thread_id = ft.id) ");
 		q.append("AND NOT EXISTS (SELECT * FROM trial WHERE trialthread_id = ft.id) ");
-		q.append("ORDER BY STICKY DESC, (SELECT MAX(fp2.time) FROM FORUMPOST fp2 WHERE (fp2.shadow = false OR fp2.poster_id = :viewer2 ) AND fp2.thread_id = ft.id) DESC ");
+		q.append("ORDER BY STICKY DESC, lastPost DESC ");
 		q.append("LIMIT :count OFFSET :offset");
 
 		SQLQuery query = sess.createSQLQuery(q.toString());

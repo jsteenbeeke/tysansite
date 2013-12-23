@@ -34,6 +34,8 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanSession;
@@ -54,6 +56,8 @@ import com.tysanclan.site.projectewok.pages.forum.CreateThreadPage;
 
 public class ForumPanel extends Panel {
 	private static final long serialVersionUID = 1L;
+
+	private static final Logger log = LoggerFactory.getLogger(ForumPanel.class);
 
 	@SpringBean
 	private ForumThreadDAO forumThreadDAO;
@@ -83,7 +87,9 @@ public class ForumPanel extends Panel {
 
 			@Override
 			protected void populateItem(Item<ForumThread> item) {
+
 				ForumThread current = item.getModelObject();
+				log.info(String.format("Forum thread %s", current.getTitle()));
 
 				TysanSession session = (TysanSession) Session.get();
 
@@ -180,6 +186,9 @@ public class ForumPanel extends Panel {
 					item.add(new Label("lastresponse", "never"));
 					item.add(new Label("lastposter", "Nobody"));
 				}
+
+				log.info(String.format("Forum thread %s done",
+						current.getTitle()));
 
 			}
 

@@ -19,6 +19,7 @@ package com.tysanclan.site.projectewok.util.forum;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
 
 /**
@@ -31,6 +32,11 @@ public abstract class AbstractForumViewContext implements ForumViewContext {
 	@SuppressWarnings("unchecked")
 	protected final <U> List<U> listOf(SQLQuery query) {
 		return (List<U>) query.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	protected final <U> List<U> listOf(Criteria criteria) {
+		return (List<U>) criteria.list();
 	}
 
 	protected final int count(SQLQuery query) {

@@ -135,7 +135,7 @@ public class MemberForumViewContext extends AbstractForumViewContext {
 		q.append("AND NOT EXISTS ");
 		q.append("(SELECT * FROM trial WHERE trialthread_id = ft.id AND accused_id != :user1 ");
 		q.append("AND NOT EXISTS (SELECT * FROM tuser WHERE Rank IN ('CHANCELLOR', 'SENATOR', 'TRUTHSAYER') AND id=:user2)) ");
-		q.append("ORDER BY STICKY DESC, (SELECT MAX(fp2.time) FROM FORUMPOST fp2 WHERE fp2.shadow = false AND fp2.thread_id = ft.id) DESC ");
+		q.append("ORDER BY STICKY DESC, lastPost DESC ");
 		q.append("LIMIT :count OFFSET :offset");
 
 		SQLQuery query = sess.createSQLQuery(q.toString());

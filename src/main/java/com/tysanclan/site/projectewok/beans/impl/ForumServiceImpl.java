@@ -415,6 +415,10 @@ class ForumServiceImpl implements
 
 		thread.getPosts().add(post);
 
+		if (!post.isShadow()) {
+			thread.setLastPost(post.getTime());
+		}
+
 		forumThreadDAO.update(thread);
 		forumPostDAO.save(post);
 

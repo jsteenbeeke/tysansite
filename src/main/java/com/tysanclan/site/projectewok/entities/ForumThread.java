@@ -34,6 +34,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
@@ -79,6 +81,10 @@ public class ForumThread extends BaseDomainObject {
 
 	@Column
 	private Date postTime;
+
+	@Column
+	@Temporal(TemporalType.DATE)
+	private Date lastPost;
 
 	@Column
 	private boolean shadow;
@@ -287,6 +293,14 @@ public class ForumThread extends BaseDomainObject {
 
 	public int getSticky() {
 		return sticky;
+	}
+
+	public Date getLastPost() {
+		return lastPost;
+	}
+
+	public void setLastPost(Date lastPost) {
+		this.lastPost = lastPost;
 	}
 
 	// $GS$

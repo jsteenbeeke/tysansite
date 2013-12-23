@@ -296,6 +296,9 @@ public class TysanPage extends WebPage {
 			response.render(OnDomReadyHeaderItem.forScript(String
 					.format("$('jqui-tabs-auto').tabs({ selected: %d });",
 							autoTabIndex)));
+		} else {
+			response.render(OnDomReadyHeaderItem
+					.forScript("$('jqui-tabs-auto').tabs();"));
 		}
 
 		StringBuilder collapsibles = new StringBuilder();
