@@ -75,6 +75,6 @@ public class RankChangeEventTrigger implements EventHandler<RankChangeEvent> {
 			}
 		}
 
-		return EventResult.ok((Event<?>[]) triggered.toArray());
+		return EventResult.ok(triggered);
 	}
 }

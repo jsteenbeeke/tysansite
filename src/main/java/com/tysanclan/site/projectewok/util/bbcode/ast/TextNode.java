@@ -1,7 +1,6 @@
 package com.tysanclan.site.projectewok.util.bbcode.ast;
 
 import com.tysanclan.site.projectewok.util.bbcode.BBAstNode;
-import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
 import com.tysanclan.site.projectewok.util.bbcode.DefaultNode;
 
 public class TextNode extends DefaultNode {
@@ -11,7 +10,7 @@ public class TextNode extends DefaultNode {
 	public TextNode(BBAstNode parent, String text) {
 		super(parent);
 
-		this.text = BBCodeUtil.stripTags(text);
+		this.text = text;
 	}
 
 	@Override
