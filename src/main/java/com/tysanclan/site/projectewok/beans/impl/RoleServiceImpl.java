@@ -126,7 +126,7 @@ class RoleServiceImpl implements
 	@Transactional(propagation = Propagation.REQUIRED)
 	public boolean assignTo(Long assigner_id, Long role_id, Long user_id) {
 		Role role = roleDAO.load(role_id);
-		User user = userDAO.load(user_id);
+		User user = user_id != null ? userDAO.load(user_id) : null;
 		User assigner = assigner_id != null ? userDAO.load(assigner_id) : null;
 
 		if (role != null && user != null) {
@@ -141,6 +141,14 @@ class RoleServiceImpl implements
 
 			notificationService.notifyUser(user,
 					"You have been given the role of " + role.getName());
+
+			return true;
+		} else if (role != null) {
+			role.setAssignedTo(null);
+			roleDAO.update(role);
+
+			logService.logUserAction(assigner, "Roles",
+					"Role " + role.getName() + " cleared");
 
 			return true;
 		}

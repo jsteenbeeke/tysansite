@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import com.google.common.collect.Lists;
 import com.tysanclan.site.projectewok.TysanPageTester;
+import com.tysanclan.site.projectewok.beans.RoleService;
 import com.tysanclan.site.projectewok.pages.member.justice.StartTrialPage;
 
 public abstract class AbstractClickThroughTester extends TysanPageTester {
@@ -178,6 +179,18 @@ public abstract class AbstractClickThroughTester extends TysanPageTester {
 
 	protected List<String> generateLinks() {
 		return generateLinks(null);
+	}
+
+	protected void assignRole(Long roleId) {
+		RoleService roleService = getBean(RoleService.class);
+
+		roleService.assignTo(userId, roleId, userId);
+	}
+
+	protected void clearRole(Long roleId) {
+		RoleService roleService = getBean(RoleService.class);
+
+		roleService.assignTo(userId, roleId, null);
 	}
 
 	protected List<String> generateLinks(String prefix) {

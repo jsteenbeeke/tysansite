@@ -37,7 +37,7 @@ public class LeaveGroupPage extends AbstractMemberPage {
 	public LeaveGroupPage(Group group) {
 		super("Leave " + group.getName());
 
-		add(new Label("title", "Leave " + group.getName()));
+		add(new Label("title2", "Leave " + group.getName()));
 
 		Link<Group> yesLink = new Link<Group>("yes", ModelMaker.wrap(group)) {
 			private static final long serialVersionUID = 1L;

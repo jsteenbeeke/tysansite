@@ -43,6 +43,7 @@ import com.tysanclan.site.projectewok.entities.Group.JoinPolicy;
 import com.tysanclan.site.projectewok.entities.LogItem;
 import com.tysanclan.site.projectewok.entities.MessageFolder;
 import com.tysanclan.site.projectewok.entities.NewsForum;
+import com.tysanclan.site.projectewok.entities.PaymentRequest;
 import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.Regulation;
 import com.tysanclan.site.projectewok.entities.Role;
@@ -244,6 +245,12 @@ public class MockObjectRepository implements InitializingBean {
 		createRole(sess, RoleType.TREASURER);
 		createRole(sess, RoleType.HERALD);
 		createRole(sess, RoleType.STEWARD);
+
+		PaymentRequest req = new PaymentRequest();
+		req.setAmount(BigDecimal.TEN);
+		req.setItem("Cookies");
+		req.setRequester(archonares);
+		addObject(sess, req);
 
 		sess.flush();
 		sess.getTransaction().commit();

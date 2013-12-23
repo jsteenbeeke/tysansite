@@ -26,6 +26,7 @@ import org.hibernate.SessionFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.orm.hibernate4.SessionFactoryUtils;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -42,6 +43,8 @@ public abstract class TysanPageTester {
 
 	private SessionFactory sessionFactory;
 
+	private BeanFactory beanFactory;
+
 	@BeforeClass
 	public static void setUp() {
 		tester = WicketTesterProvider.INST.getTester();
@@ -54,6 +57,7 @@ public abstract class TysanPageTester {
 				.getApplicationContext().getAutowireCapableBeanFactory();
 		// configurableBeanFactory.registerScope("session", new SessionScope());
 		configurableBeanFactory.registerScope("request", new RequestScope());
+		this.beanFactory = configurableBeanFactory;
 
 		MockServletContext sctx = new MockServletContext(
 				tester.getApplication(), "/src/main/webapp/");
@@ -70,12 +74,17 @@ public abstract class TysanPageTester {
 		TransactionSynchronizationManager.bindResource(sessionFactory, session);
 	}
 
+	protected <T> T getBean(Class<T> beanClass) {
+		return beanFactory.getBean(beanClass);
+	}
+
 	@After
 	public void endRequest() {
 		RequestContextHolder.resetRequestAttributes();
 		Session session = (Session) TransactionSynchronizationManager
 				.unbindResource(sessionFactory);
 		SessionFactoryUtils.closeSession(session);
+		this.beanFactory = null;
 	}
 
 	protected void logIn(Long userId) {
