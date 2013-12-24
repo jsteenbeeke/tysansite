@@ -320,6 +320,9 @@ class BBParser {
 				}
 			}
 
+			// Not a tag
+			buffer.append(peek);
+			tokenStream.consumeToken();
 		} else {
 			buffer.append(peek);
 			tokenStream.consumeToken();
