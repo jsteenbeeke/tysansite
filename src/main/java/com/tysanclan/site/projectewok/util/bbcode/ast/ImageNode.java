@@ -21,7 +21,15 @@ public class ImageNode extends DefaultNode {
 
 	@Override
 	public void renderTo(StringBuilder builder) {
-		builder.append("<img alt=\"\" ");
+		StringBuilder children = new StringBuilder();
+		for (BBAstNode node : getChildren()) {
+			node.renderTo(children);
+		}
+
+		builder.append("<img alt=\"");
+		builder.append(BBCodeUtil.filterURL(children.toString()));
+		builder.append("\" ");
+
 		if (width != null || height != null) {
 			builder.append("style=\"");
 			if (width != null) {
@@ -41,12 +49,6 @@ public class ImageNode extends DefaultNode {
 			builder.append("\" ");
 		}
 		builder.append("src=\"");
-
-		StringBuilder children = new StringBuilder();
-		for (BBAstNode node : getChildren()) {
-			node.renderTo(children);
-		}
-
 		builder.append(BBCodeUtil.filterURL(children.toString()));
 		builder.append("\" />");
 	}
