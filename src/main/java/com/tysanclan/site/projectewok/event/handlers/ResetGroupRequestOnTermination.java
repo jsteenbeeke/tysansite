@@ -30,11 +30,8 @@ public class ResetGroupRequestOnTermination implements
 	private GroupService groupService;
 
 	@Autowired
-	public ResetGroupRequestOnTermination(GroupService groupService) {
+	public void setGroupService(GroupService groupService) {
 		this.groupService = groupService;
-	}
-
-	protected ResetGroupRequestOnTermination() {
 	}
 
 	@Override

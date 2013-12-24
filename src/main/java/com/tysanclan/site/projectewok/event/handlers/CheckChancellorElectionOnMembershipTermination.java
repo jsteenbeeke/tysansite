@@ -17,6 +17,8 @@
  */
 package com.tysanclan.site.projectewok.event.handlers;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.jeroensteenbeeke.hyperion.events.EventHandler;
 import com.jeroensteenbeeke.hyperion.events.EventResult;
 import com.tysanclan.site.projectewok.beans.DemocracyService;
@@ -27,6 +29,7 @@ public class CheckChancellorElectionOnMembershipTermination implements
 		EventHandler<MembershipTerminatedEvent> {
 	private DemocracyService democracyService;
 
+	@Autowired
 	public void setDemocracyService(DemocracyService democracyService) {
 		this.democracyService = democracyService;
 	}

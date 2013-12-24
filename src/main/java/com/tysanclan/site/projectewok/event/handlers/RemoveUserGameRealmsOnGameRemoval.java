@@ -30,12 +30,8 @@ public class RemoveUserGameRealmsOnGameRemoval implements
 	private UserGameRealmDAO gameRealmDAO;
 
 	@Autowired
-	public RemoveUserGameRealmsOnGameRemoval(UserGameRealmDAO gameRealmDAO) {
-		super();
+	public void setGameRealmDAO(UserGameRealmDAO gameRealmDAO) {
 		this.gameRealmDAO = gameRealmDAO;
-	}
-
-	protected RemoveUserGameRealmsOnGameRemoval() {
 	}
 
 	@Override

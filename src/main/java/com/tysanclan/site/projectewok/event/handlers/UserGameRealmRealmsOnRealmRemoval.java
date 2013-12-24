@@ -24,16 +24,13 @@ import com.jeroensteenbeeke.hyperion.events.EventResult;
 import com.tysanclan.site.projectewok.entities.dao.UserGameRealmDAO;
 import com.tysanclan.site.projectewok.event.RealmDeletionEvent;
 
-public class UserGameRealmRealmsOnRealmRemoval implements EventHandler<RealmDeletionEvent> {
+public class UserGameRealmRealmsOnRealmRemoval implements
+		EventHandler<RealmDeletionEvent> {
 	private UserGameRealmDAO gameRealmDAO;
 
 	@Autowired
-	public UserGameRealmRealmsOnRealmRemoval(UserGameRealmDAO gameRealmDAO) {
+	public void setGameRealmDAO(UserGameRealmDAO gameRealmDAO) {
 		this.gameRealmDAO = gameRealmDAO;
-	}
-
-	protected UserGameRealmRealmsOnRealmRemoval() {
-
 	}
 
 	@Override

@@ -15,7 +15,7 @@ public class TextNode extends DefaultNode {
 
 	@Override
 	public void renderTo(StringBuilder builder) {
-		builder.append(text);
+		builder.append(text.replaceAll("\\n", "<br />"));
 	}
 
 }

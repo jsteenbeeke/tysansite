@@ -54,6 +54,7 @@ public class ResetOverseerOnTermination implements
 
 			realmDAO.update(realm);
 		}
-		return null;
+
+		return EventResult.ok();
 	}
 }

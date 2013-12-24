@@ -30,11 +30,8 @@ public class ResetGroupMembershipsOnTermination implements
 	private GroupService groupService;
 
 	@Autowired
-	public ResetGroupMembershipsOnTermination(GroupService groupService) {
+	public void setGroupService(GroupService groupService) {
 		this.groupService = groupService;
-	}
-
-	protected ResetGroupMembershipsOnTermination() {
 	}
 
 	@Override
