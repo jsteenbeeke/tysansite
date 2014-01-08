@@ -78,7 +78,6 @@ import com.tysanclan.site.projectewok.entities.dao.filters.NotificationFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.RoleTransferFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.TruthsayerNominationFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
-import com.tysanclan.site.projectewok.pages.member.AIMOverviewPage;
 import com.tysanclan.site.projectewok.pages.member.AcceptanceVotePage;
 import com.tysanclan.site.projectewok.pages.member.BugOverviewPage;
 import com.tysanclan.site.projectewok.pages.member.CalendarPage;
@@ -110,6 +109,7 @@ import com.tysanclan.site.projectewok.pages.member.RunForSenatorPage;
 import com.tysanclan.site.projectewok.pages.member.SenateElectionPage;
 import com.tysanclan.site.projectewok.pages.member.SignGamePetitionsPage;
 import com.tysanclan.site.projectewok.pages.member.SignRealmPetitionsPage;
+import com.tysanclan.site.projectewok.pages.member.SkypeOverviewPage;
 import com.tysanclan.site.projectewok.pages.member.SubscriptionPaymentPage;
 import com.tysanclan.site.projectewok.pages.member.TruthsayerAcceptancePage;
 import com.tysanclan.site.projectewok.pages.member.TruthsayerComplaintPage;
@@ -467,7 +467,7 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 		addUntenabilityVoteLink(user);
 		addStartTrialLink(user);
 		addPastElectionsLink();
-		addAIMOverviewLink();
+		addSkypeOverviewLink();
 		addNotificationsLink(user);
 		addCreateGamePetitionLink(user);
 		addCreateRealmPetitionLink(user);
@@ -711,8 +711,8 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 	/**
 	 * 
 	 */
-	private void addAIMOverviewLink() {
-		add(new Link<Void>("aim") {
+	private void addSkypeOverviewLink() {
+		add(new Link<Void>("skype") {
 			private static final long serialVersionUID = 1L;
 
 			/**
@@ -720,7 +720,7 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 			 */
 			@Override
 			public void onClick() {
-				setResponsePage(new AIMOverviewPage());
+				setResponsePage(new SkypeOverviewPage());
 
 			}
 		});

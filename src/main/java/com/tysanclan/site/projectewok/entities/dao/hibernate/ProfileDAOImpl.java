@@ -52,12 +52,12 @@ class ProfileDAOImpl extends EwokHibernateDAO<Profile> implements
 	}
 
 	/**
-	 * @see com.tysanclan.site.projectewok.entities.dao.ProfileDAO#getAIMUsers()
+	 * @see com.tysanclan.site.projectewok.entities.dao.ProfileDAO#getSkypeUsers()
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
-	public List<User> getAIMUsers() {
+	public List<User> getSkypeUsers() {
 		Criteria criteria = getSession().createCriteria(User.class);
 
 		criteria.createAlias("profile", "profile");

@@ -27,5 +27,5 @@ import com.tysanclan.site.projectewok.entities.User;
  * @author Jeroen Steenbeeke
  */
 public interface ProfileDAO extends EwokDAO<Profile> {
-	List<User> getAIMUsers();
+	List<User> getSkypeUsers();
 }

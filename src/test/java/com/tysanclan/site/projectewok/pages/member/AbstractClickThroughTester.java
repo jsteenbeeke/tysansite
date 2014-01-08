@@ -117,10 +117,10 @@ public abstract class AbstractClickThroughTester extends TysanPageTester {
 	}
 
 	@Test
-	public void testAIMPage() {
+	public void testSkypePage() {
 		overview();
-		getTester().clickLink("basicpanel:aim");
-		getTester().assertRenderedPage(AIMOverviewPage.class);
+		getTester().clickLink("basicpanel:skype");
+		getTester().assertRenderedPage(SkypeOverviewPage.class);
 	}
 
 	@Test

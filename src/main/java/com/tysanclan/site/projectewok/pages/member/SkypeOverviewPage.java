@@ -32,16 +32,16 @@ import com.tysanclan.site.projectewok.entities.dao.ProfileDAO;
  * @author Jeroen Steenbeeke
  */
 @TysanMemberSecured
-public class AIMOverviewPage extends AbstractMemberPage {
+public class SkypeOverviewPage extends AbstractMemberPage {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private ProfileDAO profileDAO;
 
-	public AIMOverviewPage() {
-		super("AIM accounts");
+	public SkypeOverviewPage() {
+		super("Skype accounts");
 
-		add(new ListView<User>("users", profileDAO.getAIMUsers()) {
+		add(new ListView<User>("users", profileDAO.getSkypeUsers()) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -49,12 +49,12 @@ public class AIMOverviewPage extends AbstractMemberPage {
 			protected void populateItem(ListItem<User> item) {
 				User user = item.getModelObject();
 				item.add(new MemberListItem("username", user));
-				String aimAddress = user.getProfile()
+				String skypeAddress = user.getProfile()
 						.getInstantMessengerAddress();
 
-				item.add(new Label("aim", aimAddress).add(AttributeModifier
-						.replace("href", "aim:addbuddy?screenname="
-								+ aimAddress)));
+				item.add(new Label("skype", skypeAddress).add(AttributeModifier
+						.replace("href",
+								String.format("skype:%s?call", skypeAddress))));
 			}
 
 		});

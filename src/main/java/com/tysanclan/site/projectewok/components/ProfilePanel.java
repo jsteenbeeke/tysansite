@@ -89,11 +89,11 @@ public abstract class ProfilePanel extends Panel {
 
 				TextField<String> realnameField = (TextField<String>) get("realname");
 				TextField<String> photoURLField = (TextField<String>) get("photoURL");
-				TextField<String> aimNameField = (TextField<String>) get("aimname");
+				TextField<String> skypeField = (TextField<String>) get("skypename");
 				TextField<String> twitterField = (TextField<String>) get("twitter");
 
 				CheckBox photoPublicCheckbox = (CheckBox) get("public");
-				CheckBox aimPublicCheckbox = (CheckBox) get("aimpublic");
+				CheckBox skypePublicBox = (CheckBox) get("skypepublic");
 				TextArea<String> publicdescField = (TextArea<String>) get("publicdesc");
 				TextArea<String> privatedescField = (TextArea<String>) get("privatedesc");
 
@@ -101,10 +101,10 @@ public abstract class ProfilePanel extends Panel {
 				Date birthDate = getSelectedDate();
 				String photoURL = photoURLField.getModelObject();
 				Boolean photoPublic = photoPublicCheckbox.getModelObject();
-				Boolean aimPublic = aimPublicCheckbox.getModelObject();
+				Boolean skypePublic = skypePublicBox.getModelObject();
 				String publicdesc = publicdescField.getModelObject();
 				String privatedesc = privatedescField.getModelObject();
-				String aimName = aimNameField.getModelObject();
+				String aimName = skypeField.getModelObject();
 				String twitter = twitterField.getModelObject();
 
 				if (profile == null) {
@@ -123,9 +123,9 @@ public abstract class ProfilePanel extends Panel {
 
 				if (!isBothNullOrEquals(aimName,
 						profile.getInstantMessengerAddress())
-						|| !isBothNullOrEquals(aimPublic,
+						|| !isBothNullOrEquals(skypePublic,
 								profile.isInstantMessengerPublic())) {
-					profileService.setAIMAddress(profile, aimName, aimPublic);
+					profileService.setAIMAddress(profile, aimName, skypePublic);
 				}
 
 				if (!isBothNullOrEquals(photoURL, profile.getPhotoURL())
@@ -253,10 +253,10 @@ public abstract class ProfilePanel extends Panel {
 		profileForm.add(image);
 		profileForm.add(new CheckBox("public", new Model<Boolean>(
 				profile != null ? profile.isPhotoPublic() : false)));
-		profileForm.add(new ContextImage("aimicon", "images/aim-icon.gif"));
-		profileForm.add(new CheckBox("aimpublic", new Model<Boolean>(
+		profileForm.add(new ContextImage("skypeicon", "images/skype-icon.gif"));
+		profileForm.add(new CheckBox("skypepublic", new Model<Boolean>(
 				profile != null ? profile.isInstantMessengerPublic() : false)));
-		profileForm.add(new TextField<String>("aimname", new Model<String>(
+		profileForm.add(new TextField<String>("skypename", new Model<String>(
 				profile != null ? profile.getInstantMessengerAddress() : "")));
 
 		profileForm.add(new BBCodeTextArea("publicdesc",
