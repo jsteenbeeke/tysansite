@@ -88,7 +88,6 @@ import com.tysanclan.site.projectewok.pages.member.CreateGamePetitionPage;
 import com.tysanclan.site.projectewok.pages.member.CreateGroupPage;
 import com.tysanclan.site.projectewok.pages.member.CreateRealmPetitionPage;
 import com.tysanclan.site.projectewok.pages.member.EditAccountsPage;
-import com.tysanclan.site.projectewok.pages.member.EditUserGalleryPage;
 import com.tysanclan.site.projectewok.pages.member.EndorsementPage;
 import com.tysanclan.site.projectewok.pages.member.FeatureOverviewPage;
 import com.tysanclan.site.projectewok.pages.member.FeelingLuckyPage;
@@ -477,7 +476,6 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 		addEditAccountsPage();
 		addBirthdays();
 		addAprilFools2010();
-		addGalleryLink(user);
 		addAchievementLinks(user);
 		addBugLink();
 		addSubscriptionPaymentLink();
@@ -564,18 +562,6 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 				"Feature Requests", NeverTrueCondition.get()));
 		add(createLink("newfeature", RequestFeaturePage.class,
 				"Request new feature", new FeatureCondition()));
-	}
-
-	private void addGalleryLink(User user) {
-		add(new Link<User>("gallery", ModelMaker.wrap(user)) {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void onClick() {
-				setResponsePage(new EditUserGalleryPage(getModelObject()));
-			}
-
-		});
 	}
 
 	/**

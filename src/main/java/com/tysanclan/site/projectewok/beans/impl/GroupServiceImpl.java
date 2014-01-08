@@ -675,14 +675,4 @@ class GroupServiceImpl implements
 
 	}
 
-	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public void setGalleryAccess(Group _group, boolean allow) {
-		Group group = groupDAO.load(_group.getId());
-
-		group.setAllowMemberGalleryAccess(allow);
-
-		groupDAO.update(group);
-
-	}
 }

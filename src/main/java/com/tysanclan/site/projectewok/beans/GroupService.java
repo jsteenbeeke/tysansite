@@ -81,8 +81,6 @@ public interface GroupService {
 
 	public void setGroupDescription(Group group, String description);
 
-	public void setGalleryAccess(Group group, boolean allow);
-
 	public void removeFromGroup(User modelObject, Group object);
 
 	void clearRequestedGroups(User user);

@@ -30,9 +30,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
-import com.tysanclan.site.projectewok.components.GalleryPanel;
 import com.tysanclan.site.projectewok.components.MemberListItem;
-import com.tysanclan.site.projectewok.components.YoutubeGalleryPanel;
 import com.tysanclan.site.projectewok.entities.Group;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.GroupDAO;
@@ -88,9 +86,6 @@ public class GroupPage extends TysanPage {
 
 			}
 		});
-
-		add(new GalleryPanel("gallery", group));
-		add(new YoutubeGalleryPanel("ygallery", group));
 
 	}
 

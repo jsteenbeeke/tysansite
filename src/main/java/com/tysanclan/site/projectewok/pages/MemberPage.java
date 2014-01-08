@@ -43,12 +43,10 @@ import com.tysanclan.site.projectewok.components.AutoGroupLink;
 import com.tysanclan.site.projectewok.components.AutoThreadLink;
 import com.tysanclan.site.projectewok.components.ChancellorElectedSincePanel;
 import com.tysanclan.site.projectewok.components.DateTimeLabel;
-import com.tysanclan.site.projectewok.components.GalleryPanel;
 import com.tysanclan.site.projectewok.components.IconLink;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
 import com.tysanclan.site.projectewok.components.RankIcon;
 import com.tysanclan.site.projectewok.components.SenateElectedSincePanel;
-import com.tysanclan.site.projectewok.components.YoutubeGalleryPanel;
 import com.tysanclan.site.projectewok.entities.ForumPost;
 import com.tysanclan.site.projectewok.entities.GameAccount;
 import com.tysanclan.site.projectewok.entities.Group;
@@ -310,15 +308,6 @@ public class MemberPage extends TysanPage {
 
 		add(new Label("twitterprofile", url).add(AttributeModifier.replace(
 				"href", url)));
-
-		add(new Label("galleryhead", "Image Gallery of " + u.getUsername())
-				.setVisible(!u.getGalleryImages().isEmpty()));
-
-		add(new Label("ygalleryhead", "Youtube Gallery of " + u.getUsername())
-				.setVisible(!u.getYoutubeGalleryItems().isEmpty()));
-
-		add(new GalleryPanel("gallery", u));
-		add(new YoutubeGalleryPanel("ygallery", u));
 
 		add(new AchievementsPanel("achievements", u));
 

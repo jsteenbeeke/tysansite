@@ -131,13 +131,6 @@ public abstract class AbstractClickThroughTester extends TysanPageTester {
 	}
 
 	@Test
-	public void testGallery() {
-		overview();
-		getTester().clickLink("basicpanel:gallery");
-		getTester().assertRenderedPage(EditUserGalleryPage.class);
-	}
-
-	@Test
 	public void testRequestAchievement() {
 		overview();
 		getTester().clickLink("basicpanel:requestAchievement");

@@ -195,9 +195,6 @@ public class User extends BaseDomainObject implements DomainObject {
 	@Column
 	private Integer luckyScore;
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-	private List<GalleryImage> galleryImages;
-
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)
 	@Index(name = "IDX_TUSER_MENTOR")
 	private User mentor;
@@ -205,9 +202,6 @@ public class User extends BaseDomainObject implements DomainObject {
 	@OneToMany(mappedBy = "mentor", fetch = FetchType.LAZY)
 	@Where(clause = "rank = 'TRIAL'")
 	private List<User> pupils;
-
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-	private List<YoutubeGalleryItem> youtubeGalleryItems;
 
 	@OneToMany(mappedBy = "donator", fetch = FetchType.LAZY)
 	private List<Donation> donations;
@@ -614,25 +608,6 @@ public class User extends BaseDomainObject implements DomainObject {
 	}
 
 	/**
-	 * @return the galleryImages
-	 */
-	public List<GalleryImage> getGalleryImages() {
-		if (galleryImages == null) {
-			galleryImages = new LinkedList<GalleryImage>();
-		}
-
-		return galleryImages;
-	}
-
-	/**
-	 * @param galleryImages
-	 *            the galleryImages to set
-	 */
-	public void setGalleryImages(List<GalleryImage> galleryImages) {
-		this.galleryImages = galleryImages;
-	}
-
-	/**
 	 * @return the loginCount
 	 */
 	public int getLoginCount() {
@@ -645,25 +620,6 @@ public class User extends BaseDomainObject implements DomainObject {
 	 */
 	public void setLoginCount(int loginCount) {
 		this.loginCount = loginCount;
-	}
-
-	/**
-	 * @return the youtubeGalleryItems
-	 */
-	public List<YoutubeGalleryItem> getYoutubeGalleryItems() {
-		if (youtubeGalleryItems == null)
-			youtubeGalleryItems = new LinkedList<YoutubeGalleryItem>();
-
-		return youtubeGalleryItems;
-	}
-
-	/**
-	 * @param youtubeGalleryItems
-	 *            the youtubeGalleryItems to set
-	 */
-	public void setYoutubeGalleryItems(
-			List<YoutubeGalleryItem> youtubeGalleryItems) {
-		this.youtubeGalleryItems = youtubeGalleryItems;
 	}
 
 	public boolean hasDonatedAtLeast(BigDecimal total) {

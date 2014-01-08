@@ -38,7 +38,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -106,15 +105,6 @@ public abstract class Group extends BaseDomainObject {
 	@Lob
 	@Type(type = "org.hibernate.type.StringClobType")
 	private String messageOfTheDay;
-
-	@OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
-	private List<GalleryImage> galleryImages;
-
-	@OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
-	private List<YoutubeGalleryItem> youtubeGalleryItems;
-
-	@Column(nullable = false)
-	private boolean allowMemberGalleryAccess;
 
 	// $P$
 
@@ -265,110 +255,6 @@ public abstract class Group extends BaseDomainObject {
 	 */
 	public void setMessageOfTheDay(String messageOfTheDay) {
 		this.messageOfTheDay = messageOfTheDay;
-	}
-
-	/**
-	 * @return the images
-	 */
-	public List<GalleryImage> getGalleryImages() {
-		return galleryImages;
-	}
-
-	public void setGalleryImages(List<GalleryImage> galleryImages) {
-		this.galleryImages = galleryImages;
-	}
-
-	/**
-	 * @return the allowMemberGalleryAccess
-	 */
-	public boolean isAllowMemberGalleryAccess() {
-		return allowMemberGalleryAccess;
-	}
-
-	/**
-	 * @param allowMemberGalleryAccess
-	 *            the allowMemberGalleryAccess to set
-	 */
-	public void setAllowMemberGalleryAccess(boolean allowMemberGalleryAccess) {
-		this.allowMemberGalleryAccess = allowMemberGalleryAccess;
-	}
-
-	/**
-	 * @return the youtubeGalleryItems
-	 */
-	public List<YoutubeGalleryItem> getYoutubeGalleryItems() {
-		return youtubeGalleryItems;
-	}
-
-	/**
-	 * @param youtubeGalleryItems
-	 *            the youtubeGalleryItems to set
-	 */
-	public void setYoutubeGalleryItems(
-			List<YoutubeGalleryItem> youtubeGalleryItems) {
-		this.youtubeGalleryItems = youtubeGalleryItems;
-	}
-
-	/**
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((description == null) ? 0 : description.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result
-				+ ((messageOfTheDay == null) ? 0 : messageOfTheDay.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
-	}
-
-	/**
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj instanceof Group)) {
-			return false;
-		}
-		Group other = (Group) obj;
-		if (getDescription() == null) {
-			if (other.getDescription() != null) {
-				return false;
-			}
-		} else if (!getDescription().equals(other.getDescription())) {
-			return false;
-		}
-		if (getId() == null) {
-			if (other.getId() != null) {
-				return false;
-			}
-		} else if (!getId().equals(other.getId())) {
-			return false;
-		}
-		if (getMessageOfTheDay() == null) {
-			if (other.getMessageOfTheDay() != null) {
-				return false;
-			}
-		} else if (!getMessageOfTheDay().equals(other.getMessageOfTheDay())) {
-			return false;
-		}
-		if (getName() == null) {
-			if (other.getName() != null) {
-				return false;
-			}
-		} else if (!getName().equals(other.getName())) {
-			return false;
-		}
-		return true;
 	}
 
 	// $GS$

@@ -38,16 +38,4 @@
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="mail.tysanclan.com"/>
 	</bean>
-	
-	<bean id="galleryService" class="com.tysanclan.site.projectewok.beans.impl.GalleryServiceImpl" autowire="byType" scope="request">
-		<constructor-arg>
-			<value>/gallery</value>
-		</constructor-arg>
-		<constructor-arg>
-			<value>/tmp/gallery</value>
-		</constructor-arg>
-		<constructor-arg>
-			<value>/</value>
-		</constructor-arg>
-	</bean>
 </beans>

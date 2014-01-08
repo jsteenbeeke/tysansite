@@ -3,7 +3,6 @@ package com.tysanclan.site.projectewok.pages.member;
 import org.junit.Test;
 
 import com.tysanclan.site.projectewok.pages.member.group.EditGroupDescriptionPage;
-import com.tysanclan.site.projectewok.pages.member.group.EditGroupGalleryPage;
 import com.tysanclan.site.projectewok.pages.member.group.EditMOTDPage;
 import com.tysanclan.site.projectewok.pages.member.group.GroupForumManagementPage;
 import com.tysanclan.site.projectewok.pages.member.group.GroupMemberManagementPage;
@@ -48,13 +47,6 @@ public class GroupLeaderTest extends AbstractClickThroughTester {
 		overview();
 		getTester().clickLink("groups:0:grouppanel:management");
 		getTester().assertRenderedPage(GroupMemberManagementPage.class);
-	}
-
-	@Test
-	public void testGroupGallery() {
-		overview();
-		getTester().clickLink("groups:0:grouppanel:gallery");
-		getTester().assertRenderedPage(EditGroupGalleryPage.class);
 	}
 
 	@Test

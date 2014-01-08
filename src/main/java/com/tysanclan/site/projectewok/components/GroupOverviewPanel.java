@@ -44,7 +44,6 @@ import com.tysanclan.site.projectewok.pages.member.RunForGroupLeaderPage;
 import com.tysanclan.site.projectewok.pages.member.group.AcceptGroupApplicationPage;
 import com.tysanclan.site.projectewok.pages.member.group.DisbandGroupPage;
 import com.tysanclan.site.projectewok.pages.member.group.EditGroupDescriptionPage;
-import com.tysanclan.site.projectewok.pages.member.group.EditGroupGalleryPage;
 import com.tysanclan.site.projectewok.pages.member.group.EditMOTDPage;
 import com.tysanclan.site.projectewok.pages.member.group.GroupAchievementApprovalPage;
 import com.tysanclan.site.projectewok.pages.member.group.GroupForumManagementPage;
@@ -294,24 +293,6 @@ public class GroupOverviewPanel extends TysanOverviewPanel<Group> {
 		managementLink.setVisible(getUser().equals(group.getLeader()));
 
 		add(managementLink);
-
-		Link<Group> galleryLink = new Link<Group>("gallery",
-				ModelMaker.wrap(group)) {
-
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void onClick() {
-				setResponsePage(new EditGroupGalleryPage(getModelObject()));
-
-			}
-
-		};
-
-		galleryLink.setVisible(group.isAllowMemberGalleryAccess()
-				|| getUser().equals(group.getLeader()));
-
-		add(galleryLink);
 
 		Link<Group> setPolicyLink = new Link<Group>("joinpolicy",
 				ModelMaker.wrap(group)) {

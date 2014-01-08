@@ -38,18 +38,6 @@
 	<context:component-scan base-package="com.tysanclan.site.projectewok.rs.services" />
 	<context:component-scan base-package="com.tysanclan.site.projectewok.rs.helpers" />
 
-	<bean id="galleryService" class="com.tysanclan.site.projectewok.beans.impl.GalleryServiceImpl" autowire="byType" scope="request">
-		<constructor-arg>
-			<value>${gallery.urlbase}</value>
-		</constructor-arg>
-		<constructor-arg>
-			<value>${gallery.path}</value>
-		</constructor-arg>
-		<constructor-arg>
-			<value>/</value>
-		</constructor-arg>
-	</bean>
-
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="${mail.server}" />
 		<property name="username" value="${mail.username}" />
