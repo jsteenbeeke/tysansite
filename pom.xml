@@ -32,10 +32,10 @@
 		<c3p0.version>0.9.1.2</c3p0.version>
 		<cxf.version>2.7.7</cxf.version>
 		<dbcp.version>1.4</dbcp.version>
-		<ehcache.version>2.7.4</ehcache.version>
+		<ehcache.version>2.8.0</ehcache.version>
 		<guava.version>15.0</guava.version>
 		<h2.version>1.3.174</h2.version>
-		<hibernate.version>4.2.0.Final</hibernate.version>
+		<hibernate.version>4.3.0.Final</hibernate.version>
 		<hyperion.events.version>1.0-SNAPSHOT</hyperion.events.version>
 		<jetty.version>8.1.14.v20131031</jetty.version>
 		<java.mail.version>1.4.7</java.mail.version>
@@ -45,11 +45,11 @@
 		<log4j.version>1.2.17</log4j.version>
 		<mockito.version>1.9.5</mockito.version>
 		<postgres.version>9.1-901-1.jdbc4</postgres.version>
-		<resteasy.version>3.0.5.Final</resteasy.version>
+		<resteasy.version>3.0.6.Final</resteasy.version>
 		<slf4j.version>1.7.5</slf4j.version>
 		<quartz.version>1.5.2</quartz.version>
 		<tysan.rest.version>1.0-SNAPSHOT</tysan.rest.version>
-		<spring.version>3.2.5.RELEASE</spring.version>
+		<spring.version>4.0.0.RELEASE</spring.version>
 		<wicket.version>6.12.0</wicket.version>
 		<wiquery.version>6.9.2</wiquery.version>
 		<wqplot.version>1.6-SNAPSHOT</wqplot.version>
