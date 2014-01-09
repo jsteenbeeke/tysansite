@@ -245,19 +245,19 @@ public class RegisterAndApplyPage extends TysanPage {
 
 						StringBuilder motivation = new StringBuilder();
 						motivation
-								.append("<strong>What sort of person are you?</strong><br />\n");
+								.append("[b]What sort of person are you?[/b]\n");
 						motivation.append(sortOfPerson);
-						motivation.append("<br /><br />");
+						motivation.append("\n\n");
 
 						motivation
-								.append("<strong>What are you looking for in a clan?</strong><br />\n");
+								.append("[b]What are you looking for in a clan?[/b]\n");
 						motivation.append(lookingFor);
-						motivation.append("<br /><br />");
+						motivation.append("\n\n");
 
 						motivation
-								.append("<strong>What other games do you play?</strong><br />\n");
+								.append("[b]What other games do you play?[/b]\n");
 						motivation.append(otherGames);
-						motivation.append("<br /><br />");
+						motivation.append("\n\n");
 
 						ForumThread thread = membershipService
 								.applyForMembership(user,
