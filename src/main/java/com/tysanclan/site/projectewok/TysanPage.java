@@ -293,12 +293,11 @@ public class TysanPage extends WebPage {
 		Integer autoTabIndex = getAutoTabIndex();
 
 		if (autoTabIndex != null) {
-			response.render(OnDomReadyHeaderItem.forScript(String
-					.format("$('jqui-tabs-auto').tabs({ selected: %d });",
-							autoTabIndex)));
+			response.render(OnDomReadyHeaderItem.forScript(String.format(
+					"$('.jqui-tabs-auto').tabs({ active: %d });", autoTabIndex)));
 		} else {
 			response.render(OnDomReadyHeaderItem
-					.forScript("$('jqui-tabs-auto').tabs();"));
+					.forScript("$('.jqui-tabs-auto').tabs();"));
 		}
 
 		StringBuilder collapsibles = new StringBuilder();

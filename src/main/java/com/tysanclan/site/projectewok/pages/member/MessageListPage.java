@@ -43,6 +43,7 @@ import com.tysanclan.site.projectewok.beans.UserService;
 import com.tysanclan.site.projectewok.components.BBCodeTextArea;
 import com.tysanclan.site.projectewok.components.IconLink;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
+import com.tysanclan.site.projectewok.components.TysanOverviewPanel.NoAuto;
 import com.tysanclan.site.projectewok.dataaccess.FilterProvider;
 import com.tysanclan.site.projectewok.entities.Conversation;
 import com.tysanclan.site.projectewok.entities.ConversationParticipation;
@@ -68,6 +69,7 @@ public class MessageListPage extends AbstractMemberPage {
 		this(null);
 	}
 
+	@NoAuto
 	public MessageListPage(User recipient) {
 		super("Messages");
 
