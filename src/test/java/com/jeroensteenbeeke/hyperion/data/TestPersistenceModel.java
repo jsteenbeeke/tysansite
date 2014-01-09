@@ -24,9 +24,9 @@ import java.io.Serializable;
 import org.apache.wicket.model.IModel;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.ServiceRegistryBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -59,8 +59,8 @@ public class TestPersistenceModel {
 		// config = config.setProperty("hibernate.c3p0.timeout", "1800");
 		// config = config.setProperty("hibernate.c3p0.max_statements", "50");
 
-		final ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
-				.applySettings(config.getProperties()).build();
+		final ServiceRegistry serviceRegistry = new ServiceRegistryBuilder()
+				.applySettings(config.getProperties()).buildServiceRegistry();
 
 		sf = config.buildSessionFactory(serviceRegistry);
 	}
