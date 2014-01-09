@@ -741,6 +741,13 @@ public class User extends BaseDomainObject implements DomainObject {
 		this.subscription = subscription;
 	}
 
+	/**
+	 * DO NOT CALL THIS METHOD IF YOU DON'T KNOW WHAT THIS IS FOR
+	 */
+	public void clearOldRank() {
+		this.oldRank = null;
+	}
+
 	// $GS$
 
 }

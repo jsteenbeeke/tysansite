@@ -220,6 +220,8 @@ class UserDAOImpl extends EwokHibernateDAO<User> implements
 		Rank newRank = object.getRank();
 
 		if (oldRank != null && newRank != null && oldRank != newRank) {
+			object.clearOldRank();
+
 			dispatcher.dispatchEvent(new RankChangeEvent(object));
 		}
 
