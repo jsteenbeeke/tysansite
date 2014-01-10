@@ -314,7 +314,9 @@ public class TysanPage extends WebPage {
 		collapsibles.append("});");
 
 		response.render(OnDomReadyHeaderItem.forScript(collapsibles));
-
+		
+		String openFirst = "$('.jqui-accordion-collapsible:first').accordion( 'option', 'active', 0 )";
+		response.render(OnDomReadyHeaderItem.forScript(openFirst));
 	}
 
 	protected Integer getAutoTabIndex() {
