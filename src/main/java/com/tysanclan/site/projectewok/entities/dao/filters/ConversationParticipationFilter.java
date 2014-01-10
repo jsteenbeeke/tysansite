@@ -22,6 +22,7 @@ import org.apache.wicket.model.Model;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.jeroensteenbeeke.hyperion.data.SearchFilter;
+import com.tysanclan.site.projectewok.entities.Conversation;
 import com.tysanclan.site.projectewok.entities.ConversationParticipation;
 import com.tysanclan.site.projectewok.entities.User;
 
@@ -33,6 +34,15 @@ public class ConversationParticipationFilter extends
 	private static final long serialVersionUID = 1L;
 
 	private IModel<User> user = new Model<User>();
+
+	private IModel<Conversation> conversation = new Model<Conversation>();
+
+	@Override
+	public void detach() {
+		super.detach();
+		user.detach();
+		conversation.detach();
+	}
 
 	/**
 	 * @return the user
@@ -47,6 +57,14 @@ public class ConversationParticipationFilter extends
 	 */
 	public void setUser(User user) {
 		this.user = ModelMaker.wrap(user);
+	}
+
+	public Conversation getConversation() {
+		return conversation.getObject();
+	}
+
+	public void setConversation(Conversation conversation) {
+		this.conversation = ModelMaker.wrap(conversation);
 	}
 
 }

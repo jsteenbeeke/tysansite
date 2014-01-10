@@ -53,8 +53,13 @@ class ConversationParticipationDAOImpl extends
 		if (filter instanceof ConversationParticipationFilter) {
 			ConversationParticipationFilter cfilter = (ConversationParticipationFilter) filter;
 
-			if (cfilter.getUser() != null)
+			if (cfilter.getUser() != null) {
 				criteria.add(Restrictions.eq("user", cfilter.getUser()));
+			}
+			if (cfilter.getConversation() != null) {
+				criteria.add(Restrictions.eq("conversation",
+						cfilter.getConversation()));
+			}
 		}
 
 		return criteria;

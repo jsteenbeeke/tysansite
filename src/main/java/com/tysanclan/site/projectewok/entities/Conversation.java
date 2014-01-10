@@ -24,6 +24,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,7 +39,12 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
 
+import com.google.common.base.Functions;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
+import com.tysanclan.site.projectewok.util.SerializableFunction;
 
 /**
  * @author Jeroen Steenbeeke
@@ -66,6 +72,38 @@ public class Conversation extends BaseDomainObject {
 
 	@Column
 	private Date lastResponse;
+
+	private static SerializableFunction<Conversation, com.tysanclan.rest.api.data.RestConversation> TO_REST = new SerializableFunction<Conversation, com.tysanclan.rest.api.data.RestConversation>() {
+
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		@Nullable
+		public com.tysanclan.rest.api.data.RestConversation apply(
+				@Nullable Conversation input) {
+			if (input != null) {
+				List<com.tysanclan.rest.api.data.RestMessage> messages = Lists
+						.transform(input.getMessages(),
+								Message.toRestFunction());
+				Set<com.tysanclan.rest.api.data.RestUser> participants = Sets
+						.newHashSet(Iterables.transform(
+								input.getParticipants(), Functions.compose(User
+										.toRestFunction(),
+										ConversationParticipation
+												.toUserFunction())));
+
+				com.tysanclan.rest.api.data.RestMessage last = messages
+						.isEmpty() ? null : messages.get(messages.size() - 1);
+				Date lastEntry = last != null ? last.getSentTime() : null;
+
+				return new com.tysanclan.rest.api.data.RestConversation(
+						input.getId(), input.getTitle(), lastEntry,
+						participants, messages);
+			}
+
+			return null;
+		}
+	};
 
 	// $P$
 
@@ -148,6 +186,10 @@ public class Conversation extends BaseDomainObject {
 
 	public void setLastResponse(Date lastResponse) {
 		this.lastResponse = lastResponse;
+	}
+
+	public static SerializableFunction<Conversation, com.tysanclan.rest.api.data.RestConversation> toRestFunction() {
+		return TO_REST;
 	}
 
 	// $GS$

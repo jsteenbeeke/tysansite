@@ -24,6 +24,7 @@ import javax.ws.rs.QueryParam;
 import org.springframework.context.annotation.Scope;
 
 import com.tysanclan.rest.api.data.Token;
+import com.tysanclan.rest.api.data.RestUser;
 import com.tysanclan.rest.api.services.TokenService;
 import com.tysanclan.site.projectewok.entities.RestToken;
 import com.tysanclan.site.projectewok.entities.User;
@@ -58,8 +59,8 @@ public class RestTokenService implements TokenService {
 				RestToken token = new RestToken(user);
 				tokenDAO.save(token);
 
-				return new Token(token.getUser().getUsername(),
-						token.getHash(), token.getExpires());
+				return new Token(new RestUser(user.getUsername(),
+						user.getRank()), token.getHash(), token.getExpires());
 			}
 		}
 

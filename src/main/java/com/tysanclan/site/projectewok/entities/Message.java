@@ -20,6 +20,7 @@ package com.tysanclan.site.projectewok.entities;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -36,6 +37,8 @@ import org.hibernate.annotations.Index;
 import org.hibernate.annotations.Type;
 
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
+import com.tysanclan.rest.api.data.RestMessage;
+import com.tysanclan.site.projectewok.util.SerializableFunction;
 
 /**
  * @author Jeroen Steenbeeke
@@ -45,6 +48,21 @@ import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class Message extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;
+
+	private static final SerializableFunction<Message, RestMessage> TO_REST = new SerializableFunction<Message, RestMessage>() {
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		@Nullable
+		public RestMessage apply(@Nullable Message input) {
+			if (input != null) {
+				return new RestMessage(input.getSendTime(), input.getContent(),
+						User.toRestFunction().apply(input.getSender()));
+			}
+
+			return null;
+		}
+	};
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Message")
@@ -161,6 +179,10 @@ public class Message extends BaseDomainObject {
 	 */
 	public void setConversation(Conversation conversation) {
 		this.conversation = conversation;
+	}
+
+	public static SerializableFunction<Message, RestMessage> toRestFunction() {
+		return TO_REST;
 	}
 
 	// $GS$

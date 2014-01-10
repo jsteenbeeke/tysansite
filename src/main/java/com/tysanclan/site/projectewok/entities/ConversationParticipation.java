@@ -21,6 +21,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.annotation.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -37,6 +38,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.Index;
 
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
+import com.tysanclan.site.projectewok.util.SerializableFunction;
 
 /**
  * @author Jeroen Steenbeeke
@@ -46,6 +48,16 @@ import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class ConversationParticipation extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;
+
+	private static final SerializableFunction<ConversationParticipation, User> TO_USER = new SerializableFunction<ConversationParticipation, User>() {
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		@Nullable
+		public User apply(@Nullable ConversationParticipation input) {
+			return input != null ? input.getUser() : null;
+		}
+	};
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ConversationParticipation")
@@ -163,6 +175,10 @@ public class ConversationParticipation extends BaseDomainObject {
 	 */
 	public void setReadMessages(Set<Message> readMessages) {
 		this.readMessages = readMessages;
+	}
+
+	public static SerializableFunction<ConversationParticipation, User> toUserFunction() {
+		return TO_USER;
 	}
 
 	// $GS$

@@ -28,6 +28,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -59,11 +60,14 @@ import org.hibernate.annotations.Index;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.Where;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 import com.jeroensteenbeeke.hyperion.data.DomainObject;
 import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.rest.api.data.RestUser;
 import com.tysanclan.site.projectewok.util.DateUtil;
+import com.tysanclan.site.projectewok.util.SerializableFunction;
 
 /**
  * @author Jeroen Steenbeeke
@@ -276,6 +280,19 @@ public class User extends BaseDomainObject implements DomainObject {
 	@JoinTable(name = "user_achievement", inverseJoinColumns = @JoinColumn(name = "achievement_id"), joinColumns = @JoinColumn(name = "user_id"))
 	@ManyToMany(fetch = FetchType.LAZY)
 	private List<Achievement> achievements;
+
+	private static SerializableFunction<User, RestUser> TO_REST = new SerializableFunction<User, RestUser>() {
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		@Nullable
+		public RestUser apply(@Nullable User input) {
+			if (input == null)
+				return null;
+
+			return new RestUser(input.getUsername(), input.getRank());
+		}
+	};
 
 	// $P$
 
@@ -747,6 +764,10 @@ public class User extends BaseDomainObject implements DomainObject {
 	 */
 	public void clearOldRank() {
 		this.oldRank = null;
+	}
+
+	public static Function<User, RestUser> toRestFunction() {
+		return TO_REST;
 	}
 
 	// $GS$
