@@ -1,6 +1,6 @@
 #!/bin/bash
 PORT=14128
-REMOTE_PATH=/var/lib/jetty/webapps
+REMOTE_PATH=/var/lib/jetty8/webapps
 URL=www.tysanclan.com
 ACCOUNT=root
 TARGET_NAME=dist.zip
