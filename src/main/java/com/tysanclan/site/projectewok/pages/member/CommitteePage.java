@@ -30,6 +30,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.GroupService;
 import com.tysanclan.site.projectewok.beans.LogService;
@@ -39,7 +40,6 @@ import com.tysanclan.site.projectewok.components.IconLink;
 import com.tysanclan.site.projectewok.components.IconLink.Builder;
 import com.tysanclan.site.projectewok.components.MemberListItem;
 import com.tysanclan.site.projectewok.entities.Committee;
-import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.CommitteeDAO;
 import com.tysanclan.site.projectewok.entities.dao.filters.CommitteeFilter;

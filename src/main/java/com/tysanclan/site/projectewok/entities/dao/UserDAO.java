@@ -19,8 +19,8 @@ package com.tysanclan.site.projectewok.entities.dao;
 
 import java.util.List;
 
+import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
-import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.User;
 
 /**

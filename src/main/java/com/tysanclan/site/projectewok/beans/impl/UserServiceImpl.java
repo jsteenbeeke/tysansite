@@ -32,11 +32,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
+import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.entities.Activation;
 import com.tysanclan.site.projectewok.entities.EmailChangeConfirmation;
 import com.tysanclan.site.projectewok.entities.InactivityNotification;
 import com.tysanclan.site.projectewok.entities.PasswordRequest;
-import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.ActivationDAO;
 import com.tysanclan.site.projectewok.entities.dao.EmailChangeConfirmationDAO;
@@ -158,7 +158,7 @@ class UserServiceImpl implements
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.UserService#setUserImportData(long,
-	 *      com.tysanclan.site.projectewok.entities.Rank, long)
+	 *      com.tysanclan.rest.api.data.Rank, long)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)

@@ -31,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.events.EventException;
 
 import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
+import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.entities.AllowedAccountType;
 import com.tysanclan.site.projectewok.entities.Diablo2Account;
 import com.tysanclan.site.projectewok.entities.Game;
@@ -40,7 +41,6 @@ import com.tysanclan.site.projectewok.entities.GamePetition;
 import com.tysanclan.site.projectewok.entities.GamingGroup;
 import com.tysanclan.site.projectewok.entities.LeagueOfLegendsAccount;
 import com.tysanclan.site.projectewok.entities.MinecraftAccount;
-import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.RealIdAccount;
 import com.tysanclan.site.projectewok.entities.Realm;
 import com.tysanclan.site.projectewok.entities.StarCraft2CharAccount;

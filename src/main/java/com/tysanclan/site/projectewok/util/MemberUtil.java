@@ -22,9 +22,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.auth.TysanSecurity;
-import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.User;
 
 /**

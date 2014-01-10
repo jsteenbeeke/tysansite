@@ -31,6 +31,7 @@ import org.w3c.dom.events.EventException;
 
 import com.google.common.collect.Lists;
 import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
+import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.entities.Committee;
 import com.tysanclan.site.projectewok.entities.Game;
 import com.tysanclan.site.projectewok.entities.GamingGroup;
@@ -38,7 +39,6 @@ import com.tysanclan.site.projectewok.entities.Group;
 import com.tysanclan.site.projectewok.entities.Group.JoinPolicy;
 import com.tysanclan.site.projectewok.entities.GroupCreationRequest;
 import com.tysanclan.site.projectewok.entities.GroupForum;
-import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.Realm;
 import com.tysanclan.site.projectewok.entities.SocialGroup;
 import com.tysanclan.site.projectewok.entities.User;

@@ -26,6 +26,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.hibernate.Hibernate;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
 import com.tysanclan.site.projectewok.components.RequiresAttentionLink.AttentionType;
@@ -35,7 +36,6 @@ import com.tysanclan.site.projectewok.entities.CompoundVote;
 import com.tysanclan.site.projectewok.entities.Group;
 import com.tysanclan.site.projectewok.entities.Group.JoinPolicy;
 import com.tysanclan.site.projectewok.entities.GroupLeaderElection;
-import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.AchievementRequestDAO;
 import com.tysanclan.site.projectewok.entities.dao.GroupLeaderElectionDAO;

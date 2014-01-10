@@ -25,7 +25,7 @@ import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.request.Request;
 
-import com.tysanclan.site.projectewok.entities.Rank;
+import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import com.tysanclan.site.projectewok.util.forum.ForumViewContext;

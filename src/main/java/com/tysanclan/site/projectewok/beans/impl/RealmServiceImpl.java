@@ -30,10 +30,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.events.EventException;
 
 import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
+import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.beans.LogService;
 import com.tysanclan.site.projectewok.beans.NotificationService;
 import com.tysanclan.site.projectewok.entities.Game;
-import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.Realm;
 import com.tysanclan.site.projectewok.entities.RealmPetition;
 import com.tysanclan.site.projectewok.entities.User;

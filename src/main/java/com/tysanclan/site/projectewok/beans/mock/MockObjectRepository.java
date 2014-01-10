@@ -32,6 +32,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jeroensteenbeeke.hyperion.data.DomainObject;
+import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.entities.Committee;
 import com.tysanclan.site.projectewok.entities.Expense;
 import com.tysanclan.site.projectewok.entities.Expense.ExpensePeriod;
@@ -44,7 +45,6 @@ import com.tysanclan.site.projectewok.entities.LogItem;
 import com.tysanclan.site.projectewok.entities.MessageFolder;
 import com.tysanclan.site.projectewok.entities.NewsForum;
 import com.tysanclan.site.projectewok.entities.PaymentRequest;
-import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.Regulation;
 import com.tysanclan.site.projectewok.entities.Role;
 import com.tysanclan.site.projectewok.entities.Role.RoleType;

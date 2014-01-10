@@ -19,10 +19,10 @@ package com.tysanclan.site.projectewok.beans;
 
 import java.util.List;
 
+import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.entities.Activation;
 import com.tysanclan.site.projectewok.entities.EmailChangeConfirmation;
 import com.tysanclan.site.projectewok.entities.PasswordRequest;
-import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.User;
 
 /**

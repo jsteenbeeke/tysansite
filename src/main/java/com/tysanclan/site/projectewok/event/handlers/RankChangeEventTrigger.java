@@ -23,7 +23,7 @@ import com.google.common.collect.Lists;
 import com.jeroensteenbeeke.hyperion.events.Event;
 import com.jeroensteenbeeke.hyperion.events.EventHandler;
 import com.jeroensteenbeeke.hyperion.events.EventResult;
-import com.tysanclan.site.projectewok.entities.Rank;
+import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.event.ForumUserBannedEvent;
 import com.tysanclan.site.projectewok.event.MembershipTerminatedEvent;

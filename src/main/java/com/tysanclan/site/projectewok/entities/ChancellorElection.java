@@ -26,6 +26,7 @@ import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.Index;
 
+import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.util.MemberUtil;
 
 /**

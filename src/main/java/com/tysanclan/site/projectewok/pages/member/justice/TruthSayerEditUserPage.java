@@ -25,11 +25,11 @@ import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.NotificationService;
 import com.tysanclan.site.projectewok.beans.UserService;
 import com.tysanclan.site.projectewok.components.ConfirmationLink;
-import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;

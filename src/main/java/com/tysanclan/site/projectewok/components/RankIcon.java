@@ -22,7 +22,7 @@ import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 
-import com.tysanclan.site.projectewok.entities.Rank;
+import com.tysanclan.rest.api.data.Rank;
 
 /**
  * @author Jeroen Steenbeeke

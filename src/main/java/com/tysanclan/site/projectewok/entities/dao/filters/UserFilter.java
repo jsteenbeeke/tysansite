@@ -26,9 +26,9 @@ import org.apache.wicket.model.Model;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.jeroensteenbeeke.hyperion.data.SearchFilter;
+import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.entities.Game;
 import com.tysanclan.site.projectewok.entities.Group;
-import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.Realm;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.util.MemberUtil;

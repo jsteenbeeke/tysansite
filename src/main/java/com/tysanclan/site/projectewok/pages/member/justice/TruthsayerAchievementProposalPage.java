@@ -25,13 +25,13 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.jeroensteenbeeke.hyperion.data.FilterDataProvider;
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.AchievementService;
 import com.tysanclan.site.projectewok.components.IconLink;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
 import com.tysanclan.site.projectewok.components.StoredImageResource;
 import com.tysanclan.site.projectewok.entities.AchievementProposal;
-import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.dao.AchievementProposalDAO;
 import com.tysanclan.site.projectewok.entities.dao.filters.AchievementProposalFilter;
 import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;

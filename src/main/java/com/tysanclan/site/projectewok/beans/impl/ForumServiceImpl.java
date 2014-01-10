@@ -32,6 +32,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.entities.Event;
 import com.tysanclan.site.projectewok.entities.Forum;
 import com.tysanclan.site.projectewok.entities.ForumCategory;
@@ -40,7 +41,6 @@ import com.tysanclan.site.projectewok.entities.ForumThread;
 import com.tysanclan.site.projectewok.entities.Group;
 import com.tysanclan.site.projectewok.entities.GroupForum;
 import com.tysanclan.site.projectewok.entities.NewsForum;
-import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.Trial;
 import com.tysanclan.site.projectewok.entities.UnreadForumPost;
 import com.tysanclan.site.projectewok.entities.User;

@@ -37,6 +37,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
+import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.beans.MailService;
 import com.tysanclan.site.projectewok.entities.AcceptanceVote;
 import com.tysanclan.site.projectewok.entities.AcceptanceVoteVerdict;
@@ -51,7 +52,6 @@ import com.tysanclan.site.projectewok.entities.Impeachment;
 import com.tysanclan.site.projectewok.entities.ImpeachmentVote;
 import com.tysanclan.site.projectewok.entities.JoinApplication;
 import com.tysanclan.site.projectewok.entities.JoinVerdict;
-import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.Regulation;
 import com.tysanclan.site.projectewok.entities.RegulationChange;
 import com.tysanclan.site.projectewok.entities.RegulationChange.ChangeType;

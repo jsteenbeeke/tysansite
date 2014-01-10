@@ -22,7 +22,7 @@ import java.util.Calendar;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
-import com.tysanclan.site.projectewok.entities.Rank;
+import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.util.DateUtil;
 

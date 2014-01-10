@@ -23,6 +23,8 @@ import javax.persistence.Entity;
 import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
 
+import com.tysanclan.rest.api.data.Rank;
+
 /**
  * @author Jeroen Steenbeeke
  */

@@ -33,6 +33,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.google.common.collect.Iterables;
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.DemocracyService;
@@ -51,7 +52,6 @@ import com.tysanclan.site.projectewok.entities.GamePetition;
 import com.tysanclan.site.projectewok.entities.Group;
 import com.tysanclan.site.projectewok.entities.MumbleServer;
 import com.tysanclan.site.projectewok.entities.Profile;
-import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.RealmPetition;
 import com.tysanclan.site.projectewok.entities.Role.RoleType;
 import com.tysanclan.site.projectewok.entities.RoleTransfer;

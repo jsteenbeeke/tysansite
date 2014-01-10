@@ -22,6 +22,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.beans.LogService;
 import com.tysanclan.site.projectewok.beans.UserService;
@@ -31,7 +32,6 @@ import com.tysanclan.site.projectewok.components.PrimaryPreferencesPanel;
 import com.tysanclan.site.projectewok.components.ProfilePanel;
 import com.tysanclan.site.projectewok.entities.GamingGroup;
 import com.tysanclan.site.projectewok.entities.Group;
-import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.pages.VacationPage;
 

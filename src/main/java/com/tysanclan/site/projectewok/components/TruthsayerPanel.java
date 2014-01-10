@@ -20,10 +20,10 @@ package com.tysanclan.site.projectewok.components;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.components.RequiresAttentionLink.AttentionType;
 import com.tysanclan.site.projectewok.components.RequiresAttentionLink.IRequiresAttentionCondition;
-import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.dao.AchievementIconDAO;
 import com.tysanclan.site.projectewok.entities.dao.AchievementProposalDAO;
 import com.tysanclan.site.projectewok.entities.dao.AchievementRequestDAO;

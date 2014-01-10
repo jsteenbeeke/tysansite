@@ -19,10 +19,10 @@ package com.tysanclan.site.projectewok.pages.forum;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 
+import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.auth.TysanNonMemberSecured;
 import com.tysanclan.site.projectewok.components.EmailChangeConfirmationPanel;
-import com.tysanclan.site.projectewok.entities.Rank;
 
 @TysanNonMemberSecured
 public class OverviewPage extends TysanPage {

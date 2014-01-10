@@ -19,8 +19,8 @@ package com.tysanclan.site.projectewok.imports.tango;
 
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.beans.UserService;
-import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.User;
 
 /**

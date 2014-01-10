@@ -28,9 +28,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jeroensteenbeeke.hyperion.data.SearchFilter;
+import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
 import com.tysanclan.site.projectewok.entities.Profile;
-import com.tysanclan.site.projectewok.entities.Rank;
 import com.tysanclan.site.projectewok.entities.User;
 
 /**

@@ -62,6 +62,7 @@ import org.hibernate.annotations.Where;
 import com.google.common.collect.Lists;
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 import com.jeroensteenbeeke.hyperion.data.DomainObject;
+import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.util.DateUtil;
 
 /**
