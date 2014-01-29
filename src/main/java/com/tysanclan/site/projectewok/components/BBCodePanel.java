@@ -2,7 +2,6 @@ package com.tysanclan.site.projectewok.components;
 
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
@@ -30,8 +29,6 @@ public class BBCodePanel extends Panel {
 		super.renderHead(response);
 
 		response.render(getCssHeaderItem());
-		response.render(JavaScriptHeaderItem
-				.forReference(BBCodePanelInitScriptResource.get()));
 	}
 
 	public CssHeaderItem getCssHeaderItem() {
