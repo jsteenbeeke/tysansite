@@ -406,17 +406,19 @@ class ForumServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public ForumPost replyToThread(ForumThread thread, String content, User user) {
+		Date posttime = new Date();
+
 		ForumPost post = new ForumPost();
 		post.setPoster(user);
 		post.setContent(BBCodeUtil.stripTags(content));
 		post.setShadow(user != null && user.getRank() == Rank.BANNED);
-		post.setTime(new Date());
+		post.setTime(posttime);
 		post.setThread(thread);
 
 		thread.getPosts().add(post);
 
 		if (!post.isShadow()) {
-			thread.setLastPost(post.getTime());
+			thread.setLastPost(posttime);
 		}
 
 		forumThreadDAO.update(thread);

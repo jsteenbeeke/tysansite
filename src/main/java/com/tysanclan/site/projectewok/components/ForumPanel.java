@@ -155,29 +155,33 @@ public class ForumPanel extends Panel {
 				item.add(new Label("postcount", new Model<Long>(
 						ForumDataProvider.of(current, forumPostDAO).size())));
 
+				Date lastPost = current.getLastPost();
+				if (lastPost != null) {
+					item.add(new DateTimeLabel("lastresponse", current
+							.getLastPost()));
+				} else {
+					item.add(new Label("lastresponse", "Never"));
+				}
+
 				if (current.getPosts().size() > 0) {
 					ForumPost last = null;
-					Date pDate = null;
 					for (int i = current.getPosts().size() - 1; i >= 0; i--) {
-						last = current.getPosts().get(i);
-						pDate = last.getTime();
-						if (!last.isShadow())
-							break;
+						ForumPost cp = current.getPosts().get(i);
+						if (!cp.isShadow())
+							continue;
+
+						last = cp;
 					}
 
-					if (last != null && pDate != null) {
-
-						item.add(new DateTimeLabel("lastresponse", pDate));
+					if (last != null) {
 						item.add(new Label("lastposter",
 								last.getPoster() != null ? last.getPoster()
 										.getUsername() : "System"));
 					} else {
-						item.add(new Label("lastresponse", "never"));
 						item.add(new Label("lastposter", "Nobody"));
 					}
 
 				} else {
-					item.add(new Label("lastresponse", "never"));
 					item.add(new Label("lastposter", "Nobody"));
 				}
 

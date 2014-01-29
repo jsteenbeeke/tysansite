@@ -25,27 +25,27 @@ public class YouTubeNode extends DefaultNode {
 		String videoId = children.toString();
 
 		if (videoId.matches(PATTERN)) {
-			builder.append("<div class=\"youtube-replace\">").append(videoId)
-					.append("</div>");
+			// builder.append("<div class=\"youtube-replace\">").append(videoId)
+			// .append("</div>");
 
-			// builder.append("<iframe id=\"ytplayer-");
-			// builder.append(videoId);
-			// builder.append("\" type=\"text/html\" width=\"560\" height=\"315\" src=\"http://www.youtube.com/embed/");
-			// builder.append(videoId);
-			// builder.append("?origin=https://www.tysanclan.com/\" frameborder=\"0\" />");
+			builder.append("<iframe id=\"ytplayer-");
+			builder.append(videoId);
+			builder.append("\" type=\"text/html\" width=\"560\" height=\"315\" src=\"http://www.youtube.com/embed/");
+			builder.append(videoId);
+			builder.append("?autoplay=0&origin=https://www.tysanclan.com/\" frameborder=\"0\"></iframe>");
 		} else {
 			Matcher matcher = Pattern.compile(URL_PATTERN).matcher(videoId);
 			if (matcher.matches()) {
 				videoId = matcher.group(2);
 
-				builder.append("<div class=\"youtube-replace\">")
-						.append(videoId).append("</div>");
+				// builder.append("<div class=\"youtube-replace\">")
+				// .append(videoId).append("</div>");
 				//
-				// builder.append("<iframe id=\"ytplayer-");
-				// builder.append(videoId);
-				// builder.append("\" type=\"text/html\" width=\"560\" height=\"315\" src=\"http://www.youtube.com/embed/");
-				// builder.append(videoId);
-				// builder.append("?origin=https://www.tysanclan.com/\" frameborder=\"0\" />");
+				builder.append("<iframe id=\"ytplayer-");
+				builder.append(videoId);
+				builder.append("\" type=\"text/html\" width=\"560\" height=\"315\" src=\"http://www.youtube.com/embed/");
+				builder.append(videoId);
+				builder.append("?autoplay=0&origin=https://www.tysanclan.com/\" frameborder=\"0\"></iframe>");
 			} else {
 				builder.append(videoId);
 			}
