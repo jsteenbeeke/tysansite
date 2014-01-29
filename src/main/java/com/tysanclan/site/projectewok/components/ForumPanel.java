@@ -171,6 +171,7 @@ public class ForumPanel extends Panel {
 							continue;
 
 						last = cp;
+						break;
 					}
 
 					if (last != null) {
