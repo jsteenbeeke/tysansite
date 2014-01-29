@@ -167,7 +167,7 @@ public class ForumPanel extends Panel {
 					ForumPost last = null;
 					for (int i = current.getPosts().size() - 1; i >= 0; i--) {
 						ForumPost cp = current.getPosts().get(i);
-						if (!cp.isShadow())
+						if (cp.isShadow())
 							continue;
 
 						last = cp;

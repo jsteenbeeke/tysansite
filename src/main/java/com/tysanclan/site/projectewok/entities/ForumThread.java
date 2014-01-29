@@ -83,7 +83,7 @@ public class ForumThread extends BaseDomainObject {
 	private Date postTime;
 
 	@Column
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastPost;
 
 	@Column
