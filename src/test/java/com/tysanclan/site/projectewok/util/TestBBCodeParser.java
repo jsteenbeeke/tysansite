@@ -64,7 +64,8 @@ public class TestBBCodeParser {
 
 	@Test
 	public void testYoutube() throws BBParseException {
-		assertEquals("<div class=\"youtube-replace\">a-79sbicwTQ</div>",
+		assertEquals(
+				"<iframe id=\"ytplayer-a-79sbicwTQ\" type=\"text/html\" width=\"560\" height=\"315\" src=\"http://www.youtube.com/embed/a-79sbicwTQ?autoplay=0&origin=https://www.tysanclan.com/\" frameborder=\"0\"></iframe>",
 				BBCodeUtil.toHtml("[youtube]a-79sbicwTQ[/youtube]"));
 	}
 
