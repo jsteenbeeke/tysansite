@@ -30,7 +30,7 @@ public class YouTubeNode extends DefaultNode {
 
 			builder.append("<iframe id=\"ytplayer-");
 			builder.append(videoId);
-			builder.append("\" type=\"text/html\" width=\"560\" height=\"315\" src=\"http://www.youtube.com/embed/");
+			builder.append("\" type=\"text/html\" width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/");
 			builder.append(videoId);
 			builder.append("?autoplay=0&origin=https://www.tysanclan.com/\" frameborder=\"0\"></iframe>");
 		} else {
@@ -43,7 +43,7 @@ public class YouTubeNode extends DefaultNode {
 				//
 				builder.append("<iframe id=\"ytplayer-");
 				builder.append(videoId);
-				builder.append("\" type=\"text/html\" width=\"560\" height=\"315\" src=\"http://www.youtube.com/embed/");
+				builder.append("\" type=\"text/html\" width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/");
 				builder.append(videoId);
 				builder.append("?autoplay=0&origin=https://www.tysanclan.com/\" frameborder=\"0\"></iframe>");
 			} else {
