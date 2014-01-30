@@ -47,6 +47,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.tysanclan.site.projectewok.auth.TysanSecurity;
+import com.tysanclan.site.projectewok.components.resources.DaysInTysanImageResource;
+import com.tysanclan.site.projectewok.components.resources.DaysInTysanImageResourceReference;
 import com.tysanclan.site.projectewok.pages.AboutPage;
 import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
 import com.tysanclan.site.projectewok.pages.CharterPage;
@@ -200,6 +202,7 @@ public class TysanApplication extends WebApplication {
 		}
 
 		mountBookmarkablePages();
+		mountResources();
 
 		getApplicationSettings().setAccessDeniedPage(AccessDeniedPage.class);
 		getApplicationSettings().setPageExpiredErrorPage(
@@ -309,6 +312,10 @@ public class TysanApplication extends WebApplication {
 			mountPage("/randomcontent", RandomContentGenerationPage.class);
 			mountPage("/oldexpenses", OldExpensesPage.class);
 		}
+	}
+	
+	private void mountResources(){
+		mountResource("/images/signatures/daysintysan/${username}", new DaysInTysanImageResourceReference());
 	}
 
 	/**
