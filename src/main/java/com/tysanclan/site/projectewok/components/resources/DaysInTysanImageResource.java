@@ -1,10 +1,18 @@
 package com.tysanclan.site.projectewok.components.resources;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.Date;
 import java.util.List;
+
+import org.apache.wicket.markup.html.image.ContextImage;
+import org.apache.wicket.markup.html.image.ContextPathGenerator;
+import org.apache.wicket.protocol.http.RequestUtils;
+import org.apache.wicket.request.UrlUtils;
+import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.google.common.collect.Lists;
 import com.tysanclan.site.projectewok.entities.User;
@@ -17,21 +25,28 @@ public class DaysInTysanImageResource extends AbstractDynamicTysanImage {
 	@Override
 	protected List<DynamicImageTextPoint> getTexts(User user) {
 		List<DynamicImageTextPoint> texts = Lists.newArrayList();
-	    texts.add( new DynamicImageTextPoint(user.getUsername(), 100, 50));
+	    texts.add( new DynamicImageTextPoint(user.getUsername(), 50, 150){
+	    	@Override
+	    	protected void onBeforeDraw(Graphics graphics) {
+	    		graphics.setColor(Color.black);
+	    		graphics.setFont(new Font("Brush Script MT", Font.BOLD, 20));
+	    	}
+	    });
 	    
 	    int numberOfMemberDays = DateUtil.daysBetween(user.getJoinDate(), new Date());
-	    texts.add( new DynamicImageTextPoint(numberOfMemberDays + " days!", 100, 100));
+	    texts.add( new DynamicImageTextPoint(numberOfMemberDays + " days!", 30, 100){
+	    	@Override
+	    	protected void onBeforeDraw(Graphics graphics) {
+	    		graphics.setColor(Color.black);
+	    		graphics.setFont(new Font("Brush Script MT", Font.BOLD, 20));
+	    	}
+	    });
+   
 	    return texts;
 	}
 
 	@Override
 	protected BufferedImage getImage(User user) {
-		return getBufferedImageFromURL("http://2.bp.blogspot.com/_Vy2Puo54Ko0/TMqTr6iWBcI/AAAAAAAAIUE/iVFYU995KEk/s400/ist2_438171-ancient-scroll.jpg");
+		return getBufferedImageFromURL(DaysInTysanImageResource.class.getResource("daysspendintysan.png").toString());
 	}
-
-	@Override
-	protected Font getFont(Graphics graphics) {
-		return graphics.getFont().deriveFont(30f);
-	}
-
 }

@@ -1,5 +1,7 @@
 package com.tysanclan.site.projectewok.components.resources;
 
+import java.awt.Graphics;
+
 public class DynamicImageTextPoint {
 	private final String text;
 	private final int x;
@@ -21,5 +23,12 @@ public class DynamicImageTextPoint {
 
 	public int getY() {
 		return y;
-	}	
+	}
+	
+	/**
+	 * Override this to edit the graphics just before the draw
+	 * @param graphics
+	 */
+	protected void onBeforeDraw(Graphics graphics){
+	}
 }

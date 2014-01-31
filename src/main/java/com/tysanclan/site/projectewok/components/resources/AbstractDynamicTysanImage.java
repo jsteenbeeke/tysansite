@@ -52,13 +52,13 @@ public abstract class AbstractDynamicTysanImage extends DynamicImageResource {
 	   if(image == null){
 		   return getErrorImage();
 	   }	   
-	   Graphics g = image.getGraphics();
-	   g.setFont(getFont(g));
+	   Graphics graphics = image.getGraphics();
 	   
 	   for(DynamicImageTextPoint text : getTexts(user)){
-		   g.drawString(text.getText(), text.getX(), text.getY());
+		   text.onBeforeDraw(graphics);
+		   graphics.drawString(text.getText(), text.getX(), text.getY());
 	   }	   
-	   g.dispose();
+	   graphics.dispose();
 	   return toImageData(image);
 	}
 	
@@ -73,8 +73,6 @@ public abstract class AbstractDynamicTysanImage extends DynamicImageResource {
 	protected abstract List<DynamicImageTextPoint> getTexts(User user);
 	
 	protected abstract BufferedImage getImage(User user);
-	
-	protected abstract Font getFont(Graphics graphics);
 	
 	protected BufferedImage getBufferedImageFromURL(String url){
 		try {
