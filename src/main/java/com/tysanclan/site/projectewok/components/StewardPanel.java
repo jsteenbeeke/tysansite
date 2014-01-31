@@ -32,6 +32,7 @@ import com.tysanclan.site.projectewok.pages.member.admin.GameRealmAllowAccountTy
 import com.tysanclan.site.projectewok.pages.member.admin.RequestPaymentPage;
 import com.tysanclan.site.projectewok.pages.member.admin.SiteWideNotificationPage;
 import com.tysanclan.site.projectewok.pages.member.admin.StewardManageBugMastersPage;
+import com.tysanclan.site.projectewok.pages.member.admin.StewardRestAgentPage;
 import com.tysanclan.site.projectewok.pages.member.admin.StewardTransferPage;
 import com.tysanclan.site.projectewok.pages.member.admin.UserAgentPage;
 
@@ -123,6 +124,18 @@ public class StewardPanel extends TysanOverviewPanel<User> {
 			@Override
 			public void onClick() {
 				setResponsePage(new RequestPaymentPage(getUser()));
+			}
+		});
+
+		add(new Link<User>("restagents") {
+			private static final long serialVersionUID = 1L;
+
+			/**
+			* @see org.apache.wicket.markup.html.link.Link#onClick()
+			*/
+			@Override
+			public void onClick() {
+				setResponsePage(new StewardRestAgentPage());
 			}
 		});
 

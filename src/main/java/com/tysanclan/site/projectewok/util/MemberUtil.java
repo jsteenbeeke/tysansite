@@ -23,6 +23,8 @@ import java.util.Date;
 import java.util.List;
 
 import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.rest.api.util.HashException;
+import com.tysanclan.rest.api.util.HashUtil;
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.auth.TysanSecurity;
 import com.tysanclan.site.projectewok.entities.User;
@@ -124,8 +126,8 @@ public class MemberUtil {
 		return visible;
 	}
 
-	public static String hashPassword(String password) {
-		return StringUtil.sha1Hash(StringUtil.combineStrings(password,
+	public static String hashPassword(String password) throws HashException {
+		return HashUtil.sha1Hash(StringUtil.combineStrings(password,
 				PASSWORD_SALT));
 
 	}

@@ -24,6 +24,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.tysanclan.rest.api.util.HashException;
 import com.tysanclan.site.projectewok.beans.UserService;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.util.MemberUtil;
@@ -35,16 +36,16 @@ public abstract class ChangePasswordPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	/**
-     * 
-     */
+	 * 
+	 */
 	public ChangePasswordPanel(String id, User user) {
 		super(id);
 
-		Form<User> changeForm = new Form<User>(
-		        "changeForm", ModelMaker.wrap(user)) {
+		Form<User> changeForm = new Form<User>("changeForm",
+				ModelMaker.wrap(user)) {
 			/**
-             * 
-             */
+			 * 
+			 */
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean
@@ -55,55 +56,54 @@ public abstract class ChangePasswordPanel extends Panel {
 			 */
 			@Override
 			protected void onSubmit() {
-				User u = getModelObject();
+				try {
+					User u = getModelObject();
 
-				PasswordTextField oldField = (PasswordTextField) get("old");
-				PasswordTextField newField1 = (PasswordTextField) get("new1");
-				PasswordTextField newField2 = (PasswordTextField) get("new2");
+					PasswordTextField oldField = (PasswordTextField) get("old");
+					PasswordTextField newField1 = (PasswordTextField) get("new1");
+					PasswordTextField newField2 = (PasswordTextField) get("new2");
 
-				String oldPW = oldField.getModelObject();
-				String newPW1 = newField1.getModelObject();
-				String newPW2 = newField2.getModelObject();
+					String oldPW = oldField.getModelObject();
+					String newPW1 = newField1.getModelObject();
+					String newPW2 = newField2.getModelObject();
 
-				boolean valid = true;
+					boolean valid = true;
 
-				if (oldPW == null
-				        || !MemberUtil.hashPassword(oldPW)
-				                .equals(u.getPassword())) {
-					valid = false;
-					warn("Old password invalid");
-				}
+					if (oldPW == null
+							|| !MemberUtil.hashPassword(oldPW).equals(
+									u.getPassword())) {
+						valid = false;
+						warn("Old password invalid");
+					}
 
-				if (newPW1 == null || newPW2 == null
-				        || newPW1.length() < 8
-				        || newPW2.length() < 8) {
-					valid = false;
-					warn("New password invalid");
-				}
+					if (newPW1 == null || newPW2 == null || newPW1.length() < 8
+							|| newPW2.length() < 8) {
+						valid = false;
+						warn("New password invalid");
+					}
 
-				if (newPW1 != null && newPW2 != null
-				        && !newPW1.equals(newPW2)) {
-					valid = false;
-					warn("New passwords do not match!");
-				}
+					if (newPW1 != null && newPW2 != null
+							&& !newPW1.equals(newPW2)) {
+						valid = false;
+						warn("New passwords do not match!");
+					}
 
-				if (valid) {
-					userService.setUserPassword(u,
-					        newPW1);
+					if (valid) {
+						userService.setUserPassword(u, newPW1);
 
-					info("Password succesfully changed");
+						info("Password succesfully changed");
 
-					onChanged();
+						onChanged();
+					}
+				} catch (HashException e) {
+					error("Unable to encrypt password");
 				}
 			}
 		};
 
-		changeForm.add(new PasswordTextField("old",
-		        new Model<String>("")));
-		changeForm.add(new PasswordTextField("new1",
-		        new Model<String>("")));
-		changeForm.add(new PasswordTextField("new2",
-		        new Model<String>("")));
+		changeForm.add(new PasswordTextField("old", new Model<String>("")));
+		changeForm.add(new PasswordTextField("new1", new Model<String>("")));
+		changeForm.add(new PasswordTextField("new2", new Model<String>("")));
 
 		add(changeForm);
 	}

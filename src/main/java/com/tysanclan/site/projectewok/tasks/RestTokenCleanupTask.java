@@ -19,12 +19,16 @@ package com.tysanclan.site.projectewok.tasks;
 
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.tysanclan.site.projectewok.beans.RestService;
 import com.tysanclan.site.projectewok.entities.dao.RestTokenDAO;
 import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 
 public class RestTokenCleanupTask extends PeriodicTask {
 	@SpringBean
 	private RestTokenDAO restTokenDAO;
+
+	@SpringBean
+	private RestService restService;
 
 	public RestTokenCleanupTask() {
 		super("Rest Token Cleanup", "Webservices",
@@ -34,6 +38,7 @@ public class RestTokenCleanupTask extends PeriodicTask {
 	@Override
 	public void run() {
 		restTokenDAO.cleanExpiredTokens();
+		restService.timeoutChallenges();
 	}
 
 }

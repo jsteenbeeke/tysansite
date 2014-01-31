@@ -19,13 +19,19 @@ package com.tysanclan.site.projectewok.rs.services;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
 import org.springframework.context.annotation.Scope;
 
-import com.tysanclan.rest.api.data.Token;
 import com.tysanclan.rest.api.data.RestUser;
+import com.tysanclan.rest.api.data.Token;
 import com.tysanclan.rest.api.services.TokenService;
+import com.tysanclan.site.projectewok.beans.RestService;
+import com.tysanclan.site.projectewok.entities.AuthorizedRestApplication;
 import com.tysanclan.site.projectewok.entities.RestToken;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.RestTokenDAO;
@@ -41,6 +47,13 @@ public class RestTokenService implements TokenService {
 	@Inject
 	private UserDAO userDAO;
 
+	@Inject
+	private RestService restService;
+
+	public void setRestService(RestService restService) {
+		this.restService = restService;
+	}
+
 	public void setTokenDAO(RestTokenDAO tokenDAO) {
 		this.tokenDAO = tokenDAO;
 	}
@@ -50,20 +63,50 @@ public class RestTokenService implements TokenService {
 	}
 
 	@Override
-	public Token getToken(@QueryParam("u") String username,
-			@QueryParam("p") String password) {
-		if (username != null && password != null) {
-			User user = userDAO.load(username, password);
+	@GET
+	@Path("/challenges")
+	@Consumes("application/json")
+	@Produces("application/json")
+	public String issueChallenge(@QueryParam("c") String clientId) {
 
-			if (user != null) {
-				RestToken token = new RestToken(user);
-				tokenDAO.save(token);
+		AuthorizedRestApplication application = restService.getClient(clientId);
 
-				return new Token(new RestUser(user.getUsername(),
-						user.getRank()), token.getHash(), token.getExpires());
-			}
+		if (application != null) {
+			return restService.createChallenge(application);
 		}
 
-		throw new HttpStatusException(401, "Invalid Username and/or Password");
+		throw new HttpStatusException(401, "Invalid client ID");
+	}
+
+	@Override
+	@GET
+	@Consumes("application/json")
+	@Produces("application/json")
+	public Token getToken(@QueryParam("c") String challenge,
+			@QueryParam("r") String response, @QueryParam("u") String username,
+			@QueryParam("p") String password) {
+		AuthorizedRestApplication application = restService
+				.consumeChallengeIfValid(challenge, response);
+
+		if (application != null) {
+			if (username != null && password != null) {
+				User user = userDAO.load(username, password);
+
+				if (user != null) {
+					RestToken token = new RestToken(user);
+					token.setApplication(application);
+					tokenDAO.save(token);
+
+					return new Token(new RestUser(user.getUsername(),
+							user.getRank()), token.getHash(),
+							token.getExpires());
+				}
+			}
+
+			throw new HttpStatusException(401,
+					"Invalid Username and/or Password");
+		}
+
+		throw new HttpStatusException(401, "Invalid challenge and/or response");
 	}
 }

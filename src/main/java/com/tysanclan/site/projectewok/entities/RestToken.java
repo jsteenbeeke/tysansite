@@ -60,6 +60,10 @@ public class RestToken extends BaseDomainObject {
 	@Column(nullable = false)
 	private long expires;
 
+	@ManyToOne(optional = false)
+	@Index(name = "IDX_RESTTOKEN_APPLICATION")
+	private AuthorizedRestApplication application;
+
 	public RestToken(User user) {
 		this.user = user;
 		setExpires(System.currentTimeMillis() + TOKEN_VALID);
@@ -109,8 +113,16 @@ public class RestToken extends BaseDomainObject {
 	}
 
 	@Override
-	public Serializable getDomainObjectId() {
+	public final Serializable getDomainObjectId() {
 		return getId();
+	}
+
+	public AuthorizedRestApplication getApplication() {
+		return application;
+	}
+
+	public void setApplication(AuthorizedRestApplication application) {
+		this.application = application;
 	}
 
 }

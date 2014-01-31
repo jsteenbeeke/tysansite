@@ -27,6 +27,7 @@ import org.apache.wicket.model.Model;
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.jeroensteenbeeke.hyperion.data.SearchFilter;
 import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.rest.api.util.HashException;
 import com.tysanclan.site.projectewok.entities.Game;
 import com.tysanclan.site.projectewok.entities.Group;
 import com.tysanclan.site.projectewok.entities.Realm;
@@ -94,8 +95,9 @@ public class UserFilter extends SearchFilter<User> {
 	/**
 	 * @param password
 	 *            the password to set
+	 * @throws HashException 
 	 */
-	public void setPassword(String password) {
+	public void setPassword(String password) throws HashException {
 		if (MemberUtil.isHashedPassword(password)) {
 			this.password = password;
 		} else {

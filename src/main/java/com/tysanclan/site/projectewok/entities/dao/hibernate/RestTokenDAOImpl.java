@@ -29,7 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jeroensteenbeeke.hyperion.data.HibernateDAO;
 import com.jeroensteenbeeke.hyperion.data.SearchFilter;
 import com.tysanclan.site.projectewok.entities.RestToken;
-import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.RestTokenDAO;
 import com.tysanclan.site.projectewok.entities.dao.filters.RestTokenFilter;
 
@@ -99,17 +98,11 @@ class RestTokenDAOImpl extends HibernateDAO<RestToken> implements RestTokenDAO {
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	@Override
-	public User getTokenUser(String hash) {
+	public RestToken getToken(String hash) {
 		Criteria criteria = getSession().createCriteria(RestToken.class);
 		criteria.add(Restrictions.gt("expires", System.currentTimeMillis()));
 		criteria.add(Restrictions.eq("hash", hash));
 
-		RestToken token = unique(criteria);
-
-		if (token != null) {
-			return token.getUser();
-		}
-
-		return null;
+		return unique(criteria);
 	}
 }

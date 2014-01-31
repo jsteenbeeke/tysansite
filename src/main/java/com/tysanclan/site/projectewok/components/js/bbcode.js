@@ -35,7 +35,7 @@ function createInsertButton(tx, pf, sf) {
 	buttons.push(createInsertButton('url', '[url]', '[/url]'));
 	buttons.push(createInsertButton('url=', '[url=', '][/url]'));
 	buttons.push(createInsertButton('quote', '[quote]', '[/quote]'));
-	buttons.push(createInsertButton('quote=', '[quote=', '][/quote]'));
+	buttons.push(createInsertButton('quote=', '[quote=]', '[/quote]'));
 	buttons.push(createInsertButton('image', '[img]', '[/img]'));
 	buttons.push(createInsertButton('youtube', '[youtube]', '[/youtube]'));
 	

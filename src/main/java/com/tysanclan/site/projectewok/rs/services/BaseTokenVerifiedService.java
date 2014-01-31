@@ -2,6 +2,8 @@ package com.tysanclan.site.projectewok.rs.services;
 
 import javax.inject.Inject;
 
+import com.tysanclan.site.projectewok.entities.AuthorizedRestApplication;
+import com.tysanclan.site.projectewok.entities.RestToken;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.RestTokenDAO;
 import com.tysanclan.site.projectewok.rs.HttpStatusException;
@@ -15,10 +17,17 @@ public abstract class BaseTokenVerifiedService {
 	}
 
 	public User verifyToken(String tokenString) {
-		User user = tokenDAO.getTokenUser(tokenString);
+		RestToken token = tokenDAO.getToken(tokenString);
+		User user = token.getUser();
 
 		if (user == null) {
 			throw new HttpStatusException(401, "Invalid or expired token");
+		}
+
+		AuthorizedRestApplication application = token.getApplication();
+
+		if (application.isActive()) {
+			throw new HttpStatusException(401, "Application access withdrawn");
 		}
 
 		return user;

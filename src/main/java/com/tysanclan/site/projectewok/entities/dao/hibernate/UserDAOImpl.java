@@ -36,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jeroensteenbeeke.hyperion.data.SearchFilter;
 import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
 import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.rest.api.util.HashException;
 import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
 import com.tysanclan.site.projectewok.entities.AcceptanceVote;
 import com.tysanclan.site.projectewok.entities.TruthsayerNomination;
@@ -92,16 +93,21 @@ class UserDAOImpl extends EwokHibernateDAO<User> implements
 
 	@Override
 	public User load(String username, String password) {
-		Criteria crit = getSession().createCriteria(User.class);
+		try {
+			Criteria crit = getSession().createCriteria(User.class);
 
-		Criterion eq = Restrictions.eq("username", username);
-		if (eq instanceof SimpleExpression) {
-			eq = ((SimpleExpression) eq).ignoreCase();
+			Criterion eq = Restrictions.eq("username", username);
+			if (eq instanceof SimpleExpression) {
+				eq = ((SimpleExpression) eq).ignoreCase();
+			}
+
+			crit.add(eq);
+			crit.add(Restrictions.eq("password",
+					MemberUtil.hashPassword(password)));
+			return (User) crit.uniqueResult();
+		} catch (HashException e) {
+			return null;
 		}
-
-		crit.add(eq);
-		crit.add(Restrictions.eq("password", MemberUtil.hashPassword(password)));
-		return (User) crit.uniqueResult();
 	}
 
 	/**

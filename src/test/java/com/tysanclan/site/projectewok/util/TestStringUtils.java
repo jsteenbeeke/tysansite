@@ -21,20 +21,23 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.tysanclan.rest.api.util.HashException;
+import com.tysanclan.rest.api.util.HashUtil;
+
 /**
  * @author Jeroen Steenbeeke
  */
 public class TestStringUtils {
 	private static String[][] testValues = new String[][] {
-	        { "test", "a94a8fe5ccb19ba61c4c0873d391e987982fbbd3" },
-	        { "tysan", "abd779725d749f99831a7b45c2690490da588372" },
-	        { "your mom", "deec6a3e9326a373b299fbead22c0339a2e18836" },
-	        { "ewok", "7c8f3b3c7be7783f3a7c51250552b7d21dd3c3b5" } };
+			{ "test", "a94a8fe5ccb19ba61c4c0873d391e987982fbbd3" },
+			{ "tysan", "abd779725d749f99831a7b45c2690490da588372" },
+			{ "your mom", "deec6a3e9326a373b299fbead22c0339a2e18836" },
+			{ "ewok", "7c8f3b3c7be7783f3a7c51250552b7d21dd3c3b5" } };
 
 	@Test
-	public void checkHashing() {
+	public void checkHashing() throws HashException {
 		for (String[] test : testValues) {
-			assertEquals(test[1], StringUtil.sha1Hash(test[0]));
+			assertEquals(test[1], HashUtil.sha1Hash(test[0]));
 		}
 	}
 }

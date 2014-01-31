@@ -19,7 +19,6 @@ package com.tysanclan.site.projectewok.util;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.security.MessageDigest;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -27,18 +26,12 @@ import java.util.StringTokenizer;
 
 import javax.annotation.Nullable;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.base.Function;
 
 /**
  * @author Jeroen Steenbeeke
  */
 public class StringUtil {
-	private static final Logger logger = LoggerFactory
-			.getLogger(StringUtil.class);
-
 	private static final Random random = new Random();
 
 	public static String combineStrings(Object... strings) {
@@ -50,63 +43,16 @@ public class StringUtil {
 		return builder.toString();
 	}
 
-	public static String sha1Hash(String input) {
-		try {
-			MessageDigest sha1Digest = MessageDigest.getInstance("SHA-1");
-			sha1Digest.update(input.getBytes());
-			return byteArrayToString(sha1Digest.digest());
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-		}
-
-		return "";
-	}
-
-	private static String byteArrayToString(byte[] array) {
-		StringBuilder builder = new StringBuilder();
-
-		for (byte next : array) {
-			byte lower = (byte) (next & 0x0F);
-
-			byte higher = (byte) ((next & 0xF0) >>> 4);
-
-			builder.append(getHexChar(higher));
-			builder.append(getHexChar(lower));
-		}
-
-		return builder.toString();
-	}
-
 	public static boolean isValidEMail(String email) {
 		return !(email.length() < 10 || email.indexOf('@') == -1
 				|| email.indexOf('.') == -1 || email.indexOf('@') > email
 				.lastIndexOf('.'));
 	}
 
-	private static char getHexChar(byte convertible) {
-		// System.out.println(convertible);
-
-		switch (convertible) {
-			case 10:
-				return 'a';
-			case 11:
-				return 'b';
-			case 12:
-				return 'c';
-			case 13:
-				return 'd';
-			case 14:
-				return 'e';
-			case 15:
-				return 'f';
-			default:
-				return combineStrings("", (int) convertible).charAt(0);
-		}
-	}
-
-	public static String generateRequestKey() {
+	public static String generateRequestKey(int baseLength, int variance) {
 		StringBuilder key = new StringBuilder();
-		int size = random.nextInt(5) + 17;
+		int size = variance > 0 ? random.nextInt(variance) + baseLength
+				: baseLength;
 
 		for (int i = 0; i < size; i++) {
 			int mode = random.nextInt(3);
@@ -234,18 +180,6 @@ public class StringUtil {
 		} catch (UnsupportedEncodingException e) {
 			return input;
 		}
-	}
-
-	public static String md5hash(String input) {
-		try {
-			MessageDigest sha1Digest = MessageDigest.getInstance("MD5");
-			sha1Digest.update(input.getBytes());
-			return byteArrayToString(sha1Digest.digest());
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-		}
-
-		return "";
 	}
 
 	public static int countWords(String input) {

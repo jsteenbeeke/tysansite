@@ -113,7 +113,7 @@ public class Game extends BaseDomainObject {
 	 * @return the id
 	 */
 	@Override
-	public Serializable getDomainObjectId() {
+	public final Serializable getDomainObjectId() {
 		return getId();
 	}
 

@@ -38,6 +38,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.hibernate.Hibernate;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.tysanclan.rest.api.util.HashException;
+import com.tysanclan.rest.api.util.HashUtil;
 import com.tysanclan.site.projectewok.components.MemberListItem;
 import com.tysanclan.site.projectewok.components.OtterSniperPanel;
 import com.tysanclan.site.projectewok.entities.ChancellorElection;
@@ -52,7 +54,6 @@ import com.tysanclan.site.projectewok.entities.dao.ElectionDAO;
 import com.tysanclan.site.projectewok.entities.dao.SenateElectionDAO;
 import com.tysanclan.site.projectewok.entities.dao.filters.ElectionFilter;
 import com.tysanclan.site.projectewok.util.DateUtil;
-import com.tysanclan.site.projectewok.util.StringUtil;
 
 /**
  * @author Jeroen Steenbeeke
@@ -304,9 +305,13 @@ public class PastElectionsPage extends AbstractMemberPage {
 	 * @return
 	 */
 	private int getHashHash(String prehash) {
-		String hash = StringUtil.sha1Hash(prehash);
+		try {
+			String hash = HashUtil.sha1Hash(prehash);
+			int hashHash = hash.hashCode();
+			return hashHash;
+		} catch (HashException e) {
+			return -1; // Still not identifiable
+		}
 
-		int hashHash = hash.hashCode();
-		return hashHash;
 	}
 }

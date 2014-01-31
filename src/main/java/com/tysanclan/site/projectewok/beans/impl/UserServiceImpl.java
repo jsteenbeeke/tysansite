@@ -33,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
 import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.rest.api.util.HashException;
 import com.tysanclan.site.projectewok.entities.Activation;
 import com.tysanclan.site.projectewok.entities.EmailChangeConfirmation;
 import com.tysanclan.site.projectewok.entities.InactivityNotification;
@@ -103,28 +104,33 @@ class UserServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public User createUser(String username, String password, String email) {
-		if (!hasUser(username)) {
-			User user = new User();
+		try {
+			if (!hasUser(username)) {
+				User user = new User();
 
-			String checkedPassword = MemberUtil.isHashedPassword(password) ? password
-					: MemberUtil.hashPassword(password);
+				String checkedPassword = MemberUtil.isHashedPassword(password) ? password
+						: MemberUtil.hashPassword(password);
 
-			user.setCustomTitle("");
-			user.setEMail(email);
-			user.setImageURL("");
-			user.setPassword(checkedPassword);
-			user.setRank(Rank.FORUM);
-			user.setSignature("");
-			user.setUsername(username);
-			user.setJoinDate(new Date());
-			user.setVacation(false);
-			user.setRetired(false);
-			userDAO.save(user);
+				user.setCustomTitle("");
+				user.setEMail(email);
+				user.setImageURL("");
+				user.setPassword(checkedPassword);
+				user.setRank(Rank.FORUM);
+				user.setSignature("");
+				user.setUsername(username);
+				user.setJoinDate(new Date());
+				user.setVacation(false);
+				user.setRetired(false);
+				userDAO.save(user);
 
-			logger.info(StringUtil.combineStrings("Created user ",
-					user.getUsername(), " (uid ", user.getId(), ")"));
+				logger.info(StringUtil.combineStrings("Created user ",
+						user.getUsername(), " (uid ", user.getId(), ")"));
 
-			return user;
+				return user;
+			}
+		} catch (HashException e) {
+			logger.error("Unable to hash user password");
+			logger.error(e.getMessage(), e);
 		}
 
 		return null;
@@ -284,7 +290,7 @@ class UserServiceImpl implements
 
 		// Anders bestaat hij nog niet, maak er dan eentje aan
 		Activation activation = new Activation();
-		activation.setActivationKey(StringUtil.generateRequestKey());
+		activation.setActivationKey(StringUtil.generateRequestKey(17, 5));
 		activation.setUser(user);
 		activation.setRegistered(new Date());
 
@@ -346,7 +352,7 @@ class UserServiceImpl implements
 	@Transactional(propagation = Propagation.REQUIRED)
 	public PasswordRequest generatePasswordRequest(User user) {
 		PasswordRequest request = new PasswordRequest();
-		request.setKey(StringUtil.generateRequestKey());
+		request.setKey(StringUtil.generateRequestKey(17, 5));
 		request.setUser(user);
 		request.setRequested(new Date());
 		passwordRequestDAO.save(request);
@@ -361,12 +367,17 @@ class UserServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void processPasswordReset(PasswordRequest request, String password) {
-		PasswordRequest _request = passwordRequestDAO.load(request.getId());
-		User user = _request.getUser();
-		user.setPassword(MemberUtil.hashPassword(password));
-		userDAO.update(user);
+		try {
+			PasswordRequest _request = passwordRequestDAO.load(request.getId());
+			User user = _request.getUser();
+			user.setPassword(MemberUtil.hashPassword(password));
+			userDAO.update(user);
 
-		passwordRequestDAO.delete(_request);
+			passwordRequestDAO.delete(_request);
+		} catch (HashException e) {
+			logger.error("Unable to hash user password");
+			logger.error(e.getMessage(), e);
+		}
 	}
 
 	/**
@@ -578,7 +589,7 @@ class UserServiceImpl implements
 		User _user = userDAO.load(user.getId());
 
 		EmailChangeConfirmation confirmation = new EmailChangeConfirmation();
-		confirmation.setActivationKey(StringUtil.generateRequestKey());
+		confirmation.setActivationKey(StringUtil.generateRequestKey(17, 5));
 		confirmation.setEmail(email);
 		confirmation.setInitialized(new Date());
 		confirmation.setUser(_user);
@@ -600,11 +611,16 @@ class UserServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void setUserPassword(User user, String newPassword) {
-		User _user = userDAO.load(user.getId());
+		try {
+			User _user = userDAO.load(user.getId());
 
-		_user.setPassword(MemberUtil.hashPassword(newPassword));
+			_user.setPassword(MemberUtil.hashPassword(newPassword));
 
-		userDAO.update(_user);
+			userDAO.update(_user);
+		} catch (HashException e) {
+			logger.error("Unable to hash user password");
+			logger.error(e.getMessage(), e);
+		}
 	}
 
 	/**
