@@ -59,6 +59,8 @@ public abstract class AbstractElectionPage<T extends Election> extends
 	private final Map<Integer, Long> votes;
 	private final int candidates;
 
+	private Component submitButton;
+
 	public abstract AbstractManualElectionPage getInternetExplorerAlternativePage(
 			T election);
 
@@ -199,11 +201,9 @@ public abstract class AbstractElectionPage<T extends Election> extends
 								getVotes().put(index, mli.getUser().getId());
 
 								if (votes.size() == AbstractElectionPage.this.candidates) {
-									Component submit = getPage().get(
-											"accordion:voteform:submit");
-									submit.setVisible(true);
+									submitButton.setVisible(true);
 									if (target != null) {
-										target.add(submit);
+										target.add(submitButton);
 									}
 								}
 
@@ -231,9 +231,10 @@ public abstract class AbstractElectionPage<T extends Election> extends
 
 		add(explanation);
 		add(castVoteForm);
-		castVoteForm.add(new WebMarkupContainer("submit")
-				.setOutputMarkupId(true).setOutputMarkupPlaceholderTag(true)
-				.setVisible(false));
+		submitButton = new WebMarkupContainer("submit").setOutputMarkupId(true)
+				.setOutputMarkupPlaceholderTag(true).setVisible(false);
+
+		castVoteForm.add(submitButton);
 	}
 
 	/**
