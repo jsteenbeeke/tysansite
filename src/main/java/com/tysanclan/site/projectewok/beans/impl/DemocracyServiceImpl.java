@@ -71,6 +71,7 @@ import com.tysanclan.site.projectewok.entities.dao.GroupLeaderElectionDAO;
 import com.tysanclan.site.projectewok.entities.dao.ImpeachmentDAO;
 import com.tysanclan.site.projectewok.entities.dao.ImpeachmentVoteDAO;
 import com.tysanclan.site.projectewok.entities.dao.JoinApplicationDAO;
+import com.tysanclan.site.projectewok.entities.dao.JoinVerdictDAO;
 import com.tysanclan.site.projectewok.entities.dao.RegulationChangeDAO;
 import com.tysanclan.site.projectewok.entities.dao.RegulationChangeVoteDAO;
 import com.tysanclan.site.projectewok.entities.dao.RegulationDAO;
@@ -129,6 +130,9 @@ class DemocracyServiceImpl implements
 	private JoinApplicationDAO joinApplicationDAO;
 
 	@Autowired
+	private JoinVerdictDAO joinVerdictDAO;
+
+	@Autowired
 	private ImpeachmentDAO impeachmentDAO;
 
 	@Autowired
@@ -169,6 +173,10 @@ class DemocracyServiceImpl implements
 
 	public void setDispatcher(IEventDispatcher dispatcher) {
 		this.dispatcher = dispatcher;
+	}
+
+	public void setJoinVerdictDAO(JoinVerdictDAO joinVerdictDAO) {
+		this.joinVerdictDAO = joinVerdictDAO;
 	}
 
 	/**
@@ -954,6 +962,9 @@ class DemocracyServiceImpl implements
 
 			}
 
+			for (JoinVerdict verdict : application.getVerdicts()) {
+				joinVerdictDAO.delete(verdict);
+			}
 			joinApplicationDAO.delete(application);
 
 			mailService.sendHTMLMail(applicant.getEMail(),
