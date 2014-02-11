@@ -962,9 +962,7 @@ class DemocracyServiceImpl implements
 
 			}
 
-			for (JoinVerdict verdict : application.getVerdicts()) {
-				joinVerdictDAO.delete(verdict);
-			}
+			joinVerdictDAO.deleteForApplication(application);
 			joinApplicationDAO.delete(application);
 
 			mailService.sendHTMLMail(applicant.getEMail(),

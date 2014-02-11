@@ -37,6 +37,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.string.StringValueConversionException;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
@@ -108,8 +109,16 @@ public class ForumThreadPage extends TysanPage {
 					AccessDeniedPage.class);
 		}
 
-		Long threadId = params.get("threadid").toOptionalLong();
-		Integer pageId = params.get("pageid").toOptionalInteger();
+		Long threadId = null;
+		Integer pageId = null;
+
+		try {
+			pageId = params.get("pageid").toOptionalInteger();
+			threadId = params.get("threadid").toOptionalLong();
+		} catch (StringValueConversionException svce) {
+			throw new RestartResponseAtInterceptPageException(
+					AccessDeniedPage.class);
+		}
 
 		if (threadId == null || pageId == null) {
 			throw new RestartResponseAtInterceptPageException(

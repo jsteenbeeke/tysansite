@@ -17,13 +17,18 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
+import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.jeroensteenbeeke.hyperion.data.SearchFilter;
 import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
+import com.tysanclan.site.projectewok.entities.JoinApplication;
 import com.tysanclan.site.projectewok.entities.JoinVerdict;
 import com.tysanclan.site.projectewok.entities.dao.filters.JoinVerdictFilter;
 
@@ -49,5 +54,18 @@ class JoinVerdictDAOImpl extends EwokHibernateDAO<JoinVerdict> implements
 		}
 
 		return criteria;
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.NESTED, readOnly = false)
+	public void deleteForApplication(JoinApplication application) {
+		Criteria criteria = getSession().createCriteria(JoinVerdict.class);
+		criteria.add(Restrictions.eq("application", application));
+
+		List<JoinVerdict> list = listOf(criteria);
+
+		for (JoinVerdict v : list) {
+			delete(v);
+		}
 	}
 }

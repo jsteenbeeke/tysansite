@@ -325,6 +325,7 @@ class MembershipServiceImpl implements
 
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED)
 	private void checkResolved(JoinApplication application) {
 		if (application.getMentor() != null) {
 			Set<User> negatives = Sets.newHashSet();

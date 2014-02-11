@@ -17,7 +17,6 @@
  */
 package com.tysanclan.site.projectewok.pages;
 
-import org.apache.wicket.Page;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
@@ -39,7 +38,9 @@ public class TysanErrorPage extends TysanPage {
 	private BugTrackerService bugTrackerService;
 
 	public TysanErrorPage() {
-		this(null, null);
+		super("DAFUQ!");
+		throw new IllegalStateException(
+				"WHY THE FUCK ARE YOU TRYING TO CALL THIS, WICKET?!?!");
 	}
 
 	/**
@@ -48,14 +49,15 @@ public class TysanErrorPage extends TysanPage {
 	 * @param exception
 	 *            The exception thrown
 	 */
-	public TysanErrorPage(Page originalPage, final Exception exception) {
+	public TysanErrorPage(String target, final Exception exception) {
 		super("An error has occurred");
 
 		boolean known = (bugTrackerService.isKnownIssue(exception));
 
 		Bug report = bugTrackerService.reportCrash(getUser(),
-				originalPage != null ? originalPage.getClass().getSimpleName()
-						: null, exception);
+				target != null ? target : null, exception);
+
+		known = known && report != null;
 
 		if (known) {
 			if (report.getComments().isEmpty()) {

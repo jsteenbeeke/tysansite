@@ -18,6 +18,7 @@
 package com.tysanclan.site.projectewok.entities.dao;
 
 import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.tysanclan.site.projectewok.entities.JoinApplication;
 import com.tysanclan.site.projectewok.entities.JoinVerdict;
 
 /**
@@ -25,5 +26,7 @@ import com.tysanclan.site.projectewok.entities.JoinVerdict;
  * @author Jeroen Steenbeeke
  */
 public interface JoinVerdictDAO extends EwokDAO<JoinVerdict> {
+
+	void deleteForApplication(JoinApplication application);
 
 }

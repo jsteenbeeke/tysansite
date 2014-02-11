@@ -46,6 +46,7 @@ import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.Type;
 
+import com.google.common.collect.Lists;
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 import com.tysanclan.site.projectewok.TysanApplication;
 import com.tysanclan.site.projectewok.TysanApplication.VersionDescriptor;
@@ -138,7 +139,7 @@ public class Bug extends BaseDomainObject {
 
 	@OrderBy("time")
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "bug")
-	private List<BugComment> comments;
+	private List<BugComment> comments = Lists.newArrayList();
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)

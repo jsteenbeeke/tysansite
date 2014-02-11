@@ -151,7 +151,9 @@ public class ViewBugPage extends AbstractSingleAccordionMemberPage {
 	protected void onDetach() {
 		super.onDetach();
 
-		bugModel.detach();
+		if (bugModel != null) {
+			bugModel.detach();
+		}
 	}
 
 	/**

@@ -30,9 +30,15 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.wicket.Application;
 import org.apache.wicket.Page;
 import org.apache.wicket.Session;
+import org.apache.wicket.core.request.handler.RenderPageRequestHandler;
+import org.apache.wicket.protocol.http.PageExpiredException;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
+import org.apache.wicket.request.Url;
+import org.apache.wicket.request.cycle.AbstractRequestCycleListener;
+import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.http.WebRequest;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
@@ -68,7 +74,6 @@ import com.tysanclan.site.projectewok.pages.RegistrationPage;
 import com.tysanclan.site.projectewok.pages.RegulationPage;
 import com.tysanclan.site.projectewok.pages.RosterPage;
 import com.tysanclan.site.projectewok.pages.SessionTimeoutPage;
-import com.tysanclan.site.projectewok.pages.TysanErrorPage;
 import com.tysanclan.site.projectewok.pages.VacationPage;
 import com.tysanclan.site.projectewok.pages.forum.ActivationPage;
 import com.tysanclan.site.projectewok.pages.member.ReportBugPage;
@@ -212,8 +217,32 @@ public class TysanApplication extends WebApplication {
 			scheduleDefaultTasks();
 		}
 
-		if (usesDeploymentConfig())
-			getApplicationSettings().setInternalErrorPage(TysanErrorPage.class);
+		// if (usesDeploymentConfig())
+		// getApplicationSettings().setInternalErrorPage(TysanErrorPage.class);
+
+		getRequestCycleListeners().add(new AbstractRequestCycleListener() {
+			@Override
+			public IRequestHandler onException(RequestCycle cycle, Exception ex) {
+				if (ex instanceof PageExpiredException) {
+					return null;
+				}
+
+				log.error(ex.getMessage(), ex);
+
+				String target = null;
+
+				Request request = cycle.getRequest();
+				if (request != null) {
+					Url url = request.getUrl();
+					if (url != null) {
+						target = url.toString();
+					}
+				}
+
+				return new RenderPageRequestHandler(new ExceptionPageProvider(
+						target, ex));
+			}
+		});
 
 		getResourceSettings().setUseMinifiedResources(false);
 
