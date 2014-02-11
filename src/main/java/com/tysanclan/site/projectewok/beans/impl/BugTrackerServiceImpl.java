@@ -87,11 +87,14 @@ class BugTrackerServiceImpl implements BugTrackerService {
 
 			return report;
 		} else {
+			log.error("Found existing error");
+
 			BugFilter filter = getExceptionFilter(exception);
 
 			Bug report = bugDAO.getUniqueByFilter(filter);
 
-			if (report.getStatus() == BugStatus.CLOSED) {
+			if (report.getStatus() == BugStatus.CLOSED
+					|| report.getStatus() == BugStatus.RESOLVED) {
 				reopenBug(report, user);
 			}
 
@@ -238,7 +241,8 @@ class BugTrackerServiceImpl implements BugTrackerService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void reopenBug(Bug bug, User user) {
-		if (bug.getStatus() == BugStatus.CLOSED) {
+		if (bug.getStatus() == BugStatus.CLOSED
+				|| bug.getStatus() == BugStatus.RESOLVED) {
 			bug.setStatus(BugStatus.NEW);
 			bug.setAssignedTo(null);
 			bugDAO.update(bug);
