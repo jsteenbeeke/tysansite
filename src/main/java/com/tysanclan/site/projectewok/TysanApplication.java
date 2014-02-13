@@ -55,6 +55,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import com.tysanclan.site.projectewok.auth.TysanSecurity;
 import com.tysanclan.site.projectewok.components.resources.DaysInTysanImageResourceReference;
 import com.tysanclan.site.projectewok.components.resources.HaleyAccidentResourceReference;
+import com.tysanclan.site.projectewok.components.resources.MinecraftWhitelistResourceReference;
 import com.tysanclan.site.projectewok.pages.AboutPage;
 import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
 import com.tysanclan.site.projectewok.pages.CharterPage;
@@ -80,7 +81,6 @@ import com.tysanclan.site.projectewok.pages.member.ReportBugPage;
 import com.tysanclan.site.projectewok.pages.member.RequestFeaturePage;
 import com.tysanclan.site.projectewok.pages.member.SubscriptionPaymentResolvedPage;
 import com.tysanclan.site.projectewok.pages.member.ViewBugPage;
-import com.tysanclan.site.projectewok.pages.member.admin.MinecraftWhiteListPage;
 import com.tysanclan.site.projectewok.pages.member.admin.OldExpensesPage;
 import com.tysanclan.site.projectewok.pages.member.admin.ProcessPaymentRequestPage;
 import com.tysanclan.site.projectewok.pages.member.admin.RandomContentGenerationPage;
@@ -321,8 +321,6 @@ public class TysanApplication extends WebApplication {
 
 		mountPage("/accessdenied", AccessDeniedPage.class);
 
-		mountPage("/mc-whitelist", MinecraftWhiteListPage.class);
-
 		mountPage("/tracker/reportbug", ReportBugPage.class);
 		mountPage("/tracker/requestfeature", RequestFeaturePage.class);
 
@@ -348,6 +346,8 @@ public class TysanApplication extends WebApplication {
 				new DaysInTysanImageResourceReference());
 		mountResource("/images/signatures/haley",
 				new HaleyAccidentResourceReference());
+		mountResource("/mc-whitelist/",
+				new MinecraftWhitelistResourceReference());
 	}
 
 	/**
