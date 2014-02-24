@@ -77,6 +77,7 @@ public class TysanErrorPage extends TysanPage {
 
 		final TextArea<String> reportArea = new TextArea<String>("report",
 				new Model<String>(""));
+		reportArea.setRequired(true);
 
 		Form<Bug> reportForm = new Form<Bug>("bugreport",
 				ModelMaker.wrap(report)) {
