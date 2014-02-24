@@ -24,6 +24,7 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.string.StringValueConversionException;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
@@ -56,8 +57,15 @@ public class ForumPage extends TysanPage {
 					AccessDeniedPage.class);
 		}
 
-		Long id = params.get("forumid").toOptionalLong();
-		Long pageNumber = params.get("pageid").toOptionalLong();
+		Long id, pageNumber;
+
+		try {
+			id = params.get("forumid").toOptionalLong();
+			pageNumber = params.get("pageid").toOptionalLong();
+		} catch (StringValueConversionException svce) {
+			throw new RestartResponseAtInterceptPageException(
+					AccessDeniedPage.class);
+		}
 
 		if (id == null || pageNumber == null || pageNumber == 0) {
 			throw new RestartResponseAtInterceptPageException(
