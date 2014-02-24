@@ -35,6 +35,7 @@ import org.apache.wicket.protocol.http.PageExpiredException;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.Request;
+import org.apache.wicket.request.RequestHandlerStack.ReplaceHandlerException;
 import org.apache.wicket.request.Response;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.cycle.AbstractRequestCycleListener;
@@ -224,6 +225,8 @@ public class TysanApplication extends WebApplication {
 			@Override
 			public IRequestHandler onException(RequestCycle cycle, Exception ex) {
 				if (ex instanceof PageExpiredException) {
+					return null;
+				} else if (ex instanceof ReplaceHandlerException) {
 					return null;
 				}
 

@@ -25,6 +25,7 @@ import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
@@ -286,6 +287,8 @@ public class TysanPage extends WebPage {
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 
+		response.render(CssHeaderItem.forUrl("css/style.css"));
+
 		response.render(JavaScriptHeaderItem
 				.forReference(TysanJQueryUIInitialisationResourceReference
 						.get()));
@@ -314,7 +317,7 @@ public class TysanPage extends WebPage {
 		collapsibles.append("});");
 
 		response.render(OnDomReadyHeaderItem.forScript(collapsibles));
-		
+
 		String openFirst = "$('.jqui-accordion-collapsible:first').accordion( 'option', 'active', 0 )";
 		response.render(OnDomReadyHeaderItem.forScript(openFirst));
 	}

@@ -34,6 +34,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.string.StringValue;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
@@ -91,11 +92,15 @@ public class MemberPage extends TysanPage {
 	public MemberPage(PageParameters params) {
 		super("");
 
-		User u = dao.get(params.get("userid").toLong());
+		StringValue userid = params.get("userid");
+		if (userid == null) {
+			throw new RestartResponseAtInterceptPageException(RosterPage.class);
+		}
 
-		if (!MemberUtil.isMember(u)) {
-			throw new RestartResponseAtInterceptPageException(
-					AccessDeniedPage.class);
+		User u = dao.get(userid.toLong());
+
+		if (u == null || !MemberUtil.isMember(u)) {
+			throw new RestartResponseAtInterceptPageException(RosterPage.class);
 		}
 
 		initComponents(u);
