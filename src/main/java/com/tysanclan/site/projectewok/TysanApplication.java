@@ -30,16 +30,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.wicket.Application;
 import org.apache.wicket.Page;
 import org.apache.wicket.Session;
-import org.apache.wicket.core.request.handler.RenderPageRequestHandler;
-import org.apache.wicket.protocol.http.PageExpiredException;
 import org.apache.wicket.protocol.http.WebApplication;
-import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.Request;
-import org.apache.wicket.request.RequestHandlerStack.ReplaceHandlerException;
 import org.apache.wicket.request.Response;
-import org.apache.wicket.request.Url;
-import org.apache.wicket.request.cycle.AbstractRequestCycleListener;
-import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.http.WebRequest;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
@@ -53,7 +46,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import com.google.common.collect.Sets;
 import com.tysanclan.site.projectewok.auth.TysanSecurity;
 import com.tysanclan.site.projectewok.components.resources.DaysInTysanImageResourceReference;
 import com.tysanclan.site.projectewok.components.resources.HaleyAccidentResourceReference;
@@ -110,7 +102,6 @@ import com.tysanclan.site.projectewok.tasks.SenateElectionResolutionTask;
 import com.tysanclan.site.projectewok.tasks.TruthsayerAcceptanceVoteResolver;
 import com.tysanclan.site.projectewok.tasks.UntenabilityVoteResolutionTask;
 import com.tysanclan.site.projectewok.tasks.WarnInactiveMembersTask;
-import com.tysanclan.site.projectewok.util.StringUtil;
 import com.tysanclan.site.projectewok.util.scheduler.TysanScheduler;
 import com.tysanclan.site.projectewok.util.scheduler.TysanTask;
 
@@ -123,9 +114,6 @@ public class TysanApplication extends WebApplication {
 	private static String version = null;
 
 	public static final String MASTER_KEY = "Sethai Janora Kumirez Dechai";
-
-	protected static final Set<String> RESOLVE_AS_404 = Sets.newHashSet("png",
-			"js", "css", "jpg", "gif");
 
 	public final List<SiteWideNotification> notifications = new LinkedList<SiteWideNotification>();
 
@@ -226,38 +214,7 @@ public class TysanApplication extends WebApplication {
 		// if (usesDeploymentConfig())
 		// getApplicationSettings().setInternalErrorPage(TysanErrorPage.class);
 
-		getRequestCycleListeners().add(new AbstractRequestCycleListener() {
-			@Override
-			public IRequestHandler onException(RequestCycle cycle, Exception ex) {
-				if (ex instanceof PageExpiredException) {
-					return null;
-				} else if (ex instanceof ReplaceHandlerException) {
-					return null;
-				}
-
-				log.error(ex.getMessage(), ex);
-
-				String target = null;
-
-				Request request = cycle.getRequest();
-				if (request != null) {
-					Url url = request.getUrl();
-					if (url != null) {
-						target = url.toString();
-					}
-				}
-
-				final String extension = StringUtil.getFileExtension(target);
-
-				if (extension != null && !extension.isEmpty()
-						&& RESOLVE_AS_404.contains(extension)) {
-					return null;
-				}
-
-				return new RenderPageRequestHandler(new ExceptionPageProvider(
-						target, ex));
-			}
-		});
+		getRequestCycleListeners().add(new ErrorReporterListener());
 
 		getResourceSettings().setUseMinifiedResources(false);
 

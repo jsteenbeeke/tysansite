@@ -25,14 +25,11 @@ public class ErrorReporterListener extends AbstractRequestCycleListener {
 
 	@Override
 	public IRequestHandler onException(RequestCycle cycle, Exception ex) {
-
 		if (ex instanceof PageExpiredException) {
 			return null;
 		} else if (ex instanceof ReplaceHandlerException) {
 			return null;
 		}
-
-		log.error(ex.getMessage(), ex);
 
 		String target = null;
 
@@ -50,6 +47,16 @@ public class ErrorReporterListener extends AbstractRequestCycleListener {
 				&& RESOLVE_AS_404.contains(extension)) {
 			return null;
 		}
+		log.error(ex.getMessage(), ex);
+		Throwable e = ex.getCause();
+
+		log.error("<EXTRALOGGING>");
+		while (e != null) {
+
+			log.error(e.getMessage(), e);
+			e = e.getCause();
+		}
+		log.error("</EXTRALOGGING>");
 
 		return new RenderPageRequestHandler(new ExceptionPageProvider(target,
 				ex));

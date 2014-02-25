@@ -19,7 +19,6 @@ package com.tysanclan.site.projectewok.components;
 
 import org.apache.wicket.markup.html.link.Link;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.entities.ForumThread;
 import com.tysanclan.site.projectewok.pages.ForumThreadPage;
 
@@ -30,14 +29,18 @@ import com.tysanclan.site.projectewok.pages.ForumThreadPage;
  */
 public class ThreadLink extends Link<ForumThread> {
 	private static final long serialVersionUID = 1L;
+
 	private boolean publicView;
-	private Integer page;
+
+	private int pageNumber;
+
+	private Long threadId;
 
 	public ThreadLink(String id, ForumThread thread) {
 		this(id, thread, false);
 	}
 
-	public ThreadLink(String id, ForumThread thread, Integer page) {
+	public ThreadLink(String id, ForumThread thread, int page) {
 		this(id, thread, page, false);
 	}
 
@@ -45,16 +48,19 @@ public class ThreadLink extends Link<ForumThread> {
 		this(id, thread, 1, publicView);
 	}
 
-	public ThreadLink(String id, ForumThread thread, Integer page,
+	public ThreadLink(String id, ForumThread thread, int page,
 			boolean publicView) {
-		super(id, ModelMaker.wrap(thread));
+		super(id);
+		this.threadId = thread != null ? thread.getId() : null;
 		this.publicView = publicView;
-		this.page = page;
+		this.pageNumber = page;
 	}
 
 	@Override
 	public void onClick() {
-		setResponsePage(new ForumThreadPage(getModelObject().getId(), page,
-				publicView));
+		if (threadId != null) {
+			setResponsePage(new ForumThreadPage(threadId, pageNumber,
+					publicView));
+		}
 	}
 }

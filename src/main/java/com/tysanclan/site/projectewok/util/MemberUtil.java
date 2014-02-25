@@ -141,21 +141,20 @@ public class MemberUtil {
 		if (rank == null)
 			return isMember(user);
 
+		final Rank userRank = user.getRank();
+
 		switch (rank) {
 			case CHANCELLOR:
-				return isMember(user) && user.getRank() != Rank.TRIAL
-						&& user.getRank() != Rank.JUNIOR_MEMBER
-						&& !user.isRetired();
+				return isMember(user) && userRank != Rank.TRIAL
+						&& userRank != Rank.JUNIOR_MEMBER && !user.isRetired();
 			case SENATOR:
-				return isMember(user) && user.getRank() != Rank.TRIAL
-						&& user.getRank() != Rank.JUNIOR_MEMBER
-						&& user.getRank() != Rank.CHANCELLOR
-						&& !user.isRetired();
+				return isMember(user) && userRank != Rank.TRIAL
+						&& userRank != Rank.JUNIOR_MEMBER
+						&& userRank != Rank.CHANCELLOR && !user.isRetired();
 			case TRUTHSAYER:
-				return isMember(user) && user.getRank() != Rank.TRIAL
-						&& user.getRank() != Rank.JUNIOR_MEMBER
-						&& user.getRank() != Rank.CHANCELLOR
-						&& !user.isRetired();
+				return isMember(user) && userRank != Rank.TRIAL
+						&& userRank != Rank.JUNIOR_MEMBER
+						&& userRank != Rank.CHANCELLOR && !user.isRetired();
 			default:
 				// Does not make sense for other ranks
 				return false;

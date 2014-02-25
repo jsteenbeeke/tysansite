@@ -49,6 +49,7 @@ import com.tysanclan.site.projectewok.pages.forum.EditForumPostPage;
 import com.tysanclan.site.projectewok.pages.member.MessageListPage;
 import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.MemberUtil;
+import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
 
 /**
  * @author Jeroen Steenbeeke
@@ -203,12 +204,12 @@ public class PostPanel extends Panel {
 					.getPoster().getRank().toString() : "Forum User"));
 
 			WebMarkupContainer image = new WebMarkupContainer("avatar");
-			String url = post.getPoster() != null ? post.getPoster()
-					.getImageURL() : "";
-			if (url != null && url.isEmpty()) {
+			final String url = post.getPoster() != null ? BBCodeUtil
+					.filterURL(post.getPoster().getImageURL()) : "";
+			if (url != null && (url.isEmpty() || "#".equals(url))) {
 				image.setVisible(false);
 			} else {
-				image.add(new AttributeModifier("src", new Model<String>(url)));
+				image.add(AttributeModifier.replace("src", url));
 			}
 			container.add(image);
 

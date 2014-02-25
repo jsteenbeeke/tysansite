@@ -30,6 +30,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
+import com.tysanclan.site.projectewok.TysanSession;
 import com.tysanclan.site.projectewok.beans.ForumService;
 import com.tysanclan.site.projectewok.beans.MembershipService;
 import com.tysanclan.site.projectewok.components.ForumPostEditorPanel;
@@ -76,7 +77,7 @@ public class ReplyPage extends TysanPage {
 			@Override
 			protected void onSubmit() {
 				ForumThread ft = threadDAO.load(getModelObject());
-				User currentUser = ReplyPage.this.getTysanSession().getUser();
+				User currentUser = TysanSession.get().getUser();
 
 				Calendar oneWeekAgo = DateUtil.getCalendarInstance();
 				oneWeekAgo.add(Calendar.WEEK_OF_YEAR, -1);

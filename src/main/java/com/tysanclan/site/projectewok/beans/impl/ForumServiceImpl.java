@@ -202,6 +202,7 @@ class ForumServiceImpl implements
 		nt.setShadow(user != null && user.getRank() == Rank.BANNED);
 		nt.setPostTime(new Date());
 		nt.setTitle(BBCodeUtil.stripTags(title));
+		nt.setLastPost(nt.getPostTime());
 		forumThreadDAO.save(nt);
 		return nt;
 	}

@@ -19,9 +19,9 @@ package com.tysanclan.site.projectewok;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.ServiceRegistryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,8 +45,8 @@ public class SessionBuilder {
 		ac = ac.addAnnotatedClass(User.class);
 		ac = ac.addAnnotatedClass(Activation.class);
 
-		final ServiceRegistry serviceRegistry = new ServiceRegistryBuilder()
-				.applySettings(ac.getProperties()).buildServiceRegistry();
+		final ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
+				.applySettings(ac.getProperties()).build();
 
 		factory = ac.buildSessionFactory(serviceRegistry);
 	}
