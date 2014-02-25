@@ -215,4 +215,22 @@ public class StringUtil {
 					.toUpperCase(), input.substring(1)) : null;
 		}
 	}
+
+	public static String getFileExtension(final String target) {
+		if (target != null) {
+			if (!target.isEmpty()) {
+				final int lastDot = target.lastIndexOf('.');
+
+				if (lastDot != -1) {
+					final int from = lastDot + 1;
+
+					if (from < target.length()) {
+						return target.substring(from);
+					}
+				}
+			}
+		}
+
+		return null;
+	}
 }

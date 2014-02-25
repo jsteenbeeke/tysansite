@@ -18,6 +18,7 @@
 package com.tysanclan.site.projectewok.util;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
@@ -39,5 +40,20 @@ public class TestStringUtils {
 		for (String[] test : testValues) {
 			assertEquals(test[1], HashUtil.sha1Hash(test[0]));
 		}
+	}
+
+	@Test
+	public void checkExtension() {
+		assertNull(StringUtil.getFileExtension(null));
+		assertNull(StringUtil.getFileExtension(""));
+		assertNull(StringUtil.getFileExtension(" "));
+		assertNull(StringUtil.getFileExtension("your mom"));
+		assertNull(StringUtil.getFileExtension("."));
+		assertEquals("gitignore", StringUtil.getFileExtension(".gitignore"));
+		assertEquals("png", StringUtil.getFileExtension(".png"));
+		assertEquals("bat", StringUtil.getFileExtension("autoexec.bat"));
+		assertEquals("com", StringUtil.getFileExtension("www.tysanclan.com"));
+		assertEquals("com",
+				StringUtil.getFileExtension("target/www.tysanclan.com"));
 	}
 }

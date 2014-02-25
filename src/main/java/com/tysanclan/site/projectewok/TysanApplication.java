@@ -53,6 +53,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import com.google.common.collect.Sets;
 import com.tysanclan.site.projectewok.auth.TysanSecurity;
 import com.tysanclan.site.projectewok.components.resources.DaysInTysanImageResourceReference;
 import com.tysanclan.site.projectewok.components.resources.HaleyAccidentResourceReference;
@@ -109,6 +110,7 @@ import com.tysanclan.site.projectewok.tasks.SenateElectionResolutionTask;
 import com.tysanclan.site.projectewok.tasks.TruthsayerAcceptanceVoteResolver;
 import com.tysanclan.site.projectewok.tasks.UntenabilityVoteResolutionTask;
 import com.tysanclan.site.projectewok.tasks.WarnInactiveMembersTask;
+import com.tysanclan.site.projectewok.util.StringUtil;
 import com.tysanclan.site.projectewok.util.scheduler.TysanScheduler;
 import com.tysanclan.site.projectewok.util.scheduler.TysanTask;
 
@@ -121,6 +123,9 @@ public class TysanApplication extends WebApplication {
 	private static String version = null;
 
 	public static final String MASTER_KEY = "Sethai Janora Kumirez Dechai";
+
+	protected static final Set<String> RESOLVE_AS_404 = Sets.newHashSet("png",
+			"js", "css", "jpg", "gif");
 
 	public final List<SiteWideNotification> notifications = new LinkedList<SiteWideNotification>();
 
@@ -240,6 +245,13 @@ public class TysanApplication extends WebApplication {
 					if (url != null) {
 						target = url.toString();
 					}
+				}
+
+				final String extension = StringUtil.getFileExtension(target);
+
+				if (extension != null && !extension.isEmpty()
+						&& RESOLVE_AS_404.contains(extension)) {
+					return null;
 				}
 
 				return new RenderPageRequestHandler(new ExceptionPageProvider(
