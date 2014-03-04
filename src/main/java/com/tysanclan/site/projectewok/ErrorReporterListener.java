@@ -10,6 +10,7 @@ import org.apache.wicket.request.RequestHandlerStack.ReplaceHandlerException;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.cycle.AbstractRequestCycleListener;
 import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.http.WebRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +33,7 @@ public class ErrorReporterListener extends AbstractRequestCycleListener {
 		}
 
 		String target = null;
+		String referrer = null;
 
 		final Request request = cycle.getRequest();
 		if (request != null) {
@@ -39,6 +41,13 @@ public class ErrorReporterListener extends AbstractRequestCycleListener {
 			if (url != null) {
 				target = url.toString();
 			}
+
+			if (request instanceof WebRequest) {
+				WebRequest wr = (WebRequest) request;
+				referrer = wr.getHeader("referer"); // Yes, this is mis-spelled
+													// in the protocol
+			}
+
 		}
 
 		final String extension = StringUtil.getFileExtension(target);
@@ -48,18 +57,9 @@ public class ErrorReporterListener extends AbstractRequestCycleListener {
 			return null;
 		}
 		log.error(ex.getMessage(), ex);
-		Throwable e = ex.getCause();
-
-		log.error("<EXTRALOGGING>");
-		while (e != null) {
-
-			log.error(e.getMessage(), e);
-			e = e.getCause();
-		}
-		log.error("</EXTRALOGGING>");
 
 		return new RenderPageRequestHandler(new ExceptionPageProvider(target,
-				ex));
+				referrer, ex));
 
 	}
 }

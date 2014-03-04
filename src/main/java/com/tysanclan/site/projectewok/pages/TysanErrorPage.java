@@ -17,6 +17,9 @@
  */
 package com.tysanclan.site.projectewok.pages;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
@@ -49,13 +52,18 @@ public class TysanErrorPage extends TysanPage {
 	 * @param exception
 	 *            The exception thrown
 	 */
-	public TysanErrorPage(String target, final Exception exception) {
+	public TysanErrorPage(@Nullable String target, @Nullable String referrer,
+			@Nonnull final Exception exception) {
 		super("An error has occurred");
 
 		boolean known = (bugTrackerService.isKnownIssue(exception));
 
-		Bug report = bugTrackerService.reportCrash(getUser(),
-				target != null ? target : null, exception);
+		Bug report = bugTrackerService
+				.reportCrash(getUser(), target, exception);
+		if (referrer != null) {
+			bugTrackerService.addCommentToBug(report, getUser(),
+					String.format("HTTP Referrer: %s", referrer));
+		}
 
 		known = known && report != null;
 
