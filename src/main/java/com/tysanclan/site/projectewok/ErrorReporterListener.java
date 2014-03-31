@@ -11,6 +11,7 @@ import org.apache.wicket.request.Url;
 import org.apache.wicket.request.cycle.AbstractRequestCycleListener;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.http.WebRequest;
+import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,6 +30,9 @@ public class ErrorReporterListener extends AbstractRequestCycleListener {
 		if (ex instanceof PageExpiredException) {
 			return null;
 		} else if (ex instanceof ReplaceHandlerException) {
+			return null;
+		} else if (ex instanceof AbortWithHttpErrorCodeException) {
+			// Do not log explicit HTTP errors
 			return null;
 		}
 

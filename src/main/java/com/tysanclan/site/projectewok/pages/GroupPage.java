@@ -20,11 +20,14 @@ package com.tysanclan.site.projectewok.pages;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -40,13 +43,36 @@ import com.tysanclan.site.projectewok.entities.dao.GroupDAO;
  */
 public class GroupPage extends TysanPage {
 	private static final long serialVersionUID = 1L;
+
+	public static class GroupPageParams {
+		private final long groupId;
+
+		public GroupPageParams(Long groupId) {
+			this.groupId = groupId;
+		}
+
+		public long getGroupId() {
+			return groupId;
+		}
+	}
+
 	@SpringBean
 	private GroupDAO groupDAO;
 
 	public GroupPage(PageParameters params) {
 		super("Group");
 
-		Group g = groupDAO.get(params.get("groupid").toLong());
+		GroupPageParams parameters;
+
+		try {
+			parameters = requiredLong("groupid").forParameters(params).toClass(
+					GroupPageParams.class);
+		} catch (PageParameterExtractorException e) {
+			throw new AbortWithHttpErrorCodeException(
+					HttpServletResponse.SC_NOT_FOUND);
+		}
+
+		Group g = groupDAO.get(parameters.getGroupId());
 
 		if (g == null) {
 			throw new RestartResponseAtInterceptPageException(

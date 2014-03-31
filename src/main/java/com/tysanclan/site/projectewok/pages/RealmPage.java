@@ -17,12 +17,15 @@
  */
 package com.tysanclan.site.projectewok.pages;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -41,6 +44,19 @@ import com.tysanclan.site.projectewok.entities.dao.RealmDAO;
 public class RealmPage extends TysanPage {
 	private static final long serialVersionUID = 1L;
 
+	public static class RealmPageParams {
+		private final long id;
+
+		public RealmPageParams(Long id) {
+			super();
+			this.id = id;
+		}
+
+		public long getId() {
+			return id;
+		}
+	}
+
 	@SpringBean
 	private RealmDAO realmDAO;
 
@@ -52,9 +68,16 @@ public class RealmPage extends TysanPage {
 	public RealmPage(PageParameters params) {
 		super("Realm overview");
 
-		Long id = Long.parseLong(params.get("id").toString());
+		RealmPageParams parameters;
+		try {
+			parameters = requiredLong("id").forParameters(params).toClass(
+					RealmPageParams.class);
+		} catch (PageParameterExtractorException e) {
+			throw new AbortWithHttpErrorCodeException(
+					HttpServletResponse.SC_NOT_FOUND);
+		}
 
-		init(realmDAO.load(id));
+		init(realmDAO.load(parameters.getId()));
 	}
 
 	public void init(Realm realm) {

@@ -17,8 +17,11 @@
  */
 package com.tysanclan.site.projectewok;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.RuntimeConfigurationType;
@@ -39,11 +42,15 @@ import org.apache.wicket.markup.html.panel.ComponentFeedbackPanel;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.string.StringValue;
+import org.apache.wicket.util.string.StringValueConversionException;
 import org.apache.wicket.util.time.Duration;
 import org.joda.time.LocalDate;
 import org.odlabs.wiquery.ui.dialog.Dialog;
 
+import com.google.common.collect.Lists;
 import com.tysanclan.site.projectewok.components.DebugWindow;
 import com.tysanclan.site.projectewok.components.TysanLoginPanel;
 import com.tysanclan.site.projectewok.components.TysanMemberPanel;
@@ -364,5 +371,280 @@ public class TysanPage extends WebPage {
 
 		}
 
+	}
+
+	private static enum ParamType {
+		BOOLEAN {
+			@Override
+			protected void checkType(StringValue value)
+					throws PageParameterExtractorException {
+				try {
+					getValue(value);
+				} catch (StringValueConversionException svce) {
+					throw new PageParameterExtractorException(
+							"%s is not a valid boolean", value.toString());
+				}
+			}
+
+			@Override
+			public Object getValue(StringValue value) {
+				return value.toOptionalBoolean();
+			}
+		},
+		INT {
+			@Override
+			protected void checkType(StringValue value)
+					throws PageParameterExtractorException {
+				try {
+					getValue(value);
+				} catch (StringValueConversionException svce) {
+					throw new PageParameterExtractorException(
+							"%s is not a valid integer", value.toString());
+				}
+			}
+
+			@Override
+			public Object getValue(StringValue value) {
+				return value.toOptionalInteger();
+			}
+		},
+		LONG {
+			@Override
+			protected void checkType(StringValue value)
+					throws PageParameterExtractorException {
+				try {
+					getValue(value);
+				} catch (StringValueConversionException svce) {
+					throw new PageParameterExtractorException(
+							"%s is not a valid long", value.toString());
+				}
+			}
+
+			@Override
+			public Object getValue(StringValue value) {
+				return value.toOptionalLong();
+			}
+		},
+		STRING {
+			@Override
+			protected void checkType(StringValue value)
+					throws PageParameterExtractorException {
+				try {
+					getValue(value);
+				} catch (StringValueConversionException svce) {
+					throw new PageParameterExtractorException(
+							"%s is not a valid string", value.toString());
+				}
+			}
+
+			@Override
+			public Object getValue(StringValue value) {
+				return value.toOptionalString();
+			}
+		};
+
+		public void check(PageParameters params, String identifier,
+				boolean required) throws PageParameterExtractorException {
+			StringValue value = params.get(identifier);
+
+			if (value.isEmpty() || value.isNull()) {
+				if (required) {
+					throw new PageParameterExtractorException(
+							"Required parameter %s is null or empty",
+							identifier);
+				}
+			}
+
+			checkType(value);
+
+		}
+
+		protected abstract void checkType(StringValue value)
+				throws PageParameterExtractorException;
+
+		public abstract Object getValue(StringValue value);
+	}
+
+	protected static PageParameterExtractorBuilder optionalBoolean(
+			String identifier) {
+		return new PageParameterExtractorBuilder(identifier, ParamType.BOOLEAN,
+				false);
+	}
+
+	protected static PageParameterExtractorBuilder optionalInt(String identifier) {
+		return new PageParameterExtractorBuilder(identifier, ParamType.INT,
+				false);
+	}
+
+	protected static PageParameterExtractorBuilder optionalLong(
+			String identifier) {
+		return new PageParameterExtractorBuilder(identifier, ParamType.LONG,
+				false);
+	}
+
+	protected static PageParameterExtractorBuilder optionalString(
+			String identifier) {
+		return new PageParameterExtractorBuilder(identifier, ParamType.STRING,
+				false);
+	}
+
+	protected static PageParameterExtractorBuilder requiredBoolean(
+			String identifier) {
+		return new PageParameterExtractorBuilder(identifier, ParamType.BOOLEAN,
+				true);
+	}
+
+	protected static PageParameterExtractorBuilder requiredInt(String identifier) {
+		return new PageParameterExtractorBuilder(identifier, ParamType.INT,
+				true);
+	}
+
+	protected static PageParameterExtractorBuilder requiredLong(
+			String identifier) {
+		return new PageParameterExtractorBuilder(identifier, ParamType.LONG,
+				true);
+	}
+
+	protected static PageParameterExtractorBuilder requiredString(
+			String identifier) {
+		return new PageParameterExtractorBuilder(identifier, ParamType.STRING,
+				true);
+	}
+
+	protected static class PageParameterExtractor {
+		private final List<Object> constructorParams;
+
+		private PageParameterExtractor() {
+			constructorParams = Lists.newArrayList();
+		}
+
+		private void addValue(Object value) {
+			constructorParams.add(value);
+		}
+
+		public <T> T toClass(Class<T> targetClass)
+				throws PageParameterExtractorException {
+			Class<?>[] pClass = new Class<?>[constructorParams.size()];
+			Object[] p = new Object[constructorParams.size()];
+			int i = 0;
+			for (Object v : constructorParams) {
+
+				p[i] = v;
+				pClass[i++] = v.getClass();
+			}
+
+			try {
+				Constructor<T> con = targetClass.getConstructor(pClass);
+				return con.newInstance(p);
+			} catch (NoSuchMethodException | SecurityException
+					| InstantiationException | IllegalAccessException
+					| IllegalArgumentException | InvocationTargetException e) {
+				throw new PageParameterExtractorException(
+						"Cannot store parameters in target class: %s",
+						e.getMessage());
+			}
+		}
+
+	}
+
+	protected static class PageParameterExtractorException extends Exception {
+		private static final long serialVersionUID = 1L;
+
+		public PageParameterExtractorException(String message, Object... params) {
+			super(String.format(message, params));
+		}
+
+	}
+
+	protected static class PageParameterExtractorBuilder {
+		private final String identifier;
+
+		private final ParamType paramType;
+
+		private final boolean required;
+
+		private final PageParameterExtractorBuilder prev;
+
+		private PageParameterExtractorBuilder(String identifier,
+				ParamType paramType, boolean required) {
+			this(identifier, paramType, required, null);
+		}
+
+		private PageParameterExtractorBuilder(String identifier,
+				ParamType paramType, boolean required,
+				PageParameterExtractorBuilder prev) {
+			super();
+			this.identifier = identifier;
+			this.paramType = paramType;
+			this.prev = prev;
+			this.required = required;
+		}
+
+		public PageParameterExtractorBuilder optionalBoolean(String identifier) {
+			return new PageParameterExtractorBuilder(identifier,
+					ParamType.BOOLEAN, false, this);
+		}
+
+		public PageParameterExtractorBuilder optionalInt(String identifier) {
+			return new PageParameterExtractorBuilder(identifier, ParamType.INT,
+					false, this);
+		}
+
+		public PageParameterExtractorBuilder optionalLong(String identifier) {
+			return new PageParameterExtractorBuilder(identifier,
+					ParamType.LONG, false, this);
+		}
+
+		public PageParameterExtractorBuilder optionalString(String identifier) {
+			return new PageParameterExtractorBuilder(identifier,
+					ParamType.STRING, false, this);
+		}
+
+		public PageParameterExtractorBuilder requiredBoolean(String identifier) {
+			return new PageParameterExtractorBuilder(identifier,
+					ParamType.BOOLEAN, true, this);
+		}
+
+		public PageParameterExtractorBuilder requiredInt(String identifier) {
+			return new PageParameterExtractorBuilder(identifier, ParamType.INT,
+					true, this);
+		}
+
+		public PageParameterExtractorBuilder requiredLong(String identifier) {
+			return new PageParameterExtractorBuilder(identifier,
+					ParamType.LONG, true, this);
+		}
+
+		public PageParameterExtractorBuilder requiredString(String identifier) {
+			return new PageParameterExtractorBuilder(identifier,
+					ParamType.STRING, true, this);
+		}
+
+		public PageParameterExtractor forParameters(PageParameters params)
+				throws PageParameterExtractorException {
+			check(params);
+
+			PageParameterExtractor extractor = new PageParameterExtractor();
+			addType(extractor, params);
+
+			return extractor;
+		}
+
+		private void addType(PageParameterExtractor extractor,
+				PageParameters params) {
+			if (prev != null) {
+				prev.addType(extractor, params);
+			}
+
+			extractor.addValue(paramType.getValue(params.get(identifier)));
+		}
+
+		private void check(PageParameters params)
+				throws PageParameterExtractorException {
+			paramType.check(params, identifier, required);
+			if (prev != null) {
+				prev.check(params);
+			}
+		}
 	}
 }

@@ -19,6 +19,8 @@ package com.tysanclan.site.projectewok.pages.member;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -32,6 +34,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -52,6 +55,19 @@ import com.tysanclan.site.projectewok.entities.dao.filters.BugFilter;
 @TysanMemberSecured
 public class ViewBugPage extends AbstractSingleAccordionMemberPage {
 	private static final long serialVersionUID = 1L;
+
+	public static class ViewBugPageParams {
+		private final long id;
+
+		public ViewBugPageParams(Long id) {
+			super();
+			this.id = id;
+		}
+
+		public long getId() {
+			return id;
+		}
+	}
 
 	public static class BugRenderer implements IChoiceRenderer<Bug> {
 		private static final long serialVersionUID = 1L;
@@ -125,13 +141,16 @@ public class ViewBugPage extends AbstractSingleAccordionMemberPage {
 	public ViewBugPage(PageParameters params) {
 		super("Bug");
 
-		Long id = params.get("bug").toOptionalLong();
+		ViewBugPageParams parameters;
+		try {
+			parameters = requiredLong("bug").forParameters(params).toClass(
+					ViewBugPageParams.class);
+		} catch (PageParameterExtractorException e) {
+			throw new AbortWithHttpErrorCodeException(
+					HttpServletResponse.SC_NOT_FOUND);
+		}
 
-		if (id == null)
-			throw new RestartResponseAtInterceptPageException(
-					BugOverviewPage.class);
-
-		Bug bug = bugDAO.get(id);
+		Bug bug = bugDAO.get(parameters.getId());
 
 		if (bug == null)
 			throw new RestartResponseAtInterceptPageException(

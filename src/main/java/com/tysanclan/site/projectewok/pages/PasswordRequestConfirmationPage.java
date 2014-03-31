@@ -19,10 +19,13 @@ package com.tysanclan.site.projectewok.pages;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -39,6 +42,19 @@ import com.tysanclan.site.projectewok.entities.dao.filters.PasswordRequestFilter
 public class PasswordRequestConfirmationPage extends TysanPage {
 	private static final long serialVersionUID = 1L;
 
+	public static class PasswordRequestConfirmationPageParams {
+		private final String key;
+
+		public PasswordRequestConfirmationPageParams(String key) {
+			super();
+			this.key = key;
+		}
+
+		public String getKey() {
+			return key;
+		}
+	}
+
 	@SpringBean
 	private PasswordRequestDAO passwordRequestDAO;
 
@@ -47,14 +63,18 @@ public class PasswordRequestConfirmationPage extends TysanPage {
 	 */
 	public PasswordRequestConfirmationPage(PageParameters params) {
 		super("Reset password");
-		String key = params.get("key").toOptionalString();
 
-		if (key == null) {
-			throw new RestartResponseAtInterceptPageException(NewsPage.class);
+		PasswordRequestConfirmationPageParams parameters;
+		try {
+			parameters = requiredString("key").forParameters(params).toClass(
+					PasswordRequestConfirmationPageParams.class);
+		} catch (PageParameterExtractorException e) {
+			throw new AbortWithHttpErrorCodeException(
+					HttpServletResponse.SC_NOT_FOUND);
 		}
 
 		PasswordRequestFilter filter = new PasswordRequestFilter();
-		filter.setKey(key);
+		filter.setKey(parameters.getKey());
 
 		List<PasswordRequest> requests = passwordRequestDAO
 				.findByFilter(filter);

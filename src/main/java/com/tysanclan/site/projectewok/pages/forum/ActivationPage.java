@@ -19,9 +19,12 @@ package com.tysanclan.site.projectewok.pages.forum;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -39,6 +42,19 @@ import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
 public class ActivationPage extends TysanPage {
 	private static final long serialVersionUID = 1L;
 
+	public static class ActivationPageParams {
+		private final String key;
+
+		public ActivationPageParams(String key) {
+			super();
+			this.key = key;
+		}
+
+		public String getKey() {
+			return key;
+		}
+	}
+
 	@SpringBean
 	private ActivationDAO activationDAO;
 
@@ -48,10 +64,17 @@ public class ActivationPage extends TysanPage {
 	public ActivationPage(PageParameters params) {
 		super("Account activation");
 
-		String key = params.get("key").toString();
+		ActivationPageParams parameters;
+		try {
+			parameters = requiredString("key").forParameters(params).toClass(
+					ActivationPageParams.class);
+		} catch (PageParameterExtractorException e) {
+			throw new AbortWithHttpErrorCodeException(
+					HttpServletResponse.SC_NOT_FOUND);
+		}
 
 		ActivationFilter filter = new ActivationFilter();
-		filter.setKey(key);
+		filter.setKey(parameters.getKey());
 		List<Activation> activations = activationDAO.findByFilter(filter);
 
 		if (activations.isEmpty()) {

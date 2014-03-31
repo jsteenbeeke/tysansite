@@ -17,14 +17,14 @@
  */
 package com.tysanclan.site.projectewok.pages;
 
-import java.util.Set;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.string.StringValueConversionException;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
@@ -37,6 +37,25 @@ import com.tysanclan.site.projectewok.entities.dao.ForumThreadDAO;
  * @author Jeroen Steenbeeke
  */
 public class ForumPage extends TysanPage {
+	public static class ForumPageParams {
+		private final long forumId;
+
+		private final long pageNumber;
+
+		public ForumPageParams(Long forumId, Long pageNumber) {
+			this.forumId = forumId;
+			this.pageNumber = pageNumber;
+		}
+
+		public long getForumId() {
+			return forumId;
+		}
+
+		public long getPageNumber() {
+			return pageNumber;
+		}
+	}
+
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
@@ -50,29 +69,22 @@ public class ForumPage extends TysanPage {
 	public ForumPage(PageParameters params) {
 		super("");
 
-		Set<String> namedKeys = params.getNamedKeys();
-
-		if (!namedKeys.contains("forumid") || !namedKeys.contains("pageid")) {
-			throw new RestartResponseAtInterceptPageException(
-					AccessDeniedPage.class);
-		}
-
-		Long id, pageNumber;
+		ForumPageParams parameters;
 
 		try {
-			id = params.get("forumid").toOptionalLong();
-			pageNumber = params.get("pageid").toOptionalLong();
-		} catch (StringValueConversionException svce) {
+			parameters = requiredLong("forumid").requiredLong("pageid")
+					.forParameters(params).toClass(ForumPageParams.class);
+		} catch (PageParameterExtractorException e) {
+			throw new AbortWithHttpErrorCodeException(
+					HttpServletResponse.SC_NOT_FOUND);
+		}
+
+		if (parameters.getPageNumber() <= 0) {
 			throw new RestartResponseAtInterceptPageException(
 					AccessDeniedPage.class);
 		}
 
-		if (id == null || pageNumber == null || pageNumber == 0) {
-			throw new RestartResponseAtInterceptPageException(
-					AccessDeniedPage.class);
-		}
-
-		Forum forum = forumDAO.get(id);
+		Forum forum = forumDAO.get(parameters.getForumId());
 
 		if (forum == null) {
 			throw new RestartResponseAtInterceptPageException(
@@ -84,7 +96,7 @@ public class ForumPage extends TysanPage {
 					AccessDeniedPage.class);
 		}
 
-		initComponents(forum, pageNumber);
+		initComponents(forum, parameters.getPageNumber());
 	}
 
 	public ForumPage(final Forum forum) {

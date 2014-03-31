@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -32,9 +34,9 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.string.StringValue;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
@@ -72,6 +74,19 @@ import com.tysanclan.site.projectewok.util.MemberUtil;
  */
 public class MemberPage extends TysanPage {
 
+	public static class MemberPageParams {
+		private final Long userId;
+
+		public MemberPageParams(Long userId) {
+			super();
+			this.userId = userId;
+		}
+
+		public Long getUserId() {
+			return userId;
+		}
+	}
+
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
@@ -92,12 +107,17 @@ public class MemberPage extends TysanPage {
 	public MemberPage(PageParameters params) {
 		super("");
 
-		StringValue userid = params.get("userid");
-		if (userid == null) {
-			throw new RestartResponseAtInterceptPageException(RosterPage.class);
+		MemberPageParams parameters;
+
+		try {
+			parameters = requiredLong("userid").forParameters(params).toClass(
+					MemberPageParams.class);
+		} catch (PageParameterExtractorException e) {
+			throw new AbortWithHttpErrorCodeException(
+					HttpServletResponse.SC_NOT_FOUND);
 		}
 
-		User u = dao.get(userid.toLong());
+		User u = dao.get(parameters.getUserId());
 
 		if (u == null || !MemberUtil.isMember(u)) {
 			throw new RestartResponseAtInterceptPageException(RosterPage.class);

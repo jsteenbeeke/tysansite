@@ -21,9 +21,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.Nullable;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -35,9 +35,9 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.string.StringValueConversionException;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
@@ -77,6 +77,26 @@ import com.tysanclan.site.projectewok.util.MemberUtil;
  */
 public class ForumThreadPage extends TysanPage {
 
+	public static class ForumThreadPageParams {
+		private final long threadId;
+
+		private final int pageNumber;
+
+		public ForumThreadPageParams(Long threadId, Integer pageNumber) {
+			this.threadId = threadId;
+			this.pageNumber = pageNumber;
+		}
+
+		public long getThreadId() {
+			return threadId;
+		}
+
+		public int getPageNumber() {
+			return pageNumber;
+		}
+
+	}
+
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
@@ -102,37 +122,24 @@ public class ForumThreadPage extends TysanPage {
 	public ForumThreadPage(PageParameters params) {
 		super("");
 
-		Set<String> namedKeys = params.getNamedKeys();
-
-		if (!namedKeys.contains("threadid") || !namedKeys.contains("pageid")) {
-			throw new RestartResponseAtInterceptPageException(
-					AccessDeniedPage.class);
-		}
-
-		Long threadId = null;
-		Integer pageId = null;
+		ForumThreadPageParams parameters;
 
 		try {
-			pageId = params.get("pageid").toOptionalInteger();
-			threadId = params.get("threadid").toOptionalLong();
-		} catch (StringValueConversionException svce) {
-			throw new RestartResponseAtInterceptPageException(
-					AccessDeniedPage.class);
+			parameters = requiredLong("threadid").requiredInt("pageid")
+					.forParameters(params).toClass(ForumThreadPageParams.class);
+		} catch (PageParameterExtractorException e) {
+			throw new AbortWithHttpErrorCodeException(
+					HttpServletResponse.SC_NOT_FOUND);
 		}
 
-		if (threadId == null || pageId == null) {
-			throw new RestartResponseAtInterceptPageException(
-					AccessDeniedPage.class);
-		}
-
-		ForumThread t = dao.get(threadId);
+		ForumThread t = dao.get(parameters.getThreadId());
 
 		if (t == null) {
 			throw new RestartResponseAtInterceptPageException(
 					AccessDeniedPage.class);
 		}
 
-		initComponents(t, pageId, getUser() == null);
+		initComponents(t, parameters.getPageNumber(), getUser() == null);
 	}
 
 	public ForumThreadPage(final long threadId, int pageId,
