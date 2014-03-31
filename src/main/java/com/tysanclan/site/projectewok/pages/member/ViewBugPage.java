@@ -39,6 +39,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.tysanclan.site.projectewok.TysanApplication;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.beans.BugTrackerService;
 import com.tysanclan.site.projectewok.components.DateLabel;
@@ -310,7 +311,8 @@ public class ViewBugPage extends AbstractSingleAccordionMemberPage {
 						&& (bug.getStatus() == BugStatus.NEW || bug.getStatus() == BugStatus.ACKNOWLEDGED));
 
 		final TextField<String> fixedInVersionField = new TextField<String>(
-				"fixedIn", new Model<String>(""));
+				"fixedIn", new Model<String>(
+						TysanApplication.getApplicationVersion()));
 		fixedInVersionField.setRequired(true);
 
 		final TextArea<String> solutionArea = new TextArea<String>(
