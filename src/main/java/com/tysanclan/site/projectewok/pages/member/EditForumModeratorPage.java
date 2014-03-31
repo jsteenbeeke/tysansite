@@ -60,7 +60,7 @@ public class EditForumModeratorPage extends TysanPage {
 
 		forumModel = ModelMaker.wrap(forum);
 
-		add(new Label("title", "Moderators for forum " + forum.getName()));
+		add(new Label("stitle", "Moderators for forum " + forum.getName()));
 
 		List<User> moderators = new LinkedList<User>();
 		moderators.addAll(forum.getModerators());
