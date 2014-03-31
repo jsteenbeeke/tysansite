@@ -19,6 +19,7 @@ package com.tysanclan.site.projectewok.pages;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -77,7 +78,13 @@ public class RealmPage extends TysanPage {
 					HttpServletResponse.SC_NOT_FOUND);
 		}
 
-		init(realmDAO.load(parameters.getId()));
+		Realm realm = realmDAO.get(parameters.getId());
+
+		if (realm == null)
+			throw new RestartResponseAtInterceptPageException(
+					AccessDeniedPage.class);
+
+		init(realm);
 	}
 
 	public void init(Realm realm) {
