@@ -19,4 +19,6 @@ public interface RestService {
 	void deleteApplication(AuthorizedRestApplication application);
 
 	void activateApplication(AuthorizedRestApplication application);
+
+	void cleanExpiredTokens();
 }

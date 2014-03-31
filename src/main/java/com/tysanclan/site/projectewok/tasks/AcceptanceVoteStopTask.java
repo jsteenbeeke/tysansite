@@ -20,16 +20,12 @@ package com.tysanclan.site.projectewok.tasks;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.tysanclan.site.projectewok.beans.DemocracyService;
-import com.tysanclan.site.projectewok.entities.dao.AcceptanceVoteDAO;
 import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 
 /**
  * @author Jeroen Steenbeeke
  */
 public class AcceptanceVoteStopTask extends PeriodicTask {
-	@SpringBean
-	private AcceptanceVoteDAO acceptanceVoteDAO;
-
 	@SpringBean
 	private DemocracyService democracyService;
 

@@ -16,6 +16,7 @@ import com.tysanclan.site.projectewok.entities.AuthorizedRestApplication;
 import com.tysanclan.site.projectewok.entities.RestApplicationChallenge;
 import com.tysanclan.site.projectewok.entities.dao.AuthorizedRestApplicationDAO;
 import com.tysanclan.site.projectewok.entities.dao.RestApplicationChallengeDAO;
+import com.tysanclan.site.projectewok.entities.dao.RestTokenDAO;
 import com.tysanclan.site.projectewok.entities.dao.filters.AuthorizedRestApplicationFilter;
 import com.tysanclan.site.projectewok.entities.dao.filters.RestApplicationChallengeFilter;
 import com.tysanclan.site.projectewok.util.StringUtil;
@@ -29,6 +30,9 @@ class RestServiceImpl implements RestService {
 	@Autowired
 	private RestApplicationChallengeDAO challengeDAO;
 
+	@Autowired
+	private RestTokenDAO tokenDAO;
+
 	public void setApplicationDAO(AuthorizedRestApplicationDAO applicationDAO) {
 		this.applicationDAO = applicationDAO;
 	}
@@ -37,7 +41,17 @@ class RestServiceImpl implements RestService {
 		this.challengeDAO = challengeDAO;
 	}
 
+	public void setTokenDAO(RestTokenDAO tokenDAO) {
+		this.tokenDAO = tokenDAO;
+	}
+
 	public RestServiceImpl() {
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED)
+	@Override
+	public void cleanExpiredTokens() {
+		tokenDAO.cleanExpiredTokens();
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
