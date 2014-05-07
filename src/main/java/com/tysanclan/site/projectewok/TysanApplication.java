@@ -50,6 +50,7 @@ import com.tysanclan.site.projectewok.auth.TysanSecurity;
 import com.tysanclan.site.projectewok.components.resources.DaysInTysanImageResourceReference;
 import com.tysanclan.site.projectewok.components.resources.HaleyAccidentResourceReference;
 import com.tysanclan.site.projectewok.components.resources.MinecraftWhitelistResourceReference;
+import com.tysanclan.site.projectewok.components.resources.UUIDMinecraftWhitelistResourceReference;
 import com.tysanclan.site.projectewok.pages.AboutPage;
 import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
 import com.tysanclan.site.projectewok.pages.CharterPage;
@@ -320,6 +321,8 @@ public class TysanApplication extends WebApplication {
 				new HaleyAccidentResourceReference());
 		mountResource("/mc-whitelist/",
 				new MinecraftWhitelistResourceReference());
+		mountResource("/uuid-mc-whitelist/",
+				new UUIDMinecraftWhitelistResourceReference());
 	}
 
 	/**
