@@ -55,8 +55,9 @@ public class UUIDMinecraftWhitelistResource extends AbstractResource {
 				whiteListBuilder.append(",").append(newline);
 			}
 			whiteListBuilder.append("\t{").append(newline);
-			whiteListBuilder.append("\t\t\"uuid\": \"").append(profile.getId())
-					.append("\",").append(newline);
+			whiteListBuilder.append("\t\t\"uuid\": \"")
+					.append(formatUUID(profile.getId())).append("\",")
+					.append(newline);
 			whiteListBuilder.append("\t\t\"name\": \"")
 					.append(profile.getName()).append("\"").append(newline);
 			whiteListBuilder.append("\t}");
@@ -65,6 +66,20 @@ public class UUIDMinecraftWhitelistResource extends AbstractResource {
 
 		return whiteListBuilder.toString();
 
+	}
+
+	private String formatUUID(String id) {
+		if (id.length() == 32) {
+			return String.format("%s-%s-%s-%s-%s",//
+					id.substring(0, 8), //
+					id.substring(8, 12), //
+					id.substring(12, 16), //
+					id.substring(16, 20), //
+					id.substring(20, 32) //
+					);
+		}
+
+		return id;
 	}
 
 	@Override
