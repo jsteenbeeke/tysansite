@@ -1,23 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-
-    Tysan Clan Website
-    Copyright (C) 2008-2013 Jeroen Steenbeeke and Ties van de Ven
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
--->
+<!-- Tysan Clan Website Copyright (C) 2008-2013 Jeroen Steenbeeke and Ties 
+	van de Ven This program is free software: you can redistribute it and/or 
+	modify it under the terms of the GNU General Public License as published 
+	by the Free Software Foundation, either version 3 of the License, or (at 
+	your option) any later version. This program is distributed in the hope that 
+	it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty 
+	of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General 
+	Public License for more details. You should have received a copy of the GNU 
+	General Public License along with this program. If not, see <http://www.gnu.org/licenses/>. -->
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
@@ -47,7 +37,7 @@
 
 	</bean>
 
-	
+
 
 	<bean id="MockObjectRepository"
 		class="com.tysanclan.site.projectewok.beans.mock.MockObjectRepository"
@@ -66,9 +56,9 @@
 				<prop key="hibernate.connection.pool_size">50</prop>
 				<prop key="hibernate.show_sql">false</prop>
 				<prop key="hibernate.format_sql">true</prop>
-            	<prop key="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
-            	<prop key="hibernate.cache.use_second_level_cache">false</prop>
-            	<prop key="hibernate.cache.use_query_cache">false</prop>
+				<prop key="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
+				<prop key="hibernate.cache.use_second_level_cache">false</prop>
+				<prop key="hibernate.cache.use_query_cache">false</prop>
 			</props>
 		</property>
 

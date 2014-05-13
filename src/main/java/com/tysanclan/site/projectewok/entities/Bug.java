@@ -30,6 +30,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Lob;
@@ -37,12 +38,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.apache.wicket.Page;
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.Type;
 
@@ -58,8 +59,13 @@ import com.tysanclan.site.projectewok.pages.member.FeatureOverviewPage;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
 @Inheritance(strategy = InheritanceType.JOINED)
+@Table(indexes = {
+		@Index(columnList = "assignedTo_id", name = "IDX_BUG_ASSIGNEDTO"),
+		@Index(columnList = "duplicateOf_id", name = "IDX_BUG_DUPEOF"),
+		@Index(columnList = "reporter_id", name = "IDX_BUG_REPORER")
+
+})
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class Bug extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;

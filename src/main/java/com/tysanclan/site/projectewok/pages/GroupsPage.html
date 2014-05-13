@@ -1,35 +1,42 @@
 <html xmlns:wicket>
-	<wicket:extend>
-		This page lists the various groups of the Tysan Clan.<br /><br />
-		
-		<div class="jqui-accordion">
-			<wicket:enclosure child="gaming">
-			<h2><a>Gaming Groups</a></h2>
+<wicket:extend>
+		This page lists the various groups of the Tysan Clan.<br />
+	<br />
+
+	<div class="jqui-accordion">
+		<wicket:enclosure child="gaming">
+			<h2>
+				<a>Gaming Groups</a>
+			</h2>
 			<div>
 				<div wicket:id="gaming">
 					<span wicket:id="link"></span>
 				</div>
 			</div>
-			</wicket:enclosure>
-			
-			<wicket:enclosure child="social">
-			<h2><a>Social Groups</a></h2>
+		</wicket:enclosure>
+
+		<wicket:enclosure child="social">
+			<h2>
+				<a>Social Groups</a>
+			</h2>
 			<div>
 				<div wicket:id="social">
 					<span wicket:id="link"></span>
 				</div>
 			</div>
-			</wicket:enclosure>
-			
-			<wicket:enclosure child="committee">
-			<h2><a>Committees</a></h2>
+		</wicket:enclosure>
+
+		<wicket:enclosure child="committee">
+			<h2>
+				<a>Committees</a>
+			</h2>
 			<div>
 				<div wicket:id="committee">
 					<span wicket:id="link"></span>
 				</div>
 			</div>
-			</wicket:enclosure>
-		</div>
-		
-	</wicket:extend>
+		</wicket:enclosure>
+	</div>
+
+</wicket:extend>
 </html>

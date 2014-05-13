@@ -29,17 +29,21 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
-import org.hibernate.annotations.Index;
 import org.hibernate.annotations.Type;
 
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 
 @Entity
+@Table(indexes = { //
+		@Index(name = "IDX_TSCOMPLAINT_TS", columnList = "truthsayer_id"),
+		@Index(name = "IDX_TSCOMPLAINT_COMPLAINER", columnList = "complainer_id") })
 public class TruthsayerComplaint extends BaseDomainObject {
 
 	private static final long serialVersionUID = 1L;
@@ -50,11 +54,9 @@ public class TruthsayerComplaint extends BaseDomainObject {
 	private Long id;
 
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	@Index(name = "IDX_TSCOMPLAINT_TS")
 	private User truthsayer;
 
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	@Index(name = "IDX_TSCOMPLAINT_COMPLAINER")
 	private User complainer;
 
 	@Column(nullable = false)

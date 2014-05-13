@@ -27,6 +27,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
@@ -35,11 +36,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.Index;
 
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 
@@ -47,7 +47,8 @@ import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
+@Table(indexes = { //
+@Index(name = "IDX_GAME_COORDINATOR", columnList = "coordinator_id") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class Game extends BaseDomainObject {
 
@@ -84,7 +85,6 @@ public class Game extends BaseDomainObject {
 	private byte[] image;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_GAME_COORDINATOR")
 	private User coordinator;
 
 	@ManyToMany(fetch = FetchType.LAZY)

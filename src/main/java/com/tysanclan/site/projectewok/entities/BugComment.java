@@ -26,12 +26,13 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
 
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
@@ -41,7 +42,8 @@ import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
+@Table(indexes = { @Index(columnList = "bug_id", name = "IDX_BUGCOMMENT_BUG"),
+		@Index(columnList = "commenter_id", name = "IDX_BUGCOMMENT_COMMENTER") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class BugComment extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;

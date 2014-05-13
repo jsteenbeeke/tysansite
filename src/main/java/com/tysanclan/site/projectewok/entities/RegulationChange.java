@@ -30,12 +30,13 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
-import org.hibernate.annotations.Index;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Type;
@@ -46,7 +47,9 @@ import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
  * @author Jeroen Steenbeeke
  */
 @javax.persistence.Entity
-@org.hibernate.annotations.AccessType("field")
+@Table(indexes = { //
+		@Index(name = "IDX_REGULATIONCHANGE_REGULATION", columnList = "regulation_id"), //
+		@Index(name = "IDX_REGULATIONCHANGE_PROPOSER", columnList = "proposer_id") })
 @org.hibernate.annotations.Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class RegulationChange extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;
@@ -73,7 +76,6 @@ public class RegulationChange extends BaseDomainObject {
 	private Date start;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_REGULATIONCHANGE_REGULATION")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Regulation regulation;
 
@@ -92,7 +94,6 @@ public class RegulationChange extends BaseDomainObject {
 	private String description;
 
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)
-	@Index(name = "IDX_REGULATIONCHANGE_PROPOSER")
 	private User proposer;
 
 	// $P$

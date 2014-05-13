@@ -27,13 +27,13 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.Index;
 import org.hibernate.annotations.Type;
 
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
@@ -44,7 +44,9 @@ import com.tysanclan.site.projectewok.util.SerializableFunction;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
+@Table(indexes = { //
+		@Index(name = "IDX_MESSAGE_SENDER", columnList = "sender_id"), //
+		@Index(name = "IDX_MESSAGE_CONVERSATION", columnList = "conversation_id") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class Message extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;
@@ -70,7 +72,6 @@ public class Message extends BaseDomainObject {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_MESSAGE_SENDER")
 	private User sender;
 
 	@Column
@@ -82,7 +83,6 @@ public class Message extends BaseDomainObject {
 	private Date sentTime;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_MESSAGE_CONVERSATION")
 	private Conversation conversation;
 
 	// $P$

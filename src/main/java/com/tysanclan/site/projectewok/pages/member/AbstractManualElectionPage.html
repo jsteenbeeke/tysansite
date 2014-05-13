@@ -1,43 +1,45 @@
 <html xmlns:wicket>
-	<wicket:extend>
-		
-		<div class="jqui-accordion">
-			<h2><a wicket:id="label">Candidates</a></h2>
-			<div>
-				You are using an obsolete browser. Had you been using a proper browser you would not have to use this page, and
-				could have used a simple drag and drop procedure to cast your vote. We therefore suggest you download either of
-				the following browsers <b>for free</b> and try to cast your vote again. If you must insist on using inferior technology,
-				then you can use this page to cast your vote.
-				
-				<table>
-					<tr>
-						<td>
-							<a href="http://www.google.com/chrome/"><img wicket:id="chrome" src="/images/browser/chrome.jpg" alt="Google Chrome" /></a>
-						</td>
-						<td>
-							<a href="http://www.getfirefox.com/"><img wicket:id="firefox" src="/images/browser/firefox.png" alt="Mozilla Firefox" /></a>
-						</td>
-						<td>
-							<a href="http://www.opera.com/browser/"><img wicket:id="opera" src="/images/browser/opera.jpg" alt="Opera" /></a>
-						</td>
-					</tr>
-				</table>
-				
-				
-				
-				To cast your vote, select your preferred candidates. You should first select the person that has your greatest preference,
-				and save the person with the least preference for last.
-				<form wicket:id="vote">
-				
-					Who is your #<span wicket:id="position"></span> candidate?<br />
-					
-					<select wicket:id="candidate"></select>
-					
-					<input type="submit" value="Vote" />
-				</form>
-			</div>
+<wicket:extend>
+
+	<div class="jqui-accordion">
+		<h2>
+			<a wicket:id="label">Candidates</a>
+		</h2>
+		<div>
+			You are using an obsolete browser. Had you been using a proper
+			browser you would not have to use this page, and could have used a
+			simple drag and drop procedure to cast your vote. We therefore
+			suggest you download either of the following browsers <b>for free</b>
+			and try to cast your vote again. If you must insist on using inferior
+			technology, then you can use this page to cast your vote.
+
+			<table>
+				<tr>
+					<td><a href="http://www.google.com/chrome/"><img
+							wicket:id="chrome" src="/images/browser/chrome.jpg"
+							alt="Google Chrome" /></a></td>
+					<td><a href="http://www.getfirefox.com/"><img
+							wicket:id="firefox" src="/images/browser/firefox.png"
+							alt="Mozilla Firefox" /></a></td>
+					<td><a href="http://www.opera.com/browser/"><img
+							wicket:id="opera" src="/images/browser/opera.jpg" alt="Opera" /></a>
+					</td>
+				</tr>
+			</table>
+
+
+
+			To cast your vote, select your preferred candidates. You should first
+			select the person that has your greatest preference, and save the
+			person with the least preference for last.
+			<form wicket:id="vote">
+
+				Who is your #<span wicket:id="position"></span> candidate?<br /> <select
+					wicket:id="candidate"></select> <input type="submit" value="Vote" />
+			</form>
 		</div>
-		
-		<wicket:child />
-	</wicket:extend>
+	</div>
+
+	<wicket:child />
+</wicket:extend>
 </html>

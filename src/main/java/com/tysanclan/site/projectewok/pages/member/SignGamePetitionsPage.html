@@ -1,16 +1,20 @@
 <html xmlns:wicket>
-	<wicket:extend>
-		<div class="jqui-accordion">
-			<h2><a>Game petitions</a></h2>
+<wicket:extend>
+	<div class="jqui-accordion">
+		<h2>
+			<a>Game petitions</a>
+		</h2>
+		<div>
+			On this page you can find games that were suggested by our members as
+			possible expansions to Tysan. In order for a game to be accepted, at
+			least <span wicket:id="count"></span> members must sign the petition.
+		</div>
+		<wicket:container wicket:id="petitions">
+			<h2>
+				<a wicket:id="name">Petition</a>
+			</h2>
 			<div>
-				On this page you can find games that were suggested by our members as
-				possible expansions to Tysan. In order for a game to be accepted, at
-				least <span wicket:id="count"></span> members must sign the petition.
-			</div>
-			<wicket:container wicket:id="petitions">
-				<h2><a wicket:id="name">Petition</a></h2>
-				<div>
-					<form wicket:id="form">
+				<form wicket:id="form">
 					<table style="width: 100%;">
 						<tr>
 							<th>Game name</th>
@@ -18,17 +22,15 @@
 						</tr>
 						<tr>
 							<th>Game Icon</th>
-							<td>
-								<img wicket:id="icon" />
-							</td>
+							<td><img wicket:id="icon" /></td>
 						</tr>
 						<tr>
 							<th>Petition started by</th>
-							<td wicket:id="starter" ></td>
+							<td wicket:id="starter"></td>
 						</tr>
 						<tr>
 							<th>Petition expires</th>
-							<td wicket:id="expires" ></td>
+							<td wicket:id="expires"></td>
 						</tr>
 						<tr>
 							<th colspan="2">Signatures</th>
@@ -41,16 +43,16 @@
 							</td>
 						</tr>
 						<tr>
-							<td colspan="2" style="text-align: center;">
-								<input type="submit" class="SubmitButton" value="Sign" wicket:id="sign" />
+							<td colspan="2" style="text-align: center;"><input
+								type="submit" class="SubmitButton" value="Sign" wicket:id="sign" />
 							</td>
 						</tr>
 					</table>
-					
-					</form>
-				</div>
-			</wicket:container>
-		</div>
-	</wicket:extend>
+
+				</form>
+			</div>
+		</wicket:container>
+	</div>
+</wicket:extend>
 </html>
 

@@ -21,7 +21,6 @@ import java.math.BigDecimal;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.link.IPageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -36,9 +35,10 @@ public class ViewSubscriptionPanel extends Panel {
 
 	private static final long serialVersionUID = 1L;
 
-	private IPageLink onSubmitLink;
+	private IOnSubmitPageCreator onSubmitLink;
 
-	public ViewSubscriptionPanel(String id, User user, IPageLink onSubmitLink) {
+	public ViewSubscriptionPanel(String id, User user,
+			IOnSubmitPageCreator onSubmitLink) {
 		super(id);
 
 		this.onSubmitLink = onSubmitLink;
@@ -78,7 +78,7 @@ public class ViewSubscriptionPanel extends Panel {
 				}
 
 				setResponsePage(ViewSubscriptionPanel.this.onSubmitLink
-						.getPage());
+						.createPage());
 			}
 		}.setVisible(due == 0));
 	}

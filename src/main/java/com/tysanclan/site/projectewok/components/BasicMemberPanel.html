@@ -1,115 +1,128 @@
 <html xmlns:wicket>
 <wicket:extend>
-  
-  <table class="fullWidth">
-    <wicket:enclosure child="emailchange">
-  	<tr>
-  		<td colspan="2">
-  			<div wicket:id="emailchange" style="border-bottom: 1px solid #fc0;"></div>
-  		</td>
-  	</tr>
-  	</wicket:enclosure>
-  	<wicket:enclosure child="birthdays">
-  	<tr>
-  		<td colspan="2" class="centeredCell">
-  			<b wicket:id="birthdays">Birthdays</b>
-  			
-  			<div wicket:id="users">
-  				<div wicket:id="user"></div>
-  			</div>
-  		</td>
- 	</tr>
- 	</wicket:enclosure>
- 	
-  	<tr>
-  		<th>Personal</th>
-  		<th>Gaming</th>
-  	</tr>
-  	<tr>
-  		<td class="topCenteredCell">
-  			<div wicket:id="messages">Messages</div>
-  			<wicket:enclosure child="accepttruthsayer"><a wicket:id="accepttruthsayer"><img wicket:id="icon" /> Truthsayer Invitation</a><br /></wicket:enclosure>
-  			<div wicket:id="treasurerAccept">Treasurer Nomination</div>
-  			<div wicket:id="heraldAccept">Herald Nomination</div>
-  			<div wicket:id="stewardAccept">Steward Nomination</div>
-  			<div wicket:id="pendingSubscription">Subscription</div>
-  			<div wicket:id="notification"></div>
-  			<div wicket:id="lucky"></div>
-  			
-  			<a wicket:id="preferences">Preferences</a><br />
-  		</td>
-  		<td class="topCenteredCell">
-  			<div wicket:id="accounts"></div>
-  			<a wicket:id="requestAchievement">Request Achievement</a><br />
-  			<wicket:enclosure child="proposeAchievement"><a wicket:id="proposeAchievement">Propose new achievement</a><br /></wicket:enclosure>
-  			<wicket:enclosure child="creategamepetition"><a wicket:id="creategamepetition">Create Game Petition</a><br /></wicket:enclosure>
-  			<wicket:enclosure child="createrealmpetition"><a wicket:id="createrealmpetition">Create Realm Petition</a><br /></wicket:enclosure>
-  			
-  		</td>
-  	</tr>
-  	<tr>
-  		<td colspan="2" style="height: 15px;"></td>
-  	</tr>
- 	<tr>
-  		<th>Democracy</th>
-  		<th>Social</th>
-  	</tr>
-  	<tr>
-  		<td class="topCenteredCell">
-  			<wicket:enclosure child="endorsement"><a wicket:id="endorsement">Endorsements</a></wicket:enclosure>
-  			<div wicket:id="votes"></div>
-  			<div wicket:id="chancellorElection"></div>
-  			<div wicket:id="senateElection"></div>
-  			<div wicket:id="signgamepetition"></div>
-  			<div wicket:id="signrealmpetition"></div>
-  			<wicket:enclosure child="untenable"><div wicket:id="untenable"></div><br /></wicket:enclosure>
-  			<div wicket:id="runforchancellor"></div>
-			<div wicket:id="runforsenator"></div>
-  			<a wicket:id="pastelections">Past Elections</a><br />
-			
-  		</td>
-  		<td class="topCenteredCell">
-  		
-  			<div wicket:id="calendar">Calendar</div>
-  			<a wicket:id="skype">Skype accounts</a><br />
-  			<div wicket:id="joingroup">Join Group</div>
-  			<wicket:enclosure child="creategroup"><a wicket:id="creategroup">Create Group</a><br /></wicket:enclosure>
-  		</td>
-  	</tr>
- 	<tr>
-  		<td colspan="2" style="height: 15px;"></td>
-  	</tr>
-  	
-  	<tr>
-  		<th>Clan</th>
-  		<th>Website</th>
-  	</tr>
-  	<tr>
-  		<td class="topCenteredCell">
-  		<a wicket:id="log">Clan Log</a><br />
-	  		<a wicket:id="finance">Clan Finances</a><br />
-	  		<a wicket:id="clanstats">Clan Statistics</a><br />
-  			<wicket:enclosure child="trial"><a wicket:id="trial">Report Rules Violation</a><br /></wicket:enclosure>
-  			<wicket:enclosure child="complaint"><a wicket:id="complaint">File Truthsayer Complaint</a><br /></wicket:enclosure>
-  		</td>
-  		<td class="topCenteredCell">
-  			<a wicket:id="bugs">Bug Reports</a>
-  			<a wicket:id="features">Feature Requests</a>
-  			<br />
-  			<a wicket:id="newbug">Report New Bug</a>
-  			<a wicket:id="newfeature">Request New Feature</a>
-  		</td>
-  	</tr>
-  	<tr>
-  		<td colspan="2" style="height: 15px;"></td>
-  	</tr>
-  	<tr>
-  		<th colspan="2">Voice Chat Servers</th>
- 	</tr>
- 	<tr wicket:id="servers">
- 		<td colspan="2" style="text-align: center;"><a wicket:id="link"><span wicket:id="name">USEast</span></a></td>
- 	</tr>
-  </table>
+
+	<table class="fullWidth">
+		<wicket:enclosure child="emailchange">
+			<tr>
+				<td colspan="2">
+					<div wicket:id="emailchange" style="border-bottom: 1px solid #fc0;"></div>
+				</td>
+			</tr>
+		</wicket:enclosure>
+		<wicket:enclosure child="birthdays">
+			<tr>
+				<td colspan="2" class="centeredCell"><b wicket:id="birthdays">Birthdays</b>
+
+					<div wicket:id="users">
+						<div wicket:id="user"></div>
+					</div></td>
+			</tr>
+		</wicket:enclosure>
+
+		<tr>
+			<th>Personal</th>
+			<th>Gaming</th>
+		</tr>
+		<tr>
+			<td class="topCenteredCell">
+				<div wicket:id="messages">Messages</div> <wicket:enclosure
+					child="accepttruthsayer">
+					<a wicket:id="accepttruthsayer"><img wicket:id="icon" />
+						Truthsayer Invitation</a>
+					<br />
+				</wicket:enclosure>
+				<div wicket:id="treasurerAccept">Treasurer Nomination</div>
+				<div wicket:id="heraldAccept">Herald Nomination</div>
+				<div wicket:id="stewardAccept">Steward Nomination</div>
+				<div wicket:id="pendingSubscription">Subscription</div>
+				<div wicket:id="notification"></div>
+				<div wicket:id="lucky"></div> <a wicket:id="preferences">Preferences</a><br />
+			</td>
+			<td class="topCenteredCell">
+				<div wicket:id="accounts"></div> <a wicket:id="requestAchievement">Request
+					Achievement</a><br /> <wicket:enclosure child="proposeAchievement">
+					<a wicket:id="proposeAchievement">Propose new achievement</a>
+					<br />
+				</wicket:enclosure> <wicket:enclosure child="creategamepetition">
+					<a wicket:id="creategamepetition">Create Game Petition</a>
+					<br />
+				</wicket:enclosure> <wicket:enclosure child="createrealmpetition">
+					<a wicket:id="createrealmpetition">Create Realm Petition</a>
+					<br />
+				</wicket:enclosure>
+
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" style="height: 15px;"></td>
+		</tr>
+		<tr>
+			<th>Democracy</th>
+			<th>Social</th>
+		</tr>
+		<tr>
+			<td class="topCenteredCell"><wicket:enclosure
+					child="endorsement">
+					<a wicket:id="endorsement">Endorsements</a>
+				</wicket:enclosure>
+				<div wicket:id="votes"></div>
+				<div wicket:id="chancellorElection"></div>
+				<div wicket:id="senateElection"></div>
+				<div wicket:id="signgamepetition"></div>
+				<div wicket:id="signrealmpetition"></div> <wicket:enclosure
+					child="untenable">
+					<div wicket:id="untenable"></div>
+					<br />
+				</wicket:enclosure>
+				<div wicket:id="runforchancellor"></div>
+				<div wicket:id="runforsenator"></div> <a wicket:id="pastelections">Past
+					Elections</a><br /></td>
+			<td class="topCenteredCell">
+
+				<div wicket:id="calendar">Calendar</div> <a wicket:id="skype">Skype
+					accounts</a><br />
+				<div wicket:id="joingroup">Join Group</div> <wicket:enclosure
+					child="creategroup">
+					<a wicket:id="creategroup">Create Group</a>
+					<br />
+				</wicket:enclosure>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" style="height: 15px;"></td>
+		</tr>
+
+		<tr>
+			<th>Clan</th>
+			<th>Website</th>
+		</tr>
+		<tr>
+			<td class="topCenteredCell"><a wicket:id="log">Clan Log</a><br />
+				<a wicket:id="finance">Clan Finances</a><br /> <a
+				wicket:id="clanstats">Clan Statistics</a><br /> <wicket:enclosure
+					child="trial">
+					<a wicket:id="trial">Report Rules Violation</a>
+					<br />
+				</wicket:enclosure> <wicket:enclosure child="complaint">
+					<a wicket:id="complaint">File Truthsayer Complaint</a>
+					<br />
+				</wicket:enclosure></td>
+			<td class="topCenteredCell"><a wicket:id="bugs">Bug Reports</a>
+				<a wicket:id="features">Feature Requests</a> <br /> <a
+				wicket:id="newbug">Report New Bug</a> <a wicket:id="newfeature">Request
+					New Feature</a></td>
+		</tr>
+		<tr>
+			<td colspan="2" style="height: 15px;"></td>
+		</tr>
+		<tr>
+			<th colspan="2">Voice Chat Servers</th>
+		</tr>
+		<tr wicket:id="servers">
+			<td colspan="2" style="text-align: center;"><a wicket:id="link"><span
+					wicket:id="name">USEast</span></a></td>
+		</tr>
+	</table>
 </wicket:extend>
 </html>
-  
+

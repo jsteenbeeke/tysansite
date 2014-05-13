@@ -29,14 +29,14 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.Index;
 import org.hibernate.annotations.Type;
 
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
@@ -45,7 +45,11 @@ import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
+@Table(indexes = { //
+@Index(name = "IDX_FORUMPOST_POSTER", columnList = "poster_id"), //
+		@Index(name = "IDX_FORUMPOST_THREAD", columnList = "thread_id")
+
+})
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "forum")
 public class ForumPost extends BaseDomainObject {
 	private static final long serialVersionUID = 1L;
@@ -64,14 +68,12 @@ public class ForumPost extends BaseDomainObject {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_FORUMPOST_POSTER")
 	private User poster;
 
 	@Column
 	private boolean shadow;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_FORUMPOST_THREAD")
 	private ForumThread thread;
 
 	@Column

@@ -9,13 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
 
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 
 @Entity
-@AccessType("field")
+
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class AuthorizedRestApplication extends BaseDomainObject {
 	private static final long serialVersionUID = 1L;

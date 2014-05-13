@@ -26,15 +26,18 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
-
-import org.hibernate.annotations.Index;
+import javax.persistence.Table;
 
 import com.google.common.base.Predicate;
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 
 @Entity
+@Table(indexes = { //
+@Index(name = "IDX_SUBPAYMENT_SUB", columnList = "subscription_id"), //
+		@Index(name = "IDX_SUBPAYMENT_USER", columnList = "user_id") })
 public class SubscriptionPayment extends BaseDomainObject {
 
 	private static final long serialVersionUID = 1L;
@@ -52,11 +55,9 @@ public class SubscriptionPayment extends BaseDomainObject {
 	private Long id;
 
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	@Index(name = "IDX_SUBPAYMENT_SUB")
 	private Subscription subscription;
 
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	@Index(name = "IDX_SUBPAYMENT_USER")
 	private User user;
 
 	@Column(nullable = false)

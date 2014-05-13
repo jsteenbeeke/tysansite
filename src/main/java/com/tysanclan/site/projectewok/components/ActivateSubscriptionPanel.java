@@ -23,7 +23,6 @@ import java.util.Arrays;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.link.IPageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -41,10 +40,10 @@ public class ActivateSubscriptionPanel extends Panel {
 
 	private static final BigDecimal TWO = new BigDecimal(2);
 
-	private IPageLink onSubmitLink;
+	private IOnSubmitPageCreator onSubmitLink;
 
 	public ActivateSubscriptionPanel(String id, User user,
-			IPageLink onSubmitLink) {
+			IOnSubmitPageCreator onSubmitLink) {
 		super(id);
 		this.onSubmitLink = onSubmitLink;
 
@@ -80,7 +79,7 @@ public class ActivateSubscriptionPanel extends Panel {
 						expenseSelect.getModelObject())) {
 
 					setResponsePage(ActivateSubscriptionPanel.this.onSubmitLink
-							.getPage());
+							.createPage());
 				} else {
 					error("Subscription failed. Most likely you already have one and submitted this form twice");
 				}

@@ -1,92 +1,109 @@
 <html xmlns:wicket>
-	<wicket:extend>
-		<div style="text-align: left;">
-			<span wicket:id="returnlink">Return to forum</span>
-		</div>
-		<br />
-		
-		<div class="nav">
-		Page:
-		<span wicket:id="topnavigation">
-        </span>
-        </div>
-		<br />
-		
-		<div wicket:id="moderatorToolbox">
-		</div>
-		<br />
-		
-		<div wicket:id="senatorApproval" class="jqui-accordion">
-			<h2><a>Senator approval</a></h2>
-			<div>
-				<span wicket:id="question">Do you want this person to be granted a trial period? Please keep in mind that you can only vote once
-				and can not change your vote.<br /><br /></span>
-				
-				<span wicket:id="status">You have not yet cast your vote</span><br /><br />
-				
-				<wicket:enclosure child="clickYes">
-					<a wicket:id="clickYes"><img wicket:id="yes" title="Yes" alt="Yes" /> Yes</a> | <a wicket:id="clickNo"><img wicket:id="no" title="No" alt="No" /> No</a>
-				</wicket:enclosure>
-			</div>
-			<br /><br />
-		</div>
-		
-		<div wicket:id="mentorApplication" class="jqui-accordion">
-			<h2><a>Mentor</a></h2>
-			<div>
-				This candidate member does not have a mentor yet. Do you wish to become his or her mentor?<br />
-				
-				<p wicket:id="realmWarning" style="color: #f00; font-weight: bold;"></p>
-				<p wicket:id="activationWarning" style="color: #f00; font-weight: bold;"></p>
-			
-				<a wicket:id="clickYes"><img wicket:id="yes" title="Yes" alt="Yes" /> Yes I want to be a mentor for <span wicket:id="username"></span></a>
-			</div>
-			<br /><br />
-		</div>
-		
-		<div wicket:id="joinMessages" class="jqui-accordion">
-			<h2><a>Status</a></h2>
-			<div style="text-align: center;">
-				<span wicket:id="mentor">This candidate member has no mentor</span><br /><br />
-				<span wicket:id="realms">Johnny primarily plays StarCraft on USEast</span><br /><br />
-				<span wicket:id="senatestatus"></span><br /><br />
-				This join application will be concluded at <span wicket:id="expirationTime"></span>
-			</div> 
-			<br /><br />
-		</div>
-		
-		
-		<div wicket:id="branchnote">This thread was branched off from <a href="source.html" wicket:id="source">Source</a></div>
-	
-		<div wicket:id="event">
-		</div>
-		
-		<div wicket:id="trial">
-		</div>
-		
-		<div wicket:id="posts">
-			<div wicket:id="postpanel"></div>
-		</div>
-		
-			
-		<wicket:enclosure child="replylink">
-		<div class="ToolBox">
-			<a href="reply.html" wicket:id="replylink"><img style="border: 0px;" src="images/icons/page_white_add.png" alt="Reply" title="Reply to thread" /></a>
-		</div>
-		<br />
-		</wicket:enclosure>		
-		
-		<br />
-		<div class="nav">
-		Page:
-		<span wicket:id="bottomnavigation">
-        </span>
-        </div>
-		<br />
+<wicket:extend>
+	<div style="text-align: left;">
+		<span wicket:id="returnlink">Return to forum</span>
+	</div>
+	<br />
 
-			
-		<div class="nav">
-			<span wicket:id="returnlink2">Return to forum</span>
+	<div class="nav">
+		Page: <span wicket:id="topnavigation"> </span>
+	</div>
+	<br />
+
+	<div wicket:id="moderatorToolbox"></div>
+	<br />
+
+	<div wicket:id="senatorApproval" class="jqui-accordion">
+		<h2>
+			<a>Senator approval</a>
+		</h2>
+		<div>
+			<span wicket:id="question">Do you want this person to be
+				granted a trial period? Please keep in mind that you can only vote
+				once and can not change your vote.<br />
+			<br />
+			</span> <span wicket:id="status">You have not yet cast your vote</span><br />
+			<br />
+
+			<wicket:enclosure child="clickYes">
+				<a wicket:id="clickYes"><img wicket:id="yes" title="Yes"
+					alt="Yes" /> Yes</a> | <a wicket:id="clickNo"><img wicket:id="no"
+					title="No" alt="No" /> No</a>
+			</wicket:enclosure>
 		</div>
-	</wicket:extend>
+		<br />
+		<br />
+	</div>
+
+	<div wicket:id="mentorApplication" class="jqui-accordion">
+		<h2>
+			<a>Mentor</a>
+		</h2>
+		<div>
+			This candidate member does not have a mentor yet. Do you wish to
+			become his or her mentor?<br />
+
+			<p wicket:id="realmWarning" style="color: #f00; font-weight: bold;"></p>
+			<p wicket:id="activationWarning"
+				style="color: #f00; font-weight: bold;"></p>
+
+			<a wicket:id="clickYes"><img wicket:id="yes" title="Yes"
+				alt="Yes" /> Yes I want to be a mentor for <span
+				wicket:id="username"></span></a>
+		</div>
+		<br />
+		<br />
+	</div>
+
+	<div wicket:id="joinMessages" class="jqui-accordion">
+		<h2>
+			<a>Status</a>
+		</h2>
+		<div style="text-align: center;">
+			<span wicket:id="mentor">This candidate member has no mentor</span><br />
+			<br /> <span wicket:id="realms">Johnny primarily plays
+				StarCraft on USEast</span><br />
+			<br /> <span wicket:id="senatestatus"></span><br />
+			<br /> This join application will be concluded at <span
+				wicket:id="expirationTime"></span>
+		</div>
+		<br />
+		<br />
+	</div>
+
+
+	<div wicket:id="branchnote">
+		This thread was branched off from <a href="source.html"
+			wicket:id="source">Source</a>
+	</div>
+
+	<div wicket:id="event"></div>
+
+	<div wicket:id="trial"></div>
+
+	<div wicket:id="posts">
+		<div wicket:id="postpanel"></div>
+	</div>
+
+
+	<wicket:enclosure child="replylink">
+		<div class="ToolBox">
+			<a href="reply.html" wicket:id="replylink"><img
+				style="border: 0px;" src="images/icons/page_white_add.png"
+				alt="Reply" title="Reply to thread" /></a>
+		</div>
+		<br />
+	</wicket:enclosure>
+
+	<br />
+	<div class="nav">
+		Page: <span wicket:id="bottomnavigation"> </span>
+	</div>
+	<br />
+
+
+	<div class="nav">
+		<span wicket:id="returnlink2">Return to forum</span>
+	</div>
+</wicket:extend>
 </html>

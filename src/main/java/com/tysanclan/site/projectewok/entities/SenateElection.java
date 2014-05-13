@@ -20,9 +20,12 @@ package com.tysanclan.site.projectewok.entities;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
 
 import com.tysanclan.rest.api.data.Rank;
@@ -32,7 +35,6 @@ import com.tysanclan.site.projectewok.util.MemberUtil;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
 @DiscriminatorValue("SenateElection")
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class SenateElection extends Election {

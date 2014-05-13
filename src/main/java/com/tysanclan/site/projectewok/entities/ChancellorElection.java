@@ -22,9 +22,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.Index;
 
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.util.MemberUtil;
@@ -33,7 +31,6 @@ import com.tysanclan.site.projectewok.util.MemberUtil;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
 @DiscriminatorValue("ChancellorElection")
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class ChancellorElection extends Election {
@@ -53,7 +50,6 @@ public class ChancellorElection extends Election {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_ChancellorElection_Winner")
 	private User winner;
 
 	// $P$

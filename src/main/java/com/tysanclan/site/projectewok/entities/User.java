@@ -38,6 +38,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
@@ -53,10 +54,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Index;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.Where;
 
@@ -73,8 +72,15 @@ import com.tysanclan.site.projectewok.util.SerializableFunction;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@Table(name = "TUSER")
-@AccessType("field")
+@Table(name = "TUSER", indexes = { //
+		@Index(name = "IDX_TUSER_JOINDATE", columnList = "joinDate"),
+		@Index(name = "IDX_TUSER_RANK", columnList = "rank"),
+		@Index(name = "IDX_TUSER_USERNAME", columnList = "username"),
+		@Index(name = "IDX_TUSER_ENDORSES", columnList = "endorses_id"),
+		@Index(name = "IDX_TUSER_MENTOR", columnList = "mentor_id"),
+		@Index(name = "IDX_TUSER_ENDORSESSENATE", columnList = "endorsesForSenate_id")
+
+})
 @Inheritance(strategy = InheritanceType.JOINED)
 @Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class User extends BaseDomainObject implements DomainObject {
@@ -122,7 +128,6 @@ public class User extends BaseDomainObject implements DomainObject {
 	private String imageURL;
 
 	@Column(nullable = false)
-	@Index(name = "IDX_TUSER_JOINDATE")
 	private Date joinDate;
 
 	@Column(nullable = false)
@@ -130,7 +135,6 @@ public class User extends BaseDomainObject implements DomainObject {
 
 	@Column
 	@Enumerated(EnumType.STRING)
-	@Index(name = "IDX_TUSER_RANK")
 	private Rank rank;
 
 	@Transient
@@ -142,7 +146,6 @@ public class User extends BaseDomainObject implements DomainObject {
 	private String signature;
 
 	@Column(nullable = false, unique = true)
-	@Index(name = "IDX_TUSER_USERNAME")
 	private String username;
 
 	@Column(nullable = false)
@@ -172,7 +175,6 @@ public class User extends BaseDomainObject implements DomainObject {
 	private Set<Role> roles;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_TUSER_ENDORSES")
 	private User endorses;
 
 	@OneToMany(mappedBy = "endorsesForSenate", fetch = FetchType.LAZY)
@@ -185,7 +187,6 @@ public class User extends BaseDomainObject implements DomainObject {
 	private Subscription subscription;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_TUSER_ENDORSESSENATE")
 	private User endorsesForSenate;
 
 	@OneToOne(optional = true, mappedBy = "user", fetch = FetchType.LAZY, targetEntity = Profile.class)
@@ -201,7 +202,6 @@ public class User extends BaseDomainObject implements DomainObject {
 	private Integer luckyScore;
 
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)
-	@Index(name = "IDX_TUSER_MENTOR")
 	private User mentor;
 
 	@OneToMany(mappedBy = "mentor", fetch = FetchType.LAZY)

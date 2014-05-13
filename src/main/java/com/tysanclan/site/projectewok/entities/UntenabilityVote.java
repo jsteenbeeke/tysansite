@@ -29,14 +29,14 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Index;
 
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 
@@ -44,7 +44,8 @@ import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
+@Table(indexes = { //
+@Index(name = "IDX_UntenabilityVote_Regulation", columnList = "regulation_id") })
 @Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class UntenabilityVote extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;
@@ -55,7 +56,6 @@ public class UntenabilityVote extends BaseDomainObject {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@Index(name = "IDX_UntenabilityVote_Regulation")
 	private Regulation regulation;
 
 	@Column

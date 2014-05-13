@@ -29,14 +29,14 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.Index;
 
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 
@@ -44,7 +44,14 @@ import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
+@Table(indexes = { //
+		@Index(name = "IDX_JOINAPPLICATION_APPLICANT", columnList = "applicant_id"), //
+		@Index(name = "IDX_JOINAPPLICATION_MENTOR", columnList = "mentor_id"), //
+		@Index(name = "IDX_JOINAPPLICATION_JOINTHREAD", columnList = "joinThread_id"), //
+		@Index(name = "IDX_JOINAPPLICATION_PRIMARYREALM", columnList = "primaryRealm_id"), //
+		@Index(name = "IDX_JOINAPPLICATION_PRIMARYGAME", columnList = "primaryGame_id")
+
+})
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class JoinApplication extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;
@@ -55,26 +62,21 @@ public class JoinApplication extends BaseDomainObject {
 	private Long id;
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_JOINAPPLICATION_APPLICANT")
 	private User applicant;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_JOINAPPLICATION_MENTOR")
 	private User mentor;
 
 	@OneToMany(mappedBy = "application", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<JoinVerdict> verdicts;
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_JOINAPPLICATION_JOINTHREAD")
 	private ForumThread joinThread;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = true)
-	@Index(name = "IDX_JOINAPPLICATION_PRIMARYREALM")
 	private Realm primaryRealm;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = true)
-	@Index(name = "IDX_JOINAPPLICATION_PRIMARYGAME")
 	private Game primaryGame;
 
 	@Column

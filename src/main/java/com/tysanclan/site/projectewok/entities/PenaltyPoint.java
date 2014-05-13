@@ -26,12 +26,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.Index;
 
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 
@@ -39,7 +39,8 @@ import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
+@Table(indexes = { //
+@Index(name = "IDX_PENALTYPOINT_USER", columnList = "user_id") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class PenaltyPoint extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;
@@ -53,7 +54,6 @@ public class PenaltyPoint extends BaseDomainObject {
 	private Date given;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_PENALTYPOINT_USER")
 	private User user;
 
 	// $P$

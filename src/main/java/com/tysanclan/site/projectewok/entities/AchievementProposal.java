@@ -29,14 +29,14 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.Index;
 
 import com.jeroensteenbeeke.hyperion.data.DomainObject;
 
@@ -45,7 +45,11 @@ import com.jeroensteenbeeke.hyperion.data.DomainObject;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
+@Table(indexes = { //
+		@Index(columnList = "suggestor_id", name = "IDX_AchievementProposal_suggestor"), //
+		@Index(columnList = "game_id", name = "IDX_AchievementProposal_Game"), //
+		@Index(columnList = "group_id", name = "IDX_AchievementProposal_Group") //
+})
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class AchievementProposal implements DomainObject {
 	public static final long serialVersionUID = 1L;
@@ -69,15 +73,12 @@ public class AchievementProposal implements DomainObject {
 	private String description;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_AchievementProposal_suggestor")
 	private User suggestor;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_AchievementProposal_Game")
 	private Game game;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_AchievementProposal_Group")
 	private Group group;
 
 	@Column

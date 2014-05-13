@@ -1,24 +1,24 @@
 <html xmlns:wicket>
-	<wicket:panel>
-			<form wicket:id="transferForm">
-				<h2><a>Nominate <span wicket:id="name"></span></a></h2>
-				<div>
-					<p>
-						There is currently no <span wicket:id="name2"></span>. For
-						the clan to properly function, one must be appointed. Normally,
-						the incumbent <span wicket:id="name3"></span> would nominate
-						his or her replacement. As the role is currently vacant, this
-						has not happened. Therefore the Chancellor may nominate a
-						replacement.
-					</p>
-				
-					<p>
-						<b>Candidate of your choice:</b><br />
-						<select wicket:id="user"></select>
-					</p>
-					
-					<input type="submit" class="SubmitButton" value="Nominate" />
-				</div>
-			</form>		
-	</wicket:panel>
+<wicket:panel>
+	<form wicket:id="transferForm">
+		<h2>
+			<a>Nominate <span wicket:id="name"></span></a>
+		</h2>
+		<div>
+			<p>
+				There is currently no <span wicket:id="name2"></span>. For the clan
+				to properly function, one must be appointed. Normally, the incumbent
+				<span wicket:id="name3"></span> would nominate his or her
+				replacement. As the role is currently vacant, this has not happened.
+				Therefore the Chancellor may nominate a replacement.
+			</p>
+
+			<p>
+				<b>Candidate of your choice:</b><br /> <select wicket:id="user"></select>
+			</p>
+
+			<input type="submit" class="SubmitButton" value="Nominate" />
+		</div>
+	</form>
+</wicket:panel>
 </html>

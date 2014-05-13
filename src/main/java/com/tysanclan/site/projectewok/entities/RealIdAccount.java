@@ -22,7 +22,6 @@ import java.util.regex.Pattern;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
 
 /**
@@ -30,7 +29,7 @@ import org.hibernate.annotations.Cache;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
+
 @DiscriminatorValue("RealIdAccount")
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class RealIdAccount extends GameAccount {

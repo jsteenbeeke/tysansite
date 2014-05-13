@@ -1,51 +1,57 @@
 <html xmlns:wicket>
-	<wicket:extend>
-		<div class="jqui-accordion">
-			<div wicket:id="otterSniperPanel"></div>
-			<wicket:container wicket:id="elections">
-				<h2><a wicket:id="title"></a></h2>
-				<div>
-					<p>
+<wicket:extend>
+	<div class="jqui-accordion">
+		<div wicket:id="otterSniperPanel"></div>
+		<wicket:container wicket:id="elections">
+			<h2>
+				<a wicket:id="title"></a>
+			</h2>
+			<div>
+				<p>
 					<b wicket:id="winnerslabel"></b><br />
 					<wicket:container wicket:id="winners">
 						<div wicket:id="winner"></div>
 					</wicket:container>
-					</p>
-					
-					<p>
-						<b>Votes:</b><br />
-						<table style="width: 100%;" cellspacing="0">
-							<thead>
-							<tr>
-								<th rowspan="2" style="vertical-align: bottom; border-bottom: 1px solid #fc0;">Voter</th>
-								<th wicket:id="candidatesheader">Candidates</th>
-							</tr>
-							<tr>
-								<wicket:container wicket:id="candidates">
-									<td style="text-align: center; border-bottom: 1px solid #fc0;"><span wicket:id="candidate"></span></td>
-								</wicket:container>
-							</tr>
-							</thead>
-							<tr wicket:id="votes">
-								<td style="text-align: center;"><span wicket:id="userdescriptor"></span></td>
-								<wicket:container wicket:id="scores">
-									<td style="text-align: center;"><span wicket:id="score"></span></td>
-								</wicket:container>
-							</tr>
-							<tfoot>
-								<tr>
-									<th style="border-top: 1px solid #fc0;">Totals</th>
-									<wicket:container wicket:id="totals">
-										<td style="text-align: center; border-top: 1px solid #fc0;"><span wicket:id="total"></span></td>
-									</wicket:container>
-								</tr>
-							</tfoot>
-						</table>
-					</p>
-					
-				</div>
-			</wicket:container>
-		</div>  
-	</wicket:extend>
+				</p>
+
+				<p>
+					<b>Votes:</b><br />
+				<table style="width: 100%;" cellspacing="0">
+					<thead>
+						<tr>
+							<th rowspan="2"
+								style="vertical-align: bottom; border-bottom: 1px solid #fc0;">Voter</th>
+							<th wicket:id="candidatesheader">Candidates</th>
+						</tr>
+						<tr>
+							<wicket:container wicket:id="candidates">
+								<td style="text-align: center; border-bottom: 1px solid #fc0;"><span
+									wicket:id="candidate"></span></td>
+							</wicket:container>
+						</tr>
+					</thead>
+					<tr wicket:id="votes">
+						<td style="text-align: center;"><span
+							wicket:id="userdescriptor"></span></td>
+						<wicket:container wicket:id="scores">
+							<td style="text-align: center;"><span wicket:id="score"></span></td>
+						</wicket:container>
+					</tr>
+					<tfoot>
+						<tr>
+							<th style="border-top: 1px solid #fc0;">Totals</th>
+							<wicket:container wicket:id="totals">
+								<td style="text-align: center; border-top: 1px solid #fc0;"><span
+									wicket:id="total"></span></td>
+							</wicket:container>
+						</tr>
+					</tfoot>
+				</table>
+				</p>
+
+			</div>
+		</wicket:container>
+	</div>
+</wicket:extend>
 </html>
 

@@ -1,64 +1,59 @@
 <html xmlns:wicket>
-	<wicket:extend>
-		<div class="jqui-tabs">
-			<ul>
-				<li><a href="#tabs-1">Servers</a></li>
-				<li><a href="#tabs-2">Add Server</a></li>
-			</ul>
-			<div id="tabs-1">
-				<table>
-					<tr>
-						<th>Server ID</th>
-						<th>Name</th>
-						<th>URL</th>
-						<th>Password</th>
-						<th>Delete</th>
-					</tr>
-					<tr wicket:id="servers">
-						<td wicket:id="serverId"></td>
-						<td wicket:id="name"></td>
-						<td wicket:id="url"></td>
-						<td wicket:id="password"></td>
-						<td><div wicket:id="del"></div></td>
-					</tr>
-				</table>
-			</div>
-			<div id="tabs-2">
-				<form wicket:id="addForm">
-					<p>
-						<b>Server ID</b><br />
-						<input type="text" wicket:id="serverId" />
-					</p>
-					
-					<p>
-						<b>Name</b><br />
-						<input type="text" wicket:id="name" />
-					</p>
-					
-					<p>
-						<b>URL</b><br />
-						<input type="text" wicket:id="url" />
-					</p>
-					
-					<p>
-						<b>Server Password</b><br />
-						<input type="text" wicket:id="password" />
-					</p>
-					
-					<p>
-						<b>API Token</b><br />
-						<input type="text" wicket:id="token" />
-					</p>
-					
-					<p>
-						<b>API Secret</b><br />
-						<input type="text" wicket:id="secret" />
-					</p>
-					
-					<input type="submit" class="SubmitButton" value="Submit" />
-				</form>
-			</div>
+<wicket:extend>
+	<div class="jqui-tabs">
+		<ul>
+			<li><a href="#tabs-1">Servers</a></li>
+			<li><a href="#tabs-2">Add Server</a></li>
+		</ul>
+		<div id="tabs-1">
+			<table>
+				<tr>
+					<th>Server ID</th>
+					<th>Name</th>
+					<th>URL</th>
+					<th>Password</th>
+					<th>Delete</th>
+				</tr>
+				<tr wicket:id="servers">
+					<td wicket:id="serverId"></td>
+					<td wicket:id="name"></td>
+					<td wicket:id="url"></td>
+					<td wicket:id="password"></td>
+					<td><div wicket:id="del"></div></td>
+				</tr>
+			</table>
 		</div>
-	</wicket:extend>
+		<div id="tabs-2">
+			<form wicket:id="addForm">
+				<p>
+					<b>Server ID</b><br /> <input type="text" wicket:id="serverId" />
+				</p>
+
+				<p>
+					<b>Name</b><br /> <input type="text" wicket:id="name" />
+				</p>
+
+				<p>
+					<b>URL</b><br /> <input type="text" wicket:id="url" />
+				</p>
+
+				<p>
+					<b>Server Password</b><br /> <input type="text"
+						wicket:id="password" />
+				</p>
+
+				<p>
+					<b>API Token</b><br /> <input type="text" wicket:id="token" />
+				</p>
+
+				<p>
+					<b>API Secret</b><br /> <input type="text" wicket:id="secret" />
+				</p>
+
+				<input type="submit" class="SubmitButton" value="Submit" />
+			</form>
+		</div>
+	</div>
+</wicket:extend>
 </html>
 

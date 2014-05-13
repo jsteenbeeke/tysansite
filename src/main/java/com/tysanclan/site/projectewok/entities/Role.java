@@ -27,14 +27,13 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.Index;
 
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 
@@ -42,8 +41,9 @@ import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@Table(name = "TROLE")
-@AccessType("field")
+@Table(name = "TROLE", indexes = { //
+@Index(name = "IDX_ROLE_ASSIGNEDTO", columnList = "assignedTo_id") //
+})
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class Role extends BaseDomainObject {
 	private static final long serialVersionUID = 1L;
@@ -81,7 +81,6 @@ public class Role extends BaseDomainObject {
 	private String description;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_ROLE_ASSIGNEDTO")
 	private User assignedTo;
 
 	@Column(nullable = false, columnDefinition = "varchar(255) default 'NORMAL' not null")

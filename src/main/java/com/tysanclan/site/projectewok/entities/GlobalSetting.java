@@ -23,8 +23,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import org.hibernate.annotations.AccessType;
-
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 
 /**
@@ -32,7 +30,6 @@ import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
 public class GlobalSetting extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;
 

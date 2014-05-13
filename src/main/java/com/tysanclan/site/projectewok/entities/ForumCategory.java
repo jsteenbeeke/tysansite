@@ -31,7 +31,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
 
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
@@ -40,7 +39,6 @@ import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "forum")
 public class ForumCategory extends BaseDomainObject {
 	private static final long serialVersionUID = 1L;

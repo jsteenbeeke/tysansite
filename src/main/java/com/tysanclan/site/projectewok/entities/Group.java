@@ -31,6 +31,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
@@ -42,9 +43,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.Index;
 import org.hibernate.annotations.Type;
 
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
@@ -53,8 +52,8 @@ import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@Table(name = "TGROUP")
-@AccessType("field")
+@Table(name = "TGROUP", indexes = { //
+@Index(name = "IDX_GROUP_LEADER", columnList = "leader_id") })
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, length = 255)
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
@@ -91,7 +90,6 @@ public abstract class Group extends BaseDomainObject {
 	private List<User> invitedMembers;
 
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)
-	@Index(name = "IDX_GROUP_LEADER")
 	private User leader;
 
 	@Column(nullable = false)

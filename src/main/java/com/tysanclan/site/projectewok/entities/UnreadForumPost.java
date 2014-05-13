@@ -24,12 +24,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.Index;
 
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 
@@ -37,7 +37,9 @@ import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
  * @author Ties
  */
 @Entity
-@AccessType("field")
+@Table(indexes = { //
+@Index(name = "IDX_UNREADPOST_USER", columnList = "user_id"),
+		@Index(name = "IDX_UNREADPOST_FORUMPOST", columnList = "forumPost_id") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class UnreadForumPost extends BaseDomainObject {
 
@@ -49,11 +51,9 @@ public class UnreadForumPost extends BaseDomainObject {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_UNREADPOST_USER")
 	private User user;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_UNREADPOST_FORUMPOST")
 	private ForumPost forumPost;
 
 	public UnreadForumPost() {

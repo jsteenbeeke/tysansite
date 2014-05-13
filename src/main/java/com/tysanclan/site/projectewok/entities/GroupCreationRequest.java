@@ -25,13 +25,13 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.Index;
 import org.hibernate.annotations.Type;
 
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
@@ -40,7 +40,10 @@ import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
+@Table(indexes = { //
+		@Index(name = "IDX_GROUPCREATIONREQUEST_REQUESTER", columnList = "requester_id"), //
+		@Index(name = "IDX_GROUPCREATIONREQUEST_GAME", columnList = "game_id"), //
+		@Index(name = "IDX_GROUPCREATIONREQUEST_REALM", columnList = "realm_id") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class GroupCreationRequest extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;
@@ -64,15 +67,12 @@ public class GroupCreationRequest extends BaseDomainObject {
 	private String description;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_GROUPCREATIONREQUEST_REQUESTER")
 	private User requester;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_GROUPCREATIONREQUEST_GAME")
 	private Game game;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_GROUPCREATIONREQUEST_REALM")
 	private Realm realm;
 
 	// $P$

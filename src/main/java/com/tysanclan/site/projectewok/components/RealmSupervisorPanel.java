@@ -112,7 +112,6 @@ public class RealmSupervisorPanel extends TysanOverviewPanel<Realm> {
 		});
 	}
 
-	@SuppressWarnings("unchecked")
 	protected ListModel<BaseSeries<String, Integer>> getGameSizeChart(
 			Realm realm) {
 		return new ListModel<BaseSeries<String, Integer>>(

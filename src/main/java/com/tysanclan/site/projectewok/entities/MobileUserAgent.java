@@ -24,11 +24,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.Index;
 
 import com.jeroensteenbeeke.hyperion.data.DomainObject;
 
@@ -37,7 +37,9 @@ import com.jeroensteenbeeke.hyperion.data.DomainObject;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
+@Table(indexes = { //
+@Index(name = "IDX_MUA_IDENT", columnList = "identifier"), //
+		@Index(name = "IDX_MUA_MOBILE", columnList = "mobile") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class MobileUserAgent implements DomainObject {
 	public static final long serialVersionUID = 1L;
@@ -48,11 +50,9 @@ public class MobileUserAgent implements DomainObject {
 	private Long id;
 
 	@Column(nullable = false, length = 255)
-	@Index(name = "IDX_MUA_IDENT")
 	private String identifier;
 
 	@Column(nullable = true)
-	@Index(name = "IDX_MUA_MOBILE")
 	private Boolean mobile;
 
 	// $P$

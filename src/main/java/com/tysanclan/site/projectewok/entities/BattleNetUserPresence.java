@@ -29,12 +29,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.Index;
 
 import com.jeroensteenbeeke.hyperion.data.DomainObject;
 
@@ -42,7 +42,8 @@ import com.jeroensteenbeeke.hyperion.data.DomainObject;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
+@Table(indexes = { //
+@Index(name = "IDX_BattleNetUserPresence_Channel", columnList = "channel_id") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class BattleNetUserPresence implements DomainObject {
 	public static final long serialVersionUID = 1L;
@@ -98,7 +99,6 @@ public class BattleNetUserPresence implements DomainObject {
 	private Long id;
 
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	@Index(name = "IDX_BattleNetUserPresence_Channel")
 	private BattleNetChannel channel;
 
 	@Column(nullable = false)

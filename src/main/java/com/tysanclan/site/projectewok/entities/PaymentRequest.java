@@ -26,14 +26,16 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
-
-import org.hibernate.annotations.Index;
+import javax.persistence.Table;
 
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 
 @Entity
+@Table(indexes = { //
+@Index(name = "IDX_PAYMENTREQUEST_USER", columnList = "requester_id") })
 public class PaymentRequest extends BaseDomainObject {
 	private static final long serialVersionUID = 1L;
 
@@ -43,7 +45,6 @@ public class PaymentRequest extends BaseDomainObject {
 	private Long id;
 
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	@Index(name = "IDX_PAYMENTREQUEST_USER")
 	private User requester;
 
 	@Column(nullable = false, length = 255)

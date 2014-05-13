@@ -1,6 +1,6 @@
 @CHARSET "ISO-8859-1";
 
-html, body {
+html,body {
 	background-color: #000;
 	font-family: Verdana;
 	font-size: 12px;
@@ -20,9 +20,23 @@ option {
 	float: right;
 }
 
-.sortable { list-style-type: none; margin: 0; padding: 0; }
-.sortable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; height: 18px; }
-.sortable li span { position: absolute; margin-left: -1.3em; }
+.sortable {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.sortable li {
+	margin: 0 3px 3px 3px;
+	padding: 0.4em;
+	padding-left: 1.5em;
+	height: 18px;
+}
+
+.sortable li span {
+	position: absolute;
+	margin-left: -1.3em;
+}
 
 .election-hover {
 	border-color: #c93 !important;
@@ -56,8 +70,8 @@ table.HeaderUnderlined {
 }
 
 table.HeaderUnderlined tr th {
-		border-bottom: 1px solid #fc0; 
-		width: 150px;
+	border-bottom: 1px solid #fc0;
+	width: 150px;
 }
 
 .Menu {
@@ -98,11 +112,11 @@ h2 .ui-icon {
 }
 
 .ui-tabs a {
-		color: #fff !important;
+	color: #fff !important;
 }
 
 a.Yellow {
-		color: #fc0 !important;
+	color: #fc0 !important;
 }
 
 a:hover {
@@ -119,7 +133,6 @@ a.auto:hover {
 	color: #fcc !important;
 	text-decoration: underline;
 }
-
 
 a.Button {
 	background-image: url('../images/button.png');
@@ -172,8 +185,6 @@ input.SubmitButton:hover {
 	color: #f99;
 }
 
-
-
 div.Banner {
 	width: 995px;
 	height: 200px;
@@ -194,7 +205,6 @@ div.Content {
 	position: 1px solid #f00;
 	padding-top: 0px;
 	padding-left: 20px;
-	
 	color: #fff;
 }
 
@@ -215,7 +225,7 @@ h1 {
 	margin-bottom: 20px;
 	display: block;
 	border-bottom: 1px solid #fc0;
-	color: #fff;	
+	color: #fff;
 }
 
 h2 {
@@ -239,8 +249,7 @@ h4 {
 	color: #fff;
 }
 
-
-input, select, textarea {
+input,select,textarea {
 	border: 1px solid #fc0;
 	background-color: #333;
 	color: #fc0;
@@ -252,13 +261,11 @@ input, select, textarea {
 	color: #fc0;
 }
 
-
 .mceEditorArea {
 	border: 1px solid #fc0;
 	background-color: #333;
 	color: #fc0;
 }
-
 
 .mceLayout {
 	border-color: #fc0;
@@ -268,7 +275,6 @@ input, select, textarea {
 	border-top: 1px solid #fc0;
 	width: 40%;
 	margin-left: 30%;
-	
 	text-align: center;
 }
 
@@ -277,7 +283,6 @@ input, select, textarea {
 	width: 60%;
 	margin-left: 20%;
 	margin-bottom: 10px;
-	
 	text-align: center;
 }
 
@@ -286,7 +291,6 @@ a img {
 }
 
 .ToolBox {
-
 	padding: 5px;
 	text-align: center;
 	width: 20%;
@@ -306,7 +310,6 @@ td.topCenteredCell {
 	text-align: center;
 	vertical-align: top;
 }
-
 
 li.feedbackPanelINFO {
 	color: #fff !important;
@@ -346,16 +349,15 @@ table.CalendarDetail {
 	border-top: 1px solid #f60;
 	border-right: 1px solid #c30;
 	border-bottom: 1px solid #c30;
-	
 	width: 100%;
 }
 
-table.Calendar tr, table.CalendarDetail tr {
+table.Calendar tr,table.CalendarDetail tr {
 	padding: 0px;
-	margin: 0px;	
+	margin: 0px;
 }
 
-table.Calendar tr th, table.CalendarDetail tr th {
+table.Calendar tr th,table.CalendarDetail tr th {
 	border-left: 1px solid #f60;
 	border-top: 1px solid #f60;
 	border-right: 1px solid #c30;
@@ -368,7 +370,7 @@ table.CalendarDetail tr th {
 	color: #fff;
 }
 
-table.Calendar tr td.Calendar, table.CalendarDetail tr td.Calendar {
+table.Calendar tr td.Calendar,table.CalendarDetail tr td.Calendar {
 	border-left: 1px solid #fc0;
 	border-top: 1px solid #fc0;
 	border-right: 1px solid #960;
@@ -407,7 +409,7 @@ table.Calendar {
 
 table.Calendar tr {
 	padding: 0px;
-	margin: 0px;	
+	margin: 0px;
 }
 
 table.Calendar tr th {
@@ -417,7 +419,7 @@ table.Calendar tr th {
 	border-bottom: 1px solid #c30;
 	padding: 5px;
 	margin: 0px;
-	color: #fff;	
+	color: #fff;
 }
 
 table.Calendar tr td.Calendar {
@@ -439,31 +441,60 @@ div.CalendarPanelNavigator {
 	text-align: center;
 }
 
-
 /* JQuery UI overrides */
-
 .ui-accordion-header {
 	width: 763px !important;
-	
 }
 
 .treeview li {
 	background-color: #000 !important;
 }
 
-.messagetree ul { list-style-type: none; }
-.messagetree li { padding: 3px 0 2px 16px; }
-.messagetree span.folder, .messagetree span.message, .messagetree span.addfolder, .messagetree span.messageunread { padding: 1px 0 1px 16px; display: block; }
-.messagetree span.folder { background: url('../images/icons/folder.png') 0 0 no-repeat; }
-.messagetree span.addfolder { background: url('../images/icons/folder_add.png') 0 0 no-repeat; }
-.messagetree li.expandable span.folder { background: url('../images/icons/folder_explore.png') 0 0 no-repeat; }
-.messagetree span.message { background: url('../images/icons/email.png') 0 0 no-repeat; }
-.messagetree span.messageunread { background: url('../images/icons/email_error.png') 0 0 no-repeat; }
+.messagetree ul {
+	list-style-type: none;
+}
 
-.messagetree .highlight { color: #f00; }
-.bordered { border: 1px dotted #f90; display: inline; padding: 2px; }
+.messagetree li {
+	padding: 3px 0 2px 16px;
+}
+
+.messagetree span.folder,.messagetree span.message,.messagetree span.addfolder,.messagetree span.messageunread
+	{
+	padding: 1px 0 1px 16px;
+	display: block;
+}
+
+.messagetree span.folder {
+	background: url('../images/icons/folder.png') 0 0 no-repeat;
+}
+
+.messagetree span.addfolder {
+	background: url('../images/icons/folder_add.png') 0 0 no-repeat;
+}
+
+.messagetree li.expandable span.folder {
+	background: url('../images/icons/folder_explore.png') 0 0 no-repeat;
+}
+
+.messagetree span.message {
+	background: url('../images/icons/email.png') 0 0 no-repeat;
+}
+
+.messagetree span.messageunread {
+	background: url('../images/icons/email_error.png') 0 0 no-repeat;
+}
+
+.messagetree .highlight {
+	color: #f00;
+}
+
+.bordered {
+	border: 1px dotted #f90;
+	display: inline;
+	padding: 2px;
+}
 
 .gameimageicon {
-	max-width:300px;
-	max-height:100px;
+	max-width: 300px;
+	max-height: 100px;
 }

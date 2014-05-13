@@ -27,15 +27,15 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.Index;
 
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 import com.tysanclan.site.projectewok.util.SerializableFunction;
@@ -44,7 +44,10 @@ import com.tysanclan.site.projectewok.util.SerializableFunction;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
+@Table(indexes = { //
+		@Index(name = "IDX_ConversationParticipation_Conversation", columnList = "conversation_id"), //
+		@Index(name = "IDX_ConversationParticipation_User", columnList = "user_id"), //
+		@Index(name = "IDX_ConversationParticipation_Folder", columnList = "messageFolder_id") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class ConversationParticipation extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;
@@ -65,15 +68,12 @@ public class ConversationParticipation extends BaseDomainObject {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_ConversationParticipation_Conversation")
 	private Conversation conversation;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_ConversationParticipation_User")
 	private User user;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_ConversationParticipation_Folder")
 	private MessageFolder messageFolder;
 
 	@ManyToMany(fetch = FetchType.LAZY)

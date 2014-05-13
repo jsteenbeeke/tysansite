@@ -1,65 +1,61 @@
 <html xmlns:wicket>
-	<wicket:extend>
-		<div class="jqui-tabs">
-  			<ul>
-				<li><a href="#tabs-1">Current Roles</a></li>
-				<li><a href="#tabs-2">Create Role</a></li>
-			</ul>
-			<div id="tabs-1">
-				<table style="width: 100%;">
-					<tr>
-						<th style="width: 20%;">Role</th>
-						<th style="width: 20%;">Assigned to</th>
-						<th style="width: 20%;">Edit</th>
-						<th style="width: 20%;">Reassign</th>
-						<th style="width: 20%;">Delete</th>
-					</tr>
-					<tr wicket:id="roles">
-						<td style="text-align:center;"><span wicket:id="name"></span></td>
-						<td style="text-align:center;"><span wicket:id="member"></span></td>
-						<td style="text-align:center;"><a wicket:id="edit"><img wicket:id="icon" /></a><span wicket:id="noneditable">-</span></td>
-						<td style="text-align:center;">
-							<a wicket:id="reassign"><img wicket:id="icon" /></a>
-							<span wicket:id="nonreassignable">-</span>
-							<div wicket:id="assigndialog">
-								<form wicket:id="assign">
-									<select wicket:id="user"></select>
-									<input type="submit" value="Assign" class="SubmitButton" />
-								</form>
-							</div>
-						</td>
-						<td style="text-align:center;">
-							<a wicket:id="delete"><img wicket:id="icon" /></a>
-							<span wicket:id="nondeletable">-</span>
-							<div wicket:id="deletedialog">
-								<p>
-								Are you sure you want to delete the role <span wicket:id="name">Web Monkey</span>?
-								</p>
-								
-								<a wicket:id="yes"><img wicket:id="icon" /> Yes</a><br />
-								<a wicket:id="no"><img wicket:id="icon" /> No</a>
-							</div>
-							
-						</td>
-					</tr>
-				</table>
-			</div>
-			<div id="tabs-2">
-				<form wicket:id="addRoleForm">
-					<p>
-						<b>Name:</b><br />
-						<input type="text" wicket:id="name" />
-					</p>
-					<p>
-						<b>Description:</b><br />
-						<textarea wicket:id="description" rows="15" cols="60"></textarea>
-					</p>
-					<p>
-						<input type="submit" value="Create" class="SubmitButton" />
-					</p>
-				</form>
-			</div>
+<wicket:extend>
+	<div class="jqui-tabs">
+		<ul>
+			<li><a href="#tabs-1">Current Roles</a></li>
+			<li><a href="#tabs-2">Create Role</a></li>
+		</ul>
+		<div id="tabs-1">
+			<table style="width: 100%;">
+				<tr>
+					<th style="width: 20%;">Role</th>
+					<th style="width: 20%;">Assigned to</th>
+					<th style="width: 20%;">Edit</th>
+					<th style="width: 20%;">Reassign</th>
+					<th style="width: 20%;">Delete</th>
+				</tr>
+				<tr wicket:id="roles">
+					<td style="text-align: center;"><span wicket:id="name"></span></td>
+					<td style="text-align: center;"><span wicket:id="member"></span></td>
+					<td style="text-align: center;"><a wicket:id="edit"><img
+							wicket:id="icon" /></a><span wicket:id="noneditable">-</span></td>
+					<td style="text-align: center;"><a wicket:id="reassign"><img
+							wicket:id="icon" /></a> <span wicket:id="nonreassignable">-</span>
+						<div wicket:id="assigndialog">
+							<form wicket:id="assign">
+								<select wicket:id="user"></select> <input type="submit"
+									value="Assign" class="SubmitButton" />
+							</form>
+						</div></td>
+					<td style="text-align: center;"><a wicket:id="delete"><img
+							wicket:id="icon" /></a> <span wicket:id="nondeletable">-</span>
+						<div wicket:id="deletedialog">
+							<p>
+								Are you sure you want to delete the role <span wicket:id="name">Web
+									Monkey</span>?
+							</p>
+
+							<a wicket:id="yes"><img wicket:id="icon" /> Yes</a><br /> <a
+								wicket:id="no"><img wicket:id="icon" /> No</a>
+						</div></td>
+				</tr>
+			</table>
 		</div>
-	</wicket:extend>
+		<div id="tabs-2">
+			<form wicket:id="addRoleForm">
+				<p>
+					<b>Name:</b><br /> <input type="text" wicket:id="name" />
+				</p>
+				<p>
+					<b>Description:</b><br />
+					<textarea wicket:id="description" rows="15" cols="60"></textarea>
+				</p>
+				<p>
+					<input type="submit" value="Create" class="SubmitButton" />
+				</p>
+			</form>
+		</div>
+	</div>
+</wicket:extend>
 </html>
 

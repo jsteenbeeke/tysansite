@@ -1,6 +1,6 @@
 <html xmlns:wicket>
 
-	<wicket:extend>
+<wicket:extend>
 		Using this page you can register an account for our forums. Using this account,
 		you can post on our forums. 
 		
@@ -24,19 +24,17 @@
 			</tr>
 			<tr>
 				<th rowspan="2">Challenge</th>
-				<td>
-					<img wicket:id="captcha" alt="Proof that you are human" />
+				<td><img wicket:id="captcha" alt="Proof that you are human" />
 				</td>
 			</tr>
 			<tr>
 				<td><input type="text" wicket:id="captchaResponse" /></td>
 			</tr>
 			<tr>
-				<td colspan="2" style="text-align: center;">
-					<input type="submit" value="Register" class="SubmitButton" />
-				</td>
+				<td colspan="2" style="text-align: center;"><input
+					type="submit" value="Register" class="SubmitButton" /></td>
 			</tr>
 		</table>
-		</form>
-	</wicket:extend>
+	</form>
+</wicket:extend>
 </html>

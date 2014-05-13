@@ -36,7 +36,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
 
 import com.google.common.base.Functions;
@@ -50,7 +49,6 @@ import com.tysanclan.site.projectewok.util.SerializableFunction;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class Conversation extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;

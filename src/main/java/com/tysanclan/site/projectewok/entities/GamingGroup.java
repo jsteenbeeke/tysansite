@@ -22,26 +22,21 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.Index;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
 @DiscriminatorValue(value = "Gaming")
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class GamingGroup extends Group {
 	private static final long serialVersionUID = 1L;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_GAMINGGROUP_GAME")
 	private Game game;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_GAMINGGROUP_REALM")
 	private Realm realm;
 
 	// $P$

@@ -1,19 +1,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket>
-	<wicket:extend>
-		<div class="jqui-accordion">
-			<h2><a>Create Regulation</a></h2>
-			<div>
-				<form wicket:id="addForm">
-					<b>Name</b><br />
-					<input type="text" wicket:id="newTitle" /><br />
-					
-					<b>Body</b><br />
-					<textarea wicket:id="description" rows="15" cols="60"></textarea><br />
-					
-					<input type="submit" value="Create" class="SubmitButton" />
-				</form>
-			</div>
+<wicket:extend>
+	<div class="jqui-accordion">
+		<h2>
+			<a>Create Regulation</a>
+		</h2>
+		<div>
+			<form wicket:id="addForm">
+				<b>Name</b><br /> <input type="text" wicket:id="newTitle" /><br />
+
+				<b>Body</b><br />
+				<textarea wicket:id="description" rows="15" cols="60"></textarea>
+				<br /> <input type="submit" value="Create" class="SubmitButton" />
+			</form>
 		</div>
-	</wicket:extend>
+	</div>
+</wicket:extend>
 </html>
 

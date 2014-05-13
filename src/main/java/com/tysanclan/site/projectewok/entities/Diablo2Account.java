@@ -20,7 +20,6 @@ package com.tysanclan.site.projectewok.entities;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
 
 /**
@@ -28,7 +27,6 @@ import org.hibernate.annotations.Cache;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
 @DiscriminatorValue("Diablo2Account")
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class Diablo2Account extends GameAccount {

@@ -1,27 +1,30 @@
 <html xmlns:wicket>
-	<wicket:extend>
-		<div class="jqui-accordion">
-			<h2><a>Report Rules Violation</a></h2>
-			<div>
-				If you have witnessed another member violate one or more regulations, then this member should
-				be tried by the Truthsayers. This trial will be private, and you will remain anonymous. The Truthsayers
-				may request additional evidence however, or dismiss your complaint entirely.
-				
-				<form wicket:id="accuse">
-					<p>
-						<b>Who committed the violation?</b><br />
-						<select wicket:id="member"></select><br />
-						<b>Which regulations did that member violate?</b><br />
-						<select wicket:id="regulations"></select><br />
-						<b>What evidence and motivation do you have?</b><br />
-						<textarea wicket:id="motivation"></textarea>
-						
-					</p>
-					
-					<input type="submit" class="SubmitButton" value="Report" />
-				</form>
-			</div>
+<wicket:extend>
+	<div class="jqui-accordion">
+		<h2>
+			<a>Report Rules Violation</a>
+		</h2>
+		<div>
+			If you have witnessed another member violate one or more regulations,
+			then this member should be tried by the Truthsayers. This trial will
+			be private, and you will remain anonymous. The Truthsayers may
+			request additional evidence however, or dismiss your complaint
+			entirely.
+
+			<form wicket:id="accuse">
+				<p>
+					<b>Who committed the violation?</b><br /> <select
+						wicket:id="member"></select><br /> <b>Which regulations did
+						that member violate?</b><br /> <select wicket:id="regulations"></select><br />
+					<b>What evidence and motivation do you have?</b><br />
+					<textarea wicket:id="motivation"></textarea>
+
+				</p>
+
+				<input type="submit" class="SubmitButton" value="Report" />
+			</form>
 		</div>
-	</wicket:extend>
+	</div>
+</wicket:extend>
 </html>
 

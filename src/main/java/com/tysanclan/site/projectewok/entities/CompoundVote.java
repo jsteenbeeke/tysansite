@@ -25,13 +25,13 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.Index;
 
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 
@@ -39,7 +39,9 @@ import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
+@Table(indexes = { //
+@Index(name = "IDX_CompoundVote_Caster", columnList = "caster_id"), //
+		@Index(name = "IDX_CompoundVote_Election", columnList = "election_id") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class CompoundVote extends BaseDomainObject {
 	private static final long serialVersionUID = 1L;
@@ -53,11 +55,9 @@ public class CompoundVote extends BaseDomainObject {
 	private Set<CompoundVoteChoice> choices;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_CompoundVote_Caster")
 	private User caster;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_CompoundVote_Election")
 	private Election election;
 
 	// $P$

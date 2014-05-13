@@ -22,9 +22,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.Index;
 
 import com.tysanclan.site.projectewok.util.MemberUtil;
 
@@ -32,7 +30,6 @@ import com.tysanclan.site.projectewok.util.MemberUtil;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
 @DiscriminatorValue("GroupLeaderElection")
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class GroupLeaderElection extends Election {
@@ -53,11 +50,9 @@ public class GroupLeaderElection extends Election {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_GROUPLEADERELECTION_GROUP")
 	private Group group;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_GROUPLEADERELECTION_WINNER")
 	private User winner;
 
 	// $P$

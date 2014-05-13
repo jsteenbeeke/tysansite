@@ -29,17 +29,17 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.Index;
 
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 
@@ -47,7 +47,10 @@ import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
+@Table(indexes = { //
+@Index(name = "IDX_FORUMTHREAD_BRANCHFROM", columnList = "branchFrom_id"), //
+		@Index(name = "IDX_FORUMTHREAD_FORUM", columnList = "forum_id"), //
+		@Index(name = "IDX_FORUMTHREAD_POSTER", columnList = "poster_id") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "forum")
 public class ForumThread extends BaseDomainObject {
 	private static final long serialVersionUID = 1L;
@@ -55,11 +58,9 @@ public class ForumThread extends BaseDomainObject {
 	public static final int POSTS_PER_PAGE = 10;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_FORUMTHREAD_BRANCHFROM")
 	private ForumThread branchFrom;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_FORUMTHREAD_FORUM")
 	private Forum forum;
 
 	@Id
@@ -72,7 +73,6 @@ public class ForumThread extends BaseDomainObject {
 
 	// If null then posted by "System"
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)
-	@Index(name = "IDX_FORUMTHREAD_POSTER")
 	private User poster;
 
 	@OneToMany(mappedBy = "thread", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)

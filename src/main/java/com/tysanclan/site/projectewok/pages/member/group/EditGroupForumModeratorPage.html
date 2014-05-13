@@ -1,33 +1,35 @@
 <html xmlns:wicket>
-	<wicket:extend>
-		<p>
-			<a wicket:id="back">Back to overview</a>
-		</p>
-		
-		<div class="jqui-accordion">
-			<h2><a wicket:id="title"></a></h2>
-			<div>
-				<table>
-					<thead>
-						<tr>
-							<th>Moderator</th>
-							<th>Remove</th>
-						</tr>
-					</thead>
-					<tr wicket:id="moderators">
-						<td wicket:id="user"></td>
-						<td>
-							<a wicket:id="remove"><img wicket:id="icon" alt="Remove" title="Remove" /></a>
-						</td>
+<wicket:extend>
+	<p>
+		<a wicket:id="back">Back to overview</a>
+	</p>
+
+	<div class="jqui-accordion">
+		<h2>
+			<a wicket:id="title"></a>
+		</h2>
+		<div>
+			<table>
+				<thead>
+					<tr>
+						<th>Moderator</th>
+						<th>Remove</th>
 					</tr>
-				</table>
-				<br /><br />
-				
-				<form wicket:id="addForm">
-					<b>Add Moderator</b><br />
-					<select wicket:id="userSelect"></select> <input type="submit" class="SubmitButton" value="Add" />
-				</form>
-			</div>
+				</thead>
+				<tr wicket:id="moderators">
+					<td wicket:id="user"></td>
+					<td><a wicket:id="remove"><img wicket:id="icon"
+							alt="Remove" title="Remove" /></a></td>
+				</tr>
+			</table>
+			<br />
+			<br />
+
+			<form wicket:id="addForm">
+				<b>Add Moderator</b><br /> <select wicket:id="userSelect"></select>
+				<input type="submit" class="SubmitButton" value="Add" />
+			</form>
 		</div>
-	</wicket:extend>
+	</div>
+</wicket:extend>
 </html>

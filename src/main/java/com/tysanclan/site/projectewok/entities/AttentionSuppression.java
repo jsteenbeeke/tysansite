@@ -25,12 +25,15 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 
 @Entity
+@Table(indexes = { @Index(columnList = "user_id", name = "IDX_ATTSUPPR_USER") })
 public class AttentionSuppression extends BaseDomainObject {
 
 	private static final long serialVersionUID = 1L;

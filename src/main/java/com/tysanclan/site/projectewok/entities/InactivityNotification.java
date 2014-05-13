@@ -24,10 +24,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
-import org.hibernate.annotations.Index;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -38,7 +39,8 @@ import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@org.hibernate.annotations.AccessType("field")
+@Table(indexes = { //
+@Index(name = "IDX_INACTIVITY_USER", columnList = "user_id") })
 @org.hibernate.annotations.Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class InactivityNotification extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;
@@ -49,7 +51,6 @@ public class InactivityNotification extends BaseDomainObject {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@Index(name = "IDX_INACTIVITY_USER")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User user;
 

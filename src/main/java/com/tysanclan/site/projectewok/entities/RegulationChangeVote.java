@@ -24,10 +24,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
-import org.hibernate.annotations.Index;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -37,7 +38,9 @@ import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
  * @author Jeroen Steenbeeke
  */
 @javax.persistence.Entity
-@org.hibernate.annotations.AccessType("field")
+@Table(indexes = { //
+		@Index(name = "IDX_REGULATIONCHANGEVOTE_CHANGE", columnList = "regulationChange_id"),
+		@Index(name = "IDX_REGULATIONCHANGEVOTE_CASTER", columnList = "senator_id") })
 @org.hibernate.annotations.Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class RegulationChangeVote extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;
@@ -48,12 +51,10 @@ public class RegulationChangeVote extends BaseDomainObject {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_REGULATIONCHANGEVOTE_CHANGE")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private RegulationChange regulationChange;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_REGULATIONCHANGEVOTE_CASTER")
 	private User senator;
 
 	@Column

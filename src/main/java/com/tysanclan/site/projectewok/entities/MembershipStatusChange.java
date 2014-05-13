@@ -28,8 +28,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -39,6 +41,7 @@ import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
  * @author Jeroen Steenbeeke
  */
 @Entity
+@Table(indexes = { @Index(columnList = "user_id", name = "IDX_MSTATUSCHANGE_USER") })
 public class MembershipStatusChange extends BaseDomainObject {
 
 	private static final long serialVersionUID = 1L;

@@ -24,12 +24,17 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 
 @Entity
+@Table(indexes = {
+		@Index(columnList = "approvesOf_id", name = "IDX_ROLETRANS_TRANSFER"),
+		@Index(columnList = "approvedBy_id", name = "IDX_ROLETRANS_APPROVER") })
 public class RoleTransferApproval extends BaseDomainObject {
 	private static final long serialVersionUID = 1L;
 

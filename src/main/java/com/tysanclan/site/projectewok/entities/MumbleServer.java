@@ -26,7 +26,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
 
 import com.jeroensteenbeeke.hyperion.data.DomainObject;
@@ -36,7 +35,6 @@ import com.jeroensteenbeeke.hyperion.data.DomainObject;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class MumbleServer implements DomainObject {
 	public static final long serialVersionUID = 1L;

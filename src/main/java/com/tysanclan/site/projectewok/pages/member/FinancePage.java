@@ -31,7 +31,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.HiddenField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.link.IPageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
@@ -43,6 +42,7 @@ import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.beans.RoleService;
 import com.tysanclan.site.projectewok.components.ActivateSubscriptionPanel;
+import com.tysanclan.site.projectewok.components.IOnSubmitPageCreator;
 import com.tysanclan.site.projectewok.components.ViewSubscriptionPanel;
 import com.tysanclan.site.projectewok.entities.Expense;
 import com.tysanclan.site.projectewok.entities.User;
@@ -245,17 +245,13 @@ public class FinancePage extends AbstractMemberPage {
 		add(plot);
 	}
 
-	private static class FinancePageLink implements IPageLink {
+	private static class FinancePageLink implements IOnSubmitPageCreator {
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		public Page getPage() {
+		public Page createPage() {
 			return new FinancePage();
 		}
 
-		@Override
-		public Class<? extends Page> getPageIdentity() {
-			return FinancePage.class;
-		}
 	}
 }

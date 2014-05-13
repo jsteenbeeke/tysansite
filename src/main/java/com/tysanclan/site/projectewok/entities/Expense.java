@@ -31,7 +31,6 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
 
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
@@ -42,7 +41,6 @@ import com.tysanclan.site.projectewok.util.StringUtil;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class Expense extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;

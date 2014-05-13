@@ -28,6 +28,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
@@ -36,10 +37,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.Index;
 import org.hibernate.annotations.Type;
 
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
@@ -48,7 +48,11 @@ import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
+@Table(indexes = { //
+@Index(name = "IDX_TRIAL_ACCUSED", columnList = "accused_id"), //
+		@Index(name = "IDX_TRIAL_ACCUSER", columnList = "accuser_id"), //
+		@Index(name = "IDX_TRIAL_JUDGE", columnList = "judge_id"), //
+		@Index(name = "IDX_TRIAL_THREAD", columnList = "trialThread_id") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "forum")
 public class Trial extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;
@@ -63,15 +67,12 @@ public class Trial extends BaseDomainObject {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_TRIAL_ACCUSED")
 	private User accused;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_TRIAL_ACCUSER")
 	private User accuser;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = true)
-	@Index(name = "IDX_TRIAL_JUDGE")
 	private User judge;
 
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -80,7 +81,6 @@ public class Trial extends BaseDomainObject {
 	private List<Regulation> regulations;
 
 	@OneToOne(optional = true, fetch = FetchType.LAZY)
-	@Index(name = "IDX_TRIAL_THREAD")
 	private ForumThread trialThread;
 
 	@Enumerated(EnumType.STRING)

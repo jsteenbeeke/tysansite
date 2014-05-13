@@ -27,6 +27,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -34,10 +35,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.Index;
 
 import com.jeroensteenbeeke.hyperion.data.DomainObject;
 
@@ -45,7 +45,8 @@ import com.jeroensteenbeeke.hyperion.data.DomainObject;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
+@Table(indexes = { //
+@Index(name = "IDX_REALM_OVERSEER", columnList = "overseer_id") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class Realm implements DomainObject {
 	public static final long serialVersionUID = 1L;
@@ -62,7 +63,6 @@ public class Realm implements DomainObject {
 	private String channel;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_REALM_OVERSEER")
 	private User overseer;
 
 	@ManyToMany(fetch = FetchType.LAZY)

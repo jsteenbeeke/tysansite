@@ -1,6 +1,6 @@
 <html xmlns:wicket>
-	<wicket:extend>
-		<div class="jqui-tabs-auto">
+<wicket:extend>
+	<div class="jqui-tabs-auto">
 		<ul>
 			<li><a href="#tabs-1">Images</a></li>
 			<li><a href="#tabs-2">YouTube</a></li>
@@ -8,77 +8,69 @@
 		<div id="tabs-1">
 			<p>
 				<b>Space Usage</b>
-				<div wicket:id="space"></div>
-				<span wicket:id="curr"></span> of <span wicket:id="max"></span> MB
+			<div wicket:id="space"></div>
+			<span wicket:id="curr"></span> of <span wicket:id="max"></span> MB
 			</p>
-	
+
 			<p style="display: block; width: 100%;">
-	  		<div wicket:id="slider">
-	  			<wicket:container wicket:id="gallery">
-	  				<p style="margin-left: 25px;">
-					<img  wicket:id="thumbnail" />
-					<br />
-					<span wicket:id="delete"></span>
+			<div wicket:id="slider">
+				<wicket:container wicket:id="gallery">
+					<p style="margin-left: 25px;">
+						<img wicket:id="thumbnail" /> <br /> <span wicket:id="delete"></span>
 					</p>
 				</wicket:container>
-	  		</div>
-	  		</p>
-	  		
-	  		<hr />
-  		
-  		<div style="width: 100%;">
-  		<b>Upload image</b>
-  		<form wicket:id="uploadForm">
-  			<p>
-  				Description:<br />
-  				<input type="text" wicket:id="description" />
-  			</p>
-  			
-  			<p>
-  				Image:<br />
-  				<input type="file" wicket:id="file" />
-  			</p>
-  			
-  			<input type="submit" value="Upload" class="SubmitButton" />
-  			
-  		</form>
-  		</div>
-  		</div>
-  		<div id="tabs-2">
-  		<p style="display: block; width: 100%;">
-  			<wicket:container wicket:id="gallery">
-  				<p>
-				<span wicket:id="vid"></span>
-				<br />
-				<span wicket:id="description"></span>
-				<br />
-				<span wicket:id="delete"></span>
-				</p>
-			</wicket:container>
-  		</p>
-  		
-  		<hr />
-  		
-  		<div style="width: 100%;">
-  		<b>Add Youtube Video</b>
-  		<form wicket:id="youtubeAddForm">
-  			<p>
-  				Video URL:<br />
-  				<input type="text" wicket:id="url" />
-  			</p>
-  			
-  			<p>
-  				Video Description:<br />
-  				<input type="text" wicket:id="description" />
-  			</p>
-  			
-  			<input type="submit" value="Add" class="SubmitButton" />
-  			
-  		</form>
-  		</div>
-  		</div>
-  		</div>
-  		
-	</wicket:extend>
+			</div>
+			</p>
+
+			<hr />
+
+			<div style="width: 100%;">
+				<b>Upload image</b>
+				<form wicket:id="uploadForm">
+					<p>
+						Description:<br /> <input type="text" wicket:id="description" />
+					</p>
+
+					<p>
+						Image:<br /> <input type="file" wicket:id="file" />
+					</p>
+
+					<input type="submit" value="Upload" class="SubmitButton" />
+
+				</form>
+			</div>
+		</div>
+		<div id="tabs-2">
+			<p style="display: block; width: 100%;">
+				<wicket:container wicket:id="gallery">
+					<p>
+						<span wicket:id="vid"></span> <br /> <span
+							wicket:id="description"></span> <br /> <span wicket:id="delete"></span>
+					</p>
+				</wicket:container>
+			</p>
+
+			<hr />
+
+			<div style="width: 100%;">
+				<b>Add Youtube Video</b>
+				<form wicket:id="youtubeAddForm">
+					<p>
+						Video URL:<br /> <input type="text" wicket:id="url" />
+					</p>
+
+					<p>
+						Video Description:<br /> <input type="text"
+							wicket:id="description" />
+					</p>
+
+					<input type="submit" value="Add" class="SubmitButton" />
+
+				</form>
+			</div>
+		</div>
+	</div>
+
+</wicket:extend>
 </html>
 

@@ -1,66 +1,65 @@
 <html xmlns:wicket>
-	<wicket:extend>
-		<div class="jqui-accordion">
-			<wicket:container wicket:id="categories">
-				<h2><a wicket:id="name"></a></h2>
-				<div>
-					<p>
-						<span wicket:id="allowpublic"></span>
-					</p>
-					<p>
-						<table>
-							<tr>
-								<th>Forum name</th>
-								<th colspan="7">Actions</th>							
-							</tr>
-							<tr wicket:id="forums">
-								<td style="text-align: center;"><span wicket:id="name"></span></td>
-								<td>
-									<a wicket:id="moveup"><img wicket:id="icon" alt="Move up" title="Move up" /></a>
-								</td>
-								<td>
-									<a wicket:id="movedown"><img wicket:id="icon" alt="Move down" title="Move down" /></a>
-								</td>
-								<td>
-									<a wicket:id="edit"><img wicket:id="icon" alt="Edit Forum" title="Edit Forum" /></a>
-								</td>						
-								<td>
-									<a wicket:id="moderators"><img wicket:id="icon" alt="Assign Moderators" title="Assign Moderators" /></a>
-								</td>
-								<td>
-									<a wicket:id="catprev"><img wicket:id="icon" alt="Move to previous category" title="Move to previous category" /></a>
-								</td>
-								<td>
-									<a wicket:id="catnext"><img wicket:id="icon" alt="Move to next category" title="Move to next category" /></a>
-								</td>
-								<td>
-									<a wicket:id="delete"><img wicket:id="icon" alt="Delete" title="Delete" /></a>
-								</td>
-
-							</tr>
-						</table>
-					</p>
-					<p>
-					<a wicket:id="add"><img wicket:id="icon" /> Add forum</a> <br />
-					<a wicket:id="delete"><img wicket:id="icon" /> Delete category <span wicket:id="name2"></span></a>
-					</p>
-				</div>
-			</wicket:container>
-			<h2><a>Add Category</a></h2>
+<wicket:extend>
+	<div class="jqui-accordion">
+		<wicket:container wicket:id="categories">
+			<h2>
+				<a wicket:id="name"></a>
+			</h2>
 			<div>
-				<form wicket:id="addform">
-					<p>
-						<b>Category name:</b><br />
-						<input type="text" wicket:id="catname" /><br />
-					</p>
-					<p>
-						<input type="checkbox" wicket:id="allowpublic" /> Allow public group forums<br />
-					</p>
-					<p>
-						<input type="submit" class="SubmitButton" value="Create" />
-					</p>
-				</form>
+				<p>
+					<span wicket:id="allowpublic"></span>
+				</p>
+				<p>
+				<table>
+					<tr>
+						<th>Forum name</th>
+						<th colspan="7">Actions</th>
+					</tr>
+					<tr wicket:id="forums">
+						<td style="text-align: center;"><span wicket:id="name"></span></td>
+						<td><a wicket:id="moveup"><img wicket:id="icon"
+								alt="Move up" title="Move up" /></a></td>
+						<td><a wicket:id="movedown"><img wicket:id="icon"
+								alt="Move down" title="Move down" /></a></td>
+						<td><a wicket:id="edit"><img wicket:id="icon"
+								alt="Edit Forum" title="Edit Forum" /></a></td>
+						<td><a wicket:id="moderators"><img wicket:id="icon"
+								alt="Assign Moderators" title="Assign Moderators" /></a></td>
+						<td><a wicket:id="catprev"><img wicket:id="icon"
+								alt="Move to previous category"
+								title="Move to previous category" /></a></td>
+						<td><a wicket:id="catnext"><img wicket:id="icon"
+								alt="Move to next category" title="Move to next category" /></a></td>
+						<td><a wicket:id="delete"><img wicket:id="icon"
+								alt="Delete" title="Delete" /></a></td>
+
+					</tr>
+				</table>
+				</p>
+				<p>
+					<a wicket:id="add"><img wicket:id="icon" /> Add forum</a> <br />
+					<a wicket:id="delete"><img wicket:id="icon" /> Delete category
+						<span wicket:id="name2"></span></a>
+				</p>
 			</div>
+		</wicket:container>
+		<h2>
+			<a>Add Category</a>
+		</h2>
+		<div>
+			<form wicket:id="addform">
+				<p>
+					<b>Category name:</b><br /> <input type="text" wicket:id="catname" /><br />
+				</p>
+				<p>
+					<input type="checkbox" wicket:id="allowpublic" /> Allow public
+					group forums<br />
+				</p>
+				<p>
+					<input type="submit" class="SubmitButton" value="Create" />
+				</p>
+			</form>
 		</div>
-	</wicket:extend>
+	</div>
+</wicket:extend>
 </html>

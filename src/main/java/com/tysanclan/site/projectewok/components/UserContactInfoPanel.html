@@ -1,31 +1,30 @@
 <html xmlns:wicket>
-	<wicket:panel>
-		<table>
-			<tr>
-				<td colspan="2" style="text-align: center;">
-					<div wicket:id="user"></div>
-				</td>
-			</tr>
-			<wicket:enclosure child="aim">
+<wicket:panel>
+	<table>
+		<tr>
+			<td colspan="2" style="text-align: center;">
+				<div wicket:id="user"></div>
+			</td>
+		</tr>
+		<wicket:enclosure child="aim">
 			<tr>
 				<th>AIM</th>
 				<td><a wicket:id="aim"></a></td>
 			</tr>
-			</wicket:enclosure>
+		</wicket:enclosure>
+		<tr>
+			<th>Last logged in</th>
+			<td wicket:id="lastlogin"></td>
+		</tr>
+		<wicket:container wicket:id="accounts">
 			<tr>
-				<th>Last logged in</th>
-				<td wicket:id="lastlogin"></td>
+				<th colspan="2">Accounts</th>
 			</tr>
-			<wicket:container wicket:id="accounts">
-				<tr>
-					<th colspan="2">Accounts</th>
-				</tr>
-				<tr wicket:id="realms">
-					<th wicket:id="realm.name"></th>
-					<td wicket:id="accountlist"></td>
-				</tr>
-			</wicket:container>
-		</table>
-	</wicket:panel>
+			<tr wicket:id="realms">
+				<th wicket:id="realm.name"></th>
+				<td wicket:id="accountlist"></td>
+			</tr>
+		</wicket:container>
+	</table>
+</wicket:panel>
 </html>
-  

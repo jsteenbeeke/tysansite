@@ -27,15 +27,15 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import org.apache.wicket.markup.html.panel.Panel;
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.Index;
 
 import com.jeroensteenbeeke.hyperion.data.DomainObject;
 import com.tysanclan.site.projectewok.components.accountpanel.Diablo2Panel;
@@ -50,7 +50,8 @@ import com.tysanclan.site.projectewok.components.accountpanel.StarCraft2Panel;
 @Entity
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@AccessType("field")
+@Table(indexes = { //
+@Index(name = "IDX_GAMEACCOUNT_UGR", columnList = "userGameRealm_id") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public abstract class GameAccount implements DomainObject {
 	public static final long serialVersionUID = 1L;
@@ -126,7 +127,6 @@ public abstract class GameAccount implements DomainObject {
 	private String name;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_GAMEACCOUNT_UGR")
 	private UserGameRealm userGameRealm;
 
 	// $P$

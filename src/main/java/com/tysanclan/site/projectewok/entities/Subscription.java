@@ -30,12 +30,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.Index;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
@@ -44,6 +44,10 @@ import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 import com.tysanclan.site.projectewok.entities.Expense.ExpensePeriod;
 
 @Entity
+@Table(indexes = { //
+@Index(name = "IDX_SUBSCRIPTION_USER", columnList = "subscriber_id") //
+
+})
 public class Subscription extends BaseDomainObject {
 	public class DueFilter implements Predicate<SubscriptionPayment> {
 		@Override
@@ -63,7 +67,6 @@ public class Subscription extends BaseDomainObject {
 	private BigDecimal amount;
 
 	@OneToOne(optional = false, fetch = FetchType.LAZY)
-	@Index(name = "IDX_SUBSCRIPTION_USER")
 	private User subscriber;
 
 	@Column(nullable = false)

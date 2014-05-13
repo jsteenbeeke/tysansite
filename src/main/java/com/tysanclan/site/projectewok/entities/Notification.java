@@ -26,12 +26,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.Index;
 
 import com.jeroensteenbeeke.hyperion.data.DomainObject;
 
@@ -39,7 +39,8 @@ import com.jeroensteenbeeke.hyperion.data.DomainObject;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
+@Table(indexes = { //
+@Index(name = "IDX_NOTIFICATION_USER", columnList = "user_id") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class Notification implements DomainObject {
 	public static final long serialVersionUID = 1L;
@@ -56,7 +57,6 @@ public class Notification implements DomainObject {
 	private Date date;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Index(name = "IDX_NOTIFICATION_USER")
 	private User user;
 
 	// $P$

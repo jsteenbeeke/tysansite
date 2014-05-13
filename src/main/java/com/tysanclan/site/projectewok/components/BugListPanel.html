@@ -1,24 +1,25 @@
 <html xmlns:wicket>
-	<wicket:panel>
-		<table style="width: 100%;">
-			<thead>
-				<tr>
-					<th wicket:id="title">Bug</th>
-					<th>Last Update</th>
-					<th>Reported By</th>
-					<th>Assigned to</th>
-					<th>Status</th>
-				</tr>
-			</thead>
-			<tr wicket:id="bugs">
-				<td style="text-align: center;"><a wicket:id="link"><span wicket:id="title"></span></a></td>
-				<td style="text-align: center;"><span wicket:id="lastUpdate"></span></td>
-				<td style="text-align: center;"><span wicket:id="reportedBy"></span></td>
-				<td style="text-align: center;"><span wicket:id="assignedTo"></span></td>
-				<td style="text-align: center;" wicket:id="status"></td>
+<wicket:panel>
+	<table style="width: 100%;">
+		<thead>
+			<tr>
+				<th wicket:id="title">Bug</th>
+				<th>Last Update</th>
+				<th>Reported By</th>
+				<th>Assigned to</th>
+				<th>Status</th>
 			</tr>
-		</table>
-		
-		<div wicket:id="paging" style="text-align: center;"></div>
-	</wicket:panel>
+		</thead>
+		<tr wicket:id="bugs">
+			<td style="text-align: center;"><a wicket:id="link"><span
+					wicket:id="title"></span></a></td>
+			<td style="text-align: center;"><span wicket:id="lastUpdate"></span></td>
+			<td style="text-align: center;"><span wicket:id="reportedBy"></span></td>
+			<td style="text-align: center;"><span wicket:id="assignedTo"></span></td>
+			<td style="text-align: center;" wicket:id="status"></td>
+		</tr>
+	</table>
+
+	<div wicket:id="paging" style="text-align: center;"></div>
+</wicket:panel>
 </html>

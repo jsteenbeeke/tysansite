@@ -17,6 +17,9 @@
  */
 package com.tysanclan.site.projectewok.components;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.apache.wicket.markup.html.link.Link;
 
 import com.tysanclan.site.projectewok.entities.ForumThread;
@@ -36,20 +39,21 @@ public class ThreadLink extends Link<ForumThread> {
 
 	private Long threadId;
 
-	public ThreadLink(String id, ForumThread thread) {
+	public ThreadLink(@Nonnull String id, @Nullable ForumThread thread) {
 		this(id, thread, false);
 	}
 
-	public ThreadLink(String id, ForumThread thread, int page) {
+	public ThreadLink(@Nonnull String id, @Nullable ForumThread thread, int page) {
 		this(id, thread, page, false);
 	}
 
-	public ThreadLink(String id, ForumThread thread, boolean publicView) {
+	public ThreadLink(@Nonnull String id, @Nullable ForumThread thread,
+			boolean publicView) {
 		this(id, thread, 1, publicView);
 	}
 
-	public ThreadLink(String id, ForumThread thread, int page,
-			boolean publicView) {
+	public ThreadLink(@Nonnull String id, @Nullable ForumThread thread,
+			int page, boolean publicView) {
 		super(id);
 		this.threadId = thread != null ? thread.getId() : null;
 		this.publicView = publicView;

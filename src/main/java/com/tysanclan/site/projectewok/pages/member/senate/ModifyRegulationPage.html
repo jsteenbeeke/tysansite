@@ -1,27 +1,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket>
-	<wicket:extend>
-		<div class="jqui-accordion">
-			<h2><a>Modify Regulation</a></h2>
-			<div>
-				<form wicket:id="editForm">
-					<select wicket:id="regulation">
-						<option>Fairness</option>
-					</select>
-					<br />
-					
-					<div style="padding: 15px; margin-top: 10px; margin-bottom: 10px; border: 1px solid #fc0" wicket:id="example">
-					</div>
-					
-					<b>New Name</b><br />
-					<input type="text" wicket:id="newTitle" /><br />
-					
-					<b>New Body</b><br />
-					<textarea wicket:id="description" rows="15" cols="60"></textarea><br />
-					
-					<input type="submit" value="Modify" class="SubmitButton" />
-				</form>
-			</div>
+<wicket:extend>
+	<div class="jqui-accordion">
+		<h2>
+			<a>Modify Regulation</a>
+		</h2>
+		<div>
+			<form wicket:id="editForm">
+				<select wicket:id="regulation">
+					<option>Fairness</option>
+				</select> <br />
+
+				<div
+					style="padding: 15px; margin-top: 10px; margin-bottom: 10px; border: 1px solid #fc0"
+					wicket:id="example"></div>
+
+				<b>New Name</b><br /> <input type="text" wicket:id="newTitle" /><br />
+
+				<b>New Body</b><br />
+				<textarea wicket:id="description" rows="15" cols="60"></textarea>
+				<br /> <input type="submit" value="Modify" class="SubmitButton" />
+			</form>
 		</div>
-	</wicket:extend>
+	</div>
+</wicket:extend>
 </html>
 

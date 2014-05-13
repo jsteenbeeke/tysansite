@@ -20,7 +20,6 @@ package com.tysanclan.site.projectewok.entities;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
 
 import com.tysanclan.rest.api.data.Rank;
@@ -29,7 +28,6 @@ import com.tysanclan.rest.api.data.Rank;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
 @DiscriminatorValue("NewsForum")
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "forum")
 public class NewsForum extends Forum {

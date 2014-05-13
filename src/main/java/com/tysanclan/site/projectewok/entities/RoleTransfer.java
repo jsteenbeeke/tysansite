@@ -28,11 +28,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
-import org.hibernate.annotations.Index;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -40,6 +41,9 @@ import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 import com.tysanclan.site.projectewok.entities.Role.RoleType;
 
 @Entity
+@Table(indexes = { //
+@Index(name = "IDX_ROLETRANSFER_CAND", columnList = "candidate_id") //
+})
 public class RoleTransfer extends BaseDomainObject {
 	private static final long serialVersionUID = 1L;
 
@@ -52,7 +56,6 @@ public class RoleTransfer extends BaseDomainObject {
 	private RoleType roleType;
 
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	@Index(name = "IDX_ROLETRANSFER_CAND")
 	private User candidate;
 
 	@Column(nullable = false)

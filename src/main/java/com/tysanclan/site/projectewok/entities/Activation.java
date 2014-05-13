@@ -26,12 +26,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.Index;
 
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 
@@ -39,7 +39,7 @@ import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
+@Table(indexes = @Index(columnList = "user_id", name = "IDX_Activation_User"))
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class Activation extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;
@@ -53,7 +53,6 @@ public class Activation extends BaseDomainObject {
 	private String activationKey;
 
 	@OneToOne(optional = false, fetch = FetchType.LAZY)
-	@Index(name = "IDX_Activation_User")
 	private User user;
 
 	@Column(nullable = false)

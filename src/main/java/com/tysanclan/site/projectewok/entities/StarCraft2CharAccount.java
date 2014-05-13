@@ -21,7 +21,6 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
 
 /**
@@ -29,7 +28,6 @@ import org.hibernate.annotations.Cache;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
 @DiscriminatorValue("StarCraft2CharAccount")
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class StarCraft2CharAccount extends GameAccount {
@@ -40,7 +38,7 @@ public class StarCraft2CharAccount extends GameAccount {
 
 	// $P$
 
-	/**
+	/** 
 	 * Creates a new StarCraft2CharAccount object
 	 */
 	public StarCraft2CharAccount() {

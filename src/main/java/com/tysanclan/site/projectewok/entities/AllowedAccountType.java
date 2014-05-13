@@ -24,10 +24,11 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cache;
 
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
@@ -38,7 +39,8 @@ import com.tysanclan.site.projectewok.entities.GameAccount.AccountType;
  * @author Jeroen Steenbeeke
  */
 @Entity
-@AccessType("field")
+@Table(indexes = { @Index(columnList = "game_id", name = "IDX_ALLWDACC_GAME"),
+		@Index(columnList = "realm_id", name = "IDX_ALLWDACC_REALM") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class AllowedAccountType extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;
