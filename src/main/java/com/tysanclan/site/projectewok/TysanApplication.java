@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 
@@ -87,6 +88,7 @@ import com.tysanclan.site.projectewok.tasks.AutomaticPromotionTask;
 import com.tysanclan.site.projectewok.tasks.ChancellorElectionChecker;
 import com.tysanclan.site.projectewok.tasks.ChancellorElectionResolutionTask;
 import com.tysanclan.site.projectewok.tasks.CheckSubscriptionsDueTask;
+import com.tysanclan.site.projectewok.tasks.DebugSiteCreationTask;
 import com.tysanclan.site.projectewok.tasks.EmailChangeConfirmationExpirationTask;
 import com.tysanclan.site.projectewok.tasks.GroupLeaderElectionResolutionTask;
 import com.tysanclan.site.projectewok.tasks.MemberApplicationResolutionTask;
@@ -110,6 +112,22 @@ import com.tysanclan.site.projectewok.util.scheduler.TysanTask;
  * @author Jeroen Steenbeeke
  */
 public class TysanApplication extends WebApplication {
+	public static final Entry<String, String> IN_MEMORY = new Entry<String, String>() {
+		@Override
+		public String getKey() {
+			return "ewok.launchMode";
+		}
+
+		public String getValue() {
+			return "inmemory";
+		}
+
+		@Override
+		public String setValue(String value) {
+			throw new UnsupportedOperationException();
+		}
+	};
+
 	private static Logger log = LoggerFactory.getLogger(TysanApplication.class);
 
 	private static String version = null;
@@ -210,6 +228,11 @@ public class TysanApplication extends WebApplication {
 
 		if (!testMode) {
 			scheduleDefaultTasks();
+		}
+
+		if (IN_MEMORY.getValue().equals(System.getProperty(IN_MEMORY.getKey()))) {
+			TysanScheduler.getScheduler().scheduleTask(
+					new DebugSiteCreationTask());
 		}
 
 		// if (usesDeploymentConfig())

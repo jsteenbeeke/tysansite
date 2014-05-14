@@ -22,6 +22,8 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.bio.SocketConnector;
 import org.eclipse.jetty.webapp.WebAppContext;
 
+import com.tysanclan.site.projectewok.TysanApplication;
+
 public class StartTysan {
 	/**
 	 * Construct.
@@ -40,6 +42,14 @@ public class StartTysan {
 
 		Server server = new Server();
 		SocketConnector connector = new SocketConnector();
+
+		final String ewokProperties = System.getProperty("ewok.properties");
+
+		if (ewokProperties == null) {
+			System.setProperty("ewok.properties", "classpath:inmem.properties");
+			System.setProperty(TysanApplication.IN_MEMORY.getKey(),
+					TysanApplication.IN_MEMORY.getValue());
+		}
 
 		// Set some timeout options to make debugging easier.
 		connector.setMaxIdleTime(timeout);
