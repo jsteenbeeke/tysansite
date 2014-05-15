@@ -184,7 +184,7 @@ public class ProposeAchievementPage extends AbstractMemberPage {
 	}
 
 	@Override
-	protected Integer getAutoTabIndex() {
+	public Integer getAutoTabIndex() {
 		return tabIndex;
 	}
 

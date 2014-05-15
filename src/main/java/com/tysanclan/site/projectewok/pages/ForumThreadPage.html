@@ -1,6 +1,6 @@
 <html xmlns:wicket>
 <wicket:extend>
-	<div style="text-align: left;">
+	<div class="alignleft">
 		<span wicket:id="returnlink">Return to forum</span>
 	</div>
 	<br />
@@ -43,9 +43,9 @@
 			This candidate member does not have a mentor yet. Do you wish to
 			become his or her mentor?<br />
 
-			<p wicket:id="realmWarning" style="color: #f00; font-weight: bold;"></p>
+			<p wicket:id="realmWarning" class="bigwarning"></p>
 			<p wicket:id="activationWarning"
-				style="color: #f00; font-weight: bold;"></p>
+				class="bigwarning"></p>
 
 			<a wicket:id="clickYes"><img wicket:id="yes" title="Yes"
 				alt="Yes" /> Yes I want to be a mentor for <span
@@ -59,7 +59,7 @@
 		<h2>
 			<a>Status</a>
 		</h2>
-		<div style="text-align: center;">
+		<div class="centered">
 			<span wicket:id="mentor">This candidate member has no mentor</span><br />
 			<br /> <span wicket:id="realms">Johnny primarily plays
 				StarCraft on USEast</span><br />
@@ -89,7 +89,7 @@
 	<wicket:enclosure child="replylink">
 		<div class="ToolBox">
 			<a href="reply.html" wicket:id="replylink"><img
-				style="border: 0px;" src="images/icons/page_white_add.png"
+				src="images/icons/page_white_add.png"
 				alt="Reply" title="Reply to thread" /></a>
 		</div>
 		<br />

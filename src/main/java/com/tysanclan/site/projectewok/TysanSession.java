@@ -47,6 +47,7 @@ public class TysanSession extends WebSession {
 
 	public TysanSession(Request request) {
 		super(request);
+		setStyle("silverblue");
 
 		seenNotifications = new HashSet<SiteWideNotification>();
 	}

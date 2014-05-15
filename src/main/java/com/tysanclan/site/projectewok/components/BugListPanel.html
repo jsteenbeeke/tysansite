@@ -1,6 +1,6 @@
 <html xmlns:wicket>
 <wicket:panel>
-	<table style="width: 100%;">
+	<table class="fullWidth">
 		<thead>
 			<tr>
 				<th wicket:id="title">Bug</th>
@@ -11,15 +11,15 @@
 			</tr>
 		</thead>
 		<tr wicket:id="bugs">
-			<td style="text-align: center;"><a wicket:id="link"><span
+			<td class="centeredCell"><a wicket:id="link"><span
 					wicket:id="title"></span></a></td>
-			<td style="text-align: center;"><span wicket:id="lastUpdate"></span></td>
-			<td style="text-align: center;"><span wicket:id="reportedBy"></span></td>
-			<td style="text-align: center;"><span wicket:id="assignedTo"></span></td>
-			<td style="text-align: center;" wicket:id="status"></td>
+			<td class="centeredCell"><span wicket:id="lastUpdate"></span></td>
+			<td class="centeredCell"><span wicket:id="reportedBy"></span></td>
+			<td class="centeredCell"><span wicket:id="assignedTo"></span></td>
+			<td class="centeredCell" wicket:id="status"></td>
 		</tr>
 	</table>
 
-	<div wicket:id="paging" style="text-align: center;"></div>
+	<div wicket:id="paging" class="centered"></div>
 </wicket:panel>
 </html>

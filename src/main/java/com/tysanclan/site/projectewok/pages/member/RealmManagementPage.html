@@ -1,6 +1,6 @@
 <html xmlns:wicket>
 <wicket:extend>
-	<table style="width: 100%;">
+	<table class="fullWidth">
 		<tr>
 			<th>Realm</th>
 			<th>Coordinator</th>
@@ -10,13 +10,13 @@
 			<th>Remove</th>
 		</tr>
 		<tr wicket:id="realms">
-			<td style="text-align: center;" wicket:id="name"></td>
-			<td style="text-align: center;"><span wicket:id="coordinator"></span>
+			<td class="centeredCell" wicket:id="name"></td>
+			<td class="centeredCell"><span wicket:id="coordinator"></span>
 				<span wicket:id="edit"></span></td>
-			<td style="text-align: center;" wicket:id="gamescount"></td>
-			<td style="text-align: center;" wicket:id="playercount"></td>
-			<td style="text-align: center;" wicket:id="groupcount"></td>
-			<td style="text-align: center;"><span wicket:id="remove"></span></td>
+			<td class="centeredCell" wicket:id="gamescount"></td>
+			<td class="centeredCell" wicket:id="playercount"></td>
+			<td class="centeredCell" wicket:id="groupcount"></td>
+			<td class="centeredCell"><span wicket:id="remove"></span></td>
 		</tr>
 	</table>
 </wicket:extend>

@@ -1,6 +1,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket>
 <wicket:extend>
-	<table style="width: 100%;">
+	<table class="fullWidth">
 		<thead>
 			<tr>
 				<th>Icon</th>
@@ -11,11 +11,11 @@
 			</tr>
 		</thead>
 		<tr wicket:id="pendingIcons">
-			<td style="text-align: center;"><img wicket:id="icon" /></td>
-			<td style="text-align: center;"><span wicket:id="creator"></span></td>
-			<td style="text-align: center;" wicket:id="purpose"></td>
-			<td style="text-align: center;"><div wicket:id="yes"></div></td>
-			<td style="text-align: center;"><div wicket:id="no"></div></td>
+			<td class="centeredCell"><img wicket:id="icon" /></td>
+			<td class="centeredCell"><span wicket:id="creator"></span></td>
+			<td class="centeredCell" wicket:id="purpose"></td>
+			<td class="centeredCell"><div wicket:id="yes"></div></td>
+			<td class="centeredCell"><div wicket:id="no"></div></td>
 		</tr>
 	</table>
 </wicket:extend>

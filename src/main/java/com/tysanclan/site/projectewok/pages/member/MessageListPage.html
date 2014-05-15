@@ -6,21 +6,21 @@
 			<li><a href="#tabs-2">Send Messages</a></li>
 		</ul>
 		<div id="tabs-1">
-			<table style="width: 100%;">
+			<table class="fullWidth">
 				<tr>
-					<th colspan="2" style="width: 50%;">Message</th>
-					<th style="width: 30%;">Participants</th>
-					<th style="width: 20%;">Remove</th>
+					<th colspan="2" class="width50p">Message</th>
+					<th class="width30p">Participants</th>
+					<th class="width20p">Remove</th>
 				</tr>
 				<tr wicket:id="messages">
-					<td style="text-align: center;"><img wicket:id="unread" /></td>
-					<td style="text-align: center;"><a wicket:id="link"><span
+					<td class="centeredCell"><img wicket:id="unread" /></td>
+					<td class="centeredCell"><a wicket:id="link"><span
 							wicket:id="title"></span></a></td>
-					<td style="text-align: center;" wicket:id="participants"></td>
-					<td style="text-align: center;"><div wicket:id="remove"></div></td>
+					<td class="centeredCell" wicket:id="participants"></td>
+					<td class="centeredCell"><div wicket:id="remove"></div></td>
 				</tr>
 				<tr>
-					<td colspan="4" wicket:id="paging" style="text-align: center;"></td>
+					<td colspan="4" wicket:id="paging" class="centered"></td>
 				</tr>
 			</table>
 		</div>

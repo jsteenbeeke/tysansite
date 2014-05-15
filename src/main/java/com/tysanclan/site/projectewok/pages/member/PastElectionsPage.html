@@ -16,32 +16,32 @@
 
 				<p>
 					<b>Votes:</b><br />
-				<table style="width: 100%;" cellspacing="0">
+				<table class="width100p" cellspacing="0">
 					<thead>
 						<tr>
 							<th rowspan="2"
-								style="vertical-align: bottom; border-bottom: 1px solid #fc0;">Voter</th>
+								class="electionheader">Voter</th>
 							<th wicket:id="candidatesheader">Candidates</th>
 						</tr>
 						<tr>
 							<wicket:container wicket:id="candidates">
-								<td style="text-align: center; border-bottom: 1px solid #fc0;"><span
+								<td class="candidateheader"><span
 									wicket:id="candidate"></span></td>
 							</wicket:container>
 						</tr>
 					</thead>
 					<tr wicket:id="votes">
-						<td style="text-align: center;"><span
+						<td class="centeredCell"><span
 							wicket:id="userdescriptor"></span></td>
 						<wicket:container wicket:id="scores">
-							<td style="text-align: center;"><span wicket:id="score"></span></td>
+							<td class="centeredCell"><span wicket:id="score"></span></td>
 						</wicket:container>
 					</tr>
 					<tfoot>
 						<tr>
-							<th style="border-top: 1px solid #fc0;">Totals</th>
+							<th class="bottomnav">Totals</th>
 							<wicket:container wicket:id="totals">
-								<td style="text-align: center; border-top: 1px solid #fc0;"><span
+								<td class="electiontotals"><span
 									wicket:id="total"></span></td>
 							</wicket:container>
 						</tr>

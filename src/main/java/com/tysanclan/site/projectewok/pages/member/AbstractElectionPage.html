@@ -11,10 +11,10 @@
 			<br />
 			<form wicket:id="voteform">
 				<div wicket:id="candidates">
-					<div style="width: 180px; padding: 0px;" wicket:id="candidate"></div>
+					<div class="candidate" wicket:id="candidate"></div>
 				</div>
 
-				<table style="width: 100%;">
+				<table class="fullWidth">
 					<thead>
 						<tr>
 							<th>Position</th>
@@ -24,9 +24,9 @@
 					</thead>
 					<tbody>
 						<tr wicket:id="slots">
-							<td style="text-align: center;"><span wicket:id="position"></span>.</td>
-							<td style="border: 1px solid #fc0" wicket:id="target"></td>
-							<td style="text-align: center;" wicket:id="score"></td>
+							<td class="centeredCell"><span wicket:id="position"></span>.</td>
+							<td class="borderedYellow" wicket:id="target"></td>
+							<td class="centeredCell" wicket:id="score"></td>
 						</tr>
 					</tbody>
 				</table>

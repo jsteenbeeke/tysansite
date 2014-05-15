@@ -12,7 +12,7 @@
 			<div>
 
 				<p wicket:id="vacation"
-					style="color: #f00; text-decoration: underline; font-weight: bold;">
+					class="biggerwarning">
 					<span wicket:id="username"></span> has activated vacation mode!
 				</p>
 
@@ -28,10 +28,10 @@
 				</wicket:enclosure>
 
 				<p wicket:id="noPosts">
-					<b style="color: #f00;">This user has never posted on the forum</b>
+					<b class="red">This user has never posted on the forum</b>
 				</p>
 
-				<p wicket:id="mentorWarning" style="color: #f00; font-weight: bold;">
+				<p wicket:id="mentorWarning" class="bigwarning">
 					<img wicket:id="warningIcon1" /> <img wicket:id="warningIcon2" />
 					<img wicket:id="warningIcon3" /> The mentor of this applicant, <span
 						wicket:id="mentor"></span>, has voted against the applicant! <img
@@ -39,7 +39,7 @@
 						wicket:id="warningIcon6" />
 				</p>
 
-				Do you want <a wicket:id="profile" style="color: #fc0;"><span
+				Do you want <a wicket:id="profile" class="yellow"><span
 					wicket:id="username"></span></a> to remain a member of Tysan?<br />
 				<br />
 
@@ -48,7 +48,7 @@
 				</p>
 
 				<span wicket:id="count">5</span> members have voted.
-				<p wicket:id="current" style="color: #fc0; font-weight: bold;"></p>
+				<p wicket:id="current" class="yellow bold"></p>
 			</div>
 		</wicket:container>
 	</div>

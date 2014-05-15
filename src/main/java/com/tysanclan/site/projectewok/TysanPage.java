@@ -28,10 +28,7 @@ import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
-import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
@@ -59,6 +56,7 @@ import com.tysanclan.site.projectewok.components.TysanUserPanel;
 import com.tysanclan.site.projectewok.entities.GlobalSetting;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.GlobalSettingDAO;
+import com.tysanclan.site.projectewok.pages.PageStyle;
 import com.tysanclan.site.projectewok.util.AprilFools;
 import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.MemberUtil;
@@ -294,42 +292,17 @@ public class TysanPage extends WebPage {
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 
-		response.render(CssHeaderItem.forUrl("css/style.css"));
+		PageStyle style = PageStyle.getCurrentStyle(getStyle());
 
-		response.render(JavaScriptHeaderItem
-				.forReference(TysanJQueryUIInitialisationResourceReference
-						.get()));
+		style.renderHead(response, this);
 
-		Integer autoTabIndex = getAutoTabIndex();
-
-		if (autoTabIndex != null) {
-			response.render(OnDomReadyHeaderItem.forScript(String.format(
-					"$('.jqui-tabs-auto').tabs({ active: %d });", autoTabIndex)));
-		} else {
-			response.render(OnDomReadyHeaderItem
-					.forScript("$('.jqui-tabs-auto').tabs();"));
-		}
-
-		StringBuilder collapsibles = new StringBuilder();
-		collapsibles.append("$('.jqui-accordion-collapsible').accordion({\n");
-		collapsibles.append("\tautoHeight: true,\n");
-		collapsibles.append("\theader: 'h2',\n");
-		collapsibles.append("\theightStyle: 'content',\n");
-		collapsibles.append("\tcollapsible: true,\n");
-		if (autoCollapse) {
-			collapsibles.append("\tactive: false\n");
-		} else {
-			collapsibles.append("\tactive: 0\n");
-		}
-		collapsibles.append("});");
-
-		response.render(OnDomReadyHeaderItem.forScript(collapsibles));
-
-		String openFirst = "$('.jqui-accordion-collapsible:first').accordion( 'option', 'active', 0 )";
-		response.render(OnDomReadyHeaderItem.forScript(openFirst));
 	}
 
-	protected Integer getAutoTabIndex() {
+	public boolean isAutoCollapse() {
+		return autoCollapse;
+	}
+
+	public Integer getAutoTabIndex() {
 		return null;
 	}
 

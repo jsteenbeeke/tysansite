@@ -1,7 +1,7 @@
 <html xmlns:wicket>
 <wicket:panel>
 	<p>
-		Using this tab, you can edit <a style="color: #fc0 !important;"
+		Using this tab, you can edit <a
 			wicket:id="profilelink">your profile</a>. None of the information
 		below is mandatory, and if you're not comfortable sharing certain
 		information you are not required to.
@@ -10,47 +10,47 @@
 	<form wicket:id="profile">
 		<table>
 			<tr>
-				<th style="vertical-align: top;">Real Name</th>
+				<th class="topalign">Real Name</th>
 				<td><input type="text" wicket:id="realname" /><br />
-					<p style="font-size: 8px;">This will only be visible to members</p>
+					<p class="fontsmaller">This will only be visible to members</p>
 					<br /></td>
 			</tr>
 			<tr>
-				<th style="vertical-align: top;">Date of birth</th>
+				<th class="topalign">Date of birth</th>
 				<td><span wicket:id="birthdate"></span><br />
-					<p style="font-size: 8px;">Your age will be publicly visible</p>
+					<p class="fontsmaller">Your age will be publicly visible</p>
 					<br /></td>
 			</tr>
 			<tr>
-				<th style="vertical-align: top;">Age</th>
+				<th class="topalign">Age</th>
 				<td><span wicket:id="age"></span><br /></td>
 			</tr>
 			<tr>
-				<th style="vertical-align: top;">Photograph URL</th>
+				<th class="topalign">Photograph URL</th>
 				<td><input type="text" wicket:id="photoURL" /><br /> <input
 					type="checkbox" wicket:id="public" /> Non-members may see my
 					photograph<br /> <img wicket:id="preview" alt="Preview"
-					title="Preview" style="display: block;" /></td>
+					title="Preview" class="block" /></td>
 			</tr>
 			<tr>
-				<th style="vertical-align: top;">Skype address <img
+				<th class="topalign">Skype address <img
 					wicket:id="skypeicon" alt="Skype" /></th>
 				<td><input type="text" wicket:id="skypename" /><br /> <input
 					type="checkbox" wicket:id="skypepublic" /> Non-members may see my
 					Skype address<br /></td>
 			</tr>
 			<tr>
-				<th style="vertical-align: top;">Public Description</th>
+				<th class="topalign">Public Description</th>
 				<td><textarea wicket:id="publicdesc"></textarea></td>
 			</tr>
 			<tr>
-				<th style="vertical-align: top;">Private Description</th>
+				<th class="topalign">Private Description</th>
 				<td><textarea wicket:id="privatedesc"></textarea></td>
 			</tr>
 			<tr>
-				<th style="vertical-align: top;">Twitter ID</th>
+				<th class="topalign">Twitter ID</th>
 				<td>http://twitter.com/<input type="text" wicket:id="twitter" /><br />
-					<p style="font-size: 8px;">Your public tweets will be visible
+					<p class="fontsmaller">Your public tweets will be visible
 						on your profile</p>
 					<br />
 				</td>

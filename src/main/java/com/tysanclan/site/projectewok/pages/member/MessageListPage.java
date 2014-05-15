@@ -163,7 +163,7 @@ public class MessageListPage extends AbstractMemberPage {
 	}
 
 	@Override
-	protected Integer getAutoTabIndex() {
+	public Integer getAutoTabIndex() {
 		return selectedTab;
 	}
 

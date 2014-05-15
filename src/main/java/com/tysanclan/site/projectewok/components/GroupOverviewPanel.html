@@ -1,15 +1,15 @@
 <html xmlns:wicket>
 <wicket:extend>
-	<table style="width: 100%;">
+	<table class="fullWidth">
 		<tr>
-			<td colspan="2" style="border-bottom: 1px solid #fc0;"><b>Message
+			<td colspan="2" class="bottombar"><b>Message
 					of the day</b><br />
 				<div wicket:id="motd"></div>
 
-				<div style="text-align: center;" wicket:id="editmotd"></div></td>
+				<div class="centered" wicket:id="editmotd"></div></td>
 		</tr>
 		<tr>
-			<td style="text-align: center; width: 50%;"><wicket:enclosure
+			<td class="centered width50p"><wicket:enclosure
 					child="invite">
 					<a wicket:id="invite">Invite Members</a>
 					<br />
@@ -23,7 +23,7 @@
 				<div wicket:id="electgroupleader"></div>
 				<div wicket:id="pendingrequest"></div> <a wicket:id="management">Manage
 					Members</a><br /></td>
-			<td style="text-align: center; width: 50%;"><wicket:enclosure
+			<td class="centered width50p"><wicket:enclosure
 					child="editdescription">
 					<a wicket:id="editdescription">Edit Description</a>
 					<br />
