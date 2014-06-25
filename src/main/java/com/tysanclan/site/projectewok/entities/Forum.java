@@ -115,11 +115,11 @@ public class Forum extends BaseDomainObject {
 	}
 
 	@Override
-	public Serializable getDomainObjectId() {
+	public final Serializable getDomainObjectId() {
 		return getId();
 	}
 
-	public Long getId() {
+	public final Long getId() {
 		return id;
 	}
 

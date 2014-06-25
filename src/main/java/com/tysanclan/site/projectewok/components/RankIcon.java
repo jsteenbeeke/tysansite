@@ -23,6 +23,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 
 import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.site.projectewok.pages.PageStyle;
 
 /**
  * @author Jeroen Steenbeeke
@@ -36,25 +37,9 @@ public class RankIcon extends Panel {
 	public RankIcon(String id, Rank rank) {
 		super(id);
 
-		StringBuilder rankStr = new StringBuilder();
-		String lowerCaseRank = rank.toString().toLowerCase();
+		PageStyle style = PageStyle.getCurrentStyle(getStyle());
 
-		for (int i = 0; i < lowerCaseRank.length(); i++) {
-			if (!Character.isWhitespace(lowerCaseRank.charAt(i))) {
-				rankStr.append(lowerCaseRank.charAt(i));
-			} else {
-				rankStr.append("_");
-			}
-		}
-
-		String imageLocation = "images/ranks/" + rankStr.toString() + ".gif";
-
-		if (rank == Rank.FORUM || rank == Rank.BANNED) {
-			imageLocation = "images/icons/script.png";
-		}
-		if (rank == Rank.HERO) {
-			imageLocation = "images/icons/rosette.png";
-		}
+		String imageLocation = style.getRankImage(rank);
 
 		ContextImage img = new ContextImage("icon", new Model<String>(
 				imageLocation));

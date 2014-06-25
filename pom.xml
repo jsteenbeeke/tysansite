@@ -15,9 +15,9 @@
 
 	<repositories>
 		<repository>
-		        <id>wiquery</id>
-		        <name>wiquery wicket components</name>
-		        <url>http://wiquery.googlecode.com/svn/repo/</url>
+			<id>wiquery</id>
+			<name>wiquery wicket components</name>
+			<url>http://wiquery.googlecode.com/svn/repo/</url>
 		</repository>
 	</repositories>
 
@@ -130,17 +130,17 @@
 
 		<!-- Data source dependencies -->
 		<dependency>
-		    <groupId>c3p0</groupId>
-		    <artifactId>c3p0</artifactId>
-		    <version>${c3p0.version}</version>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>${c3p0.version}</version>
 		</dependency>
-				
+
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>${hibernate.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-spring</artifactId>
@@ -192,9 +192,9 @@
 		<!-- UI Dependencies -->
 		<dependency>
 			<groupId>nl.topicus</groupId>
-        		<artifactId>wqplot</artifactId>
-	        	<version>${wqplot.version}</version>
-	       	</dependency>
+			<artifactId>wqplot</artifactId>
+			<version>${wqplot.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.odlabs.wiquery</groupId>
@@ -228,43 +228,43 @@
 			<artifactId>resteasy-jaxrs</artifactId>
 			<version>${resteasy.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-spring</artifactId>
 			<version>${resteasy.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-jackson-provider</artifactId>
 			<version>${resteasy.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.tysanclan.rest</groupId>
 			<artifactId>rest-api</artifactId>
 			<version>${tysan.rest.version}</version>
 		</dependency>
-		
+
 		<!-- General purpose dependencies -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>${guava.version}</version>
 		</dependency>
-		
+
 		<dependency>
-   		    <groupId>joda-time</groupId>
-   		    <artifactId>joda-time</artifactId>
-   		    <version>${jodatime.version}</version>
-   		</dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>${jodatime.version}</version>
+		</dependency>
 
 		<!-- Event dependencies -->
 		<dependency>
 			<groupId>com.jeroensteenbeeke.hyperion</groupId>
-        	<artifactId>events</artifactId>
-        	<version>${hyperion.events.version}</version>
+			<artifactId>events</artifactId>
+			<version>${hyperion.events.version}</version>
 		</dependency>
 
 
@@ -274,7 +274,7 @@
 			<artifactId>gson</artifactId>
 			<version>${gson.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-library</artifactId>
@@ -404,24 +404,44 @@
 					<keyalg>RSA</keyalg>
 				</configuration>
 			</plugin>
-			
-		      <plugin>
-		        <groupId>com.google.code.maven-license-plugin</groupId>
-		        <artifactId>maven-license-plugin</artifactId>
-		        <version>1.4.0</version>
-		        <configuration>
-		        	<header>license.txt</header>
-		        	<includes>
-	                    <include>src/**/*.java</include>
-	                    <include>src/**/*.xml</include>
-	                </includes>
-	                <mappings>
-	                	<java>JAVADOC_STYLE</java>
+
+			<plugin>
+				<groupId>com.google.code.maven-license-plugin</groupId>
+				<artifactId>maven-license-plugin</artifactId>
+				<version>1.4.0</version>
+				<configuration>
+					<header>license.txt</header>
+					<includes>
+						<include>src/**/*.java</include>
+						<include>src/**/*.xml</include>
+					</includes>
+					<mappings>
+						<java>JAVADOC_STYLE</java>
 						<xml>XML_STYLE</xml>
-	                </mappings>
-		        	
-		        </configuration>
-		      </plugin>
+					</mappings>
+
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.lesscss</groupId>
+				<artifactId>lesscss-maven-plugin</artifactId>
+				<version>1.7.0.1.0</version>
+				<configuration>
+					<sourceDirectory>${project.basedir}/src/main/resources/less</sourceDirectory>
+					<outputDirectory>${project.build.directory}/${project.build.finalName}/css</outputDirectory>
+					<compress>true</compress>
+					<includes>
+						<include>silverblue.less</include>
+					</includes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 </project>

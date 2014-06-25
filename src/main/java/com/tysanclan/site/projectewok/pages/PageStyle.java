@@ -5,8 +5,10 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 
+import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.TysanJQueryUIInitialisationResourceReference;
 import com.tysanclan.site.projectewok.TysanPage;
+import com.tysanclan.site.projectewok.components.resources.silverblue.SilverblueBootstrapJavaScriptReference;
 
 public enum PageStyle {
 	GOLD {
@@ -63,7 +65,8 @@ public enum PageStyle {
 
 		@Override
 		public void renderHead(IHeaderResponse response, TysanPage page) {
-
+			response.render(JavaScriptHeaderItem
+					.forReference(SilverblueBootstrapJavaScriptReference.get()));
 		}
 	};
 
@@ -84,4 +87,29 @@ public enum PageStyle {
 	}
 
 	public abstract void renderHead(IHeaderResponse response, TysanPage page);
+
+	public String getRankImage(Rank rank) {
+		String imageLocation;
+		StringBuilder rankStr = new StringBuilder();
+		String lowerCaseRank = rank.toString().toLowerCase();
+
+		for (int i = 0; i < lowerCaseRank.length(); i++) {
+			if (!Character.isWhitespace(lowerCaseRank.charAt(i))) {
+				rankStr.append(lowerCaseRank.charAt(i));
+			} else {
+				rankStr.append("_");
+			}
+		}
+
+		imageLocation = "images/ranks/" + rankStr.toString() + ".gif";
+
+		if (rank == Rank.FORUM || rank == Rank.BANNED) {
+			imageLocation = "images/icons/script.png";
+		}
+		if (rank == Rank.HERO) {
+			imageLocation = "images/icons/rosette.png";
+		}
+
+		return imageLocation;
+	}
 }

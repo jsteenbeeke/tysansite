@@ -28,8 +28,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,9 +42,6 @@ import org.springframework.transaction.annotation.Transactional;
 @SuppressWarnings("unchecked")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public abstract class HibernateDAO<T extends DomainObject> implements DAO<T> {
-
-	private static final Logger log = LoggerFactory
-			.getLogger(HibernateDAO.class);
 
 	private Class<T> domainClass = (Class<T>) ((ParameterizedType) getClass()
 			.getGenericSuperclass()).getActualTypeArguments()[0];
@@ -167,8 +162,6 @@ public abstract class HibernateDAO<T extends DomainObject> implements DAO<T> {
 	public Session getSession() {
 		Session session = sessionFactory.getCurrentSession();
 		session.setFlushMode(FlushMode.COMMIT);
-
-		log.info("DAO using session " + session.hashCode());
 
 		return session;
 	}

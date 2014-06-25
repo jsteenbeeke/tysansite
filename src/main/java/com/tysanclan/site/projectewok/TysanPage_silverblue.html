@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF8" />
+<meta http-equiv="X-UA-Compatible" content="chrome=1" />
+<title wicket:id="title">The Tysan Clan - Page name</title>
+</head>
+<body>
+	<div class="Frame">
+		<div class="Banner">&nbsp;</div>
+		
+		<div class="container">
+			<div id="Menu" wicket:id="menu"></div>
+		</div>
+		<div class="container">
+			
+		
+			<div class="Content">
+				
+				<div wicket:id="topMenu"></div>
+	
+				<div class="page-header">
+					<h1 wicket:id="header">Page name</h1>
+				</div>
+				
+				<div wicket:id="feedback"></div>
+	
+				<div wicket:id="notificationWindow">
+					<span wicket:id="messages"></span>
+				</div>
+				
+				<div class="Main">
+					<wicket:child />
+				</div>
+				
+				<div class="Topbar" wicket:id="topbar"></div>
+	
+				
+				
+	
+				<div wicket:id="animals">
+					You encounter the following Tysan Animal: <img wicket:id="picture" />
+	
+					Do you:
+					<ul>
+						<li wicket:id="options"><a wicket:id="choice"><span
+								wicket:id="label"></span></a></li>
+					</ul>
+	
+					Choose wisely!
+				</div>
+			</div>
+			
+			<div class="row">
+				<div
+					class="copyright">
+					&copy; 2008-<span wicket:id="year"></span> <a
+						href="mailto:webmaster@tysanclan.com">Jeroen Steenbeeke</a><br />
+						<br /> <br /> <br />
+				<div class="fontsmaller alignright">
+					Tysan site version <span wicket:id="version"></span>
+				</div>
+					<wicket:enclosure child="debugLink">
+						<br />
+						<br />
+						<div>
+							<a wicket:id="debugLink">Debug</a><br />
+							<br />
+	
+							<div wicket:id="debugWindow">
+								<div wicket:id="debugPanel"></div>
+	
+								<a wicket:id="magicpushbutton">Magic Pushbutton!</a>
+							</div>
+						</div>
+					</wicket:enclosure>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</body>
+</html>
