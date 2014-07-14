@@ -25,6 +25,8 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
@@ -36,6 +38,9 @@ import com.tysanclan.site.projectewok.entities.Bug;
  */
 public class TysanErrorPage extends TysanPage {
 	private static final long serialVersionUID = 1L;
+
+	private static final Logger log = LoggerFactory
+			.getLogger(TysanErrorPage.class);
 
 	@SpringBean
 	private BugTrackerService bugTrackerService;
@@ -55,6 +60,13 @@ public class TysanErrorPage extends TysanPage {
 	public TysanErrorPage(@Nullable String target, @Nullable String referrer,
 			@Nonnull final Exception exception) {
 		super("An error has occurred");
+
+		Throwable e = exception;
+
+		while (e != null) {
+			log.error(e.getMessage(), e);
+			e = e.getCause();
+		}
 
 		boolean known = (bugTrackerService.isKnownIssue(exception));
 

@@ -3,6 +3,7 @@ package com.tysanclan.site.projectewok;
 import java.util.Set;
 
 import org.apache.wicket.core.request.handler.RenderPageRequestHandler;
+import org.apache.wicket.core.request.mapper.StalePageException;
 import org.apache.wicket.protocol.http.PageExpiredException;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.Request;
@@ -30,6 +31,8 @@ public class ErrorReporterListener extends AbstractRequestCycleListener {
 		if (ex instanceof PageExpiredException) {
 			return null;
 		} else if (ex instanceof ReplaceHandlerException) {
+			return null;
+		} else if (ex instanceof StalePageException) {
 			return null;
 		} else if (ex instanceof AbortWithHttpErrorCodeException) {
 			// Do not log explicit HTTP errors
