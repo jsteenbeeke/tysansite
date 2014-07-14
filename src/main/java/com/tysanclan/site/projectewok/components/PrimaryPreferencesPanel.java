@@ -88,6 +88,8 @@ public abstract class PrimaryPreferencesPanel extends Panel {
 				userService.setUserSignature(user_id, signature);
 				userService.setUserTimezone(user_id, timezone);
 				userService.setUserCollapseForums(user_id, collapse);
+
+				PrimaryPreferencesPanel.this.onSubmit();
 			}
 
 		};

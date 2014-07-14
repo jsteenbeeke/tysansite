@@ -51,8 +51,8 @@
 		<slf4j.version>1.7.6</slf4j.version>
 		<quartz.version>1.5.2</quartz.version>
 		<tysan.rest.version>1.0-SNAPSHOT</tysan.rest.version>
-		<spring.version>4.0.2.RELEASE</spring.version>
-		<wicket.version>6.15.0</wicket.version>
+		<spring.version>4.0.5.RELEASE</spring.version>
+		<wicket.version>6.16.0</wicket.version>
 		<wiquery.version>6.13.0</wiquery.version>
 		<wqplot.version>1.6-SNAPSHOT</wqplot.version>
 	</properties>
