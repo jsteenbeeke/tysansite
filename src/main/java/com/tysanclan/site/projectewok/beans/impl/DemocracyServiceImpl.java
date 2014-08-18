@@ -1943,37 +1943,43 @@ class DemocracyServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void checkSenatorElections() {
-		Calendar calendar = DateUtil.getCalendarInstance();
-		calendar.add(Calendar.MONTH, -6);
+		final SenateElection current = getCurrentSenateElection();
 
-		SenateElectionFilter filter = new SenateElectionFilter();
-		filter.setStartBefore(calendar.getTime());
-		filter.addOrderBy("start", false);
+		if (current != null)
+			return;
 
-		SenateElectionFilter filter2 = new SenateElectionFilter();
-		filter2.setStartAfter(calendar.getTime());
-		filter2.addOrderBy("start", false);
+		LocalDate sixMonthsAgo = LocalDate.now().minusMonths(6);
 
-		SenateElection current = getCurrentSenateElection();
+		SenateElectionFilter electionsMoreThanSixMonthsAgo = new SenateElectionFilter();
+		electionsMoreThanSixMonthsAgo.setStartBefore(sixMonthsAgo.toDate());
+		electionsMoreThanSixMonthsAgo.addOrderBy("start", false);
 
-		if (senateElectionDAO.countAll() == 0
-				|| (senateElectionDAO.countByFilter(filter) > 0
-						&& senateElectionDAO.countByFilter(filter2) == 0 && current == null)) {
+		SenateElectionFilter electionsLessThanSixMonthsAgo = new SenateElectionFilter();
+		electionsLessThanSixMonthsAgo.setStartAfter(sixMonthsAgo.toDate());
+		electionsLessThanSixMonthsAgo.addOrderBy("start", false);
+
+		final boolean thereWasAnElectionMoreThanSixMonthsAgo = senateElectionDAO
+				.countByFilter(electionsMoreThanSixMonthsAgo) > 0;
+		final boolean thereWasNoElectionLessThanSixMonthsAgo = senateElectionDAO
+				.countByFilter(electionsLessThanSixMonthsAgo) == 0;
+		final boolean thereHasNeverBeenAnElection = senateElectionDAO
+				.countAll() == 0;
+		if (thereHasNeverBeenAnElection
+				|| (thereWasAnElectionMoreThanSixMonthsAgo && thereWasNoElectionLessThanSixMonthsAgo)) {
 			createSenateElection();
 		} else {
-			SenateElectionFilter filter3 = new SenateElectionFilter();
-			filter3.addOrderBy("start", false);
-			List<SenateElection> elections = senateElectionDAO
-					.findByFilter(filter3);
 
-			UserFilter filter4 = new UserFilter();
-			filter4.addRank(Rank.SENATOR);
+			SenateElectionFilter lastSenateElectionFilter = new SenateElectionFilter();
+			lastSenateElectionFilter.addOrderBy("start", false);
+			List<SenateElection> elections = senateElectionDAO.findByFilter(
+					lastSenateElectionFilter, 0, 1);
+
+			final long senators = userDAO.countByRank(Rank.SENATOR);
 
 			for (SenateElection election : elections) {
-				int seats = election.getWinners().size();
+				final int seats = election.getSeats();
 
 				if (seats > 0) {
-					long senators = userDAO.countByFilter(filter4);
 
 					int fraction = (int) ((senators * 100) / seats);
 

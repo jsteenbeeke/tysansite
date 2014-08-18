@@ -30,7 +30,7 @@ public class ChancellorElectionChecker extends PeriodicTask {
 	private DemocracyService democracyService;
 
 	public ChancellorElectionChecker() {
-		super("Chancellor election", "Democracy", ExecutionMode.DAILY);
+		super("Chancellor election", "Democracy", ExecutionMode.HOURLY);
 
 	}
 

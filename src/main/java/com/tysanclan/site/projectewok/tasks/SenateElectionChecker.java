@@ -31,7 +31,7 @@ public class SenateElectionChecker extends PeriodicTask {
 	private DemocracyService democracyService;
 
 	public SenateElectionChecker() {
-		super("Senate election", "Democracy", ExecutionMode.DAILY);
+		super("Senate election", "Democracy", ExecutionMode.HOURLY);
 	}
 
 	/**
