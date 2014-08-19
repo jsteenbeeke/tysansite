@@ -1976,6 +1976,11 @@ class DemocracyServiceImpl implements
 
 			final long senators = userDAO.countByRank(Rank.SENATOR);
 
+			if (senators <= 1) {
+				createSenateElection();
+				return;
+			}
+
 			for (SenateElection election : elections) {
 				final int seats = election.getSeats();
 
