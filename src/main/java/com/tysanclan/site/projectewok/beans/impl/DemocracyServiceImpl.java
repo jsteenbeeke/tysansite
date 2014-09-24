@@ -1966,6 +1966,13 @@ class DemocracyServiceImpl implements
 				.countAll() == 0;
 		if (thereHasNeverBeenAnElection
 				|| (thereWasAnElectionMoreThanSixMonthsAgo && thereWasNoElectionLessThanSixMonthsAgo)) {
+			if (thereHasNeverBeenAnElection) {
+				logService.logSystemAction("Democracy",
+						"There has never been a Senate election");
+			} else {
+				logService.logSystemAction("Democracy",
+						"Last Senate election more than six months ago");
+			}
 			createSenateElection();
 		} else {
 
@@ -1977,6 +1984,8 @@ class DemocracyServiceImpl implements
 			final long senators = userDAO.countByRank(Rank.SENATOR);
 
 			if (senators <= 1) {
+				logService
+						.logSystemAction("Democracy", "Only one Senator left");
 				createSenateElection();
 				return;
 			}
@@ -1989,6 +1998,9 @@ class DemocracyServiceImpl implements
 					int fraction = (int) ((senators * 100) / seats);
 
 					if (fraction < 40) {
+						logService
+								.logSystemAction("Democracy",
+										"Senate size less than 40% of last election's seats");
 						createSenateElection();
 					}
 				}
