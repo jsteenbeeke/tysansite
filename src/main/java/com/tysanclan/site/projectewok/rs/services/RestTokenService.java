@@ -18,7 +18,6 @@
 package com.tysanclan.site.projectewok.rs.services;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -26,6 +25,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
 import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.tysanclan.rest.api.data.RestUser;
 import com.tysanclan.rest.api.data.Token;
@@ -38,7 +38,7 @@ import com.tysanclan.site.projectewok.entities.dao.RestTokenDAO;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import com.tysanclan.site.projectewok.rs.HttpStatusException;
 
-@Named
+@Component
 @Scope("request")
 public class RestTokenService implements TokenService {
 	@Inject
@@ -97,9 +97,9 @@ public class RestTokenService implements TokenService {
 					token.setApplication(application);
 					tokenDAO.save(token);
 
-					return new Token(new RestUser(user.getUsername(),
-							user.getRank()), token.getHash(),
-							token.getExpires());
+					return new Token(
+							new RestUser(user.getUsername(), user.getRank()),
+							token.getHash(), token.getExpires());
 				}
 			}
 
