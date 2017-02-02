@@ -13,14 +13,14 @@ import com.tysanclan.site.projectewok.entities.dao.filters.RestApplicationChalle
 
 @Component
 @Scope("request")
-public class RestApplicationChallengeDAOImpl extends
-		HibernateDAO<RestApplicationChallenge> implements
-		RestApplicationChallengeDAO {
+public class RestApplicationChallengeDAOImpl
+		extends HibernateDAO<RestApplicationChallenge>
+		implements RestApplicationChallengeDAO {
 	@Override
 	protected Criteria createCriteria(
 			SearchFilter<RestApplicationChallenge> racf) {
-		Criteria criteria = getSession().createCriteria(
-				RestApplicationChallenge.class);
+		Criteria criteria = getSession()
+				.createCriteria(RestApplicationChallenge.class);
 
 		if (racf instanceof RestApplicationChallengeFilter) {
 			RestApplicationChallengeFilter filter = (RestApplicationChallengeFilter) racf;
@@ -30,13 +30,16 @@ public class RestApplicationChallengeDAOImpl extends
 						filter.getApplication()));
 			}
 			if (filter.getChallenge() != null) {
-				criteria.add(Restrictions.eq("challenge", filter.getChallenge()));
+				criteria.add(Restrictions.eq("challengeString",
+						filter.getChallenge()));
 			}
 			if (filter.getResponse() != null) {
-				criteria.add(Restrictions.eq("response", filter.getResponse()));
+				criteria.add(Restrictions.eq("expectedResponse",
+						filter.getResponse()));
 			}
 			if (filter.getIssueDate() != null) {
-				criteria.add(Restrictions.eq("issueDate", filter.getIssueDate()));
+				criteria.add(
+						Restrictions.eq("issueDate", filter.getIssueDate()));
 			}
 			if (filter.getIssueDateBefore() != null) {
 				criteria.add(Restrictions.lt("issueDate",
