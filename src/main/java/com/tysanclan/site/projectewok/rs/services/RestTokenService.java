@@ -17,13 +17,13 @@
  */
 package com.tysanclan.site.projectewok.rs.services;
 
-import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -41,13 +41,13 @@ import com.tysanclan.site.projectewok.rs.HttpStatusException;
 @Component
 @Scope("request")
 public class RestTokenService implements TokenService {
-	@Inject
+	@Autowired
 	private RestTokenDAO tokenDAO;
 
-	@Inject
+	@Autowired
 	private UserDAO userDAO;
 
-	@Inject
+	@Autowired
 	private RestService restService;
 
 	public void setRestService(RestService restService) {
