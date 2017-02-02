@@ -78,6 +78,14 @@ public class RestTokenService implements TokenService {
 		throw new HttpStatusException(401, "Invalid client ID");
 	}
 
+	@GET()
+	@Path("/stat")
+	@Consumes("application/json")
+	@Produces("text/plain")
+	public String echo() {
+		return restService.getClass().getName();
+	}
+
 	@Override
 	@GET
 	@Consumes("application/json")
