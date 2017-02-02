@@ -3,24 +3,21 @@ package com.tysanclan.site.projectewok.entities;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 
 @Entity
-@Table(indexes = { @Index(columnList = "application_id", name = "IDX_RESTCHAL_APP") })
+@Table(indexes = {
+		@Index(columnList = "application_id", name = "IDX_RESTCHAL_APP") })
 public class RestApplicationChallenge extends BaseDomainObject {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,
+			generator = "RestApplicationChallenge")
+	@SequenceGenerator(name = "RestApplicationChallenge",
+			sequenceName = "SEQ_ID_RestApplicationChallenge")
 	private Long id;
 
 	@Column(nullable = false, unique = true)
