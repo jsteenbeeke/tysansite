@@ -82,7 +82,7 @@
 
 	<servlet-mapping>
 		<servlet-name>resteasy-servlet</servlet-name>
-		<url-pattern>/*</url-pattern>
+		<url-pattern>/rs/*</url-pattern>
 	</servlet-mapping>
 
 	<listener>
