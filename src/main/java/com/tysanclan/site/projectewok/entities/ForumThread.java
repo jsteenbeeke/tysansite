@@ -22,6 +22,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -48,7 +50,7 @@ import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
  */
 @Entity
 @Table(indexes = { //
-@Index(name = "IDX_FORUMTHREAD_BRANCHFROM", columnList = "branchFrom_id"), //
+		@Index(name = "IDX_FORUMTHREAD_BRANCHFROM", columnList = "branchFrom_id"), //
 		@Index(name = "IDX_FORUMTHREAD_FORUM", columnList = "forum_id"), //
 		@Index(name = "IDX_FORUMTHREAD_POSTER", columnList = "poster_id") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "forum")
@@ -66,6 +68,7 @@ public class ForumThread extends BaseDomainObject {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ForumThread")
 	@SequenceGenerator(name = "ForumThread", sequenceName = "SEQ_ID_ForumThread", allocationSize = 1)
+	@Access(AccessType.FIELD)
 	private Long id;
 
 	@Column

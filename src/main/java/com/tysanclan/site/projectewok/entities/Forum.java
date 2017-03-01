@@ -21,6 +21,8 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -53,7 +55,7 @@ import com.tysanclan.site.projectewok.util.MemberUtil;
  */
 @Entity
 @Table(indexes = { //
-@Index(name = "IDX_FORUM_CATEGORY", columnList = "category_id") })
+		@Index(name = "IDX_FORUM_CATEGORY", columnList = "category_id") })
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "forum")
@@ -69,6 +71,7 @@ public class Forum extends BaseDomainObject {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Forum")
 	@SequenceGenerator(name = "Forum", sequenceName = "SEQ_ID_Forum", allocationSize = 1)
+	@Access(AccessType.FIELD)
 	private Long id;
 
 	@ManyToMany(fetch = FetchType.LAZY)

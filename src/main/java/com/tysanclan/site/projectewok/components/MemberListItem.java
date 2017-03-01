@@ -17,15 +17,17 @@
  */
 package com.tysanclan.site.projectewok.components;
 
+import org.apache.wicket.Page;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.pages.MemberPage;
 
@@ -49,7 +51,28 @@ public class MemberListItem extends Panel {
 		Link<User> link = new BookmarkablePageLink<User>("profile",
 				MemberPage.class, params);
 
-		link.add(new Label("username", new Model<String>(user.getUsername())));
+		link.add(new Label("username", new LoadableDetachableModel<String>() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected String load() {
+				User user = getUser();
+				Page page = getPage();
+				if (page instanceof TysanPage) {
+					TysanPage tp = (TysanPage) page;
+					if (tp.isAprilFoolsDay(2017)) {
+						int governorId = (int) (user.getId()
+								% governors.length);
+
+						return governors[governorId];
+					}
+				}
+
+				return user.getUsername();
+			}
+
+		}));
 		add(link);
 	}
 
@@ -66,4 +89,22 @@ public class MemberListItem extends Panel {
 
 		userModel.detach();
 	}
+
+	private static final String[] governors = new String[] {
+			"James Pinckney Henderson", "George T. Wood",
+			"Peter Hansborough Bell", "James W. Henderson", "Elisha M. Pease",
+			"Hardin R. Runnels", "Sam Houston", "Edward Clark",
+			"Francis R. Lubbock", "Pendleton Murrah", "Andrew J. Hamilton",
+			"James W. Throckmorton", "Elisha M. Pease", "Edmund J. Davis",
+			"Richard Coke", "Richard B. Hubbard", "Oran M. Roberts",
+			"John Ireland", "Lawrence Sullivan Ross", "James Stephen Hogg",
+			"Charles A. Culberson", "Joseph D. Sayers", "S. W. T. Lanham",
+			"Thomas Mitchell Campbell", "Oscar Branch Colquitt",
+			"James E. \"Pa\" Ferguson", "William P. Hobby", "Pat Morris Neff",
+			"Miriam A. \"Ma\" Ferguson", "Dan Moody", "Ross S. Sterling",
+			"Miriam A. \"Ma\" Ferguson", "James Allred", "W. Lee O'Daniel",
+			"Coke R. Stevenson", "Beauford H. Jester", "Allan Shivers",
+			"Price Daniel", "John Connally", "Preston Smith", "Dolph Briscoe",
+			"Bill Clements", "Mark White", "Bill Clements", "Ann Richards",
+			"George W. Bush", "Rick Perry", "Greg Abbott" };
 }

@@ -20,7 +20,6 @@ package com.tysanclan.site.projectewok;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 import org.apache.wicket.Application;
@@ -47,6 +46,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.string.StringValue;
 import org.apache.wicket.util.string.StringValueConversionException;
 import org.apache.wicket.util.time.Duration;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
 import org.odlabs.wiquery.ui.dialog.Dialog;
 
@@ -60,7 +61,6 @@ import com.tysanclan.site.projectewok.entities.GlobalSetting;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.GlobalSettingDAO;
 import com.tysanclan.site.projectewok.util.AprilFools;
-import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.MemberUtil;
 
 /**
@@ -100,16 +100,17 @@ public class TysanPage extends WebPage {
 		notificationWindow.setOutputMarkupId(true)
 				.setOutputMarkupPlaceholderTag(true);
 
-		notificationWindow.add(new ComponentFeedbackPanel("messages",
-				notificationWindow).setOutputMarkupId(true)
-				.setOutputMarkupPlaceholderTag(true));
+		notificationWindow
+				.add(new ComponentFeedbackPanel("messages", notificationWindow)
+						.setOutputMarkupId(true)
+						.setOutputMarkupPlaceholderTag(true));
 		notificationWindow.setAutoOpen(false);
 		notificationWindow.setVisible(false);
 
 		add(notificationWindow);
 
 		headerLabel = new Label("header", title);
-		titleLabel = new Label("title", title + " - The Tysan Clan ");
+		titleLabel = new Label("title", title + getTitleSuffix());
 
 		headerLabel.setEscapeModelStrings(false);
 		titleLabel.setEscapeModelStrings(false);
@@ -147,7 +148,8 @@ public class TysanPage extends WebPage {
 
 			}
 
-		}.setVisible(Application.get().getConfigurationType() == RuntimeConfigurationType.DEVELOPMENT));
+		}.setVisible(Application.get()
+				.getConfigurationType() == RuntimeConfigurationType.DEVELOPMENT));
 
 		User u = getTysanSession().getUser();
 		WebMarkupContainer subMenu = new WebMarkupContainer("topMenu");
@@ -206,6 +208,12 @@ public class TysanPage extends WebPage {
 
 		add(new Label("year", LocalDate.now().getYear())
 				.setRenderBodyOnly(true));
+		add(new WebMarkupContainer("texas").setVisible(isAprilFoolsDay(2017)));
+	}
+
+	private String getTitleSuffix() {
+		return isAprilFoolsDay(2017) ? " - The Texas Clan"
+				: " - The Tysan Clan ";
 	}
 
 	public void setAutoCollapse(boolean autoCollapse) {
@@ -245,14 +253,10 @@ public class TysanPage extends WebPage {
 	}
 
 	private void addAnimalPanel() {
-		Calendar cal = DateUtil.getCalendarInstance();
-
 		GlobalSetting animalSetting = globalSettingDAO
 				.get(AprilFools.KEY_ANIMALS);
 
-		boolean isAprilFoolsDay2011 = (cal.get(Calendar.MONTH) == Calendar.APRIL
-				&& cal.get(Calendar.DAY_OF_MONTH) == 1 && cal
-				.get(Calendar.YEAR) == 2011);
+		boolean isAprilFoolsDay2011 = isAprilFoolsDay(2011);
 
 		if (getUser() != null && MemberUtil.isMember(getUser())) {
 			if (animalSetting != null || isAprilFoolsDay2011) {
@@ -274,11 +278,11 @@ public class TysanPage extends WebPage {
 				animalDialog.setTitle("The animals!");
 				animalDialog.setVisible(show);
 
-				animalDialog.add(new ContextImage("picture", AprilFools
-						.getRandomAnimal()));
+				animalDialog.add(new ContextImage("picture",
+						AprilFools.getRandomAnimal()));
 
-				animalDialog.add(new AnimalOptionListView("options",
-						validOption));
+				animalDialog
+						.add(new AnimalOptionListView("options", validOption));
 
 				add(animalDialog);
 
@@ -290,21 +294,34 @@ public class TysanPage extends WebPage {
 		}
 	}
 
+	public boolean isAprilFoolsDay(int year) {
+		final DateTime easternStandardTime = new DateTime(
+				DateTimeZone.forID("EST"));
+
+		return easternStandardTime.getDayOfMonth() == 1
+				&& easternStandardTime.getMonthOfYear() == 4
+				&& easternStandardTime.getYear() == year;
+	}
+
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 
-		response.render(CssHeaderItem.forUrl("css/style.css"));
+		if (isAprilFoolsDay(2017)) {
+			response.render(CssHeaderItem.forUrl("css/texas.css"));
+		} else {
+			response.render(CssHeaderItem.forUrl("css/style.css"));
+		}
 
-		response.render(JavaScriptHeaderItem
-				.forReference(TysanJQueryUIInitialisationResourceReference
-						.get()));
+		response.render(JavaScriptHeaderItem.forReference(
+				TysanJQueryUIInitialisationResourceReference.get()));
 
 		Integer autoTabIndex = getAutoTabIndex();
 
 		if (autoTabIndex != null) {
-			response.render(OnDomReadyHeaderItem.forScript(String.format(
-					"$('.jqui-tabs-auto').tabs({ active: %d });", autoTabIndex)));
+			response.render(OnDomReadyHeaderItem.forScript(
+					String.format("$('.jqui-tabs-auto').tabs({ active: %d });",
+							autoTabIndex)));
 		} else {
 			response.render(OnDomReadyHeaderItem
 					.forScript("$('.jqui-tabs-auto').tabs();"));
@@ -471,7 +488,8 @@ public class TysanPage extends WebPage {
 				false);
 	}
 
-	protected static PageParameterExtractorBuilder optionalInt(String identifier) {
+	protected static PageParameterExtractorBuilder optionalInt(
+			String identifier) {
 		return new PageParameterExtractorBuilder(identifier, ParamType.INT,
 				false);
 	}
@@ -494,7 +512,8 @@ public class TysanPage extends WebPage {
 				true);
 	}
 
-	protected static PageParameterExtractorBuilder requiredInt(String identifier) {
+	protected static PageParameterExtractorBuilder requiredInt(
+			String identifier) {
 		return new PageParameterExtractorBuilder(identifier, ParamType.INT,
 				true);
 	}
@@ -550,7 +569,8 @@ public class TysanPage extends WebPage {
 	protected static class PageParameterExtractorException extends Exception {
 		private static final long serialVersionUID = 1L;
 
-		public PageParameterExtractorException(String message, Object... params) {
+		public PageParameterExtractorException(String message,
+				Object... params) {
 			super(String.format(message, params));
 		}
 
@@ -580,7 +600,8 @@ public class TysanPage extends WebPage {
 			this.required = required;
 		}
 
-		public PageParameterExtractorBuilder optionalBoolean(String identifier) {
+		public PageParameterExtractorBuilder optionalBoolean(
+				String identifier) {
 			return new PageParameterExtractorBuilder(identifier,
 					ParamType.BOOLEAN, false, this);
 		}
@@ -591,8 +612,8 @@ public class TysanPage extends WebPage {
 		}
 
 		public PageParameterExtractorBuilder optionalLong(String identifier) {
-			return new PageParameterExtractorBuilder(identifier,
-					ParamType.LONG, false, this);
+			return new PageParameterExtractorBuilder(identifier, ParamType.LONG,
+					false, this);
 		}
 
 		public PageParameterExtractorBuilder optionalString(String identifier) {
@@ -600,7 +621,8 @@ public class TysanPage extends WebPage {
 					ParamType.STRING, false, this);
 		}
 
-		public PageParameterExtractorBuilder requiredBoolean(String identifier) {
+		public PageParameterExtractorBuilder requiredBoolean(
+				String identifier) {
 			return new PageParameterExtractorBuilder(identifier,
 					ParamType.BOOLEAN, true, this);
 		}
@@ -611,8 +633,8 @@ public class TysanPage extends WebPage {
 		}
 
 		public PageParameterExtractorBuilder requiredLong(String identifier) {
-			return new PageParameterExtractorBuilder(identifier,
-					ParamType.LONG, true, this);
+			return new PageParameterExtractorBuilder(identifier, ParamType.LONG,
+					true, this);
 		}
 
 		public PageParameterExtractorBuilder requiredString(String identifier) {

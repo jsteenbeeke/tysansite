@@ -1,0 +1,495 @@
+@CHARSET "ISO-8859-1";
+
+html,body {
+	background-color: #000;
+	font-family: Verdana;
+	font-size: 12px;
+}
+
+option {
+	background-color: #000;
+}
+
+.halfblockleft {
+	width: 45%;
+	float: left;
+}
+
+.halfblockright {
+	width: 45%;
+	float: right;
+}
+
+.sortable {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.sortable li {
+	margin: 0 3px 3px 3px;
+	padding: 0.4em;
+	padding-left: 1.5em;
+	height: 18px;
+}
+
+.sortable li span {
+	position: absolute;
+	margin-left: -1.3em;
+}
+
+.election-hover {
+	border-color: #c93 !important;
+	background-color: #630 !important;
+}
+
+div.Frame {
+	position: absolute;
+	width: 995px;
+	top: 0px;
+	left: 50%;
+	margin-left: -500px;
+	border-left: 1px solid #000;
+	border-right: 1px solid #000;
+	border-bottom: 1px solid #000;
+}
+
+table.HeaderUnderlined {
+	width: 80%;
+	padding-left: 10%;
+}
+
+.ui-dialog {
+	color: #ffffff;
+	background: #000;
+}
+
+.ui-dialog-content {
+	color: #ffffff;
+	background: #000;
+}
+
+table.HeaderUnderlined tr th {
+	border-bottom: 1px solid #f00;
+	width: 150px;
+}
+
+.Menu {
+	padding: 0px;
+	margin: 0px;
+}
+
+.Menu ul {
+	list-style-type: none;
+	padding-left: 0px;
+	margin: 0px;
+}
+
+.Menu li {
+	padding-left: 0px;
+	margin: 0px;
+}
+
+div.MenuBottom {
+	display: block;
+	width: 150px;
+	height: 20px;
+	background-image: url('../images/menubottom.png');
+}
+
+a {
+	color: #f00 !important;
+	text-decoration: none;
+}
+
+h2 a {
+	color: #fff !important;
+}
+
+h2 .ui-icon {
+	display: inline-block;
+	padding-right: 2px;
+}
+
+.ui-tabs a {
+	color: #fff !important;
+}
+
+a.Yellow {
+	color: #f00 !important;
+}
+
+a:hover {
+	color: #fcc;
+	text-decoration: underline;
+}
+
+a.auto {
+	color: #f00 !important;
+	text-decoration: none;
+}
+
+a.auto:hover {
+	color: #fcc !important;
+	text-decoration: underline;
+}
+
+a.Button {
+	background-image: url('../images/texas-button.jpg');
+	text-decoration: none;
+	color: #000;
+	font-weight: bold;
+	width: 145px;
+	height: 25px;
+	display: block;
+	padding-left: 5px;
+	padding-top: 10px;
+	margin: 0px;
+}
+
+a.SmallButton {
+	background-image: url('../images/formbutton.png');
+	text-decoration: none;
+	color: #f00;
+	font-weight: bold;
+	width: 98px;
+	height: 18px;
+	display: block;
+	text-align: center;
+	border: 1px solid #f00;
+}
+
+a.SmallButton:hover {
+	background-image: url('../images/formbutton_highlight.png');
+	color: #f99;
+	border: 1px solid #f99;
+}
+
+input.SubmitButton {
+	background-image: url('../images/formbutton.png');
+	border: 1px solid #f00;
+	color: #f00;
+	width: 100px;
+	font-weight: bold;
+	display: inline;
+}
+
+input.SubmitButton:hover {
+	background-image: url('../images/formbutton_highlight.png');
+	border: 1px solid #f99;
+	color: #f99;
+}
+
+div.Banner {
+	width: 995px;
+	height: 200px;
+	border-bottom: 1px solid #000;
+	background-image: url('../images/texas-banner.jpg');
+}
+
+div.Menu {
+	float: left;
+	width: 149px;
+}
+
+div.Content {
+	position: relative;
+	float: left;
+	width: 800px;
+	display: block;
+	position: 1px solid #f00;
+	padding-top: 0px;
+	padding-left: 20px;
+	color: #fff;
+}
+
+div.Topbar {
+	text-align: right;
+	border-bottom: 1px solid #000;
+	height: 25px;
+	background-image: url('../images/bar.png');
+	color: #f00;
+	font-weight: bold;
+	padding-top: 4px;
+}
+
+h1 {
+	padding: 0px;
+	margin: 0px;
+	padding-right: 25px;
+	margin-bottom: 20px;
+	display: block;
+	border-bottom: 1px solid #f00;
+	color: #fff;
+}
+
+h2 {
+	font-size: 16px;
+	width: 175px;
+	border-bottom: 1px solid #f00;
+	color: #fff;
+}
+
+h3 {
+	font-size: 14px;
+	width: 150px;
+	border-bottom: 1px solid #f00;
+	color: #fff;
+}
+
+h4 {
+	font-size: 12px;
+	width: 125px;
+	border-bottom: 1px solid #f00;
+	color: #fff;
+}
+
+input,select,textarea {
+	border: 1px solid #f00;
+	background-color: #333;
+	color: #f00;
+}
+
+.Choice {
+	border: 1px solid #f00;
+	background-color: #333;
+	color: #f00;
+}
+
+.mceEditorArea {
+	border: 1px solid #f00;
+	background-color: #333;
+	color: #f00;
+}
+
+.mceLayout {
+	border-color: #f00;
+}
+
+.nav {
+	border-top: 1px solid #f00;
+	width: 40%;
+	margin-left: 30%;
+	text-align: center;
+}
+
+.box {
+	border: 1px solid #f00;
+	width: 60%;
+	margin-left: 20%;
+	margin-bottom: 10px;
+	text-align: center;
+}
+
+a img {
+	border: 0px;
+}
+
+.ToolBox {
+	padding: 5px;
+	text-align: center;
+	width: 20%;
+	margin-left: 40%;
+	position: relative;
+}
+
+table.fullWidth {
+	width: 100%;
+}
+
+td.centeredCell {
+	text-align: center;
+}
+
+td.topCenteredCell {
+	text-align: center;
+	vertical-align: top;
+}
+
+li.feedbackPanelINFO {
+	color: #fff !important;
+}
+
+li.feedbackPanelWARN {
+	color: #f00 !important;
+}
+
+li.feedbackPanelERROR {
+	color: #f00 !important;
+}
+
+.TysanMemberPanel {
+	position: relative;
+	text-align: right;
+	border-bottom: 1px solid #f00;
+	left: 100%;
+	margin-left: -575px;
+	width: 575px;
+	padding: 5px;
+}
+
+table.Calendar {
+	border-left: 1px solid #f60;
+	border-top: 1px solid #f60;
+	border-right: 1px solid #c30;
+	border-bottom: 1px solid #c30;
+	left: 50%;
+	position: relative;
+	width: 250px;
+	margin-left: -125px;
+}
+
+table.CalendarDetail {
+	border-left: 1px solid #f60;
+	border-top: 1px solid #f60;
+	border-right: 1px solid #c30;
+	border-bottom: 1px solid #c30;
+	width: 100%;
+}
+
+table.Calendar tr,table.CalendarDetail tr {
+	padding: 0px;
+	margin: 0px;
+}
+
+table.Calendar tr th,table.CalendarDetail tr th {
+	border-left: 1px solid #f60;
+	border-top: 1px solid #f60;
+	border-right: 1px solid #c30;
+	border-bottom: 1px solid #c30;
+	padding: 5px;
+	margin: 0px;
+}
+
+table.CalendarDetail tr th {
+	color: #fff;
+}
+
+table.Calendar tr td.Calendar,table.CalendarDetail tr td.Calendar {
+	border-left: 1px solid #f00;
+	border-top: 1px solid #f00;
+	border-right: 1px solid #00f;
+	border-bottom: 1px solid #00f;
+	padding: 5px;
+	margin: 0px;
+	text-align: center;
+}
+
+table.CalendarDetail tr td.Calendar {
+	color: #ccc;
+}
+
+div.CalendarPanelNavigator {
+	width: 150px;
+	margin-left: -75px;
+	left: 50%;
+	position: relative;
+	text-align: center;
+}
+
+table.fullWidth {
+	width: 100%;
+}
+
+table.Calendar {
+	border-left: 1px solid #f60;
+	border-top: 1px solid #f60;
+	border-right: 1px solid #c30;
+	border-bottom: 1px solid #c30;
+	left: 50%;
+	position: relative;
+	width: 250px;
+	margin-left: -125px;
+}
+
+table.Calendar tr {
+	padding: 0px;
+	margin: 0px;
+}
+
+table.Calendar tr th {
+	border-left: 1px solid #f60;
+	border-top: 1px solid #f60;
+	border-right: 1px solid #c30;
+	border-bottom: 1px solid #c30;
+	padding: 5px;
+	margin: 0px;
+	color: #fff;
+}
+
+table.Calendar tr td.Calendar {
+	border-left: 1px solid #f00;
+	border-top: 1px solid #f00;
+	border-right: 1px solid #00f;
+	border-bottom: 1px solid #00f;
+	padding: 5px;
+	margin: 0px;
+	text-align: center;
+	color: #ccc;
+}
+
+div.CalendarPanelNavigator {
+	width: 150px;
+	margin-left: -75px;
+	left: 50%;
+	position: relative;
+	text-align: center;
+}
+
+/* JQuery UI overrides */
+.ui-accordion-header {
+	width: 763px !important;
+}
+
+.treeview li {
+	background-color: #000 !important;
+}
+
+.messagetree ul {
+	list-style-type: none;
+}
+
+.messagetree li {
+	padding: 3px 0 2px 16px;
+}
+
+.messagetree span.folder,.messagetree span.message,.messagetree span.addfolder,.messagetree span.messageunread
+	{
+	padding: 1px 0 1px 16px;
+	display: block;
+}
+
+.messagetree span.folder {
+	background: url('../images/icons/folder.png') 0 0 no-repeat;
+}
+
+.messagetree span.addfolder {
+	background: url('../images/icons/folder_add.png') 0 0 no-repeat;
+}
+
+.messagetree li.expandable span.folder {
+	background: url('../images/icons/folder_explore.png') 0 0 no-repeat;
+}
+
+.messagetree span.message {
+	background: url('../images/icons/email.png') 0 0 no-repeat;
+}
+
+.messagetree span.messageunread {
+	background: url('../images/icons/email_error.png') 0 0 no-repeat;
+}
+
+.messagetree .highlight {
+	color: #f00;
+}
+
+.bordered {
+	border: 1px dotted #00f;
+	display: inline;
+	padding: 2px;
+}
+
+.gameimageicon {
+	max-width: 300px;
+	max-height: 100px;
+}
