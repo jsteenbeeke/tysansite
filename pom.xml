@@ -194,6 +194,16 @@
 			<groupId>nl.topicus</groupId>
 			<artifactId>wqplot</artifactId>
 			<version>${wqplot.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.codehaus.jackson</groupId>
+					<artifactId>jackson-mapper-asl</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -206,6 +216,12 @@
 			<groupId>org.odlabs.wiquery</groupId>
 			<artifactId>wiquery-jquery-ui</artifactId>
 			<version>${wiquery.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.codehaus.jackson</groupId>
+					<artifactId>jackson-mapper-asl</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- Scheduling dependencies -->
@@ -240,12 +256,12 @@
 			<artifactId>resteasy-jackson-provider</artifactId>
 			<version>${resteasy.version}</version>
 		</dependency>
-		
-		 <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-servlet-initializer</artifactId>
-            <version>${resteasy.version}</version>
-        </dependency>
+
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-servlet-initializer</artifactId>
+			<version>${resteasy.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>com.tysanclan.rest</groupId>
@@ -381,7 +397,7 @@
 					</archive>
 				</configuration>
 			</plugin>
-			
+
 
 			<plugin>
 				<groupId>com.google.code.maven-license-plugin</groupId>
