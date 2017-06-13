@@ -96,7 +96,7 @@ public class EditRealmSupervisorPage extends TysanPage {
 
 		form.add(userSelect);
 
-		add(new Label("title", "Realm Supervisor for " + realm.getName()));
+		add(new Label("pagetitle", "Realm Supervisor for " + realm.getName()));
 
 		add(form);
 

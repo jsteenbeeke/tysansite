@@ -9,10 +9,6 @@
 	<version>1.5-SNAPSHOT</version>
 	<name>Project Ewok</name>
 
-	<prerequisites>
-		<maven>3.0.3</maven>
-	</prerequisites>
-
 	<repositories>
 		<repository>
 			<id>wiquery</id>
@@ -387,9 +383,6 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.3</version>
 				<configuration>
-					<manifest>
-						<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-					</manifest>
 					<archive>
 						<manifestEntries>
 							<Implementation-Build>${site.version}</Implementation-Build>
@@ -409,11 +402,6 @@
 						<include>src/**/*.java</include>
 						<include>src/**/*.xml</include>
 					</includes>
-					<mappings>
-						<java>JAVADOC_STYLE</java>
-						<xml>XML_STYLE</xml>
-					</mappings>
-
 				</configuration>
 			</plugin>
 		</plugins>

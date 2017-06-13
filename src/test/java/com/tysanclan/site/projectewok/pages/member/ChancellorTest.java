@@ -80,6 +80,9 @@ public class ChancellorTest extends AbstractClickThroughTester {
 		overview();
 		getTester().clickLink("chancellorpanel:realms");
 		getTester().assertRenderedPage(RealmManagementPage.class);
+
+		getTester().clickLink("realms:0:edit:link");
+		getTester().assertRenderedPage(EditRealmSupervisorPage.class);
 	}
 
 	@Test
@@ -87,6 +90,9 @@ public class ChancellorTest extends AbstractClickThroughTester {
 		overview();
 		getTester().clickLink("chancellorpanel:games");
 		getTester().assertRenderedPage(GameManagementPage.class);
+
+		getTester().clickLink("games:0:edit:link");
+		getTester().assertRenderedPage(EditGameSupervisorPage.class);
 	}
 
 	@Test

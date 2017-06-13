@@ -1,8 +1,22 @@
+# Subversion, this goes way back
 .svn
+
+# Maven
+target
+
+# Mercurial? When the hell did we use that?
+.hg*
+
+# Git Merge
+*.orig
+
+# Eclipse
+.settings
 .fbprefs
 .project
 .classpath
-target
-.hg*
-*.orig
-.settings
+
+# IntelliJ
+*.iws
+*.iml
+.idea

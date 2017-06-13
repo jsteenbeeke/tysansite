@@ -1,17 +1,17 @@
 /**
  * Tysan Clan Website
  * Copyright (C) 2008-2013 Jeroen Steenbeeke and Ties van de Ven
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.tysanclan.site.projectewok.entities.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -33,22 +34,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jeroensteenbeeke.hyperion.data.DomainObject;
 import com.tysanclan.rest.api.data.Rank;
-import com.tysanclan.site.projectewok.entities.Committee;
-import com.tysanclan.site.projectewok.entities.Expense;
 import com.tysanclan.site.projectewok.entities.Expense.ExpensePeriod;
-import com.tysanclan.site.projectewok.entities.Forum;
-import com.tysanclan.site.projectewok.entities.ForumCategory;
-import com.tysanclan.site.projectewok.entities.ForumPost;
-import com.tysanclan.site.projectewok.entities.ForumThread;
 import com.tysanclan.site.projectewok.entities.Group.JoinPolicy;
-import com.tysanclan.site.projectewok.entities.LogItem;
-import com.tysanclan.site.projectewok.entities.MessageFolder;
-import com.tysanclan.site.projectewok.entities.NewsForum;
-import com.tysanclan.site.projectewok.entities.PaymentRequest;
-import com.tysanclan.site.projectewok.entities.Regulation;
-import com.tysanclan.site.projectewok.entities.Role;
 import com.tysanclan.site.projectewok.entities.Role.RoleType;
-import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.util.StringUtil;
 
 /**
@@ -56,6 +44,14 @@ import com.tysanclan.site.projectewok.util.StringUtil;
  */
 @Component
 public class MockObjectRepository implements InitializingBean {
+	private static final byte[] SMALLEST_PNG = {
+			0x47, (byte) 0x49, (byte) 0x46, (byte) 0x38, (byte) 0x39, (byte) 0x61, (byte) 0x01, (byte) 0x00,
+			(byte) 0x01, (byte) 0x00,
+			0x00, (byte) 0xff, (byte) 0x00, (byte) 0x2c, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+			(byte) 0x01, (byte) 0x00,
+			0x01, (byte) 0x00, (byte) 0x00, (byte) 0x02, (byte) 0x00, (byte) 0x3b
+
+	};
 	private static long userCounter = 1L;
 
 	@Autowired
@@ -76,7 +72,7 @@ public class MockObjectRepository implements InitializingBean {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void init() {
 		Session sess = factory.openSession();
@@ -113,7 +109,9 @@ public class MockObjectRepository implements InitializingBean {
 		web.setLeader(prospero);
 		web.getGroupMembers().add(prospero);
 		web.setJoinPolicy(JoinPolicy.INVITATION);
-		web.setDescription("The committee in charge of developing new features for the website as well as ensuring the current site stays operational");
+		web.setDescription(
+				"The committee in charge of developing new features for the website as well as ensuring the current " +
+						"site stays operational");
 
 		// 2
 		genUser(sess, "LordInfiniti", Rank.TRUTHSAYER);
@@ -124,7 +122,7 @@ public class MockObjectRepository implements InitializingBean {
 		// 5
 		genUser(sess, "Aragorn", Rank.SENIOR_MEMBER);
 		// 6
-		genUser(sess, "GreenfireStorm", Rank.REVERED_MEMBER);
+		User greenstorm = genUser(sess, "GreenfireStorm", Rank.REVERED_MEMBER);
 		// 7
 		genUser(sess, "Mach114", Rank.REVERED_MEMBER);
 		// 8
@@ -251,6 +249,19 @@ public class MockObjectRepository implements InitializingBean {
 		req.setItem("Cookies");
 		req.setRequester(archonares);
 		addObject(sess, req);
+
+		Game game = new Game();
+		game.setActive(true);
+		game.setCoordinator(greenstorm);
+		game.setImage(SMALLEST_PNG);
+		game.setName("Test Game");
+		addObject(sess, game);
+
+		Realm realm = new Realm();
+		realm.setChannel("Test Channel");
+		realm.setName("Test Realm");
+		realm.setOverseer(prospero);
+		addObject(sess, realm);
 
 		sess.flush();
 		sess.getTransaction().commit();

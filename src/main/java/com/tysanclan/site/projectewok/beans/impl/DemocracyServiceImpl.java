@@ -584,6 +584,8 @@ class DemocracyServiceImpl implements
 			List<User> chancellors = userDAO.findByFilter(filter);
 			// Should only be 0 or 1, but hey, who knows!
 			for (User chancellor : chancellors) {
+				chancellor.setRank(MemberUtil
+						.determineRankByJoinDate(chancellor.getJoinDate()));
 				if (!election.getWinner().equals(chancellor)) {
 					logService.logUserAction(chancellor, "Election",
 							"Has not been reelected as Chancellor, and has assumed the rank of "
@@ -591,8 +593,7 @@ class DemocracyServiceImpl implements
 					notificationService.notifyUser(chancellor,
 							"You were not reelected as Chancellor");
 				}
-				chancellor.setRank(MemberUtil
-						.determineRankByJoinDate(chancellor.getJoinDate()));
+
 				userDAO.update(chancellor);
 
 			}
