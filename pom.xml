@@ -48,7 +48,7 @@
 		<quartz.version>1.5.2</quartz.version>
 		<tysan.rest.version>1.0-SNAPSHOT</tysan.rest.version>
 		<spring.version>4.1.0.RELEASE</spring.version>
-		<wicket.version>6.17.0</wicket.version>
+		<wicket.version>6.27.1</wicket.version>
 		<wiquery.version>6.13.0</wiquery.version>
 		<wqplot.version>1.6-SNAPSHOT</wqplot.version>
 	</properties>
@@ -60,7 +60,7 @@
 
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket</artifactId>
+			<artifactId>wicket-core</artifactId>
 			<version>${wicket.version}</version>
 			<type>pom</type>
 		</dependency>

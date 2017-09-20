@@ -89,6 +89,8 @@ public abstract class PrimaryPreferencesPanel extends Panel {
 				userService.setUserTimezone(user_id, timezone);
 				userService.setUserCollapseForums(user_id, collapse);
 
+				getSession().info("Preferences updated");
+
 				PrimaryPreferencesPanel.this.onSubmit();
 			}
 
@@ -98,17 +100,17 @@ public abstract class PrimaryPreferencesPanel extends Panel {
 		timezones.addAll(Arrays.asList(TimeZone.getAvailableIDs()));
 		Collections.sort(timezones);
 
-		settingsForm.add(new CheckBox("collapseForums", new Model<Boolean>(user
+		settingsForm.add(new CheckBox("collapseForums", new Model<>(user
 				.isCollapseForums())));
 
-		settingsForm.add(new DropDownChoice<String>("timezone",
-				new Model<String>(user.getTimezone()), timezones));
-		settingsForm.add(new TextField<String>("customTitle",
-				new Model<String>(user.getCustomTitle())).add(StringValidator
+		settingsForm.add(new DropDownChoice<>("timezone",
+				new Model<>(user.getTimezone()), timezones));
+		settingsForm.add(new TextField<>("customTitle",
+				new Model<>(user.getCustomTitle())).add(StringValidator
 				.maximumLength(255)));
 
 		TextField<String> urlField = new TextField<String>("imageURL",
-				new Model<String>(user.getImageURL()));
+				new Model<>(user.getImageURL()));
 		urlField.add(StringValidator.maximumLength(255));
 		urlField.setOutputMarkupId(true);
 		urlField.setOutputMarkupPlaceholderTag(true);
@@ -128,9 +130,8 @@ public abstract class PrimaryPreferencesPanel extends Panel {
 
 				WebMarkupContainer container = getImage();
 
-				if (newURL == null || newURL.isEmpty()) {
+				if (newURL == null || newURL.isEmpty() || "#".equals(newURL)) {
 					container.setVisible(false);
-
 				} else {
 					container.add(AttributeModifier.replace("src", newURL));
 					container.setVisible(true);
@@ -147,7 +148,7 @@ public abstract class PrimaryPreferencesPanel extends Panel {
 		settingsForm.add(new BBCodeTextArea("signature", user.getSignature()));
 
 		image = new WebMarkupContainer("preview");
-		if (user.getImageURL() == null || user.getImageURL().isEmpty()) {
+		if (user.getImageURL() == null || user.getImageURL().isEmpty() || "#".equals(user.getImageURL())) {
 			image.setVisible(false);
 		} else {
 			image.add(AttributeModifier.replace("src", user.getImageURL()));
