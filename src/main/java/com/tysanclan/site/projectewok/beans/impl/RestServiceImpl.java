@@ -17,8 +17,8 @@ import com.tysanclan.site.projectewok.entities.RestApplicationChallenge;
 import com.tysanclan.site.projectewok.entities.dao.AuthorizedRestApplicationDAO;
 import com.tysanclan.site.projectewok.entities.dao.RestApplicationChallengeDAO;
 import com.tysanclan.site.projectewok.entities.dao.RestTokenDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.AuthorizedRestApplicationFilter;
-import com.tysanclan.site.projectewok.entities.dao.filters.RestApplicationChallengeFilter;
+import com.tysanclan.site.projectewok.entities.filter.AuthorizedRestApplicationFilter;
+import com.tysanclan.site.projectewok.entities.filter.RestApplicationChallengeFilter;
 import com.tysanclan.site.projectewok.util.StringUtil;
 
 @Component

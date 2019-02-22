@@ -27,7 +27,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
 
 /**
  * @author Jeroen Steenbeeke

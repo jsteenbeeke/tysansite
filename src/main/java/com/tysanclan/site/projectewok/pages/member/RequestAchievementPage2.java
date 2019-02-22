@@ -27,7 +27,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.AchievementService;
 import com.tysanclan.site.projectewok.components.BBCodeTextArea;
 import com.tysanclan.site.projectewok.components.StoredImageResource;

@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.tysanclan.site.projectewok.entities.OtterSighting;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.OtterSightingDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.OtterSightingFilter;
+import com.tysanclan.site.projectewok.entities.filter.OtterSightingFilter;
 
 /**
  * @author Ties

@@ -28,7 +28,7 @@ import com.tysanclan.site.projectewok.auth.TysanNonMemberSecured;
 import com.tysanclan.site.projectewok.components.ThreadLink;
 import com.tysanclan.site.projectewok.entities.JoinApplication;
 import com.tysanclan.site.projectewok.entities.dao.JoinApplicationDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.JoinApplicationFilter;
+import com.tysanclan.site.projectewok.entities.filter.JoinApplicationFilter;
 
 /**
  * @author Jeroen Steenbeeke

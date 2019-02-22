@@ -28,7 +28,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.resource.ByteArrayResource;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.entities.Achievement;
 import com.tysanclan.site.projectewok.entities.AchievementIcon;
 import com.tysanclan.site.projectewok.entities.Game;

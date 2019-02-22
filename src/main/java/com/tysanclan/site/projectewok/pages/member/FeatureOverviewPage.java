@@ -25,7 +25,7 @@ import com.tysanclan.site.projectewok.components.BugListPanel;
 import com.tysanclan.site.projectewok.entities.Bug;
 import com.tysanclan.site.projectewok.entities.Bug.BugStatus;
 import com.tysanclan.site.projectewok.entities.Bug.ReportType;
-import com.tysanclan.site.projectewok.entities.dao.filters.BugFilter;
+import com.tysanclan.site.projectewok.entities.filter.BugFilter;
 
 @TysanMemberSecured
 public class FeatureOverviewPage extends AbstractMemberPage {

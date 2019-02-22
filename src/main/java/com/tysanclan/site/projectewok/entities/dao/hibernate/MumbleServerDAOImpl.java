@@ -17,13 +17,11 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.MumbleServer;
+import com.tysanclan.site.projectewok.entities.filter.MumbleServerFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.MumbleServer;
 
 /**
  *
@@ -31,16 +29,7 @@ import com.tysanclan.site.projectewok.entities.MumbleServer;
  */
 @Component
 @Scope("request")
-class MumbleServerDAOImpl extends EwokHibernateDAO<MumbleServer> implements
+class MumbleServerDAOImpl extends HibernateDAO<MumbleServer, MumbleServerFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.MumbleServerDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<MumbleServer> filter) {
-		Criteria criteria = getSession().createCriteria(MumbleServer.class);
 
-		// if (filter instanceof MumbleServerFilter) {
-		// MumbleServerFilter cf = (MumbleServerFilter) filter;
-		// }
-
-		return criteria;
-	}
 }

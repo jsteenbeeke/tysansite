@@ -23,7 +23,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanSession;
 import com.tysanclan.site.projectewok.beans.ForumService;
 import com.tysanclan.site.projectewok.entities.ForumThread;

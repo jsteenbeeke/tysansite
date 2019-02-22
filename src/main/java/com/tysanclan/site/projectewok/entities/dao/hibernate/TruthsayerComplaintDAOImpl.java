@@ -17,37 +17,16 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.TruthsayerComplaint;
+import com.tysanclan.site.projectewok.entities.filter.TruthsayerComplaintFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.TruthsayerComplaint;
-import com.tysanclan.site.projectewok.entities.dao.filters.TruthsayerComplaintFilter;
-
 @Component
 @Scope("request")
-class TruthsayerComplaintDAOImpl extends EwokHibernateDAO<TruthsayerComplaint>
+class TruthsayerComplaintDAOImpl extends HibernateDAO<TruthsayerComplaint, TruthsayerComplaintFilter>
 		implements
 		com.tysanclan.site.projectewok.entities.dao.TruthsayerComplaintDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<TruthsayerComplaint> filter) {
-		Criteria criteria = getSession().createCriteria(
-				TruthsayerComplaint.class);
 
-		if (filter instanceof TruthsayerComplaintFilter) {
-			TruthsayerComplaintFilter tsf = (TruthsayerComplaintFilter) filter;
-
-			if (tsf.getMediated() != null) {
-				criteria.add(Restrictions.eq("mediated", tsf.getMediated()));
-			}
-			if (tsf.getStartBefore() != null) {
-				criteria.add(Restrictions.le("start", tsf.getStartBefore()));
-			}
-		}
-
-		return criteria;
-	}
 }

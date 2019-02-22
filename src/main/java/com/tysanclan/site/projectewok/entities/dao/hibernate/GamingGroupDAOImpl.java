@@ -17,26 +17,18 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.GamingGroup;
+import com.tysanclan.site.projectewok.entities.filter.GamingGroupFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.GamingGroup;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class GamingGroupDAOImpl extends EwokHibernateDAO<GamingGroup> implements
+class GamingGroupDAOImpl extends HibernateDAO<GamingGroup, GamingGroupFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.GamingGroupDAO {
-	/**
-	 * @see com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO#createCriteria(com.tysanclan.site.projectewok.dataaccess.SearchFilter)
-	 */
-	@Override
-	protected Criteria createCriteria(SearchFilter<GamingGroup> filter) {
-		return getSession().createCriteria(GamingGroup.class);
-	}
+
 }

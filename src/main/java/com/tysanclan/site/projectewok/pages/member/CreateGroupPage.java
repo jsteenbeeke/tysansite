@@ -33,7 +33,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.GameService;
@@ -44,7 +44,7 @@ import com.tysanclan.site.projectewok.entities.Group;
 import com.tysanclan.site.projectewok.entities.GroupCreationRequest;
 import com.tysanclan.site.projectewok.entities.Realm;
 import com.tysanclan.site.projectewok.entities.dao.GroupCreationRequestDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.GroupCreationRequestFilter;
+import com.tysanclan.site.projectewok.entities.filter.GroupCreationRequestFilter;
 
 /**
  * @author Jeroen Steenbeeke

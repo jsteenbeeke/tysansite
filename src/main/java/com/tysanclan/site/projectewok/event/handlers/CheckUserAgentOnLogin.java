@@ -27,7 +27,7 @@ import com.jeroensteenbeeke.hyperion.events.EventResult;
 import com.tysanclan.site.projectewok.TysanSession;
 import com.tysanclan.site.projectewok.entities.MobileUserAgent;
 import com.tysanclan.site.projectewok.entities.dao.MobileUserAgentDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.MobileUserAgentFilter;
+import com.tysanclan.site.projectewok.entities.filter.MobileUserAgentFilter;
 import com.tysanclan.site.projectewok.event.LoginEvent;
 
 public class CheckUserAgentOnLogin implements EventHandler<LoginEvent> {

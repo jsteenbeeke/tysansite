@@ -38,7 +38,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.joda.time.DateTime;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.beans.RoleService;
 import com.tysanclan.site.projectewok.components.ActivateSubscriptionPanel;

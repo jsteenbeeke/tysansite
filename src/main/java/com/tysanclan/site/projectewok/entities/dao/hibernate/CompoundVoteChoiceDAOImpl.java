@@ -17,28 +17,19 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.CompoundVoteChoice;
+import com.tysanclan.site.projectewok.entities.filter.CompoundVoteChoiceFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.CompoundVoteChoice;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class CompoundVoteChoiceDAOImpl extends EwokHibernateDAO<CompoundVoteChoice>
+class CompoundVoteChoiceDAOImpl extends HibernateDAO<CompoundVoteChoice, CompoundVoteChoiceFilter>
 		implements
 		com.tysanclan.site.projectewok.entities.dao.CompoundVoteChoiceDAO {
 
-	/**
-	 * @see com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO#createCriteria(com.tysanclan.site.projectewok.dataaccess.SearchFilter)
-	 */
-	@Override
-	protected Criteria createCriteria(SearchFilter<CompoundVoteChoice> filter) {
-		return getSession().createCriteria(CompoundVoteChoice.class);
-	}
 }

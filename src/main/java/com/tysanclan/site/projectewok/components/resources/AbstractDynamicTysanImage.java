@@ -16,7 +16,7 @@ import org.apache.wicket.util.string.StringValue;
 import com.tysanclan.site.projectewok.TysanApplication;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
 
 /**
  * Abstract class to easily add text to an image, so we can create many custom signatures and such

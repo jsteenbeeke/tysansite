@@ -52,9 +52,9 @@ import com.tysanclan.site.projectewok.entities.dao.PaymentRequestDAO;
 import com.tysanclan.site.projectewok.entities.dao.SubscriptionDAO;
 import com.tysanclan.site.projectewok.entities.dao.SubscriptionPaymentDAO;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.DonationFilter;
-import com.tysanclan.site.projectewok.entities.dao.filters.ExpenseFilter;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
+import com.tysanclan.site.projectewok.entities.filter.DonationFilter;
+import com.tysanclan.site.projectewok.entities.filter.ExpenseFilter;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
 import com.tysanclan.site.projectewok.util.DateUtil;
 
 /**

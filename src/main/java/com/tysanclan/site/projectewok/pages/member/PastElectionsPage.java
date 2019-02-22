@@ -37,7 +37,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.hibernate.Hibernate;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.util.HashException;
 import com.tysanclan.rest.api.util.HashUtil;
 import com.tysanclan.site.projectewok.components.MemberListItem;
@@ -52,7 +52,7 @@ import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.ChancellorElectionDAO;
 import com.tysanclan.site.projectewok.entities.dao.ElectionDAO;
 import com.tysanclan.site.projectewok.entities.dao.SenateElectionDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.ElectionFilter;
+import com.tysanclan.site.projectewok.entities.filter.ElectionFilter;
 import com.tysanclan.site.projectewok.util.DateUtil;
 
 /**

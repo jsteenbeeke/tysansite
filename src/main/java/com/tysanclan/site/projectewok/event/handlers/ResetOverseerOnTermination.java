@@ -28,7 +28,7 @@ import com.jeroensteenbeeke.hyperion.events.EventResult;
 import com.tysanclan.site.projectewok.entities.Realm;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.RealmDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.RealmFilter;
+import com.tysanclan.site.projectewok.entities.filter.RealmFilter;
 import com.tysanclan.site.projectewok.event.MembershipTerminatedEvent;
 
 public class ResetOverseerOnTermination implements

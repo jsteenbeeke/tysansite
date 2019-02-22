@@ -17,11 +17,19 @@
  */
 package com.tysanclan.site.projectewok.pages;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.site.projectewok.TysanPage;
+import com.tysanclan.site.projectewok.beans.GameService;
+import com.tysanclan.site.projectewok.components.MemberListItem;
+import com.tysanclan.site.projectewok.components.RankIcon;
+import com.tysanclan.site.projectewok.entities.Game;
+import com.tysanclan.site.projectewok.entities.Realm;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.dao.GameDAO;
+import com.tysanclan.site.projectewok.entities.dao.UserDAO;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
+import com.tysanclan.site.projectewok.util.ImageUtil;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -35,19 +43,10 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.ByteArrayResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
-import com.tysanclan.rest.api.data.Rank;
-import com.tysanclan.site.projectewok.TysanPage;
-import com.tysanclan.site.projectewok.beans.GameService;
-import com.tysanclan.site.projectewok.components.MemberListItem;
-import com.tysanclan.site.projectewok.components.RankIcon;
-import com.tysanclan.site.projectewok.entities.Game;
-import com.tysanclan.site.projectewok.entities.Realm;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.GameDAO;
-import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
-import com.tysanclan.site.projectewok.util.ImageUtil;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Jeroen Steenbeeke
@@ -68,9 +67,9 @@ public class AboutPage extends TysanPage {
 		super("About");
 
 		UserFilter chancellorFilter = new UserFilter();
-		chancellorFilter.addRank(Rank.CHANCELLOR);
+		chancellorFilter.rank(Rank.CHANCELLOR);
 
-		List<User> users = userDAO.findByFilter(chancellorFilter);
+		List<User> users = userDAO.findByFilter(chancellorFilter).;
 
 		User leader = null;
 		if (!users.isEmpty()) {

@@ -37,7 +37,7 @@ import com.tysanclan.site.projectewok.TysanSession;
 import com.tysanclan.site.projectewok.beans.AuthenticationService;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
 import com.tysanclan.site.projectewok.util.scheduler.TysanScheduler;
 import com.tysanclan.site.projectewok.util.scheduler.TysanTask;
 

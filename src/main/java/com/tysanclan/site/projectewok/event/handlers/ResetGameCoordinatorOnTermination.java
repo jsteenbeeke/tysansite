@@ -23,7 +23,7 @@ import com.jeroensteenbeeke.hyperion.events.EventHandler;
 import com.jeroensteenbeeke.hyperion.events.EventResult;
 import com.tysanclan.site.projectewok.entities.Game;
 import com.tysanclan.site.projectewok.entities.dao.GameDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.GameFilter;
+import com.tysanclan.site.projectewok.entities.filter.GameFilter;
 import com.tysanclan.site.projectewok.event.MembershipTerminatedEvent;
 
 public class ResetGameCoordinatorOnTermination implements

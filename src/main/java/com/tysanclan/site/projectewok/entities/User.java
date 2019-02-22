@@ -113,6 +113,12 @@ public class User extends BaseDomainObject implements DomainObject {
 		}
 	}
 
+	public static final int ITERATIONS = 8472;
+
+	public static final int SALT_LENGTH = 16;
+
+	public static final OWASPPasswordHasher.KeyLength KEY_LENGTH = OWASPPasswordHasher.KeyLength.Length1024;
+
 	@Column
 	private String customTitle;
 
@@ -228,6 +234,12 @@ public class User extends BaseDomainObject implements DomainObject {
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private List<Activation> activations;
+
+	@Column(nullable = true)
+	private String owaspHashedPassword;
+
+	@Column(nullable = true)
+	private byte[] salt;
 
 	/**
 	 * @return the mentor

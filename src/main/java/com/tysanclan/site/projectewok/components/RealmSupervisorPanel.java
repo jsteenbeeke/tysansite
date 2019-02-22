@@ -25,7 +25,7 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.GameService;
 import com.tysanclan.site.projectewok.components.RequiresAttentionLink.AttentionType;
 import com.tysanclan.site.projectewok.components.RequiresAttentionLink.IRequiresAttentionCondition;

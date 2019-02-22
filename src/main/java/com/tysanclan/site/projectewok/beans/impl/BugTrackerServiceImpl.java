@@ -36,7 +36,7 @@ import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.BugCommentDAO;
 import com.tysanclan.site.projectewok.entities.dao.BugDAO;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.BugFilter;
+import com.tysanclan.site.projectewok.entities.filter.BugFilter;
 
 @Component
 @Scope("request")

@@ -46,9 +46,9 @@ import com.tysanclan.site.projectewok.entities.dao.GroupCreationRequestDAO;
 import com.tysanclan.site.projectewok.entities.dao.GroupDAO;
 import com.tysanclan.site.projectewok.entities.dao.GroupForumDAO;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.GroupCreationRequestFilter;
-import com.tysanclan.site.projectewok.entities.dao.filters.GroupForumFilter;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
+import com.tysanclan.site.projectewok.entities.filter.GroupCreationRequestFilter;
+import com.tysanclan.site.projectewok.entities.filter.GroupForumFilter;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
 import com.tysanclan.site.projectewok.event.GroupWithoutLeaderEvent;
 import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
 

@@ -17,55 +17,34 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import java.util.List;
-
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.ForumCategory;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.filter.ForumCategoryFilter;
+import com.tysanclan.site.projectewok.util.forum.ForumViewContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.ForumCategory;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.filters.ForumCategoryFilter;
-import com.tysanclan.site.projectewok.util.forum.ForumViewContext;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class ForumCategoryDAOImpl extends EwokHibernateDAO<ForumCategory> implements
+class ForumCategoryDAOImpl extends HibernateDAO<ForumCategory, ForumCategoryFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.ForumCategoryDAO {
-	/**
-	 * @see com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO#createCriteria(com.tysanclan.site.projectewok.dataaccess.SearchFilter)
-	 */
-	@Override
-	protected Criteria createCriteria(SearchFilter<ForumCategory> filter) {
-		Criteria criteria = getSession().createCriteria(ForumCategory.class);
-
-		if (filter instanceof ForumCategoryFilter) {
-			ForumCategoryFilter forumCategoryFilter = (ForumCategoryFilter) filter;
-			if (forumCategoryFilter.getName() != null) {
-				criteria.add(Restrictions.eq("name",
-						forumCategoryFilter.getName()));
-			}
-		}
-
-		return criteria;
-	}
 
 	@Override
 	public int countByContext(User user, User contextObject,
 			ForumViewContext context) {
 
-		return context.countCategories(getSession(), user);
+		return context.countCategories(entityManager, user);
 	}
 
 	@Override
 	public List<ForumCategory> findByContext(User user, User contextObject,
 			ForumViewContext context, long first, long count) {
-		return context.getCategories(getSession(), user, first, count);
+		return context.getCategories(entityManager, user, first, count);
 	}
 }

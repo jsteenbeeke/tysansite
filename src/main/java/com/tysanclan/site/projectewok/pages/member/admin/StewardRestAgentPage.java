@@ -9,7 +9,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.RestService;
 import com.tysanclan.site.projectewok.beans.RoleService;
 import com.tysanclan.site.projectewok.components.IconLink;
@@ -17,7 +17,7 @@ import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
 import com.tysanclan.site.projectewok.components.RevealablePasswordField;
 import com.tysanclan.site.projectewok.entities.AuthorizedRestApplication;
 import com.tysanclan.site.projectewok.entities.dao.AuthorizedRestApplicationDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.AuthorizedRestApplicationFilter;
+import com.tysanclan.site.projectewok.entities.filter.AuthorizedRestApplicationFilter;
 import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
 import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
 

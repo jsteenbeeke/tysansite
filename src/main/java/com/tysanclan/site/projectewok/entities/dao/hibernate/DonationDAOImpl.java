@@ -17,40 +17,18 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.Donation;
+import com.tysanclan.site.projectewok.entities.filter.DonationFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.Donation;
-import com.tysanclan.site.projectewok.entities.dao.filters.DonationFilter;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class DonationDAOImpl extends EwokHibernateDAO<Donation> implements
+class DonationDAOImpl extends HibernateDAO<Donation, DonationFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.DonationDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<Donation> filter) {
-		Criteria criteria = getSession().createCriteria(Donation.class);
 
-		if (filter instanceof DonationFilter) {
-			DonationFilter dFilter = (DonationFilter) filter;
-			if (dFilter.getFrom() != null) {
-				criteria.add(Restrictions.ge("donationTime", dFilter.getFrom()));
-			}
-			if (dFilter.getTo() != null) {
-				criteria.add(Restrictions.le("donationTime", dFilter.getTo()));
-			}
-			if (dFilter.getDonator() != null) {
-				criteria.add(Restrictions.eq("donator", dFilter.getDonator()));
-			}
-		}
-
-		return criteria;
-	}
 }

@@ -37,7 +37,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.ProfileService;
 import com.tysanclan.site.projectewok.entities.Profile;
 import com.tysanclan.site.projectewok.entities.User;

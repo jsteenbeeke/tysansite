@@ -34,14 +34,14 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.resource.ByteArrayResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.entities.Game;
 import com.tysanclan.site.projectewok.entities.GameAccount;
 import com.tysanclan.site.projectewok.entities.GamingGroup;
 import com.tysanclan.site.projectewok.entities.Realm;
 import com.tysanclan.site.projectewok.entities.UserGameRealm;
 import com.tysanclan.site.projectewok.entities.dao.UserGameRealmDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserGameRealmFilter;
+import com.tysanclan.site.projectewok.entities.filter.UserGameRealmFilter;
 import com.tysanclan.site.projectewok.util.ImageUtil;
 import com.tysanclan.site.projectewok.util.MemberUtil;
 

@@ -17,13 +17,14 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.CompoundVote;
+import com.tysanclan.site.projectewok.entities.filter.CompoundVoteFilter;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface CompoundVoteDAO extends EwokDAO<CompoundVote> {
+public interface CompoundVoteDAO extends DAO<CompoundVote, CompoundVoteFilter> {
 
 }

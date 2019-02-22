@@ -28,12 +28,12 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.UserService;
 import com.tysanclan.site.projectewok.entities.EmailChangeConfirmation;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.EmailChangeConfirmationDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.EmailChangeConfirmationFilter;
+import com.tysanclan.site.projectewok.entities.filter.EmailChangeConfirmationFilter;
 
 /**
  * @author Jeroen Steenbeeke

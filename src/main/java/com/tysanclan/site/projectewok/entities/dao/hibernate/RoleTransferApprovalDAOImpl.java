@@ -17,25 +17,17 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
 import com.tysanclan.site.projectewok.entities.RoleTransferApproval;
 import com.tysanclan.site.projectewok.entities.dao.RoleTransferApprovalDAO;
+import com.tysanclan.site.projectewok.entities.filter.RoleTransferApprovalFilter;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 @Component
 @Scope("request")
 class RoleTransferApprovalDAOImpl extends
-		EwokHibernateDAO<RoleTransferApproval> implements
+		HibernateDAO<RoleTransferApproval, RoleTransferApprovalFilter> implements
 		RoleTransferApprovalDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<RoleTransferApproval> filter) {
-		Criteria criteria = getSession().createCriteria(
-				RoleTransferApproval.class);
 
-		return criteria;
-	}
 }

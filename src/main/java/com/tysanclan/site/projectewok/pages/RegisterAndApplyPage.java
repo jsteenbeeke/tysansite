@@ -42,7 +42,7 @@ import com.tysanclan.site.projectewok.entities.Game;
 import com.tysanclan.site.projectewok.entities.Realm;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
 import com.tysanclan.site.projectewok.model.GameRealmCartesian;
 import com.tysanclan.site.projectewok.util.StringUtil;
 import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;

@@ -17,46 +17,19 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.ChancellorElection;
+import com.tysanclan.site.projectewok.entities.filter.ChancellorElectionFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.ChancellorElection;
-import com.tysanclan.site.projectewok.entities.dao.filters.ChancellorElectionFilter;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class ChancellorElectionDAOImpl extends EwokHibernateDAO<ChancellorElection>
+class ChancellorElectionDAOImpl extends HibernateDAO<ChancellorElection, ChancellorElectionFilter>
 		implements
 		com.tysanclan.site.projectewok.entities.dao.ChancellorElectionDAO {
 
-	@Override
-	protected Criteria createCriteria(SearchFilter<ChancellorElection> filter) {
-		Criteria criteria = getSession().createCriteria(
-				ChancellorElection.class);
-
-		if (filter instanceof ChancellorElectionFilter) {
-			ChancellorElectionFilter f = (ChancellorElectionFilter) filter;
-
-			if (f.getStartAfter() != null) {
-				criteria.add(Restrictions.ge("start", f.getStartAfter()));
-			}
-			if (f.getStartBefore() != null) {
-				criteria.add(Restrictions.le("start", f.getStartBefore()));
-			}
-			if (f.getWinner() != null) {
-				criteria.add(Restrictions.eq("winner", f.getWinner()));
-			} else if (f.isNoWinner()) {
-				criteria.add(Restrictions.isNull("winner"));
-			}
-		}
-
-		return criteria;
-	}
 }

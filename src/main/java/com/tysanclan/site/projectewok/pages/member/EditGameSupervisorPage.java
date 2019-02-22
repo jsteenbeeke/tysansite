@@ -27,7 +27,7 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
@@ -36,7 +36,7 @@ import com.tysanclan.site.projectewok.entities.Game;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.User.CaseInsensitiveUserComparator;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
 
 /**
  * @author Jeroen Steenbeeke

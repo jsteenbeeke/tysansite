@@ -17,12 +17,13 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.components.RequiresAttentionLink.IRequiresAttentionCondition;
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
 import com.tysanclan.site.projectewok.entities.AttentionSuppression;
 import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.filter.AttentionSuppressionFilter;
 
-public interface AttentionSuppressionDAO extends EwokDAO<AttentionSuppression> {
+public interface AttentionSuppressionDAO extends DAO<AttentionSuppression, AttentionSuppressionFilter> {
 	boolean isSuppressed(
 			Class<? extends IRequiresAttentionCondition> conditionClass,
 			Long dismissalId, User user);

@@ -17,13 +17,14 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.jeroensteenbeeke.hyperion.data.DAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.MumbleServer;
+import com.tysanclan.site.projectewok.entities.filter.MumbleServerFilter;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface MumbleServerDAO extends DAO<MumbleServer> {
+public interface MumbleServerDAO extends DAO<MumbleServer, MumbleServerFilter> {
 
 }

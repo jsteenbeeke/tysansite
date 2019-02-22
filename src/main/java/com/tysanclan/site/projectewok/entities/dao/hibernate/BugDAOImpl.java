@@ -17,15 +17,11 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.Bug;
+import com.tysanclan.site.projectewok.entities.filter.BugFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.Bug;
-import com.tysanclan.site.projectewok.entities.dao.filters.BugFilter;
 
 /**
  *
@@ -33,29 +29,7 @@ import com.tysanclan.site.projectewok.entities.dao.filters.BugFilter;
  */
 @Component
 @Scope("request")
-class BugDAOImpl extends EwokHibernateDAO<Bug> implements
+class BugDAOImpl extends HibernateDAO<Bug, BugFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.BugDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<Bug> filter) {
-		Criteria criteria = getSession().createCriteria(Bug.class);
 
-		if (filter instanceof BugFilter) {
-			BugFilter cf = (BugFilter) filter;
-
-			if (cf.getDescription() != null) {
-				criteria.add(Restrictions.eq("description", cf.getDescription()));
-			}
-			if (!cf.getReportTypes().isEmpty()) {
-				criteria.add(Restrictions.in("reportType", cf.getReportTypes()));
-			}
-			if (!cf.getAllowedStatus().isEmpty()) {
-				criteria.add(Restrictions.in("status", cf.getAllowedStatus()));
-			}
-			if (cf.getExclude() != null) {
-				criteria.add(Restrictions.ne("id", cf.getExclude()));
-			}
-		}
-
-		return criteria;
-	}
 }

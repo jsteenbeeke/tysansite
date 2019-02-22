@@ -22,13 +22,13 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.beans.LawEnforcementService;
 import com.tysanclan.site.projectewok.components.BBCodeTextArea;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
 
 public class TruthsayerComplaintPage extends AbstractSingleAccordionMemberPage {
 	private static final long serialVersionUID = 1L;

@@ -17,13 +17,14 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.Message;
+import com.tysanclan.site.projectewok.entities.filter.MessageFilter;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface MessageDAO extends EwokDAO<Message> {
+public interface MessageDAO extends DAO<Message, MessageFilter> {
 
 }

@@ -17,48 +17,24 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import java.util.Date;
-
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.GroupLeaderElection;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.filter.GroupLeaderElectionFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.GroupLeaderElection;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.filters.GroupLeaderElectionFilter;
+import java.util.Date;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class GroupLeaderElectionDAOImpl extends EwokHibernateDAO<GroupLeaderElection>
+class GroupLeaderElectionDAOImpl extends HibernateDAO<GroupLeaderElection, GroupLeaderElectionFilter>
 		implements
 		com.tysanclan.site.projectewok.entities.dao.GroupLeaderElectionDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<GroupLeaderElection> filter) {
-		Criteria criteria = getSession().createCriteria(
-				GroupLeaderElection.class);
 
-		if (filter instanceof GroupLeaderElectionFilter) {
-			GroupLeaderElectionFilter f = (GroupLeaderElectionFilter) filter;
-
-			if (f.getStartAfter() != null) {
-				criteria.add(Restrictions.ge("start", f.getStartAfter()));
-			}
-			if (f.getStartBefore() != null) {
-				criteria.add(Restrictions.le("start", f.getStartBefore()));
-			}
-			if (f.getGroup() != null) {
-				criteria.add(Restrictions.eq("group", f.getGroup()));
-			}
-		}
-
-		return criteria;
-	}
 
 	@Override
 	public void restartElectionsWithParticipant(User participant) {
@@ -69,10 +45,5 @@ class GroupLeaderElectionDAOImpl extends EwokHibernateDAO<GroupLeaderElection>
 				update(ge);
 			}
 		}
-	}
-
-	@Override
-	public void flush() {
-		getSession().flush();
 	}
 }

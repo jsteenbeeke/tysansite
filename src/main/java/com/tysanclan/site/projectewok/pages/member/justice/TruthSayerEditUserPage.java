@@ -32,7 +32,7 @@ import com.tysanclan.site.projectewok.beans.UserService;
 import com.tysanclan.site.projectewok.components.ConfirmationLink;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
 import com.tysanclan.site.projectewok.pages.member.AbstractSingleAccordionMemberPage;
 
 /**

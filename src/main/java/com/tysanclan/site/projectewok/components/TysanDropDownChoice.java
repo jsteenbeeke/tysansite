@@ -23,7 +23,7 @@ import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 
 import com.jeroensteenbeeke.hyperion.data.DomainObject;
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 
 /**
  * Dropdown choice that automatically wraps entities in proper models

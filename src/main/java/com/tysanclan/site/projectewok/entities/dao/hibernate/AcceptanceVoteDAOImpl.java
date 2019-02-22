@@ -17,38 +17,18 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.AcceptanceVote;
+import com.tysanclan.site.projectewok.entities.filter.AcceptanceVoteFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.AcceptanceVote;
-import com.tysanclan.site.projectewok.entities.dao.filters.AcceptanceVoteFilter;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class AcceptanceVoteDAOImpl extends EwokHibernateDAO<AcceptanceVote> implements
+class AcceptanceVoteDAOImpl extends HibernateDAO<AcceptanceVote, AcceptanceVoteFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.AcceptanceVoteDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<AcceptanceVote> filter) {
-		Criteria criteria = getSession().createCriteria(AcceptanceVote.class);
 
-		if (filter instanceof AcceptanceVoteFilter) {
-			AcceptanceVoteFilter cf = (AcceptanceVoteFilter) filter;
-
-			if (cf.getStartBefore() != null) {
-				criteria.add(Restrictions.le("start", cf.getStartBefore()));
-			}
-			if (cf.getTrialMember() != null) {
-				criteria.add(Restrictions.eq("trialMember", cf.getTrialMember()));
-			}
-		}
-
-		return criteria;
-	}
 }

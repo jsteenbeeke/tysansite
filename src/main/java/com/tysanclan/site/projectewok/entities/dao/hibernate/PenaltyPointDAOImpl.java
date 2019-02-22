@@ -17,37 +17,18 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.PenaltyPoint;
+import com.tysanclan.site.projectewok.entities.filter.PenaltyPointFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.PenaltyPoint;
-import com.tysanclan.site.projectewok.entities.dao.filters.PenaltyPointFilter;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class PenaltyPointDAOImpl extends EwokHibernateDAO<PenaltyPoint> implements
+class PenaltyPointDAOImpl extends HibernateDAO<PenaltyPoint, PenaltyPointFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.PenaltyPointDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<PenaltyPoint> filter) {
-		Criteria criteria = getSession().createCriteria(PenaltyPoint.class);
 
-		if (filter instanceof PenaltyPointFilter) {
-			PenaltyPointFilter cf = (PenaltyPointFilter) filter;
-			if (cf.getDateAfter() != null) {
-				criteria.add(Restrictions.gt("given", cf.getDateAfter()));
-			}
-			if (cf.getUser() != null) {
-				criteria.add(Restrictions.eq("user", cf.getUser()));
-			}
-		}
-
-		return criteria;
-	}
 }

@@ -17,13 +17,11 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.UntenabilityVoteChoice;
+import com.tysanclan.site.projectewok.entities.filter.UntenabilityVoteChoiceFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.UntenabilityVoteChoice;
 
 /**
  * @author Jeroen Steenbeeke
@@ -31,19 +29,7 @@ import com.tysanclan.site.projectewok.entities.UntenabilityVoteChoice;
 @Component
 @Scope("request")
 class UntenabilityVoteChoiceDAOImpl extends
-		EwokHibernateDAO<UntenabilityVoteChoice> implements
+		HibernateDAO<UntenabilityVoteChoice, UntenabilityVoteChoiceFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.UntenabilityVoteChoiceDAO {
-	@Override
-	protected Criteria createCriteria(
-			SearchFilter<UntenabilityVoteChoice> filter) {
-		Criteria criteria = getSession().createCriteria(
-				UntenabilityVoteChoice.class);
 
-		// if (filter instanceof UntenabilityVoteChoiceFilter) {
-		// UntenabilityVoteChoiceFilter cf = (UntenabilityVoteChoiceFilter)
-		// filter;
-		// }
-
-		return criteria;
-	}
 }

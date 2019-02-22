@@ -35,7 +35,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.ui.dialog.Dialog;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.RoleService;
@@ -46,8 +46,8 @@ import com.tysanclan.site.projectewok.entities.Role.RoleType;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.RoleDAO;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.RoleFilter;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
+import com.tysanclan.site.projectewok.entities.filter.RoleFilter;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
 
 /**
  * @author Jeroen Steenbeeke

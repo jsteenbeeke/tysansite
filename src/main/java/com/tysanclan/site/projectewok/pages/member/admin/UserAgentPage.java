@@ -24,14 +24,14 @@ import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.jeroensteenbeeke.hyperion.data.FilterDataProvider;
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.RoleService;
 import com.tysanclan.site.projectewok.beans.UserAgentService;
 import com.tysanclan.site.projectewok.components.IconLink;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
 import com.tysanclan.site.projectewok.entities.MobileUserAgent;
 import com.tysanclan.site.projectewok.entities.dao.MobileUserAgentDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.MobileUserAgentFilter;
+import com.tysanclan.site.projectewok.entities.filter.MobileUserAgentFilter;
 import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
 import com.tysanclan.site.projectewok.pages.member.AbstractSingleAccordionMemberPage;
 

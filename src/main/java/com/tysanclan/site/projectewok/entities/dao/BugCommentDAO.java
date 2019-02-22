@@ -17,13 +17,14 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.jeroensteenbeeke.hyperion.data.DAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.BugComment;
+import com.tysanclan.site.projectewok.entities.filter.BugCommentFilter;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface BugCommentDAO extends DAO<BugComment> {
+public interface BugCommentDAO extends DAO<BugComment, BugCommentFilter> {
 
 }

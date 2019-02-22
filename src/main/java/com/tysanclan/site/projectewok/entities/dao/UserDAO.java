@@ -17,18 +17,19 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import java.util.List;
-
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.rest.api.data.Rank;
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
 import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
+
+import java.util.List;
 
 /**
  * A DAO for handling users
  * 
  * @author Jeroen Steenbeeke
  */
-public interface UserDAO extends EwokDAO<User> {
+public interface UserDAO extends DAO<User, UserFilter> {
 	/**
 	 * Counts the number of users holding a given rank
 	 * 
@@ -36,7 +37,7 @@ public interface UserDAO extends EwokDAO<User> {
 	 *            The rank to count
 	 * @return The number of users holding that rank
 	 */
-	public int countByRank(Rank rank);
+	long countByRank(Rank rank);
 
 	/**
 	 * Loads the user based on the username and password
@@ -47,9 +48,9 @@ public interface UserDAO extends EwokDAO<User> {
 	 *            The password of the requested user
 	 * @return The requested user, or <code>null</code> if not found
 	 */
-	public abstract User load(String username, String password);
+	User load(String username, String password);
 
-	public abstract List<User> getTrialMembersReadyForVote();
+	List<User> getTrialMembersReadyForVote();
 
-	public List<User> findByRank(Rank senator);
+	List<User> findByRank(Rank senator);
 }

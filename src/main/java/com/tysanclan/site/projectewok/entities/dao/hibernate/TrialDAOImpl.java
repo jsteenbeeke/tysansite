@@ -17,23 +17,19 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
 import com.tysanclan.site.projectewok.entities.ForumThread;
 import com.tysanclan.site.projectewok.entities.Trial;
-import com.tysanclan.site.projectewok.entities.dao.filters.TrialFilter;
+import com.tysanclan.site.projectewok.entities.filter.TrialFilter;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class TrialDAOImpl extends EwokHibernateDAO<Trial> implements
+class TrialDAOImpl extends HibernateDAO<Trial, TrialFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.TrialDAO {
 
 	/**
@@ -41,36 +37,11 @@ class TrialDAOImpl extends EwokHibernateDAO<Trial> implements
 	 */
 	@Override
 	public Trial getTrialByThread(ForumThread thread) {
-		Criteria criteria = getSession().createCriteria(Trial.class);
+		TrialFilter filter = new TrialFilter();
+		filter.trialThread(thread);
 
-		criteria.add(Restrictions.eq("trialThread", thread));
-
-		return (Trial) criteria.uniqueResult();
+		return getUniqueByFilter(filter).getOrNull();
 	}
 
-	@Override
-	protected Criteria createCriteria(SearchFilter<Trial> filter) {
-		Criteria criteria = getSession().createCriteria(Trial.class);
 
-		if (filter instanceof TrialFilter) {
-			TrialFilter cf = (TrialFilter) filter;
-			if (cf.getStartAfter() != null) {
-				criteria.createAlias("trialThread", "thread");
-				criteria.add(Restrictions.gt("thread.postTime",
-						cf.getStartAfter()));
-			}
-			if (cf.getRestrained() != null) {
-				criteria.add(Restrictions.eq("restrained", cf.getRestrained()));
-			}
-			if (cf.getAccused() != null) {
-				criteria.add(Restrictions.eq("accused", cf.getAccused()));
-			}
-
-			if (!cf.isWithTrialThread()) {
-				criteria.add(Restrictions.isNull("trialThread"));
-			}
-		}
-
-		return criteria;
-	}
 }

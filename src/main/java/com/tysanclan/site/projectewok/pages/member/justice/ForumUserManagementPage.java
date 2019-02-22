@@ -25,7 +25,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PageableListView;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.UserService;
@@ -33,7 +33,7 @@ import com.tysanclan.site.projectewok.components.IconLink;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
 import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
 import com.tysanclan.site.projectewok.util.DateUtil;
 

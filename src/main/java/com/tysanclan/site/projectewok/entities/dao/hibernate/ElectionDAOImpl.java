@@ -17,42 +17,18 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.Election;
+import com.tysanclan.site.projectewok.entities.filter.ElectionFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.Election;
-import com.tysanclan.site.projectewok.entities.dao.filters.ElectionFilter;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class ElectionDAOImpl extends EwokHibernateDAO<Election> implements
+class ElectionDAOImpl extends HibernateDAO<Election, ElectionFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.ElectionDAO {
 
-	/**
-	 * @see com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO#createCriteria(com.tysanclan.site.projectewok.dataaccess.SearchFilter)
-	 */
-	@Override
-	protected Criteria createCriteria(SearchFilter<Election> filter) {
-		Criteria criteria = getSession().createCriteria(Election.class);
-
-		if (filter instanceof ElectionFilter) {
-			ElectionFilter ef = (ElectionFilter) filter;
-
-			if (ef.getStartBefore() != null) {
-				criteria.add(Restrictions.lt("start", ef.getStartBefore()));
-			}
-			if (ef.getStartAfter() != null) {
-				criteria.add(Restrictions.gt("start", ef.getStartBefore()));
-			}
-		}
-
-		return criteria;
-	}
 }

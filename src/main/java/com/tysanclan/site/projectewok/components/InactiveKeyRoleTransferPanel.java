@@ -33,7 +33,7 @@ import com.tysanclan.site.projectewok.entities.Role;
 import com.tysanclan.site.projectewok.entities.Role.RoleType;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
 import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
 import com.tysanclan.site.projectewok.pages.member.InactiveKeyRoleTransferPage;
 

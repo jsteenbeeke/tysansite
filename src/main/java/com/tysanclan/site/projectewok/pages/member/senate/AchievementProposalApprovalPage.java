@@ -25,7 +25,7 @@ import org.apache.wicket.request.resource.ByteArrayResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.jeroensteenbeeke.hyperion.data.FilterDataProvider;
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.AchievementService;
@@ -35,7 +35,7 @@ import com.tysanclan.site.projectewok.entities.AchievementIcon;
 import com.tysanclan.site.projectewok.entities.AchievementProposal;
 import com.tysanclan.site.projectewok.entities.AchievementProposalVote;
 import com.tysanclan.site.projectewok.entities.dao.AchievementProposalDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.AchievementProposalFilter;
+import com.tysanclan.site.projectewok.entities.filter.AchievementProposalFilter;
 import com.tysanclan.site.projectewok.pages.member.AbstractSingleAccordionMemberPage;
 import com.tysanclan.site.projectewok.util.ImageUtil;
 

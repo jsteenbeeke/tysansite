@@ -17,18 +17,19 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import java.util.List;
-
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.Game;
 import com.tysanclan.site.projectewok.entities.Realm;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.UserGameRealm;
+import com.tysanclan.site.projectewok.entities.filter.UserGameRealmFilter;
+
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public interface UserGameRealmDAO extends EwokDAO<UserGameRealm> {
+public interface UserGameRealmDAO extends DAO<UserGameRealm, UserGameRealmFilter> {
 	List<User> getActiveUsers(Game game, Realm realm);
 
 	int countActivePlayers(Realm realm);

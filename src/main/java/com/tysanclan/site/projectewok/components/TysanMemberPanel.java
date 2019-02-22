@@ -37,7 +37,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.ui.dialog.Dialog;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanSession;
 import com.tysanclan.site.projectewok.TysanTopPanel;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
@@ -50,7 +50,7 @@ import com.tysanclan.site.projectewok.entities.MumbleServer;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.ConversationParticipationDAO;
 import com.tysanclan.site.projectewok.entities.dao.MumbleServerDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.ConversationParticipationFilter;
+import com.tysanclan.site.projectewok.entities.filter.ConversationParticipationFilter;
 import com.tysanclan.site.projectewok.pages.ForumOverviewPage;
 import com.tysanclan.site.projectewok.pages.member.MessageListPage;
 import com.tysanclan.site.projectewok.pages.member.OverviewPage;

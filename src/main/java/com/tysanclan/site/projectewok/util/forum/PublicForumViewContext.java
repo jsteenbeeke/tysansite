@@ -1,17 +1,17 @@
 /**
  * Tysan Clan Website
  * Copyright (C) 2008-2013 Jeroen Steenbeeke and Ties van de Ven
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -19,17 +19,20 @@ package com.tysanclan.site.projectewok.util.forum;
 
 import java.util.List;
 
+import com.jeroensteenbeeke.hyperion.data.DomainObject;
+import com.tysanclan.site.projectewok.entities.*;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
-import com.tysanclan.site.projectewok.entities.Forum;
-import com.tysanclan.site.projectewok.entities.ForumCategory;
-import com.tysanclan.site.projectewok.entities.ForumPost;
-import com.tysanclan.site.projectewok.entities.ForumThread;
-import com.tysanclan.site.projectewok.entities.User;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 
 /**
  * Forum context for visitors who are not logged in, and forum users with normal status
+ *
  * @author Jeroen Steenbeeke
  */
 public class PublicForumViewContext extends AbstractForumViewContext {
@@ -37,135 +40,174 @@ public class PublicForumViewContext extends AbstractForumViewContext {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public int countCategories(Session sess, User viewer) {
-		StringBuilder q = new StringBuilder();
-		q.append("SELECT COUNT(*) FROM FORUMCATEGORY FC ");
-		q.append("WHERE EXISTS ( ");
+	public int countCategories(EntityManager em, User viewer) {
+		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+		CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
 
-		q.append("SELECT * FROM FORUM f ");
-		q.append("WHERE f.DTYPE!='GroupForum' AND f.MEMBERSONLY=false AND f.category_id = FC.id");
+		Root<ForumCategory> root = criteriaQuery.from(ForumCategory.class);
 
-		q.append(")");
+		Subquery<Forum> subquery = criteriaQuery.subquery(Forum.class);
+		Root<Forum> subqueryRoot = subquery.from(Forum.class);
 
-		SQLQuery query = sess.createSQLQuery(q.toString());
+		subquery.where(criteriaBuilder.notEqual(subqueryRoot.get("dtype"), "GroupForum"),
+					   criteriaBuilder.equal(subqueryRoot.get(Forum_.membersOnly), false),
+					   criteriaBuilder.equal(subqueryRoot.get(Forum_.category), root.get(ForumCategory_.id)));
 
-		return count(query);
+		criteriaQuery.select(criteriaBuilder.count(root));
+		criteriaQuery.where(criteriaBuilder.exists(subquery));
+		return count(em, criteriaQuery);
+	}
+
+
+	@Override
+	public List<ForumCategory> getCategories(EntityManager em, User viewer,
+											 long offset, long count) {
+		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+		CriteriaQuery<ForumCategory> criteriaQuery = criteriaBuilder.createQuery(ForumCategory.class);
+
+		Root<ForumCategory> root = criteriaQuery.from(ForumCategory.class);
+
+		Subquery<Forum> subquery = criteriaQuery.subquery(Forum.class);
+		Root<Forum> subqueryRoot = subquery.from(Forum.class);
+
+		subquery.where(criteriaBuilder.notEqual(subqueryRoot.get("dtype"), "GroupForum"),
+					   criteriaBuilder.equal(subqueryRoot.get(Forum_.membersOnly), false),
+					   criteriaBuilder.equal(subqueryRoot.get(Forum_.category), root.get(ForumCategory_.id)));
+
+		criteriaQuery.select(root);
+		criteriaQuery.where(criteriaBuilder.exists(subquery));
+		return listOf(em, criteriaQuery);
+	}
+
+
+	@Override
+	public int countForums(EntityManager em, ForumCategory context, User viewer) {
+		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+		CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+
+		Root<Forum> root = criteriaQuery.from(Forum.class);
+
+		criteriaQuery.select(criteriaBuilder.count(root));
+		criteriaQuery.where(criteriaBuilder.notEqual(root.get("dtype"), "GroupForum"),
+							criteriaBuilder.equal(root.get(Forum_.membersOnly), false),
+							criteriaBuilder.equal(root.get(Forum_.category), context));
+		return count(em, criteriaQuery);
 	}
 
 	@Override
-	public List<ForumCategory> getCategories(Session sess, User viewer,
-			long offset, long count) {
-		StringBuilder q = new StringBuilder();
-		q.append("SELECT * FROM FORUMCATEGORY FC ");
-		q.append("WHERE EXISTS ( ");
+	public List<Forum> getForums(EntityManager em, ForumCategory context,
+								 User viewer, long offset, long count) {
+		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+		CriteriaQuery<Forum> criteriaQuery = criteriaBuilder.createQuery(Forum.class);
 
-		q.append("SELECT * FROM FORUM f ");
-		q.append("WHERE f.DTYPE!='GroupForum' AND f.MEMBERSONLY=false AND f.category_id = FC.id ");
+		Root<Forum> root = criteriaQuery.from(Forum.class);
 
-		q.append(") ORDER BY id ASC LIMIT :count OFFSET :offset");
-
-		SQLQuery query = sess.createSQLQuery(q.toString());
-		query.setLong("count", count);
-		query.setLong("offset", offset);
-		query.addEntity(ForumCategory.class);
-
-		return listOf(query);
+		criteriaQuery.select(root);
+		criteriaQuery.where(criteriaBuilder.notEqual(root.get("dtype"), "GroupForum"),
+							criteriaBuilder.equal(root.get(Forum_.membersOnly), false),
+							criteriaBuilder.equal(root.get(Forum_.category), context));
+		return listOf(em, criteriaQuery);
 	}
 
 	@Override
-	public int countForums(Session sess, ForumCategory context, User viewer) {
+	public int countThreads(EntityManager em, Forum context, User viewer) {
+		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+		CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
 
-		StringBuilder q = new StringBuilder();
-		q.append("SELECT COUNT(*) FROM FORUM f ");
-		q.append("WHERE f.DTYPE!='GroupForum' AND f.MEMBERSONLY=false AND f.category_id = :cat");
+		Root<ForumThread> root = criteriaQuery.from(ForumThread.class);
 
-		SQLQuery query = sess.createSQLQuery(q.toString());
-		query.setLong("cat", context.getId());
+		Subquery<Trial> trialSubquery = criteriaQuery.subquery(Trial.class);
+		Root<Trial> trialRoot = trialSubquery.from(Trial.class);
 
-		return count(query);
-	}
+		Subquery<ForumPost> forumPostSubquery = criteriaQuery.subquery(ForumPost.class);
+		Root<ForumPost> forumPostRoot = forumPostSubquery.from(ForumPost.class);
 
-	@Override
-	public List<Forum> getForums(Session sess, ForumCategory context,
-			User viewer, long offset, long count) {
-		StringBuilder q = new StringBuilder();
-		q.append("SELECT * FROM FORUM f ");
-		q.append("WHERE f.DTYPE!='GroupForum' AND f.MEMBERSONLY=false AND f.category_id = :cat ");
-		q.append("ORDER BY position ASC ");
-		q.append("LIMIT :count OFFSET :offset");
 
-		SQLQuery query = sess.createSQLQuery(q.toString());
-		query.setLong("cat", context.getId());
-		query.setLong("count", count);
-		query.setLong("offset", offset);
-		query.addEntity(Forum.class);
+		criteriaQuery
+				.select(criteriaBuilder.count(root))
+				.where(criteriaBuilder.equal(root.get(ForumThread_.forum), context),
+					   criteriaBuilder.equal(root.get(ForumThread_.shadow), false),
+					   criteriaBuilder.not(criteriaBuilder.exists(
+							   trialSubquery.select(trialRoot)
+											.where(
+													criteriaBuilder.equal(
+															trialRoot.get(Trial_.trialThread),
+															root.get(ForumThread_.id))))),
+					   criteriaBuilder.exists(
+							   forumPostSubquery.select(forumPostRoot).where(
+									   criteriaBuilder.equal(forumPostRoot.get(ForumPost_.shadow), false),
+									   criteriaBuilder.equal(forumPostRoot.get(ForumPost_.thread), root.get(ForumThread_.id))
+							   )
+					   )
+				);
 
-		return listOf(query);
-	}
-
-	@Override
-	public int countThreads(Session sess, Forum context, User viewer) {
-
-		StringBuilder q = new StringBuilder();
-
-		q.append("SELECT COUNT(*) FROM FORUMTHREAD FT WHERE ft.forum_id = :forum AND ft.shadow = false AND ");
-		q.append("NOT EXISTS (SELECT * FROM trial WHERE trialthread_id = ft.id) AND ");
-		q.append("EXISTS (SELECT * FROM FORUMPOST FP WHERE fp.shadow = false AND fp.thread_id = ft.id)");
-
-		SQLQuery query = sess.createSQLQuery(q.toString());
-		query.setLong("forum", context.getId());
-
-		return count(query);
+		return count(em, criteriaQuery);
 
 	}
 
 	@Override
-	public List<ForumThread> getThreads(Session sess, Forum context,
-			User viewer, long offset, long count) {
-		StringBuilder q = new StringBuilder();
+	public List<ForumThread> getThreads(EntityManager em, Forum context,
+										User viewer, long offset, long count) {
+		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+		CriteriaQuery<ForumThread> criteriaQuery = criteriaBuilder.createQuery(ForumThread.class);
 
-		q.append("SELECT * FROM FORUMTHREAD FT WHERE ft.forum_id = :forum AND ft.shadow = false AND ");
-		q.append("NOT EXISTS (SELECT * FROM trial WHERE trialthread_id = ft.id) AND ");
-		q.append("EXISTS (SELECT * FROM FORUMPOST FP WHERE fp.shadow = false AND fp.thread_id = ft.id) ");
-		q.append("ORDER BY STICKY DESC, lastPost DESC ");
-		q.append("LIMIT :count OFFSET :offset");
+		Root<ForumThread> root = criteriaQuery.from(ForumThread.class);
 
-		SQLQuery query = sess.createSQLQuery(q.toString());
-		query.setLong("forum", context.getId());
-		query.setLong("count", count);
-		query.setLong("offset", offset);
-		query.addEntity(ForumThread.class);
+		Subquery<Trial> trialSubquery = criteriaQuery.subquery(Trial.class);
+		Root<Trial> trialRoot = trialSubquery.from(Trial.class);
 
-		return listOf(query);
+		Subquery<ForumPost> forumPostSubquery = criteriaQuery.subquery(ForumPost.class);
+		Root<ForumPost> forumPostRoot = forumPostSubquery.from(ForumPost.class);
+
+
+		criteriaQuery.select(root).where(criteriaBuilder.equal(root.get(ForumThread_.forum), context),
+										 criteriaBuilder.equal(root.get(ForumThread_.shadow), false),
+										 criteriaBuilder.not(criteriaBuilder.exists(
+												 trialSubquery.select(trialRoot)
+															  .where(
+																	  criteriaBuilder.equal(
+																			  trialRoot.get(Trial_.trialThread),
+																			  root.get(ForumThread_.id))))),
+										 criteriaBuilder.exists(
+												 forumPostSubquery.select(forumPostRoot).where(
+														 criteriaBuilder.equal(forumPostRoot.get(ForumPost_.shadow), false),
+														 criteriaBuilder.equal(forumPostRoot.get(ForumPost_.thread), root
+																 .get(ForumThread_.id))
+												 )
+										 )
+		);
+
+		return listOf(em, criteriaQuery);
 	}
 
 	@Override
-	public int countPosts(Session sess, ForumThread context, User viewer) {
-		StringBuilder q = new StringBuilder();
+	public int countPosts(EntityManager em, ForumThread context, User viewer) {
+		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+		CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+		Root<ForumPost> root = criteriaQuery.from(ForumPost.class);
 
-		q.append("SELECT COUNT(*) FROM FORUMPOST FP WHERE fp.shadow = false AND fp.thread_id = :thread");
+		criteriaQuery.select(criteriaBuilder.count(root)).where(
+				criteriaBuilder.equal(root.get(ForumPost_.shadow), false),
+				criteriaBuilder.equal(root.get(ForumPost_.thread), context)
+		);
 
-		SQLQuery query = sess.createSQLQuery(q.toString());
-		query.setLong("thread", context.getId());
 
-		return count(query);
+		return count(em, criteriaQuery);
 	}
 
 	@Override
-	public List<ForumPost> getPosts(Session sess, ForumThread context,
-			User viewer, long offset, long count) {
-		StringBuilder q = new StringBuilder();
+	public List<ForumPost> getPosts(EntityManager em, ForumThread context,
+									User viewer, long offset, long count) {
+		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+		CriteriaQuery<ForumPost> criteriaQuery = criteriaBuilder.createQuery(ForumPost.class);
+		Root<ForumPost> root = criteriaQuery.from(ForumPost.class);
 
-		q.append("SELECT * FROM FORUMPOST FP WHERE fp.shadow = false AND fp.thread_id = :thread ");
-		q.append("ORDER BY time ASC LIMIT :count OFFSET :offset");
+		criteriaQuery.select(root).where(
+				criteriaBuilder.equal(root.get(ForumPost_.shadow), false),
+				criteriaBuilder.equal(root.get(ForumPost_.thread), context)
+		);
 
-		SQLQuery query = sess.createSQLQuery(q.toString());
-		query.setLong("thread", context.getId());
-		query.setLong("count", count);
-		query.setLong("offset", offset);
-		query.addEntity(ForumPost.class);
-
-		return listOf(query);
+		return listOf(em, criteriaQuery, (int) count, (int) offset);
 	}
 
 }

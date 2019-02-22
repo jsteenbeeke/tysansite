@@ -17,12 +17,13 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.ForumPost;
 import com.tysanclan.site.projectewok.entities.ForumThread;
 import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.filter.ForumPostFilter;
 
-public interface ForumPostDAO extends EwokDAO<ForumPost>,
+public interface ForumPostDAO extends DAO<ForumPost, ForumPostFilter>,
 		ContextBasedForumDAO<ForumPost, ForumThread> {
 
 	public int getUnreadSize(User user);

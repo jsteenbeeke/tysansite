@@ -34,7 +34,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import com.tysanclan.site.projectewok.entities.Donation;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.DonationDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.DonationFilter;
+import com.tysanclan.site.projectewok.entities.filter.DonationFilter;
 import com.tysanclan.site.projectewok.util.DateUtil;
 
 /**

@@ -17,40 +17,18 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.Role;
+import com.tysanclan.site.projectewok.entities.filter.RoleFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.Role;
-import com.tysanclan.site.projectewok.entities.dao.filters.RoleFilter;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class RoleDAOImpl extends EwokHibernateDAO<Role> implements
+class RoleDAOImpl extends HibernateDAO<Role, RoleFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.RoleDAO {
-	/**
-	 * @see com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO#createCriteria(com.tysanclan.site.projectewok.dataaccess.SearchFilter)
-	 */
-	@Override
-	protected Criteria createCriteria(SearchFilter<Role> filter) {
-		Criteria criteria = getSession().createCriteria(Role.class);
 
-		if (filter instanceof RoleFilter) {
-			RoleFilter rf = (RoleFilter) filter;
-			if (rf.getUser() != null) {
-				criteria.add(Restrictions.eq("assignedTo", rf.getUser()));
-			}
-			if (rf.getRoleType() != null) {
-				criteria.add(Restrictions.eq("roleType", rf.getRoleType()));
-			}
-		}
-
-		return criteria;
-	}
 }

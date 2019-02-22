@@ -17,23 +17,17 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.LogItem;
+import com.tysanclan.site.projectewok.entities.filter.LogItemFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.LogItem;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class LogItemDAOImpl extends EwokHibernateDAO<LogItem> implements
+class LogItemDAOImpl extends HibernateDAO<LogItem, LogItemFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.LogItemDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<LogItem> filter) {
-		return getSession().createCriteria(LogItem.class);
-	}
 }

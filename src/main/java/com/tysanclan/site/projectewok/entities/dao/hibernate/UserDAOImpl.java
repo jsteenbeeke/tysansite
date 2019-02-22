@@ -1,61 +1,54 @@
 /**
  * Tysan Clan Website
  * Copyright (C) 2008-2013 Jeroen Steenbeeke and Ties van de Ven
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.SimpleExpression;
+import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.rest.api.util.HashException;
+import com.tysanclan.site.projectewok.entities.AcceptanceVote;
+import com.tysanclan.site.projectewok.entities.AcceptanceVote_;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.User_;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
+import com.tysanclan.site.projectewok.event.RankChangeEvent;
+import com.tysanclan.site.projectewok.util.DateUtil;
+import com.tysanclan.site.projectewok.util.MemberUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
-import com.tysanclan.rest.api.data.Rank;
-import com.tysanclan.rest.api.util.HashException;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.AcceptanceVote;
-import com.tysanclan.site.projectewok.entities.TruthsayerNomination;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.TruthsayerNominationDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
-import com.tysanclan.site.projectewok.event.RankChangeEvent;
-import com.tysanclan.site.projectewok.util.DateUtil;
-import com.tysanclan.site.projectewok.util.MemberUtil;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class UserDAOImpl extends EwokHibernateDAO<User> implements
+class UserDAOImpl extends HibernateDAO<User, UserFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.UserDAO {
-	@Autowired
-	private TruthsayerNominationDAO truthsayerNominationDAO;
 
 	@Autowired
 	private IEventDispatcher dispatcher;
@@ -64,159 +57,64 @@ class UserDAOImpl extends EwokHibernateDAO<User> implements
 		this.dispatcher = dispatcher;
 	}
 
-	/**
-	 * @param truthsayerNominationDAO
-	 *            the truthsayerNominationDAO to set
-	 */
-	public void setTruthsayerNominationDAO(
-			TruthsayerNominationDAO truthsayerNominationDAO) {
-		this.truthsayerNominationDAO = truthsayerNominationDAO;
-	}
 
 	@Override
-	public int countByRank(Rank rank) {
-		Criteria crit = getSession().createCriteria(User.class);
-		crit.add(Restrictions.eq("rank", rank));
-		crit.add(Restrictions.eq("retired", false));
-		crit.setProjection(Projections.rowCount());
+	public long countByRank(Rank rank) {
+		UserFilter filter = new UserFilter();
+		filter.rank(rank);
+		filter.retired(false);
 
-		return ((Number) crit.uniqueResult()).intValue();
+		return countByFilter(filter);
 	}
 
 	@Override
 	public List<User> findByRank(Rank rank) {
-		Criteria crit = getSession().createCriteria(User.class);
-		crit.add(Restrictions.eq("rank", rank));
+		UserFilter filter = new UserFilter();
+		filter.rank(rank);
 
-		return listOf(crit);
+		return findByFilter(filter).toJavaList();
 	}
 
 	@Override
 	public User load(String username, String password) {
 		try {
-			Criteria crit = getSession().createCriteria(User.class);
+			UserFilter filter = new UserFilter();
+			filter.username().equalsIgnoreCase(username);
+			filter.password(MemberUtil.hashPassword(password));
 
-			Criterion eq = Restrictions.eq("username", username);
-			if (eq instanceof SimpleExpression) {
-				eq = ((SimpleExpression) eq).ignoreCase();
-			}
-
-			crit.add(eq);
-			crit.add(Restrictions.eq("password",
-					MemberUtil.hashPassword(password)));
-			return (User) crit.uniqueResult();
+			return getUniqueByFilter(filter).getOrNull();
 		} catch (HashException e) {
 			return null;
 		}
 	}
 
 	/**
-	 * @see com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO#createCriteria(com.tysanclan.site.projectewok.dataaccess.SearchFilter)
-	 */
-	@Override
-	protected Criteria createCriteria(SearchFilter<User> filter) {
-		Criteria criteria = getSession().createCriteria(User.class);
-
-		if (filter instanceof UserFilter) {
-			UserFilter userFilter = (UserFilter) filter;
-			if (userFilter.getGroup() != null) {
-				criteria.createCriteria("groups").add(
-						Restrictions.eq("group_id", userFilter.getGroup()
-								.getId()));
-			}
-			if (userFilter.getUsername() != null) {
-				Criterion eq = Restrictions.eq("username",
-						userFilter.getUsername());
-				if (eq instanceof SimpleExpression) {
-					eq = ((SimpleExpression) eq).ignoreCase();
-				}
-
-				criteria.add(eq);
-			}
-			if (userFilter.getRanks() != null) {
-				criteria.add(Restrictions.in("rank", userFilter.getRanks()));
-			}
-			if (userFilter.getPassword() != null) {
-				criteria.add(Restrictions.eq("password",
-						userFilter.getPassword()));
-			}
-			if (userFilter.getActiveSince() != null) {
-				criteria.add(Restrictions.ge("lastAction",
-						userFilter.getActiveSince()));
-			}
-			if (userFilter.getActiveBefore() != null) {
-				criteria.add(Restrictions.lt("lastAction",
-						userFilter.getActiveBefore()));
-			}
-			if (userFilter.getEmail() != null) {
-				criteria.add(Restrictions.eq("eMail", userFilter.getEmail()));
-			}
-			if (userFilter.getRetired() != null) {
-				criteria.add(Restrictions.eq("retired", userFilter.getRetired()));
-			}
-			if (userFilter.getVacation() != null) {
-				criteria.add(Restrictions.eq("vacation",
-						userFilter.getVacation()));
-			}
-			if (userFilter.getRealm() != null) {
-				Criteria sc = criteria.createCriteria("playedGames");
-				sc.add(Restrictions.eq("realm", userFilter.getRealm()));
-			}
-
-			if (userFilter.getBugReportMaster() != null) {
-				criteria.add(Restrictions.eq("bugReportMaster",
-						userFilter.getBugReportMaster()));
-			}
-
-			if (userFilter.getTruthsayerNominated() != null) {
-				List<TruthsayerNomination> nominated = truthsayerNominationDAO
-						.findAll();
-				Set<Long> userids = new HashSet<Long>();
-				for (TruthsayerNomination nomination : nominated) {
-					userids.add(nomination.getUser().getId());
-				}
-
-				if (userFilter.getTruthsayerNominated()) {
-					criteria.add(userids.isEmpty() ? Restrictions
-							.sqlRestriction(" 1 = 2") : Restrictions.in("id",
-							userids));
-				} else {
-					if (!userids.isEmpty()) {
-						criteria.add(Restrictions.not(Restrictions.in("id",
-								userids)));
-					}
-				}
-			}
-		}
-
-		return criteria;
-	}
-
-	/**
 	 * @see com.tysanclan.site.projectewok.entities.dao.UserDAO#getTrialMembersReadyForVote()
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<User> getTrialMembersReadyForVote() {
-		Criteria criteria = getSession().createCriteria(User.class);
+		Date fourteenDaysAgo = DateUtil.daysAgo(14);
 
-		Calendar cal = DateUtil.getCalendarInstance();
-		cal.add(Calendar.DAY_OF_YEAR, -14);
+		UserFilter filter = new UserFilter();
+		filter.rank(Rank.TRIAL);
+		filter.joinDate().lessThanOrEqualTo(fourteenDaysAgo);
 
-		criteria.add(Restrictions.eq("rank", Rank.TRIAL));
-		criteria.add(Restrictions.le("joinDate", cal.getTime()));
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
+		Root<User> root = query.from(User.class);
 
-		Criteria reverse = getSession().createCriteria(AcceptanceVote.class);
-		reverse.createAlias("trialMember", "user");
-		reverse.setProjection(Projections.property("user.id"));
+		Subquery<Long> subquery = query.subquery(Long.class);
+		Root<AcceptanceVote> acceptanceVoteRoot = subquery.from(AcceptanceVote.class);
 
-		List<?> activeVotes = reverse.list();
+		subquery.select(acceptanceVoteRoot.get(AcceptanceVote_.trialMember).get(User_.id));
 
-		if (!activeVotes.isEmpty()) {
-			criteria.add(Restrictions.not(Restrictions.in("id", activeVotes)));
-		}
+		query.select(root).where(criteriaBuilder.not(root.get(User_.id).in(subquery)),
+								 criteriaBuilder.equal(root.get(User_.rank), Rank.TRIAL),
+								 criteriaBuilder.lessThanOrEqualTo(root.get(User_.joinDate), fourteenDaysAgo)
+		);
 
-		return criteria.list();
+
+		return entityManager.createQuery(query).getResultList();
 	}
 
 	@Override

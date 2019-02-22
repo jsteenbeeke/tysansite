@@ -17,13 +17,11 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.TruthsayerNominationVote;
+import com.tysanclan.site.projectewok.entities.filter.TruthsayerNominationVoteFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.TruthsayerNominationVote;
 
 /**
  * @author Jeroen Steenbeeke
@@ -31,19 +29,7 @@ import com.tysanclan.site.projectewok.entities.TruthsayerNominationVote;
 @Component
 @Scope("request")
 class TruthsayerNominationVoteDAOImpl extends
-		EwokHibernateDAO<TruthsayerNominationVote> implements
+		HibernateDAO<TruthsayerNominationVote, TruthsayerNominationVoteFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.TruthsayerNominationVoteDAO {
-	@Override
-	protected Criteria createCriteria(
-			SearchFilter<TruthsayerNominationVote> filter) {
-		Criteria criteria = getSession().createCriteria(
-				TruthsayerNominationVote.class);
 
-		// if (filter instanceof TruthsayerNominationVoteFilter) {
-		// TruthsayerNominationVoteFilter cf = (TruthsayerNominationVoteFilter)
-		// filter;
-		// }
-
-		return criteria;
-	}
 }

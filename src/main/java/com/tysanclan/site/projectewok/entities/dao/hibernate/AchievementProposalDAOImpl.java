@@ -17,15 +17,11 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.AchievementProposal;
+import com.tysanclan.site.projectewok.entities.filter.AchievementProposalFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.AchievementProposal;
-import com.tysanclan.site.projectewok.entities.dao.filters.AchievementProposalFilter;
 
 /**
  * 
@@ -33,33 +29,7 @@ import com.tysanclan.site.projectewok.entities.dao.filters.AchievementProposalFi
  */
 @Component
 @Scope("request")
-class AchievementProposalDAOImpl extends EwokHibernateDAO<AchievementProposal>
+class AchievementProposalDAOImpl extends HibernateDAO<AchievementProposal, AchievementProposalFilter>
 		implements
 		com.tysanclan.site.projectewok.entities.dao.AchievementProposalDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<AchievementProposal> filter) {
-		Criteria criteria = getSession().createCriteria(
-				AchievementProposal.class);
-
-		if (filter instanceof AchievementProposalFilter) {
-			AchievementProposalFilter cf = (AchievementProposalFilter) filter;
-
-			if (cf.getSuggestor() != null) {
-				criteria.add(Restrictions.eq("suggestor", cf.getSuggestor()));
-			}
-
-			if (cf.getStartsBefore() != null) {
-				criteria.add(Restrictions.le("startDate", cf.getStartsBefore()));
-			}
-			if (cf.getTruthsayerReviewed() != null) {
-				criteria.add(Restrictions.eq("truthsayerReviewed",
-						cf.getTruthsayerReviewed()));
-			}
-			if (cf.isVetoUndecided()) {
-				criteria.add(Restrictions.isNull("chancellorVeto"));
-			}
-		}
-
-		return criteria;
-	}
 }

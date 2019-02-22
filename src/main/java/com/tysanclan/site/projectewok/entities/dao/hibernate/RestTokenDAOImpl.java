@@ -17,63 +17,29 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import java.util.List;
-
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.RestToken;
+import com.tysanclan.site.projectewok.entities.dao.RestTokenDAO;
+import com.tysanclan.site.projectewok.entities.filter.RestTokenFilter;
+import io.vavr.collection.Seq;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jeroensteenbeeke.hyperion.data.HibernateDAO;
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.entities.RestToken;
-import com.tysanclan.site.projectewok.entities.dao.RestTokenDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.RestTokenFilter;
-
 @Component
 @Scope("request")
-class RestTokenDAOImpl extends HibernateDAO<RestToken> implements RestTokenDAO {
+class RestTokenDAOImpl extends HibernateDAO<RestToken,RestTokenFilter> implements RestTokenDAO {
 
-	@Override
-	protected Criteria createCriteria(SearchFilter<RestToken> filter) {
-		Criteria criteria = getSession().createCriteria(RestToken.class);
 
-		if (filter instanceof RestTokenFilter) {
-			RestTokenFilter rtf = (RestTokenFilter) filter;
-
-			if (rtf.getExpired() != null) {
-				boolean expired = rtf.getExpired().booleanValue();
-
-				if (expired) {
-					criteria.add(Restrictions.lt("expires",
-							System.currentTimeMillis()));
-				} else {
-					criteria.add(Restrictions.gt("expires",
-							System.currentTimeMillis()));
-				}
-			}
-
-			if (rtf.getUser() != null) {
-				criteria.add(Restrictions.eq("user", rtf.getUser()));
-			}
-
-			if (rtf.getHash() != null) {
-				criteria.add(Restrictions.eq("hash", rtf.getHash()));
-			}
-		}
-
-		return criteria;
-	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	@Override
 	public void cleanExpiredTokens() {
-		Criteria criteria = getSession().createCriteria(RestToken.class);
-		criteria.add(Restrictions.lt("expires", System.currentTimeMillis()));
+		RestTokenFilter filter = new RestTokenFilter();
+		filter.expires().lessThan(System.currentTimeMillis());
 
-		List<RestToken> tokens = listOf(criteria);
+		Seq<RestToken> tokens = findByFilter(filter);
 
 		for (RestToken token : tokens) {
 			delete(token);
@@ -83,11 +49,11 @@ class RestTokenDAOImpl extends HibernateDAO<RestToken> implements RestTokenDAO {
 	@Transactional(propagation = Propagation.REQUIRED)
 	@Override
 	public void updateTokenExpiry(String hash) {
-		Criteria criteria = getSession().createCriteria(RestToken.class);
-		criteria.add(Restrictions.gt("expires", System.currentTimeMillis()));
-		criteria.add(Restrictions.eq("hash", hash));
+		RestTokenFilter filter = new RestTokenFilter();
+		filter.expires().greaterThanOrEqualTo(System.currentTimeMillis());
+		filter.hash(hash);
 
-		RestToken token = unique(criteria);
+		RestToken token = getUniqueByFilter(filter).getOrNull();
 
 		if (token != null) {
 			token.refreshToken();
@@ -99,10 +65,10 @@ class RestTokenDAOImpl extends HibernateDAO<RestToken> implements RestTokenDAO {
 	@Transactional(propagation = Propagation.REQUIRED)
 	@Override
 	public RestToken getToken(String hash) {
-		Criteria criteria = getSession().createCriteria(RestToken.class);
-		criteria.add(Restrictions.gt("expires", System.currentTimeMillis()));
-		criteria.add(Restrictions.eq("hash", hash));
+		RestTokenFilter filter = new RestTokenFilter();
+		filter.expires().greaterThanOrEqualTo(System.currentTimeMillis());
+		filter.hash(hash);
 
-		return unique(criteria);
+		return getUniqueByFilter(filter).getOrNull();
 	}
 }

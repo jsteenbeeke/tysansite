@@ -17,9 +17,10 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.PaidExpense;
+import com.tysanclan.site.projectewok.entities.filter.PaidExpenseFilter;
 
-public interface PaidExpenseDAO extends EwokDAO<PaidExpense> {
+public interface PaidExpenseDAO extends DAO<PaidExpense, PaidExpenseFilter> {
 
 }

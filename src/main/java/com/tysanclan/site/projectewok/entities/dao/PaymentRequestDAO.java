@@ -17,10 +17,11 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.PaymentRequest;
+import com.tysanclan.site.projectewok.entities.filter.PaymentRequestFilter;
 
-public interface PaymentRequestDAO extends EwokDAO<PaymentRequest> {
+public interface PaymentRequestDAO extends DAO<PaymentRequest, PaymentRequestFilter> {
 
 	String getConfirmationKey(PaymentRequest request);
 

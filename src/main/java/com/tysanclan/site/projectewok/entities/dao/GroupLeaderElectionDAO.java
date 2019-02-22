@@ -17,15 +17,16 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.GroupLeaderElection;
 import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.filter.GroupLeaderElectionFilter;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface GroupLeaderElectionDAO extends EwokDAO<GroupLeaderElection> {
+public interface GroupLeaderElectionDAO extends DAO<GroupLeaderElection, GroupLeaderElectionFilter> {
 
 	void flush();
 

@@ -19,7 +19,7 @@ package com.tysanclan.site.projectewok.components;
 
 import org.apache.wicket.markup.html.link.Link;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.entities.Group;
 import com.tysanclan.site.projectewok.pages.GroupPage;
 

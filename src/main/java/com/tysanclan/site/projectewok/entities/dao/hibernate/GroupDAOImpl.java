@@ -17,44 +17,18 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.Group;
+import com.tysanclan.site.projectewok.entities.filter.GroupFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.Group;
-import com.tysanclan.site.projectewok.entities.dao.filters.GroupFilter;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class GroupDAOImpl extends EwokHibernateDAO<Group> implements
+class GroupDAOImpl extends HibernateDAO<Group, GroupFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.GroupDAO {
-	/**
-	 * @see com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO#createCriteria(com.tysanclan.site.projectewok.dataaccess.SearchFilter)
-	 */
-	@Override
-	protected Criteria createCriteria(SearchFilter<Group> filter) {
-		Criteria criteria = getSession().createCriteria(Group.class);
 
-		if (filter instanceof GroupFilter) {
-			GroupFilter groupFilter = (GroupFilter) filter;
-			if (groupFilter.getIncludedMembers() != null
-					&& !groupFilter.getIncludedMembers().isEmpty()) {
-
-				criteria.createCriteria("groupMembers")
-						.add(Restrictions.in("id",
-								groupFilter.getIncludedMembers()));
-			}
-			if (groupFilter.getName() != null) {
-				criteria.add(Restrictions.eq("name", groupFilter.getName()));
-			}
-		}
-
-		return criteria;
-	}
 }

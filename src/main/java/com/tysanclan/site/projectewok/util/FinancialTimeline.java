@@ -59,8 +59,8 @@ import com.tysanclan.site.projectewok.entities.dao.DonationDAO;
 import com.tysanclan.site.projectewok.entities.dao.ExpenseDAO;
 import com.tysanclan.site.projectewok.entities.dao.PaidExpenseDAO;
 import com.tysanclan.site.projectewok.entities.dao.SubscriptionDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.DonationFilter;
-import com.tysanclan.site.projectewok.entities.dao.filters.PaidExpenseFilter;
+import com.tysanclan.site.projectewok.entities.filter.DonationFilter;
+import com.tysanclan.site.projectewok.entities.filter.PaidExpenseFilter;
 
 public class FinancialTimeline {
 

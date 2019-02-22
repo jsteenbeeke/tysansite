@@ -17,13 +17,14 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.jeroensteenbeeke.hyperion.data.DAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.AchievementProposalVote;
+import com.tysanclan.site.projectewok.entities.filter.AchievementProposalVoteFilter;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface AchievementProposalVoteDAO extends DAO<AchievementProposalVote> {
+public interface AchievementProposalVoteDAO extends DAO<AchievementProposalVote, AchievementProposalVoteFilter> {
 
 }

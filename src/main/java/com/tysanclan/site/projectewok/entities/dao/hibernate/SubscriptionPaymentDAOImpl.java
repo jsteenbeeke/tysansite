@@ -17,31 +17,23 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.jeroensteenbeeke.hyperion.util.HashUtil;
+import com.tysanclan.site.projectewok.entities.SubscriptionPayment;
+import com.tysanclan.site.projectewok.entities.dao.SubscriptionPaymentDAO;
+import com.tysanclan.site.projectewok.entities.filter.SubscriptionPaymentFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.jeroensteenbeeke.hyperion.util.HashUtil;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.SubscriptionPayment;
-import com.tysanclan.site.projectewok.entities.dao.SubscriptionPaymentDAO;
-
 @Component
 @Scope("request")
-class SubscriptionPaymentDAOImpl extends EwokHibernateDAO<SubscriptionPayment>
+class SubscriptionPaymentDAOImpl extends HibernateDAO<SubscriptionPayment, SubscriptionPaymentFilter>
 		implements SubscriptionPaymentDAO {
 	@Override
 	public String getConfirmationKey(SubscriptionPayment payment) {
 		return HashUtil.sha1Hash(payment.getId()
-				+ payment.getUser().getUsername());
+				+ payment.getUser().getUsername()).throwIfNotOk(IllegalStateException::new);
 	}
 
-	@Override
-	protected Criteria createCriteria(SearchFilter<SubscriptionPayment> filter) {
-		Criteria criteria = getSession().createCriteria(
-				SubscriptionPayment.class);
 
-		return criteria;
-	}
 }

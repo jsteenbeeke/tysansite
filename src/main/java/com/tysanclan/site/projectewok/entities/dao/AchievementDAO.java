@@ -17,13 +17,14 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.jeroensteenbeeke.hyperion.data.DAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.Achievement;
+import com.tysanclan.site.projectewok.entities.filter.AchievementFilter;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface AchievementDAO extends DAO<Achievement> {
+public interface AchievementDAO extends DAO<Achievement, AchievementFilter> {
 
 }

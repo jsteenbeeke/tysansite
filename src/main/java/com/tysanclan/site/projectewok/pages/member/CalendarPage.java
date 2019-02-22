@@ -38,7 +38,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.beans.EventService;
 import com.tysanclan.site.projectewok.components.AutoThreadLink;
@@ -48,7 +48,7 @@ import com.tysanclan.site.projectewok.components.InlineDatePicker;
 import com.tysanclan.site.projectewok.components.OtterSniperPanel;
 import com.tysanclan.site.projectewok.entities.Event;
 import com.tysanclan.site.projectewok.entities.dao.EventDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.EventFilter;
+import com.tysanclan.site.projectewok.entities.filter.EventFilter;
 import com.tysanclan.site.projectewok.util.DateUtil;
 
 /**

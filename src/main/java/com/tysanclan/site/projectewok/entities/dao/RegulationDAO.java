@@ -17,12 +17,13 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.Regulation;
+import com.tysanclan.site.projectewok.entities.filter.RegulationFilter;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public interface RegulationDAO extends EwokDAO<Regulation> {
+public interface RegulationDAO extends DAO<Regulation, RegulationFilter> {
 
 }

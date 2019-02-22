@@ -26,13 +26,13 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
 import com.tysanclan.site.projectewok.entities.Forum;
 import com.tysanclan.site.projectewok.entities.ForumCategory;
 import com.tysanclan.site.projectewok.entities.ForumPost;
 import com.tysanclan.site.projectewok.entities.UnreadForumPost;
 import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.filters.ForumFilter;
+import com.tysanclan.site.projectewok.entities.filter.ForumFilter;
 import com.tysanclan.site.projectewok.util.forum.ForumViewContext;
 
 /**
@@ -40,7 +40,7 @@ import com.tysanclan.site.projectewok.util.forum.ForumViewContext;
  */
 @Component
 @Scope("request")
-class ForumDAOImpl extends EwokHibernateDAO<Forum> implements
+class ForumDAOImpl extends HibernateDAO<Forum, ForumFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.ForumDAO {
 	@Override
 	public boolean isPostUnread(User user, ForumPost post) {

@@ -17,54 +17,39 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.BattleNetChannel;
+import com.tysanclan.site.projectewok.entities.BattleNetChannel_;
+import com.tysanclan.site.projectewok.entities.filter.BattleNetChannelFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.BattleNetChannel;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component("channelDAO")
 @Scope("request")
-class BattleNetChannelDAOImpl extends EwokHibernateDAO<BattleNetChannel>
+class BattleNetChannelDAOImpl extends HibernateDAO<BattleNetChannel, BattleNetChannelFilter>
 		implements
 		com.tysanclan.site.projectewok.entities.dao.BattleNetChannelDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<BattleNetChannel> filter) {
-		Criteria criteria = getSession().createCriteria(BattleNetChannel.class);
-
-		// if (filter instanceof BattleNetChannelFilter) {
-		// BattleNetChannelFilter cf = (BattleNetChannelFilter) filter;
-		// }
-
-		return criteria;
-	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.entities.dao.BattleNetChannelDAO#getPasswordByUID(java.lang.String)
 	 */
 	@Override
 	public String getPasswordByUID(String identifier) {
-		Criteria criteria = getSession().createCriteria(BattleNetChannel.class);
+		BattleNetChannelFilter filter = new BattleNetChannelFilter();
+		filter.webServiceUserId(identifier);
 
-		criteria.add(Restrictions.eq("webServiceUserId", identifier));
-		criteria.setProjection(Projections.property("webServicePassword"));
 
-		return (String) criteria.uniqueResult();
+		return property(BattleNetChannel_.webServicePassword, filter).getOrNull();
 	}
 
 	@Override
 	public BattleNetChannel getChannelByUID(String identifier) {
-		Criteria criteria = getSession().createCriteria(BattleNetChannel.class);
+		BattleNetChannelFilter filter = new BattleNetChannelFilter();
+		filter.webServiceUserId(identifier);
 
-		criteria.add(Restrictions.eq("webServiceUserId", identifier));
-
-		return (BattleNetChannel) criteria.uniqueResult();
+		return getUniqueByFilter(filter).getOrNull();
 	}
 }

@@ -28,7 +28,7 @@ import com.tysanclan.site.projectewok.beans.LawEnforcementService;
 import com.tysanclan.site.projectewok.components.TysanDropDownChoice;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
 
 /**
  * @author Jeroen Steenbeeke

@@ -30,7 +30,7 @@ import com.tysanclan.site.projectewok.entities.Forum;
 import com.tysanclan.site.projectewok.entities.ForumThread;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.ForumThreadDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.ForumThreadFilter;
+import com.tysanclan.site.projectewok.entities.filter.ForumThreadFilter;
 
 /**
  * @author Jeroen Steenbeeke

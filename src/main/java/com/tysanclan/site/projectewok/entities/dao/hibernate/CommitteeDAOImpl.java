@@ -17,26 +17,18 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.Committee;
+import com.tysanclan.site.projectewok.entities.filter.CommitteeFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.Committee;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class CommitteeDAOImpl extends EwokHibernateDAO<Committee> implements
+class CommitteeDAOImpl extends HibernateDAO<Committee, CommitteeFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.CommitteeDAO {
-	/**
-	 * @see com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO#createCriteria(com.tysanclan.site.projectewok.dataaccess.SearchFilter)
-	 */
-	@Override
-	protected Criteria createCriteria(SearchFilter<Committee> filter) {
-		return getSession().createCriteria(Committee.class);
-	}
+
 }

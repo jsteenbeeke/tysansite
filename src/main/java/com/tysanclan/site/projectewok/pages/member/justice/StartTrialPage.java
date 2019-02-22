@@ -30,7 +30,7 @@ import org.apache.wicket.markup.html.form.ListMultipleChoice;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.beans.LawEnforcementService;
 import com.tysanclan.site.projectewok.beans.UserService;

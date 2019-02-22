@@ -17,13 +17,14 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.PenaltyPoint;
+import com.tysanclan.site.projectewok.entities.filter.PenaltyPointFilter;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface PenaltyPointDAO extends EwokDAO<PenaltyPoint> {
+public interface PenaltyPointDAO extends DAO<PenaltyPoint, PenaltyPointFilter> {
 
 }

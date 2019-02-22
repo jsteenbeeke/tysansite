@@ -26,7 +26,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import com.tysanclan.site.projectewok.entities.ChancellorElection;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.ChancellorElectionDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.ChancellorElectionFilter;
+import com.tysanclan.site.projectewok.entities.filter.ChancellorElectionFilter;
 import com.tysanclan.site.projectewok.util.DateUtil;
 
 /**

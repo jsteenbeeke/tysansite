@@ -41,7 +41,7 @@ import org.odlabs.wiquery.core.javascript.JsStatement;
 import org.odlabs.wiquery.ui.draggable.DraggableBehavior;
 import org.odlabs.wiquery.ui.droppable.DroppableAjaxBehavior;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanSession;
 import com.tysanclan.site.projectewok.components.MemberListItem;
 import com.tysanclan.site.projectewok.entities.Election;

@@ -17,13 +17,11 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.BugComment;
+import com.tysanclan.site.projectewok.entities.filter.BugCommentFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.BugComment;
 
 /**
  *
@@ -31,16 +29,7 @@ import com.tysanclan.site.projectewok.entities.BugComment;
  */
 @Component
 @Scope("request")
-class BugCommentDAOImpl extends EwokHibernateDAO<BugComment> implements
+class BugCommentDAOImpl extends HibernateDAO<BugComment, BugCommentFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.BugCommentDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<BugComment> filter) {
-		Criteria criteria = getSession().createCriteria(BugComment.class);
 
-		// if (filter instanceof BugCommentFilter) {
-		// BugCommentFilter cf = (BugCommentFilter) filter;
-		// }
-
-		return criteria;
-	}
 }

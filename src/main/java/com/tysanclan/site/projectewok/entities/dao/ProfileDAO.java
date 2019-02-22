@@ -17,15 +17,16 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import java.util.List;
-
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.Profile;
 import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.filter.ProfileFilter;
+
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public interface ProfileDAO extends EwokDAO<Profile> {
+public interface ProfileDAO extends DAO<Profile, ProfileFilter> {
 	List<User> getSkypeUsers();
 }

@@ -17,13 +17,14 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.PasswordRequest;
+import com.tysanclan.site.projectewok.entities.filter.PasswordRequestFilter;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface PasswordRequestDAO extends EwokDAO<PasswordRequest> {
+public interface PasswordRequestDAO extends DAO<PasswordRequest, PasswordRequestFilter> {
 
 }

@@ -24,7 +24,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.auth.TysanLoginSecured;
 import com.tysanclan.site.projectewok.beans.ForumService;
@@ -34,7 +34,7 @@ import com.tysanclan.site.projectewok.entities.Forum;
 import com.tysanclan.site.projectewok.entities.ForumThread;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.TrialDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.TrialFilter;
+import com.tysanclan.site.projectewok.entities.filter.TrialFilter;
 import com.tysanclan.site.projectewok.pages.ForumThreadPage;
 import com.tysanclan.site.projectewok.util.DateUtil;
 

@@ -17,16 +17,17 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import java.util.List;
-
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.Expense;
+import com.tysanclan.site.projectewok.entities.filter.ExpenseFilter;
+
+import java.util.List;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface ExpenseDAO extends EwokDAO<Expense> {
+public interface ExpenseDAO extends DAO<Expense, ExpenseFilter> {
 
 	List<Expense> getActiveExpenses();
 

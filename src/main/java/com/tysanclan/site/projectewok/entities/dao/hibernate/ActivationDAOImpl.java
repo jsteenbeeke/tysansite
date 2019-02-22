@@ -17,43 +17,18 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.Activation;
+import com.tysanclan.site.projectewok.entities.filter.ActivationFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.Activation;
-import com.tysanclan.site.projectewok.entities.dao.filters.ActivationFilter;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class ActivationDAOImpl extends EwokHibernateDAO<Activation> implements
+class ActivationDAOImpl extends HibernateDAO<Activation, ActivationFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.ActivationDAO {
-	/** 
-	 * @see com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO#createCriteria(com.tysanclan.site.projectewok.dataaccess.SearchFilter)
-	 */
-	@Override
-	protected Criteria createCriteria(SearchFilter<Activation> filter) {
-		Criteria criteria = getSession().createCriteria(Activation.class);
 
-		if (filter instanceof ActivationFilter) {
-			ActivationFilter av = (ActivationFilter) filter;
-			if (av.getUser() != null) {
-				criteria.add(Restrictions.eq("user", av.getUser()));
-			}
-			if (av.getKey() != null) {
-				criteria.add(Restrictions.eq("activationKey", av.getKey()));
-			}
-			if (av.getDateBefore() != null) {
-				criteria.add(Restrictions.le("registered", av.getDateBefore()));
-			}
-		}
-
-		return criteria;
-	}
 }

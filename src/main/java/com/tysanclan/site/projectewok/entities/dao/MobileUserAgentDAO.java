@@ -17,13 +17,14 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.jeroensteenbeeke.hyperion.data.DAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.MobileUserAgent;
+import com.tysanclan.site.projectewok.entities.filter.MobileUserAgentFilter;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface MobileUserAgentDAO extends DAO<MobileUserAgent> {
+public interface MobileUserAgentDAO extends DAO<MobileUserAgent, MobileUserAgentFilter> {
 
 }

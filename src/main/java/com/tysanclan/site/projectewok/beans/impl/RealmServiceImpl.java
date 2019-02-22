@@ -41,7 +41,7 @@ import com.tysanclan.site.projectewok.entities.UserGameRealm;
 import com.tysanclan.site.projectewok.entities.dao.RealmDAO;
 import com.tysanclan.site.projectewok.entities.dao.RealmPetitionDAO;
 import com.tysanclan.site.projectewok.entities.dao.UserGameRealmDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserGameRealmFilter;
+import com.tysanclan.site.projectewok.entities.filter.UserGameRealmFilter;
 import com.tysanclan.site.projectewok.event.RealmDeletionEvent;
 import com.tysanclan.site.projectewok.util.MemberUtil;
 

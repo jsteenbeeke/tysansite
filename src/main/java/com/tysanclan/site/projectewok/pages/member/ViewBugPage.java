@@ -38,7 +38,7 @@ import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanApplication;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.beans.BugTrackerService;
@@ -51,7 +51,7 @@ import com.tysanclan.site.projectewok.entities.Bug.BugStatus;
 import com.tysanclan.site.projectewok.entities.Bug.ReportType;
 import com.tysanclan.site.projectewok.entities.BugComment;
 import com.tysanclan.site.projectewok.entities.dao.BugDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.BugFilter;
+import com.tysanclan.site.projectewok.entities.filter.BugFilter;
 
 @TysanMemberSecured
 public class ViewBugPage extends AbstractSingleAccordionMemberPage {

@@ -17,10 +17,11 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.jeroensteenbeeke.hyperion.data.DAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.RestToken;
+import com.tysanclan.site.projectewok.entities.filter.RestTokenFilter;
 
-public interface RestTokenDAO extends DAO<RestToken> {
+public interface RestTokenDAO extends DAO<RestToken, RestTokenFilter> {
 	RestToken getToken(String hash);
 
 	void updateTokenExpiry(String hash);

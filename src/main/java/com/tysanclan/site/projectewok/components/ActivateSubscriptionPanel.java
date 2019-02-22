@@ -28,7 +28,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.RangeValidator;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.FinanceService;
 import com.tysanclan.site.projectewok.entities.Expense.ExpensePeriod;
 import com.tysanclan.site.projectewok.entities.Expense.ExpensePeriodRenderer;

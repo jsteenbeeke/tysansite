@@ -20,7 +20,7 @@ package com.tysanclan.site.projectewok.components;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.TysanTopPanel;
 import com.tysanclan.site.projectewok.auth.TysanNonMemberSecured;

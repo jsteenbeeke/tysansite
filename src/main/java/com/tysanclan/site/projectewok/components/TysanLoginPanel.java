@@ -34,7 +34,7 @@ import com.tysanclan.site.projectewok.beans.MembershipService;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.ActivationDAO;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.ActivationFilter;
+import com.tysanclan.site.projectewok.entities.filter.ActivationFilter;
 import com.tysanclan.site.projectewok.pages.ActivationNotificationPage;
 import com.tysanclan.site.projectewok.pages.PasswordRequestPage;
 

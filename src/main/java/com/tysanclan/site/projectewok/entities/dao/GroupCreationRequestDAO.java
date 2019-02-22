@@ -17,13 +17,14 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.GroupCreationRequest;
+import com.tysanclan.site.projectewok.entities.filter.GroupCreationRequestFilter;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface GroupCreationRequestDAO extends EwokDAO<GroupCreationRequest> {
+public interface GroupCreationRequestDAO extends DAO<GroupCreationRequest, GroupCreationRequestFilter> {
 
 }

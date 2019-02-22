@@ -20,13 +20,13 @@ package com.tysanclan.site.projectewok.components;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.RoleService;
 import com.tysanclan.site.projectewok.components.RequiresAttentionLink.AttentionType;
 import com.tysanclan.site.projectewok.components.RequiresAttentionLink.IRequiresAttentionCondition;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.MobileUserAgentDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.MobileUserAgentFilter;
+import com.tysanclan.site.projectewok.entities.filter.MobileUserAgentFilter;
 import com.tysanclan.site.projectewok.pages.member.PaypalSettingsPage;
 import com.tysanclan.site.projectewok.pages.member.admin.GameRealmAllowAccountTypePage;
 import com.tysanclan.site.projectewok.pages.member.admin.RequestPaymentPage;

@@ -17,15 +17,11 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.AllowedAccountType;
+import com.tysanclan.site.projectewok.entities.filter.AllowedAccountTypeFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.AllowedAccountType;
-import com.tysanclan.site.projectewok.entities.dao.filters.AllowedAccountTypeFilter;
 
 /**
  * 
@@ -33,27 +29,7 @@ import com.tysanclan.site.projectewok.entities.dao.filters.AllowedAccountTypeFil
  */
 @Component
 @Scope("request")
-class AllowedAccountTypeDAOImpl extends EwokHibernateDAO<AllowedAccountType>
+class AllowedAccountTypeDAOImpl extends HibernateDAO<AllowedAccountType, AllowedAccountTypeFilter>
 		implements
 		com.tysanclan.site.projectewok.entities.dao.AllowedAccountTypeDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<AllowedAccountType> filter) {
-		Criteria criteria = getSession().createCriteria(
-				AllowedAccountType.class);
-
-		if (filter instanceof AllowedAccountTypeFilter) {
-			AllowedAccountTypeFilter cf = (AllowedAccountTypeFilter) filter;
-			if (cf.getGame() != null) {
-				criteria.add(Restrictions.eq("game", cf.getGame()));
-			}
-			if (cf.getRealm() != null) {
-				criteria.add(Restrictions.eq("realm", cf.getRealm()));
-			}
-			if (cf.getAccountType() != null) {
-				criteria.add(Restrictions.eq("type", cf.getAccountType()));
-			}
-		}
-
-		return criteria;
-	}
 }

@@ -28,7 +28,7 @@ import com.tysanclan.site.projectewok.components.OtterSniperPanel;
 import com.tysanclan.site.projectewok.dataaccess.FilterProvider;
 import com.tysanclan.site.projectewok.entities.LogItem;
 import com.tysanclan.site.projectewok.entities.dao.LogItemDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.LogItemFilter;
+import com.tysanclan.site.projectewok.entities.filter.LogItemFilter;
 import com.tysanclan.site.projectewok.util.DateUtil;
 
 /**

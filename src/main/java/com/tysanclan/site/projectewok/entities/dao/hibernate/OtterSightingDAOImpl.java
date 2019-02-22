@@ -17,15 +17,11 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.OtterSighting;
+import com.tysanclan.site.projectewok.entities.filter.OtterSightingFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.OtterSighting;
-import com.tysanclan.site.projectewok.entities.dao.filters.OtterSightingFilter;
 
 /**
  *
@@ -33,22 +29,7 @@ import com.tysanclan.site.projectewok.entities.dao.filters.OtterSightingFilter;
  */
 @Component
 @Scope("request")
-class OtterSightingDAOImpl extends EwokHibernateDAO<OtterSighting> implements
+class OtterSightingDAOImpl extends HibernateDAO<OtterSighting, OtterSightingFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.OtterSightingDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<OtterSighting> filter) {
-		Criteria criteria = getSession().createCriteria(OtterSighting.class);
 
-		if (filter instanceof OtterSightingFilter) {
-			OtterSightingFilter cf = (OtterSightingFilter) filter;
-			if (cf.getUser() != null) {
-				criteria.add(Restrictions.eq("user", cf.getUser()));
-			}
-			if (cf.getOtterNumber() != null) {
-				criteria.add(Restrictions.eq("otterNumber", cf.getOtterNumber()));
-			}
-		}
-
-		return criteria;
-	}
 }

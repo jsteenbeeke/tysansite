@@ -30,7 +30,7 @@ import com.tysanclan.site.projectewok.entities.Notification;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.NotificationDAO;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.NotificationFilter;
+import com.tysanclan.site.projectewok.entities.filter.NotificationFilter;
 
 /**
  * @author Jeroen Steenbeeke

@@ -17,15 +17,16 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.ForumPost;
 import com.tysanclan.site.projectewok.entities.UnreadForumPost;
 import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.filter.UnreadForumPostFilter;
 
 /**
  * @author Ties
  */
-public interface UnreadForumPostDAO extends EwokDAO<UnreadForumPost> {
+public interface UnreadForumPostDAO extends DAO<UnreadForumPost, UnreadForumPostFilter> {
 
 	void markAsRead(User user, ForumPost post);
 

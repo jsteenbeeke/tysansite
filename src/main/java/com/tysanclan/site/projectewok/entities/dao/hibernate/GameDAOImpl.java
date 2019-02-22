@@ -17,41 +17,18 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.Game;
+import com.tysanclan.site.projectewok.entities.filter.GameFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.Game;
-import com.tysanclan.site.projectewok.entities.dao.filters.GameFilter;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class GameDAOImpl extends EwokHibernateDAO<Game> implements
+class GameDAOImpl extends HibernateDAO<Game, GameFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.GameDAO {
-	/**
-	 * @see com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO#createCriteria(com.tysanclan.site.projectewok.dataaccess.SearchFilter)
-	 */
-	@Override
-	protected Criteria createCriteria(SearchFilter<Game> filter) {
-		Criteria criteria = getSession().createCriteria(Game.class);
 
-		if (filter instanceof GameFilter) {
-			GameFilter gf = (GameFilter) filter;
-
-			if (gf.getActive() != null) {
-				criteria.add(Restrictions.eq("active", gf.getActive()));
-			}
-			if (gf.getCoordinator() != null) {
-				criteria.add(Restrictions.eq("coordinator", gf.getCoordinator()));
-			}
-		}
-
-		return criteria;
-	}
 }

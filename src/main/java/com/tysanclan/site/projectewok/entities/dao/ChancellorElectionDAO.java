@@ -17,13 +17,14 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.ChancellorElection;
+import com.tysanclan.site.projectewok.entities.filter.ChancellorElectionFilter;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface ChancellorElectionDAO extends EwokDAO<ChancellorElection> {
+public interface ChancellorElectionDAO extends DAO<ChancellorElection, ChancellorElectionFilter> {
 
 }

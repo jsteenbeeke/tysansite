@@ -17,17 +17,18 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import java.util.List;
-
-import com.jeroensteenbeeke.hyperion.data.DAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.InactivityNotification;
 import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.filter.InactivityNotificationFilter;
+
+import java.util.List;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface InactivityNotificationDAO extends DAO<InactivityNotification> {
+public interface InactivityNotificationDAO extends DAO<InactivityNotification, InactivityNotificationFilter> {
 	List<Long> getUnnotifiedInactiveUsers();
 
 	void deleteNotificationForUser(User user);

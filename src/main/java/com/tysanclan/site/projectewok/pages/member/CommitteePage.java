@@ -29,7 +29,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.GroupService;
@@ -42,7 +42,7 @@ import com.tysanclan.site.projectewok.components.MemberListItem;
 import com.tysanclan.site.projectewok.entities.Committee;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.CommitteeDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.CommitteeFilter;
+import com.tysanclan.site.projectewok.entities.filter.CommitteeFilter;
 import com.tysanclan.site.projectewok.pages.GroupPage;
 import com.tysanclan.site.projectewok.pages.member.group.DisbandGroupPage;
 

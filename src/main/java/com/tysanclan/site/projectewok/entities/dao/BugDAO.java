@@ -17,13 +17,14 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.Bug;
+import com.tysanclan.site.projectewok.entities.filter.BugFilter;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface BugDAO extends EwokDAO<Bug> {
+public interface BugDAO extends DAO<Bug, BugFilter> {
 
 }

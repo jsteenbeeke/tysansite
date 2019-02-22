@@ -37,8 +37,8 @@ import com.tysanclan.site.projectewok.entities.dao.RoleDAO;
 import com.tysanclan.site.projectewok.entities.dao.RoleTransferApprovalDAO;
 import com.tysanclan.site.projectewok.entities.dao.RoleTransferDAO;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.RoleFilter;
-import com.tysanclan.site.projectewok.entities.dao.filters.RoleTransferFilter;
+import com.tysanclan.site.projectewok.entities.filter.RoleFilter;
+import com.tysanclan.site.projectewok.entities.filter.RoleTransferFilter;
 import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
 

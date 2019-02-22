@@ -29,12 +29,12 @@ import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.beans.UserService;
 import com.tysanclan.site.projectewok.entities.PasswordRequest;
 import com.tysanclan.site.projectewok.entities.dao.PasswordRequestDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.PasswordRequestFilter;
+import com.tysanclan.site.projectewok.entities.filter.PasswordRequestFilter;
 
 /**
  * @author Jeroen Steenbeeke

@@ -17,15 +17,11 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.MobileUserAgent;
+import com.tysanclan.site.projectewok.entities.filter.MobileUserAgentFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.MobileUserAgent;
-import com.tysanclan.site.projectewok.entities.dao.filters.MobileUserAgentFilter;
 
 /**
  *
@@ -33,27 +29,8 @@ import com.tysanclan.site.projectewok.entities.dao.filters.MobileUserAgentFilter
  */
 @Component
 @Scope("request")
-class MobileUserAgentDAOImpl extends EwokHibernateDAO<MobileUserAgent>
+class MobileUserAgentDAOImpl extends HibernateDAO<MobileUserAgent, MobileUserAgentFilter>
 		implements
 		com.tysanclan.site.projectewok.entities.dao.MobileUserAgentDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<MobileUserAgent> filter) {
-		Criteria criteria = getSession().createCriteria(MobileUserAgent.class);
 
-		if (filter instanceof MobileUserAgentFilter) {
-			MobileUserAgentFilter cf = (MobileUserAgentFilter) filter;
-
-			if (cf.getMobile() != null) {
-				criteria.add(Restrictions.eq("mobile", cf.getMobile()));
-			} else if (cf.isSearchUnknownType()) {
-				criteria.add(Restrictions.isNull("mobile"));
-			}
-
-			if (cf.getIdentifier() != null) {
-				criteria.add(Restrictions.eq("identifier", cf.getIdentifier()));
-			}
-		}
-
-		return criteria;
-	}
 }

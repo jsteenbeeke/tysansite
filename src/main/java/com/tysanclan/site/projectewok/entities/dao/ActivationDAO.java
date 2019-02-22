@@ -17,12 +17,13 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.Activation;
+import com.tysanclan.site.projectewok.entities.filter.ActivationFilter;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public interface ActivationDAO extends EwokDAO<Activation> {
+public interface ActivationDAO extends DAO<Activation, ActivationFilter> {
 
 }

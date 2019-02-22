@@ -17,13 +17,11 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.Achievement;
+import com.tysanclan.site.projectewok.entities.filter.AchievementFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.Achievement;
 
 /**
  * 
@@ -31,16 +29,7 @@ import com.tysanclan.site.projectewok.entities.Achievement;
  */
 @Component
 @Scope("request")
-class AchievementDAOImpl extends EwokHibernateDAO<Achievement> implements
+class AchievementDAOImpl extends HibernateDAO<Achievement, AchievementFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.AchievementDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<Achievement> filter) {
-		Criteria criteria = getSession().createCriteria(Achievement.class);
 
-		// if (filter instanceof AchievementFilter) {
-		// AchievementFilter cf = (AchievementFilter) filter;
-		// }
-
-		return criteria;
-	}
 }

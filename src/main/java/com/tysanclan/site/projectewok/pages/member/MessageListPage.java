@@ -36,7 +36,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.beans.MessageService;
 import com.tysanclan.site.projectewok.beans.UserService;
@@ -49,7 +49,7 @@ import com.tysanclan.site.projectewok.entities.Conversation;
 import com.tysanclan.site.projectewok.entities.ConversationParticipation;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.ConversationDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.ConversationFilter;
+import com.tysanclan.site.projectewok.entities.filter.ConversationFilter;
 
 /**
  * @author Jeroen Steenbeeke

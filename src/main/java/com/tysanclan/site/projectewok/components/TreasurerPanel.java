@@ -20,7 +20,7 @@ package com.tysanclan.site.projectewok.components;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.RoleService;
 import com.tysanclan.site.projectewok.components.RequiresAttentionLink.AttentionType;
 import com.tysanclan.site.projectewok.components.RequiresAttentionLink.IRequiresAttentionCondition;

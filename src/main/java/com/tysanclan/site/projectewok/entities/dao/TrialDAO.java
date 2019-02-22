@@ -17,14 +17,15 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.ForumThread;
 import com.tysanclan.site.projectewok.entities.Trial;
+import com.tysanclan.site.projectewok.entities.filter.TrialFilter;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public interface TrialDAO extends EwokDAO<Trial> {
+public interface TrialDAO extends DAO<Trial, TrialFilter> {
 
 	
 	Trial getTrialByThread(ForumThread thread);

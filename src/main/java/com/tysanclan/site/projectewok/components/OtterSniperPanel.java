@@ -24,14 +24,14 @@ import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanSession;
 import com.tysanclan.site.projectewok.beans.HumorService;
 import com.tysanclan.site.projectewok.entities.GlobalSetting.GlobalSettings;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.GlobalSettingDAO;
 import com.tysanclan.site.projectewok.entities.dao.OtterSightingDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.OtterSightingFilter;
+import com.tysanclan.site.projectewok.entities.filter.OtterSightingFilter;
 
 /**
  * @author Ties

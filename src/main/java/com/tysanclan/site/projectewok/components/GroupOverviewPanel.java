@@ -25,7 +25,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.hibernate.Hibernate;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
@@ -39,7 +39,7 @@ import com.tysanclan.site.projectewok.entities.GroupLeaderElection;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.AchievementRequestDAO;
 import com.tysanclan.site.projectewok.entities.dao.GroupLeaderElectionDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.GroupLeaderElectionFilter;
+import com.tysanclan.site.projectewok.entities.filter.GroupLeaderElectionFilter;
 import com.tysanclan.site.projectewok.pages.member.RunForGroupLeaderPage;
 import com.tysanclan.site.projectewok.pages.member.group.AcceptGroupApplicationPage;
 import com.tysanclan.site.projectewok.pages.member.group.DisbandGroupPage;

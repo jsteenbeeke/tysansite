@@ -17,30 +17,18 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.ImpeachmentVote;
+import com.tysanclan.site.projectewok.entities.filter.ImpeachmentVoteFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.ImpeachmentVote;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class ImpeachmentVoteDAOImpl extends EwokHibernateDAO<ImpeachmentVote>
+class ImpeachmentVoteDAOImpl extends HibernateDAO<ImpeachmentVote, ImpeachmentVoteFilter>
 		implements
 		com.tysanclan.site.projectewok.entities.dao.ImpeachmentVoteDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<ImpeachmentVote> filter) {
-		Criteria criteria = getSession().createCriteria(ImpeachmentVote.class);
-
-		// if (filter instanceof ImpeachmentVoteFilter) {
-		// ImpeachmentVoteFilter cf = (ImpeachmentVoteFilter) filter;
-		// }
-
-		return criteria;
-	}
 }
