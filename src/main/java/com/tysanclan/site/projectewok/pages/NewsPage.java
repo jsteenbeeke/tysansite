@@ -17,11 +17,7 @@
  */
 package com.tysanclan.site.projectewok.pages;
 
-import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.markup.repeater.data.DataView;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.FilterDataProvider;
+import com.jeroensteenbeeke.hyperion.solstice.data.FilterDataProvider;
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.beans.ForumService;
 import com.tysanclan.site.projectewok.components.AutoForumLink;
@@ -31,6 +27,9 @@ import com.tysanclan.site.projectewok.entities.ForumThread;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.ForumThreadDAO;
 import com.tysanclan.site.projectewok.entities.filter.ForumThreadFilter;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -50,8 +49,8 @@ public class NewsPage extends TysanPage {
 		Forum forum = forumService.getNewsForum();
 
 		ForumThreadFilter filter = new ForumThreadFilter();
-		filter.setForum(forum);
-		filter.addOrderBy("postTime", false);
+		filter.forum(forum);
+		filter.postTime().orderBy(false);
 
 		DataView<ForumThread> newsItems = new DataView<ForumThread>(
 				"newsitems", FilterDataProvider.of(filter, forumThreadDAO)) {

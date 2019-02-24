@@ -53,7 +53,9 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.jeroensteenbeeke.hyperion.util.OWASPPasswordHasher;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
+import org.apache.wicket.model.IModel;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
@@ -96,20 +98,6 @@ public class User extends BaseDomainObject implements DomainObject {
 		@Override
 		public int compare(User o1, User o2) {
 			return o1.getUsername().compareToIgnoreCase(o2.getUsername());
-		}
-	}
-
-	public static final class Renderer implements IChoiceRenderer<User> {
-		private static final long serialVersionUID = 1L;
-
-		@Override
-		public Object getDisplayValue(User object) {
-			return object.getUsername();
-		}
-
-		@Override
-		public String getIdValue(User object, int index) {
-			return Long.toString(object.getId());
 		}
 	}
 

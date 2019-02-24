@@ -17,14 +17,7 @@
  */
 package com.tysanclan.site.projectewok.pages.member.senate;
 
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.markup.repeater.data.DataView;
-import org.apache.wicket.request.resource.ByteArrayResource;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.FilterDataProvider;
+import com.jeroensteenbeeke.hyperion.solstice.data.FilterDataProvider;
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
@@ -38,6 +31,12 @@ import com.tysanclan.site.projectewok.entities.dao.AchievementProposalDAO;
 import com.tysanclan.site.projectewok.entities.filter.AchievementProposalFilter;
 import com.tysanclan.site.projectewok.pages.member.AbstractSingleAccordionMemberPage;
 import com.tysanclan.site.projectewok.util.ImageUtil;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.request.resource.ByteArrayResource;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -54,7 +53,7 @@ public class AchievementProposalApprovalPage extends
 		super("Approve achievements");
 
 		AchievementProposalFilter filter = new AchievementProposalFilter();
-		filter.addOrderBy("name", true);
+		filter.name().orderBy(true);
 
 		add(
 				new DataView<AchievementProposal>("proposals",

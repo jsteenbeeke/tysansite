@@ -17,15 +17,9 @@
  */
 package com.tysanclan.site.projectewok.pages.member.admin;
 
-import org.apache.wicket.RestartResponseAtInterceptPageException;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.markup.repeater.data.DataView;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.FilterDataProvider;
+import com.jeroensteenbeeke.hyperion.solstice.data.FilterDataProvider;
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.LambdaRenderer;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.beans.BugTrackerService;
@@ -38,6 +32,12 @@ import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import com.tysanclan.site.projectewok.entities.filter.UserFilter;
 import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
 import com.tysanclan.site.projectewok.pages.member.AbstractSingleAccordionMemberPage;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 @TysanMemberSecured
 public class StewardManageBugMastersPage extends
@@ -81,7 +81,7 @@ public class StewardManageBugMastersPage extends
 		final DropDownChoice<User> userChoice = new DropDownChoice<User>(
 				"user", ModelMaker.wrap((User) null),
 				ModelMaker.wrapChoices(userDAO.findByFilter(getFilter(false,
-						false))), new User.Renderer());
+						false)).toJavaList()), LambdaRenderer.of(User::getUsername));
 
 		Form<User> addMasterForm = new Form<User>("addMasterForm") {
 			private static final long serialVersionUID = 1L;
@@ -107,18 +107,18 @@ public class StewardManageBugMastersPage extends
 	private UserFilter getFilter(boolean bugReportMaster,
 			boolean includeJuniorAndLower) {
 		UserFilter filter = new UserFilter();
-		filter.setBugReportMaster(bugReportMaster);
-		filter.addRank(Rank.CHANCELLOR);
-		filter.addRank(Rank.SENATOR);
-		filter.addRank(Rank.TRUTHSAYER);
-		filter.addRank(Rank.REVERED_MEMBER);
-		filter.addRank(Rank.SENIOR_MEMBER);
-		filter.addRank(Rank.FULL_MEMBER);
+		filter.bugReportMaster(bugReportMaster);
+		filter.rank(Rank.CHANCELLOR);
+		filter.orRank(Rank.SENATOR);
+		filter.orRank(Rank.TRUTHSAYER);
+		filter.orRank(Rank.REVERED_MEMBER);
+		filter.orRank(Rank.SENIOR_MEMBER);
+		filter.orRank(Rank.FULL_MEMBER);
 		if (includeJuniorAndLower) {
-			filter.addRank(Rank.JUNIOR_MEMBER);
-			filter.addRank(Rank.TRIAL);
+			filter.orRank(Rank.JUNIOR_MEMBER);
+			filter.orRank(Rank.TRIAL);
 		}
-		filter.addOrderBy("username", true);
+		filter.username().orderBy(true);
 		return filter;
 	}
 

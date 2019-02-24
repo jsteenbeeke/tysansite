@@ -1,23 +1,21 @@
 package com.tysanclan.site.projectewok;
 
-import java.util.Set;
-
+import com.google.common.collect.Sets;
+import com.tysanclan.site.projectewok.util.StringUtil;
 import org.apache.wicket.IWicketInternalException;
 import org.apache.wicket.core.request.handler.RenderPageRequestHandler;
 import org.apache.wicket.protocol.http.PageExpiredException;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.Request;
-import org.apache.wicket.request.RequestHandlerStack.ReplaceHandlerException;
+import org.apache.wicket.request.RequestHandlerExecutor;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.cycle.AbstractRequestCycleListener;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.http.WebRequest;
-import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Sets;
-import com.tysanclan.site.projectewok.util.StringUtil;
+import java.util.Set;
 
 public class ErrorReporterListener extends AbstractRequestCycleListener {
 	private static final Set<String> RESOLVE_AS_404 = Sets.newHashSet("png",
@@ -32,10 +30,7 @@ public class ErrorReporterListener extends AbstractRequestCycleListener {
 			return null;
 		} else if (ex instanceof PageExpiredException) {
 			return null;
-		} else if (ex instanceof ReplaceHandlerException) {
-			return null;
-		} else if (ex instanceof AbortWithHttpErrorCodeException) {
-			// Do not log explicit HTTP errors
+		} else if (ex instanceof RequestHandlerExecutor.ReplaceHandlerException) {
 			return null;
 		}
 

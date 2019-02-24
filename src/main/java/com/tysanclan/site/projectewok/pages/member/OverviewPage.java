@@ -17,32 +17,12 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.markup.repeater.data.DataView;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.FilterDataProvider;
+import com.jeroensteenbeeke.hyperion.solstice.data.FilterDataProvider;
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
-import com.tysanclan.site.projectewok.components.BasicMemberPanel;
-import com.tysanclan.site.projectewok.components.ChancellorPanel;
-import com.tysanclan.site.projectewok.components.GameSupervisorPanel;
-import com.tysanclan.site.projectewok.components.GroupOverviewPanel;
-import com.tysanclan.site.projectewok.components.HeraldPanel;
-import com.tysanclan.site.projectewok.components.MentorPanel;
-import com.tysanclan.site.projectewok.components.PupilPanel;
-import com.tysanclan.site.projectewok.components.RealmSupervisorPanel;
-import com.tysanclan.site.projectewok.components.SenatorPanel;
-import com.tysanclan.site.projectewok.components.StewardPanel;
-import com.tysanclan.site.projectewok.components.TreasurerPanel;
-import com.tysanclan.site.projectewok.components.TruthsayerPanel;
+import com.tysanclan.site.projectewok.components.*;
 import com.tysanclan.site.projectewok.entities.Game;
 import com.tysanclan.site.projectewok.entities.Group;
 import com.tysanclan.site.projectewok.entities.Realm;
@@ -51,6 +31,14 @@ import com.tysanclan.site.projectewok.entities.dao.GameDAO;
 import com.tysanclan.site.projectewok.entities.dao.RealmDAO;
 import com.tysanclan.site.projectewok.entities.filter.GameFilter;
 import com.tysanclan.site.projectewok.entities.filter.RealmFilter;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -102,7 +90,7 @@ public class OverviewPage extends TysanPage {
 		});
 
 		GameFilter gfilter = new GameFilter();
-		gfilter.setCoordinator(user);
+		gfilter.coordinator(user);
 
 		add(new DataView<Game>("games", FilterDataProvider.of(gfilter, gameDAO)) {
 			private static final long serialVersionUID = 1L;
@@ -117,7 +105,7 @@ public class OverviewPage extends TysanPage {
 		});
 
 		RealmFilter rfilter = new RealmFilter();
-		rfilter.setOverseer(user);
+		rfilter.overseer(user);
 
 		add(new DataView<Realm>("realms", FilterDataProvider.of(rfilter,
 				realmDAO)) {

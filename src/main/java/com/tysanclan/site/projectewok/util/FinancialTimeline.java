@@ -1,66 +1,45 @@
 /**
  * Tysan Clan Website
  * Copyright (C) 2008-2013 Jeroen Steenbeeke and Ties van de Ven
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.tysanclan.site.projectewok.util;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.SortedSet;
-import java.util.TreeMap;
-
-import nl.topicus.wqplot.data.BaseSeries;
-import nl.topicus.wqplot.data.DateNumberSeries;
-
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.util.ListModel;
-import org.joda.time.DateTime;
-
-import com.google.common.base.Function;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.LinkedListMultimap;
-import com.google.common.collect.ListMultimap;
-import com.google.common.collect.Maps;
+import com.google.common.collect.*;
 import com.google.common.collect.Maps.EntryTransformer;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
-import com.google.common.collect.Sets;
-import com.jeroensteenbeeke.hyperion.util.MapUtil;
-import com.tysanclan.site.projectewok.entities.Donation;
-import com.tysanclan.site.projectewok.entities.Expense;
-import com.tysanclan.site.projectewok.entities.PaidExpense;
-import com.tysanclan.site.projectewok.entities.Subscription;
-import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.*;
 import com.tysanclan.site.projectewok.entities.dao.DonationDAO;
 import com.tysanclan.site.projectewok.entities.dao.ExpenseDAO;
 import com.tysanclan.site.projectewok.entities.dao.PaidExpenseDAO;
 import com.tysanclan.site.projectewok.entities.dao.SubscriptionDAO;
 import com.tysanclan.site.projectewok.entities.filter.DonationFilter;
 import com.tysanclan.site.projectewok.entities.filter.PaidExpenseFilter;
+import io.vavr.collection.Seq;
+import nl.topicus.wqplot.data.BaseSeries;
+import nl.topicus.wqplot.data.DateNumberSeries;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.util.ListModel;
+import org.joda.time.DateTime;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class FinancialTimeline {
 
@@ -100,7 +79,7 @@ public class FinancialTimeline {
 			Function<Entry<DateTime, BigDecimal>, Entry<DateTime, BigDecimal>> {
 		public Entry<DateTime, BigDecimal> apply(
 				Entry<DateTime, BigDecimal> input) {
-			return new SerializableEntry<DateTime, BigDecimal>(input.getKey(),
+			return new SerializableEntry<>(input.getKey(),
 					input.getValue());
 		}
 	}
@@ -110,7 +89,7 @@ public class FinancialTimeline {
 
 		@Override
 		public int compare(Entry<DateTime, BigDecimal> o1,
-				Entry<DateTime, BigDecimal> o2) {
+						   Entry<DateTime, BigDecimal> o2) {
 			return o1.getKey().compareTo(o2.getKey());
 		}
 	}
@@ -328,16 +307,16 @@ public class FinancialTimeline {
 
 								@Override
 								public BigDecimal transformEntry(DateTime key,
-										List<BigDecimal> value) {
+																 List<BigDecimal> value) {
 									return function.apply(value);
 								}
 							});
 
-			entries.addAll(ImmutableList.copyOf(Iterables.transform(
-					transformed.entrySet(), new EntryCopy())));
+			entries.addAll(transformed.entrySet().stream().map(new EntryCopy()).collect(Collectors.toList()));
 
 			// Loop through actual expenses and subtract from existing reserves
-			spendings: for (Entry<DateTime, BigDecimal> e : entries) {
+			spendings:
+			for (Entry<DateTime, BigDecimal> e : entries) {
 				if (!e.getKey().isAfter(time)) {
 					BigDecimal open = e.getValue();
 
@@ -383,20 +362,22 @@ public class FinancialTimeline {
 
 			Multimap<User, BigDecimal> aggregated = Multimaps.transformEntries(
 					result, new ReserveToBigDecimalFunction());
-			Map<User, BigDecimal> results = Maps.transformValues(
-					aggregated.asMap(), SumFunction.INSTANCE);
-
+			Map<User, BigDecimal> results = io.vavr.collection.HashMap.ofAll(aggregated.asMap())
+					.mapValues(SumFunction.INSTANCE)
+					.toJavaMap();
 			buffer.put(time, results);
 
 			return results;
 		}
 
 		public void addReserve(DateTime dt, User user, BigDecimal amount) {
-			MapUtil.listAdd(reserves, dt, new Reserve(dt, user, amount));
+			reserves.merge(dt,
+					ImmutableList.of(new Reserve(dt, user, amount)),
+					(a, b) -> ImmutableList.<Reserve>builder().addAll(a).addAll(b).build());
 		}
 
 		public void spend(DateTime dt, BigDecimal amount) {
-			MapUtil.listAdd(spendings, dt, amount);
+			spendings.merge(dt, ImmutableList.of(amount), (a, b) -> ImmutableList.<BigDecimal>builder().addAll(a).addAll(b).build());
 		}
 
 	}
@@ -424,7 +405,7 @@ public class FinancialTimeline {
 	private String exhaustionPoint = null;
 
 	public FinancialTimeline(ExpenseDAO expenseDAO, DonationDAO donationDAO,
-			SubscriptionDAO subscriptionDAO, PaidExpenseDAO paidExpenseDAO) {
+							 SubscriptionDAO subscriptionDAO, PaidExpenseDAO paidExpenseDAO) {
 		this.expenseDAO = expenseDAO;
 		this.donationDAO = donationDAO;
 		this.subscriptionDAO = subscriptionDAO;
@@ -437,19 +418,19 @@ public class FinancialTimeline {
 		reserve = new CashReserve();
 
 		DonationFilter df = new DonationFilter();
-		df.addOrderBy("donationTime", true);
+		df.donationTime().orderBy(true);
 		for (Donation d : donationDAO.findByFilter(df)) {
 			DateTime dt = new DateTime(d.getDonationTime());
-			MapUtil.listAdd(mutations, dt, d.getAmount());
+			mutations.merge(dt, ImmutableList.of(d.getAmount()), (a, b) -> ImmutableList.<BigDecimal>builder().addAll(a).addAll(b).build());
 			reserve.addReserve(dt, d.getDonator(), d.getAmount());
 		}
 
 		PaidExpenseFilter pef = new PaidExpenseFilter();
-		pef.addOrderBy("paymentDate", true);
+		pef.paymentDate().orderBy(true);
 
 		for (PaidExpense expense : paidExpenseDAO.findByFilter(pef)) {
 			DateTime dt = new DateTime(expense.getPaymentDate());
-			MapUtil.listAdd(mutations, dt, expense.getAmount().negate());
+			mutations.merge(dt, ImmutableList.of(expense.getAmount().abs().negate()), (a, b) -> ImmutableList.<BigDecimal>builder().addAll(a).addAll(b).build());
 			reserve.spend(dt, expense.getAmount());
 		}
 
@@ -476,7 +457,8 @@ public class FinancialTimeline {
 			cashFlow.put(last, current);
 		}
 
-		expenses: for (PaidExpense expense : paidExpenseDAO.findByFilter(pef)) {
+		expenses:
+		for (PaidExpense expense : paidExpenseDAO.findByFilter(pef)) {
 			DateTime dt = new DateTime(expense.getPaymentDate());
 
 			BigDecimal toFulfill = expense.getAmount();
@@ -526,14 +508,14 @@ public class FinancialTimeline {
 			while (!c.isAfter(threeYearsFromNow)
 					&& (e.getEnd() == null || !c.isAfter(eEnd))) {
 				if (!c.isBefore(eStart)) {
-					MapUtil.listAdd(futureMutations, c, e.getAmount().negate());
+					futureMutations.merge(c, ImmutableList.of(e.getAmount().abs().negate()), (a, b) -> ImmutableList.<BigDecimal>builder().addAll(a).addAll(b).build());
 				}
 
 				c = new DateTime(e.getPeriod().nextDate(c.toDate()));
 			}
 		}
 
-		List<Subscription> subscriptions = subscriptionDAO.findAll();
+		Seq<Subscription> subscriptions = subscriptionDAO.findAll();
 		for (Subscription s : subscriptions) {
 			DateTime c = now;
 
@@ -541,7 +523,7 @@ public class FinancialTimeline {
 
 			while (!c.isAfter(threeYearsFromNow)) {
 				if (!c.isBefore(sStart)) {
-					MapUtil.listAdd(futureMutations, c, s.getAmount());
+					futureMutations.merge(c, ImmutableList.of(s.getAmount()), (a, b) -> ImmutableList.<BigDecimal>builder().addAll(a).addAll(b).build());
 				}
 
 				c = new DateTime(s.getInterval().nextDate(c.toDate()));
@@ -593,12 +575,9 @@ public class FinancialTimeline {
 			}
 		}
 
-		Map<String, BigDecimal> sums = Maps.transformValues(amounts.asMap(),
-				SumFunction.INSTANCE);
-
-		for (Entry<String, BigDecimal> e : sums.entrySet()) {
-			series.addEntry(e.getKey(), e.getValue());
-		}
+		io.vavr.collection.HashMap.ofAll(amounts.asMap())
+				.mapValues(SumFunction.INSTANCE)
+				.forEach((BiConsumer<String, BigDecimal>) series::addEntry);
 
 		return listOf(series);
 	}
@@ -623,7 +602,7 @@ public class FinancialTimeline {
 
 		res.add(series);
 
-		return new ListModel<DateNumberSeries<T>>(res);
+		return new ListModel<>(res);
 	}
 
 	private <K, V extends Number> IModel<List<BaseSeries<K, V>>> listOf(
@@ -632,7 +611,7 @@ public class FinancialTimeline {
 
 		res.add(series);
 
-		return new ListModel<BaseSeries<K, V>>(res);
+		return new ListModel<>(res);
 	}
 
 	public BigDecimal getReservesToday() {

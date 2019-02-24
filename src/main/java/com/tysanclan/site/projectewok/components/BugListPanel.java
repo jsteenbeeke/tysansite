@@ -17,6 +17,12 @@
  */
 package com.tysanclan.site.projectewok.components;
 
+import com.jeroensteenbeeke.hyperion.solstice.data.FilterDataProvider;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.entities.Bug;
+import com.tysanclan.site.projectewok.entities.Bug.BugStatus;
+import com.tysanclan.site.projectewok.entities.dao.BugDAO;
+import com.tysanclan.site.projectewok.entities.filter.BugFilter;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
@@ -25,13 +31,6 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.FilterDataProvider;
-import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
-import com.tysanclan.site.projectewok.entities.Bug;
-import com.tysanclan.site.projectewok.entities.Bug.BugStatus;
-import com.tysanclan.site.projectewok.entities.dao.BugDAO;
-import com.tysanclan.site.projectewok.entities.filter.BugFilter;
 
 public abstract class BugListPanel extends Panel {
 	private static final long serialVersionUID = 1L;

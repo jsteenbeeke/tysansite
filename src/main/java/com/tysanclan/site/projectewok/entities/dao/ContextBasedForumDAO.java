@@ -32,6 +32,6 @@ public interface ContextBasedForumDAO<T extends DomainObject, ContextType extend
 			ForumViewContext context);
 
 	List<T> findByContext(User user, ContextType contextId,
-			ForumViewContext context, long first, long count);
+			ForumViewContext context, int first, int count);
 
 }

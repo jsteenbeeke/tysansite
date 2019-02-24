@@ -17,11 +17,22 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.FilterDataProvider;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
+import com.tysanclan.site.projectewok.beans.MessageService;
+import com.tysanclan.site.projectewok.beans.UserService;
+import com.tysanclan.site.projectewok.components.BBCodeTextArea;
+import com.tysanclan.site.projectewok.components.IconLink;
+import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
+import com.tysanclan.site.projectewok.components.TysanOverviewPanel.NoAuto;
+import com.tysanclan.site.projectewok.entities.Conversation;
+import com.tysanclan.site.projectewok.entities.ConversationParticipation;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.dao.ConversationDAO;
+import com.tysanclan.site.projectewok.entities.dao.ConversationParticipationDAO;
+import com.tysanclan.site.projectewok.entities.filter.ConversationFilter;
+import com.tysanclan.site.projectewok.entities.filter.ConversationParticipationFilter;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.ListMultipleChoice;
@@ -36,20 +47,10 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
-import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
-import com.tysanclan.site.projectewok.beans.MessageService;
-import com.tysanclan.site.projectewok.beans.UserService;
-import com.tysanclan.site.projectewok.components.BBCodeTextArea;
-import com.tysanclan.site.projectewok.components.IconLink;
-import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
-import com.tysanclan.site.projectewok.components.TysanOverviewPanel.NoAuto;
-import com.tysanclan.site.projectewok.dataaccess.FilterProvider;
-import com.tysanclan.site.projectewok.entities.Conversation;
-import com.tysanclan.site.projectewok.entities.ConversationParticipation;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.ConversationDAO;
-import com.tysanclan.site.projectewok.entities.filter.ConversationFilter;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -60,6 +61,12 @@ public class MessageListPage extends AbstractMemberPage {
 
 	@SpringBean
 	private UserService userService;
+
+	@SpringBean
+	private ConversationDAO conversationDAO;
+
+	@SpringBean
+	private ConversationParticipationDAO participationDAO;
 
 	private IModel<User> firstSelect;
 
@@ -77,12 +84,15 @@ public class MessageListPage extends AbstractMemberPage {
 
 		this.selectedTab = recipient != null ? 1 : 0;
 
+		ConversationParticipationFilter participationFilter = new ConversationParticipationFilter();
+		participationFilter.user(getUser());
+
 		ConversationFilter filter = new ConversationFilter();
-		filter.addParticipant(getUser());
-		filter.setSortByLastResponse(true);
+		filter.id().in(participationDAO.properties(participationFilter.id(), participationFilter));
+		filter.lastResponse().orderBy(false);
 
 		DataView<Conversation> messageView = new DataView<Conversation>(
-				"messages", FilterProvider.of(ConversationDAO.class, filter)) {
+				"messages", FilterDataProvider.of(filter, conversationDAO)) {
 
 			private static final long serialVersionUID = 1L;
 

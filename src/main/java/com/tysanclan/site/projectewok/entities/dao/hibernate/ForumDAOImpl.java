@@ -17,23 +17,17 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import java.util.List;
-
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.*;
+import com.tysanclan.site.projectewok.entities.filter.ForumFilter;
+import com.tysanclan.site.projectewok.util.forum.ForumViewContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
-import com.tysanclan.site.projectewok.entities.Forum;
-import com.tysanclan.site.projectewok.entities.ForumCategory;
-import com.tysanclan.site.projectewok.entities.ForumPost;
-import com.tysanclan.site.projectewok.entities.UnreadForumPost;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.filter.ForumFilter;
-import com.tysanclan.site.projectewok.util.forum.ForumViewContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -44,45 +38,27 @@ class ForumDAOImpl extends HibernateDAO<Forum, ForumFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.ForumDAO {
 	@Override
 	public boolean isPostUnread(User user, ForumPost post) {
-		Criteria criteria = getSession().createCriteria(UnreadForumPost.class);
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+		Root<UnreadForumPost> root = criteriaQuery.from(UnreadForumPost.class);
 
-		criteria.add(Restrictions.eq("forumPost", post));
-		criteria.add(Restrictions.eq("user", user));
-		criteria.setProjection(Projections.rowCount());
+		criteriaQuery.select(criteriaBuilder.count(root));
+		criteriaQuery.where(criteriaBuilder.equal(root.get(UnreadForumPost_.forumPost), post),
+				criteriaBuilder.equal(root.get(UnreadForumPost_.user), user));
 
-		return ((Number) criteria.uniqueResult()).intValue() == 1;
-	}
-
-	/**
-	 * @see com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO#createCriteria(com.tysanclan.site.projectewok.dataaccess.SearchFilter)
-	 */
-	@Override
-	protected Criteria createCriteria(SearchFilter<Forum> filter) {
-		Criteria criteria = getSession().createCriteria(Forum.class);
-
-		if (filter instanceof ForumFilter) {
-			ForumFilter ff = (ForumFilter) filter;
-			if (ff.getName() != null) {
-				criteria.add(Restrictions.eq("name", ff.getName()));
-			}
-			if (ff.getInteractive() != null) {
-				criteria.add(Restrictions.eq("interactive", ff.getInteractive()));
-			}
-		}
-
-		return criteria;
+		return ((Number) entityManager.createQuery(criteriaQuery).getSingleResult()).intValue() == 1;
 	}
 
 	@Override
 	public int countByContext(User user, ForumCategory contextObject,
 			ForumViewContext context) {
-		return context.countForums(getSession(), contextObject, user);
+		return context.countForums(entityManager, contextObject, user);
 	}
 
 	@Override
 	public List<Forum> findByContext(User user, ForumCategory contextObject,
-			ForumViewContext context, long first, long count) {
-		return context.getForums(getSession(), contextObject, user, first,
+			ForumViewContext context, int first, int count) {
+		return context.getForums(entityManager, contextObject, user, first,
 				count);
 	}
 }

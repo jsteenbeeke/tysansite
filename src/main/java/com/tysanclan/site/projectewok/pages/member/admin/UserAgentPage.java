@@ -17,13 +17,7 @@
  */
 package com.tysanclan.site.projectewok.pages.member.admin;
 
-import org.apache.wicket.RestartResponseAtInterceptPageException;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.markup.repeater.data.DataView;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.FilterDataProvider;
+import com.jeroensteenbeeke.hyperion.solstice.data.FilterDataProvider;
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.RoleService;
 import com.tysanclan.site.projectewok.beans.UserAgentService;
@@ -34,6 +28,11 @@ import com.tysanclan.site.projectewok.entities.dao.MobileUserAgentDAO;
 import com.tysanclan.site.projectewok.entities.filter.MobileUserAgentFilter;
 import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
 import com.tysanclan.site.projectewok.pages.member.AbstractSingleAccordionMemberPage;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -59,7 +58,7 @@ public class UserAgentPage extends AbstractSingleAccordionMemberPage {
 		}
 
 		MobileUserAgentFilter filter = new MobileUserAgentFilter();
-		filter.addOrderBy("identifier", true);
+		filter.identifier().orderBy(true);
 
 		add(
 				new DataView<MobileUserAgent>("agents", FilterDataProvider.of(
