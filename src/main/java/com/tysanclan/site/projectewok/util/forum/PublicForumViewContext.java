@@ -61,7 +61,7 @@ public class PublicForumViewContext extends AbstractForumViewContext {
 
 	@Override
 	public List<ForumCategory> getCategories(EntityManager em, User viewer,
-											 long offset, long count) {
+											 int offset, int count) {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<ForumCategory> criteriaQuery = criteriaBuilder.createQuery(ForumCategory.class);
 
@@ -96,7 +96,7 @@ public class PublicForumViewContext extends AbstractForumViewContext {
 
 	@Override
 	public List<Forum> getForums(EntityManager em, ForumCategory context,
-								 User viewer, long offset, long count) {
+								 User viewer, int offset, int count) {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<Forum> criteriaQuery = criteriaBuilder.createQuery(Forum.class);
 
@@ -147,7 +147,7 @@ public class PublicForumViewContext extends AbstractForumViewContext {
 
 	@Override
 	public List<ForumThread> getThreads(EntityManager em, Forum context,
-										User viewer, long offset, long count) {
+										User viewer, int offset, int count) {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<ForumThread> criteriaQuery = criteriaBuilder.createQuery(ForumThread.class);
 
@@ -197,7 +197,7 @@ public class PublicForumViewContext extends AbstractForumViewContext {
 
 	@Override
 	public List<ForumPost> getPosts(EntityManager em, ForumThread context,
-									User viewer, long offset, long count) {
+									User viewer, int offset, int count) {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<ForumPost> criteriaQuery = criteriaBuilder.createQuery(ForumPost.class);
 		Root<ForumPost> root = criteriaQuery.from(ForumPost.class);

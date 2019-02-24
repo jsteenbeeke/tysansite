@@ -69,7 +69,7 @@ public class AboutPage extends TysanPage {
 		UserFilter chancellorFilter = new UserFilter();
 		chancellorFilter.rank(Rank.CHANCELLOR);
 
-		List<User> users = userDAO.findByFilter(chancellorFilter).;
+		List<User> users = userDAO.findByFilter(chancellorFilter).toJavaList();
 
 		User leader = null;
 		if (!users.isEmpty()) {
