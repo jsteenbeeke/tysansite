@@ -70,14 +70,13 @@ public class OtterSniperPanel extends Panel {
 			otterId = otterNumber;
 		}
 
-		User currentUser = null;
-		if (TysanSession.get() != null) {
-			currentUser = TysanSession.get().getUser();
-		}
+		User currentUser = TysanSession.session()
+				.flatMap(TysanSession::getUser)
+				.getOrNull();
 
 		OtterSightingFilter filter = new OtterSightingFilter();
-		filter.setUser(currentUser);
-		filter.setOtterNumber(otterNumber);
+		filter.user(currentUser);
+		filter.otterNumber(otterNumber);
 
 		boolean hasSighting = otterSightDao.countByFilter(filter) > 0;
 
@@ -91,8 +90,7 @@ public class OtterSniperPanel extends Panel {
 				User user = getModelObject();
 
 				if (user != null) {
-					humorService.otterSighted(TysanSession.get().getUser(),
-							otterId);
+					humorService.otterSighted(user, otterId);
 					livingGnomeContainer.setVisible(false);
 					deadGnomeContainer.setVisible(true);
 					target.add(deadGnomeContainer);

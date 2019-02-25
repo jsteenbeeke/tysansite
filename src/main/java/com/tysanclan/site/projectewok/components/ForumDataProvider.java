@@ -66,20 +66,21 @@ public class ForumDataProvider<T extends DomainObject, C extends DomainObject, D
 
 	@Override
 	public Iterator<? extends T> iterator(long first, long count) {
-		TysanSession session = TysanSession.get();
-		User user = session != null ? session.getUser() : null;
+		User user = TysanSession.session()
+				.flatMap(TysanSession::getUser)
+				.getOrNull();
 
 		List<T> list = dao.findByContext(user, context.getObject(),
-				TysanSession.getForumContext(), first, count);
+				TysanSession.getForumContext(), (int) first, (int) count);
 
 		return list.iterator();
 	}
 
 	@Override
 	public long size() {
-
-		TysanSession session = TysanSession.get();
-		User user = session != null ? session.getUser() : null;
+		User user = TysanSession.session()
+				.flatMap(TysanSession::getUser)
+				.getOrNull();
 
 		return dao.countByContext(user, context.getObject(),
 				TysanSession.getForumContext());

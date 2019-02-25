@@ -17,24 +17,23 @@
  */
 package com.tysanclan.site.projectewok.tasks;
 
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.HyperionTask;
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.ServiceProvider;
+import com.tysanclan.site.projectewok.TysanTaskGroup;
 import com.tysanclan.site.projectewok.beans.AchievementService;
-import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public class AchievementProposalTask extends PeriodicTask {
-	@SpringBean
-	private AchievementService service;
+public class AchievementProposalTask extends HyperionTask {
 
 	public AchievementProposalTask() {
-		super("Cleanup proposals", "Achievements", ExecutionMode.HOURLY);
+		super("Cleanup proposals", TysanTaskGroup.CLEANUP);
 	}
 
 	@Override
-	public void run() {
-		service.resolvePendingProposals();
+	public void run(ServiceProvider provider) {
+		provider.getService(AchievementService.class).resolvePendingProposals();
 	}
 }

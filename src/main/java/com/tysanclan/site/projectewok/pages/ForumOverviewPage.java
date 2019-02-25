@@ -17,6 +17,7 @@
  */
 package com.tysanclan.site.projectewok.pages;
 
+import com.tysanclan.site.projectewok.TysanSession;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 
 import com.tysanclan.site.projectewok.TysanPage;
@@ -32,7 +33,7 @@ public class ForumOverviewPage extends TysanPage {
 	public ForumOverviewPage() {
 		super("Forums");
 
-		User u = getTysanSession() != null ? getTysanSession().getUser() : null;
+		User u = getTysanSession().flatMap(TysanSession::getUser).getOrNull();
 
 		setAutoCollapse(u != null && u.isCollapseForums());
 

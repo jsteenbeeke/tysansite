@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import io.vavr.control.Option;
 import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.request.Request;
@@ -54,16 +55,16 @@ public class TysanSession extends WebSession {
 	/**
 	 * @return the user
 	 */
-	public User getUser() {
+	public Option<User> getUser() {
 		// Lazy initialization
 		Long userId = (Long) getAttribute("userid");
 
 		if (userId != null)
 
 			return TysanApplication.getApplicationContext()
-					.getBean(UserDAO.class).get(userId);
+					.getBean(UserDAO.class).load(userId);
 
-		return null;
+		return Option.none();
 
 	}
 
@@ -72,12 +73,12 @@ public class TysanSession extends WebSession {
 		if (tsession == null)
 			return new PublicForumViewContext();
 
-		User u = tsession.getUser();
+		Option<User> u = tsession.getUser();
 
-		if (u == null || u.getRank() == Rank.FORUM)
+		if (u.isEmpty() || u.filter(_u -> _u.getRank() == Rank.FORUM).isDefined())
 			return new PublicForumViewContext();
 
-		if (u.getRank() == Rank.BANNED)
+		if (u.filter(_u -> _u.getRank() == Rank.BANNED).isDefined())
 			return new ShadowForumViewContext();
 
 		return new MemberForumViewContext();
@@ -90,6 +91,10 @@ public class TysanSession extends WebSession {
 
 	public static TysanSession get() {
 		return (TysanSession) Session.get();
+	}
+
+	public static Option<TysanSession> session() {
+		return Option.of(get());
 	}
 
 	public boolean notificationSeen(SiteWideNotification swn) {

@@ -54,8 +54,7 @@ public class ConfirmForumThreadStickyPage extends TysanPage {
 			@Override
 			protected void onSubmit() {
 				if (!service.stickyThread(getModelObject(),
-						ConfirmForumThreadStickyPage.this.getTysanSession()
-								.getUser())) {
+						ConfirmForumThreadStickyPage.this.getUser())) {
 					error("Unable to sticky thread: Permission denied");
 				}
 

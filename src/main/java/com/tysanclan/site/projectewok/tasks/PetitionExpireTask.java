@@ -17,30 +17,26 @@
  */
 package com.tysanclan.site.projectewok.tasks;
 
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.HyperionTask;
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.ServiceProvider;
+import com.tysanclan.site.projectewok.TysanTaskGroup;
 import com.tysanclan.site.projectewok.beans.GameService;
 import com.tysanclan.site.projectewok.beans.RealmService;
-import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public class PetitionExpireTask extends PeriodicTask {
-	@SpringBean
-	private GameService gameService;
+public class PetitionExpireTask extends HyperionTask {
 
-	@SpringBean
-	private RealmService realmService;
 
 	public PetitionExpireTask() {
-		super("Expires", "Petitions", ExecutionMode.DAILY);
+		super("Expires", TysanTaskGroup.CLEANUP);
 	}
 
 	@Override
-	public void run() {
-		gameService.expirePetitions();
-		realmService.expirePetitions();
+	public void run(ServiceProvider provider) {
+		provider.getService(GameService.class).expirePetitions();
+		provider.getService(RealmService.class).expirePetitions();
 
 	}
 

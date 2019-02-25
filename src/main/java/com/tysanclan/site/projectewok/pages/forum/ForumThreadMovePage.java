@@ -19,6 +19,7 @@ package com.tysanclan.site.projectewok.pages.forum;
 
 import java.util.List;
 
+import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.LambdaRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
@@ -44,8 +45,7 @@ public class ForumThreadMovePage extends TysanPage {
 	public ForumThreadMovePage(ForumThread thread) {
 		super("Move thread: " + thread.getTitle());
 
-		final User u = getTysanSession() != null ? getTysanSession().getUser()
-				: null;
+		final User u = getUser();
 
 		List<Forum> forums = forumService.getValidDestinationForums(
 				thread.getForum(), u);
@@ -54,20 +54,7 @@ public class ForumThreadMovePage extends TysanPage {
 				"target");
 		targetForum.setChoices(forums);
 		targetForum.setModel(ModelMaker.wrap(forums.get(0), true));
-		targetForum.setChoiceRenderer(new IChoiceRenderer<Forum>() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public Object getDisplayValue(Forum object) {
-				return object.getName();
-			}
-
-			@Override
-			public String getIdValue(Forum object, int index) {
-				return object.getId().toString();
-			}
-
-		});
+		targetForum.setChoiceRenderer(LambdaRenderer.of(Forum::getName));
 
 		Form<ForumThread> form = new Form<ForumThread>("moveform",
 				ModelMaker.wrap(thread)) {

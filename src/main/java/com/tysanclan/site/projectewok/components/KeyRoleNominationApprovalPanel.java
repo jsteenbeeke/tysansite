@@ -17,6 +17,7 @@
  */
 package com.tysanclan.site.projectewok.components;
 
+import com.tysanclan.site.projectewok.entities.User;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -44,10 +45,14 @@ public class KeyRoleNominationApprovalPanel extends Panel {
 
 		this.transferModel = ModelMaker.wrap(transfer);
 
+		User user = TysanSession.session()
+				.flatMap(TysanSession::getUser)
+				.getOrNull();
+
 		RoleTransferApproval app = null;
 		if (transfer != null) {
 			for (RoleTransferApproval a : transfer.getApprovedBy()) {
-				if (a.getApprovedBy().equals(TysanSession.get().getUser())) {
+				if (a.getApprovedBy().equals(user)) {
 					app = a;
 					break;
 				}
@@ -69,7 +74,7 @@ public class KeyRoleNominationApprovalPanel extends Panel {
 						@Override
 						public void onClick() {
 							roleService.approveCandidate(transferModel
-									.getObject(), TysanSession.get().getUser());
+									.getObject(), user);
 
 							setResponsePage(new KeyRoleNominationApprovalPage());
 						}
@@ -84,8 +89,7 @@ public class KeyRoleNominationApprovalPanel extends Panel {
 
 						@Override
 						public void onClick() {
-							roleService.objectToTransfer(TysanSession.get()
-									.getUser(), transferModel.getObject());
+							roleService.objectToTransfer(user, transferModel.getObject());
 
 							setResponsePage(new KeyRoleNominationApprovalPage());
 						}

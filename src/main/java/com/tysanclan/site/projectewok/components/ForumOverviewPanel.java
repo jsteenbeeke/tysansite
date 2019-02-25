@@ -66,8 +66,9 @@ public class ForumOverviewPanel extends Panel {
 				ForumCategory cat = item.getModelObject();
 				String catName = cat.getName();
 
-				TysanSession session = TysanSession.get();
-				User user = session != null ? session.getUser() : null;
+				User user = TysanSession.session()
+						.flatMap(TysanSession::getUser)
+						.getOrNull();
 
 				boolean active = user == null || !user.isCollapseForums();
 
@@ -81,8 +82,7 @@ public class ForumOverviewPanel extends Panel {
 				}
 
 				item.add(new WebMarkupContainer("unread")
-						.setVisible(session != null
-								&& session.getUser() != null));
+						.setVisible(user != null));
 
 				Label label = new Label("cattitle", catName);
 
@@ -106,15 +106,15 @@ public class ForumOverviewPanel extends Panel {
 								ForumDataProvider.of(forum, forumThreadDAO)
 										.size())));
 
-						TysanSession sess = TysanSession.get();
-						User u = sess != null ? sess.getUser() : null;
+						User u = TysanSession.session()
+								.flatMap(TysanSession::getUser)
+								.getOrNull();
 
 						int unreadCount = u != null ? forumService
 								.getForumUnreadCount(u, forum) : 0;
 
 						innerItem.add(new Label("unread", new Model<Integer>(
-								unreadCount)).setVisible(sess != null
-								&& sess.getUser() != null));
+								unreadCount)).setVisible(u != null));
 
 						StringBuilder modList = new StringBuilder();
 						for (User mod : forum.getModerators()) {
@@ -147,10 +147,12 @@ public class ForumOverviewPanel extends Panel {
 
 			@Override
 			public void onClick() {
-				TysanSession session = (TysanSession) TysanSession.get();
+				User user = TysanSession.session()
+						.flatMap(TysanSession::getUser)
+						.getOrNull();
 
-				if (session != null && session.getUser() != null) {
-					forumService.clearUnreadPosts(session.getUser());
+				if (user != null) {
+					forumService.clearUnreadPosts(user);
 				}
 
 			}
@@ -159,12 +161,9 @@ public class ForumOverviewPanel extends Panel {
 
 		markAsReadLink.add(new ContextImage("icon", "images/icons/eye.png"));
 
-		TysanSession session = (TysanSession) TysanSession.get();
-		User user = null;
-
-		if (session != null) {
-			user = session.getUser();
-		}
+		User user = TysanSession.session()
+				.flatMap(TysanSession::getUser)
+				.getOrNull();
 
 		markAsReadLink.setVisible(user != null);
 

@@ -52,8 +52,7 @@ public class ConfirmForumThreadUnlockPage extends TysanPage {
 			@Override
 			protected void onSubmit() {
 				if (!service.unlockThread(getModelObject(),
-						ConfirmForumThreadUnlockPage.this.getTysanSession()
-								.getUser())) {
+						ConfirmForumThreadUnlockPage.this.getUser())) {
 					error("Unable to unlock thread: Permission denied");
 				}
 				setResponsePage(new ForumThreadPage(getModelObject().getId(),

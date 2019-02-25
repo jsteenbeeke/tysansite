@@ -17,34 +17,24 @@
  */
 package com.tysanclan.site.projectewok.tasks;
 
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.HyperionTask;
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.ServiceProvider;
+import com.tysanclan.site.projectewok.TysanTaskGroup;
 import com.tysanclan.site.projectewok.beans.PopulationService;
-import com.tysanclan.site.projectewok.util.scheduler.SingleExecutionTask;
 
 /**
  * Background task for installing various debug users
  * 
  * @author Jeroen Steenbeeke
  */
-public class DebugSiteCreationTask extends SingleExecutionTask {
-
-	@SpringBean
-	private PopulationService populationService;
-
-	/**
-	 * 
-	 */
+public class DebugSiteCreationTask extends HyperionTask {
 	public DebugSiteCreationTask() {
-		super("Create debug users", "Debug");
+		super("Create debug users", TysanTaskGroup.DEBUG);
 	}
 
-	/**
-	 * @see com.tysanclan.site.projectewok.util.scheduler.TysanTask#run()
-	 */
 	@Override
-	public void run() {
-		populationService.createDebugSite();
+	public void run(ServiceProvider provider) {
+		provider.getService(PopulationService.class).createDebugSite();
 
 	}
 

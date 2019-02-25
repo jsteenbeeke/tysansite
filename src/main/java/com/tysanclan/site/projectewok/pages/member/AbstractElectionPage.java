@@ -151,7 +151,7 @@ public abstract class AbstractElectionPage<T extends Election> extends
 				List<User> userList = new LinkedList<User>();
 
 				for (Integer position : getVotes().keySet()) {
-					userList.add(userDAO.load(getVotes().get(position)));
+					userDAO.load(getVotes().get(position)).forEach(userList::add);
 				}
 
 				onVoteSubmit(userList);
@@ -171,12 +171,12 @@ public abstract class AbstractElectionPage<T extends Election> extends
 
 			@Override
 			protected void populateItem(ListItem<Integer> item) {
-				item.add(new Label("position", new Model<Integer>(item
+				item.add(new Label("position", new Model<>(item
 						.getIndex() + 1)));
 
 				final int index = item.getIndex();
 
-				item.add(new Label("score", new Model<Integer>(item
+				item.add(new Label("score", new Model<>(item
 						.getModelObject())));
 				WebMarkupContainer container = new WebMarkupContainer("target");
 				container.setOutputMarkupId(true)

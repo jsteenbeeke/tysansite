@@ -20,6 +20,7 @@ package com.tysanclan.site.projectewok.pages.member;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.LambdaRenderer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -110,7 +111,7 @@ public class ProposeAchievementPage2 extends AbstractSingleAccordionMemberPage {
 
 		final DropDownChoice<Game> gameChoice = new DropDownChoice<Game>(
 				"game", ModelMaker.wrap((Game) null), ModelMaker.wrap(games),
-				new Game.Renderer());
+				LambdaRenderer.of(Game::getName));
 		gameContainer.add(gameChoice);
 
 		final DropDownChoice<Group> groupChoice = new DropDownChoice<Group>(

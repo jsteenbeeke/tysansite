@@ -1,33 +1,40 @@
 /**
  * Tysan Clan Website
  * Copyright (C) 2008-2013 Jeroen Steenbeeke and Ties van de Ven
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.tysanclan.site.projectewok;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Properties;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.intervals.Interval;
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.intervals.Intervals;
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.wicket.HyperionScheduler;
+import com.tysanclan.site.projectewok.auth.TysanSecurity;
+import com.tysanclan.site.projectewok.components.resources.DaysInTysanImageResourceReference;
+import com.tysanclan.site.projectewok.components.resources.HaleyAccidentResourceReference;
+import com.tysanclan.site.projectewok.components.resources.MinecraftWhitelistResourceReference;
+import com.tysanclan.site.projectewok.components.resources.UUIDMinecraftWhitelistResourceReference;
+import com.tysanclan.site.projectewok.pages.*;
+import com.tysanclan.site.projectewok.pages.forum.ActivationPage;
+import com.tysanclan.site.projectewok.pages.member.ReportBugPage;
+import com.tysanclan.site.projectewok.pages.member.RequestFeaturePage;
+import com.tysanclan.site.projectewok.pages.member.SubscriptionPaymentResolvedPage;
+import com.tysanclan.site.projectewok.pages.member.ViewBugPage;
+import com.tysanclan.site.projectewok.pages.member.admin.OldExpensesPage;
+import com.tysanclan.site.projectewok.pages.member.admin.ProcessPaymentRequestPage;
+import com.tysanclan.site.projectewok.pages.member.admin.RandomContentGenerationPage;
+import com.tysanclan.site.projectewok.tasks.*;
 import org.apache.wicket.Application;
 import org.apache.wicket.Page;
 import org.apache.wicket.Session;
@@ -37,6 +44,7 @@ import org.apache.wicket.request.Response;
 import org.apache.wicket.request.http.WebRequest;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
+import org.joda.time.DateTime;
 import org.odlabs.wiquery.ui.themes.WiQueryCoreThemeResourceReference;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -47,66 +55,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import com.tysanclan.site.projectewok.auth.TysanSecurity;
-import com.tysanclan.site.projectewok.components.resources.DaysInTysanImageResourceReference;
-import com.tysanclan.site.projectewok.components.resources.HaleyAccidentResourceReference;
-import com.tysanclan.site.projectewok.components.resources.MinecraftWhitelistResourceReference;
-import com.tysanclan.site.projectewok.components.resources.UUIDMinecraftWhitelistResourceReference;
-import com.tysanclan.site.projectewok.pages.AboutPage;
-import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
-import com.tysanclan.site.projectewok.pages.CharterPage;
-import com.tysanclan.site.projectewok.pages.ForumOverviewPage;
-import com.tysanclan.site.projectewok.pages.ForumPage;
-import com.tysanclan.site.projectewok.pages.ForumThreadPage;
-import com.tysanclan.site.projectewok.pages.GroupPage;
-import com.tysanclan.site.projectewok.pages.GroupsPage;
-import com.tysanclan.site.projectewok.pages.HistoryPage;
-import com.tysanclan.site.projectewok.pages.JoinOverviewPage;
-import com.tysanclan.site.projectewok.pages.MemberPage;
-import com.tysanclan.site.projectewok.pages.NewsPage;
-import com.tysanclan.site.projectewok.pages.PasswordRequestConfirmationPage;
-import com.tysanclan.site.projectewok.pages.RealmPage;
-import com.tysanclan.site.projectewok.pages.RegisterAndApplyPage;
-import com.tysanclan.site.projectewok.pages.RegistrationPage;
-import com.tysanclan.site.projectewok.pages.RegulationPage;
-import com.tysanclan.site.projectewok.pages.RosterPage;
-import com.tysanclan.site.projectewok.pages.SessionTimeoutPage;
-import com.tysanclan.site.projectewok.pages.VacationPage;
-import com.tysanclan.site.projectewok.pages.forum.ActivationPage;
-import com.tysanclan.site.projectewok.pages.member.ReportBugPage;
-import com.tysanclan.site.projectewok.pages.member.RequestFeaturePage;
-import com.tysanclan.site.projectewok.pages.member.SubscriptionPaymentResolvedPage;
-import com.tysanclan.site.projectewok.pages.member.ViewBugPage;
-import com.tysanclan.site.projectewok.pages.member.admin.OldExpensesPage;
-import com.tysanclan.site.projectewok.pages.member.admin.ProcessPaymentRequestPage;
-import com.tysanclan.site.projectewok.pages.member.admin.RandomContentGenerationPage;
-import com.tysanclan.site.projectewok.pages.member.admin.TangoImporterPage;
-import com.tysanclan.site.projectewok.tasks.AcceptanceVoteStartTask;
-import com.tysanclan.site.projectewok.tasks.AcceptanceVoteStopTask;
-import com.tysanclan.site.projectewok.tasks.AchievementProposalTask;
-import com.tysanclan.site.projectewok.tasks.AutomaticPromotionTask;
-import com.tysanclan.site.projectewok.tasks.ChancellorElectionChecker;
-import com.tysanclan.site.projectewok.tasks.ChancellorElectionResolutionTask;
-import com.tysanclan.site.projectewok.tasks.CheckSubscriptionsDueTask;
-import com.tysanclan.site.projectewok.tasks.DebugSiteCreationTask;
-import com.tysanclan.site.projectewok.tasks.EmailChangeConfirmationExpirationTask;
-import com.tysanclan.site.projectewok.tasks.GroupLeaderElectionResolutionTask;
-import com.tysanclan.site.projectewok.tasks.MemberApplicationResolutionTask;
-import com.tysanclan.site.projectewok.tasks.MembershipExpirationTask;
-import com.tysanclan.site.projectewok.tasks.NoAccountExpireTask;
-import com.tysanclan.site.projectewok.tasks.PasswordRequestExpirationTask;
-import com.tysanclan.site.projectewok.tasks.RegulationChangeResolutionTask;
-import com.tysanclan.site.projectewok.tasks.ResolveImpeachmentTask;
-import com.tysanclan.site.projectewok.tasks.ResolveRoleTransferTask;
-import com.tysanclan.site.projectewok.tasks.ResolveTruthsayerComplaintTask;
-import com.tysanclan.site.projectewok.tasks.RestTokenCleanupTask;
-import com.tysanclan.site.projectewok.tasks.SenateElectionChecker;
-import com.tysanclan.site.projectewok.tasks.SenateElectionResolutionTask;
-import com.tysanclan.site.projectewok.tasks.TruthsayerAcceptanceVoteResolver;
-import com.tysanclan.site.projectewok.tasks.UntenabilityVoteResolutionTask;
-import com.tysanclan.site.projectewok.tasks.WarnInactiveMembersTask;
-import com.tysanclan.site.projectewok.util.scheduler.TysanScheduler;
-import com.tysanclan.site.projectewok.util.scheduler.TysanTask;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * @author Jeroen Steenbeeke
@@ -182,7 +135,7 @@ public class TysanApplication extends WebApplication {
 
 	/**
 	 * Creates a new application object for the Tysan website
-	 * 
+	 *
 	 * @param isTestMode
 	 *            Whether or not we are running this site in test mode
 	 */
@@ -210,7 +163,7 @@ public class TysanApplication extends WebApplication {
 		getComponentInstantiationListeners().add(new TysanSecurity());
 		if (testMode) {
 			relevantCtx = new ClassPathXmlApplicationContext(
-					new String[] { "services-mock.xml" });
+					new String[]{"services-mock.xml"});
 			getComponentInstantiationListeners().add(
 					new SpringComponentInjector(this, relevantCtx, true));
 			testContext = relevantCtx;
@@ -231,7 +184,7 @@ public class TysanApplication extends WebApplication {
 		}
 
 		if (IN_MEMORY.getValue().equals(System.getProperty(IN_MEMORY.getKey()))) {
-			TysanScheduler.getScheduler().scheduleTask(
+			HyperionScheduler.getScheduler().scheduleTask(DateTime.now(),
 					new DebugSiteCreationTask());
 		}
 
@@ -248,43 +201,51 @@ public class TysanApplication extends WebApplication {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void scheduleDefaultTasks() {
-		TysanScheduler.getScheduler().setApplication(this);
+		HyperionScheduler.getScheduler().setApplication(this);
 
-		TysanTask[] tasks = { new AcceptanceVoteStartTask(),
-				new AcceptanceVoteStopTask(), new AutomaticPromotionTask(),
-				new ChancellorElectionChecker(),
-				new ChancellorElectionResolutionTask(),
-				new EmailChangeConfirmationExpirationTask(),
-				new GroupLeaderElectionResolutionTask(),
-				new MemberApplicationResolutionTask(),
-				new MembershipExpirationTask(),
-				new PasswordRequestExpirationTask(),
-				new RegulationChangeResolutionTask(),
-				new ResolveImpeachmentTask(), new SenateElectionChecker(),
-				new SenateElectionResolutionTask(),
-				new TruthsayerAcceptanceVoteResolver(),
-				new UntenabilityVoteResolutionTask(),
-				new AchievementProposalTask(), new WarnInactiveMembersTask(),
-				new ResolveRoleTransferTask(), new CheckSubscriptionsDueTask(),
-				new ResolveTruthsayerComplaintTask(),
-				new RestTokenCleanupTask() };
+		Interval daily = Intervals.days(1);
+		Interval hourly = Intervals.hours(1);
+		Interval everyFourHours = Intervals.hours(4);
+		Interval everySixHours = Intervals.hours(6);
 
-		for (TysanTask task : tasks) {
-			TysanScheduler.getScheduler().scheduleTask(task);
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(daily, new AcceptanceVoteStartTask());
 
-		}
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(everyFourHours, new AcceptanceVoteStopTask());
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(daily, new AutomaticPromotionTask());
+
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(hourly, new ChancellorElectionChecker());
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(everyFourHours, new ChancellorElectionResolutionTask());
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(daily, new EmailChangeConfirmationExpirationTask());
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(daily, new GroupLeaderElectionResolutionTask());
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(hourly, new MemberApplicationResolutionTask());
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(hourly, new MembershipExpirationTask());
+
+
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(hourly, new PasswordRequestExpirationTask());
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(everyFourHours, new RegulationChangeResolutionTask());
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(daily, new ResolveImpeachmentTask());
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(hourly, new SenateElectionChecker());
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(everyFourHours, new SenateElectionResolutionTask());
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(daily, new TruthsayerAcceptanceVoteResolver());
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(daily, new UntenabilityVoteResolutionTask());
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(hourly, new AchievementProposalTask());
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(hourly, new WarnInactiveMembersTask());
+
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(everySixHours, new ResolveRoleTransferTask());
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(everySixHours, new CheckSubscriptionsDueTask());
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(everySixHours, new ResolveTruthsayerComplaintTask());
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(Intervals.minutes(5), new RestTokenCleanupTask());
 
 		if (System.getProperty("tysan.debug") != null) {
-			TysanScheduler.getScheduler().scheduleTask(
-					new NoAccountExpireTask());
+			HyperionScheduler.getScheduler().scheduleRepeatingTask(hourly, new NoAccountExpireTask());
 		}
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void mountBookmarkablePages() {
 
@@ -331,7 +292,6 @@ public class TysanApplication extends WebApplication {
 		mountPage("/feature/${id}", ViewBugPage.class);
 
 		if (System.getProperty("tysan.install") != null) {
-			mountPage("/tangoimport", TangoImporterPage.class);
 			mountPage("/randomcontent", RandomContentGenerationPage.class);
 			mountPage("/oldexpenses", OldExpensesPage.class);
 		}
@@ -362,7 +322,7 @@ public class TysanApplication extends WebApplication {
 
 	@Override
 	public WebRequest newWebRequest(HttpServletRequest servletRequest,
-			String filterPath) {
+									String filterPath) {
 		WebRequest request = super.newWebRequest(servletRequest, filterPath);
 		getSessionStore().setAttribute(
 				request,

@@ -55,15 +55,13 @@ public class ConfirmForumPostDeletePage extends TysanPage {
 						.size() > 1;
 
 				forumService.deletePost(getModelObject(),
-						ConfirmForumPostDeletePage.this.getTysanSession()
-								.getUser());
+						ConfirmForumPostDeletePage.this.getUser());
 				if (threadExists) {
 					setResponsePage(new ForumThreadPage(getModelObject()
 							.getThread().getId(), 1, false));
 				} else {
-					setResponsePage(new ForumPage(
-							forumDAO.load(getModelObject().getThread()
-									.getForum().getId())));
+					forumDAO.load(getModelObject().getThread()
+							.getForum().getId()).forEach(forum -> setResponsePage(new ForumPage(forum)));
 				}
 			}
 		};

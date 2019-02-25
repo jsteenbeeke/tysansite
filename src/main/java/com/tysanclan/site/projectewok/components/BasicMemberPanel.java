@@ -17,12 +17,10 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.TimeZone;
+import java.util.*;
 
+import com.tysanclan.site.projectewok.entities.*;
+import io.vavr.collection.Seq;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.ContextImage;
@@ -41,24 +39,9 @@ import com.tysanclan.site.projectewok.beans.RoleService;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
 import com.tysanclan.site.projectewok.components.RequiresAttentionLink.AttentionType;
 import com.tysanclan.site.projectewok.components.RequiresAttentionLink.IRequiresAttentionCondition;
-import com.tysanclan.site.projectewok.entities.AcceptanceVote;
-import com.tysanclan.site.projectewok.entities.AcceptanceVoteVerdict;
-import com.tysanclan.site.projectewok.entities.Bug;
 import com.tysanclan.site.projectewok.entities.Bug.ReportType;
-import com.tysanclan.site.projectewok.entities.ChancellorElection;
-import com.tysanclan.site.projectewok.entities.CompoundVote;
-import com.tysanclan.site.projectewok.entities.Event;
-import com.tysanclan.site.projectewok.entities.GamePetition;
-import com.tysanclan.site.projectewok.entities.Group;
-import com.tysanclan.site.projectewok.entities.MumbleServer;
-import com.tysanclan.site.projectewok.entities.Profile;
-import com.tysanclan.site.projectewok.entities.RealmPetition;
 import com.tysanclan.site.projectewok.entities.Role.RoleType;
-import com.tysanclan.site.projectewok.entities.RoleTransfer;
-import com.tysanclan.site.projectewok.entities.SenateElection;
 import com.tysanclan.site.projectewok.entities.SubscriptionPayment.UnpaidFilter;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.UserGameRealm;
 import com.tysanclan.site.projectewok.entities.dao.AcceptanceVoteDAO;
 import com.tysanclan.site.projectewok.entities.dao.BugDAO;
 import com.tysanclan.site.projectewok.entities.dao.ConversationParticipationDAO;
@@ -129,8 +112,7 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 
 		@Override
 		public AttentionType requiresAttention() {
-			if (Iterables.filter(getUser().getPayments(), new UnpaidFilter())
-					.iterator().hasNext()) {
+			if (getUser().getPayments().stream().anyMatch(s -> !s.isPaid())) {
 				User treasurer = roleService.getTreasurer();
 				if (treasurer != null && treasurer.getPaypalAddress() != null) {
 					return AttentionType.ERROR;
@@ -195,7 +177,7 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 
 		@Override
 		public AttentionType requiresAttention() {
-			List<Group> allGroups = groupDAO.findAll();
+			Seq<Group> allGroups = groupDAO.findAll();
 			allGroups.removeAll(getUser().getGroups());
 
 			for (Group g : allGroups) {
@@ -481,7 +463,7 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 		addSubscriptionPaymentLink();
 
 		add(new ListView<MumbleServer>("servers", ModelMaker.wrap(serverDAO
-				.findAll())) {
+				.findAll().toJavaList())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -516,17 +498,18 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 	}
 
 	private void addKeyRoleLinks(User user) {
+		addRoleLink(createRoleTransferFilter(user, RoleType.HERALD), "heraldAccept");
+		addRoleLink(createRoleTransferFilter(user, RoleType.STEWARD), "stewardAccept");
+		addRoleLink(createRoleTransferFilter(user, RoleType.TREASURER), "treasurerAccept");
+
+	}
+
+	private RoleTransferFilter createRoleTransferFilter(User user, RoleType type) {
 		RoleTransferFilter filter = new RoleTransferFilter();
-		filter.setAccepted(false);
-		filter.setUser(user);
-		filter.setRoleType(RoleType.HERALD);
-
-		addRoleLink(filter, "heraldAccept");
-		filter.setRoleType(RoleType.STEWARD);
-		addRoleLink(filter, "stewardAccept");
-		filter.setRoleType(RoleType.TREASURER);
-		addRoleLink(filter, "treasurerAccept");
-
+		filter.accepted(false);
+		filter.candidate(user);
+		filter.roleType(type);
+		return filter;
 	}
 
 	/**
@@ -534,7 +517,7 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 	 * @param id
 	 */
 	private void addRoleLink(RoleTransferFilter filter, String id) {
-		RoleTransfer transfer = roleTransferDAO.getUniqueByFilter(filter);
+		RoleTransfer transfer = roleTransferDAO.getUniqueByFilter(filter).getOrNull();
 
 		add(new IconLink.Builder("images/icons/delete.png",
 				new DefaultClickResponder<RoleTransfer>(
@@ -578,7 +561,7 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 	 */
 	private void addBirthdays() {
 
-		List<Profile> _profiles = profileDAO.findAll();
+		Seq<Profile> _profiles = profileDAO.findAll();
 		List<Profile> profiles = new LinkedList<Profile>();
 
 		Calendar cal = DateUtil.getCalendarInstance();
@@ -772,8 +755,8 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 		};
 
 		UserFilter filter = new UserFilter();
-		filter.addRank(Rank.TRUTHSAYER);
-		List<User> truthsayers = userDAO.findByFilter(filter);
+		filter.rank(Rank.TRUTHSAYER);
+		Seq<User> truthsayers = userDAO.findByFilter(filter);
 
 		trialLink.setVisible(!truthsayers.contains(user)
 				|| truthsayers.size() > 1);
@@ -839,8 +822,8 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 		};
 
 		TruthsayerNominationFilter filter = new TruthsayerNominationFilter();
-		filter.setNominee(user);
-		filter.setStartNotSet(true);
+		filter.user(user);
+		filter.voteStart().isNull();
 
 		acceptLink.add(new ContextImage("icon", "images/icons/error.png"));
 
@@ -1061,7 +1044,12 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 
 		private Event getNextEvent() {
 			EventFilter filter = new EventFilter();
-			filter.setDate(DateUtil.getMidnightCalendarInstance().getTime());
+			Calendar midnightCalendarInstance = DateUtil.getMidnightCalendarInstance();
+			Date startOfDay = midnightCalendarInstance.getTime();
+			midnightCalendarInstance.add(Calendar.DAY_OF_YEAR, 1);
+			midnightCalendarInstance.add(Calendar.SECOND, 1);
+
+			filter.date().between(startOfDay,midnightCalendarInstance.getTime());
 
 			if (eventDAO.countByFilter(filter) > 0) {
 				return eventDAO.findByFilter(filter).get(0);
@@ -1116,7 +1104,7 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 		@Override
 		public AttentionType requiresAttention() {
 			NotificationFilter nfilter = new NotificationFilter();
-			nfilter.setUser(getUser());
+			nfilter.user(getUser());
 
 			if (notificationDAO.countByFilter(nfilter) > 0) {
 				return AttentionType.WARNING;
@@ -1303,7 +1291,7 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 
 		@Override
 		public AttentionType requiresAttention() {
-			List<AcceptanceVote> votes = acceptanceVoteDAO.findAll();
+			Seq<AcceptanceVote> votes = acceptanceVoteDAO.findAll();
 
 			if (!votes.isEmpty() && MemberUtil.canUserVote(getUser())) {
 

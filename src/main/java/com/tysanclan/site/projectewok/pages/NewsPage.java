@@ -19,6 +19,7 @@ package com.tysanclan.site.projectewok.pages;
 
 import com.jeroensteenbeeke.hyperion.solstice.data.FilterDataProvider;
 import com.tysanclan.site.projectewok.TysanPage;
+import com.tysanclan.site.projectewok.TysanSession;
 import com.tysanclan.site.projectewok.beans.ForumService;
 import com.tysanclan.site.projectewok.components.AutoForumLink;
 import com.tysanclan.site.projectewok.components.NewsPanel;
@@ -58,8 +59,7 @@ public class NewsPage extends TysanPage {
 
 			@Override
 			protected void populateItem(Item<ForumThread> item) {
-				User u = NewsPage.this.getTysanSession() != null ? NewsPage.this
-						.getTysanSession().getUser() : null;
+				User u = getTysanSession().flatMap(TysanSession::getUser).getOrNull();
 
 				item.add(new NewsPanel("newspanel", item.getModelObject(),
 						u == null));

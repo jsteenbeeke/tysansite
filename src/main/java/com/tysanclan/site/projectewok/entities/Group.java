@@ -60,7 +60,7 @@ import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 public abstract class Group extends BaseDomainObject {
 	private static final long serialVersionUID = 1L;
 
-	public static enum JoinPolicy {
+	public enum JoinPolicy {
 		OPEN, APPLICATION, INVITATION;
 	}
 

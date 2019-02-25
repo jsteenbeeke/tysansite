@@ -55,7 +55,7 @@ public class ConfirmForumThreadDeletePage extends TysanPage {
 			@Override
 			protected void onSubmit() {
 				if (!service.deleteThread(getModelObject(),
-						ConfirmForumThreadDeletePage.this.getTysanSession()
+						ConfirmForumThreadDeletePage.this
 								.getUser())) {
 					error("Unable to delete thread: Permission denied");
 					setResponsePage(new ForumThreadPage(getModelObject()

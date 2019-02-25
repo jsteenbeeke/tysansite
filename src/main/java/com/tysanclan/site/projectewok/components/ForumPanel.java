@@ -1,17 +1,17 @@
 /**
  * Tysan Clan Website
  * Copyright (C) 2008-2013 Jeroen Steenbeeke and Ties van de Ven
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -62,7 +62,7 @@ public class ForumPanel extends Panel {
 	private ForumService forumService;
 
 	public ForumPanel(String id, final Forum forum, final long pageId,
-			final boolean publicView) {
+					  final boolean publicView) {
 		super(id);
 
 		DataView<ForumThread> threads = new DataView<ForumThread>("threads",
@@ -85,10 +85,12 @@ public class ForumPanel extends Panel {
 			protected void populateItem(Item<ForumThread> item) {
 
 				ForumThread current = item.getModelObject();
-				TysanSession session = (TysanSession) Session.get();
+				User user = TysanSession.session()
+						.flatMap(TysanSession::getUser)
+						.getOrNull();
 
-				int unreadCount = (session != null && session.getUser() != null) ? forumService
-						.getForumThreadUnreadCount(session.getUser(), current)
+				int unreadCount = (user != null) ? forumService
+						.getForumThreadUnreadCount(user, current)
 						: 0;
 
 				Event ev = current.getEvent();
@@ -198,10 +200,12 @@ public class ForumPanel extends Panel {
 
 			@Override
 			public void onClick() {
-				TysanSession session = (TysanSession) TysanSession.get();
+				User user = TysanSession.session()
+						.flatMap(TysanSession::getUser)
+						.getOrNull();
 
-				if (session != null && session.getUser() != null) {
-					forumService.clearUnreadPosts(session.getUser(),
+				if (user != null) {
+					forumService.clearUnreadPosts(user,
 							getModelObject());
 
 				}
@@ -212,12 +216,9 @@ public class ForumPanel extends Panel {
 
 		markAsReadLink.add(new ContextImage("icon", "images/icons/eye.png"));
 
-		TysanSession session = (TysanSession) TysanSession.get();
-		User user = null;
-
-		if (session != null) {
-			user = session.getUser();
-		}
+		User user = TysanSession.session()
+				.flatMap(TysanSession::getUser)
+				.getOrNull();
 
 		markAsReadLink.setVisible(user != null);
 

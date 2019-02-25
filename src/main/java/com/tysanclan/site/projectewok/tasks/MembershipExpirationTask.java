@@ -17,30 +17,22 @@
  */
 package com.tysanclan.site.projectewok.tasks;
 
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.HyperionTask;
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.ServiceProvider;
+import com.tysanclan.site.projectewok.TysanTaskGroup;
 import com.tysanclan.site.projectewok.beans.MembershipService;
-import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public class MembershipExpirationTask extends PeriodicTask {
-	@SpringBean
-	private MembershipService membershipService;
-
-	/**
-	 * Creates a new task that checks for expired memberships
-	 */
+public class MembershipExpirationTask extends HyperionTask {
 	public MembershipExpirationTask() {
-		super("Membership Expiration", "Members", ExecutionMode.HOURLY);
+		super("Membership Expiration", TysanTaskGroup.MEMBERS);
 	}
 
-	/**
-	 * @see com.tysanclan.site.projectewok.util.scheduler.TysanTask#run()
-	 */
 	@Override
-	public void run() {
-		membershipService.expireMembers();
+	public void run(ServiceProvider provider) {
+
+		provider.getService(MembershipService.class).expireMembers();
 	}
 }

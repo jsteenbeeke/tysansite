@@ -1,17 +1,17 @@
 /**
  * Tysan Clan Website
  * Copyright (C) 2008-2013 Jeroen Steenbeeke and Ties van de Ven
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -132,21 +132,18 @@ public class ForumThreadPage extends TysanPage {
 					HttpServletResponse.SC_NOT_FOUND);
 		}
 
-		ForumThread t = dao.get(parameters.getThreadId());
+		ForumThread t = dao.load(parameters.getThreadId()).getOrElseThrow(() -> new RestartResponseAtInterceptPageException(
+				AccessDeniedPage.class));
 
-		if (t == null) {
-			throw new RestartResponseAtInterceptPageException(
-					AccessDeniedPage.class);
-		}
 
 		initComponents(t, parameters.getPageNumber(), getUser() == null);
 	}
 
 	public ForumThreadPage(final long threadId, int pageId,
-			final boolean publicView) {
+						   final boolean publicView) {
 		super("");
 
-		initComponents(dao.load(threadId), pageId, publicView);
+		initComponents(dao.load(threadId).getOrNull(), pageId, publicView);
 	}
 
 	/**
@@ -157,7 +154,7 @@ public class ForumThreadPage extends TysanPage {
 	}
 
 	protected void initComponents(ForumThread thread, final int pageId,
-			final boolean publicView) {
+								  final boolean publicView) {
 		TysanSession sess = TysanSession.get();
 
 		Forum forum = thread.getForum();

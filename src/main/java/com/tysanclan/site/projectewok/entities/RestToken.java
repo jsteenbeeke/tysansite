@@ -69,7 +69,7 @@ public class RestToken extends BaseDomainObject {
 		this.user = user;
 		setExpires(System.currentTimeMillis() + TOKEN_VALID);
 		this.hash = HashUtil.sha1Hash(Joiner.on("!").join(user.getUsername(),
-				new Date().toString()));
+				new Date().toString())).throwIfNotOk(IllegalStateException::new);
 
 	}
 

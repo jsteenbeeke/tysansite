@@ -57,7 +57,7 @@ import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 public class Trial extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;
 
-	public static enum Verdict {
+	public enum Verdict {
 		INNOCENT, MINOR, MEDIUM, MAJOR;
 	}
 

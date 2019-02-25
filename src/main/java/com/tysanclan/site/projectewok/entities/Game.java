@@ -52,21 +52,6 @@ import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class Game extends BaseDomainObject {
 
-	public static class Renderer implements IChoiceRenderer<Game> {
-
-		private static final long serialVersionUID = 1L;
-
-		@Override
-		public Object getDisplayValue(Game object) {
-			return object.getName();
-		}
-
-		@Override
-		public String getIdValue(Game object, int index) {
-			return Long.toString(object.getId());
-		}
-	}
-
 	private static final long serialVersionUID = 1L;
 
 	@Id

@@ -17,27 +17,21 @@
  */
 package com.tysanclan.site.projectewok.tasks;
 
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.HyperionTask;
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.ServiceProvider;
+import com.tysanclan.site.projectewok.TysanTaskGroup;
 import com.tysanclan.site.projectewok.beans.RoleService;
 import com.tysanclan.site.projectewok.entities.dao.RoleTransferDAO;
-import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
-public class ResolveRoleTransferTask extends PeriodicTask {
-	@SpringBean
-	private RoleService roleService;
-
-	@SpringBean
-	private RoleTransferDAO roleTransferDAO;
-
+public class ResolveRoleTransferTask extends HyperionTask {
 	public ResolveRoleTransferTask() {
-		super("Resolve Role Transfer", "Organization",
-				ExecutionMode.ONCE_EVERY_SIX_HOURS);
+		super("Resolve Role Transfer", TysanTaskGroup.ORGANIZATIONAL);
 	}
 
 	@Override
-	public void run() {
-		roleService.resolveTransfers();
+	public void run(ServiceProvider provider) {
+		provider.getService(RoleService.class).resolveTransfers();
 
 	}
 }

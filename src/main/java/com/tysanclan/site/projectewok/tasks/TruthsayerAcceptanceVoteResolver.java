@@ -17,36 +17,23 @@
  */
 package com.tysanclan.site.projectewok.tasks;
 
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.HyperionTask;
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.ServiceProvider;
+import com.tysanclan.site.projectewok.TysanTaskGroup;
 import com.tysanclan.site.projectewok.beans.LawEnforcementService;
-import com.tysanclan.site.projectewok.entities.dao.TruthsayerNominationDAO;
-import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public class TruthsayerAcceptanceVoteResolver extends PeriodicTask {
+public class TruthsayerAcceptanceVoteResolver extends HyperionTask {
 
-	/**
-	 * 
-	 */
 	public TruthsayerAcceptanceVoteResolver() {
-		super("Acceptance vote resolver", "Truthsayers", ExecutionMode.DAILY);
+		super("Acceptance vote resolver", TysanTaskGroup.ORGANIZATIONAL);
 	}
 
-	@SpringBean
-	private TruthsayerNominationDAO truthsayerNominationDAO;
-
-	@SpringBean
-	private LawEnforcementService lawEnforcementService;
-
-	/**
-	 * @see com.tysanclan.site.projectewok.util.scheduler.TysanTask#run()
-	 */
 	@Override
-	public void run() {
-		lawEnforcementService.resolveNominations();
+	public void run(ServiceProvider provider) {
+		provider.getService(LawEnforcementService.class).resolveNominations();
 
 	}
 

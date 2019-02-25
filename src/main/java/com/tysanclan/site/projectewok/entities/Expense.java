@@ -30,6 +30,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
+import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.NaiveRenderer;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.hibernate.annotations.Cache;
 
@@ -46,7 +47,7 @@ public class Expense extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;
 
 	public static class ExpensePeriodRenderer implements
-			IChoiceRenderer<ExpensePeriod> {
+			IChoiceRenderer<ExpensePeriod>, NaiveRenderer<ExpensePeriod> {
 		private static final long serialVersionUID = 1L;
 
 		private final boolean lowercased;

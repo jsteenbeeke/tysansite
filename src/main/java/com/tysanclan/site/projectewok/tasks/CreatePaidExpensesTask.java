@@ -17,22 +17,18 @@
  */
 package com.tysanclan.site.projectewok.tasks;
 
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.HyperionTask;
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.ServiceProvider;
+import com.tysanclan.site.projectewok.TysanTaskGroup;
 import com.tysanclan.site.projectewok.beans.FinanceService;
-import com.tysanclan.site.projectewok.util.scheduler.SingleExecutionTask;
 
-public class CreatePaidExpensesTask extends SingleExecutionTask {
-	@SpringBean
-	private FinanceService financeService;
-
+public class CreatePaidExpensesTask extends HyperionTask {
 	public CreatePaidExpensesTask() {
-		super("Create Paid Expenses", "Finance");
+		super("Create Paid Expenses", TysanTaskGroup.FINANCE);
 	}
 
 	@Override
-	public void run() {
-		financeService.transformExpensesToPaidExpenses();
-
+	public void run(ServiceProvider provider) {
+		provider.getService(FinanceService.class).transformExpensesToPaidExpenses();
 	}
 }

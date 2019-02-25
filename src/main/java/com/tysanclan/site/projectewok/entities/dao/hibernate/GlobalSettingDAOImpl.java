@@ -21,6 +21,7 @@ import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
 import com.tysanclan.site.projectewok.entities.GlobalSetting;
 import com.tysanclan.site.projectewok.entities.GlobalSetting.GlobalSettings;
 import com.tysanclan.site.projectewok.entities.filter.GlobalSettingFilter;
+import io.vavr.control.Option;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -33,6 +34,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("request")
 class GlobalSettingDAOImpl extends HibernateDAO<GlobalSetting, GlobalSettingFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.GlobalSettingDAO {
+	@Override
+	public Option<GlobalSetting> get(String id) {
+		GlobalSettingFilter filter = new GlobalSettingFilter();
+		filter.id().equalTo(id);
+
+		return getUniqueByFilter(filter);
+	}
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)

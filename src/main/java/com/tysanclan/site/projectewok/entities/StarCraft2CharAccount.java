@@ -36,13 +36,11 @@ public class StarCraft2CharAccount extends GameAccount {
 	@Column
 	private int characterCode;
 
-	// $P$
 
 	/** 
 	 * Creates a new StarCraft2CharAccount object
 	 */
 	public StarCraft2CharAccount() {
-		// $H$
 	}
 
 	/**
@@ -83,6 +81,4 @@ public class StarCraft2CharAccount extends GameAccount {
 	public AccountType getType() {
 		return AccountType.STARCRAFT2;
 	}
-
-	// $GS$
 }

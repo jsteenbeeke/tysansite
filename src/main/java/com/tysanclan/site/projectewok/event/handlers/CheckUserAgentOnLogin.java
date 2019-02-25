@@ -53,7 +53,7 @@ public class CheckUserAgentOnLogin implements EventHandler<LoginEvent> {
 
 		MobileUserAgentFilter filter = new MobileUserAgentFilter();
 
-		filter.setIdentifier(userAgent);
+		filter.identifier(userAgent);
 
 		if (userAgentDAO.countByFilter(filter) == 0) {
 			MobileUserAgent agent = new MobileUserAgent();

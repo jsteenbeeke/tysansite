@@ -17,16 +17,16 @@
  */
 package com.tysanclan.site.projectewok.pages.member.admin;
 
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.PasswordTextField;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.wicket.HyperionScheduler;
 import com.tysanclan.site.projectewok.TysanApplication;
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import com.tysanclan.site.projectewok.tasks.DebugSiteCreationTask;
-import com.tysanclan.site.projectewok.util.scheduler.TysanScheduler;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.PasswordTextField;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.joda.time.DateTime;
 
 /**
  * @author Jeroen Steenbeeke
@@ -54,7 +54,7 @@ public class RandomContentGenerationPage extends TysanPage {
 
 					if (keyField.getModelObject().equals(
 							TysanApplication.MASTER_KEY)) {
-						TysanScheduler.getScheduler().scheduleTask(
+						HyperionScheduler.getScheduler().scheduleTask(DateTime.now(),
 								new DebugSiteCreationTask());
 						info("Site population background task started");
 					} else {

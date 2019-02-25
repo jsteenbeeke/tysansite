@@ -57,7 +57,7 @@ public class TruthsayerNomination extends BaseDomainObject {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private User user;
 
-	@Column(nullable = true)
+	@Column()
 	private Date voteStart;
 
 	@OneToMany(mappedBy = "nomination", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -69,7 +69,7 @@ public class TruthsayerNomination extends BaseDomainObject {
 	 * Creates a new TruthsayerNomination object
 	 */
 	public TruthsayerNomination() {
-		this.votes = new HashSet<TruthsayerNominationVote>();
+		this.votes = new HashSet<>();
 		// $H$
 	}
 

@@ -33,7 +33,7 @@ import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 public class GlobalSetting extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;
 
-	public static enum GlobalSettings {
+	public enum GlobalSettings {
 		DEFAULT {
 			@Override
 			public GlobalSetting getNewDefaultGlobalSetting() {

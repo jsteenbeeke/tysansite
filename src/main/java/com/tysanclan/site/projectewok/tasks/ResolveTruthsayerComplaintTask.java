@@ -17,26 +17,18 @@
  */
 package com.tysanclan.site.projectewok.tasks;
 
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.HyperionTask;
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.ServiceProvider;
+import com.tysanclan.site.projectewok.TysanTaskGroup;
 import com.tysanclan.site.projectewok.beans.LawEnforcementService;
-import com.tysanclan.site.projectewok.entities.dao.TruthsayerComplaintDAO;
-import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 
-public class ResolveTruthsayerComplaintTask extends PeriodicTask {
-	@SpringBean
-	private LawEnforcementService lawEnforcementService;
-
-	@SpringBean
-	private TruthsayerComplaintDAO truthsayerComplaintDAO;
-
+public class ResolveTruthsayerComplaintTask extends HyperionTask {
 	public ResolveTruthsayerComplaintTask() {
-		super("Resolve Truthsayer Complaint", "Justice",
-				ExecutionMode.ONCE_EVERY_SIX_HOURS);
+		super("Resolve Truthsayer Complaint", TysanTaskGroup.JUSTICE);
 	}
 
 	@Override
-	public void run() {
-		lawEnforcementService.resolveComplaints();
+	public void run(ServiceProvider provider) {
+		provider.getService(LawEnforcementService.class).resolveComplaints();
 	}
 }

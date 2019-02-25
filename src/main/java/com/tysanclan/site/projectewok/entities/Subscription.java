@@ -125,7 +125,7 @@ public class Subscription extends BaseDomainObject {
 
 	public List<SubscriptionPayment> getPayments() {
 		if (payments == null)
-			payments = new ArrayList<SubscriptionPayment>(0);
+			payments = new ArrayList<>(0);
 
 		return payments;
 	}
@@ -135,8 +135,7 @@ public class Subscription extends BaseDomainObject {
 	}
 
 	@Transient
-	public int countPaymentsDue() {
-		return ImmutableList.copyOf(
-				Iterables.filter(getPayments(), new DueFilter())).size();
+	public long countPaymentsDue() {
+		return getPayments().stream().filter(s -> !s.isPaid()).count();
 	}
 }

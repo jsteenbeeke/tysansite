@@ -31,11 +31,8 @@ import org.hibernate.annotations.Cache;
 public class SocialGroup extends Group {
 	private static final long serialVersionUID = 1L;
 
-	// $P$
-
 	public SocialGroup() {
 		super();
-		// $H$
 	}
 
 	/**
@@ -53,7 +50,5 @@ public class SocialGroup extends Group {
 	public String toString() {
 		return "Social Group [" + getId() + "]: " + getName();
 	}
-
-	// $GS$
 
 }

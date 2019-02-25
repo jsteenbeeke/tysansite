@@ -1,17 +1,17 @@
 /**
  * Tysan Clan Website
  * Copyright (C) 2008-2013 Jeroen Steenbeeke and Ties van de Ven
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -127,8 +127,8 @@ public abstract class TysanOverviewPanel<T> extends Panel {
 	}
 
 	protected RequiresAttentionLink createConditionalVisibilityLink(String id,
-			final Class<? extends TysanPage> pageClass, String text,
-			IRequiresAttentionCondition condition) {
+																	final Class<? extends TysanPage> pageClass, String text,
+																	IRequiresAttentionCondition condition) {
 		return createConditionalVisibilityLink(id, null, pageClass, text,
 				condition);
 	}
@@ -152,65 +152,65 @@ public abstract class TysanOverviewPanel<T> extends Panel {
 		RequiresAttentionLink.Builder builder = new RequiresAttentionLink.Builder(
 				text, new DefaultClickResponder<U>(linkModel) {
 
-					private static final long serialVersionUID = 1L;
+			private static final long serialVersionUID = 1L;
 
-					/**
-					 * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
-					 */
-					@SuppressWarnings("unchecked")
-					@Override
-					public void onClick() {
-						Constructor<? extends TysanPage> modelParamConstructor = null;
-						Constructor<? extends TysanPage> userParamConstructor = null;
-						Constructor<? extends TysanPage> noParamConstructor = null;
+			/**
+			 * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
+			 */
+			@SuppressWarnings("unchecked")
+			@Override
+			public void onClick() {
+				Constructor<? extends TysanPage> modelParamConstructor = null;
+				Constructor<? extends TysanPage> userParamConstructor = null;
+				Constructor<? extends TysanPage> noParamConstructor = null;
 
-						U modelObject = super.getModelObject();
+				U modelObject = super.getModelObject();
 
-						for (Constructor<?> cns : pageClass.getConstructors()) {
-							if (cns.getParameterTypes().length == 0) {
-								if (!cns.isAnnotationPresent(NoAuto.class)) {
-									noParamConstructor = (Constructor<? extends TysanPage>) cns;
-								}
-							}
-							if (cns.getParameterTypes().length == 1
-									&& cns.getParameterTypes()[0] == User.class) {
-								if (!cns.isAnnotationPresent(NoAuto.class)) {
-									userParamConstructor = (Constructor<? extends TysanPage>) cns;
-								}
-							}
-							if (cns.getParameterTypes().length == 1
-									&& modelObject != null
-									&& cns.getParameterTypes()[0]
-											.isAssignableFrom(modelObject
-													.getClass())) {
-								if (!cns.isAnnotationPresent(NoAuto.class)) {
-									modelParamConstructor = (Constructor<? extends TysanPage>) cns;
-								}
-							}
-						}
-
-						try {
-							if (userParamConstructor != null) {
-								setResponsePage(userParamConstructor
-										.newInstance(getUser()));
-							} else if (noParamConstructor != null) {
-								setResponsePage(noParamConstructor
-										.newInstance());
-							} else if (modelParamConstructor != null) {
-								setResponsePage(modelParamConstructor
-										.newInstance(modelObject));
-							}
-						} catch (IllegalArgumentException e) {
-							logger.error(e.getMessage(), e);
-						} catch (InstantiationException e) {
-							logger.error(e.getMessage(), e);
-						} catch (IllegalAccessException e) {
-							logger.error(e.getMessage(), e);
-						} catch (InvocationTargetException e) {
-							logger.error(e.getMessage(), e);
+				for (Constructor<?> cns : pageClass.getConstructors()) {
+					if (cns.getParameterTypes().length == 0) {
+						if (!cns.isAnnotationPresent(NoAuto.class)) {
+							noParamConstructor = (Constructor<? extends TysanPage>) cns;
 						}
 					}
-				});
+					if (cns.getParameterTypes().length == 1
+							&& cns.getParameterTypes()[0] == User.class) {
+						if (!cns.isAnnotationPresent(NoAuto.class)) {
+							userParamConstructor = (Constructor<? extends TysanPage>) cns;
+						}
+					}
+					if (cns.getParameterTypes().length == 1
+							&& modelObject != null
+							&& cns.getParameterTypes()[0]
+							.isAssignableFrom(modelObject
+									.getClass())) {
+						if (!cns.isAnnotationPresent(NoAuto.class)) {
+							modelParamConstructor = (Constructor<? extends TysanPage>) cns;
+						}
+					}
+				}
+
+				try {
+					if (userParamConstructor != null) {
+						setResponsePage(userParamConstructor
+								.newInstance(getUser()));
+					} else if (noParamConstructor != null) {
+						setResponsePage(noParamConstructor
+								.newInstance());
+					} else if (modelParamConstructor != null) {
+						setResponsePage(modelParamConstructor
+								.newInstance(modelObject));
+					}
+				} catch (IllegalArgumentException e) {
+					logger.error(e.getMessage(), e);
+				} catch (InstantiationException e) {
+					logger.error(e.getMessage(), e);
+				} catch (IllegalAccessException e) {
+					logger.error(e.getMessage(), e);
+				} catch (InvocationTargetException e) {
+					logger.error(e.getMessage(), e);
+				}
+			}
+		});
 
 		TysanSecurity sec = new TysanSecurity();
 		if (!sec.authorize(pageClass)) {
@@ -221,14 +221,14 @@ public abstract class TysanOverviewPanel<T> extends Panel {
 	}
 
 	protected RequiresAttentionLink createLink(String id,
-			final Class<? extends TysanPage> pageClass, String text,
-			IRequiresAttentionCondition condition) {
+											   final Class<? extends TysanPage> pageClass, String text,
+											   IRequiresAttentionCondition condition) {
 		return createLink(id, null, pageClass, text, condition);
 	}
 
 	protected <U> RequiresAttentionLink createLink(String id,
-			IModel<U> linkModel, final Class<? extends TysanPage> pageClass,
-			String text, IRequiresAttentionCondition condition) {
+												   IModel<U> linkModel, final Class<? extends TysanPage> pageClass,
+												   String text, IRequiresAttentionCondition condition) {
 		RequiresAttentionLink.Builder builder = createBasicBuilder(pageClass,
 				linkModel, text);
 
@@ -238,9 +238,9 @@ public abstract class TysanOverviewPanel<T> extends Panel {
 	}
 
 	protected final User getUser() {
-		TysanSession session = TysanSession.get();
-
-		return session.getUser();
+		return TysanSession.session()
+				.flatMap(TysanSession::getUser)
+				.getOrNull();
 	}
 
 	public void requiresAttention() {

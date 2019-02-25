@@ -54,8 +54,7 @@ public class ConfirmForumThreadLockPage extends TysanPage {
 			@Override
 			protected void onSubmit() {
 				if (!service.lockThread(getModelObject(),
-						ConfirmForumThreadLockPage.this.getTysanSession()
-								.getUser())) {
+						ConfirmForumThreadLockPage.this.getUser())) {
 					error("Unable to lock thread: Permission denied");
 				}
 				setResponsePage(new ForumThreadPage(getModelObject().getId(),

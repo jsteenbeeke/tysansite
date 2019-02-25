@@ -36,14 +36,11 @@ public class GroupForum extends Forum {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Group group;
 
-	// $P$
-
 	/**
 	 * Creates a new GroupForum object
 	 */
 	public GroupForum() {
 		setMembersOnly(true);
-		// $H$
 	}
 
 	/**

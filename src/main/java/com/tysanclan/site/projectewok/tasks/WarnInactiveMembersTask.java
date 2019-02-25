@@ -17,29 +17,23 @@
  */
 package com.tysanclan.site.projectewok.tasks;
 
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.HyperionTask;
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.ServiceProvider;
+import com.tysanclan.site.projectewok.TysanTaskGroup;
 import com.tysanclan.site.projectewok.beans.UserService;
 import com.tysanclan.site.projectewok.entities.dao.InactivityNotificationDAO;
-import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public class WarnInactiveMembersTask extends PeriodicTask {
-	@SpringBean
-	private InactivityNotificationDAO inactivityDAO;
-
-	@SpringBean
-	private UserService userService;
-
+public class WarnInactiveMembersTask extends HyperionTask {
 	public WarnInactiveMembersTask() {
-		super("Send warning e-mail to inactive members", "Membership",
-				ExecutionMode.HOURLY);
+		super("Send warning e-mail to inactive members", TysanTaskGroup.MEMBERS);
 	}
 
 	@Override
-	public void run() {
-		userService.warnInactives();
+	public void run(ServiceProvider provider) {
+		provider.getService(UserService.class).warnInactives();
 	}
 }

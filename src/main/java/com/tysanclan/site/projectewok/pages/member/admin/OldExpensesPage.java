@@ -17,14 +17,14 @@
  */
 package com.tysanclan.site.projectewok.pages.member.admin;
 
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.PasswordTextField;
-import org.apache.wicket.model.Model;
-
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.wicket.HyperionScheduler;
 import com.tysanclan.site.projectewok.TysanApplication;
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.tasks.CreatePaidExpensesTask;
-import com.tysanclan.site.projectewok.util.scheduler.TysanScheduler;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.PasswordTextField;
+import org.apache.wicket.model.Model;
+import org.joda.time.DateTime;
 
 public class OldExpensesPage extends TysanPage {
 	private static final long serialVersionUID = 1L;
@@ -46,7 +46,7 @@ public class OldExpensesPage extends TysanPage {
 				if (keyField.getModelObject().equals(
 						TysanApplication.MASTER_KEY)) {
 
-					TysanScheduler.getScheduler().scheduleTask(
+					HyperionScheduler.getScheduler().scheduleTask(DateTime.now(),
 							new CreatePaidExpensesTask());
 					info("Expense transformation background job started");
 

@@ -1,17 +1,17 @@
 /**
  * Tysan Clan Website
  * Copyright (C) 2008-2013 Jeroen Steenbeeke and Ties van de Ven
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -22,6 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 
+import io.vavr.control.Option;
 import org.apache.wicket.Application;
 import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -65,7 +66,7 @@ import com.tysanclan.site.projectewok.util.MemberUtil;
 
 /**
  * Web page for use within the Tysan Clan
- * 
+ *
  * @author Jeroen Steenbeeke
  */
 public class TysanPage extends WebPage {
@@ -151,7 +152,7 @@ public class TysanPage extends WebPage {
 		}.setVisible(Application.get()
 				.getConfigurationType() == RuntimeConfigurationType.DEVELOPMENT));
 
-		User u = getTysanSession().getUser();
+		User u = getUser();
 		WebMarkupContainer subMenu = new WebMarkupContainer("topMenu");
 		if (u != null) {
 			if (MemberUtil.isMember(u)) {
@@ -221,11 +222,11 @@ public class TysanPage extends WebPage {
 	}
 
 	public User getUser() {
-		return getTysanSession() != null ? getTysanSession().getUser() : null;
+		return getTysanSession().flatMap(TysanSession::getUser).getOrNull();
 	}
 
-	public TysanSession getTysanSession() {
-		return (TysanSession) getSession();
+	public Option<TysanSession> getTysanSession() {
+		return TysanSession.session();
 	}
 
 	/**
@@ -253,23 +254,23 @@ public class TysanPage extends WebPage {
 	}
 
 	private void addAnimalPanel() {
-		GlobalSetting animalSetting = globalSettingDAO
+		Option<GlobalSetting> animalSetting = globalSettingDAO
 				.get(AprilFools.KEY_ANIMALS);
 
 		boolean isAprilFoolsDay2011 = isAprilFoolsDay(2011);
 
 		if (getUser() != null && MemberUtil.isMember(getUser())) {
-			if (animalSetting != null || isAprilFoolsDay2011) {
+			if (isAprilFoolsDay2011) {
 
 				String validOption = "";
 
-				if (animalSetting != null) {
-					validOption = animalSetting.getValue();
+				if (animalSetting.isDefined()) {
+					validOption = animalSetting.get().getValue();
 				} else {
 					validOption = AprilFools.getRandomAnimalOption();
 				}
 
-				int showChance = isAprilFoolsDay2011 ? 249 : 0;
+				int showChance = 249;
 
 				boolean show = showChance > AprilFools.rand.nextInt(1000);
 
@@ -461,7 +462,7 @@ public class TysanPage extends WebPage {
 		};
 
 		public void check(PageParameters params, String identifier,
-				boolean required) throws PageParameterExtractorException {
+						  boolean required) throws PageParameterExtractorException {
 			StringValue value = params.get(identifier);
 
 			if (value.isEmpty() || value.isNull()) {
@@ -570,7 +571,7 @@ public class TysanPage extends WebPage {
 		private static final long serialVersionUID = 1L;
 
 		public PageParameterExtractorException(String message,
-				Object... params) {
+											   Object... params) {
 			super(String.format(message, params));
 		}
 
@@ -586,13 +587,13 @@ public class TysanPage extends WebPage {
 		private final PageParameterExtractorBuilder prev;
 
 		private PageParameterExtractorBuilder(String identifier,
-				ParamType paramType, boolean required) {
+											  ParamType paramType, boolean required) {
 			this(identifier, paramType, required, null);
 		}
 
 		private PageParameterExtractorBuilder(String identifier,
-				ParamType paramType, boolean required,
-				PageParameterExtractorBuilder prev) {
+											  ParamType paramType, boolean required,
+											  PageParameterExtractorBuilder prev) {
 			super();
 			this.identifier = identifier;
 			this.paramType = paramType;
@@ -653,7 +654,7 @@ public class TysanPage extends WebPage {
 		}
 
 		private void addType(PageParameterExtractor extractor,
-				PageParameters params) {
+							 PageParameters params) {
 			if (prev != null) {
 				prev.addType(extractor, params);
 			}

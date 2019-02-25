@@ -40,7 +40,7 @@ public class MentorPanel extends TysanOverviewPanel<User> {
 
 		setVisible(!mentor.getPupils().isEmpty());
 
-		add(new Label("count", new Model<Integer>(mentor.getPupils().size())));
+		add(new Label("count", new Model<>(mentor.getPupils().size())));
 
 		add(new ListView<User>("pupils", ModelMaker.wrap(mentor.getPupils())) {
 			private static final long serialVersionUID = 1L;

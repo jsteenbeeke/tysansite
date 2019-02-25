@@ -17,27 +17,20 @@
  */
 package com.tysanclan.site.projectewok.tasks;
 
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.HyperionTask;
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.ServiceProvider;
+import com.tysanclan.site.projectewok.TysanTaskGroup;
 import com.tysanclan.site.projectewok.beans.FinanceService;
-import com.tysanclan.site.projectewok.entities.dao.SubscriptionDAO;
-import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 
-public class CheckSubscriptionsDueTask extends PeriodicTask {
-	@SpringBean
-	private FinanceService financeService;
-
-	@SpringBean
-	private SubscriptionDAO subscriptionDAO;
-
+public class CheckSubscriptionsDueTask extends HyperionTask {
 	public CheckSubscriptionsDueTask() {
-		super("Check subscriptions due", "Finance",
-				ExecutionMode.ONCE_EVERY_SIX_HOURS);
+		super("Check subscriptions due", TysanTaskGroup.FINANCE);
 	}
 
 	@Override
-	public void run() {
-		financeService.checkSubscriptionsDue();
+	public void run(ServiceProvider provider) {
+
+		provider.getService(FinanceService.class).checkSubscriptionsDue();
 
 	}
 }
