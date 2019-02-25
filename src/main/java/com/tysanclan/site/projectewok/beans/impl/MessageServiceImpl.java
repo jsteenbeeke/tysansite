@@ -1,17 +1,17 @@
 /**
  * Tysan Clan Website
  * Copyright (C) 2008-2013 Jeroen Steenbeeke and Ties van de Ven
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -77,7 +77,7 @@ class MessageServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public ConversationParticipation createConversation(User sender,
-			List<User> participants, String title, String text) {
+														List<User> participants, String title, String text) {
 		return createConversation(sender, participants, title, text, null);
 	}
 
@@ -100,8 +100,8 @@ class MessageServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public ConversationParticipation createConversation(User sender,
-			List<User> participants, String title, String text,
-			MessageFolder folder) {
+														List<User> participants, String title, String text,
+														MessageFolder folder) {
 		if (!participants.contains(sender) && sender != null) {
 			participants.add(sender);
 		}
@@ -150,7 +150,7 @@ class MessageServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public Message respondToConversation(Conversation conversation, User user,
-			String content) {
+										 String content) {
 		Message message = new Message();
 		message.setContent(content);
 		message.setConversation(conversation);
@@ -172,7 +172,7 @@ class MessageServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void markAsRead(ConversationParticipation participation,
-			Message object) {
+						   Message object) {
 		participation.getReadMessages().add(object);
 		conversationParticipationDAO.update(participation);
 
@@ -215,19 +215,19 @@ class MessageServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void ceaseParticipation(ConversationParticipation participation) {
-		ConversationParticipation _participation = conversationParticipationDAO
-				.load(participation.getId());
+		conversationParticipationDAO
+				.load(participation.getId()).forEach(_participation -> {
+			Conversation conversation = _participation.getConversation();
 
-		Conversation conversation = _participation.getConversation();
+			conversation.getParticipants().remove(_participation);
 
-		conversation.getParticipants().remove(_participation);
+			conversationParticipationDAO.delete(_participation);
+			conversationDAO.update(conversation);
 
-		conversationParticipationDAO.delete(_participation);
-		conversationDAO.update(conversation);
-
-		if (conversation.getParticipants().isEmpty()) {
-			conversationDAO.delete(conversation);
-		}
+			if (conversation.getParticipants().isEmpty()) {
+				conversationDAO.delete(conversation);
+			}
+		});
 	}
 
 }

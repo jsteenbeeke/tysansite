@@ -74,18 +74,16 @@ class MailServiceImpl implements
 
 	@Override
 	public String getActivationMailBody(String username, String activationKey) {
-		StringBuilder body = new StringBuilder();
-		body.append("Dear ").append(username).append(",<br/><br/>");
-		body.append("You have succesfully created an account for the Tysan Clan Forums. ");
-		body.append("Before you can begin using this account however, you need to activate it first. Please ");
-		body.append("visit https://www.tysanclan.com/activation/")
-				.append(activationKey).append("/ to activate your account. ");
-		body.append("Once this is done you can use your account normally.<br /><br />");
-		body.append("With regards,<br/><br/>")
-				.append("The Tysan Clan<br /><br />")
-				.append("(THIS E-MAIL WAS AUTOMATICALLY GENERATED)");
 
-		return body.toString();
+		return "Dear " + username + ",<br/><br/>" +
+				"You have succesfully created an account for the Tysan Clan Forums. " +
+				"Before you can begin using this account however, you need to activate it first. Please " +
+				"visit https://www.tysanclan.com/activation/" +
+				activationKey + "/ to activate your account. " +
+				"Once this is done you can use your account normally.<br /><br />" +
+				"With regards,<br/><br/>" +
+				"The Tysan Clan<br /><br />" +
+				"(THIS E-MAIL WAS AUTOMATICALLY GENERATED)";
 
 	}
 
@@ -95,24 +93,21 @@ class MailServiceImpl implements
 	 */
 	@Override
 	public String getConfirmationMailBody(String username, String activationKey) {
-		StringBuilder body = new StringBuilder();
-		body.append("Dear ").append(username).append(",<br/><br/>");
 
-		body.append("You have requested to change your")
-				.append(" e-mail address of your account on")
-				.append(" the Tysan Clan website. ")
-				.append("To confirm this change, log into your")
-				.append(" account and enter the following confirmation")
-				.append(" code:<br /><br />");
-		body.append("Confirmation code: ").append(activationKey)
-				.append("<br /><br />");
-		body.append("If you do not do this within 3 days of your")
-				.append(" request, your e-mail address will remain unchanged.<br /><br />");
-		body.append("With regards,<br /><br />");
-		body.append("The Tysan Clan<br /><br />");
-		body.append("(THIS E-MAIL WAS AUTOMATICALLY GENERATED)");
-
-		return body.toString();
+		return "Dear " + username + ",<br/><br/>" +
+				"You have requested to change your" +
+				" e-mail address of your account on" +
+				" the Tysan Clan website. " +
+				"To confirm this change, log into your" +
+				" account and enter the following confirmation" +
+				" code:<br /><br />" +
+				"Confirmation code: " + activationKey +
+				"<br /><br />" +
+				"If you do not do this within 3 days of your" +
+				" request, your e-mail address will remain unchanged.<br /><br />" +
+				"With regards,<br /><br />" +
+				"The Tysan Clan<br /><br />" +
+				"(THIS E-MAIL WAS AUTOMATICALLY GENERATED)";
 	}
 
 	/**
@@ -122,18 +117,16 @@ class MailServiceImpl implements
 	@Override
 	public String getPasswordRequestMailBody(String username,
 			String activationKey) {
-		StringBuilder body = new StringBuilder();
-		body.append("Dear ").append(username).append(",<br/><br/>");
-		body.append("Someone has requested a password reset for your account. If you did not request such a reset, ");
-		body.append("please disregard this e-mail. ");
-		body.append("If you did request this reset, Then please ");
-		body.append("visit https://www.tysanclan.com/resetpassword/")
-				.append(activationKey).append("/ to proceed.<br /><br />");
-		body.append("With regards,<br/><br/>")
-				.append("The Tysan Clan<br /><br />")
-				.append("(THIS E-MAIL WAS AUTOMATICALLY GENERATED)");
 
-		return body.toString();
+		return "Dear " + username + ",<br/><br/>" +
+				"Someone has requested a password reset for your account. If you did not request such a reset, " +
+				"please disregard this e-mail. " +
+				"If you did request this reset, Then please " +
+				"visit https://www.tysanclan.com/resetpassword/" +
+				activationKey + "/ to proceed.<br /><br />" +
+				"With regards,<br/><br/>" +
+				"The Tysan Clan<br /><br />" +
+				"(THIS E-MAIL WAS AUTOMATICALLY GENERATED)";
 	}
 
 	/**
@@ -325,17 +318,15 @@ class MailServiceImpl implements
 	 */
 	@Override
 	public String getEmailChangeMailBody(String username, String activationKey) {
-		StringBuilder body = new StringBuilder();
-		body.append("Dear ").append(username).append(",<br/><br/>");
-		body.append("You have requested to change your e-mail. To complete the change, you must log in ");
-		body.append("to the site and enter the following code:<br/><br/>");
-		body.append(activationKey);
-		body.append("<br /><br />");
-		body.append("With regards,<br/><br/>")
-				.append("The Tysan Clan<br /><br />")
-				.append("(THIS E-MAIL WAS AUTOMATICALLY GENERATED)");
 
-		return body.toString();
+		return "Dear " + username + ",<br/><br/>" +
+				"You have requested to change your e-mail. To complete the change, you must log in " +
+				"to the site and enter the following code:<br/><br/>" +
+				activationKey +
+				"<br /><br />" +
+				"With regards,<br/><br/>" +
+				"The Tysan Clan<br /><br />" +
+				"(THIS E-MAIL WAS AUTOMATICALLY GENERATED)";
 
 	}
 }

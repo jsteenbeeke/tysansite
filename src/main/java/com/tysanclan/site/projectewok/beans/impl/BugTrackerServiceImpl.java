@@ -91,7 +91,7 @@ class BugTrackerServiceImpl implements BugTrackerService {
 
 			BugFilter filter = getExceptionFilter(exception);
 
-			Bug report = bugDAO.getUniqueByFilter(filter);
+			Bug report = bugDAO.getUniqueByFilter(filter).getOrElseThrow(IllegalStateException::new);
 
 			if (report.getStatus() == BugStatus.CLOSED
 					|| report.getStatus() == BugStatus.RESOLVED) {
@@ -176,7 +176,7 @@ class BugTrackerServiceImpl implements BugTrackerService {
 
 	private BugFilter getExceptionFilter(Exception exception) {
 		BugFilter filter = new BugFilter();
-		filter.setDescription(exceptionToString(exception));
+		filter.description(exceptionToString(exception));
 		return filter;
 	}
 

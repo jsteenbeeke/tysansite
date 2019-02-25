@@ -1,44 +1,27 @@
 /**
  * Tysan Clan Website
  * Copyright (C) 2008-2013 Jeroen Steenbeeke and Ties van de Ven
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.tysanclan.site.projectewok.beans.impl;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.google.common.collect.Sets;
 import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.beans.ForumService;
-import com.tysanclan.site.projectewok.entities.Forum;
-import com.tysanclan.site.projectewok.entities.ForumThread;
-import com.tysanclan.site.projectewok.entities.Game;
-import com.tysanclan.site.projectewok.entities.JoinApplication;
-import com.tysanclan.site.projectewok.entities.JoinVerdict;
-import com.tysanclan.site.projectewok.entities.Realm;
-import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.*;
 import com.tysanclan.site.projectewok.entities.dao.JoinApplicationDAO;
 import com.tysanclan.site.projectewok.entities.dao.JoinVerdictDAO;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
@@ -48,6 +31,17 @@ import com.tysanclan.site.projectewok.entities.filter.UserFilter;
 import com.tysanclan.site.projectewok.event.LoginEvent;
 import com.tysanclan.site.projectewok.event.MemberStatusEvent;
 import com.tysanclan.site.projectewok.util.MemberUtil;
+import io.vavr.collection.Seq;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 /**
  * @author Jeroen Steenbeeke
@@ -104,8 +98,7 @@ class MembershipServiceImpl implements
 	}
 
 	/**
-	 * @param logService
-	 *            the logService to set
+	 * @param logService the logService to set
 	 */
 	public void setLogService(
 			com.tysanclan.site.projectewok.beans.LogService logService) {
@@ -113,8 +106,7 @@ class MembershipServiceImpl implements
 	}
 
 	/**
-	 * @param democracyService
-	 *            the democracyService to set
+	 * @param democracyService the democracyService to set
 	 */
 	public void setDemocracyService(
 			com.tysanclan.site.projectewok.beans.DemocracyService democracyService) {
@@ -122,32 +114,28 @@ class MembershipServiceImpl implements
 	}
 
 	/**
-	 * @param userDAO
-	 *            the userDAO to set
+	 * @param userDAO the userDAO to set
 	 */
 	public void setUserDAO(UserDAO userDAO) {
 		this.userDAO = userDAO;
 	}
 
 	/**
-	 * @param forumService
-	 *            the forumService to set
+	 * @param forumService the forumService to set
 	 */
 	public void setForumService(ForumService forumService) {
 		this.forumService = forumService;
 	}
 
 	/**
-	 * @param joinApplicationDAO
-	 *            the joinApplicationDAO to set
+	 * @param joinApplicationDAO the joinApplicationDAO to set
 	 */
 	public void setJoinApplicationDAO(JoinApplicationDAO joinApplicationDAO) {
 		this.joinApplicationDAO = joinApplicationDAO;
 	}
 
 	/**
-	 * @param joinVerdictDAO
-	 *            the joinVerdictDAO to set
+	 * @param joinVerdictDAO the joinVerdictDAO to set
 	 */
 	public void setJoinVerdictDAO(JoinVerdictDAO joinVerdictDAO) {
 		this.joinVerdictDAO = joinVerdictDAO;
@@ -157,29 +145,27 @@ class MembershipServiceImpl implements
 		this.dispatcher = dispatcher;
 	}
 
-	/**
-	 * @see com.tysanclan.site.projectewok.beans.MembershipService#terminateMembership(com.tysanclan.site.projectewok.entities.User)
-	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void terminateMembership(User _user, boolean judicial) {
-		User user = userDAO.load(_user.getId());
+		userDAO.load(_user.getId()).forEach(user -> {
 
-		if (user != null) {
-			clearMentorStatus(user);
-			clearSenatorStatus(user);
-			clearChancellorStatus(user);
-			clearEndorsements(user);
-			user.setRank(judicial ? Rank.BANNED : Rank.FORUM);
-			userDAO.update(user);
-		}
+			if (user != null) {
+				clearMentorStatus(user);
+				clearSenatorStatus(user);
+				clearChancellorStatus(user);
+				clearEndorsements(user);
+				user.setRank(judicial ? Rank.BANNED : Rank.FORUM);
+				userDAO.update(user);
+			}
 
-		logService.logUserAction(user, "Membership",
-				"Membership has been terminated");
+			logService.logUserAction(user, "Membership",
+					"Membership has been terminated");
+		});
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	private void clearEndorsements(User user) {
+	protected void clearEndorsements(User user) {
 		user.getEndorsedBy().clear();
 		user.setEndorses(null);
 		user.getEndorsedForSenateBy().clear();
@@ -189,10 +175,10 @@ class MembershipServiceImpl implements
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	private void clearSenatorStatus(User _user) {
+	protected void clearSenatorStatus(User _user) {
 		if (_user.getRank() == Rank.SENATOR) {
 			UserFilter filter = new UserFilter();
-			filter.addRank(Rank.SENATOR);
+			filter.rank(Rank.SENATOR);
 			long count = userDAO.countByFilter(filter);
 			// Only the current user is a Senator
 			if (count == 1) {
@@ -203,7 +189,7 @@ class MembershipServiceImpl implements
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	private void clearChancellorStatus(User _user) {
+	protected void clearChancellorStatus(User _user) {
 		if (_user.getRank() == Rank.CHANCELLOR) {
 			// If the user was the Chancellor, prepare new elections
 			democracyService.createChancellorElection();
@@ -211,11 +197,11 @@ class MembershipServiceImpl implements
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	private void clearMentorStatus(User _user) {
+	protected void clearMentorStatus(User _user) {
 		JoinApplicationFilter filter = new JoinApplicationFilter();
-		filter.setMentor(_user);
+		filter.mentor(_user);
 
-		List<JoinApplication> applications = joinApplicationDAO
+		Seq<JoinApplication> applications = joinApplicationDAO
 				.findByFilter(filter);
 		for (JoinApplication application : applications) {
 			application.setMentor(null);
@@ -226,107 +212,108 @@ class MembershipServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void registerAction(User user) {
-		User _user = userDAO.load(user.getId());
-		_user.setLastAction(new Date());
-		_user.setVacation(false);
-		userDAO.save(_user);
+		userDAO.load(user.getId()).forEach(_user -> {
+			_user.setLastAction(new Date());
+			_user.setVacation(false);
+			userDAO.save(_user);
+		});
 
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public ForumThread applyForMembership(User user, String motivation,
-			Game game, Realm realm) {
-		User _user = userDAO.load(user.getId());
+										  Game game, Realm realm) {
+		return userDAO.load(user.getId()).map(_user -> {
 
-		Forum forum = forumService.getInteractionForum();
+			Forum forum = forumService.getInteractionForum();
 
-		ForumThread joinThread = forumService.createForumThread(forum,
-				"Join application: " + _user.getUsername(), motivation, _user);
+			ForumThread joinThread = forumService.createForumThread(forum,
+					"Join application: " + _user.getUsername(), motivation, _user);
 
-		JoinApplication joinApplication = new JoinApplication();
-		joinApplication.setApplicant(_user);
-		joinApplication.setJoinThread(joinThread);
-		joinApplication.setStartDate(new Date());
-		joinApplication.setPrimaryGame(game);
-		joinApplication.setPrimaryRealm(realm);
+			JoinApplication joinApplication = new JoinApplication();
+			joinApplication.setApplicant(_user);
+			joinApplication.setJoinThread(joinThread);
+			joinApplication.setStartDate(new Date());
+			joinApplication.setPrimaryGame(game);
+			joinApplication.setPrimaryRealm(realm);
 
-		joinApplicationDAO.save(joinApplication);
+			joinApplicationDAO.save(joinApplication);
 
-		logService.logUserAction(user, "Membership",
-				"Has applied for membership");
+			logService.logUserAction(user, "Membership",
+					"Has applied for membership");
 
-		dispatcher
-				.dispatchEvent(new MemberStatusEvent(
-						com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.APPLIED,
-						user));
+			dispatcher
+					.dispatchEvent(new MemberStatusEvent(
+							com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.APPLIED,
+							user));
 
-		return joinThread;
+			return joinThread;
+		}).getOrElseThrow(IllegalStateException::new);
 
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.MembershipService#setMentor(com.tysanclan.site.projectewok.entities.JoinApplication,
-	 *      com.tysanclan.site.projectewok.entities.User)
+	 * com.tysanclan.site.projectewok.entities.User)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void setMentor(JoinApplication application, User mentor) {
-
 		if (application.getMentor() == null) {
-			User _mentor = userDAO.load(mentor.getId());
-			if (MemberUtil.canUserBeMentor(mentor)) {
-				JoinApplication _application = joinApplicationDAO
-						.load(application.getId());
-				_application.setMentor(_mentor);
-				joinApplicationDAO.update(_application);
+			userDAO.load(mentor.getId()).filter(MemberUtil::canUserBeMentor).forEach(_mentor -> {
+				joinApplicationDAO
+						.load(application.getId()).forEach(_application -> {
+					_application.setMentor(_mentor);
+					joinApplicationDAO.update(_application);
 
-				logService.logUserAction(_mentor, "Membership",
-						"Has become Mentor of "
-								+ application.getApplicant().getUsername());
+					logService.logUserAction(_mentor, "Membership",
+							"Has become Mentor of "
+									+ application.getApplicant().getUsername());
 
-				checkResolved(application);
-			}
+					checkResolved(application);
+				});
+			});
 		}
-
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.MembershipService#setJoinApplicationVote(com.tysanclan.site.projectewok.entities.JoinApplication,
-	 *      com.tysanclan.site.projectewok.entities.User, boolean)
+	 * com.tysanclan.site.projectewok.entities.User, boolean)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void setJoinApplicationVote(JoinApplication application,
-			User senator, boolean inFavor) {
-		JoinApplication _application = joinApplicationDAO.load(application
-				.getId());
-		User _senator = userDAO.load(senator.getId());
+									   User senator, boolean inFavor) {
+		joinApplicationDAO.load(application
+				.getId()).forEach(_application -> userDAO.load(senator.getId()).forEach(_senator -> {
 
-		JoinVerdictFilter filter = new JoinVerdictFilter();
-		filter.setJoinApplication(_application);
-		filter.setSenator(_senator);
+			JoinVerdictFilter filter = new JoinVerdictFilter();
+			filter.application(_application);
+			filter.user(_senator);
 
-		long count = joinVerdictDAO.countByFilter(filter);
-		if (count == 0 && _senator.getRank() == Rank.SENATOR) {
-			JoinVerdict verdict = new JoinVerdict();
-			verdict.setApplication(_application);
-			verdict.setInFavor(inFavor);
-			verdict.setUser(_senator);
-			joinVerdictDAO.save(verdict);
-		} else if (_senator.getRank() == Rank.SENATOR) {
-			List<JoinVerdict> verdicts = joinVerdictDAO.findByFilter(filter);
-			JoinVerdict verdict = verdicts.get(0);
-			verdict.setInFavor(inFavor);
-			joinVerdictDAO.update(verdict);
-		}
+			long count = joinVerdictDAO.countByFilter(filter);
+			if (count == 0 && _senator.getRank() == Rank.SENATOR) {
+				JoinVerdict verdict = new JoinVerdict();
+				verdict.setApplication(_application);
+				verdict.setInFavor(inFavor);
+				verdict.setUser(_senator);
+				joinVerdictDAO.save(verdict);
+			} else if (_senator.getRank() == Rank.SENATOR) {
+				Seq<JoinVerdict> verdicts = joinVerdictDAO.findByFilter(filter);
+				JoinVerdict verdict = verdicts.get(0);
+				verdict.setInFavor(inFavor);
+				joinVerdictDAO.update(verdict);
+			}
 
-		checkResolved(application);
+			checkResolved(application);
+
+		}));
 
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	private void checkResolved(JoinApplication application) {
+	protected void checkResolved(JoinApplication application) {
 		if (application.getMentor() != null) {
 			Set<User> negatives = Sets.newHashSet();
 			for (JoinVerdict verdict : application.getVerdicts()) {
@@ -355,55 +342,55 @@ class MembershipServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void performAutoPromotion(User _user) {
-		User user = userDAO.load(_user.getId());
-		Rank newRank = MemberUtil.determineRankByJoinDate(_user.getJoinDate());
+		userDAO.load(_user.getId()).forEach(user -> {
+			Rank newRank = MemberUtil.determineRankByJoinDate(_user.getJoinDate());
 
-		user.setRank(newRank);
+			user.setRank(newRank);
 
-		userDAO.update(user);
+			userDAO.update(user);
 
-		logService.logUserAction(user, "Membership",
-				"User has been promoted to " + newRank.toString());
-		notificationService.notifyUser(user, "You now have the rank of "
-				+ newRank.toString());
+			logService.logUserAction(user, "Membership",
+					"User has been promoted to " + newRank.toString());
+			notificationService.notifyUser(user, "You now have the rank of "
+					+ newRank.toString());
+		});
 
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void feelLucky(User _luckyOne) {
-		User luckyOne = userDAO.load(_luckyOne.getId());
+		userDAO.load(_luckyOne.getId()).forEach(luckyOne -> {
+			int action = random.nextInt(100);
 
-		int action = random.nextInt(100);
+			luckyOne.setLuckyScore(luckyOne.getLuckyScore() != null ? luckyOne
+					.getLuckyScore() + 1 : 1);
 
-		luckyOne.setLuckyScore(luckyOne.getLuckyScore() != null ? luckyOne
-				.getLuckyScore() + 1 : 1);
-
-		userDAO.update(luckyOne);
-
-		if (action < 23) {
-			// Reset avatar
-			luckyOne.setCustomTitle("Unlucky One");
-			luckyOne.setSignature("Unlucky One");
-			luckyOne.setImageURL("/images/unlucky.png");
-			userDAO.update(luckyOne);
-		} else if (action < 24) {
-			// Reset score
-			luckyOne.setLuckyScore(0);
 			userDAO.update(luckyOne);
 
-			notificationService.notifyUser(luckyOne,
-					"You were unlucky enough to have your lucky score reset!");
-		} else if (action < 58) {
-			// Nothing, really lucky
-		} else {
-			// Rickroll
-			luckyOne.setCustomTitle("I <3 Rick Astley");
-			luckyOne.setSignature("Rick Astley's greatest fan");
-			luckyOne.setImageURL("/images/unlucky2.png");
-			userDAO.update(luckyOne);
-		}
+			if (action < 23) {
+				// Reset avatar
+				luckyOne.setCustomTitle("Unlucky One");
+				luckyOne.setSignature("Unlucky One");
+				luckyOne.setImageURL("/images/unlucky.png");
+				userDAO.update(luckyOne);
+			} else if (action < 24) {
+				// Reset score
+				luckyOne.setLuckyScore(0);
+				userDAO.update(luckyOne);
 
+				notificationService.notifyUser(luckyOne,
+						"You were unlucky enough to have your lucky score reset!");
+			} else if (action < 58) {
+				// Nothing, really lucky
+			} else {
+				// Rickroll
+				luckyOne.setCustomTitle("I <3 Rick Astley");
+				luckyOne.setSignature("Rick Astley's greatest fan");
+				luckyOne.setImageURL("/images/unlucky2.png");
+				userDAO.update(luckyOne);
+			}
+		});
 	}
 
 	/**
@@ -437,11 +424,11 @@ class MembershipServiceImpl implements
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void determinePromotions() {
 		UserFilter filter = new UserFilter();
-		filter.addRank(Rank.JUNIOR_MEMBER);
-		filter.addRank(Rank.FULL_MEMBER);
-		filter.addRank(Rank.SENIOR_MEMBER);
+		filter.rank(Rank.JUNIOR_MEMBER);
+		filter.orRank(Rank.FULL_MEMBER);
+		filter.orRank(Rank.SENIOR_MEMBER);
 
-		List<User> users = userDAO.findByFilter(filter);
+		Seq<User> users = userDAO.findByFilter(filter);
 		for (User user : users) {
 			if (MemberUtil.determineRankByJoinDate(user.getJoinDate()) != user
 					.getRank()) {

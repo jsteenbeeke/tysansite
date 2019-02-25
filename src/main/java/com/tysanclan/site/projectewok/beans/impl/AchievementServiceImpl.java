@@ -104,7 +104,7 @@ class AchievementServiceImpl implements AchievementService {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	private void castVote(AchievementProposal proposal, User senator,
+	protected void castVote(AchievementProposal proposal, User senator,
 			boolean inFavor) {
 		AchievementProposalVote vote = getCurrentVote(proposal, senator);
 
@@ -124,7 +124,7 @@ class AchievementServiceImpl implements AchievementService {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	private AchievementProposalVote getCurrentVote(
+	protected AchievementProposalVote getCurrentVote(
 			AchievementProposal proposal, User senator) {
 		AchievementProposalVote vote = null;
 
@@ -224,9 +224,9 @@ class AchievementServiceImpl implements AchievementService {
 	public List<AchievementProposal> getProposedAchievements(User user) {
 		AchievementProposalFilter filter = new AchievementProposalFilter();
 
-		filter.setSuggestor(user);
+		filter.suggestor(user);
 
-		return achievementProposalDAO.findByFilter(filter);
+		return achievementProposalDAO.findByFilter(filter).toJavaList();
 	}
 
 	@Override
@@ -328,27 +328,34 @@ class AchievementServiceImpl implements AchievementService {
 	private void addOtherIcons(List<AchievementIcon> icons) {
 
 		AchievementIconFilter filter = new AchievementIconFilter();
-		filter.setUnclaimed(true);
-		filter.setCreatorOnly(false);
-		filter.setApproved(true);
-		icons.addAll(achievementIconDAO.findByFilter(filter));
+		filter.achievement().isNull();
+		filter.proposal().isNull();
+		filter.creatorOnly(false);
+		filter.approved(true);
+
+		icons.addAll(achievementIconDAO.findByFilter(filter).toJavaList());
 	}
 
 	private void addMyIcons(User user, List<AchievementIcon> icons) {
 		AchievementIconFilter filter = new AchievementIconFilter();
-		filter.setUnclaimed(true);
-		filter.setCreatorOnly(true);
-		filter.setApproved(true);
-		filter.setCreator(user);
-		icons.addAll(achievementIconDAO.findByFilter(filter));
+
+		filter.achievement().isNull();
+		filter.proposal().isNull();
+		filter.creatorOnly(true);
+		filter.approved(true);
+		filter.creator(user);
+
+		icons.addAll(achievementIconDAO.findByFilter(filter).toJavaList());
 	}
 
 	private void addClassicIcons(List<AchievementIcon> icons) {
 		AchievementIconFilter filter = new AchievementIconFilter();
-		filter.setUnclaimed(true);
-		filter.setCreatorOnlyAsNull(true);
-		filter.setApproved(true);
-		icons.addAll(achievementIconDAO.findByFilter(filter));
+		filter.achievement().isNull();
+		filter.proposal().isNull();
+		filter.creatorOnly().isNull();
+		filter.approved(true);
+
+		icons.addAll(achievementIconDAO.findByFilter(filter).toJavaList());
 	}
 
 	@Override
@@ -400,14 +407,14 @@ class AchievementServiceImpl implements AchievementService {
 		Calendar cal = DateUtil.getCalendarInstance();
 		cal.add(Calendar.DAY_OF_MONTH, -4);
 
-		filter.setStartsBefore(cal.getTime());
+		filter.startDate().lessThan(cal.getTime());
 
 		for (AchievementProposal proposal : achievementProposalDAO
 				.findByFilter(filter)) {
 
-			int senateSize = userDAO.countByRank(Rank.SENATOR);
-			int totalVotes = proposal.getChancellorVeto() == null
-					|| !proposal.getChancellorVeto().booleanValue() ? proposal
+			long senateSize = userDAO.countByRank(Rank.SENATOR);
+			long totalVotes = proposal.getChancellorVeto() == null
+					|| !proposal.getChancellorVeto() ? proposal
 					.getApprovedBy().size() : senateSize;
 			int inFavor = 0;
 
@@ -418,12 +425,12 @@ class AchievementServiceImpl implements AchievementService {
 			}
 
 			int requiredPercentage = proposal.getChancellorVeto() == null
-					|| !proposal.getChancellorVeto().booleanValue() ? 51 : 66;
+					|| !proposal.getChancellorVeto() ? 51 : 66;
 
 			AchievementIcon icon = proposal.getIcon();
 			icon.setProposal(null);
 
-			int perc = 100 * inFavor / totalVotes;
+			long perc = 100 * inFavor / totalVotes;
 			if (perc >= requiredPercentage) {
 				Achievement achievement = new Achievement();
 				achievement.setDescription(proposal.getDescription());

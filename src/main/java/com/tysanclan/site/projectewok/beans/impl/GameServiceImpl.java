@@ -1,26 +1,33 @@
 /**
  * Tysan Clan Website
  * Copyright (C) 2008-2013 Jeroen Steenbeeke and Ties van de Ven
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.tysanclan.site.projectewok.beans.impl;
 
-import java.awt.Dimension;
-import java.util.Date;
-import java.util.List;
-
+import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
+import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.site.projectewok.entities.*;
+import com.tysanclan.site.projectewok.entities.GameAccount.AccountType;
+import com.tysanclan.site.projectewok.entities.dao.*;
+import com.tysanclan.site.projectewok.entities.filter.AllowedAccountTypeFilter;
+import com.tysanclan.site.projectewok.entities.filter.GameFilter;
+import com.tysanclan.site.projectewok.entities.filter.UserGameRealmFilter;
+import com.tysanclan.site.projectewok.event.GameDeletionEvent;
+import com.tysanclan.site.projectewok.util.ImageUtil;
+import com.tysanclan.site.projectewok.util.MemberUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,35 +37,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.events.EventException;
 
-import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
-import com.tysanclan.rest.api.data.Rank;
-import com.tysanclan.site.projectewok.entities.AllowedAccountType;
-import com.tysanclan.site.projectewok.entities.Diablo2Account;
-import com.tysanclan.site.projectewok.entities.Game;
-import com.tysanclan.site.projectewok.entities.GameAccount;
-import com.tysanclan.site.projectewok.entities.GameAccount.AccountType;
-import com.tysanclan.site.projectewok.entities.GamePetition;
-import com.tysanclan.site.projectewok.entities.GamingGroup;
-import com.tysanclan.site.projectewok.entities.LeagueOfLegendsAccount;
-import com.tysanclan.site.projectewok.entities.MinecraftAccount;
-import com.tysanclan.site.projectewok.entities.RealIdAccount;
-import com.tysanclan.site.projectewok.entities.Realm;
-import com.tysanclan.site.projectewok.entities.StarCraft2CharAccount;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.UserGameRealm;
-import com.tysanclan.site.projectewok.entities.dao.AllowedAccountTypeDAO;
-import com.tysanclan.site.projectewok.entities.dao.GameAccountDAO;
-import com.tysanclan.site.projectewok.entities.dao.GameDAO;
-import com.tysanclan.site.projectewok.entities.dao.GamePetitionDAO;
-import com.tysanclan.site.projectewok.entities.dao.GroupDAO;
-import com.tysanclan.site.projectewok.entities.dao.RealmDAO;
-import com.tysanclan.site.projectewok.entities.dao.UserGameRealmDAO;
-import com.tysanclan.site.projectewok.entities.filter.AllowedAccountTypeFilter;
-import com.tysanclan.site.projectewok.entities.filter.GameFilter;
-import com.tysanclan.site.projectewok.entities.filter.UserGameRealmFilter;
-import com.tysanclan.site.projectewok.event.GameDeletionEvent;
-import com.tysanclan.site.projectewok.util.ImageUtil;
-import com.tysanclan.site.projectewok.util.MemberUtil;
+import java.awt.*;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -122,8 +103,7 @@ class GameServiceImpl implements
 	}
 
 	/**
-	 * @param gameAccountDAO
-	 *            the gameAccountDAO to set
+	 * @param gameAccountDAO the gameAccountDAO to set
 	 */
 	public void setGameAccountDAO(GameAccountDAO gameAccountDAO) {
 		this.gameAccountDAO = gameAccountDAO;
@@ -136,7 +116,7 @@ class GameServiceImpl implements
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.GameService#createGame(java.lang.String,
-	 *      byte[])
+	 * byte[])
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -157,14 +137,13 @@ class GameServiceImpl implements
 	public List<Game> getActiveGames() {
 		GameFilter filter = new GameFilter();
 
-		filter.setActive(true);
+		filter.active(true);
 
-		return gameDAO.findByFilter(filter);
+		return gameDAO.findByFilter(filter).toJavaList();
 	}
 
 	/**
-	 * @param logService
-	 *            the logService to set
+	 * @param logService the logService to set
 	 */
 	public void setLogService(
 			com.tysanclan.site.projectewok.beans.LogService logService) {
@@ -172,16 +151,14 @@ class GameServiceImpl implements
 	}
 
 	/**
-	 * @param realmService
-	 *            the realmService to set
+	 * @param realmService the realmService to set
 	 */
 	public void setRealmService(RealmServiceImpl realmService) {
 		this.realmService = realmService;
 	}
 
 	/**
-	 * @param notificationService
-	 *            the notificationService to set
+	 * @param notificationService the notificationService to set
 	 */
 	public void setNotificationService(
 			com.tysanclan.site.projectewok.beans.NotificationService notificationService) {
@@ -189,8 +166,7 @@ class GameServiceImpl implements
 	}
 
 	/**
-	 * @param gameDAO
-	 *            the gameDAO to set
+	 * @param gameDAO the gameDAO to set
 	 */
 	public void setGameDAO(GameDAO gameDAO) {
 		this.gameDAO = gameDAO;
@@ -201,16 +177,14 @@ class GameServiceImpl implements
 	}
 
 	/**
-	 * @param gamePetitionDAO
-	 *            the gamePetitionDAO to set
+	 * @param gamePetitionDAO the gamePetitionDAO to set
 	 */
 	public void setGamePetitionDAO(GamePetitionDAO gamePetitionDAO) {
 		this.gamePetitionDAO = gamePetitionDAO;
 	}
 
 	/**
-	 * @param userGameRealmDAO
-	 *            the userGameRealmDAO to set
+	 * @param userGameRealmDAO the userGameRealmDAO to set
 	 */
 	public void setUserGameRealmDAO(UserGameRealmDAO userGameRealmDAO) {
 		this.userGameRealmDAO = userGameRealmDAO;
@@ -229,7 +203,7 @@ class GameServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public GamePetition createPetition(User user, String name, Realm realm,
-			byte[] icon) {
+									   byte[] icon) {
 		Dimension d = ImageUtil.getImageDimensions(icon);
 
 		if (d.width < 48 || d.height < 48) {
@@ -255,7 +229,7 @@ class GameServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public GamePetition createPetition(User user, String name,
-			String realmName, byte[] icon) {
+									   String realmName, byte[] icon) {
 		GamePetition petition = new GamePetition();
 		petition.setImage(icon);
 		petition.setName(name);
@@ -326,24 +300,24 @@ class GameServiceImpl implements
 	public List<UserGameRealm> getPlayedGames(User user) {
 		UserGameRealmFilter filter = new UserGameRealmFilter();
 
-		filter.setUser(user);
+		filter.user(user);
 
-		return userGameRealmDAO.findByFilter(filter);
+		return userGameRealmDAO.findByFilter(filter).toJavaList();
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.GameService#addPlayedGame(com.tysanclan.site.projectewok.entities.User,
-	 *      com.tysanclan.site.projectewok.entities.Game,
-	 *      com.tysanclan.site.projectewok.entities.Realm)
+	 * com.tysanclan.site.projectewok.entities.Game,
+	 * com.tysanclan.site.projectewok.entities.Realm)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void addPlayedGame(User user, Game game, Realm realm) {
 		UserGameRealmFilter filter = new UserGameRealmFilter();
 
-		filter.setUser(user);
-		filter.setGame(game);
-		filter.setRealm(realm);
+		filter.user(user);
+		filter.game(game);
+		filter.realm(realm);
 
 		if (userGameRealmDAO.countByFilter(filter) == 0) {
 			UserGameRealm ugr = new UserGameRealm();
@@ -360,9 +334,9 @@ class GameServiceImpl implements
 	public void removePlayedGame(User user, Game game, Realm realm) {
 		UserGameRealmFilter filter = new UserGameRealmFilter();
 
-		filter.setUser(user);
-		filter.setGame(game);
-		filter.setRealm(realm);
+		filter.user(user);
+		filter.game(game);
+		filter.realm(realm);
 
 		if (userGameRealmDAO.countByFilter(filter) > 0) {
 			for (UserGameRealm ugr : userGameRealmDAO.findByFilter(filter)) {
@@ -373,7 +347,7 @@ class GameServiceImpl implements
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.GameService#signPetition(com.tysanclan.site.projectewok.entities.GamePetition,
-	 *      com.tysanclan.site.projectewok.entities.User)
+	 * com.tysanclan.site.projectewok.entities.User)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -412,7 +386,7 @@ class GameServiceImpl implements
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.GameService#countPlayers(com.tysanclan.site.projectewok.entities.Game,
-	 *      com.tysanclan.site.projectewok.entities.Realm)
+	 * com.tysanclan.site.projectewok.entities.Realm)
 	 */
 	@Override
 	public int countPlayers(Game game, Realm realm) {
@@ -420,8 +394,8 @@ class GameServiceImpl implements
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	private void notifyPetitionParticipants(GamePetition petition,
-			String message) {
+	protected void notifyPetitionParticipants(GamePetition petition,
+											  String message) {
 		notificationService.notifyUser(petition.getRequester(), message);
 		for (User user : petition.getSignatures()) {
 			notificationService.notifyUser(user, message);
@@ -431,7 +405,7 @@ class GameServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public GameAccount createMinecraftAccount(UserGameRealm userGameRealm,
-			String username) {
+											  String username) {
 		MinecraftAccount account = new MinecraftAccount();
 
 		account.setName(username);
@@ -443,7 +417,7 @@ class GameServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public GameAccount createDiablo2Account(UserGameRealm userGameRealm,
-			String username) {
+											String username) {
 		Diablo2Account account = new Diablo2Account();
 
 		account.setName(username);
@@ -455,7 +429,7 @@ class GameServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public GameAccount createRealIDAccount(UserGameRealm userGameRealm,
-			String email) {
+										   String email) {
 		RealIdAccount account = new RealIdAccount();
 
 		account.setName(email);
@@ -479,7 +453,7 @@ class GameServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public GameAccount createStarCraft2Account(UserGameRealm userGameRealm,
-			String username, int characterCode) {
+											   String username, int characterCode) {
 		StarCraft2CharAccount account = new StarCraft2CharAccount();
 
 		account.setCharacterCode(characterCode);
@@ -490,11 +464,11 @@ class GameServiceImpl implements
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	private GameAccount trySaveAccount(GameAccount account) {
+	protected GameAccount trySaveAccount(GameAccount account) {
 		if (account.isValid()
 				&& isValidAccountType(account.getUserGameRealm().getGame(),
-						account.getUserGameRealm().getRealm(),
-						account.getType())) {
+				account.getUserGameRealm().getRealm(),
+				account.getType())) {
 			gameAccountDAO.save(account);
 		} else {
 			return null;
@@ -507,9 +481,9 @@ class GameServiceImpl implements
 	public boolean isValidAccountType(Game game, Realm realm, AccountType type) {
 		AllowedAccountTypeFilter filter = new AllowedAccountTypeFilter();
 
-		filter.setGame(game);
-		filter.setRealm(realm);
-		filter.setAccountType(type);
+		filter.game(game);
+		filter.realm(realm);
+		filter.type(type);
 
 		return allowedAccountTypeDAO.countByFilter(filter) >= 1;
 	}
@@ -556,73 +530,73 @@ class GameServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void deleteGame(User user, Game _game) {
-		Game game = gameDAO.load(_game.getId());
+		gameDAO.load(_game.getId()).forEach(game -> {
+			if (user.getRank() == Rank.CHANCELLOR) {
+				gameDAO.delete(game);
 
-		if (user.getRank() == Rank.CHANCELLOR) {
-			gameDAO.delete(game);
+				logService.logUserAction(user, "Realm", "Realm was removed");
 
-			logService.logUserAction(user, "Realm", "Realm was removed");
-
-			try {
-				dispatcher.dispatchEvent(new GameDeletionEvent(game));
-			} catch (EventException e) {
-				log.error(e.getMessage(), e);
+				try {
+					dispatcher.dispatchEvent(new GameDeletionEvent(game));
+				} catch (EventException e) {
+					log.error(e.getMessage(), e);
+				}
 			}
-		}
+		});
 
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.GameService#removeFromRealm(com.tysanclan.site.projectewok.entities.User,
-	 *      com.tysanclan.site.projectewok.entities.Realm,
-	 *      com.tysanclan.site.projectewok.entities.Game)
+	 * com.tysanclan.site.projectewok.entities.Realm,
+	 * com.tysanclan.site.projectewok.entities.Game)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void removeFromRealm(User user, Realm _realm, Game _game) {
-		Realm realm = realmDAO.load(_realm.getId());
-		Game game = gameDAO.load(_game.getId());
+		realmDAO.load(_realm.getId()).forEach(realm -> gameDAO.load(_game.getId()).forEach(game -> {
 
-		realm.getGames().remove(game);
-		game.getRealms().remove(realm);
+			realm.getGames().remove(game);
+			game.getRealms().remove(realm);
 
-		logService.logUserAction(user, "Games", game.getName()
-				+ " is no longer played on " + realm.getName());
+			logService.logUserAction(user, "Games", game.getName()
+					+ " is no longer played on " + realm.getName());
 
-		if (realm.getGames().isEmpty()) {
-			for (GamingGroup group : realm.getGroups()) {
-				logService.logSystemAction("Groups", "Group " + group.getName()
-						+ " has been disbanded due to its realm being removed");
-				groupDAO.delete(group);
+			if (realm.getGames().isEmpty()) {
+				for (GamingGroup group : realm.getGroups()) {
+					logService.logSystemAction("Groups", "Group " + group.getName()
+							+ " has been disbanded due to its realm being removed");
+					groupDAO.delete(group);
+				}
+
+				logService
+						.logSystemAction(
+								"Realms",
+								"Realm "
+										+ realm.getName()
+										+ " no longer has any active games and has therefore been removed");
+
+				realmDAO.delete(realm);
+
 			}
 
-			logService
-					.logSystemAction(
-							"Realms",
-							"Realm "
-									+ realm.getName()
-									+ " no longer has any active games and has therefore been removed");
+			if (game.getRealms().isEmpty()) {
+				for (GamingGroup group : game.getGroups()) {
+					logService.logSystemAction("Groups", "Group " + group.getName()
+							+ " has been disbanded due to its game being removed");
+					groupDAO.delete(group);
+				}
 
-			realmDAO.delete(realm);
+				logService
+						.logSystemAction(
+								"Games",
+								"Game "
+										+ game.getName()
+										+ " no longer has any active realms and has therefore been removed");
 
-		}
-
-		if (game.getRealms().isEmpty()) {
-			for (GamingGroup group : game.getGroups()) {
-				logService.logSystemAction("Groups", "Group " + group.getName()
-						+ " has been disbanded due to its game being removed");
-				groupDAO.delete(group);
+				gameDAO.delete(game);
 			}
-
-			logService
-					.logSystemAction(
-							"Games",
-							"Game "
-									+ game.getName()
-									+ " no longer has any active realms and has therefore been removed");
-
-			gameDAO.delete(game);
-		}
+		}));
 	}
 
 	@Override
@@ -643,9 +617,9 @@ class GameServiceImpl implements
 		if (isValidAccountType(game, realm, type)) {
 			AllowedAccountTypeFilter filter = new AllowedAccountTypeFilter();
 
-			filter.setGame(game);
-			filter.setRealm(realm);
-			filter.setAccountType(type);
+			filter.game(game);
+			filter.realm(realm);
+			filter.type(type);
 
 			for (AllowedAccountType atype : allowedAccountTypeDAO
 					.findByFilter(filter)) {
@@ -657,31 +631,32 @@ class GameServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void setGameSupervisor(Game _game, User user) {
-		Game game = gameDAO.load(_game.getId());
+		gameDAO.load(_game.getId()).forEach(game -> {
 
-		if (MemberUtil.isMember(user) && user.getRank() != Rank.TRIAL) {
-			boolean wasReplaced = game.getCoordinator() == null;
-			if (game.getCoordinator() != null
-					&& !game.getCoordinator().equals(user)) {
-				notificationService.notifyUser(
-						game.getCoordinator(),
-						"You are no longer supervisor for the game "
-								+ game.getName());
-				wasReplaced = true;
+			if (MemberUtil.isMember(user) && user.getRank() != Rank.TRIAL) {
+				boolean wasReplaced = game.getCoordinator() == null;
+				if (game.getCoordinator() != null
+						&& !game.getCoordinator().equals(user)) {
+					notificationService.notifyUser(
+							game.getCoordinator(),
+							"You are no longer supervisor for the game "
+									+ game.getName());
+					wasReplaced = true;
+				}
+
+				game.setCoordinator(user);
+
+				if (wasReplaced) {
+					notificationService
+							.notifyUser(
+									game.getCoordinator(),
+									"You are now supervisor for the game "
+											+ game.getName());
+					logService.logUserAction(game.getCoordinator(), "Game",
+							"User is now supervisor for game " + game.getName());
+				}
 			}
-
-			game.setCoordinator(user);
-
-			if (wasReplaced) {
-				notificationService
-						.notifyUser(
-								game.getCoordinator(),
-								"You are now supervisor for the game "
-										+ game.getName());
-				logService.logUserAction(game.getCoordinator(), "Game",
-						"User is now supervisor for game " + game.getName());
-			}
-		}
+		});
 
 	}
 

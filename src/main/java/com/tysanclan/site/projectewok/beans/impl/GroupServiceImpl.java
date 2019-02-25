@@ -1,17 +1,17 @@
 /**
  * Tysan Clan Website
  * Copyright (C) 2008-2013 Jeroen Steenbeeke and Ties van de Ven
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -20,6 +20,7 @@ package com.tysanclan.site.projectewok.beans.impl;
 import java.util.LinkedList;
 import java.util.List;
 
+import io.vavr.collection.Seq;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,16 +94,14 @@ class GroupServiceImpl implements
 	}
 
 	/**
-	 * @param groupForumDAO
-	 *            the groupForumDAO to set
+	 * @param groupForumDAO the groupForumDAO to set
 	 */
 	public void setGroupForumDAO(GroupForumDAO groupForumDAO) {
 		this.groupForumDAO = groupForumDAO;
 	}
 
 	/**
-	 * @param groupDAO
-	 *            the groupDAO to set
+	 * @param groupDAO the groupDAO to set
 	 */
 	public void setGroupDAO(GroupDAO groupDAO) {
 		this.groupDAO = groupDAO;
@@ -112,9 +111,9 @@ class GroupServiceImpl implements
 	@Override
 	public void clearRequestedGroups(User user) {
 		GroupCreationRequestFilter filter = new GroupCreationRequestFilter();
-		filter.setRequester(user);
+		filter.requester(user);
 
-		List<GroupCreationRequest> requests = groupCreationRequestDAO
+		Seq<GroupCreationRequest> requests = groupCreationRequestDAO
 				.findByFilter(filter);
 		for (GroupCreationRequest request : requests) {
 			groupCreationRequestDAO.delete(request);
@@ -164,7 +163,7 @@ class GroupServiceImpl implements
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.GroupService#addUserToGroup(com.tysanclan.site.projectewok.entities.User,
-	 *      com.tysanclan.site.projectewok.entities.Group)
+	 * com.tysanclan.site.projectewok.entities.Group)
 	 */
 	@Transactional(propagation = Propagation.REQUIRED)
 	@Override
@@ -181,7 +180,7 @@ class GroupServiceImpl implements
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.GroupService#createCommittee(java.lang.String,
-	 *      java.lang.String)
+	 * java.lang.String)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -199,13 +198,13 @@ class GroupServiceImpl implements
 	@Override
 	@Deprecated
 	public GamingGroup createGamingGroup(String name, String description,
-			Game game) {
+										 Game game) {
 		return null;
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.GroupService#createSocialGroup(java.lang.String,
-	 *      java.lang.String)
+	 * java.lang.String)
 	 */
 	@Transactional(propagation = Propagation.REQUIRED)
 	@Deprecated
@@ -222,7 +221,7 @@ class GroupServiceImpl implements
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.GroupService#inviteUserToGroup(com.tysanclan.site.projectewok.entities.User,
-	 *      com.tysanclan.site.projectewok.entities.Group)
+	 * com.tysanclan.site.projectewok.entities.Group)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -244,7 +243,7 @@ class GroupServiceImpl implements
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.GroupService#setGroupLeader(com.tysanclan.site.projectewok.entities.User,
-	 *      com.tysanclan.site.projectewok.entities.Group)
+	 * com.tysanclan.site.projectewok.entities.Group)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -264,7 +263,7 @@ class GroupServiceImpl implements
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.GroupService#applyToGroup(com.tysanclan.site.projectewok.entities.User,
-	 *      com.tysanclan.site.projectewok.entities.Group)
+	 * com.tysanclan.site.projectewok.entities.Group)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -306,7 +305,7 @@ class GroupServiceImpl implements
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.GroupService#acceptInvitation(com.tysanclan.site.projectewok.entities.User,
-	 *      com.tysanclan.site.projectewok.entities.Group)
+	 * com.tysanclan.site.projectewok.entities.Group)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -329,7 +328,7 @@ class GroupServiceImpl implements
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.GroupService#declineInvitation(com.tysanclan.site.projectewok.entities.User,
-	 *      com.tysanclan.site.projectewok.entities.Group)
+	 * com.tysanclan.site.projectewok.entities.Group)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -350,7 +349,7 @@ class GroupServiceImpl implements
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.GroupService#leaveGroup(com.tysanclan.site.projectewok.entities.User,
-	 *      com.tysanclan.site.projectewok.entities.Group)
+	 * com.tysanclan.site.projectewok.entities.Group)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -420,7 +419,7 @@ class GroupServiceImpl implements
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.GroupService#disbandGroup(com.tysanclan.site.projectewok.entities.User,
-	 *      com.tysanclan.site.projectewok.entities.Group)
+	 * com.tysanclan.site.projectewok.entities.Group)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -431,9 +430,9 @@ class GroupServiceImpl implements
 		}
 
 		GroupForumFilter filter = new GroupForumFilter();
-		filter.setGroup(group);
+		filter.group(group);
 
-		List<GroupForum> forums = groupForumDAO.findByFilter(filter);
+		Seq<GroupForum> forums = groupForumDAO.findByFilter(filter);
 
 		for (GroupForum forum : forums) {
 			groupForumDAO.delete(forum);
@@ -449,8 +448,8 @@ class GroupServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public GroupCreationRequest createGamingGroupRequest(User requester,
-			Game game, Realm realm, String name, String description,
-			String motivation) {
+														 Game game, Realm realm, String name, String description,
+														 String motivation) {
 		GroupCreationRequest request = new GroupCreationRequest();
 		request.setName(BBCodeUtil.stripTags(name));
 		request.setRequester(requester);
@@ -472,7 +471,7 @@ class GroupServiceImpl implements
 	 */
 	private void notifyChancellor(String message) {
 		UserFilter filter = new UserFilter();
-		filter.addRank(Rank.CHANCELLOR);
+		filter.rank(Rank.CHANCELLOR);
 		for (User user : userDAO.findByFilter(filter)) {
 			notificationService.notifyUser(user, message);
 		}
@@ -480,12 +479,12 @@ class GroupServiceImpl implements
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.GroupService#createSocialGroupRequest(com.tysanclan.site.projectewok.entities.User,
-	 *      java.lang.String, java.lang.String, java.lang.String)
+	 * java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public GroupCreationRequest createSocialGroupRequest(User requester,
-			String name, String description, String motivation) {
+														 String name, String description, String motivation) {
 		GroupCreationRequest request = new GroupCreationRequest();
 		request.setName(BBCodeUtil.stripTags(name));
 		request.setRequester(requester);
@@ -503,175 +502,168 @@ class GroupServiceImpl implements
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.GroupService#declineRequest(com.tysanclan.site.projectewok.entities.User,
-	 *      com.tysanclan.site.projectewok.entities.GroupCreationRequest)
+	 * com.tysanclan.site.projectewok.entities.GroupCreationRequest)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void declineRequest(User decliner, GroupCreationRequest request) {
-		GroupCreationRequest _request = groupCreationRequestDAO.load(request
-				.getId());
+		groupCreationRequestDAO.load(request
+				.getId()).forEach(_request -> {
 
-		groupCreationRequestDAO.delete(_request);
+			groupCreationRequestDAO.delete(_request);
 
-		logService.logUserAction(decliner, "Groups", "Request to create group "
-				+ request.getName() + " has been declined");
+			logService.logUserAction(decliner, "Groups", "Request to create group "
+					+ request.getName() + " has been declined");
 
-		notificationService.notifyUser(_request.getRequester(),
-				"Your request to create a group called " + request.getName()
-						+ " has been declined");
+			notificationService.notifyUser(_request.getRequester(),
+					"Your request to create a group called " + request.getName()
+							+ " has been declined");
+		});
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.GroupService#acceptRequest(com.tysanclan.site.projectewok.entities.User,
-	 *      com.tysanclan.site.projectewok.entities.GroupCreationRequest)
+	 * com.tysanclan.site.projectewok.entities.GroupCreationRequest)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void acceptRequest(User accepter, GroupCreationRequest request) {
-		GroupCreationRequest _request = groupCreationRequestDAO.load(request
-				.getId());
+		groupCreationRequestDAO.load(request
+				.getId()).forEach(_request -> {
 
-		Group group = null;
+			Group group;
 
-		if (_request.getGame() != null && _request.getRealm() != null) {
-			GamingGroup gamingGroup = new GamingGroup();
-			gamingGroup.setName(_request.getName());
-			gamingGroup.setDescription(_request.getDescription());
-			gamingGroup.setGame(_request.getGame());
-			gamingGroup.setRealm(_request.getRealm());
-			gamingGroup.setJoinPolicy(JoinPolicy.APPLICATION);
-			groupDAO.save(gamingGroup);
+			if (_request.getGame() != null && _request.getRealm() != null) {
+				GamingGroup gamingGroup = new GamingGroup();
+				gamingGroup.setName(_request.getName());
+				gamingGroup.setDescription(_request.getDescription());
+				gamingGroup.setGame(_request.getGame());
+				gamingGroup.setRealm(_request.getRealm());
+				gamingGroup.setJoinPolicy(JoinPolicy.APPLICATION);
+				groupDAO.save(gamingGroup);
 
-			group = gamingGroup;
+				group = gamingGroup;
 
-		} else {
-			SocialGroup socialGroup = new SocialGroup();
-			socialGroup.setName(_request.getName());
-			socialGroup.setDescription(_request.getDescription());
-			socialGroup.setJoinPolicy(JoinPolicy.APPLICATION);
-			groupDAO.save(socialGroup);
+			} else {
+				SocialGroup socialGroup = new SocialGroup();
+				socialGroup.setName(_request.getName());
+				socialGroup.setDescription(_request.getDescription());
+				socialGroup.setJoinPolicy(JoinPolicy.APPLICATION);
+				groupDAO.save(socialGroup);
 
-			group = socialGroup;
-		}
+				group = socialGroup;
+			}
 
-		setGroupLeader(_request.getRequester(), group);
+			setGroupLeader(_request.getRequester(), group);
 
-		group.getGroupMembers().add(_request.getRequester());
+			group.getGroupMembers().add(_request.getRequester());
 
-		groupCreationRequestDAO.delete(_request);
+			groupCreationRequestDAO.delete(_request);
 
-		logService.logUserAction(accepter, "Groups", "Request to create group "
-				+ request.getName() + " has been accepted");
-		notificationService.notifyUser(_request.getRequester(),
-				"Your request to create a group called " + request.getName()
-						+ " has been accepted");
+			logService.logUserAction(accepter, "Groups", "Request to create group "
+					+ request.getName() + " has been accepted");
+			notificationService.notifyUser(_request.getRequester(),
+					"Your request to create a group called " + request.getName()
+							+ " has been accepted");
+		});
 
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.GroupService#acceptGroupJoinRequest(com.tysanclan.site.projectewok.entities.User,
-	 *      com.tysanclan.site.projectewok.entities.Group,
-	 *      com.tysanclan.site.projectewok.entities.User)
+	 * com.tysanclan.site.projectewok.entities.Group,
+	 * com.tysanclan.site.projectewok.entities.User)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void acceptGroupJoinRequest(User accepter, Group group,
-			User applicant) {
-		User _user = userDAO.load(applicant.getId());
-		Group _group = groupDAO.load(group.getId());
+									   User applicant) {
+		userDAO.load(applicant.getId()).forEach(_user -> groupDAO.load(group.getId()).forEach(_group -> {
+			_group.getAppliedMembers().remove(_user);
+			_group.getGroupMembers().add(_user);
 
-		_group.getAppliedMembers().remove(_user);
-		_group.getGroupMembers().add(_user);
+			groupDAO.update(_group);
+			userDAO.evict(_user);
 
-		groupDAO.update(_group);
-		userDAO.evict(_user);
+			notificationService.notifyUser(applicant, "Your request to join "
+					+ group.getName() + " has been accepted");
 
-		List<User> users = new LinkedList<User>();
-		users.add(_user);
-
-		notificationService.notifyUser(applicant, "Your request to join "
-				+ group.getName() + " has been accepted");
-
-		logService.logUserAction(accepter, "Groups",
-				"Request by " + applicant.getUsername() + " to join group "
-						+ group.getName() + " has been accepted");
-
+			logService.logUserAction(accepter, "Groups",
+					"Request by " + applicant.getUsername() + " to join group "
+							+ group.getName() + " has been accepted");
+		}));
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.GroupService#declineGroupJoinRequest(com.tysanclan.site.projectewok.entities.User,
-	 *      com.tysanclan.site.projectewok.entities.Group,
-	 *      com.tysanclan.site.projectewok.entities.User)
+	 * com.tysanclan.site.projectewok.entities.Group,
+	 * com.tysanclan.site.projectewok.entities.User)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void declineGroupJoinRequest(User decliner, Group group,
-			User applicant) {
-		User _user = userDAO.load(applicant.getId());
-		Group _group = groupDAO.load(group.getId());
+										User applicant) {
+		userDAO.load(applicant.getId()).forEach(_user -> groupDAO.load(group.getId()).forEach(_group -> {
+			_group.getAppliedMembers().remove(_user);
 
-		_group.getAppliedMembers().remove(_user);
+			groupDAO.update(_group);
 
-		groupDAO.update(_group);
+			notificationService.notifyUser(applicant, "Your request to join "
+					+ group.getName() + " has been declined");
 
-		List<User> users = new LinkedList<User>();
-		users.add(_user);
-
-		notificationService.notifyUser(applicant, "Your request to join "
-				+ group.getName() + " has been declined");
-
-		logService.logUserAction(decliner, "Groups",
-				"Request by " + applicant.getUsername() + " to join group "
-						+ group.getName() + " has been declined");
+			logService.logUserAction(decliner, "Groups",
+					"Request by " + applicant.getUsername() + " to join group "
+							+ group.getName() + " has been declined");
+		}));
 
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.GroupService#setJoinPolicy(com.tysanclan.site.projectewok.entities.Group,
-	 *      com.tysanclan.site.projectewok.entities.Group.JoinPolicy)
+	 * com.tysanclan.site.projectewok.entities.Group.JoinPolicy)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void setJoinPolicy(Group group, JoinPolicy joinPolicy) {
-		Group _group = groupDAO.load(group.getId());
-		_group.setJoinPolicy(joinPolicy);
-		groupDAO.update(_group);
+		groupDAO.load(group.getId()).forEach(_group -> {
+			_group.setJoinPolicy(joinPolicy);
+			groupDAO.update(_group);
 
-		String name = joinPolicy.name().substring(0, 1).toUpperCase()
-				+ joinPolicy.name().substring(1).toLowerCase();
+			String name = joinPolicy.name().substring(0, 1).toUpperCase()
+					+ joinPolicy.name().substring(1).toLowerCase();
 
-		logService.logUserAction(group.getLeader(), "Groups",
-				"Join policy of group " + _group.getName() + " set to " + name);
-
+			logService.logUserAction(group.getLeader(), "Groups",
+					"Join policy of group " + _group.getName() + " set to " + name);
+		});
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.GroupService#setGroupMOTD(com.tysanclan.site.projectewok.entities.Group,
-	 *      java.lang.String)
+	 * java.lang.String)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void setGroupMOTD(Group group, String motd) {
-		Group _group = groupDAO.load(group.getId());
+		groupDAO.load(group.getId()).forEach(_group -> {
+			_group.setMessageOfTheDay(BBCodeUtil.stripTags(motd));
 
-		_group.setMessageOfTheDay(BBCodeUtil.stripTags(motd));
-
-		groupDAO.update(_group);
+			groupDAO.update(_group);
+		});
 
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.GroupService#setGroupDescription(com.tysanclan.site.projectewok.entities.Group,
-	 *      java.lang.String)
+	 * java.lang.String)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void setGroupDescription(Group group, String description) {
-		Group _group = groupDAO.load(group.getId());
+		groupDAO.load(group.getId()).forEach(_group -> {
+			_group.setDescription(BBCodeUtil.stripTags(description));
 
-		_group.setDescription(BBCodeUtil.stripTags(description));
-
-		groupDAO.update(_group);
+			groupDAO.update(_group);
+		});
 
 	}
 

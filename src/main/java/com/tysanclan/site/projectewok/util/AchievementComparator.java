@@ -40,7 +40,7 @@ public class AchievementComparator implements Comparator<Achievement> {
 		int cat1 = g1 == null ? (gr1 == null ? 0 : 2) : 1;
 		int cat2 = g2 == null ? (gr2 == null ? 0 : 2) : 1;
 
-		int comp = Integer.valueOf(cat1).compareTo(cat2);
+		int comp = Integer.compare(cat1, cat2);
 
 		if (comp == 0) {
 			switch (cat1) {

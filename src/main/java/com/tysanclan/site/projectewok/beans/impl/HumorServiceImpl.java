@@ -46,8 +46,8 @@ class HumorServiceImpl implements
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public OtterSighting otterSighted(User user, Integer otterNumber) {
 		OtterSightingFilter filter = new OtterSightingFilter();
-		filter.setUser(user);
-		filter.setOtterNumber(otterNumber);
+		filter.user(user);
+		filter.otterNumber(otterNumber);
 
 		if (otterSightingDAO.countByFilter(filter) == 0) {
 			OtterSighting sighting = new OtterSighting(user, otterNumber);
@@ -57,6 +57,6 @@ class HumorServiceImpl implements
 			return sighting;
 		}
 
-		return otterSightingDAO.getUniqueByFilter(filter);
+		return otterSightingDAO.getUniqueByFilter(filter).getOrNull();
 	}
 }
