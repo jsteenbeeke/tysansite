@@ -52,7 +52,7 @@ public class GroupRequestApprovalPage extends AbstractMemberPage {
 	public GroupRequestApprovalPage() {
 		super("Group Request Approval");
 
-		List<GroupCreationRequest> requests = groupCreationRequestDAO.findAll();
+		List<GroupCreationRequest> requests = groupCreationRequestDAO.findAll().toJavaList();
 
 		String intro = (requests.size() == 0) ? "There are no pending group creation requests"
 				: "There are " + requests.size()

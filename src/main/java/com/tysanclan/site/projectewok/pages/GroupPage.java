@@ -72,12 +72,8 @@ public class GroupPage extends TysanPage {
 					HttpServletResponse.SC_NOT_FOUND);
 		}
 
-		Group g = groupDAO.get(parameters.getGroupId());
-
-		if (g == null) {
-			throw new RestartResponseAtInterceptPageException(
-					AccessDeniedPage.class);
-		}
+		Group g = groupDAO.load(parameters.getGroupId()).getOrElseThrow(() -> new RestartResponseAtInterceptPageException(
+				AccessDeniedPage.class));
 
 		initComponents(g);
 	}

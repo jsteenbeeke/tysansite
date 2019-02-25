@@ -217,12 +217,16 @@ public class CalendarPage extends AbstractMemberPage {
 	public ListView<Event> createListView(Date date) {
 
 		EventFilter filter = new EventFilter();
-		filter.setDate(date);
+		Calendar midnightCalendarInstance = DateUtil.getMidnightCalendarInstance();
+		Date startOfDay = midnightCalendarInstance.getTime();
+		midnightCalendarInstance.add(Calendar.DAY_OF_YEAR, 1);
+		midnightCalendarInstance.add(Calendar.SECOND, 1);
+		filter.date().between(startOfDay,midnightCalendarInstance.getTime());
 
 		IModel<List<Event>> events = ModelMaker.wrap(eventDAO
-				.findByFilter(filter));
+				.findByFilter(filter).toJavaList());
 
-		ListView<Event> result = new ListView<Event>(EVENT_VIEW_ID, events) {
+		return new ListView<Event>(EVENT_VIEW_ID, events) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -241,8 +245,6 @@ public class CalendarPage extends AbstractMemberPage {
 			}
 
 		};
-
-		return result;
 	}
 
 	Component getContainer() {

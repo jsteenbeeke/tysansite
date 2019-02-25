@@ -83,8 +83,8 @@ public class PastElectionsPage extends AbstractMemberPage {
 		calendar.add(Calendar.DAY_OF_YEAR, -1);
 
 		ElectionFilter filter = new ElectionFilter();
-		filter.setStartBefore(calendar.getTime());
-		filter.addOrderBy("start", false);
+		filter.start().lessThan(calendar.getTime());
+		filter.start().orderBy(false);
 
 		List<Election> elections = new LinkedList<Election>();
 
@@ -106,13 +106,12 @@ public class PastElectionsPage extends AbstractMemberPage {
 				DateFormat format = new SimpleDateFormat("EEEE d MMMM yyyy",
 						Locale.US);
 
-				List<User> candidates = new LinkedList<User>();
-				candidates.addAll(election.getCandidates());
+				List<User> candidates = new LinkedList<>(election.getCandidates());
 
-				Collections.sort(candidates, new Comparator<User>() {
+				candidates.sort(new Comparator<User>() {
 					/**
-					 * @see java.util.Comparator#compare(java.lang.Object,
-					 *      java.lang.Object)
+					 * @see Comparator#compare(Object,
+					 *      Object)
 					 */
 					@Override
 					public int compare(User o1, User o2) {
@@ -134,7 +133,7 @@ public class PastElectionsPage extends AbstractMemberPage {
 
 				if (electionClass == ChancellorElection.class) {
 					ChancellorElection ce = chancellorElectionDAO.load(election
-							.getId());
+							.getId()).getOrElseThrow(IllegalStateException::new);
 					type = "Chancellor";
 					if (ce.getWinner() != null) {
 						winners.add(ce.getWinner());
@@ -143,7 +142,7 @@ public class PastElectionsPage extends AbstractMemberPage {
 					type = "Senate";
 					winnersLabel = "Winners:";
 					SenateElection se = senateElectionDAO
-							.load(election.getId());
+							.load(election.getId()).getOrElseThrow(IllegalStateException::new);
 					winners.addAll(se.getWinners());
 				}
 
@@ -164,18 +163,11 @@ public class PastElectionsPage extends AbstractMemberPage {
 					votes.add(v);
 				}
 
-				Collections.sort(votes, new Comparator<CompoundVote>() {
-
-					@Override
-					public int compare(CompoundVote o1, CompoundVote o2) {
-						return o1
-								.getCaster()
-								.getUsername()
-								.compareToIgnoreCase(
-										o2.getCaster().getUsername());
-					}
-
-				});
+				votes.sort((o1, o2) -> o1
+						.getCaster()
+						.getUsername()
+						.compareToIgnoreCase(
+								o2.getCaster().getUsername()));
 
 				item.add(new Label("title", type + " election of "
 						+ format.format(cal.getTime())));

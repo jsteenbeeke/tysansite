@@ -20,6 +20,7 @@ package com.tysanclan.site.projectewok.pages.member;
 import java.util.LinkedList;
 import java.util.List;
 
+import io.vavr.collection.Seq;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -64,11 +65,10 @@ public class CreateRealmPetitionPage extends AbstractMemberPage {
 
 		List<GameRealmCartesian> allCombinations = new LinkedList<GameRealmCartesian>();
 
-		List<Game> games = gameDAO.findAll();
+		Seq<Game> games = gameDAO.findAll();
 
 		for (Game game : games) {
-			List<Realm> curr = new LinkedList<Realm>();
-			curr.addAll(realmDAO.findAll());
+			List<Realm> curr = new LinkedList<>(realmDAO.findAll().toJavaList());
 			curr.removeAll(game.getRealms());
 
 			for (Realm realm : curr) {
@@ -111,11 +111,11 @@ public class CreateRealmPetitionPage extends AbstractMemberPage {
 
 		newRealm.add(new Button("submit").setVisible(!games.isEmpty()));
 
-		newRealm.add(new TextField<String>("name", new Model<String>(""))
+		newRealm.add(new TextField<>("name", new Model<>(""))
 				.setRequired(true));
 
-		newRealm.add(new DropDownChoice<Game>("game", ModelMaker
-				.wrap((Game) null), ModelMaker.wrapChoices(games),
+		newRealm.add(new DropDownChoice<>("game", ModelMaker
+				.wrap((Game) null), ModelMaker.wrapChoices(games.toJavaList()),
 				new GameChoiceRenderer()).setRequired(true));
 
 		add(newRealm);
@@ -143,8 +143,8 @@ public class CreateRealmPetitionPage extends AbstractMemberPage {
 			}
 		};
 
-		existing.add(new DropDownChoice<GameRealmCartesian>("existing",
-				new Model<GameRealmCartesian>(null), allCombinations,
+		existing.add(new DropDownChoice<>("existing",
+				new Model<>(null), allCombinations,
 				new GameRealmCartesianRenderer()).setRequired(true));
 
 		existing.add(new Button("submit").setVisible(!allCombinations.isEmpty()));

@@ -42,12 +42,12 @@ public class FeatureOverviewPage extends AbstractMemberPage {
 
 		BugFilter filter = new BugFilter();
 
-		filter.addReportType(ReportType.FEATUREREQUEST);
-		filter.addAllowedStatus(BugStatus.NEW);
-		filter.addAllowedStatus(BugStatus.ACKNOWLEDGED);
-		filter.addOrderBy("status", true);
-		filter.addOrderBy("updated", false);
-		filter.addOrderBy("reported", false);
+		filter.reportType(ReportType.FEATUREREQUEST);
+		filter.status(BugStatus.NEW);
+		filter.orStatus(BugStatus.ACKNOWLEDGED);
+		filter.status().orderBy(true);
+		filter.updated().orderBy(false);
+		filter.reported().orderBy(false);
 
 		add(new BugListPanel("features", "Feature", filter) {
 			private static final long serialVersionUID = 1L;
@@ -59,12 +59,13 @@ public class FeatureOverviewPage extends AbstractMemberPage {
 		});
 
 		filter = new BugFilter();
-		filter.addReportType(ReportType.FEATUREREQUEST);
-		filter.addAllowedStatus(BugStatus.RESOLVED);
-		filter.addAllowedStatus(BugStatus.CLOSED);
-		filter.addOrderBy("status", false);
-		filter.addOrderBy("updated", false);
-		filter.addOrderBy("reported", false);
+		filter.reportType(ReportType.FEATUREREQUEST);
+		filter.status(BugStatus.RESOLVED);
+		filter.orStatus(BugStatus.CLOSED);
+		filter.status().orderBy(false);
+		filter.updated().orderBy(false);
+		filter.reported().orderBy(false);
+
 
 		add(new BugListPanel("rfeatures", "Feature", filter) {
 			private static final long serialVersionUID = 1L;

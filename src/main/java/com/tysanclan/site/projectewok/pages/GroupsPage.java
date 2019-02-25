@@ -52,9 +52,9 @@ public class GroupsPage extends TysanPage {
 	public GroupsPage() {
 		super("Groups");
 
-		add(new GroupLister<SocialGroup>("social", socialGroupDAO.findAll()));
-		add(new GroupLister<GamingGroup>("gaming", gamingGroupDAO.findAll()));
-		add(new GroupLister<Committee>("committee", commiteeDAO.findAll()));
+		add(new GroupLister<>("social", socialGroupDAO.findAll().toJavaList()));
+		add(new GroupLister<>("gaming", gamingGroupDAO.findAll().toJavaList()));
+		add(new GroupLister<>("committee", commiteeDAO.findAll().toJavaList()));
 
 	}
 

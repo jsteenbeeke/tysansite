@@ -94,8 +94,8 @@ public class EditAccountsPage extends AbstractMemberPage {
 					.getRealm()));
 		}
 
-		form.add(new DropDownChoice<GameRealmCartesian>("choices",
-				new Model<GameRealmCartesian>(null), cartesians,
+		form.add(new DropDownChoice<>("choices",
+				new Model<>(null), cartesians,
 				new GameRealmCartesianRenderer()));
 
 		add(form);

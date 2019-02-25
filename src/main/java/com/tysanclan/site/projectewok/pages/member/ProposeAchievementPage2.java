@@ -56,9 +56,8 @@ public class ProposeAchievementPage2 extends AbstractSingleAccordionMemberPage {
 		private final String description;
 
 		private AchievementType() {
-			this.description = new StringBuilder()
-					.append(name().substring(0, 1).toUpperCase())
-					.append(name().substring(1).toLowerCase()).toString();
+			this.description = name().substring(0, 1).toUpperCase() +
+					name().substring(1).toLowerCase();
 		}
 
 		@Override

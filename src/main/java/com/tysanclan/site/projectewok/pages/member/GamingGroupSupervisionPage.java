@@ -114,7 +114,7 @@ public class GamingGroupSupervisionPage extends AbstractMemberPage {
 		List<BaseSeries<String, Integer>> res = new LinkedList<BaseSeries<String, Integer>>();
 		res.add(series);
 
-		return new ListModel<BaseSeries<String, Integer>>(res);
+		return new ListModel<>(res);
 	}
 
 	/**
@@ -140,6 +140,6 @@ public class GamingGroupSupervisionPage extends AbstractMemberPage {
 		List<BaseSeries<String, Integer>> res = new LinkedList<BaseSeries<String, Integer>>();
 		res.add(series);
 
-		return new ListModel<BaseSeries<String, Integer>>(res);
+		return new ListModel<>(res);
 	}
 }

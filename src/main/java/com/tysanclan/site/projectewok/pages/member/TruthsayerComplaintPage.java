@@ -40,12 +40,12 @@ public class TruthsayerComplaintPage extends AbstractSingleAccordionMemberPage {
 		super("File Truthsayer Complaint");
 
 		UserFilter filter = new UserFilter();
-		filter.addRank(Rank.TRUTHSAYER);
-		filter.addOrderBy("username", true);
+		filter.rank(Rank.TRUTHSAYER);
+		filter.username().orderBy(true);
 
 		final DropDownChoice<User> userChoice = new DropDownChoice<User>(
 				"user", ModelMaker.wrap((User) null),
-				ModelMaker.wrapChoices(userDAO.findByFilter(filter)));
+				ModelMaker.wrapChoices(userDAO.findByFilter(filter).toJavaList()));
 		userChoice.setRequired(true);
 		userChoice.setNullValid(true);
 

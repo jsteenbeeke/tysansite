@@ -40,7 +40,7 @@ public class RegulationPage extends TysanPage {
 		super("Regulations");
 
 		add(new ListView<Regulation>("regulations", ModelMaker.wrap(dao
-				.findAll())) {
+				.findAll().toJavaList())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

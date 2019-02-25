@@ -117,11 +117,9 @@ public class MemberPage extends TysanPage {
 					HttpServletResponse.SC_NOT_FOUND);
 		}
 
-		User u = dao.get(parameters.getUserId());
-
-		if (u == null || !MemberUtil.isMember(u)) {
-			throw new RestartResponseAtInterceptPageException(RosterPage.class);
-		}
+		User u = dao.load(parameters.getUserId())
+				.filter(MemberUtil::isMember)
+				.getOrElseThrow(() -> new RestartResponseAtInterceptPageException(RosterPage.class));
 
 		initComponents(u);
 	}
@@ -190,9 +188,7 @@ public class MemberPage extends TysanPage {
 								&& getUser() != null && MemberUtil
 									.isMember(getUser())))));
 
-		GroupFilter gfilter = new GroupFilter();
-		gfilter.addIncludedMember(u);
-		List<Group> groups = groupDAO.findByFilter(gfilter);
+		List<Group> groups = groupDAO.getMemberGroups(u);
 
 		add(new ListView<Group>("groups", ModelMaker.wrap(groups)) {
 			private static final long serialVersionUID = 1L;
@@ -209,11 +205,11 @@ public class MemberPage extends TysanPage {
 		}.setVisible(!groups.isEmpty()));
 
 		RoleFilter rfilter = new RoleFilter();
-		rfilter.setUser(u);
+		rfilter.assignedTo(u);
 
 		add(new Label("usernameroles", u.getUsername()));
 
-		List<Role> roles = roleDAO.findByFilter(rfilter);
+		List<Role> roles = roleDAO.findByFilter(rfilter).toJavaList();
 
 		add(new ListView<Role>("roles", ModelMaker.wrap(roles)) {
 			private static final long serialVersionUID = 1L;
@@ -245,11 +241,11 @@ public class MemberPage extends TysanPage {
 		}
 
 		ForumPostFilter filter = new ForumPostFilter();
-		filter.setShadow(false);
-		filter.setUser(u);
-		filter.addOrderBy("time", false);
+		filter.shadow(false);
+		filter.poster(u);
+		filter.time().orderBy(false);
 
-		List<ForumPost> posts = forumPostDAO.findByFilter(filter);
+		List<ForumPost> posts = forumPostDAO.findByFilter(filter).toJavaList();
 
 		posts = forumService.filterPosts(getUser(), true, posts);
 

@@ -53,7 +53,7 @@ public class GameManagementPage extends AbstractSingleAccordionMemberPage {
 	public GameManagementPage() {
 		super("Game Management");
 
-		add(new ListView<Game>("games", ModelMaker.wrap(gameDAO.findAll())) {
+		add(new ListView<Game>("games", ModelMaker.wrap(gameDAO.findAll().toJavaList())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

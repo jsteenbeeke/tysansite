@@ -19,6 +19,7 @@ package com.tysanclan.site.projectewok.pages.member;
 
 import java.util.List;
 
+import io.vavr.collection.Seq;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.link.Link;
@@ -50,10 +51,10 @@ public class TruthsayerAcceptancePage extends AbstractMemberPage {
 		super("Truthsayer Invitation");
 
 		TruthsayerNominationFilter filter = new TruthsayerNominationFilter();
-		filter.setNominee(getUser());
-		filter.setStartNotSet(true);
+		filter.user(getUser());
+		filter.voteStart().isNull();
 
-		List<TruthsayerNomination> nominations = truthSayerNominationDAO
+		Seq<TruthsayerNomination> nominations = truthSayerNominationDAO
 				.findByFilter(filter);
 
 		if (nominations.isEmpty()) {

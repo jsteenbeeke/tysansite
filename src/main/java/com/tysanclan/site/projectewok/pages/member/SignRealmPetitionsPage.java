@@ -58,7 +58,7 @@ public class SignRealmPetitionsPage extends AbstractMemberPage {
 		add(new Label("count", new Model<Integer>(
 				realmService.getRequiredPetitionSignatures())));
 		add(new ListView<RealmPetition>("petitions",
-				ModelMaker.wrap(realmPetitionDAO.findAll())) {
+				ModelMaker.wrap(realmPetitionDAO.findAll().toJavaList())) {
 			private static final long serialVersionUID = 1L;
 
 			/**

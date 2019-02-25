@@ -52,20 +52,20 @@ public class RegistrationPage extends TysanPage {
 		resource = new CaptchaImageResource(passId);
 
 		final TextField<String> tfUsername = new TextField<String>("username",
-				new Model<String>(""));
+				new Model<>(""));
 		tfUsername.setRequired(true);
 		final TextField<String> tfMail = new TextField<String>("mail",
-				new Model<String>(""));
+				new Model<>(""));
 		tfMail.setRequired(true);
 		final PasswordTextField tfPassword = new PasswordTextField("password",
-				new Model<String>(""));
+				new Model<>(""));
 		tfPassword.setRequired(true);
 		final PasswordTextField tfPassword2 = new PasswordTextField(
-				"password2", new Model<String>(""));
+				"password2", new Model<>(""));
 		tfPassword2.setRequired(true);
 
 		final TextField<String> tfCaptcha = new TextField<String>(
-				"captchaResponse", new Model<String>(""));
+				"captchaResponse", new Model<>(""));
 		tfCaptcha.setRequired(true);
 
 		Form<?> registrationForm = new Form<Void>("registerform") {
@@ -128,7 +128,7 @@ public class RegistrationPage extends TysanPage {
 				}
 				if (valid) {
 					UserFilter filter = new UserFilter();
-					filter.setEmail(tfMail.getModelObject());
+					filter.eMail(tfMail.getModelObject());
 					long users = userDAO.countByFilter(filter);
 					if (users != 0) {
 						valid = false;

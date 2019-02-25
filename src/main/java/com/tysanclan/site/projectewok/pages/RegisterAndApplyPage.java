@@ -72,41 +72,41 @@ public class RegisterAndApplyPage extends TysanPage {
 		}
 
 		final DropDownChoice<GameRealmCartesian> realmChoice = new DropDownChoice<GameRealmCartesian>(
-				"gamerealm", new Model<GameRealmCartesian>(null), grlms,
+				"gamerealm", new Model<>(null), grlms,
 				new GameRealmCartesianRenderer());
 		realmChoice.setRequired(true);
 		realmChoice.setNullValid(false);
 
 		final TextArea<String> otherGamesDescription = new TextArea<String>(
-				"othergames", new Model<String>(""));
+				"othergames", new Model<>(""));
 		otherGamesDescription.setRequired(true);
 
 		final TextArea<String> sortOfPersonArea = new TextArea<String>(
-				"sortofperson", new Model<String>(""));
+				"sortofperson", new Model<>(""));
 		sortOfPersonArea.setRequired(true);
 
 		final TextArea<String> lookingForArea = new TextArea<String>(
-				"lookingfor", new Model<String>(""));
+				"lookingfor", new Model<>(""));
 		lookingForArea.setRequired(true);
 
 		passId = randomString(6, 8);
 		resource = new CaptchaImageResource(passId);
 
 		final TextField<String> tfUsername = new TextField<String>("username",
-				new Model<String>(""));
+				new Model<>(""));
 		tfUsername.setRequired(true);
 		final TextField<String> tfMail = new TextField<String>("mail",
-				new Model<String>(""));
+				new Model<>(""));
 		tfMail.setRequired(true);
 		final PasswordTextField tfPassword = new PasswordTextField("password",
-				new Model<String>(""));
+				new Model<>(""));
 		tfPassword.setRequired(true);
 		final PasswordTextField tfPassword2 = new PasswordTextField(
-				"password2", new Model<String>(""));
+				"password2", new Model<>(""));
 		tfPassword2.setRequired(true);
 
 		final TextField<String> tfCaptcha = new TextField<String>(
-				"captchaResponse", new Model<String>(""));
+				"captchaResponse", new Model<>(""));
 		tfCaptcha.setRequired(true);
 
 		Form<User> registrationForm = new Form<User>("registerform") {
@@ -175,7 +175,7 @@ public class RegisterAndApplyPage extends TysanPage {
 				}
 				if (valid) {
 					UserFilter filter = new UserFilter();
-					filter.setEmail(tfMail.getModelObject());
+					filter.eMail(tfMail.getModelObject());
 					long users = userDAO.countByFilter(filter);
 					if (users != 0) {
 						valid = false;

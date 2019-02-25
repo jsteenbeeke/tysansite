@@ -47,6 +47,7 @@ import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.AchievementIconDAO;
 import com.tysanclan.site.projectewok.entities.dao.AchievementProposalDAO;
 import com.tysanclan.site.projectewok.entities.filter.AchievementIconFilter;
+import org.danekja.java.util.function.serializable.SerializableConsumer;
 
 /**
  * @author Jeroen Steenbeeke
@@ -78,7 +79,7 @@ public class ProposeAchievementPage extends AbstractMemberPage {
 		this.tabIndex = tabIndex;
 
 		add(new ListView<AchievementProposal>("proposals",
-				ModelMaker.wrap(achievementProposalDAO.findAll())) {
+				ModelMaker.wrap(achievementProposalDAO.findAll().toJavaList())) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -109,7 +110,7 @@ public class ProposeAchievementPage extends AbstractMemberPage {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onClick(AchievementIcon icon) {
+			public void accept(AchievementIcon icon) {
 				setResponsePage(new ProposeAchievementPage2(icon));
 			}
 		}));
@@ -124,7 +125,7 @@ public class ProposeAchievementPage extends AbstractMemberPage {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public void onClick(AchievementIcon icon) {
+					public void accept(AchievementIcon icon) {
 						achievementService.deleteIcon(getUser(), icon);
 
 						setResponsePage(new ProposeAchievementPage(2));
@@ -132,7 +133,7 @@ public class ProposeAchievementPage extends AbstractMemberPage {
 				}));
 
 		final FileUploadField uploadField = new FileUploadField("file",
-				new ListModel<FileUpload>());
+				new ListModel<>());
 		uploadField.setRequired(true);
 
 		final TextField<String> purposeField = new TextField<String>("purpose",
@@ -191,28 +192,28 @@ public class ProposeAchievementPage extends AbstractMemberPage {
 	private List<AchievementIcon> getRejectedIcons(User user) {
 		AchievementIconFilter filter = new AchievementIconFilter();
 
-		filter.setCreator(user);
-		filter.setApproved(false);
+		filter.creator(user);
+		filter.approved(false);
 
-		return achievementIconDAO.findByFilter(filter);
+		return achievementIconDAO.findByFilter(filter).toJavaList();
 	}
 
 	private List<AchievementIcon> getApprovedIcons(User user) {
 		AchievementIconFilter filter = new AchievementIconFilter();
 
-		filter.setCreator(user);
-		filter.setApproved(true);
+		filter.creator(user);
+		filter.approved(true);
 
-		return achievementIconDAO.findByFilter(filter);
+		return achievementIconDAO.findByFilter(filter).toJavaList();
 	}
 
 	private List<AchievementIcon> getPendingIcons(User user) {
 		AchievementIconFilter filter = new AchievementIconFilter();
 
-		filter.setCreator(user);
-		filter.setApprovedAsNull(true);
+		filter.creator(user);
+		filter.approved().isNull();
 
-		return achievementIconDAO.findByFilter(filter);
+		return achievementIconDAO.findByFilter(filter).toJavaList();
 	}
 
 	private ListView<List<Long>> getIconListview(String id,
@@ -254,7 +255,7 @@ public class ProposeAchievementPage extends AbstractMemberPage {
 					@Override
 					protected void populateItem(final ListItem<Long> innerItem) {
 						AchievementIcon icon = iconDAO.load(innerItem
-								.getModelObject());
+								.getModelObject()).getOrElseThrow(IllegalStateException::new);
 
 						Link<AchievementIcon> iconLink = new Link<AchievementIcon>(
 								"iconLink", ModelMaker.wrap(icon)) {
@@ -283,7 +284,9 @@ public class ProposeAchievementPage extends AbstractMemberPage {
 		};
 	}
 
-	private static interface IconClickResponder extends Serializable {
-		void onClick(AchievementIcon icon);
+	private interface IconClickResponder extends SerializableConsumer<AchievementIcon> {
+		default void onClick(AchievementIcon icon) {
+			accept(icon);
+		}
 	}
 }

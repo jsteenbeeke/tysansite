@@ -65,18 +65,18 @@ public class RosterPage extends TysanPage {
 	public RosterPage() {
 		super("Roster");
 
-		BaseSeries<String, Integer> values = new BaseSeries<String, Integer>();
+		BaseSeries<String, Long> values = new BaseSeries<>();
 
-		int chancellorCount = userDAO.countByRank(Rank.CHANCELLOR);
-		int senatorCount = userDAO.countByRank(Rank.SENATOR);
-		int truthsayerCount = userDAO.countByRank(Rank.TRUTHSAYER);
-		int reveredMemberCount = userDAO.countByRank(Rank.REVERED_MEMBER);
-		int seniorMemberCount = userDAO.countByRank(Rank.SENIOR_MEMBER);
-		int memberCount = userDAO.countByRank(Rank.FULL_MEMBER);
-		int juniorMemberCount = userDAO.countByRank(Rank.JUNIOR_MEMBER);
-		int trialMemberCount = userDAO.countByRank(Rank.TRIAL);
+		long chancellorCount = userDAO.countByRank(Rank.CHANCELLOR);
+		long senatorCount = userDAO.countByRank(Rank.SENATOR);
+		long truthsayerCount = userDAO.countByRank(Rank.TRUTHSAYER);
+		long reveredMemberCount = userDAO.countByRank(Rank.REVERED_MEMBER);
+		long seniorMemberCount = userDAO.countByRank(Rank.SENIOR_MEMBER);
+		long memberCount = userDAO.countByRank(Rank.FULL_MEMBER);
+		long juniorMemberCount = userDAO.countByRank(Rank.JUNIOR_MEMBER);
+		long trialMemberCount = userDAO.countByRank(Rank.TRIAL);
 
-		int total = chancellorCount + senatorCount + truthsayerCount
+		long total = chancellorCount + senatorCount + truthsayerCount
 				+ reveredMemberCount + seniorMemberCount + memberCount
 				+ juniorMemberCount + trialMemberCount;
 
@@ -105,11 +105,11 @@ public class RosterPage extends TysanPage {
 			values.addEntry("Trial Members", 100 * trialMemberCount / total);
 		}
 
-		List<BaseSeries<String, Integer>> valuesAsList = new LinkedList<BaseSeries<String, Integer>>();
+		List<BaseSeries<String, Long>> valuesAsList = new LinkedList<>();
 		valuesAsList.add(values);
 
 		add(GraphUtil.makePieChart("chart", "Member Distribution",
-				new ListModel<BaseSeries<String, Integer>>(valuesAsList)));
+				new ListModel<>(valuesAsList)));
 
 		User chancellor = null;
 		List<User> senators = new LinkedList<User>();
@@ -120,7 +120,7 @@ public class RosterPage extends TysanPage {
 
 		for (User u : userDAO.findAll()) {
 			if (MemberUtil.isMember(u)) {
-				if (u.isRetired() == false) {
+				if (!u.isRetired()) {
 					switch (u.getRank()) {
 						case CHANCELLOR:
 							chancellor = u;

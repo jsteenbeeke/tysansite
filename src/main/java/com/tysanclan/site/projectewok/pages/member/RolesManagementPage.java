@@ -66,10 +66,10 @@ public class RolesManagementPage extends AbstractMemberPage {
 		super("Roles management");
 
 		RoleFilter filter = new RoleFilter();
-		filter.addOrderBy("roleType", true);
-		filter.addOrderBy("name", true);
+		filter.roleType().orderBy(true);
+		filter.name().orderBy(true);
 
-		List<Role> roles = roleDAO.findByFilter(filter);
+		List<Role> roles = roleDAO.findByFilter(filter).toJavaList();
 
 		add(new ListView<Role>("roles", ModelMaker.wrap(roles)) {
 			private static final long serialVersionUID = 1L;
@@ -120,14 +120,14 @@ public class RolesManagementPage extends AbstractMemberPage {
 				reassignDialog.setTitle("Assign role " + role.getName());
 
 				UserFilter f = new UserFilter();
-				f.addRank(Rank.CHANCELLOR);
-				f.addRank(Rank.SENATOR);
-				f.addRank(Rank.TRUTHSAYER);
-				f.addRank(Rank.REVERED_MEMBER);
-				f.addRank(Rank.SENIOR_MEMBER);
-				f.addRank(Rank.FULL_MEMBER);
+				f.rank(Rank.CHANCELLOR);
+				f.orRank(Rank.SENATOR);
+				f.orRank(Rank.TRUTHSAYER);
+				f.orRank(Rank.REVERED_MEMBER);
+				f.orRank(Rank.SENIOR_MEMBER);
+				f.orRank(Rank.FULL_MEMBER);
 
-				List<User> users = userDAO.findByFilter(f);
+				List<User> users = userDAO.findByFilter(f).toJavaList();
 
 				reassignForm.add(new DropDownChoice<User>("user", ModelMaker
 						.wrap(users.get(0), true), ModelMaker.wrap(users))

@@ -52,7 +52,7 @@ public class RealmManagementPage extends AbstractSingleAccordionMemberPage {
 
 		add(
 				new ListView<Realm>("realms", ModelMaker.wrap(realmDAO
-						.findAll())) {
+						.findAll().toJavaList())) {
 					private static final long serialVersionUID = 1L;
 
 					@Override

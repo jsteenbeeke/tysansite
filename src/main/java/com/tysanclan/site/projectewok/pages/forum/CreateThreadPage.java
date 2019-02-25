@@ -19,6 +19,7 @@ package com.tysanclan.site.projectewok.pages.forum;
 
 import java.util.Calendar;
 
+import com.tysanclan.site.projectewok.entities.filter.ForumThreadFilter;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
@@ -74,9 +75,9 @@ public class CreateThreadPage extends TysanPage {
 					oneWeekAgo.add(Calendar.WEEK_OF_YEAR, -1);
 
 					TrialFilter filter = new TrialFilter();
-					filter.setStartAfter(oneWeekAgo.getTime());
-					filter.setRestrained(true);
-					filter.setAccused(u);
+					filter.trialThread(new ForumThreadFilter().postTime().greaterThan(oneWeekAgo.getTime()));
+					filter.restrained(true);
+					filter.accused(u);
 
 					long count = trialDAO.countByFilter(filter);
 

@@ -22,6 +22,7 @@ import java.math.RoundingMode;
 import java.util.LinkedList;
 import java.util.List;
 
+import io.vavr.collection.Seq;
 import nl.topicus.wqplot.components.JQPlot;
 import nl.topicus.wqplot.data.AbstractSeries;
 
@@ -95,10 +96,10 @@ public class FinancePage extends AbstractMemberPage {
 		// - donations
 		// - contribution
 		// - subscriptions
-		List<Expense> expenses = expenseDAO.findAll();
+		Seq<Expense> expenses = expenseDAO.findAll();
 		List<Expense> filtered = new LinkedList<Expense>();
 
-		BigDecimal sum = new BigDecimal(0).setScale(2);
+		BigDecimal sum = new BigDecimal(0).setScale(2, RoundingMode.HALF_UP);
 
 		DateTime now = new DateTime();
 		DateTime oneMonthAgo = now.minusMonths(1);

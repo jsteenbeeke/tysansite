@@ -43,7 +43,7 @@ public class UntenabilityVotePage extends AbstractMemberPage {
 		super("Untenability Votes");
 
 		add(new ListView<UntenabilityVote>("votes",
-				ModelMaker.wrap(untenabilityVoteDAO.findAll())) {
+				ModelMaker.wrap(untenabilityVoteDAO.findAll().toJavaList())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

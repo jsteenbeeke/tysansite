@@ -76,34 +76,34 @@ public class SubscriptionPaymentPage extends AbstractMemberPage {
 				item.add(new Label("header", "Subscription Payment - "
 						+ dateTimeStr));
 				item.add(new Label("amount", new DollarSignModel(
-						new Model<BigDecimal>(payment.getSubscription()
+						new Model<>(payment.getSubscription()
 								.getAmount()))));
 
-				item.add(new HiddenField<String>(
+				item.add(new HiddenField<>(
 						"paypalAddress",
-						new Model<String>(
+						new Model<>(
 								roleService.getTreasurer() != null ? roleService
 										.getTreasurer().getPaypalAddress()
 										: null)).add(AttributeModifier.replace(
 						"name", "business")));
-				item.add(new HiddenField<String>("itemname", new Model<String>(
+				item.add(new HiddenField<>("itemname", new Model<>(
 						"The Tysan Clan - Subscription Payment - "
 								+ dateTimeStr)));
 
-				item.add(new HiddenField<String>("itemdesc", new Model<String>(
+				item.add(new HiddenField<>("itemdesc", new Model<>(
 						"The Tysan Clan - Subscription Payment - "
 								+ dateTimeStr)).add(AttributeModifier.replace(
 						"name", "item_name"))); //
-				item.add(new HiddenField<String>("amount2", new Model<String>(
+				item.add(new HiddenField<>("amount2", new Model<>(
 						payment.getSubscription().getAmount().toString()))
 						.add(AttributeModifier.replace("name", "amount")));
-				item.add(new HiddenField<String>("returnUrl",
-						new Model<String>(
+				item.add(new HiddenField<>("returnUrl",
+						new Model<>(
 								"https://www.tysanclan.com/processSubscriptionPayment/"
 										+ payment.getId()
 										+ "/"
 										+ paymentDAO
-												.getConfirmationKey(payment)
+										.getConfirmationKey(payment)
 										+ "/")).add(AttributeModifier.replace(
 						"name", "return")));
 			}

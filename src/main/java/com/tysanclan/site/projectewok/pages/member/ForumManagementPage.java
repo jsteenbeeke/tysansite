@@ -19,6 +19,7 @@ package com.tysanclan.site.projectewok.pages.member;
 
 import java.util.List;
 
+import io.vavr.collection.Seq;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
@@ -67,7 +68,7 @@ public class ForumManagementPage extends AbstractMemberPage {
 	 	 */
 	private ListView<ForumCategory> createCategoryListView() {
 		return new ListView<ForumCategory>("categories",
-				ModelMaker.wrap(forumCategoryDAO.findAll())) {
+				ModelMaker.wrap(forumCategoryDAO.findAll().toJavaList())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -188,7 +189,7 @@ public class ForumManagementPage extends AbstractMemberPage {
 							@Override
 							public void onClick() {
 								Forum _forum = getModelObject();
-								List<ForumCategory> cats = forumCategoryDAO
+								Seq<ForumCategory> cats = forumCategoryDAO
 										.findAll();
 
 								ForumCategory current = _forum.getCategory();
@@ -227,7 +228,7 @@ public class ForumManagementPage extends AbstractMemberPage {
 							@Override
 							public void onClick() {
 								Forum _forum = getModelObject();
-								List<ForumCategory> cats = forumCategoryDAO
+								Seq<ForumCategory> cats = forumCategoryDAO
 										.findAll();
 
 								ForumCategory current = _forum.getCategory();

@@ -156,16 +156,16 @@ public class EndorsementPage extends AbstractMemberPage {
 		};
 
 		UserFilter filter = new UserFilter();
-		filter.addRank(Rank.CHANCELLOR);
-		filter.addRank(Rank.SENATOR);
-		filter.addRank(Rank.TRUTHSAYER);
-		filter.addRank(Rank.REVERED_MEMBER);
-		filter.addRank(Rank.SENIOR_MEMBER);
-		filter.addRank(Rank.FULL_MEMBER);
-		filter.setRetired(false);
-		filter.addOrderBy("username", true);
+		filter.rank(Rank.CHANCELLOR);
+		filter.orRank(Rank.SENATOR);
+		filter.orRank(Rank.TRUTHSAYER);
+		filter.orRank(Rank.REVERED_MEMBER);
+		filter.orRank(Rank.SENIOR_MEMBER);
+		filter.orRank(Rank.FULL_MEMBER);
+		filter.retired(false);
+		filter.username().orderBy(true);
 
-		List<User> eligible = userDAO.findByFilter(filter);
+		List<User> eligible = userDAO.findByFilter(filter).toJavaList();
 		eligible.remove(getUser());
 
 		endorsementForm.add(new DropDownChoice<User>("targetUser", ModelMaker
@@ -203,15 +203,16 @@ public class EndorsementPage extends AbstractMemberPage {
 		};
 
 		UserFilter filter2 = new UserFilter();
-		filter2.addRank(Rank.CHANCELLOR);
-		filter2.addRank(Rank.SENATOR);
-		filter2.addRank(Rank.TRUTHSAYER);
-		filter2.addRank(Rank.REVERED_MEMBER);
-		filter2.addRank(Rank.SENIOR_MEMBER);
-		filter2.addRank(Rank.FULL_MEMBER);
-		filter2.setRetired(false);
+		filter2.rank(Rank.CHANCELLOR);
+		filter2.orRank(Rank.SENATOR);
+		filter2.orRank(Rank.TRUTHSAYER);
+		filter2.orRank(Rank.REVERED_MEMBER);
+		filter2.orRank(Rank.SENIOR_MEMBER);
+		filter2.orRank(Rank.FULL_MEMBER);
+		filter2.retired(false);
+		filter2.username().orderBy(true);
 
-		List<User> eligible2 = userDAO.findByFilter(filter2);
+		List<User> eligible2 = userDAO.findByFilter(filter2).toJavaList();
 		eligible2.remove(getUser());
 
 		User endorsesForSenate = getUser().getEndorsesForSenate();

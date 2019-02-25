@@ -68,7 +68,7 @@ public class AcceptanceVotePage extends AbstractMemberPage {
 		super("Acceptance votes");
 
 		add(new ListView<AcceptanceVote>("members",
-				ModelMaker.wrap(acceptanceVoteDAO.findAll())) {
+				ModelMaker.wrap(acceptanceVoteDAO.findAll().toJavaList())) {
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean
@@ -213,11 +213,11 @@ public class AcceptanceVotePage extends AbstractMemberPage {
 						.getVerdicts().size())));
 
 				ForumPostFilter filter = new ForumPostFilter();
-				filter.setShadow(false);
-				filter.setUser(trialMember);
-				filter.addOrderBy("time", false);
+				filter.shadow(false);
+				filter.poster(trialMember);
+				filter.time().orderBy(false);
 
-				List<ForumPost> posts = forumPostDAO.findByFilter(filter);
+				List<ForumPost> posts = forumPostDAO.findByFilter(filter).toJavaList();
 
 				posts = forumService.filterPosts(getUser(), false, posts);
 

@@ -19,9 +19,16 @@ package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
 import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
 import com.tysanclan.site.projectewok.entities.Group;
+import com.tysanclan.site.projectewok.entities.Group_;
+import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.filter.GroupFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -31,4 +38,14 @@ import org.springframework.stereotype.Component;
 class GroupDAOImpl extends HibernateDAO<Group, GroupFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.GroupDAO {
 
+	@Override
+	public List<Group> getMemberGroups(User user) {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Group> query = criteriaBuilder.createQuery(Group.class);
+		Root<Group> root = query.from(Group.class);
+
+		query.select(root).where(criteriaBuilder.equal(root.get(Group_.groupMembers), user));
+
+		return entityManager.createQuery(query).getResultList();
+	}
 }

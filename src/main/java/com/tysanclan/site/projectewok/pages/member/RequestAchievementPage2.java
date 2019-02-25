@@ -51,7 +51,7 @@ public class RequestAchievementPage2 extends AbstractSingleAccordionMemberPage {
 		achievementModel = ModelMaker.wrap(achievement);
 
 		final FileUploadField uploadField = new FileUploadField("screenshot",
-				new ListModel<FileUpload>());
+				new ListModel<>());
 		final TextArea<String> evidenceField = new BBCodeTextArea("evidence",
 				"");
 

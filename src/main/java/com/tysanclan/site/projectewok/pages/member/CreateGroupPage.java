@@ -20,6 +20,7 @@ package com.tysanclan.site.projectewok.pages.member;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.NaiveRenderer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -73,10 +74,10 @@ public class CreateGroupPage extends AbstractMemberPage {
 
 	private void addPendingRequests() {
 		GroupCreationRequestFilter filter = new GroupCreationRequestFilter();
-		filter.setRequester(getUser());
+		filter.requester(getUser());
 
 		List<GroupCreationRequest> requests = groupCreationRequestDAO
-				.findByFilter(filter);
+				.findByFilter(filter).asJava();
 
 		String intro = (requests.size() == 0) ? "You have no pending group creation requests"
 				: "You have " + requests.size()
@@ -262,7 +263,7 @@ public class CreateGroupPage extends AbstractMemberPage {
 	}
 
 	private static class GameRealmRenderer implements
-			IChoiceRenderer<GameRealm> {
+			IChoiceRenderer<GameRealm>, NaiveRenderer<GameRealm> {
 		private static final long serialVersionUID = 1L;
 
 		/**

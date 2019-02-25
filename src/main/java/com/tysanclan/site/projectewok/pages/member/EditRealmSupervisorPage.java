@@ -20,6 +20,7 @@ package com.tysanclan.site.projectewok.pages.member;
 import java.util.Collections;
 import java.util.List;
 
+import com.tysanclan.site.projectewok.entities.UserGameRealm;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -80,17 +81,18 @@ public class EditRealmSupervisorPage extends TysanPage {
 		};
 
 		UserFilter filter = new UserFilter();
-		filter.addRank(Rank.CHANCELLOR);
-		filter.addRank(Rank.SENATOR);
-		filter.addRank(Rank.TRUTHSAYER);
-		filter.addRank(Rank.REVERED_MEMBER);
-		filter.addRank(Rank.SENIOR_MEMBER);
-		filter.addRank(Rank.FULL_MEMBER);
-		filter.addRank(Rank.JUNIOR_MEMBER);
-		filter.setRealm(realm);
+		filter.rank(Rank.CHANCELLOR);
+		filter.orRank(Rank.SENATOR);
+		filter.orRank(Rank.TRUTHSAYER);
+		filter.orRank(Rank.REVERED_MEMBER);
+		filter.orRank(Rank.SENIOR_MEMBER);
+		filter.orRank(Rank.FULL_MEMBER);
+		filter.orRank(Rank.JUNIOR_MEMBER);
 
-		List<User> users = userDAO.findByFilter(filter);
-		Collections.sort(users, new CaseInsensitiveUserComparator());
+		List<User> users = userDAO.findByFilter(filter).filter(
+				u -> u.getPlayedGames().stream().map(UserGameRealm::getRealm).anyMatch(realm::equals)
+		).toJavaList();
+		users.sort(new CaseInsensitiveUserComparator());
 
 		userSelect = new DropDownChoice<User>("overseer", users);
 

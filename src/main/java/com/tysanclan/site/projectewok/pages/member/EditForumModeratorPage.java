@@ -62,10 +62,9 @@ public class EditForumModeratorPage extends TysanPage {
 
 		add(new Label("stitle", "Moderators for forum " + forum.getName()));
 
-		List<User> moderators = new LinkedList<User>();
-		moderators.addAll(forum.getModerators());
+		List<User> moderators = new LinkedList<>(forum.getModerators());
 
-		Collections.sort(moderators, new CaseInsensitiveUserComparator());
+		moderators.sort(new CaseInsensitiveUserComparator());
 
 		add(new ListView<User>("moderators", ModelMaker.wrap(moderators)) {
 			private static final long serialVersionUID = 1L;
@@ -130,16 +129,16 @@ public class EditForumModeratorPage extends TysanPage {
 		};
 
 		UserFilter filter = new UserFilter();
-		filter.addRank(Rank.CHANCELLOR);
-		filter.addRank(Rank.SENATOR);
-		filter.addRank(Rank.TRUTHSAYER);
-		filter.addRank(Rank.REVERED_MEMBER);
-		filter.addRank(Rank.SENIOR_MEMBER);
-		filter.addRank(Rank.FULL_MEMBER);
-		filter.addRank(Rank.JUNIOR_MEMBER);
-		filter.addOrderBy("username", true);
+		filter.rank(Rank.CHANCELLOR);
+		filter.orRank(Rank.SENATOR);
+		filter.orRank(Rank.TRUTHSAYER);
+		filter.orRank(Rank.REVERED_MEMBER);
+		filter.orRank(Rank.SENIOR_MEMBER);
+		filter.orRank(Rank.FULL_MEMBER);
+		filter.orRank(Rank.JUNIOR_MEMBER);
+		filter.username().orderBy(true);
 
-		List<User> users = userDAO.findByFilter(filter);
+		List<User> users = userDAO.findByFilter(filter).toJavaList();
 
 		addModeratorForm.add(new DropDownChoice<User>("userSelect", ModelMaker
 				.wrap(users.get(0), true), ModelMaker.wrap(users))

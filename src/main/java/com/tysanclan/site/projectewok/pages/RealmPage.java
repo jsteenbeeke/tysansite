@@ -78,11 +78,8 @@ public class RealmPage extends TysanPage {
 					HttpServletResponse.SC_NOT_FOUND);
 		}
 
-		Realm realm = realmDAO.get(parameters.getId());
-
-		if (realm == null)
-			throw new RestartResponseAtInterceptPageException(
-					AccessDeniedPage.class);
+		Realm realm = realmDAO.load(parameters.getId()).getOrElseThrow(() -> new RestartResponseAtInterceptPageException(
+				AccessDeniedPage.class));
 
 		init(realm);
 	}

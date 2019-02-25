@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import io.vavr.collection.Seq;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -122,11 +123,11 @@ public class RunForSenatorPage extends AbstractMemberPage {
 		cal.add(Calendar.MONTH, -6);
 
 		DonationFilter filter = new DonationFilter();
-		filter.setFrom(cal.getTime());
-		filter.setDonator(getUser());
+		filter.donationTime().greaterThanOrEqualTo(cal.getTime());
+		filter.donator(getUser());
 
 		BigDecimal value = BigDecimal.ZERO;
-		List<Donation> donations = donationDAO.findByFilter(filter);
+		Seq<Donation> donations = donationDAO.findByFilter(filter);
 		for (Donation donation : donations) {
 			value = value.add(donation.getAmount());
 		}

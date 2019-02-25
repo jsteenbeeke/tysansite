@@ -20,6 +20,7 @@ package com.tysanclan.site.projectewok.pages.member;
 import java.util.LinkedList;
 import java.util.List;
 
+import io.vavr.collection.Seq;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.link.Link;
@@ -47,7 +48,7 @@ public class JoinGroupPage extends AbstractMemberPage {
 	public JoinGroupPage() {
 		super("Join group");
 
-		List<Group> groups = groupDAO.findAll();
+		List<Group> groups = groupDAO.findAll().toJavaList();
 		List<Group> currentGroups = getUser().getGroups();
 
 		for (Group group : currentGroups) {

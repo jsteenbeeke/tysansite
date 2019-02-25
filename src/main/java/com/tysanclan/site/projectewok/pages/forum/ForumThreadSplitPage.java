@@ -148,8 +148,7 @@ public class ForumThreadSplitPage extends TysanPage {
 	public ForumThreadSplitPage(ForumThread thread) {
 		super("Split thread: " + thread.getTitle());
 
-		TysanSession sess = (TysanSession) Session.get();
-		User u = sess != null ? sess.getUser() : null;
+		User u = TysanSession.session().flatMap(TysanSession::getUser).getOrNull();
 
 		List<ForumPost> posts = forumService.filterPosts(u, false,
 				thread.getPosts());
@@ -191,8 +190,8 @@ public class ForumThreadSplitPage extends TysanPage {
 			protected void onSubmit() {
 				ForumThread t = getModelObject();
 
-				TysanSession session = (TysanSession) Session.get();
-				User user = session != null ? session.getUser() : null;
+				User user = TysanSession.session().flatMap(TysanSession::getUser).getOrNull();
+
 
 				List<PostSelectionPair> pairsLIst = postselection
 						.getModelObject();

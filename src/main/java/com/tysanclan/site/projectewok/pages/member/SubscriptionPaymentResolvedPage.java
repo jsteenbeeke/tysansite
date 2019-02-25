@@ -69,6 +69,6 @@ public class SubscriptionPaymentResolvedPage extends WebPage {
 	}
 
 	private SubscriptionPayment getPayment(Long paymentId) {
-		return subscriptionPaymentDAO.get(paymentId);
+		return subscriptionPaymentDAO.load(paymentId).getOrElseThrow(IllegalStateException::new);
 	}
 }

@@ -21,6 +21,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import io.vavr.collection.Seq;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -74,8 +75,8 @@ public class ActivationPage extends TysanPage {
 		}
 
 		ActivationFilter filter = new ActivationFilter();
-		filter.setKey(parameters.getKey());
-		List<Activation> activations = activationDAO.findByFilter(filter);
+		filter.activationKey(parameters.getKey());
+		Seq<Activation> activations = activationDAO.findByFilter(filter);
 
 		if (activations.isEmpty()) {
 			throw new RestartResponseAtInterceptPageException(

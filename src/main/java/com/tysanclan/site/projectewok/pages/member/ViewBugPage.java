@@ -21,6 +21,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.NaiveRenderer;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -70,7 +71,7 @@ public class ViewBugPage extends AbstractSingleAccordionMemberPage {
 		}
 	}
 
-	public static class BugRenderer implements IChoiceRenderer<Bug> {
+	public static class BugRenderer implements IChoiceRenderer<Bug>, NaiveRenderer<Bug> {
 		private static final long serialVersionUID = 1L;
 
 		@Override
@@ -151,11 +152,8 @@ public class ViewBugPage extends AbstractSingleAccordionMemberPage {
 					HttpServletResponse.SC_NOT_FOUND);
 		}
 
-		Bug bug = bugDAO.get(parameters.getId());
-
-		if (bug == null)
-			throw new RestartResponseAtInterceptPageException(
-					BugOverviewPage.class);
+		Bug bug = bugDAO.load(parameters.getId()).getOrElseThrow(() -> new RestartResponseAtInterceptPageException(
+				BugOverviewPage.class));
 
 		initPage(bug);
 	}
@@ -277,9 +275,9 @@ public class ViewBugPage extends AbstractSingleAccordionMemberPage {
 		WebMarkupContainer masterPanel = new WebMarkupContainer("masterPanel");
 
 		BugFilter filter = new BugFilter();
-		filter.setExclude(bug.getId());
+		filter.id().notEqualTo(bug.getId());
 
-		List<Bug> otherBugs = bugDAO.findByFilter(filter);
+		List<Bug> otherBugs = bugDAO.findByFilter(filter).asJava();
 
 		final DropDownChoice<Bug> bugSelect = new DropDownChoice<Bug>(
 				"duplicate", ModelMaker.wrap((Bug) null),

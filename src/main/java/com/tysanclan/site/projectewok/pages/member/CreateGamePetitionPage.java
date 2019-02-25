@@ -19,6 +19,7 @@ package com.tysanclan.site.projectewok.pages.member;
 
 import java.util.List;
 
+import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.LambdaRenderer;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -130,22 +131,9 @@ public class CreateGamePetitionPage extends AbstractSingleAccordionMemberPage {
 
 			}
 		});
-		realmChoice.setChoiceRenderer(new IChoiceRenderer<Realm>() {
-			private static final long serialVersionUID = 1L;
+		realmChoice.setChoiceRenderer(LambdaRenderer.of(Realm::getName));
 
-			@Override
-			public Object getDisplayValue(Realm object) {
-				return object.getName();
-			}
-
-			@Override
-			public String getIdValue(Realm object, int index) {
-				return object == null ? "null" : object.getId().toString();
-			}
-
-		});
-
-		form.add(new TextField<String>("newRealm", new Model<String>(""))
+		form.add(new TextField<>("newRealm", new Model<>(""))
 				.setOutputMarkupId(true).setOutputMarkupPlaceholderTag(true));
 
 		form.add(realmChoice);

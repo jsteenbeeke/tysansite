@@ -58,10 +58,10 @@ public class SignGamePetitionsPage extends AbstractMemberPage {
 	public SignGamePetitionsPage() {
 		super("New game petitions");
 
-		add(new Label("count", new Model<Integer>(
+		add(new Label("count", new Model<>(
 				gameService.getRequiredPetitionSignatures())));
 		add(new ListView<GamePetition>("petitions",
-				ModelMaker.wrap(gamePetitionDAO.findAll())) {
+				ModelMaker.wrap(gamePetitionDAO.findAll().toJavaList())) {
 			private static final long serialVersionUID = 1L;
 
 			/**

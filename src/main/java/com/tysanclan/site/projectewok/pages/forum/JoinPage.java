@@ -19,6 +19,7 @@ package com.tysanclan.site.projectewok.pages.forum;
 
 import java.util.List;
 
+import io.vavr.collection.Seq;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -47,8 +48,8 @@ public class JoinPage extends TysanPage {
 		WebMarkupContainer container2 = new WebMarkupContainer("container2");
 
 		JoinApplicationFilter filter = new JoinApplicationFilter();
-		filter.setApplicant(getUser());
-		List<JoinApplication> applications = joinApplicationDAO
+		filter.applicant(getUser());
+		Seq<JoinApplication> applications = joinApplicationDAO
 				.findByFilter(filter);
 
 		int count = applications.size();

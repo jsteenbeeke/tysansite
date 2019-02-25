@@ -46,7 +46,7 @@ public class FeelingLuckyPage extends AbstractSingleAccordionMemberPage {
 
 		add(
 				new Label("score",
-						new Model<Integer>(getUser().getLuckyScore())));
+						new Model<>(getUser().getLuckyScore())));
 
 		add(new Form<User>("luckyForm") {
 			private static final long serialVersionUID = 1L;

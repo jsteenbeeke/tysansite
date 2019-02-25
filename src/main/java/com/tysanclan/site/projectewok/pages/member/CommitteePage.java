@@ -121,10 +121,10 @@ public class CommitteePage extends AbstractMemberPage {
 		add(createForm);
 
 		CommitteeFilter filter = new CommitteeFilter();
-		filter.addOrderBy("name", true);
+		filter.name().orderBy(true);
 
 		add(new ListView<Committee>("committees", ModelMaker.wrap(committeeDAO
-				.findByFilter(filter))) {
+				.findByFilter(filter).toJavaList())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

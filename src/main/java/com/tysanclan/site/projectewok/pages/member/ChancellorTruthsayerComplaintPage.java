@@ -80,7 +80,7 @@ public class ChancellorTruthsayerComplaintPage extends AbstractMemberPage {
 		super("Truthsayer Complaints");
 
 		add(new ListView<TruthsayerComplaint>("complaints",
-				ModelMaker.wrap(complaintDAO.findAll())) {
+				ModelMaker.wrap(complaintDAO.findAll().toJavaList())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

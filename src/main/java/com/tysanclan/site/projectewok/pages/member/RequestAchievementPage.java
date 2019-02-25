@@ -59,7 +59,7 @@ public class RequestAchievementPage extends AbstractSingleAccordionMemberPage {
 
 		Set<Game> games = new HashSet<Game>();
 
-		List<Achievement> available = achievementDAO.findAll();
+		List<Achievement> available = achievementDAO.findAll().toJavaList();
 		available.removeAll(user.getAchievements());
 
 		for (UserGameRealm ugr : user.getPlayedGames()) {
@@ -86,7 +86,7 @@ public class RequestAchievementPage extends AbstractSingleAccordionMemberPage {
 		}
 		available.removeAll(remove);
 
-		Collections.sort(available, AchievementComparator.INSTANCE);
+		available.sort(AchievementComparator.INSTANCE);
 
 		add(
 				new ListView<Achievement>("achievements", ModelMaker

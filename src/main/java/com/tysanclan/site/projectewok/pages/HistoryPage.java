@@ -19,6 +19,7 @@ package com.tysanclan.site.projectewok.pages;
 
 import java.util.List;
 
+import io.vavr.collection.Seq;
 import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -49,9 +50,9 @@ public class HistoryPage extends TysanPage {
 		User prospero = null;
 
 		UserFilter filter = new UserFilter();
-		filter.setUsername("prospero");
+		filter.username("prospero");
 
-		List<User> prosperos = userDAO.findByFilter(filter);
+		Seq<User> prosperos = userDAO.findByFilter(filter);
 		if (!prosperos.isEmpty()) {
 			prospero = prosperos.get(0);
 		}

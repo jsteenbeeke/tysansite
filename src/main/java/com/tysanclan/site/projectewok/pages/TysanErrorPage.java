@@ -51,12 +51,6 @@ public class TysanErrorPage extends TysanPage {
 				"WHY THE FUCK ARE YOU TRYING TO CALL THIS, WICKET?!?!");
 	}
 
-	/**
-	 * @param originalPage
-	 *            The page we were trying to view
-	 * @param exception
-	 *            The exception thrown
-	 */
 	public TysanErrorPage(@Nullable String target, @Nullable String referrer,
 			@Nonnull final Exception exception) {
 		super("An error has occurred");

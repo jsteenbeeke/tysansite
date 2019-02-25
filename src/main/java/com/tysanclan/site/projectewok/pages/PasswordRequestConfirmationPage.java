@@ -21,6 +21,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import io.vavr.collection.Seq;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
@@ -74,9 +75,9 @@ public class PasswordRequestConfirmationPage extends TysanPage {
 		}
 
 		PasswordRequestFilter filter = new PasswordRequestFilter();
-		filter.setKey(parameters.getKey());
+		filter.key(parameters.getKey());
 
-		List<PasswordRequest> requests = passwordRequestDAO
+		Seq<PasswordRequest> requests = passwordRequestDAO
 				.findByFilter(filter);
 		if (requests.isEmpty()) {
 			throw new RestartResponseAtInterceptPageException(NewsPage.class);

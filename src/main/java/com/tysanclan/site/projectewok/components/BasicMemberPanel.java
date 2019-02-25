@@ -1048,7 +1048,6 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 			Date startOfDay = midnightCalendarInstance.getTime();
 			midnightCalendarInstance.add(Calendar.DAY_OF_YEAR, 1);
 			midnightCalendarInstance.add(Calendar.SECOND, 1);
-
 			filter.date().between(startOfDay,midnightCalendarInstance.getTime());
 
 			if (eventDAO.countByFilter(filter) > 0) {

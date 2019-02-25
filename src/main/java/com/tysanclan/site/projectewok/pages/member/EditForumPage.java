@@ -101,17 +101,17 @@ public class EditForumPage extends TysanPage {
 
 		};
 
-		editForm.add(new TextField<String>("name", new Model<String>(forum
+		editForm.add(new TextField<>("name", new Model<>(forum
 				.getName())));
 
-		editForm.add(new TextArea<String>("description", new Model<String>(
+		editForm.add(new TextArea<>("description", new Model<>(
 				forum.getDescription())));
 
-		editForm.add(new CheckBox("interactive", new Model<Boolean>(forum
+		editForm.add(new CheckBox("interactive", new Model<>(forum
 				.isInteractive())).setEnabled(false));
-		editForm.add(new CheckBox("publicaccess", new Model<Boolean>(!forum
+		editForm.add(new CheckBox("publicaccess", new Model<>(!forum
 				.isPublicAccess())).setEnabled(!(forum instanceof NewsForum)));
-		editForm.add(new CheckBox("membersonly", new Model<Boolean>(forum
+		editForm.add(new CheckBox("membersonly", new Model<>(forum
 				.isMembersOnly())).setEnabled(!(forum instanceof NewsForum)));
 
 		add(editForm);

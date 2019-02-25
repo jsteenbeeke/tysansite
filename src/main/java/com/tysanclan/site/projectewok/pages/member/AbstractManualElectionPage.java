@@ -85,17 +85,16 @@ public abstract class AbstractManualElectionPage extends AbstractMemberPage {
 					List<User> users = new LinkedList<User>();
 
 					for (Long id : preferences) {
-						users.add(userDAO.load(id));
+						userDAO.load(id).map(users::add);
 					}
 
 					onVoteSubmit(users);
 				} else {
-					List<User> remaining = new LinkedList<User>();
-					remaining.addAll(userChoice.getChoices());
+					List<User> remaining = new LinkedList<>(userChoice.getChoices());
 					remaining.remove(userChoice.getModelObject());
 
 					positionLabel.replaceWith(new Label("position",
-							new Model<Integer>(preferences.size() + 1)));
+							new Model<>(preferences.size() + 1)));
 
 					userChoice.setChoices(ModelMaker.wrapChoices(remaining));
 					userChoice.setModel(ModelMaker.wrap((User) null, true));
