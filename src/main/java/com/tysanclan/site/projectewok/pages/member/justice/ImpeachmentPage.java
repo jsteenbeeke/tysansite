@@ -19,6 +19,7 @@ package com.tysanclan.site.projectewok.pages.member.justice;
 
 import java.util.List;
 
+import io.vavr.collection.Seq;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -50,7 +51,7 @@ public class ImpeachmentPage extends AbstractMemberPage {
 	public ImpeachmentPage() {
 		super("Impeach Chancellor");
 
-		List<Impeachment> impeachments = impeachmentDAO.findAll();
+		Seq<Impeachment> impeachments = impeachmentDAO.findAll();
 
 		if (impeachments.isEmpty()) {
 			throw new RestartResponseAtInterceptPageException(

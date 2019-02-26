@@ -17,6 +17,7 @@
  */
 package com.tysanclan.site.projectewok.pages.member.justice;
 
+import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.NaiveRenderer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -50,14 +51,14 @@ public class AchievementRejectionPage extends AbstractSingleAccordionMemberPage 
 		super("Reject achievement");
 
 		RegulationFilter filter = new RegulationFilter();
-		filter.addOrderBy("name", true);
+		filter.name().orderBy(true);
 
 		final CheckBox charterCheckBox = new CheckBox("charter",
 				new Model<Boolean>(false));
 		final DropDownChoice<Regulation> regulationChoice = new DropDownChoice<Regulation>(
 				"regulation", ModelMaker.wrap((Regulation) null),
-				ModelMaker.wrapChoices(regulationDAO.findByFilter(filter)),
-				new IChoiceRenderer<Regulation>() {
+				ModelMaker.wrapChoices(regulationDAO.findByFilter(filter).toJavaList()),
+				new NaiveRenderer<Regulation>() {
 					private static final long serialVersionUID = 1L;
 
 					@Override

@@ -61,7 +61,7 @@ public class MumbleServerAdminPage extends AbstractMemberPage {
 		}
 
 		add(new ListView<MumbleServer>("servers",
-				ModelMaker.wrap(mumbleServerDAO.findAll())) {
+				ModelMaker.wrap(mumbleServerDAO.findAll().toJavaList())) {
 
 			private static final long serialVersionUID = 1L;
 

@@ -19,6 +19,7 @@ package com.tysanclan.site.projectewok.pages.member.justice;
 
 import java.util.List;
 
+import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.NaiveRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
@@ -75,7 +76,7 @@ public class UntenabilityPage extends AbstractMemberPage {
 			}
 		};
 
-		List<Regulation> regulations = regulationDAO.findAll();
+		List<Regulation> regulations = regulationDAO.findAll().toJavaList();
 
 		for (UntenabilityVote vote : untenabilityVoteDAO.findAll()) {
 			regulations.remove(vote.getRegulation());
@@ -85,7 +86,7 @@ public class UntenabilityPage extends AbstractMemberPage {
 				ModelMaker.wrap(regulations.isEmpty() ? (Regulation) null
 						: regulations.get(0), true), ModelMaker
 						.wrapChoices(regulations),
-				new IChoiceRenderer<Regulation>() {
+				new NaiveRenderer<Regulation>() {
 					private static final long serialVersionUID = 1L;
 
 					/**

@@ -52,11 +52,11 @@ public class TrialConfirmationPage extends AbstractSingleAccordionMemberPage {
 		super("Trial Confirmation");
 
 		TrialFilter filter = new TrialFilter();
-		filter.setWithTrialThread(false);
+		filter.trialThread().isNull();
 
 		add(
 				new ListView<Trial>("trials", ModelMaker.wrap(trialDAO
-						.findByFilter(filter))) {
+						.findByFilter(filter).toJavaList())) {
 					private static final long serialVersionUID = 1L;
 
 					/**

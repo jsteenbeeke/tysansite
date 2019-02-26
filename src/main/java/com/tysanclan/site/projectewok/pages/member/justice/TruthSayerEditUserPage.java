@@ -17,6 +17,9 @@
  */
 package com.tysanclan.site.projectewok.pages.member.justice;
 
+import com.tysanclan.site.projectewok.pages.member.OverviewPage;
+import io.vavr.control.Option;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.SubmitLink;
@@ -56,7 +59,7 @@ public class TruthSayerEditUserPage extends AbstractSingleAccordionMemberPage {
 
 		User givenUser = null;
 		if (user != null) {
-			givenUser = userDao.load(user.getId());
+			givenUser = userDao.load(user.getId()).getOrElseThrow(() -> new RestartResponseAtInterceptPageException(OverviewPage.class));
 		}
 
 		Form<Void> form = new Form<Void>("userSearchForm") {
@@ -65,24 +68,24 @@ public class TruthSayerEditUserPage extends AbstractSingleAccordionMemberPage {
 			@Override
 			protected void onSubmit() {
 				UserFilter filter = new UserFilter();
-				filter.setUsername(get("username")
+				filter.username(get("username")
 						.getDefaultModelObjectAsString());
-				User foundUser = userDao.getUniqueByFilter(filter);
-				if (foundUser == null) {
+				Option<User> foundUser = userDao.getUniqueByFilter(filter);
+				if (foundUser.isEmpty()) {
 					warn("Could not find user");
 					return;
 				}
-				setResponsePage(new TruthSayerEditUserPage(foundUser));
+				setResponsePage(new TruthSayerEditUserPage(foundUser.get()));
 			}
 		};
-		form.add(new TextField<String>("username", new Model<String>(
+		form.add(new TextField<>("username", new Model<>(
 				givenUser != null ? givenUser.getUsername() : "")));
 		SubmitLink submit = new SubmitLink("submit", form);
 		submit.add(new ContextImage("search", "images/icons/magnifier.png"));
 		form.add(submit);
 
 		ConfirmationLink<User> removeAvatarLink = new ConfirmationLink<User>(
-				"removeAvatar", new Model<User>(givenUser),
+				"removeAvatar", new Model<>(givenUser),
 				"Are you sure you want to delete this users avatar?") {
 
 			private static final long serialVersionUID = 1L;
@@ -120,7 +123,7 @@ public class TruthSayerEditUserPage extends AbstractSingleAccordionMemberPage {
 		};
 
 		ConfirmationLink<User> removeCustomTitleLink = new ConfirmationLink<User>(
-				"removeCustomTitleLink", new Model<User>(givenUser),
+				"removeCustomTitleLink", new Model<>(givenUser),
 				"Are you sure you want to delete this users custom title?") {
 
 			private static final long serialVersionUID = 1L;
@@ -157,7 +160,7 @@ public class TruthSayerEditUserPage extends AbstractSingleAccordionMemberPage {
 				"images/icons/delete.png"));
 
 		add(
-				new Label("username", new Model<String>(
+				new Label("username", new Model<>(
 						givenUser != null ? givenUser.getUsername() : "")));
 		add(removeAvatarLink);
 		add(removeSignatureLink);

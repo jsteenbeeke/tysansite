@@ -19,6 +19,7 @@ package com.tysanclan.site.projectewok.pages.member.group;
 
 import java.util.Arrays;
 
+import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.NaiveRenderer;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -74,39 +75,39 @@ public class GroupJoinPolicyPage extends AbstractMemberPage {
 			}
 		};
 
-		setPolicyForm.add(new DropDownChoice<JoinPolicy>("policy",
-				new Model<JoinPolicy>(group.getJoinPolicy()), Arrays
-						.asList(JoinPolicy.values()),
-				new IChoiceRenderer<JoinPolicy>() {
-					private static final long serialVersionUID = 1L;
+		setPolicyForm.add(new DropDownChoice<>("policy",
+											   new Model<>(group.getJoinPolicy()), Arrays
+													   .asList(JoinPolicy.values()),
+											   new NaiveRenderer<JoinPolicy>() {
+												   private static final long serialVersionUID = 1L;
 
-					/**
-					 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(java.lang.Object)
-					 */
-					@Override
-					public Object getDisplayValue(JoinPolicy object) {
-						switch (object) {
-							case APPLICATION:
-								return "Members must apply, and I must approve their application";
-							case INVITATION:
-								return "Only members I invite can join my group";
-							case OPEN:
-								return "Anyone can join my group at any time";
+												   /**
+													* @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(java.lang.Object)
+													*/
+												   @Override
+												   public Object getDisplayValue(JoinPolicy object) {
+													   switch (object) {
+														   case APPLICATION:
+															   return "Members must apply, and I must approve their application";
+														   case INVITATION:
+															   return "Only members I invite can join my group";
+														   case OPEN:
+															   return "Anyone can join my group at any time";
 
-						}
+													   }
 
-						return null;
-					}
+													   return null;
+												   }
 
-					/**
-					 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getIdValue(java.lang.Object,
-					 *      int)
-					 */
-					@Override
-					public String getIdValue(JoinPolicy object, int index) {
-						return object.name();
-					}
-				}));
+												   /**
+													* @see org.apache.wicket.markup.html.form.IChoiceRenderer#getIdValue(java.lang.Object,
+													* int)
+													*/
+												   @Override
+												   public String getIdValue(JoinPolicy object, int index) {
+													   return object.name();
+												   }
+											   }));
 
 		add(setPolicyForm);
 

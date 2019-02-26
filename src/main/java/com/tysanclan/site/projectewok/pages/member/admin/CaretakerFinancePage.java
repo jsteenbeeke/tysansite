@@ -111,10 +111,10 @@ public class CaretakerFinancePage extends AbstractMemberPage {
 		}
 
 		ExpenseFilter efilter = new ExpenseFilter();
-		efilter.addOrderBy("start", true);
+		efilter.start().orderBy(true);
 
 		add(new ListView<Expense>("expenses", ModelMaker.wrap(expenseDAO
-				.findByFilter(efilter))) {
+				.findByFilter(efilter).toJavaList())) {
 
 			/**
 			 * 
@@ -169,10 +169,10 @@ public class CaretakerFinancePage extends AbstractMemberPage {
 		});
 
 		DonationFilter filter = new DonationFilter();
-		filter.addOrderBy("donationTime", true);
+		filter.donationTime().orderBy(true);
 
 		add(new ListView<Donation>("donations", ModelMaker.wrap(donationDAO
-				.findByFilter(filter))) {
+				.findByFilter(filter).toJavaList())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

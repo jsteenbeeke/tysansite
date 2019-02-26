@@ -73,33 +73,23 @@ public class InviteGroupMemberPage extends AbstractMemberPage {
 		};
 
 		UserFilter filter = new UserFilter();
-		filter.addRank(Rank.CHANCELLOR);
-		filter.addRank(Rank.SENATOR);
-		filter.addRank(Rank.TRUTHSAYER);
-		filter.addRank(Rank.REVERED_MEMBER);
-		filter.addRank(Rank.SENIOR_MEMBER);
-		filter.addRank(Rank.FULL_MEMBER);
-		filter.addRank(Rank.JUNIOR_MEMBER);
-		filter.addRank(Rank.TRIAL);
+		filter.rank(Rank.CHANCELLOR);
+		filter.orRank(Rank.SENATOR);
+		filter.orRank(Rank.TRUTHSAYER);
+		filter.orRank(Rank.REVERED_MEMBER);
+		filter.orRank(Rank.SENIOR_MEMBER);
+		filter.orRank(Rank.FULL_MEMBER);
+		filter.orRank(Rank.JUNIOR_MEMBER);
+		filter.orRank(Rank.TRIAL);
 
-		List<User> users = new LinkedList<User>();
-
-		users.addAll(userDAO.findByFilter(filter));
+		List<User> users = new LinkedList<>(userDAO.findByFilter(filter).asJava());
 
 		users.removeAll(group.getInvitedMembers());
 		users.removeAll(group.getGroupMembers());
 
-		Collections.sort(users, new Comparator<User>() {
+		users.sort(Comparator.comparing(o -> o.getUsername().toLowerCase()));
 
-			@Override
-			public int compare(User o1, User o2) {
-				return o1.getUsername().toLowerCase()
-						.compareTo(o2.getUsername().toLowerCase());
-			}
-
-		});
-
-		addForm.add(new DropDownChoice<User>("user", ModelMaker
+		addForm.add(new DropDownChoice<>("user", ModelMaker
 				.wrap((User) null), ModelMaker.wrap(users)));
 
 		add(addForm);

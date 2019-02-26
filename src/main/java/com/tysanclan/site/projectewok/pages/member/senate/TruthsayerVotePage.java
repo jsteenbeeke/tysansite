@@ -47,10 +47,10 @@ public class TruthsayerVotePage extends AbstractMemberPage {
 		super("Truthsayer votes");
 
 		TruthsayerNominationFilter filter = new TruthsayerNominationFilter();
-		filter.setStartSet(true);
+		filter.voteStart().isNotNull();
 
 		add(new ListView<TruthsayerNomination>("nominations",
-				ModelMaker.wrap(truthsayerNominationDAO.findByFilter(filter))) {
+				ModelMaker.wrap(truthsayerNominationDAO.findByFilter(filter).toJavaList())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

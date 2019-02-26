@@ -58,7 +58,7 @@ public class PaymentRequestApprovalPage extends AbstractMemberPage {
 		}
 
 		add(new ListView<PaymentRequest>("requests", ModelMaker.wrap(requestDAO
-				.findAll())) {
+				.findAll().toJavaList())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

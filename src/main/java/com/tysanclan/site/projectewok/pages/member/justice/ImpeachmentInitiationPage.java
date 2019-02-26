@@ -19,6 +19,7 @@ package com.tysanclan.site.projectewok.pages.member.justice;
 
 import java.util.List;
 
+import io.vavr.collection.Seq;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -55,9 +56,9 @@ public class ImpeachmentInitiationPage extends AbstractMemberPage {
 		super("Impeach Chancellor");
 
 		UserFilter filter = new UserFilter();
-		filter.addRank(Rank.CHANCELLOR);
+		filter.rank(Rank.CHANCELLOR);
 
-		List<User> chancellors = userDAO.findByFilter(filter);
+		Seq<User> chancellors = userDAO.findByFilter(filter);
 		User chancellor = chancellors.isEmpty() ? null : chancellors.get(0);
 
 		String chancellorName = chancellor != null ? chancellor.getUsername()

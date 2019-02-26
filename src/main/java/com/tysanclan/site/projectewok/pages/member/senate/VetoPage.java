@@ -47,7 +47,7 @@ public class VetoPage extends AbstractMemberPage {
 		super("Proposed regulation changes");
 
 		add(new ListView<RegulationChange>("votes",
-				ModelMaker.wrap(regulationChangeDAO.findAll())) {
+				ModelMaker.wrap(regulationChangeDAO.findAll().toJavaList())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

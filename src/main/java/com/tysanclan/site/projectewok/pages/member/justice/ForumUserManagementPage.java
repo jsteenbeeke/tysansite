@@ -55,20 +55,20 @@ public class ForumUserManagementPage extends AbstractMemberPage {
 		super("Manage Forum Users");
 
 		UserFilter filter = new UserFilter();
-		filter.addRank(Rank.BANNED);
-		filter.addRank(Rank.FORUM);
+		filter.rank(Rank.BANNED);
+		filter.orRank(Rank.FORUM);
 
 		if (filterInactive) {
 			Calendar cal = DateUtil.getCalendarInstance();
 			cal.add(Calendar.WEEK_OF_YEAR, -2);
 
-			filter.setActiveSince(cal.getTime());
+			filter.lastAction().greaterThan(cal.getTime());
 		}
 
-		filter.addOrderBy("username", true);
+		filter.username().orderBy(true);
 
 		PageableListView<User> users = new PageableListView<User>("users",
-				ModelMaker.wrap(userDAO.findByFilter(filter)), 20) {
+				ModelMaker.wrap(userDAO.findByFilter(filter).toJavaList()), 20) {
 			private static final long serialVersionUID = 1L;
 
 			/**

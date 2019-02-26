@@ -19,6 +19,7 @@ package com.tysanclan.site.projectewok.pages.member.group;
 
 import java.util.List;
 
+import io.vavr.collection.Seq;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
@@ -128,7 +129,7 @@ public class CreateGroupForumPage extends TysanPage {
 	}
 
 	private void initCategoryModel(Group group) {
-		List<ForumCategory> categories = forumCategoryDAO.findAll();
+		Seq<ForumCategory> categories = forumCategoryDAO.findAll();
 		ForumCategory category = null;
 
 		for (ForumCategory next : categories) {

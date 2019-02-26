@@ -17,6 +17,7 @@
  */
 package com.tysanclan.site.projectewok.pages.member.senate;
 
+import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.NaiveRenderer;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -97,18 +98,19 @@ public class ModifyRegulationPage extends AbstractMemberPage {
 
 		};
 
-		form.add(new TextField<String>("newTitle", new Model<String>("")));
+		form.add(new TextField<>("newTitle", new Model<>("")));
 
 		form.add(new BBCodeTextArea("description", "")
 				.setRequired(true));
 
-		form.add(new Label("example", new Model<String>(""))
+		form.add(new Label("example", new Model<>(""))
 				.setEscapeModelStrings(false).setVisible(false)
 				.setOutputMarkupId(true).setOutputMarkupPlaceholderTag(true));
 
-		form.add(new DropDownChoice<Regulation>("regulation", ModelMaker.wrap(
+		form.add(new DropDownChoice<>("regulation", ModelMaker.wrap(
 				(Regulation) null, true), ModelMaker.wrapChoices(regulationDAO
-				.findAll()), new IChoiceRenderer<Regulation>() {
+																		 .findAll()
+																		 .toJavaList()), new NaiveRenderer<Regulation>() {
 			private static final long serialVersionUID = 1L;
 
 			/**
@@ -121,7 +123,7 @@ public class ModifyRegulationPage extends AbstractMemberPage {
 
 			/**
 			 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getIdValue(java.lang.Object,
-			 *      int)
+			 * int)
 			 */
 			@Override
 			public String getIdValue(Regulation object, int index) {

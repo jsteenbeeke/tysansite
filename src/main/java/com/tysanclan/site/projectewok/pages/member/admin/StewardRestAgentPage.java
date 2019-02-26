@@ -41,11 +41,11 @@ public class StewardRestAgentPage extends AbstractMemberPage {
 					AccessDeniedPage.class);
 
 		AuthorizedRestApplicationFilter activeFilter = new AuthorizedRestApplicationFilter();
-		activeFilter.setActive(true);
-		activeFilter.addOrderBy("name", true);
+		activeFilter.active(true);
+		activeFilter.name().orderBy(true);
 
 		add(new ListView<AuthorizedRestApplication>("active",
-				ModelMaker.wrap(appDAO.findByFilter(activeFilter))) {
+				ModelMaker.wrap(appDAO.findByFilter(activeFilter).toJavaList())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -77,11 +77,11 @@ public class StewardRestAgentPage extends AbstractMemberPage {
 		});
 
 		AuthorizedRestApplicationFilter inactiveFilter = new AuthorizedRestApplicationFilter();
-		inactiveFilter.setActive(false);
-		inactiveFilter.addOrderBy("name", true);
+		inactiveFilter.active(false);
+		inactiveFilter.name().orderBy(true);
 
 		add(new ListView<AuthorizedRestApplication>("inactive",
-				ModelMaker.wrap(appDAO.findByFilter(inactiveFilter))) {
+				ModelMaker.wrap(appDAO.findByFilter(inactiveFilter).toJavaList())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

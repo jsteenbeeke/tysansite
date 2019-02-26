@@ -59,9 +59,9 @@ public class GroupForumManagementPage extends AbstractMemberPage {
 		}
 
 		GroupForumFilter filter = new GroupForumFilter();
-		filter.setGroup(group);
+		filter.group(group);
 
-		List<GroupForum> forums = groupForumDAO.findByFilter(filter);
+		List<GroupForum> forums = groupForumDAO.findByFilter(filter).asJava();
 
 		add(new ListView<GroupForum>("forums", ModelMaker.wrap(forums)) {
 			private static final long serialVersionUID = 1L;

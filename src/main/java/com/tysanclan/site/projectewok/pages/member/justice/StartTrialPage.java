@@ -23,6 +23,7 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.NaiveRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
@@ -115,25 +116,25 @@ public class StartTrialPage extends AbstractMemberPage {
 
 		accuseForm.add(new BBCodeTextArea("motivation", "").setRequired(true));
 
-		accuseForm.add(new ListMultipleChoice<Regulation>("regulations",
-				ModelMaker.wrapAsCollection(new LinkedList<Regulation>()),
-				ModelMaker.wrapChoices(regulationDAO.findAll()),
-				new IChoiceRenderer<Regulation>() {
-					private static final long serialVersionUID = 1L;
+		accuseForm.add(new ListMultipleChoice<>("regulations",
+												ModelMaker.wrapAsCollection(new LinkedList<>()),
+												ModelMaker.wrapChoices(regulationDAO.findAll().toJavaList()),
+												new NaiveRenderer<Regulation>() {
+													private static final long serialVersionUID = 1L;
 
-					/**
-					 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(java.lang.Object)
-					 */
-					@Override
-					public Object getDisplayValue(Regulation object) {
-						return object.getName();
-					}
+													/**
+													 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(java.lang.Object)
+													 */
+													@Override
+													public Object getDisplayValue(Regulation object) {
+														return object.getName();
+													}
 
-					@Override
-					public String getIdValue(Regulation object, int index) {
-						return object.getId().toString();
-					}
-				}).setRequired(true));
+													@Override
+													public String getIdValue(Regulation object, int index) {
+														return object.getId().toString();
+													}
+												}).setRequired(true));
 
 		add(accuseForm);
 

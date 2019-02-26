@@ -110,8 +110,8 @@ public class AchievementIconApprovalPage extends
 
 	private List<AchievementIcon> getPendingIcons() {
 		AchievementIconFilter filter = new AchievementIconFilter();
-		filter.setApprovedAsNull(true);
+		filter.approved().isNull();
 
-		return achievementIconDAO.findByFilter(filter);
+		return achievementIconDAO.findByFilter(filter).asJava();
 	}
 }

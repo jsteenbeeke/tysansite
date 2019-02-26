@@ -17,6 +17,7 @@
  */
 package com.tysanclan.site.projectewok.pages.member.senate;
 
+import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.NaiveRenderer;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -94,7 +95,7 @@ public class RepealRegulationPage extends AbstractMemberPage {
 		};
 
 		RegulationChangeFilter filter = new RegulationChangeFilter();
-		filter.setUser(getUser());
+		filter.proposer(getUser());
 
 		if (regulationChangeDAO.countByFilter(filter) > 0) {
 			error("You have already submitted a regulation change proposal. You can not submit more than 1 simultaneously.");
@@ -107,7 +108,7 @@ public class RepealRegulationPage extends AbstractMemberPage {
 
 		form.add(new DropDownChoice<Regulation>("regulation", ModelMaker.wrap(
 				(Regulation) null, true), ModelMaker.wrapChoices(regulationDAO
-				.findAll()), new IChoiceRenderer<Regulation>() {
+				.findAll().toJavaList()), new NaiveRenderer<Regulation>() {
 			private static final long serialVersionUID = 1L;
 
 			/**

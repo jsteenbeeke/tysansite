@@ -69,6 +69,6 @@ public class ProcessPaymentRequestPage extends WebPage {
 
 	private PaymentRequest getRequest(Long requestId) {
 
-		return paymentRequestDAO.get(requestId);
+		return paymentRequestDAO.load(requestId).getOrNull();
 	}
 }

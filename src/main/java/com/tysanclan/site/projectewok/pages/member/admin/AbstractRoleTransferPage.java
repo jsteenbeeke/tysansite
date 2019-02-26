@@ -63,17 +63,17 @@ public abstract class AbstractRoleTransferPage extends
 					new TransferInProgressPage(type));
 
 		UserFilter filter = new UserFilter();
-		filter.setRetired(false);
-		filter.addRank(Rank.CHANCELLOR);
-		filter.addRank(Rank.SENATOR);
-		filter.addRank(Rank.TRUTHSAYER);
-		filter.addRank(Rank.REVERED_MEMBER);
-		filter.addRank(Rank.FULL_MEMBER);
-		filter.addRank(Rank.SENIOR_MEMBER);
-		filter.addRank(Rank.JUNIOR_MEMBER);
-		filter.addOrderBy("username", true);
+		filter.retired(false);
+		filter.rank(Rank.CHANCELLOR);
+		filter.orRank(Rank.SENATOR);
+		filter.orRank(Rank.TRUTHSAYER);
+		filter.orRank(Rank.REVERED_MEMBER);
+		filter.orRank(Rank.FULL_MEMBER);
+		filter.orRank(Rank.SENIOR_MEMBER);
+		filter.orRank(Rank.JUNIOR_MEMBER);
+		filter.username().orderBy(true);
 
-		List<User> users = userDAO.findByFilter(filter);
+		List<User> users = userDAO.findByFilter(filter).toJavaList();
 
 		final TysanDropDownChoice<User> userChoice = new TysanDropDownChoice<User>(
 				"user", null, users);
