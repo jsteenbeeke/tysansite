@@ -57,7 +57,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- Dependency versions -->
-    <wqplot.version>1.6-SNAPSHOT</wqplot.version>
     <hyperion.events.version>1.0-SNAPSHOT</hyperion.events.version>
     <tysan.rest.version>1.0-SNAPSHOT</tysan.rest.version>
     <wiquery.version>8.1.1</wiquery.version>
@@ -91,19 +90,9 @@
 
     <!-- UI Dependencies -->
     <dependency>
-      <groupId>nl.topicus</groupId>
-      <artifactId>wqplot</artifactId>
-      <version>${wqplot.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.codehaus.jackson</groupId>
-          <artifactId>jackson-mapper-asl</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
-        </exclusion>
-      </exclusions>
+      <groupId>org.wicketstuff</groupId>
+      <artifactId>jqplot</artifactId>
+      <version>${wicket.version}</version>
     </dependency>
 
     <dependency>

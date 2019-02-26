@@ -24,7 +24,7 @@ public class MinecraftWhitelistResource extends AbstractResource {
 
 	public String getCurrentWhitelist() {
 
-		Seq<Game> games = TysanApplication.getApplicationContext()
+		Seq<Game> games = TysanApplication.get().getApplicationContext()
 										  .getBean(GameDAO.class).findAll();
 		List<String> whitelist = new LinkedList<String>();
 

@@ -1,15 +1,16 @@
 package com.tysanclan.site.projectewok.pages.member;
 
-import org.junit.Test;
-
+import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.pages.member.senate.AddRegulationPage;
 import com.tysanclan.site.projectewok.pages.member.senate.ModifyRegulationPage;
 import com.tysanclan.site.projectewok.pages.member.senate.RepealRegulationPage;
+import org.junit.Test;
 
 public class ChancellorTest extends AbstractClickThroughTester {
 
-	public ChancellorTest() {
-		super(4L);
+	@Override
+	protected long determineUserId() {
+		return userIdOfRank(Rank.CHANCELLOR);
 	}
 
 	@Test

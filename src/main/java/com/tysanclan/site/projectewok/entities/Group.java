@@ -81,7 +81,7 @@ public abstract class Group extends BaseDomainObject {
 
 	@Column
 	@Lob
-	@Type(type = "org.hibernate.type.StringClobType")
+
 	private String description;
 
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -101,7 +101,7 @@ public abstract class Group extends BaseDomainObject {
 
 	@Column(nullable = true)
 	@Lob
-	@Type(type = "org.hibernate.type.StringClobType")
+
 	private String messageOfTheDay;
 
 	// $P$

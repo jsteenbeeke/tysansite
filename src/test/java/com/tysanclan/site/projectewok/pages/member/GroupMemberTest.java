@@ -5,8 +5,9 @@ import org.junit.Test;
 import com.tysanclan.site.projectewok.pages.member.group.LeaveGroupPage;
 
 public class GroupMemberTest extends AbstractClickThroughTester {
-	public GroupMemberTest() {
-		super(15L);
+	@Override
+	protected long determineUserId() {
+		return userIdOfGroupMember();
 	}
 
 	@Test

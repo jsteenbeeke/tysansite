@@ -39,7 +39,7 @@ public abstract class AbstractDynamicTysanImage extends DynamicImageResource {
 
 		UserFilter filter = new UserFilter();
 		filter.username(name.toOptionalString());
-		Seq<User> users = TysanApplication.getApplicationContext()
+		Seq<User> users = TysanApplication.get().getApplicationContext()
 										  .getBean(UserDAO.class).findByFilter(filter);
 		if (users == null || users.isEmpty()) {
 			return getErrorImage();

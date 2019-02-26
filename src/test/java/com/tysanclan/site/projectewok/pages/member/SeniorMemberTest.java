@@ -1,9 +1,11 @@
 package com.tysanclan.site.projectewok.pages.member;
 
+import com.tysanclan.rest.api.data.Rank;
+
 public class SeniorMemberTest extends AbstractClickThroughTester {
 
-	public SeniorMemberTest() {
-		super(11L);
+	@Override
+	protected long determineUserId() {
+		return userIdOfRank(Rank.SENIOR_MEMBER);
 	}
-
 }

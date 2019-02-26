@@ -63,12 +63,12 @@ public class Profile extends BaseDomainObject {
 
 	@Column
 	@Lob
-	@Type(type = "org.hibernate.type.StringClobType")
+
 	private String privateDescription;
 
 	@Column
 	@Lob
-	@Type(type = "org.hibernate.type.StringClobType")
+
 	private String publicDescription;
 
 	@Column

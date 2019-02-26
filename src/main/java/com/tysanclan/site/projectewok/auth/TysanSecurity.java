@@ -45,10 +45,9 @@ public class TysanSecurity implements IComponentInstantiationListener {
 	/**
 	 * Checks whether or not the current user has access to the given component
 	 *
-	 * @param componentClass
-	 *            The class of the component to instantiate
+	 * @param componentClass The class of the component to instantiate
 	 * @return <code>true</code> if the user is authorized, <code>false</code>
-	 *         otherwise
+	 * otherwise
 	 */
 	public boolean authorize(Class<? extends Component> componentClass) {
 		// Check for rank-based security policy
@@ -65,7 +64,9 @@ public class TysanSecurity implements IComponentInstantiationListener {
 				.getAnnotation(TysanLoginSecured.class);
 
 		// Get the current user
-		return TysanSession.session().flatMap(TysanSession::getUser).map(user -> {
+		Option<TysanSession> session = TysanSession.session();
+		Option<User> users = session.flatMap(TysanSession::getUser);
+		return users.map(user -> {
 			// There is a user, check for security policies
 			if (sec1 != null) {
 				// Check if the user has the correct rank
@@ -77,7 +78,10 @@ public class TysanSecurity implements IComponentInstantiationListener {
 				if (sec3 != null) {
 					// Check if the user is not a Tysan member
 					return !MemberUtil.isMember(user);
-				} else return sec4 != null;
+				} else {
+					// LoginSecured only requires us to be logged in, which we are
+					return true;
+				}
 
 		}).getOrElse(() -> {
 			// No user, but existing security policy

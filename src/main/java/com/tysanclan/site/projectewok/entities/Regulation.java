@@ -57,7 +57,7 @@ public class Regulation extends BaseDomainObject {
 
 	@Column
 	@Lob
-	@Type(type = "org.hibernate.type.StringClobType")
+
 	private String contents;
 
 	@ManyToOne(fetch = FetchType.LAZY)

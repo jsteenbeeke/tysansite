@@ -18,13 +18,13 @@
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
 import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
-import com.tysanclan.site.projectewok.entities.ConversationParticipation;
-import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.*;
 import com.tysanclan.site.projectewok.entities.filter.ConversationParticipationFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.Query;
+import javax.persistence.criteria.*;
 
 /**
  * @author Jeroen Steenbeeke
@@ -41,9 +41,19 @@ class ConversationParticipationDAOImpl extends
 	 */
 	@Override
 	public long countUnreadMessages(User user) {
-		Query nativeQuery = entityManager.createNativeQuery("SELECT COUNT(*) FROM ConversationParticipation cp WHERE cp.user = ? AND size(cp.readMessages) < (SELECT COUNT(*) FROM Message m, Conversation c WHERE c.id = cp.conversation AND m.conversation = c.id)");
-		nativeQuery.setParameter(1, user.getId());
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
+		Root<ConversationParticipation> root = query.from(ConversationParticipation.class);
+		Subquery<Long> subquery = query.subquery(Long.class);
+		Root<Message> subqueryRoot = subquery.from(Message.class);
 
-		return ((Number) nativeQuery.getSingleResult()).longValue();
+		Join<Message, Conversation> join = subqueryRoot.join(Message_.conversation);
+		subquery.select(criteriaBuilder.count(join)).where(criteriaBuilder.equal(join.get(Conversation_.id), root.get(ConversationParticipation_.conversation)));
+
+		query.select(criteriaBuilder.count(root)).where(criteriaBuilder.lessThan(criteriaBuilder.size(root.get(ConversationParticipation_.readMessages)),
+																				 subquery.as(Integer.class)
+																				 ));
+
+		return entityManager.createQuery(query).getSingleResult();
 	}
 }

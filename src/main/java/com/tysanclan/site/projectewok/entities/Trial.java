@@ -88,7 +88,7 @@ public class Trial extends BaseDomainObject {
 
 	@Column
 	@Lob
-	@Type(type = "org.hibernate.type.StringClobType")
+
 	private String motivation;
 
 	@Column(nullable = true)

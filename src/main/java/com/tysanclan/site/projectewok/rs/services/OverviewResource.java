@@ -31,8 +31,6 @@ public class OverviewResource implements BeanFactoryAware {
 
 	@Override
 	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
-		// TODO Auto-generated method stub
-		System.out.println("BEANS!");
 
 	}
 
@@ -89,8 +87,8 @@ public class OverviewResource implements BeanFactoryAware {
 			Map<String, ResourceDescription> descriptions = Maps.newHashMap();
 
 			for (Map.Entry<String, List<ResourceInvoker>> entry : bound) {
-				Method aMethod = ((ResourceMethodInvoker) entry.getValue()
-						.get(0)).getMethod();
+				Method aMethod = entry.getValue()
+									  .get(0).getMethod();
 				String basePath = aMethod.getDeclaringClass()
 						.getAnnotation(Path.class).value();
 

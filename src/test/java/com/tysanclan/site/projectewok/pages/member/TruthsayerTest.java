@@ -1,16 +1,16 @@
 package com.tysanclan.site.projectewok.pages.member;
 
-import org.junit.Test;
-
+import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.pages.member.justice.ForumUserManagementPage;
 import com.tysanclan.site.projectewok.pages.member.justice.ImpeachmentInitiationPage;
 import com.tysanclan.site.projectewok.pages.member.justice.TruthSayerEditUserPage;
 import com.tysanclan.site.projectewok.pages.member.justice.UntenabilityPage;
+import org.junit.Test;
 
 public class TruthsayerTest extends AbstractClickThroughTester {
-
-	public TruthsayerTest() {
-		super(2L, false);
+	@Override
+	protected long determineUserId() {
+		return userIdOfRank(Rank.FULL_MEMBER);
 	}
 
 	@Test

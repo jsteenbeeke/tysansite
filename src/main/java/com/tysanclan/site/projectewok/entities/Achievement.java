@@ -79,7 +79,7 @@ public class Achievement implements DomainObject {
 
 	@Column(nullable = false)
 	@Lob
-	@Type(type = "org.hibernate.type.StringClobType")
+
 	private String description;
 
 	// $P$

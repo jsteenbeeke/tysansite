@@ -59,7 +59,7 @@ public class ForumPost extends BaseDomainObject {
 
 	@Column
 	@Lob
-	@Type(type = "org.hibernate.type.StringClobType")
+
 	private String content;
 
 	@Id

@@ -33,6 +33,8 @@ import com.tysanclan.site.projectewok.entities.dao.ConversationDAO;
 import com.tysanclan.site.projectewok.entities.dao.ConversationParticipationDAO;
 import com.tysanclan.site.projectewok.entities.filter.ConversationFilter;
 import com.tysanclan.site.projectewok.entities.filter.ConversationParticipationFilter;
+import io.vavr.collection.Array;
+import io.vavr.collection.Seq;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.ListMultipleChoice;
@@ -88,7 +90,13 @@ public class MessageListPage extends AbstractMemberPage {
 		participationFilter.user(getUser());
 
 		ConversationFilter filter = new ConversationFilter();
-		filter.id().in(participationDAO.properties(participationFilter.id(), participationFilter));
+		Seq<Long> participationIds = participationDAO.properties(participationFilter.id(), participationFilter);
+		if (participationIds.isEmpty()) {
+			filter.id().equalTo(-1L);
+		} else {
+			filter.id().in(participationIds);
+		}
+
 		filter.lastResponse().orderBy(false);
 
 		DataView<Conversation> messageView = new DataView<Conversation>(

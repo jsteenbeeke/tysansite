@@ -58,12 +58,10 @@ public class GroupCreationRequest extends BaseDomainObject {
 
 	@Column
 	@Lob
-	@Type(type = "org.hibernate.type.StringClobType")
 	private String motivation;
 
 	@Column
 	@Lob
-	@Type(type = "org.hibernate.type.StringClobType")
 	private String description;
 
 	@ManyToOne(fetch = FetchType.LAZY)

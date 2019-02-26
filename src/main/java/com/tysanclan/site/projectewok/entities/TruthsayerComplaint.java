@@ -61,7 +61,7 @@ public class TruthsayerComplaint extends BaseDomainObject {
 
 	@Column(nullable = false)
 	@Lob
-	@Type(type = "org.hibernate.type.StringClobType")
+
 	private String complaint;
 
 	@Column(nullable = false)

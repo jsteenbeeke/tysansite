@@ -90,7 +90,7 @@ public class RegulationChange extends BaseDomainObject {
 
 	@Column(nullable = true)
 	@Lob
-	@Type(type = "org.hibernate.type.StringClobType")
+
 	private String description;
 
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)

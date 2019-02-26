@@ -65,7 +65,7 @@ public class AchievementRequest implements DomainObject {
 
 	@Lob
 	@Column
-	@Type(type = "org.hibernate.type.StringClobType")
+
 	private String evidenceDescription;
 
 	// $P$

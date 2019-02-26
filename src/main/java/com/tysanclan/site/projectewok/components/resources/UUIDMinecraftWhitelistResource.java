@@ -24,7 +24,7 @@ public class UUIDMinecraftWhitelistResource extends AbstractResource {
 
 	public String getCurrentWhitelist() {
 
-		Seq<Game> games = TysanApplication.getApplicationContext()
+		Seq<Game> games = TysanApplication.get().getApplicationContext()
 										  .getBean(GameDAO.class).findAll();
 		ArrayList<String> whitelist = new ArrayList<String>();
 

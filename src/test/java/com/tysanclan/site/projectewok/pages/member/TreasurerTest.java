@@ -1,5 +1,6 @@
 package com.tysanclan.site.projectewok.pages.member;
 
+import com.tysanclan.rest.api.data.Rank;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,8 +10,9 @@ import com.tysanclan.site.projectewok.pages.member.admin.PaymentRequestApprovalP
 import com.tysanclan.site.projectewok.pages.member.admin.TreasurerTransferPage;
 
 public class TreasurerTest extends AbstractClickThroughTester {
-	public TreasurerTest() {
-		super(1L);
+	@Override
+	protected long determineUserId() {
+		return userIdOfRank(Rank.SENIOR_MEMBER);
 	}
 
 	@Before

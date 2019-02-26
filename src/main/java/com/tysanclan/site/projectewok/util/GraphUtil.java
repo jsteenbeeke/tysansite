@@ -24,29 +24,19 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.SortedMap;
 
-import nl.topicus.wqplot.components.JQPlot;
-import nl.topicus.wqplot.components.plugins.JQPlotBezierCurveRenderer;
-import nl.topicus.wqplot.components.plugins.JQPlotCategoryAxisRenderer;
-import nl.topicus.wqplot.components.plugins.JQPlotDateAxisRenderer;
-import nl.topicus.wqplot.components.plugins.Renderer;
-import nl.topicus.wqplot.data.AbstractSeries;
-import nl.topicus.wqplot.data.DateNumberSeries;
-import nl.topicus.wqplot.options.PlotBarRendererOptions;
-import nl.topicus.wqplot.options.PlotLineRendererOptions;
-import nl.topicus.wqplot.options.PlotOptions;
-import nl.topicus.wqplot.options.PlotPieRendererOptions;
-import nl.topicus.wqplot.options.PlotTitle;
+
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.util.ListModel;
+import org.wicketstuff.jqplot.JqPlotChart;
 
 public class GraphUtil {
 
 	private GraphUtil() {
 	}
 
-	public static JQPlot makePieChart(String id, String title,
-			IModel<? extends List<? extends AbstractSeries<?, ?, ?>>> data) {
+	public static JqPlotChart makePieChart(String id, String title,
+										   IModel<? extends List<? extends AbstractSeries<?, ?, ?>>> data) {
 		JQPlot jq = new JQPlot(id, data);
 
 		PlotOptions p = jq.getOptions();

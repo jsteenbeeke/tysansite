@@ -1040,7 +1040,10 @@ class ForumServiceImpl implements
 	}
 
 	@Override
-	public int countUnread(User user) {
+	@Transactional(propagation = Propagation.REQUIRED)
+	public int countUnread(User _user) {
+		User user = userDAO.load(_user.getId()).getOrElseThrow(IllegalStateException::new);
+
 		if (user.getUnreadForumPosts() == null) {
 			return 0;
 		}

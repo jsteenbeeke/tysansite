@@ -17,10 +17,14 @@
  */
 package com.tysanclan.site.projectewok;
 
+import com.jeroensteenbeeke.hyperion.meld.web.EntityEncapsulator;
+import com.jeroensteenbeeke.hyperion.solstice.data.factory.SolsticeEntityEncapsulatorFactory;
+import com.jeroensteenbeeke.hyperion.solstice.spring.ApplicationContextProvider;
 import com.jeroensteenbeeke.hyperion.tardis.scheduler.intervals.Interval;
 import com.jeroensteenbeeke.hyperion.tardis.scheduler.intervals.Intervals;
 import com.jeroensteenbeeke.hyperion.tardis.scheduler.wicket.HyperionScheduler;
 import com.tysanclan.site.projectewok.auth.TysanSecurity;
+import com.tysanclan.site.projectewok.beans.PopulationService;
 import com.tysanclan.site.projectewok.components.resources.DaysInTysanImageResourceReference;
 import com.tysanclan.site.projectewok.components.resources.HaleyAccidentResourceReference;
 import com.tysanclan.site.projectewok.components.resources.MinecraftWhitelistResourceReference;
@@ -33,18 +37,19 @@ import com.tysanclan.site.projectewok.pages.member.SubscriptionPaymentResolvedPa
 import com.tysanclan.site.projectewok.pages.member.ViewBugPage;
 import com.tysanclan.site.projectewok.pages.member.admin.OldExpensesPage;
 import com.tysanclan.site.projectewok.pages.member.admin.ProcessPaymentRequestPage;
-import com.tysanclan.site.projectewok.pages.member.admin.RandomContentGenerationPage;
 import com.tysanclan.site.projectewok.tasks.*;
 import org.apache.wicket.Application;
 import org.apache.wicket.Page;
 import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.protocol.http.mock.MockHttpServletRequest;
+import org.apache.wicket.protocol.http.mock.MockHttpSession;
+import org.apache.wicket.protocol.http.mock.MockServletContext;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
 import org.apache.wicket.request.http.WebRequest;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
-import org.joda.time.DateTime;
 import org.odlabs.wiquery.ui.themes.WiQueryCoreThemeResourceReference;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -52,35 +57,20 @@ import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
-import java.util.Map.Entry;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public class TysanApplication extends WebApplication {
-	public static final Entry<String, String> IN_MEMORY = new Entry<String, String>() {
-		@Override
-		public String getKey() {
-			return "ewok.launchMode";
-		}
-
-		public String getValue() {
-			return "inmemory";
-		}
-
-		@Override
-		public String setValue(String value) {
-			throw new UnsupportedOperationException();
-		}
-	};
-
+public class TysanApplication extends WebApplication implements ApplicationContextProvider {
 	private static Logger log = LoggerFactory.getLogger(TysanApplication.class);
 
 	private static String version = null;
@@ -89,22 +79,17 @@ public class TysanApplication extends WebApplication {
 
 	public final List<SiteWideNotification> notifications = new LinkedList<SiteWideNotification>();
 
-	private static ApplicationContext testContext = null;
+	private ApplicationContext context = null;
 
 	/**
 	 * Creates a new application object for the Tysan website
 	 */
 	public TysanApplication() {
-		this(false);
+		this(System.getProperty("ewok.testmode") != null);
 	}
 
-	public static ApplicationContext getApplicationContext() {
-		if (testContext != null)
-			return testContext;
-
-		TysanApplication ta = (TysanApplication) Application.get();
-		return WebApplicationContextUtils.getWebApplicationContext(ta
-				.getServletContext());
+	public ApplicationContext getApplicationContext() {
+		return context;
 	}
 
 	public static String getApplicationVersion() {
@@ -113,7 +98,7 @@ public class TysanApplication extends WebApplication {
 				Properties props = new Properties();
 
 				InputStream stream = get().getServletContext()
-						.getResourceAsStream("/META-INF/MANIFEST.MF");
+										  .getResourceAsStream("/META-INF/MANIFEST.MF");
 
 				if (stream != null) {
 
@@ -136,8 +121,7 @@ public class TysanApplication extends WebApplication {
 	/**
 	 * Creates a new application object for the Tysan website
 	 *
-	 * @param isTestMode
-	 *            Whether or not we are running this site in test mode
+	 * @param isTestMode Whether or not we are running this site in test mode
 	 */
 	public TysanApplication(boolean isTestMode) {
 		this.testMode = isTestMode;
@@ -158,19 +142,14 @@ public class TysanApplication extends WebApplication {
 	protected void init() {
 		super.init();
 
-		ApplicationContext relevantCtx;
+		context = WebApplicationContextUtils
+				.getWebApplicationContext(getServletContext());
 
 		getComponentInstantiationListeners().add(new TysanSecurity());
-		if (testMode) {
-			relevantCtx = new ClassPathXmlApplicationContext(
-					new String[]{"services-mock.xml"});
-			getComponentInstantiationListeners().add(
-					new SpringComponentInjector(this, relevantCtx, true));
-			testContext = relevantCtx;
-		} else {
-			SpringComponentInjector injector = new SpringComponentInjector(this);
-			getComponentInstantiationListeners().add(injector);
-		}
+
+		SpringComponentInjector injector = new SpringComponentInjector(this);
+		getComponentInstantiationListeners().add(injector);
+
 
 		mountBookmarkablePages();
 		mountResources();
@@ -179,13 +158,15 @@ public class TysanApplication extends WebApplication {
 		getApplicationSettings().setPageExpiredErrorPage(
 				SessionTimeoutPage.class);
 
+		EntityEncapsulator.setFactory(new SolsticeEntityEncapsulatorFactory());
+
+		HyperionScheduler.getScheduler().setApplication(this);
+
 		if (!testMode) {
 			scheduleDefaultTasks();
-		}
-
-		if (IN_MEMORY.getValue().equals(System.getProperty(IN_MEMORY.getKey()))) {
-			HyperionScheduler.getScheduler().scheduleTask(DateTime.now(),
-					new DebugSiteCreationTask());
+		} else {
+			runSitePopulator();
+			TysanApplicationReference.INSTANCE.setApplication(this);
 		}
 
 		// if (usesDeploymentConfig())
@@ -196,15 +177,28 @@ public class TysanApplication extends WebApplication {
 		getResourceSettings().setUseMinifiedResources(false);
 
 		addResourceReplacement(WiQueryCoreThemeResourceReference.get(),
-				new CssResourceReference(TysanApplication.class,
-						"themes/ui-darkness/jquery-ui-1.10.2.custom.css"));
+							   new CssResourceReference(TysanApplication.class,
+														"themes/ui-darkness/jquery-ui-1.10.2.custom.css"));
+	}
+
+	private void runSitePopulator() {
+		MockServletContext sctx = new MockServletContext(
+				this, "/src/main/webapp/");
+		MockHttpServletRequest request = new MockHttpServletRequest(
+				this, new MockHttpSession(sctx), sctx);
+		RequestAttributes attr = new ServletRequestAttributes(request);
+
+		RequestContextHolder.setRequestAttributes(attr);
+
+		context.getBean(PopulationService.class).createDebugSite();
+
+		RequestContextHolder.resetRequestAttributes();
 	}
 
 	/**
 	 *
 	 */
 	private void scheduleDefaultTasks() {
-		HyperionScheduler.getScheduler().setApplication(this);
 
 		Interval daily = Intervals.days(1);
 		Interval hourly = Intervals.hours(1);
@@ -274,7 +268,7 @@ public class TysanApplication extends WebApplication {
 		mountPage("/activation/${key}", ActivationPage.class);
 
 		mountPage("/resetpassword/${key}",
-				PasswordRequestConfirmationPage.class);
+				  PasswordRequestConfirmationPage.class);
 
 		mountPage("/accessdenied", AccessDeniedPage.class);
 
@@ -282,7 +276,7 @@ public class TysanApplication extends WebApplication {
 		mountPage("/tracker/requestfeature", RequestFeaturePage.class);
 
 		mountPage("/processPaymentRequest/${requestId}/${confirmationKey}",
-				ProcessPaymentRequestPage.class);
+				  ProcessPaymentRequestPage.class);
 
 		mountPage(
 				"/processSubscriptionPayment/${paymentId}/${confirmationKey}",
@@ -292,20 +286,19 @@ public class TysanApplication extends WebApplication {
 		mountPage("/feature/${id}", ViewBugPage.class);
 
 		if (System.getProperty("tysan.install") != null) {
-			mountPage("/randomcontent", RandomContentGenerationPage.class);
 			mountPage("/oldexpenses", OldExpensesPage.class);
 		}
 	}
 
 	private void mountResources() {
 		mountResource("/images/signatures/daysintysan/${username}",
-				new DaysInTysanImageResourceReference());
+					  new DaysInTysanImageResourceReference());
 		mountResource("/images/signatures/haley",
-				new HaleyAccidentResourceReference());
+					  new HaleyAccidentResourceReference());
 		mountResource("/mc-whitelist/",
-				new MinecraftWhitelistResourceReference());
+					  new MinecraftWhitelistResourceReference());
 		mountResource("/uuid-mc-whitelist/",
-				new UUIDMinecraftWhitelistResourceReference());
+					  new UUIDMinecraftWhitelistResourceReference());
 	}
 
 	/**
@@ -328,7 +321,7 @@ public class TysanApplication extends WebApplication {
 				request,
 				"wickery-theme",
 				new CssResourceReference(TysanApplication.class,
-						"themes/ui-darkness/jquery-ui-1.7.2.custom.css"));
+										 "themes/ui-darkness/jquery-ui-1.7.2.custom.css"));
 
 		return request;
 	}

@@ -10,8 +10,9 @@ import com.tysanclan.site.projectewok.pages.member.group.InviteGroupMemberPage;
 import com.tysanclan.site.projectewok.pages.member.group.LeaveGroupPage;
 
 public class GroupLeaderTest extends AbstractClickThroughTester {
-	public GroupLeaderTest() {
-		super(1L);
+	@Override
+	protected long determineUserId() {
+		return userIdOfGroupLeader();
 	}
 
 	@Test

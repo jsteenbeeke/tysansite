@@ -26,6 +26,8 @@ public class StartTysan {
 	 * @param args Program arguments
 	 */
 	public static void main(String[] args) throws Exception {
+		System.setProperty("ewok.testmode", "true");
+
 		InMemory.run("ProjectEwok")
 				.withContextPath("/tysan")
 				.atPort(8081)

@@ -33,6 +33,7 @@ import com.tysanclan.site.projectewok.util.forum.ForumViewContext;
 import com.tysanclan.site.projectewok.util.forum.MemberForumViewContext;
 import com.tysanclan.site.projectewok.util.forum.PublicForumViewContext;
 import com.tysanclan.site.projectewok.util.forum.ShadowForumViewContext;
+import org.springframework.context.ApplicationContext;
 
 /**
  * Session for Tysan site logins
@@ -46,10 +47,12 @@ public class TysanSession extends WebSession {
 
 	private Date previousLogin;
 
+	private Long userId;
+
 	public TysanSession(Request request) {
 		super(request);
 
-		seenNotifications = new HashSet<SiteWideNotification>();
+		seenNotifications = new HashSet<>();
 	}
 
 	/**
@@ -57,12 +60,14 @@ public class TysanSession extends WebSession {
 	 */
 	public Option<User> getUser() {
 		// Lazy initialization
-		Long userId = (Long) getAttribute("userid");
+		if (userId != null) {
+			TysanApplication application = TysanApplication.get();
 
-		if (userId != null)
-
-			return TysanApplication.getApplicationContext()
-					.getBean(UserDAO.class).load(userId);
+			ApplicationContext applicationContext = application.getApplicationContext();
+			UserDAO bean = applicationContext.getBean(UserDAO.class);
+			Option<User> userOption = bean.load(userId);
+			return userOption;
+		}
 
 		return Option.none();
 
@@ -86,7 +91,7 @@ public class TysanSession extends WebSession {
 	}
 
 	public void setCurrentUserId(Long currentUserId) {
-		setAttribute("userid", currentUserId);
+		this.userId = currentUserId;
 	}
 
 	public static TysanSession get() {

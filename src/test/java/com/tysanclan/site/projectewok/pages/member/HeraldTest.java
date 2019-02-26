@@ -1,16 +1,17 @@
 package com.tysanclan.site.projectewok.pages.member;
 
+import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.site.projectewok.pages.member.admin.HeraldTransferPage;
+import com.tysanclan.site.projectewok.pages.member.admin.MumbleServerAdminPage;
+import com.tysanclan.site.projectewok.pages.member.admin.RequestPaymentPage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.tysanclan.site.projectewok.pages.member.admin.HeraldTransferPage;
-import com.tysanclan.site.projectewok.pages.member.admin.MumbleServerAdminPage;
-import com.tysanclan.site.projectewok.pages.member.admin.RequestPaymentPage;
-
 public class HeraldTest extends AbstractClickThroughTester {
-	public HeraldTest() {
-		super(1L);
+	@Override
+	protected long determineUserId() {
+		return userIdOfRank(Rank.SENIOR_MEMBER);
 	}
 
 	@Before

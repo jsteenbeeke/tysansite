@@ -1,13 +1,14 @@
 package com.tysanclan.site.projectewok.pages.member;
 
+import com.tysanclan.rest.api.data.Rank;
 import org.junit.Test;
 
 import com.tysanclan.site.projectewok.components.PupilPanel;
 
 public class TrialMemberTest extends AbstractClickThroughTester {
-
-	public TrialMemberTest() {
-		super(16L);
+	@Override
+	protected long determineUserId() {
+		return userIdOfRank(Rank.TRIAL);
 	}
 
 	@Test

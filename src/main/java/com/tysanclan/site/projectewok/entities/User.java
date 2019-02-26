@@ -135,7 +135,7 @@ public class User extends BaseDomainObject implements DomainObject {
 	private Rank oldRank;
 
 	@Column
-	@Type(type = "org.hibernate.type.StringClobType")
+
 	@Lob
 	private String signature;
 
@@ -222,12 +222,12 @@ public class User extends BaseDomainObject implements DomainObject {
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private List<Activation> activations;
-
-	@Column(nullable = true)
-	private String owaspHashedPassword;
-
-	@Column(nullable = true)
-	private byte[] salt;
+//
+//	@Column(nullable = true)
+//	private String owaspHashedPassword;
+//
+//	@Column(nullable = true)
+//	private byte[] salt;
 
 	/**
 	 * @return the mentor

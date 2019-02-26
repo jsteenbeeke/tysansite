@@ -126,7 +126,7 @@ public class Bug extends BaseDomainObject {
 
 	@Column(nullable = false)
 	@Lob
-	@Type(type = "org.hibernate.type.StringClobType")
+
 	private String description;
 
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)

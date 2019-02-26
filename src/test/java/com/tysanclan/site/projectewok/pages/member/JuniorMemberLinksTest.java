@@ -17,11 +17,13 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
+import com.tysanclan.rest.api.data.Rank;
 import org.junit.Test;
 
 public class JuniorMemberLinksTest extends AbstractOverviewLinksTest {
-	public JuniorMemberLinksTest() {
-		super(13L);
+	@Override
+	protected long determineUserId() {
+		return userIdOfRank(Rank.JUNIOR_MEMBER);
 	}
 
 	@Test
