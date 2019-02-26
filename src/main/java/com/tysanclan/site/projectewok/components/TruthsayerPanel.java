@@ -56,7 +56,7 @@ public class TruthsayerPanel extends TysanOverviewPanel<Void> {
 		public AttentionType requiresAttention() {
 			AchievementProposalFilter filter = new AchievementProposalFilter();
 
-			filter.setTruthsayerReviewed(false);
+			filter.truthsayerReviewed(false);
 
 			if (achievementProposalDAO.countByFilter(filter) > 0) {
 				return AttentionType.WARNING;
@@ -80,7 +80,7 @@ public class TruthsayerPanel extends TysanOverviewPanel<Void> {
 		public AttentionType requiresAttention() {
 			AchievementIconFilter filter = new AchievementIconFilter();
 
-			filter.setApprovedAsNull(true);
+			filter.approved().isNull();
 
 			if (achievementIconDAO.countByFilter(filter) > 0) {
 				return AttentionType.WARNING;
@@ -101,7 +101,7 @@ public class TruthsayerPanel extends TysanOverviewPanel<Void> {
 		@Override
 		public AttentionType requiresAttention() {
 			TrialFilter filter = new TrialFilter();
-			filter.setWithTrialThread(false);
+			filter.trialThread().isNotNull();
 			if (trialDAO.countByFilter(filter) > 0) {
 				return AttentionType.ERROR;
 			}
@@ -169,7 +169,7 @@ public class TruthsayerPanel extends TysanOverviewPanel<Void> {
 		});
 
 		UserFilter filter = new UserFilter();
-		filter.addRank(Rank.CHANCELLOR);
+		filter.rank(Rank.CHANCELLOR);
 
 		add(new Link<Void>("impeachlink") {
 

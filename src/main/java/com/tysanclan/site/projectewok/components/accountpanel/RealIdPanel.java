@@ -66,7 +66,7 @@ public class RealIdPanel extends Panel {
 
 		};
 
-		form.add(new TextField<String>("name", new Model<String>(""))
+		form.add(new TextField<>("name", new Model<>(""))
 				.setRequired(true));
 
 		setVisible(gameService.isValidAccountType(userGameRealm.getGame(),

@@ -20,6 +20,7 @@ package com.tysanclan.site.projectewok.components;
 import java.util.Calendar;
 import java.util.List;
 
+import io.vavr.collection.Seq;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -194,14 +195,14 @@ public class GroupOverviewPanel extends TysanOverviewPanel<Group> {
 		if (electionModel == null) {
 			GroupLeaderElection election = null;
 			GroupLeaderElectionFilter filter = new GroupLeaderElectionFilter();
-			filter.setGroup(getModelObject());
+			filter.group(getModelObject());
 
 			Calendar calendar = DateUtil.getCalendarInstance();
 			calendar.add(Calendar.WEEK_OF_YEAR, -2);
 
-			filter.setStartAfter(calendar.getTime());
+			filter.start().greaterThan(calendar.getTime());
 
-			List<GroupLeaderElection> elections = groupLeaderElectionDAO
+			Seq<GroupLeaderElection> elections = groupLeaderElectionDAO
 					.findByFilter(filter);
 
 			if (elections.size() > 0) {

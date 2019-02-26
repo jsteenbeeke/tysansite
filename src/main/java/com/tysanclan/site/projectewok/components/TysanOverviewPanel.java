@@ -53,7 +53,7 @@ public abstract class TysanOverviewPanel<T> extends Panel {
 
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(value = ElementType.CONSTRUCTOR)
-	public static @interface NoAuto {
+	public @interface NoAuto {
 
 	}
 

@@ -17,6 +17,7 @@
  */
 package com.tysanclan.site.projectewok.components.renderer;
 
+import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.NaiveRenderer;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 
 import com.tysanclan.site.projectewok.entities.Game;
@@ -25,7 +26,7 @@ import com.tysanclan.site.projectewok.entities.Game;
  * @author Jeroen Steenbeeke
  */
 public final class GameChoiceRenderer implements
-        IChoiceRenderer<Game> {
+		NaiveRenderer<Game> {
 	private static final long serialVersionUID = 1L;
 
 	/**

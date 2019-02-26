@@ -52,9 +52,9 @@ public class ChancellorElectedSincePanel extends
 	@Override
 	public List<ChancellorElection> getElectionsSortedByDate() {
 		ChancellorElectionFilter filter = new ChancellorElectionFilter();
-		filter.addOrderBy("start", false);
+		filter.start().orderBy(false);
 
-		return chancellorElectionDAO.findByFilter(filter);
+		return chancellorElectionDAO.findByFilter(filter).asJava();
 	}
 
 	/**

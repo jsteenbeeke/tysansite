@@ -65,11 +65,10 @@ public class RealmGamePanel extends Panel {
 				.getImage()), game.getImage())));
 
 		UserGameRealmFilter filter = new UserGameRealmFilter();
-		filter.setRealm(realm);
-		filter.setGame(game);
+		filter.realm(realm);
+		filter.game(game);
 
-		List<UserGameRealm> ugrs = new LinkedList<UserGameRealm>();
-		ugrs.addAll(userGameRealmDAO.findByFilter(filter));
+		List<UserGameRealm> ugrs = new LinkedList<UserGameRealm>(userGameRealmDAO.findByFilter(filter).asJava());
 		Set<UserGameRealm> removeUGR = new HashSet<UserGameRealm>();
 
 		for (UserGameRealm ugr : ugrs) {
@@ -84,19 +83,19 @@ public class RealmGamePanel extends Panel {
 			setVisible(false);
 		}
 
-		Collections.sort(ugrs, new Comparator<UserGameRealm>() {
+		ugrs.sort(new Comparator<UserGameRealm>() {
 			/**
-			 * @see java.util.Comparator#compare(java.lang.Object,
-			 *      java.lang.Object)
+			 * @see Comparator#compare(Object,
+			 *      Object)
 			 */
 			@Override
 			public int compare(UserGameRealm o1, UserGameRealm o2) {
 				return o1.getUser().getUsername()
-						.compareToIgnoreCase(o2.getUser().getUsername());
+						 .compareToIgnoreCase(o2.getUser().getUsername());
 			}
 		});
 
-		add(new Label("count", new Model<Integer>(ugrs.size())));
+		add(new Label("count", new Model<>(ugrs.size())));
 
 		add(new ListView<UserGameRealm>("members", ModelMaker.wrap(ugrs)) {
 			private static final long serialVersionUID = 1L;

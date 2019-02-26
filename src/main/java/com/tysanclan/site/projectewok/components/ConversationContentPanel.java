@@ -149,7 +149,7 @@ public class ConversationContentPanel extends Panel {
 	}
 
 	public ConversationParticipation getParticipation() {
-		return conversationParticipationDAO.load(participationId);
+		return conversationParticipationDAO.load(participationId).getOrElseThrow(IllegalArgumentException::new);
 	}
 
 	private User getUser() {
@@ -202,7 +202,7 @@ public class ConversationContentPanel extends Panel {
 				Injector.get().inject(this);
 			}
 
-			return conversationDAO.load(conversationID).getMessages();
+			return conversationDAO.load(conversationID).getOrElseThrow(IllegalArgumentException::new).getMessages();
 		}
 
 		/**

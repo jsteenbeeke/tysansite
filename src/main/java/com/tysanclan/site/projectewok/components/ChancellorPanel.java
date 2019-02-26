@@ -93,7 +93,7 @@ public class ChancellorPanel extends TysanOverviewPanel<Void> {
 
 		private RoleTransfer getActiveTransfer() {
 			RoleTransferFilter filter = new RoleTransferFilter();
-			filter.setAccepted(true);
+			filter.accepted(true);
 
 			outer: for (RoleTransfer transfer : roleTransferDAO
 					.findByFilter(filter)) {
@@ -194,7 +194,7 @@ public class ChancellorPanel extends TysanOverviewPanel<Void> {
 		@Override
 		public AttentionType requiresAttention() {
 			AchievementProposalFilter filter = new AchievementProposalFilter();
-			filter.setVetoUndecided(true);
+			filter.chancellorVeto().isNull();
 
 			if (achievementProposalDAO.countByFilter(filter) > 0) {
 				return AttentionType.WARNING;

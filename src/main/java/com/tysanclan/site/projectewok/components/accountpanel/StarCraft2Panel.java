@@ -69,10 +69,10 @@ public class StarCraft2Panel extends Panel {
 
 		};
 
-		form.add(new TextField<String>("name", new Model<String>(""))
+		form.add(new TextField<>("name", new Model<>(""))
 				.setRequired(true));
-		form.add(new TextField<Integer>("charCode", new Model<Integer>(0),
-				Integer.class).add(new RangeValidator<Integer>(0, 999)));
+		form.add(new TextField<>("charCode", new Model<>(0),
+								 Integer.class).add(new RangeValidator<>(0, 999)));
 
 		setVisible(gameService.isValidAccountType(userGameRealm.getGame(),
 				userGameRealm.getRealm(), AccountType.STARCRAFT2));

@@ -28,6 +28,6 @@ import com.jeroensteenbeeke.hyperion.data.DomainObject;
  */
 public interface EntityClickListener<T extends DomainObject>
         extends Serializable {
-	public void onEntityClick(AjaxRequestTarget target,
+	void onEntityClick(AjaxRequestTarget target,
 	        T entity);
 }

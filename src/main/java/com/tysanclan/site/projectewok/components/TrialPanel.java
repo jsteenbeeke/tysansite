@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.NaiveRenderer;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -131,7 +132,7 @@ public class TrialPanel extends Panel {
 
 		verdictForm.add(new DropDownChoice<Verdict>("verdict",
 				new Model<Verdict>(Verdict.INNOCENT), Arrays.asList(Verdict
-						.values()), new IChoiceRenderer<Verdict>() {
+						.values()), new NaiveRenderer<Verdict>() {
 
 					/**
 					 * 

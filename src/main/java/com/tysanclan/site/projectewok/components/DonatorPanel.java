@@ -24,6 +24,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
+import io.vavr.collection.Seq;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -53,11 +54,11 @@ public class DonatorPanel extends Panel {
 		cal.add(Calendar.MONTH, -6);
 
 		DonationFilter filter = new DonationFilter();
-		filter.setFrom(cal.getTime());
-		filter.setDonator(user);
+		filter.donationTime().greaterThanOrEqualTo(cal.getTime());
+		filter.donator(user);
 
 		BigDecimal value = BigDecimal.ZERO;
-		List<Donation> donations = donationDAO.findByFilter(filter);
+		Seq<Donation> donations = donationDAO.findByFilter(filter);
 		for (Donation donation : donations) {
 			value = value.add(donation.getAmount());
 		}

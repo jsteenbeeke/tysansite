@@ -17,6 +17,7 @@
  */
 package com.tysanclan.site.projectewok.components.renderer;
 
+import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.NaiveRenderer;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 
 import com.tysanclan.site.projectewok.model.GameRealmCartesian;
@@ -25,7 +26,7 @@ import com.tysanclan.site.projectewok.model.GameRealmCartesian;
  * @author Jeroen Steenbeeke
  */
 public final class GameRealmCartesianRenderer implements
-        IChoiceRenderer<GameRealmCartesian> {
+		NaiveRenderer<GameRealmCartesian> {
 	private static final long serialVersionUID = 1L;
 
 	/**

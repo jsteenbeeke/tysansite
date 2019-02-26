@@ -93,7 +93,7 @@ public class SenatorPanel extends TysanOverviewPanel<Void> {
 
 		private RoleTransfer getActiveTransfer() {
 			RoleTransferFilter filter = new RoleTransferFilter();
-			filter.setAccepted(true);
+			filter.accepted(true);
 
 			outer: for (RoleTransfer transfer : roleTransferDAO
 					.findByFilter(filter)) {
@@ -136,7 +136,7 @@ public class SenatorPanel extends TysanOverviewPanel<Void> {
 		@Override
 		public AttentionType requiresAttention() {
 			TruthsayerNominationFilter filter = new TruthsayerNominationFilter();
-			filter.setStartSet(true);
+			filter.voteStart().isNotNull();
 
 			for (TruthsayerNomination nomination : truthsayerNominationDAO
 					.findByFilter(filter)) {

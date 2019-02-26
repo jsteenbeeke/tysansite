@@ -52,9 +52,9 @@ public class SenateElectedSincePanel extends
 	@Override
 	public List<SenateElection> getElectionsSortedByDate() {
 		SenateElectionFilter filter = new SenateElectionFilter();
-		filter.addOrderBy("start", false);
+		filter.start().orderBy(false);
 
-		return senateElectionDAO.findByFilter(filter);
+		return senateElectionDAO.findByFilter(filter).toJavaList();
 	}
 
 	/**

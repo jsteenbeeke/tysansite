@@ -1,17 +1,17 @@
 /**
  * Tysan Clan Website
  * Copyright (C) 2008-2013 Jeroen Steenbeeke and Ties van de Ven
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -54,7 +54,7 @@ public class ForumThreadModeratorPanel extends Panel {
 	private EventDAO eventDAO;
 
 	public ForumThreadModeratorPanel(String id,
-	        ForumThread thread) {
+									 ForumThread thread) {
 		super(id);
 
 		IModel<ForumThread> model = ModelMaker.wrap(thread);
@@ -65,22 +65,22 @@ public class ForumThreadModeratorPanel extends Panel {
 			@Override
 			public void onClick() {
 				setResponsePage(new ConfirmForumThreadDeletePage(
-				        getModelObject()));
+						getModelObject()));
 			}
 		}
-		        .setVisible(!thread.isLocked()
-		                && !thread.isPostSticky()
-		                && trialDAO
-		                        .getTrialByThread(thread) == null
-		                && eventDAO
-		                        .getEventByThread(thread) == null));
+					.setVisible(!thread.isLocked()
+										&& !thread.isPostSticky()
+										&& trialDAO
+							.getTrialByThread(thread) == null
+										&& eventDAO
+							.getEventByThread(thread) == null));
 		add(new Link<ForumThread>("lock", model) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick() {
 				setResponsePage(new ConfirmForumThreadLockPage(
-				        getModelObject()));
+						getModelObject()));
 			}
 		}.setVisible(!thread.isLocked()));
 
@@ -90,7 +90,7 @@ public class ForumThreadModeratorPanel extends Panel {
 			@Override
 			public void onClick() {
 				setResponsePage(new ConfirmForumThreadUnlockPage(
-				        getModelObject()));
+						getModelObject()));
 			}
 		}.setVisible(thread.isLocked()));
 
@@ -100,10 +100,10 @@ public class ForumThreadModeratorPanel extends Panel {
 			@Override
 			public void onClick() {
 				setResponsePage(new ConfirmForumThreadStickyPage(
-				        getModelObject()));
+						getModelObject()));
 			}
 		}.setVisible(!thread.isLocked()
-		        && !thread.isPostSticky()));
+							 && !thread.isPostSticky()));
 
 		add(new Link<ForumThread>("unsticky", model) {
 			private static final long serialVersionUID = 1L;
@@ -111,13 +111,12 @@ public class ForumThreadModeratorPanel extends Panel {
 			@Override
 			public void onClick() {
 				setResponsePage(new ConfirmForumThreadUnstickyPage(
-				        getModelObject()));
+						getModelObject()));
 			}
 		}.setVisible(!thread.isLocked()
-		        && thread.isPostSticky()));
+							 && thread.isPostSticky()));
 
-		TysanSession sess = (TysanSession) Session.get();
-		User u = sess != null ? sess.getUser() : null;
+		User u = TysanSession.session().flatMap(TysanSession::getUser).getOrNull();
 
 		add(new Link<ForumThread>("move", model) {
 			private static final long serialVersionUID = 1L;
@@ -125,24 +124,24 @@ public class ForumThreadModeratorPanel extends Panel {
 			@Override
 			public void onClick() {
 				setResponsePage(new ForumThreadMovePage(
-				        getModelObject()));
+						getModelObject()));
 			}
 		}
-		        .setVisible(!forumService
-		                .getValidDestinationForums(
-		                        thread.getForum(), u)
-		                .isEmpty()
-		                && !thread.isLocked()
-		                && !thread.isPostSticky()));
+					.setVisible(!forumService
+							.getValidDestinationForums(
+									thread.getForum(), u)
+							.isEmpty()
+										&& !thread.isLocked()
+										&& !thread.isPostSticky()));
 		add(new Link<ForumThread>("split", model) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick() {
 				setResponsePage(new ForumThreadSplitPage(
-				        getModelObject()));
+						getModelObject()));
 			}
 		}.setVisible(!thread.isLocked()
-		        && thread.getPosts().size() > 1));
+							 && thread.getPosts().size() > 1));
 	}
 }

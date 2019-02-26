@@ -49,7 +49,7 @@ public class ViewSubscriptionPanel extends Panel {
 
 		ExpensePeriod period = ExpensePeriod.MONTHLY;
 		BigDecimal amount = BigDecimal.ZERO;
-		int due = 0;
+		long due = 0;
 
 		if (user.getSubscription() != null) {
 			period = user.getSubscription().getInterval();
@@ -57,9 +57,9 @@ public class ViewSubscriptionPanel extends Panel {
 			due = user.getSubscription().countPaymentsDue();
 		}
 
-		add(new Label("amount", new Model<BigDecimal>(amount)));
+		add(new Label("amount", new Model<>(amount)));
 		add(new Label("interval", period.getOmschrijving()));
-		add(new Label("due", new Model<Integer>(due)));
+		add(new Label("due", new Model<>(due)));
 
 		add(new Form<Subscription>("unsubscribe", ModelMaker.wrap(user
 				.getSubscription())) {

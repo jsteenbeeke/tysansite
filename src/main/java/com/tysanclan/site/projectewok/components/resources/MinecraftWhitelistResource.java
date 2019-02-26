@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
+import io.vavr.collection.Seq;
 import org.apache.wicket.request.resource.AbstractResource;
 import org.apache.wicket.request.resource.ContentDisposition;
 import org.apache.wicket.util.time.Time;
@@ -23,8 +24,8 @@ public class MinecraftWhitelistResource extends AbstractResource {
 
 	public String getCurrentWhitelist() {
 
-		List<Game> games = TysanApplication.getApplicationContext()
-				.getBean(GameDAO.class).findAll();
+		Seq<Game> games = TysanApplication.getApplicationContext()
+										  .getBean(GameDAO.class).findAll();
 		List<String> whitelist = new LinkedList<String>();
 
 		StringBuilder whiteListBuilder = new StringBuilder();

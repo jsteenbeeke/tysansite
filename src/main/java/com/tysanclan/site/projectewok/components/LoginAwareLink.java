@@ -70,9 +70,7 @@ public abstract class LoginAwareLink<L extends Link<?>, U extends Link<?>>
 	}
 
 	protected boolean isLoggedInCondition() {
-		TysanSession sess = (TysanSession) Session.get();
-		User u = (sess != null) ? sess.getUser() : null;
-		return (u != null);
+		return TysanSession.session().flatMap(TysanSession::getUser).isDefined();
 	}
 
 	/**

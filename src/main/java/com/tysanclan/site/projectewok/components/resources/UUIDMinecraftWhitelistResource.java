@@ -3,6 +3,7 @@ package com.tysanclan.site.projectewok.components.resources;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.vavr.collection.Seq;
 import org.apache.wicket.request.resource.AbstractResource;
 import org.apache.wicket.request.resource.ContentDisposition;
 import org.apache.wicket.util.time.Time;
@@ -23,8 +24,8 @@ public class UUIDMinecraftWhitelistResource extends AbstractResource {
 
 	public String getCurrentWhitelist() {
 
-		List<Game> games = TysanApplication.getApplicationContext()
-				.getBean(GameDAO.class).findAll();
+		Seq<Game> games = TysanApplication.getApplicationContext()
+										  .getBean(GameDAO.class).findAll();
 		ArrayList<String> whitelist = new ArrayList<String>();
 
 		StringBuilder whiteListBuilder = new StringBuilder();

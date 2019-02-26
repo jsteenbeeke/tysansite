@@ -19,6 +19,7 @@ package com.tysanclan.site.projectewok.components;
 
 import java.util.List;
 
+import io.vavr.collection.Seq;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
@@ -50,10 +51,10 @@ public abstract class EmailChangeConfirmationPanel extends
 		super(id);
 
 		EmailChangeConfirmationFilter filter = new EmailChangeConfirmationFilter();
-		filter.setUser(user);
-		filter.addOrderBy("id", true);
+		filter.user(user);
+		filter.id().orderBy(true);
 
-		List<EmailChangeConfirmation> confirmations = emailChangeConfirmationDAO
+		Seq<EmailChangeConfirmation> confirmations = emailChangeConfirmationDAO
 		        .findByFilter(filter);
 
 		EmailChangeConfirmation confirmation = null;

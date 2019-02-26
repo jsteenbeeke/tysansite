@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import io.vavr.collection.Seq;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.DynamicImageResource;
 import org.apache.wicket.util.string.StringValue;
@@ -37,9 +38,9 @@ public abstract class AbstractDynamicTysanImage extends DynamicImageResource {
 		}
 
 		UserFilter filter = new UserFilter();
-		filter.setUsername(name.toOptionalString());
-		List<User> users = TysanApplication.getApplicationContext()
-				.getBean(UserDAO.class).findByFilter(filter);
+		filter.username(name.toOptionalString());
+		Seq<User> users = TysanApplication.getApplicationContext()
+										  .getBean(UserDAO.class).findByFilter(filter);
 		if (users == null || users.isEmpty()) {
 			return getErrorImage();
 		}

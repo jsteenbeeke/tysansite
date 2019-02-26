@@ -45,7 +45,7 @@ public class StewardPanel extends TysanOverviewPanel<User> {
 		public AttentionType requiresAttention() {
 			MobileUserAgentFilter filter = new MobileUserAgentFilter();
 
-			filter.setSearchUnknownType(true);
+			filter.mobile().isNull();
 
 			if (userAgentDAO.countByFilter(filter) > 0) {
 				return AttentionType.ERROR;

@@ -19,6 +19,8 @@ package com.tysanclan.site.projectewok.components;
 
 import java.util.List;
 
+import com.tysanclan.site.projectewok.entities.dao.TruthsayerNominationDAO;
+import com.tysanclan.site.projectewok.entities.filter.TruthsayerNominationFilter;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -47,6 +49,9 @@ public class InactiveKeyRoleTransferPanel extends Panel {
 	@SpringBean
 	private UserDAO userDAO;
 
+	@SpringBean
+	private TruthsayerNominationDAO nominationDAO;
+
 	private Form<RoleType> nominationForm;
 
 	public InactiveKeyRoleTransferPanel(String id, RoleType roleType) {
@@ -59,14 +64,15 @@ public class InactiveKeyRoleTransferPanel extends Panel {
 					AccessDeniedPage.class);
 
 		UserFilter filter = new UserFilter();
-		filter.setRetired(false);
-		filter.addRank(Rank.REVERED_MEMBER);
-		filter.addRank(Rank.FULL_MEMBER);
-		filter.addRank(Rank.SENIOR_MEMBER);
-		filter.setTruthsayerNominated(false);
-		filter.addOrderBy("username", true);
+		filter.retired(false);
+		filter.rank(Rank.REVERED_MEMBER);
+		filter.orRank(Rank.FULL_MEMBER);
+		filter.orRank(Rank.SENIOR_MEMBER);
+		filter.username().orderBy(true);
 
-		List<User> users = userDAO.findByFilter(filter);
+		List<User> users = userDAO.findByFilter(filter).filter(u ->
+				nominationDAO.findByFilter(new TruthsayerNominationFilter().user(u)).isEmpty()
+				).toJavaList();
 
 		final DropDownChoice<User> userChoice = new TysanDropDownChoice<User>(
 				"user", null, users);

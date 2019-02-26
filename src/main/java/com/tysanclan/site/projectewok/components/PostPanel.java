@@ -99,8 +99,7 @@ public class PostPanel extends Panel {
 			add(container);
 
 		} else {
-			TysanSession sess = (TysanSession) Session.get();
-			User u = sess != null ? sess.getUser() : null;
+			User u = TysanSession.session().flatMap(TysanSession::getUser).getOrNull();
 
 			WebMarkupContainer container = new WebMarkupContainer("container");
 
@@ -233,10 +232,10 @@ public class PostPanel extends Panel {
 							: "").setVisible(post.getPoster() != null
 					&& !post.getPoster().getSignature().isEmpty()));
 			container.add(new ContextImage("icon", "images/icons/new.png")
-					.setVisible(sess != null ? forumService.isPostUnread(u,
-							post) : false));
+					.setVisible(u != null && forumService.isPostUnread(u,
+																	   post)));
 
-			if (sess != null) {
+			if (u != null) {
 				forumService.markForumPostRead(u, post);
 			}
 

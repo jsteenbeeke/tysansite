@@ -2,6 +2,7 @@ package com.tysanclan.site.projectewok.components;
 
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
 import org.apache.wicket.markup.head.HeaderItem;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.resource.JQueryPluginResourceReference;
@@ -19,13 +20,13 @@ public class BBCodeTextAreaPluginResource extends JQueryPluginResourceReference 
 	}
 
 	@Override
-	public Iterable<? extends HeaderItem> getDependencies() {
+	public List<HeaderItem> getDependencies() {
 		List<HeaderItem> deps = Lists.newArrayListWithExpectedSize(1);
 
 		deps.add(JavaScriptHeaderItem
 				.forReference(JQueryTextareaCaretPluginResource.get()));
 
-		return Iterables.concat(super.getDependencies(), deps);
+		return ImmutableList.copyOf(Iterables.concat(super.getDependencies(), deps));
 	}
 
 	public static BBCodeTextAreaPluginResource get() {
