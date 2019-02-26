@@ -17,12 +17,17 @@
  */
 package com.tysanclan.site.projectewok;
 
+import com.google.common.collect.ImmutableList;
 import org.apache.wicket.markup.head.HeaderItem;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.odlabs.wiquery.core.resources.JavaScriptHeaderItems;
 import org.odlabs.wiquery.ui.accordion.AccordionJavaScriptResourceReference;
 import org.odlabs.wiquery.ui.dialog.DialogJavaScriptResourceReference;
 import org.odlabs.wiquery.ui.tabs.TabsJavaScriptResourceReference;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TysanJQueryUIInitialisationResourceReference extends
 		JavaScriptResourceReference {
@@ -46,9 +51,9 @@ public class TysanJQueryUIInitialisationResourceReference extends
 	}
 
 	@Override
-	public Iterable<? extends HeaderItem> getDependencies() {
-		return JavaScriptHeaderItems.forReferences(
-				AccordionJavaScriptResourceReference.get(),
-				TabsJavaScriptResourceReference.get());
+	public List<HeaderItem> getDependencies() {
+		return ImmutableList.of(
+				JavaScriptHeaderItem.forReference(AccordionJavaScriptResourceReference.get()),
+				JavaScriptHeaderItem.forReference(TabsJavaScriptResourceReference.get()));
 	}
 }

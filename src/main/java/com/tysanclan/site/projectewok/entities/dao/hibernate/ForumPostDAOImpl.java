@@ -59,7 +59,7 @@ class ForumPostDAOImpl extends HibernateDAO<ForumPost, ForumPostFilter> implemen
 
 	@Override
 	public List<ForumPost> findByContext(User user, ForumThread contextObject,
-										 ForumViewContext context, long first, long count) {
+										 ForumViewContext context, int first, int count) {
 		return context
 				.getPosts(entityManager, contextObject, user, first, count);
 	}

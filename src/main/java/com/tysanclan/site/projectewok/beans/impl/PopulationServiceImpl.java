@@ -23,8 +23,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.ApplicationContextServiceProvider;
 import org.apache.wicket.injection.Injector;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -49,7 +53,7 @@ import com.tysanclan.site.projectewok.util.DateUtil;
 
 @Component
 @Scope("request")
-public class PopulationServiceImpl implements PopulationService {
+public class PopulationServiceImpl implements PopulationService, ApplicationContextAware {
 	@Autowired
 	private UserService userService;
 
@@ -61,6 +65,8 @@ public class PopulationServiceImpl implements PopulationService {
 
 	@Autowired
 	private GroupService groupService;
+
+	private ApplicationContext context;
 
 	public void setForumService(ForumService forumService) {
 		this.forumService = forumService;
@@ -76,6 +82,11 @@ public class PopulationServiceImpl implements PopulationService {
 
 	public void setUserService(UserService userService) {
 		this.userService = userService;
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.context = applicationContext;
 	}
 
 	@Override
@@ -223,12 +234,10 @@ public class PopulationServiceImpl implements PopulationService {
 		generateShadowThread(forum, ban);
 
 		SenateElectionChecker checker = new SenateElectionChecker();
-		Injector.get().inject(checker);
-		checker.run();
+		checker.run(new ApplicationContextServiceProvider(context));
 
 		ChancellorElectionChecker checker2 = new ChancellorElectionChecker();
-		Injector.get().inject(checker2);
-		checker2.run();
+		checker2.run(new ApplicationContextServiceProvider(context));
 
 	}
 

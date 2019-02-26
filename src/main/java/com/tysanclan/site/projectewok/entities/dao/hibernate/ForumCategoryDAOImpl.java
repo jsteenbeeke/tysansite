@@ -44,7 +44,7 @@ class ForumCategoryDAOImpl extends HibernateDAO<ForumCategory, ForumCategoryFilt
 
 	@Override
 	public List<ForumCategory> findByContext(User user, User contextObject,
-			ForumViewContext context, long first, long count) {
+			ForumViewContext context, int first, int count) {
 		return context.getCategories(entityManager, user, first, count);
 	}
 }

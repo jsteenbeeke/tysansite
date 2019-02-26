@@ -55,7 +55,7 @@ class ForumThreadDAOImpl extends HibernateDAO<ForumThread, ForumThreadFilter> im
 
 	@Override
 	public List<ForumThread> findByContext(User user, Forum contextObject,
-										   ForumViewContext context, long first, long count) {
+										   ForumViewContext context, int first, int count) {
 		return context.getThreads(entityManager, contextObject, user, first,
 								  count);
 	}

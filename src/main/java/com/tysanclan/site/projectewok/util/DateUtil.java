@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.NaiveRenderer;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 
 import com.tysanclan.site.projectewok.entities.User;
@@ -188,7 +189,7 @@ public class DateUtil {
 	}
 
 	public static IChoiceRenderer<Integer> getTwoDigitRenderer() {
-		return new IChoiceRenderer<Integer>() {
+		return new NaiveRenderer<Integer>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
