@@ -19,6 +19,7 @@ package com.tysanclan.site.projectewok.event.handlers;
 
 import java.util.List;
 
+import io.vavr.collection.Seq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,9 +47,9 @@ public class ResetOverseerOnTermination implements
 		User user = event.getSubject();
 
 		RealmFilter rfilter = new RealmFilter();
-		rfilter.setOverseer(user);
+		rfilter.overseer(user);
 
-		List<Realm> realms = realmDAO.findByFilter(rfilter);
+		Seq<Realm> realms = realmDAO.findByFilter(rfilter);
 		for (Realm realm : realms) {
 			realm.setOverseer(null);
 
