@@ -48,6 +48,7 @@ public class PublicForumViewContext extends AbstractForumViewContext {
 
 		Subquery<Forum> subquery = criteriaQuery.subquery(Forum.class);
 		Root<Forum> subqueryRoot = subquery.from(Forum.class);
+		subquery.select(subqueryRoot);
 
 		Subquery<Long> groupForumSubquery = criteriaQuery.subquery(Long.class);
 		Root<GroupForum> groupForumRoot = groupForumSubquery.from(GroupForum.class);
@@ -73,6 +74,7 @@ public class PublicForumViewContext extends AbstractForumViewContext {
 
 		Subquery<Forum> subquery = criteriaQuery.subquery(Forum.class);
 		Root<Forum> subqueryRoot = subquery.from(Forum.class);
+		subquery.select(subqueryRoot);
 
 		Subquery<Long> groupForumSubquery = criteriaQuery.subquery(Long.class);
 		Root<GroupForum> groupForumRoot = groupForumSubquery.from(GroupForum.class);
