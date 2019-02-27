@@ -3,7 +3,10 @@ package com.mojang.api.profiles;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import io.vavr.collection.Array;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -32,13 +35,8 @@ public class HttpProfileRepositoryIntegrationTests {
 		Profile[] profiles = repository.findProfilesByNames("mollstam",
 				"KrisJelbring");
 
-		assertThat(profiles.length, is(2));
-		assertThat(profiles[0].getName(), is(equalTo("mollstam")));
-		assertThat(profiles[0].getId(),
-				is(equalTo("f8cdb6839e9043eea81939f85d9c5d69")));
-		assertThat(profiles[1].getName(), is(equalTo("KrisJelbring")));
-		assertThat(profiles[1].getId(),
-				is(equalTo("7125ba8b1c864508b92bb5c042ccfe2b")));
+		assertEquals(Array.of("KrisJelbring", "mollstam"), Array.of(profiles).map(Profile::getName).sorted());
+		assertEquals(Array.of("7125ba8b1c864508b92bb5c042ccfe2b", "f8cdb6839e9043eea81939f85d9c5d69"), Array.of(profiles).map(Profile::getId).sorted());
 	}
 
 	@Test

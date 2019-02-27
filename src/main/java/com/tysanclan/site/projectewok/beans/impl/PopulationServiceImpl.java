@@ -24,6 +24,8 @@ import java.util.Map.Entry;
 import java.util.Random;
 
 import com.jeroensteenbeeke.hyperion.tardis.scheduler.ApplicationContextServiceProvider;
+import com.tysanclan.site.projectewok.beans.*;
+import com.tysanclan.site.projectewok.entities.*;
 import org.apache.wicket.injection.Injector;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,18 +37,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tysanclan.rest.api.data.Rank;
-import com.tysanclan.site.projectewok.beans.ForumService;
-import com.tysanclan.site.projectewok.beans.GroupService;
-import com.tysanclan.site.projectewok.beans.PopulationService;
-import com.tysanclan.site.projectewok.beans.RoleService;
-import com.tysanclan.site.projectewok.beans.UserService;
-import com.tysanclan.site.projectewok.entities.Forum;
-import com.tysanclan.site.projectewok.entities.ForumCategory;
-import com.tysanclan.site.projectewok.entities.ForumThread;
-import com.tysanclan.site.projectewok.entities.Group;
-import com.tysanclan.site.projectewok.entities.Role;
 import com.tysanclan.site.projectewok.entities.Role.RoleType;
-import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.tasks.ChancellorElectionChecker;
 import com.tysanclan.site.projectewok.tasks.SenateElectionChecker;
 import com.tysanclan.site.projectewok.util.DateUtil;
@@ -65,6 +56,12 @@ public class PopulationServiceImpl implements PopulationService, ApplicationCont
 
 	@Autowired
 	private GroupService groupService;
+
+	@Autowired
+	private RealmService realmService;
+
+	@Autowired
+	private GameService gameService;
 
 	private ApplicationContext context;
 
@@ -232,6 +229,10 @@ public class PopulationServiceImpl implements PopulationService, ApplicationCont
 				averageJoe3);
 
 		generateShadowThread(forum, ban);
+
+		Game game = gameService.createGame("Diablo 9", new byte[0]);
+		gameService.setGameSupervisor(game, averageJoe2);
+		realmService.createRealm("USNorth", game, averageJoe2);
 
 		SenateElectionChecker checker = new SenateElectionChecker();
 		checker.run(new ApplicationContextServiceProvider(context));

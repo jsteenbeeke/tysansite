@@ -1,9 +1,17 @@
 package com.tysanclan.site.projectewok.pages.member;
 
 import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.site.projectewok.TysanApplication;
+import com.tysanclan.site.projectewok.beans.RoleService;
+import com.tysanclan.site.projectewok.components.ChancellorPanel;
+import com.tysanclan.site.projectewok.components.RequiresAttentionLink;
+import com.tysanclan.site.projectewok.entities.Role;
+import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.pages.member.senate.AddRegulationPage;
 import com.tysanclan.site.projectewok.pages.member.senate.ModifyRegulationPage;
 import com.tysanclan.site.projectewok.pages.member.senate.RepealRegulationPage;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.list.ListView;
 import org.junit.Test;
 
 public class ChancellorTest extends AbstractClickThroughTester {
@@ -81,6 +89,8 @@ public class ChancellorTest extends AbstractClickThroughTester {
 		overview();
 		getTester().clickLink("chancellorpanel:realms");
 		getTester().assertRenderedPage(RealmManagementPage.class);
+		getTester().assertComponent("realms", ListView.class);
+		getTester().assertComponent("realms:0:edit:link", Link.class);
 
 		getTester().clickLink("realms:0:edit:link");
 		getTester().assertRenderedPage(EditRealmSupervisorPage.class);
@@ -91,6 +101,8 @@ public class ChancellorTest extends AbstractClickThroughTester {
 		overview();
 		getTester().clickLink("chancellorpanel:games");
 		getTester().assertRenderedPage(GameManagementPage.class);
+		getTester().assertComponent("games", ListView.class);
+		getTester().assertComponent("games:0:edit:link", Link.class);
 
 		getTester().clickLink("games:0:edit:link");
 		getTester().assertRenderedPage(EditGameSupervisorPage.class);
@@ -98,9 +110,18 @@ public class ChancellorTest extends AbstractClickThroughTester {
 
 	@Test
 	public void testInactiveKeyRole() {
+		RoleService roleService = TysanApplication.get().getApplicationContext().getBean(RoleService.class);
+		User herald = roleService.getHerald();
+		roleService.removeRoles(herald);
+
 		overview();
+		getTester().assertComponent("chancellorpanel", ChancellorPanel.class);
+		getTester().assertComponent("chancellorpanel:inactivekeyrole", RequiresAttentionLink.class);
+
 		getTester().clickLink("chancellorpanel:inactivekeyrole:label:link");
 		getTester().assertRenderedPage(InactiveKeyRoleTransferPage.class);
+
+		roleService.assignTo(herald.getId(), roleService.getRoleByType(Role.RoleType.HERALD).getId(), herald.getId());
 	}
 
 	@Test

@@ -1,17 +1,17 @@
 /**
  * Tysan Clan Website
  * Copyright (C) 2008-2013 Jeroen Steenbeeke and Ties van de Ven
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -54,8 +54,9 @@ public abstract class TysanPageTester {
 	public static void setUp() throws Exception {
 		System.setProperty("ewok.testmode", "true");
 		handler = InMemory.run("ewok")
-				.withContextPath("/tysantest")
-				.atPort(8383)
+						  .withContextPath("/tysantest")
+						  .withoutShowingSql()
+						  .atPort(8383)
 						  .orElseThrow(() -> new IllegalStateException(
 								  "Could not start webserver"));
 
@@ -94,7 +95,8 @@ public abstract class TysanPageTester {
 		setupAfterRequestStarted();
 	}
 
-	protected void setupAfterRequestStarted() {}
+	protected void setupAfterRequestStarted() {
+	}
 
 	@After
 	public void endRequest() {
@@ -106,7 +108,6 @@ public abstract class TysanPageTester {
 	protected <T> T getBean(Class<T> beanClass) {
 		return beanFactory.getBean(beanClass);
 	}
-
 
 
 	protected void logIn(Long userId) {
