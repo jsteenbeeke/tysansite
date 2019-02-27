@@ -1,6 +1,6 @@
 package com.tysanclan.site.projectewok.pages.member;
 
-import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.site.projectewok.entities.Role;
 import com.tysanclan.site.projectewok.pages.member.admin.HeraldTransferPage;
 import com.tysanclan.site.projectewok.pages.member.admin.MumbleServerAdminPage;
 import com.tysanclan.site.projectewok.pages.member.admin.RequestPaymentPage;
@@ -11,17 +11,7 @@ import org.junit.Test;
 public class HeraldTest extends AbstractClickThroughTester {
 	@Override
 	protected long determineUserId() {
-		return userIdOfRank(Rank.SENIOR_MEMBER);
-	}
-
-	@Before
-	public void makeHerald() {
-		assignRole(2L);
-	}
-
-	@After
-	public void unmakeHerald() {
-		clearRole(2L);
+		return userIdWithRole(Role.RoleType.HERALD);
 	}
 
 	@Test

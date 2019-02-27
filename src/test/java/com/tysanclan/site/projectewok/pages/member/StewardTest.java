@@ -1,6 +1,7 @@
 package com.tysanclan.site.projectewok.pages.member;
 
 import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.site.projectewok.entities.Role;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,17 +15,7 @@ import com.tysanclan.site.projectewok.pages.member.admin.StewardTransferPage;
 public class StewardTest extends AbstractClickThroughTester {
 	@Override
 	protected long determineUserId() {
-		return userIdOfRank(Rank.REVERED_MEMBER);
-	}
-
-	@Before
-	public void makeSteward() {
-		assignRole(3L);
-	}
-
-	@After
-	public void unmakeSteward() {
-		clearRole(3L);
+		return userIdWithRole(Role.RoleType.STEWARD);
 	}
 
 	@Test

@@ -19,6 +19,9 @@ package com.tysanclan.site.projectewok.pages.member.admin;
 
 import java.math.BigDecimal;
 
+import com.tysanclan.site.projectewok.entities.dao.PaymentRequestDAO;
+import com.tysanclan.site.projectewok.entities.dao.UserDAO;
+import com.tysanclan.site.projectewok.entities.filter.PaymentRequestFilter;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -48,8 +51,16 @@ public class RequestPaymentPage extends AbstractSingleAccordionMemberPage {
 	@SpringBean
 	private FinanceService financeService;
 
-	public RequestPaymentPage(User user) {
+	@SpringBean
+	private UserDAO userDAO;
+
+	@SpringBean
+	private PaymentRequestDAO requestDAO;
+
+	public RequestPaymentPage(User _user) {
 		super("Request Payment");
+
+		User user = userDAO.load(_user.getId()).getOrElseThrow(IllegalStateException::new);
 
 		if (!user.equals(roleService.getHerald())
 				&& !user.equals(roleService.getSteward())) {
@@ -57,9 +68,12 @@ public class RequestPaymentPage extends AbstractSingleAccordionMemberPage {
 					AccessDeniedPage.class);
 		}
 
+		PaymentRequestFilter filter = new PaymentRequestFilter();
+		filter.requester(user);
+		filter.id().orderBy(true);
+
 		add(
-				new ListView<PaymentRequest>("pending", user
-						.getPaymentRequests()) {
+				new ListView<PaymentRequest>("pending", requestDAO.findByFilter(filter).toJavaList()) {
 					private static final long serialVersionUID = 1L;
 
 					@Override

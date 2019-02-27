@@ -6,9 +6,11 @@ import com.tysanclan.site.projectewok.TysanApplication;
 import com.tysanclan.site.projectewok.TysanPageTester;
 import com.tysanclan.site.projectewok.beans.RoleService;
 import com.tysanclan.site.projectewok.entities.Group;
+import com.tysanclan.site.projectewok.entities.Role;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.GroupDAO;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
+import com.tysanclan.site.projectewok.entities.filter.GroupFilter;
 import com.tysanclan.site.projectewok.pages.member.justice.StartTrialPage;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.util.tester.Result;
@@ -67,13 +69,22 @@ public abstract class AbstractClickThroughTester extends TysanPageTester {
 
 	}
 
-	protected static long userIdOfGroupLeader() {
+	protected static long userIdOfGroupLeader(Group.JoinPolicy joinPolicy) {
 		GroupDAO groupDAO = TysanApplication.get().getApplicationContext().getBean(GroupDAO.class);
 
-		Group group = groupDAO.findAll().getOrElseThrow(IllegalStateException::new);
+		GroupFilter filter = new GroupFilter();
+		filter.joinPolicy(joinPolicy);
+
+		Group group = groupDAO.findByFilter(filter).getOrElseThrow(IllegalStateException::new);
 
 		return group.getLeader().getId();
 
+	}
+
+	protected static long userIdWithRole(Role.RoleType roleType) {
+		RoleService roleService = TysanApplication.get().getApplicationContext().getBean(RoleService.class);
+
+		return roleService.getRoleByType(roleType).getAssignedTo().getId();
 	}
 
 	@Before
@@ -219,18 +230,6 @@ public abstract class AbstractClickThroughTester extends TysanPageTester {
 
 	protected List<String> generateLinks() {
 		return generateLinks(null);
-	}
-
-	protected void assignRole(Long roleId) {
-		RoleService roleService = getBean(RoleService.class);
-
-		roleService.assignTo(userId, roleId, userId);
-	}
-
-	protected void clearRole(Long roleId) {
-		RoleService roleService = getBean(RoleService.class);
-
-		roleService.assignTo(userId, roleId, null);
 	}
 
 	protected List<String> generateLinks(String prefix) {

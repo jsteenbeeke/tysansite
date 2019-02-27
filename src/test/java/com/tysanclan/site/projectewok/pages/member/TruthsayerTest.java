@@ -10,7 +10,7 @@ import org.junit.Test;
 public class TruthsayerTest extends AbstractClickThroughTester {
 	@Override
 	protected long determineUserId() {
-		return userIdOfRank(Rank.FULL_MEMBER);
+		return userIdOfRank(Rank.TRUTHSAYER);
 	}
 
 	@Test

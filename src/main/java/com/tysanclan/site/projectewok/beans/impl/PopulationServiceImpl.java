@@ -1,27 +1,25 @@
 /**
  * Tysan Clan Website
  * Copyright (C) 2008-2013 Jeroen Steenbeeke and Ties van de Ven
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.tysanclan.site.projectewok.beans.impl;
 
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.math.BigDecimal;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Random;
 
 import com.jeroensteenbeeke.hyperion.tardis.scheduler.ApplicationContextServiceProvider;
 import com.tysanclan.site.projectewok.beans.*;
@@ -62,6 +60,9 @@ public class PopulationServiceImpl implements PopulationService, ApplicationCont
 
 	@Autowired
 	private GameService gameService;
+
+	@Autowired
+	private FinanceService financeService;
 
 	private ApplicationContext context;
 
@@ -124,8 +125,8 @@ public class PopulationServiceImpl implements PopulationService, ApplicationCont
 
 		joinTime.put(Rank.REVERED_MEMBER, cal.getTimeInMillis());
 
-		String[] potentialNames = { "Steve", "Bob", "Mike", "Fred", "George",
-				"John", "Todd", "Kevin" };
+		String[] potentialNames = {"Steve", "Bob", "Mike", "Fred", "George",
+				"John", "Todd", "Kevin"};
 
 		Random random = new Random();
 
@@ -137,6 +138,12 @@ public class PopulationServiceImpl implements PopulationService, ApplicationCont
 		User averageJoe1 = null;
 		User averageJoe2 = null;
 		User averageJoe3 = null;
+		User averageJoe4 = null;
+		User averageJoe5 = null;
+		User averageJoe6 = null;
+		User averageJoe7 = null;
+		User averageJoe8 = null;
+		User averageJoe9 = null;
 
 		for (Entry<Rank, Integer> entry : userTypes.entrySet()) {
 			Rank rank = entry.getKey();
@@ -169,70 +176,107 @@ public class PopulationServiceImpl implements PopulationService, ApplicationCont
 				if (rank == Rank.JUNIOR_MEMBER && averageJoe3 == null) {
 					averageJoe3 = user;
 				}
+				if (rank == Rank.SENIOR_MEMBER && averageJoe4 == null && !user.equals(averageJoe1)) {
+					averageJoe4 = user;
+				}
+				if (rank == Rank.FULL_MEMBER && averageJoe5 == null && !user.equals(averageJoe2)) {
+					averageJoe5 = user;
+				}
+				if (rank == Rank.JUNIOR_MEMBER && averageJoe6 == null && !user.equals(averageJoe3)) {
+					averageJoe6 = user;
+				}
+				if (rank == Rank.SENIOR_MEMBER && averageJoe7 == null && !user.equals(averageJoe1) && !user.equals(averageJoe4)) {
+					averageJoe7 = user;
+				}
+				if (rank == Rank.FULL_MEMBER && averageJoe8 == null && !user.equals(averageJoe2) && !user.equals(averageJoe5)) {
+					averageJoe8 = user;
+				}
+				if (rank == Rank.JUNIOR_MEMBER && averageJoe9 == null && !user.equals(averageJoe3) && !user.equals(averageJoe6)) {
+					averageJoe9 = user;
+				}
 
 				if (rank != Rank.BANNED && rank != Rank.FORUM) {
 
 					if (!hasTreasurer && random.nextBoolean()) {
 						hasTreasurer = true;
 						Role role = roleService.createRole(user, "Treasurer",
-								"The lord of cash", RoleType.TREASURER);
+														   "The lord of cash", RoleType.TREASURER);
 						roleService.assignTo(user.getId(), role.getId(),
-								user.getId());
+											 user.getId());
 					} else if (!hasSteward && random.nextBoolean()) {
 						hasSteward = true;
 						Role role = roleService.createRole(user, "Steward",
-								"The lord of code", RoleType.STEWARD);
+														   "The lord of code", RoleType.STEWARD);
 						roleService.assignTo(user.getId(), role.getId(),
-								user.getId());
+											 user.getId());
 					} else if (!hasHerald && random.nextBoolean()) {
 						hasHerald = true;
 						Role role = roleService.createRole(user, "Herald",
-								"The voice of Tysan", RoleType.HERALD);
+														   "The voice of Tysan", RoleType.HERALD);
 						roleService.assignTo(user.getId(), role.getId(),
-								user.getId());
+											 user.getId());
 					}
 				}
 			}
 		}
 
-		@SuppressWarnings("deprecation")
-		Group testGroup = groupService.createSocialGroup("Test Group",
-				"A group for testing purposes");
-		groupService.setGroupLeader(averageJoe2, testGroup);
-		groupService.addUserToGroup(averageJoe1, testGroup);
-		groupService.addUserToGroup(averageJoe2, testGroup);
-		groupService.addUserToGroup(averageJoe3, testGroup);
+		Group testGroup = null;
+
+		EnumMap<Group.JoinPolicy, User> leaders = new EnumMap<>(Group.JoinPolicy.class);
+		leaders.put(Group.JoinPolicy.APPLICATION, averageJoe1);
+		leaders.put(Group.JoinPolicy.INVITATION, averageJoe4);
+		leaders.put(Group.JoinPolicy.OPEN, averageJoe7);
+
+		for (Group.JoinPolicy joinPolicy : Group.JoinPolicy.values()) {
+
+			@SuppressWarnings("deprecation")
+
+			Group g = groupService.createSocialGroup("Test Group "+ joinPolicy.name(),
+															 "A group for testing "+ joinPolicy.name());
+			groupService.setJoinPolicy(g, joinPolicy);
+
+			groupService.setGroupLeader(leaders.get(joinPolicy), g);
+			groupService.addUserToGroup(leaders.get(joinPolicy), g);
+			groupService.addUserToGroup(averageJoe2, g);
+			groupService.addUserToGroup(averageJoe3, g);
+
+			if (testGroup == null) {
+				testGroup = g;
+			}
+		}
 
 		ForumCategory cat = forumService.createCategory(chan, "Test Category",
-				false);
+														false);
 		Forum newsForum = forumService.createNewsForum("News forum",
-				"News goes here", true, cat);
+													   "News goes here", true, cat);
 		Forum forum = forumService.createForum("Test Forum",
-				"Everything else goes here", true, cat, chan);
+											   "Everything else goes here", true, cat, chan);
 		forumService.setInteractive(forum, true, chan);
 
 		Forum membersOnly = forumService.createForum("Members Only Forum",
-				"Members only stuff goes here", true, cat, chan);
+													 "Members only stuff goes here", true, cat, chan);
 		forumService.setMembersOnly(null, membersOnly, true);
 
 		ForumCategory groupCat = forumService.createCategory(chan,
-				"Test Category", true);
+															 "Test Category", true);
 
 		Forum groupForum = forumService.createGroupForum("Test Group Forum",
-				"The forum for the test group", groupCat, testGroup);
+														 "The forum for the test group", groupCat, testGroup);
 
 		generateForumThreads(newsForum, 6, averageJoe1, chan, averageJoe2,
-				averageJoe3);
+							 averageJoe3);
 		generateForumThreads(forum, 19, averageJoe1, ban, chan, averageJoe2,
-				averageJoe3);
+							 averageJoe3);
 		generateForumThreads(groupForum, 12, averageJoe1, averageJoe2,
-				averageJoe3);
+							 averageJoe3);
 
 		generateShadowThread(forum, ban);
 
 		Game game = gameService.createGame("Diablo 9", new byte[0]);
 		gameService.setGameSupervisor(game, averageJoe2);
 		realmService.createRealm("USNorth", game, averageJoe2);
+
+		financeService.requestPayment(roleService.getSteward(), "Burritos", BigDecimal.TEN);
 
 		SenateElectionChecker checker = new SenateElectionChecker();
 		checker.run(new ApplicationContextServiceProvider(context));
@@ -245,7 +289,7 @@ public class PopulationServiceImpl implements PopulationService, ApplicationCont
 	private void generateShadowThread(Forum forum, User ban) {
 
 		forumService.createForumThread(forum, "PROSPERO SUCKS COCK!1",
-				"This is a test thread", ban);
+									   "This is a test thread", ban);
 
 	}
 
@@ -259,12 +303,12 @@ public class PopulationServiceImpl implements PopulationService, ApplicationCont
 			}
 
 			ForumThread thread = forumService.createForumThread(forum,
-					"Test thread " + (i + 1), "This is a test thread", poster);
+																"Test thread " + (i + 1), "This is a test thread", poster);
 
 			for (int k = 0; k < ((i % 2) + (i % 5)); k++) {
 				poster = posters[j++ % posters.length];
 				forumService.replyToThread(thread,
-						"This is test response " + k, poster);
+										   "This is test response " + k, poster);
 			}
 
 		}

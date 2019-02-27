@@ -1,28 +1,15 @@
 package com.tysanclan.site.projectewok.pages.member;
 
-import com.tysanclan.rest.api.data.Rank;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
+import com.tysanclan.site.projectewok.entities.Role;
 import com.tysanclan.site.projectewok.pages.member.admin.CaretakerFinancePage;
 import com.tysanclan.site.projectewok.pages.member.admin.PaymentRequestApprovalPage;
 import com.tysanclan.site.projectewok.pages.member.admin.TreasurerTransferPage;
+import org.junit.Test;
 
 public class TreasurerTest extends AbstractClickThroughTester {
 	@Override
 	protected long determineUserId() {
-		return userIdOfRank(Rank.SENIOR_MEMBER);
-	}
-
-	@Before
-	public void makeTreasurer() {
-		assignRole(1L);
-	}
-
-	@After
-	public void unmakeTreasurer() {
-		clearRole(1L);
+		return userIdWithRole(Role.RoleType.TREASURER);
 	}
 
 	@Test
