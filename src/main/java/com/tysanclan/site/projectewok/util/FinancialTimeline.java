@@ -27,17 +27,12 @@ import com.tysanclan.site.projectewok.entities.dao.SubscriptionDAO;
 import com.tysanclan.site.projectewok.entities.filter.DonationFilter;
 import com.tysanclan.site.projectewok.entities.filter.PaidExpenseFilter;
 import io.vavr.collection.Seq;
-import nl.topicus.wqplot.data.BaseSeries;
-import nl.topicus.wqplot.data.DateNumberSeries;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.util.ListModel;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -546,24 +541,24 @@ public class FinancialTimeline {
 		return exhaustionPoint;
 	}
 
-	public IModel<List<BaseSeries<String, BigDecimal>>> getReservesAt(
+	public SortedMap<String, BigDecimal> getReservesAt(
 			DateTime time) {
-		BaseSeries<String, BigDecimal> series = new BaseSeries<String, BigDecimal>();
+		SortedMap<String, BigDecimal> series = new TreeMap<>();
 
 		Map<User, BigDecimal> reservesAt = reserve.getReservesAt(time);
 
 		for (Entry<User, BigDecimal> e : reservesAt.entrySet()) {
-			series.addEntry(e.getKey() != null ? e.getKey().getUsername()
+			series.put(e.getKey() != null ? e.getKey().getUsername()
 					: "Anonymous", e.getValue());
 		}
 
-		return listOf(series);
+		return series;
 
 	}
 
-	public IModel<List<BaseSeries<String, BigDecimal>>> getParticipation(
+	public Map<String, BigDecimal> getParticipation(
 			DateTime start, DateTime end) {
-		BaseSeries<String, BigDecimal> series = new BaseSeries<String, BigDecimal>();
+		Map<String, BigDecimal> series = new HashMap<>();
 
 		Multimap<String, BigDecimal> amounts = HashMultimap.create();
 
@@ -577,41 +572,23 @@ public class FinancialTimeline {
 
 		io.vavr.collection.HashMap.ofAll(amounts.asMap())
 				.mapValues(SumFunction.INSTANCE)
-				.forEach((BiConsumer<String, BigDecimal>) series::addEntry);
+				.forEach(series::put);
 
-		return listOf(series);
+		return series;
 	}
 
-	public IModel<List<DateNumberSeries<BigDecimal>>> getCashFlow(
+	public SortedMap<Date,BigDecimal> getCashFlow(
 			DateTime start, DateTime end) {
 
-		DateNumberSeries<BigDecimal> series = new DateNumberSeries<BigDecimal>();
+		SortedMap<Date,BigDecimal> series = new TreeMap<>();
 
 		for (Entry<DateTime, BigDecimal> e : cashFlow.entrySet()) {
 			if (!e.getKey().isBefore(start) && !e.getKey().isAfter(end)) {
-				series.addEntry(e.getKey().toDate(), e.getValue());
+				series.put(e.getKey().toDate(), e.getValue());
 			}
 		}
 
-		return listOf(series);
-	}
-
-	private <T extends Number> IModel<List<DateNumberSeries<T>>> listOf(
-			DateNumberSeries<T> series) {
-		List<DateNumberSeries<T>> res = new ArrayList<DateNumberSeries<T>>(1);
-
-		res.add(series);
-
-		return new ListModel<>(res);
-	}
-
-	private <K, V extends Number> IModel<List<BaseSeries<K, V>>> listOf(
-			BaseSeries<K, V> series) {
-		List<BaseSeries<K, V>> res = new ArrayList<BaseSeries<K, V>>(1);
-
-		res.add(series);
-
-		return new ListModel<>(res);
+		return series;
 	}
 
 	public BigDecimal getReservesToday() {

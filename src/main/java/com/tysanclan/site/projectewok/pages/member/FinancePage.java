@@ -17,28 +17,6 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.LinkedList;
-import java.util.List;
-
-import io.vavr.collection.Seq;
-import nl.topicus.wqplot.components.JQPlot;
-import nl.topicus.wqplot.data.AbstractSeries;
-
-import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.Page;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.HiddenField;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.joda.time.DateTime;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.beans.RoleService;
@@ -55,6 +33,24 @@ import com.tysanclan.site.projectewok.model.DollarSignModel;
 import com.tysanclan.site.projectewok.pages.CharterPage;
 import com.tysanclan.site.projectewok.util.FinancialTimeline;
 import com.tysanclan.site.projectewok.util.GraphUtil;
+import io.vavr.collection.Seq;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Page;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.HiddenField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.joda.time.DateTime;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -143,8 +139,8 @@ public class FinancePage extends AbstractMemberPage {
 				Expense expense = item.getModelObject();
 
 				item.add(new Label("name", expense.getName()));
-				String regularity = null;
-				IModel<String> yearlyExpense = null;
+				String regularity;
+				IModel<String> yearlyExpense;
 
 				boolean amountPerTermVisible = true;
 
@@ -152,45 +148,45 @@ public class FinancePage extends AbstractMemberPage {
 					case MONTHLY:
 						regularity = "Monthly";
 						yearlyExpense = new DollarSignModel(
-								new Model<BigDecimal>(expense.getAmount()
+								new Model<>(expense.getAmount()
 										.multiply(factor12)));
 						break;
 					case QUARTERLY:
 						regularity = "Quarterly";
 						yearlyExpense = new DollarSignModel(
-								new Model<BigDecimal>(expense.getAmount()
+								new Model<>(expense.getAmount()
 										.multiply(factor4)));
 						break;
 					case SEMIANNUALLY:
 						regularity = "Semiannually";
 						yearlyExpense = new DollarSignModel(
-								new Model<BigDecimal>(expense.getAmount()
+								new Model<>(expense.getAmount()
 										.multiply(factor2)));
 						break;
 					case BIANNUALLY:
 						regularity = "Biannually";
 						yearlyExpense = new DollarSignModel(
-								new Model<BigDecimal>(expense.getAmount()
+								new Model<>(expense.getAmount()
 										.divide(factor2, RoundingMode.HALF_UP)));
 						break;
 					default:
 						amountPerTermVisible = false;
 						regularity = "Annually";
 						yearlyExpense = new DollarSignModel(
-								new Model<BigDecimal>(expense.getAmount()));
+								new Model<>(expense.getAmount()));
 
 				}
 
 				item.add(new Label("regularity", regularity));
 
 				item.add(new Label("amounteach", new DollarSignModel(
-						new Model<BigDecimal>(expense.getAmount())))
+						new Model<>(expense.getAmount())))
 						.setVisible(amountPerTermVisible));
 				item.add(new Label("annualfee", yearlyExpense));
 			}
 		});
 
-		add(new Label("annualcost", new DollarSignModel(new Model<BigDecimal>(
+		add(new Label("annualcost", new DollarSignModel(new Model<>(
 				sum))));
 
 		FinancialTimeline timeline = new FinancialTimeline(expenseDAO,
@@ -198,12 +194,12 @@ public class FinancePage extends AbstractMemberPage {
 
 		// Finance overview charts
 
-		addLineChart("monthlychart", "Cash flow last month", 2,
-				timeline.getCashFlow(oneMonthAgo, now));
-		addLineChart("yearlychart", "Cash flow last year", 2,
-				timeline.getCashFlow(oneYearAgo, now));
-		addLineChart("alltimechart", "Cash flow all time", 2,
-				timeline.getCashFlow(year1997, now));
+		add(GraphUtil.makeCashFlowLineChart("monthlychart", "Cash flow last month",
+				timeline.getCashFlow(oneMonthAgo, now)));
+		add(GraphUtil.makeCashFlowLineChart("yearlychart", "Cash flow last year",
+				timeline.getCashFlow(oneYearAgo, now)));
+		add(GraphUtil.makeCashFlowLineChart("alltimechart", "Cash flow all time",
+				timeline.getCashFlow(year1997, now)));
 		add(GraphUtil.makePieChart("monthlyparticipation",
 				"Participation last month",
 				timeline.getParticipation(oneMonthAgo, now)));
@@ -222,7 +218,7 @@ public class FinancePage extends AbstractMemberPage {
 				"Tysan Donation by " + getUser().getUsername())));
 		User treasurer = roleService.getTreasurer();
 
-		add(new HiddenField<String>("paypalAddress", new Model<String>(
+		add(new HiddenField<>("paypalAddress", new Model<>(
 				treasurer != null ? treasurer.getPaypalAddress() : "disable"))
 				.add(AttributeModifier.replace("name", "business")));
 
@@ -230,20 +226,6 @@ public class FinancePage extends AbstractMemberPage {
 				new FinancePageLink()));
 		add(new ViewSubscriptionPanel("viewsubscription", getUser(),
 				new FinancePageLink()));
-	}
-
-	protected void addBarChart(String id, String title, int page,
-			IModel<? extends List<? extends AbstractSeries<?, ?, ?>>> model) {
-		JQPlot plot = GraphUtil.makeDonationBarChart(id, title, model);
-
-		add(plot);
-	}
-
-	protected void addLineChart(String id, String title, int page,
-			IModel<? extends List<? extends AbstractSeries<?, ?, ?>>> model) {
-		JQPlot plot = GraphUtil.makeCashFlowLineChart(id, title, model);
-
-		add(plot);
 	}
 
 	private static class FinancePageLink implements IOnSubmitPageCreator {

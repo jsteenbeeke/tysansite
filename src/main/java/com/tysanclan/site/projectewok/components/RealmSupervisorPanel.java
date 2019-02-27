@@ -17,14 +17,6 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import java.util.Arrays;
-
-import nl.topicus.wqplot.data.BaseSeries;
-
-import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.model.util.ListModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.GameService;
 import com.tysanclan.site.projectewok.components.RequiresAttentionLink.AttentionType;
@@ -34,6 +26,11 @@ import com.tysanclan.site.projectewok.entities.Realm;
 import com.tysanclan.site.projectewok.pages.member.DeadRealmRemovalPage;
 import com.tysanclan.site.projectewok.pages.member.GamingGroupSupervisionPage;
 import com.tysanclan.site.projectewok.util.GraphUtil;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Jeroen Steenbeeke
@@ -93,7 +90,7 @@ public class RealmSupervisorPanel extends TysanOverviewPanel<Realm> {
 				+ realm.getName());
 
 		add(GraphUtil.makePieChart("gamesize", "Game percentages",
-				getGameSizeChart(realm)));
+				createGameSizeChart(realm)));
 
 		add(createLink("deadrealm", ModelMaker.wrap(realm),
 				DeadRealmRemovalPage.class, "Remove Dead Realms",
@@ -112,20 +109,14 @@ public class RealmSupervisorPanel extends TysanOverviewPanel<Realm> {
 		});
 	}
 
-	protected ListModel<BaseSeries<String, Integer>> getGameSizeChart(
-			Realm realm) {
-		return new ListModel<BaseSeries<String, Integer>>(
-				Arrays.asList(createGameSizeChart(realm)));
-	}
+	private Map<String, Integer> createGameSizeChart(Realm realm) {
 
-	private BaseSeries<String, Integer> createGameSizeChart(Realm realm) {
-
-		BaseSeries<String, Integer> series = new BaseSeries<String, Integer>();
+		Map<String, Integer> series = new HashMap<>();
 
 		for (Game game : realm.getGames()) {
 			int playerSize = game.getPlayers().size();
 			if (playerSize > 0) {
-				series.addEntry(game.getName(), playerSize);
+				series.put(game.getName(), playerSize);
 			}
 		}
 

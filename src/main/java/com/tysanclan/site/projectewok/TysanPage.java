@@ -17,11 +17,13 @@
  */
 package com.tysanclan.site.projectewok;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.List;
-
+import com.google.common.collect.Lists;
+import com.tysanclan.site.projectewok.components.*;
+import com.tysanclan.site.projectewok.entities.GlobalSetting;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.dao.GlobalSettingDAO;
+import com.tysanclan.site.projectewok.util.AprilFools;
+import com.tysanclan.site.projectewok.util.MemberUtil;
 import io.vavr.control.Option;
 import org.apache.wicket.Application;
 import org.apache.wicket.RuntimeConfigurationType;
@@ -50,19 +52,12 @@ import org.apache.wicket.util.time.Duration;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
-import org.odlabs.wiquery.ui.dialog.Dialog;
+import org.wicketstuff.wiquery.ui.dialog.Dialog;
 
-import com.google.common.collect.Lists;
-import com.tysanclan.site.projectewok.components.DebugWindow;
-import com.tysanclan.site.projectewok.components.TysanLoginPanel;
-import com.tysanclan.site.projectewok.components.TysanMemberPanel;
-import com.tysanclan.site.projectewok.components.TysanMenu;
-import com.tysanclan.site.projectewok.components.TysanUserPanel;
-import com.tysanclan.site.projectewok.entities.GlobalSetting;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.GlobalSettingDAO;
-import com.tysanclan.site.projectewok.util.AprilFools;
-import com.tysanclan.site.projectewok.util.MemberUtil;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Web page for use within the Tysan Clan

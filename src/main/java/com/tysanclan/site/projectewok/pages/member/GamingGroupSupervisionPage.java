@@ -17,20 +17,6 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import nl.topicus.wqplot.data.BaseSeries;
-
-import org.apache.wicket.RestartResponseAtInterceptPageException;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.util.ListModel;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.entities.Game;
@@ -39,6 +25,13 @@ import com.tysanclan.site.projectewok.entities.Realm;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
 import com.tysanclan.site.projectewok.util.GraphUtil;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * @author Jeroen Steenbeeke
@@ -77,7 +70,7 @@ public class GamingGroupSupervisionPage extends AbstractMemberPage {
 		add(GraphUtil.makePieChart("rankcomposition",
 				"Overall rank composition", createCompositionChart(users))
 				.setVisible(!users.isEmpty()));
-		add(GraphUtil.makeBarChart("groupsize", "Group sizes",
+		add(GraphUtil.makeDonationsBarChart("groupsize", "Group sizes",
 				createGroupSizeChart(groups)).setVisible(!users.isEmpty()));
 
 		add(new ListView<GamingGroup>("groups", ModelMaker.wrap(groups)) {
@@ -103,25 +96,23 @@ public class GamingGroupSupervisionPage extends AbstractMemberPage {
 
 	}
 
-	private ListModel<BaseSeries<String, Integer>> createGroupSizeChart(
+	private SortedMap<String, Integer> createGroupSizeChart(
 			List<GamingGroup> groups) {
 
-		BaseSeries<String, Integer> series = new BaseSeries<String, Integer>();
+		SortedMap<String, Integer> series = new TreeMap<>();
 
 		for (GamingGroup group : groups) {
-			series.addEntry(group.getName(), group.getGroupMembers().size());
+			series.put(group.getName(), group.getGroupMembers().size());
 		}
-		List<BaseSeries<String, Integer>> res = new LinkedList<BaseSeries<String, Integer>>();
-		res.add(series);
 
-		return new ListModel<>(res);
+		return series;
 	}
 
 	/**
 	 	 */
-	private ListModel<BaseSeries<String, Integer>> createCompositionChart(
+	private SortedMap<String, Integer> createCompositionChart(
 			List<User> users) {
-		BaseSeries<String, Integer> series = new BaseSeries<String, Integer>();
+		SortedMap<String, Integer> series = new TreeMap<>();
 
 		Map<Rank, Integer> count = new HashMap<Rank, Integer>();
 
@@ -134,12 +125,9 @@ public class GamingGroupSupervisionPage extends AbstractMemberPage {
 		}
 
 		for (Entry<Rank, Integer> e : count.entrySet()) {
-			series.addEntry(e.getKey().toString(), e.getValue());
+			series.put(e.getKey().toString(), e.getValue());
 		}
 
-		List<BaseSeries<String, Integer>> res = new LinkedList<BaseSeries<String, Integer>>();
-		res.add(series);
-
-		return new ListModel<>(res);
+		return series;
 	}
 }

@@ -36,10 +36,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.protocol.http.request.WebClientInfo;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.javascript.JsQuery;
-import org.odlabs.wiquery.core.javascript.JsStatement;
-import org.odlabs.wiquery.ui.draggable.DraggableBehavior;
-import org.odlabs.wiquery.ui.droppable.DroppableAjaxBehavior;
 
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanSession;
@@ -48,6 +44,10 @@ import com.tysanclan.site.projectewok.entities.Election;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import com.tysanclan.site.projectewok.util.DateUtil;
+import org.wicketstuff.wiquery.core.javascript.JsQuery;
+import org.wicketstuff.wiquery.core.javascript.JsStatement;
+import org.wicketstuff.wiquery.ui.draggable.DraggableBehavior;
+import org.wicketstuff.wiquery.ui.droppable.DroppableAjaxBehavior;
 
 /**
  * @author Jeroen Steenbeeke
@@ -101,11 +101,8 @@ public abstract class AbstractElectionPage<T extends Election> extends
 					mitem.add(new DraggableBehavior() {
 						private static final long serialVersionUID = 1L;
 
-						/**
-						 * @see org.odlabs.wiquery.ui.draggable.DraggableBehavior#statement()
-						 */
 						@Override
-						public JsStatement statement() {
+						public JsStatement widget() {
 							return new JsQuery(getComponent()).$().chain(
 									"draggable", "{ revert: true }");
 

@@ -50,7 +50,6 @@ import org.apache.wicket.request.Response;
 import org.apache.wicket.request.http.WebRequest;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
-import org.odlabs.wiquery.ui.themes.WiQueryCoreThemeResourceReference;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.impl.StdSchedulerFactory;
@@ -61,6 +60,7 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.wicketstuff.wiquery.ui.themes.WiQueryCoreThemeResourceReference;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;

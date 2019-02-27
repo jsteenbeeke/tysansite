@@ -17,6 +17,7 @@
  */
 package com.tysanclan.site.projectewok.components;
 
+import com.googlecode.wicket.jquery.core.Options;
 import com.tysanclan.site.projectewok.TysanSession;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.util.DateUtil;
@@ -26,12 +27,11 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.odlabs.wiquery.core.javascript.JsQuery;
-import org.odlabs.wiquery.core.javascript.JsScopeContext;
-import org.odlabs.wiquery.core.javascript.JsStatement;
-import org.odlabs.wiquery.core.options.Options;
-import org.odlabs.wiquery.ui.datepicker.DatePickerJavaScriptResourceReference;
-import org.odlabs.wiquery.ui.datepicker.scope.JsScopeUiDatePickerDateTextEvent;
+import org.wicketstuff.wiquery.core.javascript.JsQuery;
+import org.wicketstuff.wiquery.core.javascript.JsScopeContext;
+import org.wicketstuff.wiquery.core.javascript.JsStatement;
+import org.wicketstuff.wiquery.ui.JQueryUIJavaScriptResourceReference;
+import org.wicketstuff.wiquery.ui.datepicker.scope.JsScopeUiDatePickerDateTextEvent;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -59,9 +59,9 @@ public abstract class InlineDatePicker extends WebMarkupContainer {
 		add(behavior);
 
 		options = new Options();
-		options.put("onSelect", behavior.getInnerEvent());
-		options.put("dateFormat", "'mm/dd/yy'");
-		options.put("defaultDate",
+		options.set("onSelect", behavior.getInnerEvent());
+		options.set("dateFormat", "'mm/dd/yy'");
+		options.set("defaultDate",
 					new SimpleDateFormat("MM/dd/yy").format(selectedDate));
 	}
 
@@ -81,17 +81,17 @@ public abstract class InlineDatePicker extends WebMarkupContainer {
 	}
 
 	public InlineDatePicker setChangeMonth(boolean value) {
-		options.put("changeMonth", value);
+		options.set("changeMonth", value);
 		return this;
 	}
 
 	public InlineDatePicker setChangeYear(boolean value) {
-		options.put("changeYear", value);
+		options.set("changeYear", value);
 		return this;
 	}
 
 	public InlineDatePicker setYearRange(String range) {
-		options.put("yearRange", range);
+		options.set("yearRange", range);
 		return this;
 	}
 
@@ -101,7 +101,7 @@ public abstract class InlineDatePicker extends WebMarkupContainer {
 		super.renderHead(response);
 
 		response.render(JavaScriptHeaderItem
-								.forReference(DatePickerJavaScriptResourceReference.get()));
+								.forReference(JQueryUIJavaScriptResourceReference.get()));
 
 		JsStatement statement = new JsStatement();
 
@@ -116,10 +116,10 @@ public abstract class InlineDatePicker extends WebMarkupContainer {
 								+ calendar.get(Calendar.MONTH) + ", "
 								+ calendar.get(Calendar.DAY_OF_MONTH) + ");");
 
-		options.put("defaultDate", String.format("bDate%s", getMarkupId()));
+		options.set("defaultDate", String.format("bDate%s", getMarkupId()));
 
 		JsStatement statement2 = new JsQuery(this).$().chain("datepicker",
-															 options.getJavaScriptOptions());
+															 options.toString());
 
 		statement.append(statement2.render());
 
@@ -188,9 +188,6 @@ public abstract class InlineDatePicker extends WebMarkupContainer {
 		private class OnSelectEvent extends JsScopeUiDatePickerDateTextEvent {
 			private static final long serialVersionUID = 1L;
 
-			/**
-			 * @see org.odlabs.wiquery.core.javascript.JsScope#execute(org.odlabs.wiquery.core.javascript.JsScopeContext)
-			 */
 			@Override
 			protected void execute(JsScopeContext scopeContext) {
 				JsStatement stat = new JsStatement().$(InlineDatePicker.this)

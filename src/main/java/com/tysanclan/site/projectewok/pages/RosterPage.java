@@ -17,19 +17,6 @@
  */
 package com.tysanclan.site.projectewok.pages;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-
-import nl.topicus.wqplot.data.BaseSeries;
-
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.util.ListModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.TysanPage;
@@ -38,6 +25,12 @@ import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import com.tysanclan.site.projectewok.util.GraphUtil;
 import com.tysanclan.site.projectewok.util.MemberUtil;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.*;
 
 public class RosterPage extends TysanPage {
 	private static final long serialVersionUID = 1L;
@@ -65,7 +58,7 @@ public class RosterPage extends TysanPage {
 	public RosterPage() {
 		super("Roster");
 
-		BaseSeries<String, Long> values = new BaseSeries<>();
+		Map<String, Long> values = new HashMap<>();
 
 		long chancellorCount = userDAO.countByRank(Rank.CHANCELLOR);
 		long senatorCount = userDAO.countByRank(Rank.SENATOR);
@@ -81,35 +74,32 @@ public class RosterPage extends TysanPage {
 				+ juniorMemberCount + trialMemberCount;
 
 		if (chancellorCount > 0) {
-			values.addEntry("Chancellor", 100 * chancellorCount / total);
+			values.put("Chancellor", 100 * chancellorCount / total);
 		}
 		if (senatorCount > 0) {
-			values.addEntry("Senators", 100 * senatorCount / total);
+			values.put("Senators", 100 * senatorCount / total);
 		}
 		if (truthsayerCount > 0) {
-			values.addEntry("Truthsayers", 100 * truthsayerCount / total);
+			values.put("Truthsayers", 100 * truthsayerCount / total);
 		}
 		if (reveredMemberCount > 0) {
-			values.addEntry("Revered Members", 100 * reveredMemberCount / total);
+			values.put("Revered Members", 100 * reveredMemberCount / total);
 		}
 		if (seniorMemberCount > 0) {
-			values.addEntry("Senior Members", 100 * seniorMemberCount / total);
+			values.put("Senior Members", 100 * seniorMemberCount / total);
 		}
 		if (memberCount > 0) {
-			values.addEntry("Members", 100 * memberCount / total);
+			values.put("Members", 100 * memberCount / total);
 		}
 		if (juniorMemberCount > 0) {
-			values.addEntry("Junior Members", 100 * juniorMemberCount / total);
+			values.put("Junior Members", 100 * juniorMemberCount / total);
 		}
 		if (trialMemberCount > 0) {
-			values.addEntry("Trial Members", 100 * trialMemberCount / total);
+			values.put("Trial Members", 100 * trialMemberCount / total);
 		}
 
-		List<BaseSeries<String, Long>> valuesAsList = new LinkedList<>();
-		valuesAsList.add(values);
-
 		add(GraphUtil.makePieChart("chart", "Member Distribution",
-				new ListModel<>(valuesAsList)));
+				values));
 
 		User chancellor = null;
 		List<User> senators = new LinkedList<User>();
@@ -150,10 +140,10 @@ public class RosterPage extends TysanPage {
 			add(new WebMarkupContainer("chancellor"));
 		}
 
-		Collections.sort(members, new Comparator<User>() {
+		members.sort(new Comparator<User>() {
 			/**
-			 * @see java.util.Comparator#compare(java.lang.Object,
-			 *      java.lang.Object)
+			 * @see Comparator#compare(Object,
+			 *      Object)
 			 */
 			@Override
 			public int compare(User o1, User o2) {

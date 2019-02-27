@@ -17,17 +17,16 @@
  */
 package com.tysanclan.site.projectewok.components;
 
+import com.tysanclan.site.projectewok.util.DateUtil;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
+import org.wicketstuff.wiquery.ui.datepicker.DatePicker;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.Model;
-import org.odlabs.wiquery.ui.datepicker.DatePicker;
-
-import com.tysanclan.site.projectewok.util.DateUtil;
 
 /**
  * @author Jeroen Steenbeeke

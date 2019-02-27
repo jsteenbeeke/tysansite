@@ -17,8 +17,19 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.List;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.site.projectewok.auth.TysanRankSecured;
+import com.tysanclan.site.projectewok.beans.RoleService;
+import com.tysanclan.site.projectewok.components.BBCodeTextArea;
+import com.tysanclan.site.projectewok.components.MemberListItem;
+import com.tysanclan.site.projectewok.entities.Role;
+import com.tysanclan.site.projectewok.entities.Role.RoleType;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.dao.RoleDAO;
+import com.tysanclan.site.projectewok.entities.dao.UserDAO;
+import com.tysanclan.site.projectewok.entities.filter.RoleFilter;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -33,21 +44,9 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.ui.dialog.Dialog;
+import org.wicketstuff.wiquery.ui.dialog.Dialog;
 
-import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
-import com.tysanclan.rest.api.data.Rank;
-import com.tysanclan.site.projectewok.auth.TysanRankSecured;
-import com.tysanclan.site.projectewok.beans.RoleService;
-import com.tysanclan.site.projectewok.components.BBCodeTextArea;
-import com.tysanclan.site.projectewok.components.MemberListItem;
-import com.tysanclan.site.projectewok.entities.Role;
-import com.tysanclan.site.projectewok.entities.Role.RoleType;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.RoleDAO;
-import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.filter.RoleFilter;
-import com.tysanclan.site.projectewok.entities.filter.UserFilter;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -129,7 +128,7 @@ public class RolesManagementPage extends AbstractMemberPage {
 
 				List<User> users = userDAO.findByFilter(f).toJavaList();
 
-				reassignForm.add(new DropDownChoice<User>("user", ModelMaker
+				reassignForm.add(new DropDownChoice<>("user", ModelMaker
 						.wrap(users.get(0), true), ModelMaker.wrap(users))
 						.setNullValid(false));
 
@@ -138,7 +137,7 @@ public class RolesManagementPage extends AbstractMemberPage {
 				item.add(reassignDialog);
 
 				AjaxLink<Dialog> reassignLink = new AjaxLink<Dialog>(
-						"reassign", new Model<Dialog>(reassignDialog)) {
+						"reassign", new Model<>(reassignDialog)) {
 					private static final long serialVersionUID = 1L;
 
 					/**
