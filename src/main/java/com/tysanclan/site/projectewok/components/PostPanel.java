@@ -125,6 +125,10 @@ public class PostPanel extends Panel {
 
 			container.add(lucky);
 
+			Integer bpm = post.getPoster().getBpm();
+			container.add(new Label("bpm", bpm).setVisible(bpm != null));
+			container.add(new ContextImage("bpmicon", "images/techno-icon.gif").setVisible(bpm != null));
+
 			final Long posterId = post.getPoster() != null ? post.getPoster()
 					.getId() : null;
 

@@ -24,6 +24,7 @@ import java.util.Map.Entry;
 import com.jeroensteenbeeke.hyperion.tardis.scheduler.ApplicationContextServiceProvider;
 import com.tysanclan.site.projectewok.beans.*;
 import com.tysanclan.site.projectewok.entities.*;
+import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import org.apache.wicket.injection.Injector;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +64,9 @@ public class PopulationServiceImpl implements PopulationService, ApplicationCont
 
 	@Autowired
 	private FinanceService financeService;
+
+	@Autowired
+	private UserDAO userDAO;
 
 	private ApplicationContext context;
 
@@ -153,8 +157,15 @@ public class PopulationServiceImpl implements PopulationService, ApplicationCont
 				String username = potentialNames[random
 						.nextInt(potentialNames.length)] + (++counter);
 
+
 				User user = userService.createUser(username, "test", username
 						+ "@tysanclan.com");
+
+				if (random.nextInt(3) == 0) {
+					user.setBpm(random.nextInt(500));
+					userDAO.update(user);
+				}
+
 
 				long joined = joinTime.containsKey(rank) ? joinTime.get(rank)
 						: System.currentTimeMillis();

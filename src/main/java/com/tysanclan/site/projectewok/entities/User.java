@@ -155,6 +155,9 @@ public class User extends BaseDomainObject implements DomainObject {
 	@Column
 	private Integer luckyScore;
 
+	@Column
+	private Integer bpm;
+
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)
 	private User mentor;
 
@@ -725,6 +728,14 @@ public class User extends BaseDomainObject implements DomainObject {
 
 	public void setLegacyhash(boolean legacyhash) {
 		this.legacyhash = legacyhash;
+	}
+
+	public Integer getBpm() {
+		return bpm;
+	}
+
+	public void setBpm(Integer bpm) {
+		this.bpm = bpm;
 	}
 
 	/**
