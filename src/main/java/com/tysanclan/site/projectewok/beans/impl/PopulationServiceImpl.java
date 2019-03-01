@@ -269,8 +269,12 @@ public class PopulationServiceImpl implements PopulationService, ApplicationCont
 							 averageJoe3);
 		generateForumThreads(groupForum, 12, averageJoe1, averageJoe2,
 							 averageJoe3);
+		generateForumThreads(membersOnly, 12, averageJoe1, averageJoe2,
+							 averageJoe3, ban);
 
-		generateShadowThread(forum, ban);
+		for (int i = 0; i < 200; i++) {
+			generateShadowThread(forum, ban);
+		}
 
 		Game game = gameService.createGame("Diablo 9", new byte[0]);
 		gameService.setGameSupervisor(game, averageJoe2);

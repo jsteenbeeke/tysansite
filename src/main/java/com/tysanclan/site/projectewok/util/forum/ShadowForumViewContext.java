@@ -105,9 +105,9 @@ public class ShadowForumViewContext extends PublicForumViewContext {
 										.get(ForumThread_.id))
 						)
 				)
-		);
+		).orderBy(criteriaBuilder.desc(root.get(ForumThread_.postTime)));
 
-		return listOf(em, criteriaQuery);
+		return listOf(em, criteriaQuery, count, offset);
 	}
 
 	@Override
@@ -140,6 +140,7 @@ public class ShadowForumViewContext extends PublicForumViewContext {
 						criteriaBuilder.equal(root.get(ForumPost_.poster), viewer)),
 				criteriaBuilder.equal(root.get(ForumPost_.thread), context)
 		);
+		criteriaQuery.orderBy(criteriaBuilder.asc(root.get(ForumPost_.time)));
 
 		return listOf(em, criteriaQuery, count, offset);
 	}

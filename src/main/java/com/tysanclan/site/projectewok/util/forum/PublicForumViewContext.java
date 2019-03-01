@@ -25,10 +25,7 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
 import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Subquery;
+import javax.persistence.criteria.*;
 
 /**
  * Forum context for visitors who are not logged in, and forum users with normal status
@@ -86,7 +83,8 @@ public class PublicForumViewContext extends AbstractForumViewContext {
 
 		criteriaQuery.select(root);
 		criteriaQuery.where(criteriaBuilder.exists(subquery));
-		return listOf(em, criteriaQuery);
+		criteriaQuery.orderBy(criteriaBuilder.asc(root.get(ForumCategory_.id)));
+		return listOf(em, criteriaQuery, count, offset);
 	}
 
 
@@ -123,8 +121,9 @@ public class PublicForumViewContext extends AbstractForumViewContext {
 		criteriaQuery.select(root);
 		criteriaQuery.where(criteriaBuilder.not(root.get(Forum_.id).in(groupForumSubquery)),
 							criteriaBuilder.equal(root.get(Forum_.membersOnly), false),
-							criteriaBuilder.equal(root.get(Forum_.category), context));
-		return listOf(em, criteriaQuery);
+							criteriaBuilder.equal(root.get(Forum_.category), context))
+					 .orderBy(criteriaBuilder.asc(root.get(Forum_.position)));
+		return listOf(em, criteriaQuery, count, offset);
 	}
 
 	@Override
@@ -193,9 +192,9 @@ public class PublicForumViewContext extends AbstractForumViewContext {
 																 .get(ForumThread_.id))
 												 )
 										 )
-		);
+		).orderBy(criteriaBuilder.desc(root.get(ForumThread_.lastPost)));
 
-		return listOf(em, criteriaQuery);
+		return listOf(em, criteriaQuery, count, offset);
 	}
 
 	@Override
@@ -223,9 +222,11 @@ public class PublicForumViewContext extends AbstractForumViewContext {
 		criteriaQuery.select(root).where(
 				criteriaBuilder.equal(root.get(ForumPost_.shadow), false),
 				criteriaBuilder.equal(root.get(ForumPost_.thread), context)
-		);
+		).orderBy(criteriaBuilder.asc(root.get(ForumPost_.time)));
 
-		return listOf(em, criteriaQuery, (int) count, (int) offset);
+
+
+		return listOf(em, criteriaQuery, count, offset);
 	}
 
 }

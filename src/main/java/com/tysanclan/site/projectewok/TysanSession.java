@@ -118,4 +118,10 @@ public class TysanSession extends WebSession {
 	public Date getPreviousLogin() {
 		return previousLogin;
 	}
+
+	@Override
+	public void onInvalidate() {
+		super.onInvalidate();
+		setCurrentUserId(null);
+	}
 }
