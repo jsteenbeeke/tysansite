@@ -298,7 +298,7 @@ public class MockObjectRepository implements InitializingBean {
 		next.setCustomTitle("");
 		next.setEMail(username + "@tysanclan.com");
 		next.setImageURL("");
-		next.setPassword("test");
+		next.setArgon2hash("test");
 		next.setRank(rank);
 		next.setSignature("");
 		next.setUsername(username);

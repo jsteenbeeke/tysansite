@@ -71,7 +71,18 @@
 
     <dependency>
       <groupId>com.jeroensteenbeeke</groupId>
+      <artifactId>hyperion-password-argon2</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.jeroensteenbeeke</groupId>
+      <artifactId>hyperion-password-policy</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.jeroensteenbeeke</groupId>
       <artifactId>hyperion-wicket-standalone-test-deps</artifactId>
+      <scope>test</scope>
     </dependency>
 
 

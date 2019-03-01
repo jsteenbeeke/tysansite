@@ -17,12 +17,19 @@
  */
 package com.tysanclan.site.projectewok.beans.impl;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-
+import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
+import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.rest.api.util.HashException;
+import com.tysanclan.site.projectewok.entities.*;
+import com.tysanclan.site.projectewok.entities.dao.*;
+import com.tysanclan.site.projectewok.entities.filter.ActivationFilter;
+import com.tysanclan.site.projectewok.entities.filter.EmailChangeConfirmationFilter;
+import com.tysanclan.site.projectewok.entities.filter.PasswordRequestFilter;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
+import com.tysanclan.site.projectewok.util.DateUtil;
+import com.tysanclan.site.projectewok.util.MemberUtil;
+import com.tysanclan.site.projectewok.util.StringUtil;
+import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
 import io.vavr.collection.Seq;
 import io.vavr.control.Option;
 import org.slf4j.Logger;
@@ -33,27 +40,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
-import com.tysanclan.rest.api.data.Rank;
-import com.tysanclan.rest.api.util.HashException;
-import com.tysanclan.site.projectewok.entities.Activation;
-import com.tysanclan.site.projectewok.entities.EmailChangeConfirmation;
-import com.tysanclan.site.projectewok.entities.InactivityNotification;
-import com.tysanclan.site.projectewok.entities.PasswordRequest;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.ActivationDAO;
-import com.tysanclan.site.projectewok.entities.dao.EmailChangeConfirmationDAO;
-import com.tysanclan.site.projectewok.entities.dao.InactivityNotificationDAO;
-import com.tysanclan.site.projectewok.entities.dao.PasswordRequestDAO;
-import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.filter.ActivationFilter;
-import com.tysanclan.site.projectewok.entities.filter.EmailChangeConfirmationFilter;
-import com.tysanclan.site.projectewok.entities.filter.PasswordRequestFilter;
-import com.tysanclan.site.projectewok.entities.filter.UserFilter;
-import com.tysanclan.site.projectewok.util.DateUtil;
-import com.tysanclan.site.projectewok.util.MemberUtil;
-import com.tysanclan.site.projectewok.util.StringUtil;
-import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
+import java.util.*;
 
 /**
  * Various general user-related actions (non-member)
@@ -106,33 +93,28 @@ class UserServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public User createUser(String username, String password, String email) {
-		try {
-			if (!hasUser(username)) {
-				User user = new User();
+		if (!hasUser(username)) {
+			User user = new User();
 
-				String checkedPassword = MemberUtil.isHashedPassword(password) ? password
-						: MemberUtil.hashPassword(password);
+			String checkedPassword = MemberUtil.isHashedPassword(password) ? password
+					: MemberUtil.hashPassword(password);
 
-				user.setCustomTitle("");
-				user.setEMail(email);
-				user.setImageURL("");
-				user.setPassword(checkedPassword);
-				user.setRank(Rank.FORUM);
-				user.setSignature("");
-				user.setUsername(username);
-				user.setJoinDate(new Date());
-				user.setVacation(false);
-				user.setRetired(false);
-				userDAO.save(user);
+			user.setCustomTitle("");
+			user.setEMail(email);
+			user.setImageURL("");
+			user.setArgon2hash(checkedPassword);
+			user.setRank(Rank.FORUM);
+			user.setSignature("");
+			user.setUsername(username);
+			user.setJoinDate(new Date());
+			user.setVacation(false);
+			user.setRetired(false);
+			userDAO.save(user);
 
-				logger.info(StringUtil.combineStrings("Created user ",
-						user.getUsername(), " (uid ", user.getId(), ")"));
+			logger.info(StringUtil.combineStrings("Created user ",
+												  user.getUsername(), " (uid ", user.getId(), ")"));
 
-				return user;
-			}
-		} catch (HashException e) {
-			logger.error("Unable to hash user password");
-			logger.error(e.getMessage(), e);
+			return user;
 		}
 
 		return null;
@@ -294,7 +276,7 @@ class UserServiceImpl implements
 		return activationDAO.load(activation.getId()).map(_activation -> {
 
 			logService.logUserAction(activation.getUser(), "User",
-					"Account has been activated");
+									 "Account has been activated");
 
 			activationDAO.delete(_activation);
 
@@ -351,19 +333,15 @@ class UserServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void processPasswordReset(PasswordRequest request, String password) {
-		try {
-			Option<PasswordRequest> passwordRequestOption = passwordRequestDAO.load(request.getId());
-			if (passwordRequestOption.isDefined()) {
-				PasswordRequest _request = passwordRequestOption.get();
-				User user = _request.getUser();
-				user.setPassword(MemberUtil.hashPassword(password));
-				userDAO.update(user);
+		Option<PasswordRequest> passwordRequestOption = passwordRequestDAO.load(request.getId());
+		if (passwordRequestOption.isDefined()) {
+			PasswordRequest _request = passwordRequestOption.get();
+			User user = _request.getUser();
+			user.setLegacyhash(false);
+			user.setArgon2hash(MemberUtil.hashPassword(password));
+			userDAO.update(user);
 
-				passwordRequestDAO.delete(_request);
-			}
-		} catch (HashException e) {
-			logger.error("Unable to hash user password");
-			logger.error(e.getMessage(), e);
+			passwordRequestDAO.delete(_request);
 		}
 	}
 
@@ -591,15 +569,10 @@ class UserServiceImpl implements
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void setUserPassword(User user, String newPassword) {
 		userDAO.load(user.getId()).forEach(_user -> {
-			try {
-				_user.setPassword(MemberUtil.hashPassword(newPassword));
+			_user.setArgon2hash(MemberUtil.hashPassword(newPassword));
+			_user.setLegacyhash(false);
 
-				userDAO.update(_user);
-			} catch (HashException e) {
-				logger.error("Unable to hash user password");
-				logger.error(e.getMessage(), e);
-				throw new IllegalStateException(e);
-			}
+			userDAO.update(_user);
 		});
 	}
 
@@ -611,16 +584,16 @@ class UserServiceImpl implements
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void banUser(User banner, User user) {
 		userDAO.load(user.getId())
-				.filter(_user -> _user.getRank() == Rank.FORUM)
-				.forEach(_user -> {
-					_user.setRank(Rank.BANNED);
-					userDAO.update(_user);
+			   .filter(_user -> _user.getRank() == Rank.FORUM)
+			   .forEach(_user -> {
+				   _user.setRank(Rank.BANNED);
+				   userDAO.update(_user);
 
-					logService.logUserAction(banner, "Forums",
-							"Forum user " + _user.getUsername()
-									+ " was banned from the forums");
+				   logService.logUserAction(banner, "Forums",
+											"Forum user " + _user.getUsername()
+													+ " was banned from the forums");
 
-				});
+			   });
 
 	}
 
@@ -632,16 +605,16 @@ class UserServiceImpl implements
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void unbanUser(User unbanner, User user) {
 		userDAO.load(user.getId())
-				.filter(_user -> _user.getRank() == Rank.BANNED)
-				.forEach(_user -> {
-					_user.setRank(Rank.FORUM);
-					userDAO.update(_user);
+			   .filter(_user -> _user.getRank() == Rank.BANNED)
+			   .forEach(_user -> {
+				   _user.setRank(Rank.FORUM);
+				   userDAO.update(_user);
 
-					logService.logUserAction(unbanner, "Forums",
-							"Forum user " + _user.getUsername()
-									+ " may once again access the forums");
+				   logService.logUserAction(unbanner, "Forums",
+											"Forum user " + _user.getUsername()
+													+ " may once again access the forums");
 
-				});
+			   });
 
 	}
 
@@ -650,8 +623,8 @@ class UserServiceImpl implements
 	public void warnUserForInactivity(Long userId) {
 		userDAO.load(userId).forEach(u -> {
 			mailService.sendHTMLMail(u.getEMail(),
-					"Please remember to log in to the Tysan Clan website",
-					mailService.getInactivityWarningMail(u));
+									 "Please remember to log in to the Tysan Clan website",
+									 mailService.getInactivityWarningMail(u));
 
 			logger.info("Notified " + u.getUsername() + " of inactivity");
 

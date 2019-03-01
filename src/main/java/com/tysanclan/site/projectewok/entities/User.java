@@ -17,50 +17,6 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
-import javax.annotation.Nullable;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.OrderBy;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import com.jeroensteenbeeke.hyperion.util.OWASPPasswordHasher;
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
-import org.apache.wicket.model.IModel;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.Where;
-
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
@@ -69,6 +25,15 @@ import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.rest.api.data.RestUser;
 import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.SerializableFunction;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Where;
+
+import javax.annotation.Nullable;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.*;
 
 /**
  * @author Jeroen Steenbeeke
@@ -101,11 +66,9 @@ public class User extends BaseDomainObject implements DomainObject {
 		}
 	}
 
-	public static final int ITERATIONS = 8472;
+	public static final int ITERATIONS = 25;
 
-	public static final int SALT_LENGTH = 16;
-
-	public static final OWASPPasswordHasher.KeyLength KEY_LENGTH = OWASPPasswordHasher.KeyLength.Length1024;
+	public static final int KEY_LENGTH = 32;
 
 	@Column
 	private String customTitle;
@@ -123,9 +86,6 @@ public class User extends BaseDomainObject implements DomainObject {
 
 	@Column(nullable = false)
 	private Date joinDate;
-
-	@Column(nullable = false)
-	private String password;
 
 	@Column
 	@Enumerated(EnumType.STRING)
@@ -222,12 +182,12 @@ public class User extends BaseDomainObject implements DomainObject {
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private List<Activation> activations;
-//
-//	@Column(nullable = true)
-//	private String owaspHashedPassword;
-//
-//	@Column(nullable = true)
-//	private byte[] salt;
+
+	@Column(nullable = false)
+	private String argon2hash;
+
+	@Column(nullable = false)
+	private boolean legacyhash;
 
 	/**
 	 * @return the mentor
@@ -339,10 +299,6 @@ public class User extends BaseDomainObject implements DomainObject {
 		return joinDate;
 	}
 
-	public String getPassword() {
-		return password;
-	}
-
 	public Rank getRank() {
 		return rank;
 	}
@@ -377,10 +333,6 @@ public class User extends BaseDomainObject implements DomainObject {
 	 */
 	public void setJoinDate(Date joinDate) {
 		this.joinDate = joinDate;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	public void setRank(Rank rank) {
@@ -757,6 +709,22 @@ public class User extends BaseDomainObject implements DomainObject {
 
 	public void setSubscription(Subscription subscription) {
 		this.subscription = subscription;
+	}
+
+	public String getArgon2hash() {
+		return argon2hash;
+	}
+
+	public void setArgon2hash(String argon2hash) {
+		this.argon2hash = argon2hash;
+	}
+
+	public boolean isLegacyhash() {
+		return legacyhash;
+	}
+
+	public void setLegacyhash(boolean legacyhash) {
+		this.legacyhash = legacyhash;
 	}
 
 	/**

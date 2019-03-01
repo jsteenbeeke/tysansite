@@ -22,12 +22,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import com.jeroensteenbeeke.hyperion.password.argon2.Argon2PasswordHasher;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.rest.api.util.HashException;
 import com.tysanclan.rest.api.util.HashUtil;
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.auth.TysanSecurity;
 import com.tysanclan.site.projectewok.entities.User;
+import de.mkammerer.argon2.Argon2;
 
 /**
  * @author Jeroen Steenbeeke
@@ -57,17 +59,7 @@ public class MemberUtil {
 	}
 
 	public static boolean isHashedPassword(String password) {
-		if (password.length() != 40) {
-			return false;
-		}
-		for (byte character : password.getBytes()) {
-			if (!Character.isDigit(character)
-					&& !(character >= 97 && character <= 102)) {
-				return false;
-			}
-		}
-
-		return true;
+		return password.startsWith("$argon2");
 	}
 
 	/**
@@ -126,7 +118,18 @@ public class MemberUtil {
 		return visible;
 	}
 
-	public static String hashPassword(String password) throws HashException {
+	public static String hashPassword(String password) {
+		int keyLength = System.getProperty("ewok.testmode") != null ? 8 : User.KEY_LENGTH;
+		int iterations = System.getProperty("ewok.testmode") != null ? 4 : User.ITERATIONS;
+
+		return Argon2PasswordHasher.hashNewPassword(password.toCharArray())
+				.withHashLength(keyLength)
+				.withIterations(iterations)
+				.withPHCIssue9DefaultMemorySettings()
+				.withPHCIssue9DefaultParallelism();
+	}
+
+	public static String legacyHashPassword(String password) throws HashException {
 		return HashUtil.sha1Hash(StringUtil.combineStrings(password,
 				PASSWORD_SALT));
 

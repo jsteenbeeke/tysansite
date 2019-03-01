@@ -18,6 +18,7 @@
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
 import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
+import com.jeroensteenbeeke.hyperion.password.argon2.Argon2PasswordHasher;
 import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.rest.api.util.HashException;
@@ -77,15 +78,25 @@ class UserDAOImpl extends HibernateDAO<User, UserFilter> implements
 
 	@Override
 	public User load(String username, String password) {
-		try {
-			UserFilter filter = new UserFilter();
-			filter.username().equalsIgnoreCase(username);
-			filter.password(MemberUtil.hashPassword(password));
+		UserFilter filter = new UserFilter();
+		filter.username().equalsIgnoreCase(username);
 
-			return getUniqueByFilter(filter).getOrNull();
-		} catch (HashException e) {
-			return null;
-		}
+		return getUniqueByFilter(filter).filter(u -> {
+			if (!Argon2PasswordHasher.checkExistingPassword(password.toCharArray()).withHash(u.getArgon2hash())) {
+				try {
+					if (!Argon2PasswordHasher
+							.checkExistingPassword(MemberUtil.legacyHashPassword(password).toCharArray())
+							.withHash(u.getArgon2hash())) {
+						return false;
+					}
+				} catch (HashException e) {
+					return false;
+				}
+			}
+
+			return true;
+
+		}).getOrNull();
 	}
 
 	/**
