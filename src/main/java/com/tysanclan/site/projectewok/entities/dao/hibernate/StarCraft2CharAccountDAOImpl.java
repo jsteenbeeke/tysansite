@@ -29,8 +29,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class StarCraft2CharAccountDAOImpl extends
-		HibernateDAO<StarCraft2CharAccount, StarCraft2CharAccountFilter> implements
+class StarCraft2CharAccountDAOImpl
+		extends HibernateDAO<StarCraft2CharAccount, StarCraft2CharAccountFilter>
+		implements
 		com.tysanclan.site.projectewok.entities.dao.StarCraft2CharAccountDAO {
 
 }

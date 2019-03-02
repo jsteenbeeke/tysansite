@@ -17,16 +17,15 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import java.util.Date;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.TysanSession;
+import com.tysanclan.site.projectewok.entities.User;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 
-import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
-import com.tysanclan.site.projectewok.TysanSession;
-import com.tysanclan.site.projectewok.entities.User;
+import java.util.Date;
 
 /**
  * @author Jeroen Steenbeeke
@@ -50,8 +49,8 @@ public class MentorPanel extends TysanOverviewPanel<User> {
 			 */
 			@Override
 			protected void populateItem(ListItem<User> item) {
-				item.add(new UserContactInfoPanel("pupil", item
-						.getModelObject()));
+				item.add(new UserContactInfoPanel("pupil",
+						item.getModelObject()));
 
 			}
 		});
@@ -60,8 +59,8 @@ public class MentorPanel extends TysanOverviewPanel<User> {
 
 		if (previousLogin != null) {
 			for (User pupil : getUser().getPupils()) {
-				if (pupil.getJoinDate() != null
-						&& pupil.getJoinDate().after(previousLogin)) {
+				if (pupil.getJoinDate() != null && pupil.getJoinDate()
+						.after(previousLogin)) {
 					super.requiresAttention();
 					break;
 				}

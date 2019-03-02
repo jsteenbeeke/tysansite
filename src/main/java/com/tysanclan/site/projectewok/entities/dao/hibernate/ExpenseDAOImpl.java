@@ -31,12 +31,13 @@ import java.util.List;
  */
 @Component
 @Scope("request")
-class ExpenseDAOImpl extends HibernateDAO<Expense, ExpenseFilter> implements
-		com.tysanclan.site.projectewok.entities.dao.ExpenseDAO {
-
+class ExpenseDAOImpl extends HibernateDAO<Expense, ExpenseFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.ExpenseDAO {
 
 	@Override
 	public List<Expense> getActiveExpenses() {
-		return findByFilter(new ExpenseFilter().end().greaterThanOrEqualTo(new Date()).orEnd().isNull()).toJavaList();
+		return findByFilter(
+				new ExpenseFilter().end().greaterThanOrEqualTo(new Date())
+						.orEnd().isNull()).toJavaList();
 	}
 }

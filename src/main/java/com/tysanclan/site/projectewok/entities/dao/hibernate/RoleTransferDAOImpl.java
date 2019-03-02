@@ -26,8 +26,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("request")
-public class RoleTransferDAOImpl extends HibernateDAO<RoleTransfer, RoleTransferFilter>
+public class RoleTransferDAOImpl
+		extends HibernateDAO<RoleTransfer, RoleTransferFilter>
 		implements RoleTransferDAO {
-
 
 }

@@ -48,8 +48,8 @@ import java.util.Set;
  */
 @Component
 @Scope("request")
-class MembershipServiceImpl implements
-		com.tysanclan.site.projectewok.beans.MembershipService {
+class MembershipServiceImpl
+		implements com.tysanclan.site.projectewok.beans.MembershipService {
 	private static final Random random = new Random();
 
 	@Autowired
@@ -223,13 +223,14 @@ class MembershipServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public ForumThread applyForMembership(User user, String motivation,
-										  Game game, Realm realm) {
+			Game game, Realm realm) {
 		return userDAO.load(user.getId()).map(_user -> {
 
 			Forum forum = forumService.getInteractionForum();
 
 			ForumThread joinThread = forumService.createForumThread(forum,
-					"Join application: " + _user.getUsername(), motivation, _user);
+					"Join application: " + _user.getUsername(), motivation,
+					_user);
 
 			JoinApplication joinApplication = new JoinApplication();
 			joinApplication.setApplicant(_user);
@@ -243,10 +244,9 @@ class MembershipServiceImpl implements
 			logService.logUserAction(user, "Membership",
 					"Has applied for membership");
 
-			dispatcher
-					.dispatchEvent(new MemberStatusEvent(
-							com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.APPLIED,
-							user));
+			dispatcher.dispatchEvent(new MemberStatusEvent(
+					com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.APPLIED,
+					user));
 
 			return joinThread;
 		}).getOrElseThrow(IllegalStateException::new);
@@ -261,19 +261,22 @@ class MembershipServiceImpl implements
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void setMentor(JoinApplication application, User mentor) {
 		if (application.getMentor() == null) {
-			userDAO.load(mentor.getId()).filter(MemberUtil::canUserBeMentor).forEach(_mentor -> {
-				joinApplicationDAO
-						.load(application.getId()).forEach(_application -> {
-					_application.setMentor(_mentor);
-					joinApplicationDAO.update(_application);
+			userDAO.load(mentor.getId()).filter(MemberUtil::canUserBeMentor)
+					.forEach(_mentor -> {
+						joinApplicationDAO.load(application.getId())
+								.forEach(_application -> {
+									_application.setMentor(_mentor);
+									joinApplicationDAO.update(_application);
 
-					logService.logUserAction(_mentor, "Membership",
-							"Has become Mentor of "
-									+ application.getApplicant().getUsername());
+									logService.logUserAction(_mentor,
+											"Membership",
+											"Has become Mentor of "
+													+ application.getApplicant()
+													.getUsername());
 
-					checkResolved(application);
-				});
-			});
+									checkResolved(application);
+								});
+					});
 		}
 	}
 
@@ -284,31 +287,34 @@ class MembershipServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void setJoinApplicationVote(JoinApplication application,
-									   User senator, boolean inFavor) {
-		joinApplicationDAO.load(application
-				.getId()).forEach(_application -> userDAO.load(senator.getId()).forEach(_senator -> {
+			User senator, boolean inFavor) {
+		joinApplicationDAO.load(application.getId()).forEach(
+				_application -> userDAO.load(senator.getId())
+						.forEach(_senator -> {
 
-			JoinVerdictFilter filter = new JoinVerdictFilter();
-			filter.application(_application);
-			filter.user(_senator);
+							JoinVerdictFilter filter = new JoinVerdictFilter();
+							filter.application(_application);
+							filter.user(_senator);
 
-			long count = joinVerdictDAO.countByFilter(filter);
-			if (count == 0 && _senator.getRank() == Rank.SENATOR) {
-				JoinVerdict verdict = new JoinVerdict();
-				verdict.setApplication(_application);
-				verdict.setInFavor(inFavor);
-				verdict.setUser(_senator);
-				joinVerdictDAO.save(verdict);
-			} else if (_senator.getRank() == Rank.SENATOR) {
-				Seq<JoinVerdict> verdicts = joinVerdictDAO.findByFilter(filter);
-				JoinVerdict verdict = verdicts.get(0);
-				verdict.setInFavor(inFavor);
-				joinVerdictDAO.update(verdict);
-			}
+							long count = joinVerdictDAO.countByFilter(filter);
+							if (count == 0
+									&& _senator.getRank() == Rank.SENATOR) {
+								JoinVerdict verdict = new JoinVerdict();
+								verdict.setApplication(_application);
+								verdict.setInFavor(inFavor);
+								verdict.setUser(_senator);
+								joinVerdictDAO.save(verdict);
+							} else if (_senator.getRank() == Rank.SENATOR) {
+								Seq<JoinVerdict> verdicts = joinVerdictDAO
+										.findByFilter(filter);
+								JoinVerdict verdict = verdicts.get(0);
+								verdict.setInFavor(inFavor);
+								joinVerdictDAO.update(verdict);
+							}
 
-			checkResolved(application);
+							checkResolved(application);
 
-		}));
+						}));
 
 	}
 
@@ -326,8 +332,8 @@ class MembershipServiceImpl implements
 				negatives.add(verdict.getUser());
 			}
 
-			Set<User> notYetVoted = Sets.newHashSet(userDAO
-					.findByRank(Rank.SENATOR));
+			Set<User> notYetVoted = Sets
+					.newHashSet(userDAO.findByRank(Rank.SENATOR));
 			notYetVoted.removeAll(negatives);
 
 			if (notYetVoted.isEmpty()) {
@@ -343,7 +349,8 @@ class MembershipServiceImpl implements
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void performAutoPromotion(User _user) {
 		userDAO.load(_user.getId()).forEach(user -> {
-			Rank newRank = MemberUtil.determineRankByJoinDate(_user.getJoinDate());
+			Rank newRank = MemberUtil
+					.determineRankByJoinDate(_user.getJoinDate());
 
 			user.setRank(newRank);
 
@@ -351,8 +358,8 @@ class MembershipServiceImpl implements
 
 			logService.logUserAction(user, "Membership",
 					"User has been promoted to " + newRank.toString());
-			notificationService.notifyUser(user, "You now have the rank of "
-					+ newRank.toString());
+			notificationService.notifyUser(user,
+					"You now have the rank of " + newRank.toString());
 		});
 
 	}
@@ -363,8 +370,9 @@ class MembershipServiceImpl implements
 		userDAO.load(_luckyOne.getId()).forEach(luckyOne -> {
 			int action = random.nextInt(100);
 
-			luckyOne.setLuckyScore(luckyOne.getLuckyScore() != null ? luckyOne
-					.getLuckyScore() + 1 : 1);
+			luckyOne.setLuckyScore(luckyOne.getLuckyScore() != null ?
+					luckyOne.getLuckyScore() + 1 :
+					1);
 
 			userDAO.update(luckyOne);
 
@@ -412,10 +420,9 @@ class MembershipServiceImpl implements
 			mailService.sendHTMLMail(user.getEMail(),
 					"Tysan Clan Membership Expired", mailBody);
 
-			dispatcher
-					.dispatchEvent(new MemberStatusEvent(
-							com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.INACTIVITY_TIMEOUT,
-							user));
+			dispatcher.dispatchEvent(new MemberStatusEvent(
+					com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.INACTIVITY_TIMEOUT,
+					user));
 		}
 
 	}

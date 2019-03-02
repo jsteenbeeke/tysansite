@@ -17,9 +17,20 @@
  */
 package com.tysanclan.site.projectewok.beans.impl;
 
-import java.util.LinkedList;
-import java.util.List;
-
+import com.google.common.collect.Lists;
+import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
+import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.site.projectewok.entities.*;
+import com.tysanclan.site.projectewok.entities.Group.JoinPolicy;
+import com.tysanclan.site.projectewok.entities.dao.GroupCreationRequestDAO;
+import com.tysanclan.site.projectewok.entities.dao.GroupDAO;
+import com.tysanclan.site.projectewok.entities.dao.GroupForumDAO;
+import com.tysanclan.site.projectewok.entities.dao.UserDAO;
+import com.tysanclan.site.projectewok.entities.filter.GroupCreationRequestFilter;
+import com.tysanclan.site.projectewok.entities.filter.GroupForumFilter;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
+import com.tysanclan.site.projectewok.event.GroupWithoutLeaderEvent;
+import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
 import io.vavr.collection.Seq;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,36 +41,15 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.events.EventException;
 
-import com.google.common.collect.Lists;
-import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
-import com.tysanclan.rest.api.data.Rank;
-import com.tysanclan.site.projectewok.entities.Committee;
-import com.tysanclan.site.projectewok.entities.Game;
-import com.tysanclan.site.projectewok.entities.GamingGroup;
-import com.tysanclan.site.projectewok.entities.Group;
-import com.tysanclan.site.projectewok.entities.Group.JoinPolicy;
-import com.tysanclan.site.projectewok.entities.GroupCreationRequest;
-import com.tysanclan.site.projectewok.entities.GroupForum;
-import com.tysanclan.site.projectewok.entities.Realm;
-import com.tysanclan.site.projectewok.entities.SocialGroup;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.GroupCreationRequestDAO;
-import com.tysanclan.site.projectewok.entities.dao.GroupDAO;
-import com.tysanclan.site.projectewok.entities.dao.GroupForumDAO;
-import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.filter.GroupCreationRequestFilter;
-import com.tysanclan.site.projectewok.entities.filter.GroupForumFilter;
-import com.tysanclan.site.projectewok.entities.filter.UserFilter;
-import com.tysanclan.site.projectewok.event.GroupWithoutLeaderEvent;
-import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class GroupServiceImpl implements
-		com.tysanclan.site.projectewok.beans.GroupService {
+class GroupServiceImpl
+		implements com.tysanclan.site.projectewok.beans.GroupService {
 	private static final Logger logger = LoggerFactory
 			.getLogger(GroupServiceImpl.class);
 
@@ -198,7 +188,7 @@ class GroupServiceImpl implements
 	@Override
 	@Deprecated
 	public GamingGroup createGamingGroup(String name, String description,
-										 Game game) {
+			Game game) {
 		return null;
 	}
 
@@ -253,8 +243,8 @@ class GroupServiceImpl implements
 
 			groupDAO.update(group);
 
-			notificationService.notifyUser(user, "You are now the leader of "
-					+ group.getName());
+			notificationService.notifyUser(user,
+					"You are now the leader of " + group.getName());
 
 			return true;
 		}
@@ -269,18 +259,17 @@ class GroupServiceImpl implements
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void applyToGroup(User user, Group group) {
 		if (group.getJoinPolicy() == JoinPolicy.APPLICATION) {
-			if (!group.getGroupMembers().contains(user)
-					&& !group.getAppliedMembers().contains(user)) {
+			if (!group.getGroupMembers().contains(user) && !group
+					.getAppliedMembers().contains(user)) {
 				group.getAppliedMembers().add(user);
 				groupDAO.update(group);
 
-				logService.logUserAction(user, "Groups", "Has applied to join "
-						+ group.getName());
+				logService.logUserAction(user, "Groups",
+						"Has applied to join " + group.getName());
 
-				notificationService.notifyUser(
-						group.getLeader(),
-						user.getUsername() + " has applied to join "
-								+ group.getName());
+				notificationService.notifyUser(group.getLeader(),
+						user.getUsername() + " has applied to join " + group
+								.getName());
 			}
 		} else if (group.getJoinPolicy() == JoinPolicy.OPEN) {
 			if (!group.getGroupMembers().contains(user)) {
@@ -317,11 +306,9 @@ class GroupServiceImpl implements
 
 			logService.logUserAction(user, "Groups",
 					"Has accepted an invitation to join " + group.getName());
-			notificationService.notifyUser(
-					group.getLeader(),
-					user.getUsername()
-							+ " has accepted your invitation to join "
-							+ group.getName());
+			notificationService.notifyUser(group.getLeader(), user.getUsername()
+					+ " has accepted your invitation to join " + group
+					.getName());
 		}
 
 	}
@@ -339,11 +326,9 @@ class GroupServiceImpl implements
 
 			logService.logUserAction(user, "Groups",
 					"Has declined an invitation to join " + group.getName());
-			notificationService.notifyUser(
-					group.getLeader(),
-					user.getUsername()
-							+ " has declined your invitation to join "
-							+ group.getName());
+			notificationService.notifyUser(group.getLeader(), user.getUsername()
+					+ " has declined your invitation to join " + group
+					.getName());
 		}
 	}
 
@@ -405,14 +390,12 @@ class GroupServiceImpl implements
 			user.getGroups().remove(group);
 			userDAO.update(user);
 
-			notificationService.notifyUser(user, "You have been removed from "
-					+ group.getName());
+			notificationService.notifyUser(user,
+					"You have been removed from " + group.getName());
 
-			logService.logUserAction(
-					group.getLeader(),
-					"Groups",
-					user.getUsername() + " has been removed from "
-							+ group.getName());
+			logService.logUserAction(group.getLeader(), "Groups",
+					user.getUsername() + " has been removed from " + group
+							.getName());
 		}
 
 	}
@@ -448,8 +431,8 @@ class GroupServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public GroupCreationRequest createGamingGroupRequest(User requester,
-														 Game game, Realm realm, String name, String description,
-														 String motivation) {
+			Game game, Realm realm, String name, String description,
+			String motivation) {
 		GroupCreationRequest request = new GroupCreationRequest();
 		request.setName(BBCodeUtil.stripTags(name));
 		request.setRequester(requester);
@@ -484,7 +467,7 @@ class GroupServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public GroupCreationRequest createSocialGroupRequest(User requester,
-														 String name, String description, String motivation) {
+			String name, String description, String motivation) {
 		GroupCreationRequest request = new GroupCreationRequest();
 		request.setName(BBCodeUtil.stripTags(name));
 		request.setRequester(requester);
@@ -507,13 +490,13 @@ class GroupServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void declineRequest(User decliner, GroupCreationRequest request) {
-		groupCreationRequestDAO.load(request
-				.getId()).forEach(_request -> {
+		groupCreationRequestDAO.load(request.getId()).forEach(_request -> {
 
 			groupCreationRequestDAO.delete(_request);
 
-			logService.logUserAction(decliner, "Groups", "Request to create group "
-					+ request.getName() + " has been declined");
+			logService.logUserAction(decliner, "Groups",
+					"Request to create group " + request.getName()
+							+ " has been declined");
 
 			notificationService.notifyUser(_request.getRequester(),
 					"Your request to create a group called " + request.getName()
@@ -528,8 +511,7 @@ class GroupServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void acceptRequest(User accepter, GroupCreationRequest request) {
-		groupCreationRequestDAO.load(request
-				.getId()).forEach(_request -> {
+		groupCreationRequestDAO.load(request.getId()).forEach(_request -> {
 
 			Group group;
 
@@ -560,8 +542,9 @@ class GroupServiceImpl implements
 
 			groupCreationRequestDAO.delete(_request);
 
-			logService.logUserAction(accepter, "Groups", "Request to create group "
-					+ request.getName() + " has been accepted");
+			logService.logUserAction(accepter, "Groups",
+					"Request to create group " + request.getName()
+							+ " has been accepted");
 			notificationService.notifyUser(_request.getRequester(),
 					"Your request to create a group called " + request.getName()
 							+ " has been accepted");
@@ -577,21 +560,24 @@ class GroupServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void acceptGroupJoinRequest(User accepter, Group group,
-									   User applicant) {
-		userDAO.load(applicant.getId()).forEach(_user -> groupDAO.load(group.getId()).forEach(_group -> {
-			_group.getAppliedMembers().remove(_user);
-			_group.getGroupMembers().add(_user);
+			User applicant) {
+		userDAO.load(applicant.getId()).forEach(
+				_user -> groupDAO.load(group.getId()).forEach(_group -> {
+					_group.getAppliedMembers().remove(_user);
+					_group.getGroupMembers().add(_user);
 
-			groupDAO.update(_group);
-			userDAO.evict(_user);
+					groupDAO.update(_group);
+					userDAO.evict(_user);
 
-			notificationService.notifyUser(applicant, "Your request to join "
-					+ group.getName() + " has been accepted");
+					notificationService.notifyUser(applicant,
+							"Your request to join " + group.getName()
+									+ " has been accepted");
 
-			logService.logUserAction(accepter, "Groups",
-					"Request by " + applicant.getUsername() + " to join group "
-							+ group.getName() + " has been accepted");
-		}));
+					logService.logUserAction(accepter, "Groups",
+							"Request by " + applicant.getUsername()
+									+ " to join group " + group.getName()
+									+ " has been accepted");
+				}));
 	}
 
 	/**
@@ -602,19 +588,22 @@ class GroupServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void declineGroupJoinRequest(User decliner, Group group,
-										User applicant) {
-		userDAO.load(applicant.getId()).forEach(_user -> groupDAO.load(group.getId()).forEach(_group -> {
-			_group.getAppliedMembers().remove(_user);
+			User applicant) {
+		userDAO.load(applicant.getId()).forEach(
+				_user -> groupDAO.load(group.getId()).forEach(_group -> {
+					_group.getAppliedMembers().remove(_user);
 
-			groupDAO.update(_group);
+					groupDAO.update(_group);
 
-			notificationService.notifyUser(applicant, "Your request to join "
-					+ group.getName() + " has been declined");
+					notificationService.notifyUser(applicant,
+							"Your request to join " + group.getName()
+									+ " has been declined");
 
-			logService.logUserAction(decliner, "Groups",
-					"Request by " + applicant.getUsername() + " to join group "
-							+ group.getName() + " has been declined");
-		}));
+					logService.logUserAction(decliner, "Groups",
+							"Request by " + applicant.getUsername()
+									+ " to join group " + group.getName()
+									+ " has been declined");
+				}));
 
 	}
 
@@ -629,11 +618,13 @@ class GroupServiceImpl implements
 			_group.setJoinPolicy(joinPolicy);
 			groupDAO.update(_group);
 
-			String name = joinPolicy.name().substring(0, 1).toUpperCase()
-					+ joinPolicy.name().substring(1).toLowerCase();
+			String name =
+					joinPolicy.name().substring(0, 1).toUpperCase() + joinPolicy
+							.name().substring(1).toLowerCase();
 
 			logService.logUserAction(group.getLeader(), "Groups",
-					"Join policy of group " + _group.getName() + " set to " + name);
+					"Join policy of group " + _group.getName() + " set to "
+							+ name);
 		});
 	}
 

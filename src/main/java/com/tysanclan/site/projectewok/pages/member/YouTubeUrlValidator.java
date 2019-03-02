@@ -17,23 +17,22 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * @author Jeroen Steenbeeke
  */
-public class YouTubeUrlValidator implements
-        IValidator<String> {
+public class YouTubeUrlValidator implements IValidator<String> {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final Pattern REGEX = Pattern
-	        .compile("^http://www.youtube.com/watch\\?v=(([a-zA-Z0-9]|-|_)+)(&.*)?$");
+	public static final Pattern REGEX = Pattern.compile(
+			"^http://www.youtube.com/watch\\?v=(([a-zA-Z0-9]|-|_)+)(&.*)?$");
 
 	/**
 	 * @see org.apache.wicket.validation.IValidator#validate(org.apache.wicket.validation.IValidatable)
@@ -46,7 +45,7 @@ public class YouTubeUrlValidator implements
 
 		if (!m.matches()) {
 			validatable.error(new ValidationError()
-			        .setMessage("Not a valid YouTube URL"));
+					.setMessage("Not a valid YouTube URL"));
 		}
 
 	}

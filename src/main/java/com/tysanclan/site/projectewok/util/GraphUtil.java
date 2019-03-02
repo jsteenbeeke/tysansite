@@ -17,6 +17,7 @@
  */
 package com.tysanclan.site.projectewok.util;
 
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.wicketstuff.jqplot.JqPlotChart;
 import org.wicketstuff.jqplot.lib.ChartConfiguration;
 import org.wicketstuff.jqplot.lib.JqPlotResources;
@@ -37,10 +38,17 @@ public class GraphUtil {
 	private GraphUtil() {
 	}
 
-	public static <T extends Number> JqPlotChart makePieChart(String id, String title,
-															  Map<String, T> data) {
+	public static <T extends Number> WebMarkupContainer makePieChart(String id,
+			String title, Map<String, T> data) {
+		if (data.isEmpty()) {
+			WebMarkupContainer container = new WebMarkupContainer("id");
+			container.setVisible(false);
+			return container;
+		}
+
 		PieChart<T> chart = new PieChart<>();
-		ChartConfiguration<String> configuration = chart.getChartConfiguration();
+		ChartConfiguration<String> configuration = chart
+				.getChartConfiguration();
 
 		configuration.getTitle().setText(title);
 		Grid<String> grid;
@@ -49,7 +57,8 @@ public class GraphUtil {
 		grid.setBackground("#000000");
 		configuration.getLegend().setShow(true);
 
-		RendererOptions rendererOptions = configuration.getSeriesDefaults().getRendererOptions();
+		RendererOptions rendererOptions = configuration.getSeriesDefaults()
+				.getRendererOptions();
 
 		data.forEach(chart::addValue);
 
@@ -58,9 +67,14 @@ public class GraphUtil {
 		return new JqPlotChart(id, chart);
 	}
 
+	public static WebMarkupContainer makeReservesBarChart(String id,
+			String title, SortedMap<String, BigDecimal> donationsPerUser) {
+		if (donationsPerUser.isEmpty()) {
+			WebMarkupContainer container = new WebMarkupContainer("id");
+			container.setVisible(false);
+			return container;
+		}
 
-	public static JqPlotChart makeReservesBarChart(String id, String title,
-												   SortedMap<String, BigDecimal> donationsPerUser) {
 		BarChart<BigDecimal> chart = new BarChart<>();
 
 		ChartConfiguration<Long> configuration = chart.getChartConfiguration();
@@ -79,14 +93,21 @@ public class GraphUtil {
 		configuration.getLegend().setShowLables(true);
 
 		chart.addValue(donationsPerUser.values());
-		chart.getChartConfiguration().getSeriesDefaults()
-			 .setPointLabels(new PointLabels().setLabels(new ArrayList<>(donationsPerUser.keySet())));
+		chart.getChartConfiguration().getSeriesDefaults().setPointLabels(
+				new PointLabels()
+						.setLabels(new ArrayList<>(donationsPerUser.keySet())));
 
 		return new JqPlotChart(id, chart);
 	}
 
-	public static <T extends Number> JqPlotChart makeDonationsBarChart(String id, String title,
-																	   SortedMap<String, T> donationsPerUser) {
+	public static <T extends Number> WebMarkupContainer makeDonationsBarChart(
+			String id, String title, SortedMap<String, T> donationsPerUser) {
+		if (donationsPerUser.isEmpty()) {
+			WebMarkupContainer container = new WebMarkupContainer("id");
+			container.setVisible(false);
+			return container;
+		}
+
 		BarChart<T> chart = new BarChart<>();
 
 		ChartConfiguration<Long> configuration = chart.getChartConfiguration();
@@ -107,17 +128,25 @@ public class GraphUtil {
 		configuration.getSeriesDefaults().getRendererOptions().setBarWidth(8);
 
 		chart.addValue(donationsPerUser.values());
-		chart.getChartConfiguration().getSeriesDefaults()
-			 .setPointLabels(new PointLabels().setLabels(new ArrayList<>(donationsPerUser.keySet())));
+		chart.getChartConfiguration().getSeriesDefaults().setPointLabels(
+				new PointLabels()
+						.setLabels(new ArrayList<>(donationsPerUser.keySet())));
 
 		return new JqPlotChart(id, chart);
 	}
 
-	public static JqPlotChart makeMemberCountLineChart(String id, String title,
-													   SortedMap<Date, Integer> counts) {
+	public static WebMarkupContainer makeMemberCountLineChart(String id,
+			String title, SortedMap<Date, Integer> counts) {
+		if (counts.isEmpty()) {
+			WebMarkupContainer container = new WebMarkupContainer("id");
+			container.setVisible(false);
+			return container;
+		}
+
 		LineChart<Integer> chart = new LineChart<>();
 
-		ChartConfiguration<String> configuration = chart.getChartConfiguration();
+		ChartConfiguration<String> configuration = chart
+				.getChartConfiguration();
 
 		configuration.getTitle().setText(title);
 		Grid<String> grid;
@@ -125,7 +154,8 @@ public class GraphUtil {
 		grid.setBackground("#000000");
 		Axes<String> axes = configuration.getAxes();
 
-		int max = counts.values().stream().max(Comparator.naturalOrder()).orElse(0);
+		int max = counts.values().stream().max(Comparator.naturalOrder())
+				.orElse(0);
 
 		axes.setYaxis(new YAxis<>());
 		axes.getYaxis().setLabel("Members");
@@ -139,11 +169,18 @@ public class GraphUtil {
 
 	}
 
-	public static JqPlotChart makeCashFlowLineChart(String id, String title,
-													SortedMap<Date, BigDecimal> cashFlow) {
+	public static WebMarkupContainer makeCashFlowLineChart(String id,
+			String title, SortedMap<Date, BigDecimal> cashFlow) {
+		if (cashFlow.isEmpty()) {
+			WebMarkupContainer container = new WebMarkupContainer("id");
+			container.setVisible(false);
+			return container;
+		}
+
 		LineChart<BigDecimal> chart = new LineChart<>();
 
-		ChartConfiguration<String> configuration = chart.getChartConfiguration();
+		ChartConfiguration<String> configuration = chart
+				.getChartConfiguration();
 
 		configuration.getTitle().setText(title);
 		Grid<String> grid;
@@ -161,13 +198,10 @@ public class GraphUtil {
 
 		cashFlow.values().forEach(chart::addValue);
 		chart.getChartConfiguration().setSeriesDefaults(new SeriesDefaults());
-		chart.getChartConfiguration().getSeriesDefaults()
-			 .setPointLabels(new PointLabels().setLabels(cashFlow
-																 .keySet()
-																 .stream()
-																 .map(format::format)
-																 .collect(Collectors.toList())
-			 ));
+		chart.getChartConfiguration().getSeriesDefaults().setPointLabels(
+				new PointLabels().setLabels(
+						cashFlow.keySet().stream().map(format::format)
+								.collect(Collectors.toList())));
 		return new JqPlotChart(id, chart);
 	}
 }

@@ -28,6 +28,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class LogItemDAOImpl extends HibernateDAO<LogItem, LogItemFilter> implements
-		com.tysanclan.site.projectewok.entities.dao.LogItemDAO {
+class LogItemDAOImpl extends HibernateDAO<LogItem, LogItemFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.LogItemDAO {
 }

@@ -29,7 +29,8 @@ import java.util.List;
 /**
  * @author Jeroen Steenbeeke
  */
-public interface UserGameRealmDAO extends DAO<UserGameRealm, UserGameRealmFilter> {
+public interface UserGameRealmDAO
+		extends DAO<UserGameRealm, UserGameRealmFilter> {
 	List<User> getActiveUsers(Game game, Realm realm);
 
 	int countActivePlayers(Realm realm);

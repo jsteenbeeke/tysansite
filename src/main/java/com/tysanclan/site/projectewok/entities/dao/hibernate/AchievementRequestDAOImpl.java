@@ -28,15 +28,15 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * 
+ *
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class AchievementRequestDAOImpl extends HibernateDAO<AchievementRequest, AchievementRequestFilter>
+class AchievementRequestDAOImpl
+		extends HibernateDAO<AchievementRequest, AchievementRequestFilter>
 		implements
 		com.tysanclan.site.projectewok.entities.dao.AchievementRequestDAO {
-
 
 	@Override
 	public List<AchievementRequest> getPendingGroupRequests(Group group) {

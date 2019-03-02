@@ -27,13 +27,15 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("request")
-class PaymentRequestDAOImpl extends HibernateDAO<PaymentRequest, PaymentRequestFilter> implements
-		PaymentRequestDAO {
+class PaymentRequestDAOImpl
+		extends HibernateDAO<PaymentRequest, PaymentRequestFilter>
+		implements PaymentRequestDAO {
 	@Override
 	public String getConfirmationKey(PaymentRequest request) {
 
-		return HashUtil.sha1Hash(request.getId()
-				+ request.getRequester().getUsername()).throwIfNotOk(IllegalStateException::new);
+		return HashUtil.sha1Hash(
+				request.getId() + request.getRequester().getUsername())
+				.throwIfNotOk(IllegalStateException::new);
 	}
 
 }

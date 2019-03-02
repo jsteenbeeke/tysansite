@@ -22,9 +22,6 @@ import com.tysanclan.site.projectewok.entities.MembershipStatusChange;
 import com.tysanclan.site.projectewok.entities.MembershipStatusChange_;
 import com.tysanclan.site.projectewok.entities.filter.MembershipStatusChangeFilter;
 import io.vavr.collection.Array;
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -33,7 +30,10 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  * @author Jeroen Steenbeeke
@@ -41,33 +41,37 @@ import java.util.*;
 @Component
 @Scope("request")
 class MembershipStatusChangeDAOImpl extends
-		HibernateDAO<MembershipStatusChange, MembershipStatusChangeFilter> implements
+		HibernateDAO<MembershipStatusChange, MembershipStatusChangeFilter>
+		implements
 		com.tysanclan.site.projectewok.entities.dao.MembershipStatusChangeDAO {
-
 
 	@Override
 	public SortedMap<Date, Long> getMutationsByDate(Date start, Date end) {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Tuple> query = criteriaBuilder.createQuery(Tuple.class);
-		Root<MembershipStatusChange> root = query.from(MembershipStatusChange.class);
+		Root<MembershipStatusChange> root = query
+				.from(MembershipStatusChange.class);
 
-		query.select(criteriaBuilder.tuple(
-				root.get(MembershipStatusChange_.changeTime),
-				criteriaBuilder.sum(root.get(MembershipStatusChange_.memberSizeMutation))));
+		query.select(criteriaBuilder
+				.tuple(root.get(MembershipStatusChange_.changeTime),
+						criteriaBuilder.sum(root
+								.get(MembershipStatusChange_.memberSizeMutation))));
 
 		Array<Predicate> predicates = Array.empty();
 
-
 		if (start != null) {
-			predicates = predicates.append(criteriaBuilder.greaterThanOrEqualTo(root.get(MembershipStatusChange_.changeTime), start));
+			predicates = predicates.append(criteriaBuilder.greaterThanOrEqualTo(
+					root.get(MembershipStatusChange_.changeTime), start));
 		}
 
 		if (end != null) {
-			predicates = predicates.append(criteriaBuilder.lessThanOrEqualTo(root.get(MembershipStatusChange_.changeTime), end));
+			predicates = predicates.append(criteriaBuilder.lessThanOrEqualTo(
+					root.get(MembershipStatusChange_.changeTime), end));
 		}
 
-
-		List<Tuple> results = entityManager.createQuery(query.where(predicates.toJavaArray(Predicate.class))).getResultList();
+		List<Tuple> results = entityManager.createQuery(
+				query.where(predicates.toJavaArray(Predicate.class)))
+				.getResultList();
 
 		SortedMap<Date, Long> map = new TreeMap<Date, Long>(
 				(d1, d2) -> -d1.compareTo(d2));

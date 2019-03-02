@@ -2,7 +2,7 @@ package com.tysanclan.site.projectewok.util.bbcode;
 
 /**
  * Class for parsing BBCode and outputting HTML
- *  
+ *
  * @author steenbeeke
  */
 public class BBCodeUtil {
@@ -17,8 +17,8 @@ public class BBCodeUtil {
 		if (url == null)
 			return "#";
 
-		if (url.startsWith("http://") || url.startsWith("https://")
-				|| url.startsWith("/")) {
+		if (url.startsWith("http://") || url.startsWith("https://") || url
+				.startsWith("/")) {
 			return url;
 		}
 
@@ -27,7 +27,7 @@ public class BBCodeUtil {
 
 	/**
 	 * Turns all tags in a String into HTML entities
-	 * 
+	 *
 	 * @param original
 	 *            The original string
 	 * @return A String that has no HTML in it, only text and entities

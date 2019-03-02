@@ -17,14 +17,13 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.TysanSession;
+import com.tysanclan.site.projectewok.beans.ForumService;
+import com.tysanclan.site.projectewok.entities.*;
+import com.tysanclan.site.projectewok.entities.dao.*;
+import com.tysanclan.site.projectewok.pages.forum.CreateThreadPage;
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.link.Link;
@@ -35,22 +34,11 @@ import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
-import com.tysanclan.site.projectewok.TysanSession;
-import com.tysanclan.site.projectewok.beans.ForumService;
-import com.tysanclan.site.projectewok.entities.Event;
-import com.tysanclan.site.projectewok.entities.Forum;
-import com.tysanclan.site.projectewok.entities.ForumPost;
-import com.tysanclan.site.projectewok.entities.ForumThread;
-import com.tysanclan.site.projectewok.entities.JoinApplication;
-import com.tysanclan.site.projectewok.entities.Trial;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.EventDAO;
-import com.tysanclan.site.projectewok.entities.dao.ForumPostDAO;
-import com.tysanclan.site.projectewok.entities.dao.ForumThreadDAO;
-import com.tysanclan.site.projectewok.entities.dao.JoinApplicationDAO;
-import com.tysanclan.site.projectewok.entities.dao.TrialDAO;
-import com.tysanclan.site.projectewok.pages.forum.CreateThreadPage;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class ForumPanel extends Panel {
 	private static final long serialVersionUID = 1L;
@@ -62,7 +50,7 @@ public class ForumPanel extends Panel {
 	private ForumService forumService;
 
 	public ForumPanel(String id, final Forum forum, final long pageId,
-					  final boolean publicView) {
+			final boolean publicView) {
 		super(id);
 
 		DataView<ForumThread> threads = new DataView<ForumThread>("threads",
@@ -86,37 +74,36 @@ public class ForumPanel extends Panel {
 
 				ForumThread current = item.getModelObject();
 				User user = TysanSession.session()
-						.flatMap(TysanSession::getUser)
-						.getOrNull();
+						.flatMap(TysanSession::getUser).getOrNull();
 
-				int unreadCount = (user != null) ? forumService
-						.getForumThreadUnreadCount(user, current)
-						: 0;
+				int unreadCount = (user != null) ?
+						forumService.getForumThreadUnreadCount(user, current) :
+						0;
 
 				Event ev = current.getEvent();
 				Trial tr = current.getTrial();
 				JoinApplication ja = current.getApplication();
 
 				if (ev != null) {
-					item.add(new ContextImage("thread",
-							"images/icons/clock.png").add(
-							AttributeModifier.replace("alt", new Model<String>(
-									"Event"))).add(
-							AttributeModifier.replace("title",
-									new Model<String>("Event"))));
+					item.add(
+							new ContextImage("thread", "images/icons/clock.png")
+									.add(AttributeModifier.replace("alt",
+											new Model<String>("Event")))
+									.add(AttributeModifier.replace("title",
+											new Model<String>("Event"))));
 				} else if (ja != null) {
 					item.add(new ContextImage("thread",
-							"images/icons/user_add.png").add(
-							AttributeModifier.replace("alt", new Model<String>(
-									"Join Application"))).add(
-							AttributeModifier.replace("title",
+							"images/icons/user_add.png").add(AttributeModifier
+							.replace("alt",
+									new Model<String>("Join Application")))
+							.add(AttributeModifier.replace("title",
 									new Model<String>("Join Application"))));
 				} else if (tr != null) {
 					item.add(new ContextImage("thread", "images/icons/bell.png")
 							.add(new AttributeModifier("alt",
-									new Model<String>("User Trial"))).add(
-									AttributeModifier.replace("title",
-											new Model<String>("User Trial"))));
+									new Model<String>("User Trial")))
+							.add(AttributeModifier.replace("title",
+									new Model<String>("User Trial"))));
 				} else {
 					item.add(new ContextImage("thread",
 							"images/icons/page_white.png"));
@@ -151,16 +138,16 @@ public class ForumPanel extends Panel {
 						"'Today' h:mma zzz", Locale.US);
 				sdfToday.setTimeZone(ny);
 
-				item.add(new Label("poster",
-						current.getPoster() != null ? current.getPoster()
-								.getUsername() : "System"));
+				item.add(new Label("poster", current.getPoster() != null ?
+						current.getPoster().getUsername() :
+						"System"));
 				item.add(new Label("postcount", new Model<Long>(
 						ForumDataProvider.of(current, forumPostDAO).size())));
 
 				Date lastPost = current.getLastPost();
 				if (lastPost != null) {
-					item.add(new DateTimeLabel("lastresponse", current
-							.getLastPost()));
+					item.add(new DateTimeLabel("lastresponse",
+							current.getLastPost()));
 				} else {
 					item.add(new Label("lastresponse", "Never"));
 				}
@@ -178,8 +165,9 @@ public class ForumPanel extends Panel {
 
 					if (last != null) {
 						item.add(new Label("lastposter",
-								last.getPoster() != null ? last.getPoster()
-										.getUsername() : "System"));
+								last.getPoster() != null ?
+										last.getPoster().getUsername() :
+										"System"));
 					} else {
 						item.add(new Label("lastposter", "Nobody"));
 					}
@@ -201,12 +189,10 @@ public class ForumPanel extends Panel {
 			@Override
 			public void onClick() {
 				User user = TysanSession.session()
-						.flatMap(TysanSession::getUser)
-						.getOrNull();
+						.flatMap(TysanSession::getUser).getOrNull();
 
 				if (user != null) {
-					forumService.clearUnreadPosts(user,
-							getModelObject());
+					forumService.clearUnreadPosts(user, getModelObject());
 
 				}
 
@@ -216,8 +202,7 @@ public class ForumPanel extends Panel {
 
 		markAsReadLink.add(new ContextImage("icon", "images/icons/eye.png"));
 
-		User user = TysanSession.session()
-				.flatMap(TysanSession::getUser)
+		User user = TysanSession.session().flatMap(TysanSession::getUser)
 				.getOrNull();
 
 		markAsReadLink.setVisible(user != null);

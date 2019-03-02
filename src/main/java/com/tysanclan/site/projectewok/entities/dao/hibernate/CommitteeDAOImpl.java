@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class CommitteeDAOImpl extends HibernateDAO<Committee, CommitteeFilter> implements
-		com.tysanclan.site.projectewok.entities.dao.CommitteeDAO {
+class CommitteeDAOImpl extends HibernateDAO<Committee, CommitteeFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.CommitteeDAO {
 
 }

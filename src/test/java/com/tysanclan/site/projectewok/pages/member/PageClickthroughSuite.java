@@ -1,9 +1,8 @@
 package com.tysanclan.site.projectewok.pages.member;
 
+import com.tysanclan.site.projectewok.pages.PublicPagesTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-
-import com.tysanclan.site.projectewok.pages.PublicPagesTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ TrialMemberTest.class, JuniorMemberTest.class,

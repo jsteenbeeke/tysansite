@@ -17,15 +17,8 @@
  */
 package com.tysanclan.site.projectewok.pages.forum;
 
-import java.util.List;
-
-import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.LambdaRenderer;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.LambdaRenderer;
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.beans.ForumService;
 import com.tysanclan.site.projectewok.components.PostPanel;
@@ -35,6 +28,11 @@ import com.tysanclan.site.projectewok.entities.ForumThread;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.pages.ForumPage;
 import com.tysanclan.site.projectewok.pages.ForumThreadPage;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.List;
 
 public class ForumThreadMovePage extends TysanPage {
 	private static final long serialVersionUID = 1L;
@@ -47,8 +45,8 @@ public class ForumThreadMovePage extends TysanPage {
 
 		final User u = getUser();
 
-		List<Forum> forums = forumService.getValidDestinationForums(
-				thread.getForum(), u);
+		List<Forum> forums = forumService
+				.getValidDestinationForums(thread.getForum(), u);
 
 		final DropDownChoice<Forum> targetForum = new DropDownChoice<Forum>(
 				"target");
@@ -71,10 +69,12 @@ public class ForumThreadMovePage extends TysanPage {
 				if (!service.moveThread(getModelObject(),
 						targetForum.getModelObject(), u)) {
 					error("Unable to move thread: permission denied!");
-					setResponsePage(new ForumThreadPage(getModelObject()
-							.getId(), 1, false));
+					setResponsePage(
+							new ForumThreadPage(getModelObject().getId(), 1,
+									false));
 				} else {
-					setResponsePage(new ForumPage(targetForum.getModelObject()));
+					setResponsePage(
+							new ForumPage(targetForum.getModelObject()));
 				}
 			}
 

@@ -27,7 +27,6 @@ import com.tysanclan.site.projectewok.entities.filter.TrialFilter;
  */
 public interface TrialDAO extends DAO<Trial, TrialFilter> {
 
-	
 	Trial getTrialByThread(ForumThread thread);
 
 }

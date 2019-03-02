@@ -54,8 +54,8 @@ public class LogPage extends AbstractMemberPage {
 			protected void populateItem(Item<LogItem> item) {
 				LogItem logItem = item.getModelObject();
 
-				item.add(new Label("time", DateUtil
-						.getESTFormattedString(new Date(logItem.getLogTime()))));
+				item.add(new Label("time", DateUtil.getESTFormattedString(
+						new Date(logItem.getLogTime()))));
 				item.add(new Label("category", logItem.getCategory()));
 				item.add(new Label("user", logItem.getVisibleUsername()));
 				item.add(new Label("action", logItem.getMessage()));

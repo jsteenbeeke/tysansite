@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <parent>
@@ -50,7 +51,9 @@
   </pluginRepositories>
 
   <properties>
-    <site.version>${projectewok.majorVersion}.${projectewok.minorVersion}.${maven.build.timestamp}</site.version>
+    <site.version>
+      ${projectewok.majorVersion}.${projectewok.minorVersion}.${maven.build.timestamp}
+    </site.version>
     <projectewok.minorVersion>0</projectewok.minorVersion>
     <projectewok.majorVersion>2</projectewok.majorVersion>
     <maven.build.timestamp.format>yyMMdd.HHmm</maven.build.timestamp.format>
@@ -205,8 +208,12 @@
           <target>1.8</target>
           <source>1.8</source>
           <annotationProcessors>
-            <annotationProcessor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</annotationProcessor>
-            <annotationProcessor>com.jeroensteenbeeke.hyperion.filtergen.SearchFilterGenerator</annotationProcessor>
+            <annotationProcessor>
+              org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor
+            </annotationProcessor>
+            <annotationProcessor>
+              com.jeroensteenbeeke.hyperion.filtergen.SearchFilterGenerator
+            </annotationProcessor>
           </annotationProcessors>
         </configuration>
       </plugin>

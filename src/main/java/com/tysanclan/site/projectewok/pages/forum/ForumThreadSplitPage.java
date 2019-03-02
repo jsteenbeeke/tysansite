@@ -17,22 +17,6 @@
  */
 package com.tysanclan.site.projectewok.pages.forum;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.apache.wicket.Session;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.TysanSession;
@@ -44,10 +28,24 @@ import com.tysanclan.site.projectewok.entities.ForumPost;
 import com.tysanclan.site.projectewok.entities.ForumThread;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.pages.ForumThreadPage;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Page for splitting a thread, creating a new thread
- * 
+ *
  * @author Jeroen Steenbeeke
  */
 public class ForumThreadSplitPage extends TysanPage {
@@ -59,7 +57,7 @@ public class ForumThreadSplitPage extends TysanPage {
 		private PostSelectionPairModel parent;
 
 		/**
-		 * 
+		 *
 		 */
 		public PostSelectionPair(PostSelectionPairModel parent, ForumPost post,
 				Boolean selected) {
@@ -87,8 +85,8 @@ public class ForumThreadSplitPage extends TysanPage {
 		}
 	}
 
-	private static class PostSelectionPairModel extends
-			LoadableDetachableModel<List<PostSelectionPair>> {
+	private static class PostSelectionPairModel
+			extends LoadableDetachableModel<List<PostSelectionPair>> {
 		private static final long serialVersionUID = 1L;
 
 		private IModel<List<ForumPost>> posts;
@@ -148,10 +146,11 @@ public class ForumThreadSplitPage extends TysanPage {
 	public ForumThreadSplitPage(ForumThread thread) {
 		super("Split thread: " + thread.getTitle());
 
-		User u = TysanSession.session().flatMap(TysanSession::getUser).getOrNull();
+		User u = TysanSession.session().flatMap(TysanSession::getUser)
+				.getOrNull();
 
-		List<ForumPost> posts = forumService.filterPosts(u, false,
-				thread.getPosts());
+		List<ForumPost> posts = forumService
+				.filterPosts(u, false, thread.getPosts());
 		ForumPost firstPost = posts.get(0);
 		List<ForumPost> filtered = new ArrayList<ForumPost>(posts.size() - 1);
 
@@ -169,9 +168,10 @@ public class ForumThreadSplitPage extends TysanPage {
 			protected void populateItem(ListItem<PostSelectionPair> item) {
 				IModel<PostSelectionPair> model = item.getModel();
 
-				item.add(new CheckBox("checkbox", new PropertyModel<Boolean>(
-						model, "selected")));
-				item.add(new PostPanel("postpanel", model.getObject().getPost()));
+				item.add(new CheckBox("checkbox",
+						new PropertyModel<Boolean>(model, "selected")));
+				item.add(new PostPanel("postpanel",
+						model.getObject().getPost()));
 			}
 
 		};
@@ -190,8 +190,8 @@ public class ForumThreadSplitPage extends TysanPage {
 			protected void onSubmit() {
 				ForumThread t = getModelObject();
 
-				User user = TysanSession.session().flatMap(TysanSession::getUser).getOrNull();
-
+				User user = TysanSession.session()
+						.flatMap(TysanSession::getUser).getOrNull();
 
 				List<PostSelectionPair> pairsLIst = postselection
 						.getModelObject();
@@ -202,8 +202,8 @@ public class ForumThreadSplitPage extends TysanPage {
 					}
 				}
 
-				if (titleField.getModelObject() == null
-						|| titleField.getModelObject().trim().isEmpty()) {
+				if (titleField.getModelObject() == null || titleField
+						.getModelObject().trim().isEmpty()) {
 					error("Title may not be empty!");
 				} else if (editor.getEditorContent().trim().isEmpty()) {
 					error("Thread opening may not be empty");
@@ -212,9 +212,10 @@ public class ForumThreadSplitPage extends TysanPage {
 				} else {
 					if (forumService.isModerator(user, t.getForum())) {
 
-						ForumThread result = forumService.splitThread(t,
-								postList, titleField.getModelObject(),
-								editor.getEditorContent(), user);
+						ForumThread result = forumService
+								.splitThread(t, postList,
+										titleField.getModelObject(),
+										editor.getEditorContent(), user);
 						if (result == null) {
 							error("Could not split thread: permission denied!");
 						}

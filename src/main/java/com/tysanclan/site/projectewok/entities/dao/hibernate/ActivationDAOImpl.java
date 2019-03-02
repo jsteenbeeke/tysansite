@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class ActivationDAOImpl extends HibernateDAO<Activation, ActivationFilter> implements
-		com.tysanclan.site.projectewok.entities.dao.ActivationDAO {
+class ActivationDAOImpl extends HibernateDAO<Activation, ActivationFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.ActivationDAO {
 
 }

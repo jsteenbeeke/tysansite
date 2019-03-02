@@ -17,11 +17,12 @@
  */
 package com.tysanclan.site.projectewok.pages;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.TysanPage;
+import com.tysanclan.site.projectewok.components.MemberListItem;
+import com.tysanclan.site.projectewok.entities.Group;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.dao.GroupDAO;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -31,12 +32,9 @@ import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
-import com.tysanclan.site.projectewok.TysanPage;
-import com.tysanclan.site.projectewok.components.MemberListItem;
-import com.tysanclan.site.projectewok.entities.Group;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.GroupDAO;
+import javax.servlet.http.HttpServletResponse;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -65,15 +63,16 @@ public class GroupPage extends TysanPage {
 		GroupPageParams parameters;
 
 		try {
-			parameters = requiredLong("groupid").forParameters(params).toClass(
-					GroupPageParams.class);
+			parameters = requiredLong("groupid").forParameters(params)
+					.toClass(GroupPageParams.class);
 		} catch (PageParameterExtractorException e) {
 			throw new AbortWithHttpErrorCodeException(
 					HttpServletResponse.SC_NOT_FOUND);
 		}
 
-		Group g = groupDAO.load(parameters.getGroupId()).getOrElseThrow(() -> new RestartResponseAtInterceptPageException(
-				AccessDeniedPage.class));
+		Group g = groupDAO.load(parameters.getGroupId()).getOrElseThrow(
+				() -> new RestartResponseAtInterceptPageException(
+						AccessDeniedPage.class));
 
 		initComponents(g);
 	}

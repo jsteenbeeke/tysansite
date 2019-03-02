@@ -33,7 +33,6 @@ import com.tysanclan.site.projectewok.entities.dao.ConversationDAO;
 import com.tysanclan.site.projectewok.entities.dao.ConversationParticipationDAO;
 import com.tysanclan.site.projectewok.entities.filter.ConversationFilter;
 import com.tysanclan.site.projectewok.entities.filter.ConversationParticipationFilter;
-import io.vavr.collection.Array;
 import io.vavr.collection.Seq;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -90,7 +89,8 @@ public class MessageListPage extends AbstractMemberPage {
 		participationFilter.user(getUser());
 
 		ConversationFilter filter = new ConversationFilter();
-		Seq<Long> participationIds = participationDAO.properties(participationFilter.id(), participationFilter);
+		Seq<Long> participationIds = participationDAO
+				.properties(participationFilter.id(), participationFilter);
 		if (participationIds.isEmpty()) {
 			filter.id().equalTo(-1L);
 		} else {
@@ -130,9 +130,9 @@ public class MessageListPage extends AbstractMemberPage {
 				}
 
 				item.add(new ContextImage("unread",
-						"images/icons/email_error.png").setVisible(cp != null
-						&& cp.getReadMessages().size() != conv.getMessages()
-								.size()));
+						"images/icons/email_error.png").setVisible(
+						cp != null && cp.getReadMessages().size() != conv
+								.getMessages().size()));
 
 				Link<ConversationParticipation> link = new Link<ConversationParticipation>(
 						"link", ModelMaker.wrap(cp)) {
@@ -140,8 +140,8 @@ public class MessageListPage extends AbstractMemberPage {
 
 					@Override
 					public void onClick() {
-						setResponsePage(new ViewConversationPage(
-								getModelObject()));
+						setResponsePage(
+								new ViewConversationPage(getModelObject()));
 					}
 				};
 
@@ -195,43 +195,44 @@ public class MessageListPage extends AbstractMemberPage {
 
 		final ListMultipleChoice<User> userSelect = new ListMultipleChoice<User>(
 				"userselect", new IModel<Collection<User>>() {
-					private static final long serialVersionUID = 1L;
+			private static final long serialVersionUID = 1L;
 
-					private IModel<List<User>> wrapped = null;
+			private IModel<List<User>> wrapped = null;
 
-					@Override
-					public Collection<User> getObject() {
-						if (wrapped == null) {
-							List<User> start = new LinkedList<User>();
-							if (firstSelect.getObject() != null) {
-								start.add(firstSelect.getObject());
-							}
-
-							wrapped = ModelMaker.wrap(start);
-						}
-
-						return wrapped.getObject();
+			@Override
+			public Collection<User> getObject() {
+				if (wrapped == null) {
+					List<User> start = new LinkedList<User>();
+					if (firstSelect.getObject() != null) {
+						start.add(firstSelect.getObject());
 					}
 
-					@Override
-					public void setObject(Collection<User> object) {
+					wrapped = ModelMaker.wrap(start);
+				}
 
-						List<User> userList = new LinkedList<User>();
-						userList.addAll(object);
-						wrapped = ModelMaker.wrap(userList);
-					}
+				return wrapped.getObject();
+			}
 
-					@Override
-					public void detach() {
-						if (wrapped != null) {
-							wrapped.detach();
-						}
+			@Override
+			public void setObject(Collection<User> object) {
 
-					}
+				List<User> userList = new LinkedList<User>();
+				userList.addAll(object);
+				wrapped = ModelMaker.wrap(userList);
+			}
 
-				}, ModelMaker.wrap(users));
+			@Override
+			public void detach() {
+				if (wrapped != null) {
+					wrapped.detach();
+				}
 
-		final TextArea<String> editor = new BBCodeTextArea("messagecontent", "");
+			}
+
+		}, ModelMaker.wrap(users));
+
+		final TextArea<String> editor = new BBCodeTextArea("messagecontent",
+				"");
 		editor.setRequired(true);
 
 		Form<Conversation> newMessageForm = new Form<Conversation>(id) {
@@ -247,8 +248,8 @@ public class MessageListPage extends AbstractMemberPage {
 				selectedUsers.addAll(userSelect.getModelObject());
 
 				_messageService.createConversation(getUser(), selectedUsers,
-						titleField.getModel().getObject(), editor.getModel()
-								.getObject());
+						titleField.getModel().getObject(),
+						editor.getModel().getObject());
 
 				setResponsePage(new MessageListPage());
 

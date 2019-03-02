@@ -134,20 +134,18 @@ class RestServiceImpl implements RestService {
 	@Transactional(propagation = Propagation.REQUIRED)
 	@Override
 	public AuthorizedRestApplication consumeChallengeIfValid(String challenge,
-															 String response) {
+			String response) {
 		RestApplicationChallengeFilter filter = new RestApplicationChallengeFilter();
 		filter.challengeString(challenge);
 		filter.expectedResponse(response);
 
-		return challengeDAO
-				.getUniqueByFilter(filter).map(foundChallenge -> {
-					AuthorizedRestApplication application = foundChallenge
-							.getApplication();
-					challengeDAO.delete(foundChallenge);
+		return challengeDAO.getUniqueByFilter(filter).map(foundChallenge -> {
+			AuthorizedRestApplication application = foundChallenge
+					.getApplication();
+			challengeDAO.delete(foundChallenge);
 
-					return application;
-				}).getOrNull();
-
+			return application;
+		}).getOrNull();
 
 	}
 
@@ -159,9 +157,10 @@ class RestServiceImpl implements RestService {
 			RestApplicationChallenge challenge = new RestApplicationChallenge();
 			challenge.setApplication(application);
 			challenge.setChallengeString(c);
-			challenge.setExpectedResponse(Challenge
-					.forClient(application.getClientId())
-					.withSecret(application.getClientSecret()).getResponse(c));
+			challenge.setExpectedResponse(
+					Challenge.forClient(application.getClientId())
+							.withSecret(application.getClientSecret())
+							.getResponse(c));
 			challenge.setIssueDate(new Date());
 			challengeDAO.save(challenge);
 

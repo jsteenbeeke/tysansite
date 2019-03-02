@@ -17,18 +17,17 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import org.apache.wicket.model.IDetachable;
-import org.apache.wicket.model.IModel;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.components.RequiresAttentionLink.AttentionType;
 import com.tysanclan.site.projectewok.components.RequiresAttentionLink.IRequiresAttentionCondition;
 import com.tysanclan.site.projectewok.entities.User;
+import org.apache.wicket.model.IDetachable;
+import org.apache.wicket.model.IModel;
 
-public class DoesNotHavePaypalCondition implements IRequiresAttentionCondition,
-		IDetachable {
+public class DoesNotHavePaypalCondition
+		implements IRequiresAttentionCondition, IDetachable {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private IModel<User> user;

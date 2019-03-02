@@ -17,15 +17,14 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import org.apache.wicket.RestartResponseAtInterceptPageException;
-import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.tysanclan.site.projectewok.beans.FinanceService;
 import com.tysanclan.site.projectewok.entities.SubscriptionPayment;
 import com.tysanclan.site.projectewok.entities.dao.SubscriptionPaymentDAO;
 import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class SubscriptionPaymentResolvedPage extends WebPage {
 	private static final long serialVersionUID = 1L;
@@ -69,6 +68,7 @@ public class SubscriptionPaymentResolvedPage extends WebPage {
 	}
 
 	private SubscriptionPayment getPayment(Long paymentId) {
-		return subscriptionPaymentDAO.load(paymentId).getOrElseThrow(IllegalStateException::new);
+		return subscriptionPaymentDAO.load(paymentId)
+				.getOrElseThrow(IllegalStateException::new);
 	}
 }

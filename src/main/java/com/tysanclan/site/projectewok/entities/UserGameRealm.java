@@ -17,26 +17,13 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import com.jeroensteenbeeke.hyperion.data.DomainObject;
+import org.hibernate.annotations.Cache;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
-
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-
-import org.hibernate.annotations.Cache;
-
-import com.jeroensteenbeeke.hyperion.data.DomainObject;
 
 /**
  * @author Jeroen Steenbeeke
@@ -44,7 +31,7 @@ import com.jeroensteenbeeke.hyperion.data.DomainObject;
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = { "user_id",
 		"game_id", "realm_id" }), indexes = { //
-@Index(name = "IDX_USERGAMEREALM_USER", columnList = "user_id"),
+		@Index(name = "IDX_USERGAMEREALM_USER", columnList = "user_id"),
 		@Index(name = "IDX_USERGAMEREALM_GAME", columnList = "game_id"),
 		@Index(name = "IDX_USERGAMEREALM_REALM", columnList = "realm_id") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
@@ -107,7 +94,7 @@ public class UserGameRealm implements DomainObject {
 
 	/**
 	 * Sets the User of this UserGameRealm
-	 * 
+	 *
 	 * @param user
 	 *            The User of this UserGameRealm
 	 */
@@ -124,7 +111,7 @@ public class UserGameRealm implements DomainObject {
 
 	/**
 	 * Sets the Game of this UserGameRealm
-	 * 
+	 *
 	 * @param game
 	 *            The Game of this UserGameRealm
 	 */
@@ -141,7 +128,7 @@ public class UserGameRealm implements DomainObject {
 
 	/**
 	 * Sets the Realm of this UserGameRealm
-	 * 
+	 *
 	 * @param realm
 	 *            The Realm of this UserGameRealm
 	 */

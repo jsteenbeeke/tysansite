@@ -27,8 +27,8 @@ import com.tysanclan.site.projectewok.beans.DemocracyService;
  */
 public class ResolveImpeachmentTask extends HyperionTask {
 	/**
-     * 
-     */
+	 *
+	 */
 	public ResolveImpeachmentTask() {
 		super("Impeachment", TysanTaskGroup.DEMOCRACY);
 	}

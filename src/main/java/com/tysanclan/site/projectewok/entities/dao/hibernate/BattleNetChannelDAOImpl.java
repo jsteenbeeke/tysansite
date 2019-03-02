@@ -29,7 +29,8 @@ import org.springframework.stereotype.Component;
  */
 @Component("channelDAO")
 @Scope("request")
-class BattleNetChannelDAOImpl extends HibernateDAO<BattleNetChannel, BattleNetChannelFilter>
+class BattleNetChannelDAOImpl
+		extends HibernateDAO<BattleNetChannel, BattleNetChannelFilter>
 		implements
 		com.tysanclan.site.projectewok.entities.dao.BattleNetChannelDAO {
 
@@ -41,8 +42,8 @@ class BattleNetChannelDAOImpl extends HibernateDAO<BattleNetChannel, BattleNetCh
 		BattleNetChannelFilter filter = new BattleNetChannelFilter();
 		filter.webServiceUserId(identifier);
 
-
-		return property(BattleNetChannel_.webServicePassword, filter).getOrNull();
+		return property(BattleNetChannel_.webServicePassword, filter)
+				.getOrNull();
 	}
 
 	@Override

@@ -17,11 +17,6 @@
  */
 package com.tysanclan.site.projectewok.event.handlers;
 
-import org.apache.wicket.protocol.http.request.WebClientInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.jeroensteenbeeke.hyperion.events.EventHandler;
 import com.jeroensteenbeeke.hyperion.events.EventResult;
 import com.tysanclan.site.projectewok.TysanSession;
@@ -29,6 +24,10 @@ import com.tysanclan.site.projectewok.entities.MobileUserAgent;
 import com.tysanclan.site.projectewok.entities.dao.MobileUserAgentDAO;
 import com.tysanclan.site.projectewok.entities.filter.MobileUserAgentFilter;
 import com.tysanclan.site.projectewok.event.LoginEvent;
+import org.apache.wicket.protocol.http.request.WebClientInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class CheckUserAgentOnLogin implements EventHandler<LoginEvent> {
 	private static final Logger log = LoggerFactory

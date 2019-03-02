@@ -54,7 +54,7 @@ public class OverviewPage extends TysanPage {
 	private GameDAO gameDAO;
 
 	/**
-	 * 
+	 *
 	 */
 	public OverviewPage() {
 		super("Member overview");
@@ -63,12 +63,12 @@ public class OverviewPage extends TysanPage {
 		add(new PupilPanel("mentor", getUser()));
 
 		add(new BasicMemberPanel("basicpanel", getUser()));
-		add(new TruthsayerPanel("truthsayerpanel").setVisible(getUser()
-				.getRank().equals(Rank.TRUTHSAYER)));
-		add(new SenatorPanel("senatorpanel").setVisible(getUser().getRank()
-				.equals(Rank.SENATOR)));
-		add(new ChancellorPanel("chancellorpanel").setVisible(getUser()
-				.getRank().equals(Rank.CHANCELLOR)));
+		add(new TruthsayerPanel("truthsayerpanel")
+				.setVisible(getUser().getRank().equals(Rank.TRUTHSAYER)));
+		add(new SenatorPanel("senatorpanel")
+				.setVisible(getUser().getRank().equals(Rank.SENATOR)));
+		add(new ChancellorPanel("chancellorpanel")
+				.setVisible(getUser().getRank().equals(Rank.CHANCELLOR)));
 		add(new TreasurerPanel("treasurerpanel", getUser()));
 		add(new StewardPanel("stewardpanel", getUser()));
 		add(new HeraldPanel("heraldpanel", getUser()));
@@ -84,7 +84,8 @@ public class OverviewPage extends TysanPage {
 			protected void populateItem(ListItem<Group> item) {
 				Group group = item.getModelObject();
 
-				item.add(new GroupOverviewPanel("grouppanel", getUser(), group));
+				item.add(
+						new GroupOverviewPanel("grouppanel", getUser(), group));
 
 			}
 		});
@@ -92,7 +93,8 @@ public class OverviewPage extends TysanPage {
 		GameFilter gfilter = new GameFilter();
 		gfilter.coordinator(user);
 
-		add(new DataView<Game>("games", FilterDataProvider.of(gfilter, gameDAO)) {
+		add(new DataView<Game>("games",
+				FilterDataProvider.of(gfilter, gameDAO)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -107,8 +109,8 @@ public class OverviewPage extends TysanPage {
 		RealmFilter rfilter = new RealmFilter();
 		rfilter.overseer(user);
 
-		add(new DataView<Realm>("realms", FilterDataProvider.of(rfilter,
-				realmDAO)) {
+		add(new DataView<Realm>("realms",
+				FilterDataProvider.of(rfilter, realmDAO)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

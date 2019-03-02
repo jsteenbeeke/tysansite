@@ -25,6 +25,7 @@ import com.tysanclan.site.projectewok.entities.filter.ChancellorElectionFilter;
  *
  * @author Jeroen Steenbeeke
  */
-public interface ChancellorElectionDAO extends DAO<ChancellorElection, ChancellorElectionFilter> {
+public interface ChancellorElectionDAO
+		extends DAO<ChancellorElection, ChancellorElectionFilter> {
 
 }

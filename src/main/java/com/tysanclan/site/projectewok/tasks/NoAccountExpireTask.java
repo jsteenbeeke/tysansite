@@ -25,7 +25,7 @@ import com.tysanclan.site.projectewok.beans.MembershipService;
 /**
  * Special task that bumps account activity every hour, so no expired mails go
  * out
- * 
+ *
  * @author Jeroen Steenbeeke
  */
 public class NoAccountExpireTask extends HyperionTask {

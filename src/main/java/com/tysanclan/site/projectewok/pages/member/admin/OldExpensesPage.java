@@ -41,13 +41,15 @@ public class OldExpensesPage extends TysanPage {
 			 */
 			@Override
 			protected void onSubmit() {
-				PasswordTextField keyField = (PasswordTextField) get("masterKey");
+				PasswordTextField keyField = (PasswordTextField) get(
+						"masterKey");
 
-				if (keyField.getModelObject().equals(
-						TysanApplication.MASTER_KEY)) {
+				if (keyField.getModelObject()
+						.equals(TysanApplication.MASTER_KEY)) {
 
-					HyperionScheduler.getScheduler().scheduleTask(DateTime.now(),
-							new CreatePaidExpensesTask());
+					HyperionScheduler.getScheduler()
+							.scheduleTask(DateTime.now(),
+									new CreatePaidExpensesTask());
 					info("Expense transformation background job started");
 
 				} else {

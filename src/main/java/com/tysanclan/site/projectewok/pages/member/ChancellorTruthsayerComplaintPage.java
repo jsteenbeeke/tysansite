@@ -17,11 +17,6 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
@@ -31,13 +26,17 @@ import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
 import com.tysanclan.site.projectewok.components.MemberListItem;
 import com.tysanclan.site.projectewok.entities.TruthsayerComplaint;
 import com.tysanclan.site.projectewok.entities.dao.TruthsayerComplaintDAO;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 @TysanRankSecured(Rank.CHANCELLOR)
 public class ChancellorTruthsayerComplaintPage extends AbstractMemberPage {
 	private static final long serialVersionUID = 1L;
 
-	public class DeferResponder extends
-			DefaultClickResponder<TruthsayerComplaint> {
+	public class DeferResponder
+			extends DefaultClickResponder<TruthsayerComplaint> {
 
 		private static final long serialVersionUID = 1L;
 
@@ -54,8 +53,8 @@ public class ChancellorTruthsayerComplaintPage extends AbstractMemberPage {
 		}
 	}
 
-	public class MediationResponder extends
-			DefaultClickResponder<TruthsayerComplaint> {
+	public class MediationResponder
+			extends DefaultClickResponder<TruthsayerComplaint> {
 		private static final long serialVersionUID = 1L;
 
 		public MediationResponder(TruthsayerComplaint complaint) {
@@ -92,22 +91,21 @@ public class ChancellorTruthsayerComplaintPage extends AbstractMemberPage {
 				item.add(new MemberListItem("complainer", c.getComplainer()));
 				item.add(new MemberListItem("truthsayer", c.getTruthsayer()));
 
-				item.add(new Label("title", "Complaint against "
-						+ c.getTruthsayer().getUsername()));
+				item.add(new Label("title",
+						"Complaint against " + c.getTruthsayer()
+								.getUsername()));
 				item.add(new Label("complaint", c.getComplaint())
 						.setEscapeModelStrings(false));
 
 				boolean mediated = c.isMediated();
 
 				item.add(new IconLink.Builder("images/icons/tick.png",
-						new MediationResponder(c))
-						.setText(
-								"This complaint has been resolved, and does not require a Senate vote")
+						new MediationResponder(c)).setText(
+						"This complaint has been resolved, and does not require a Senate vote")
 						.newInstance("mediated").setVisible(!mediated));
 				item.add(new IconLink.Builder("images/icons/cross.png",
-						new DeferResponder(c))
-						.setText(
-								"This complaint is not resolved, the Senate should vote on this matter")
+						new DeferResponder(c)).setText(
+						"This complaint is not resolved, the Senate should vote on this matter")
 						.newInstance("defer").setVisible(!mediated));
 			}
 		});

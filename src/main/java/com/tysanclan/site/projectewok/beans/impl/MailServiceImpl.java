@@ -17,9 +17,9 @@
  */
 package com.tysanclan.site.projectewok.beans.impl;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-
+import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.site.projectewok.entities.JoinApplication;
+import com.tysanclan.site.projectewok.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,16 +28,15 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
-import com.tysanclan.rest.api.data.Rank;
-import com.tysanclan.site.projectewok.entities.JoinApplication;
-import com.tysanclan.site.projectewok.entities.User;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
-class MailServiceImpl implements
-		com.tysanclan.site.projectewok.beans.MailService {
+class MailServiceImpl
+		implements com.tysanclan.site.projectewok.beans.MailService {
 	private Logger logger = LoggerFactory.getLogger(MailServiceImpl.class);
 
 	@Autowired
@@ -75,15 +74,14 @@ class MailServiceImpl implements
 	@Override
 	public String getActivationMailBody(String username, String activationKey) {
 
-		return "Dear " + username + ",<br/><br/>" +
-				"You have succesfully created an account for the Tysan Clan Forums. " +
-				"Before you can begin using this account however, you need to activate it first. Please " +
-				"visit https://www.tysanclan.com/activation/" +
-				activationKey + "/ to activate your account. " +
-				"Once this is done you can use your account normally.<br /><br />" +
-				"With regards,<br/><br/>" +
-				"The Tysan Clan<br /><br />" +
-				"(THIS E-MAIL WAS AUTOMATICALLY GENERATED)";
+		return "Dear " + username + ",<br/><br/>"
+				+ "You have succesfully created an account for the Tysan Clan Forums. "
+				+ "Before you can begin using this account however, you need to activate it first. Please "
+				+ "visit https://www.tysanclan.com/activation/" + activationKey
+				+ "/ to activate your account. "
+				+ "Once this is done you can use your account normally.<br /><br />"
+				+ "With regards,<br/><br/>" + "The Tysan Clan<br /><br />"
+				+ "(THIS E-MAIL WAS AUTOMATICALLY GENERATED)";
 
 	}
 
@@ -92,22 +90,20 @@ class MailServiceImpl implements
 	 *      java.lang.String)
 	 */
 	@Override
-	public String getConfirmationMailBody(String username, String activationKey) {
+	public String getConfirmationMailBody(String username,
+			String activationKey) {
 
-		return "Dear " + username + ",<br/><br/>" +
-				"You have requested to change your" +
-				" e-mail address of your account on" +
-				" the Tysan Clan website. " +
-				"To confirm this change, log into your" +
-				" account and enter the following confirmation" +
-				" code:<br /><br />" +
-				"Confirmation code: " + activationKey +
-				"<br /><br />" +
-				"If you do not do this within 3 days of your" +
-				" request, your e-mail address will remain unchanged.<br /><br />" +
-				"With regards,<br /><br />" +
-				"The Tysan Clan<br /><br />" +
-				"(THIS E-MAIL WAS AUTOMATICALLY GENERATED)";
+		return "Dear " + username + ",<br/><br/>"
+				+ "You have requested to change your"
+				+ " e-mail address of your account on"
+				+ " the Tysan Clan website. "
+				+ "To confirm this change, log into your"
+				+ " account and enter the following confirmation"
+				+ " code:<br /><br />" + "Confirmation code: " + activationKey
+				+ "<br /><br />" + "If you do not do this within 3 days of your"
+				+ " request, your e-mail address will remain unchanged.<br /><br />"
+				+ "With regards,<br /><br />" + "The Tysan Clan<br /><br />"
+				+ "(THIS E-MAIL WAS AUTOMATICALLY GENERATED)";
 	}
 
 	/**
@@ -118,15 +114,14 @@ class MailServiceImpl implements
 	public String getPasswordRequestMailBody(String username,
 			String activationKey) {
 
-		return "Dear " + username + ",<br/><br/>" +
-				"Someone has requested a password reset for your account. If you did not request such a reset, " +
-				"please disregard this e-mail. " +
-				"If you did request this reset, Then please " +
-				"visit https://www.tysanclan.com/resetpassword/" +
-				activationKey + "/ to proceed.<br /><br />" +
-				"With regards,<br/><br/>" +
-				"The Tysan Clan<br /><br />" +
-				"(THIS E-MAIL WAS AUTOMATICALLY GENERATED)";
+		return "Dear " + username + ",<br/><br/>"
+				+ "Someone has requested a password reset for your account. If you did not request such a reset, "
+				+ "please disregard this e-mail. "
+				+ "If you did request this reset, Then please "
+				+ "visit https://www.tysanclan.com/resetpassword/"
+				+ activationKey + "/ to proceed.<br /><br />"
+				+ "With regards,<br/><br/>" + "The Tysan Clan<br /><br />"
+				+ "(THIS E-MAIL WAS AUTOMATICALLY GENERATED)";
 	}
 
 	/**
@@ -278,8 +273,8 @@ class MailServiceImpl implements
 	 *      boolean, int, int)
 	 */
 	@Override
-	public String getAcceptanceVoteNotificationMail(User user,
-			boolean accepted, int inFavor, int total) {
+	public String getAcceptanceVoteNotificationMail(User user, boolean accepted,
+			int inFavor, int total) {
 		StringBuilder body = new StringBuilder();
 		body.append("Dear ").append(user.getUsername()).append(",<br/><br/>");
 		if (accepted) {
@@ -317,16 +312,15 @@ class MailServiceImpl implements
 	 *      java.lang.String)
 	 */
 	@Override
-	public String getEmailChangeMailBody(String username, String activationKey) {
+	public String getEmailChangeMailBody(String username,
+			String activationKey) {
 
-		return "Dear " + username + ",<br/><br/>" +
-				"You have requested to change your e-mail. To complete the change, you must log in " +
-				"to the site and enter the following code:<br/><br/>" +
-				activationKey +
-				"<br /><br />" +
-				"With regards,<br/><br/>" +
-				"The Tysan Clan<br /><br />" +
-				"(THIS E-MAIL WAS AUTOMATICALLY GENERATED)";
+		return "Dear " + username + ",<br/><br/>"
+				+ "You have requested to change your e-mail. To complete the change, you must log in "
+				+ "to the site and enter the following code:<br/><br/>"
+				+ activationKey + "<br /><br />" + "With regards,<br/><br/>"
+				+ "The Tysan Clan<br /><br />"
+				+ "(THIS E-MAIL WAS AUTOMATICALLY GENERATED)";
 
 	}
 }

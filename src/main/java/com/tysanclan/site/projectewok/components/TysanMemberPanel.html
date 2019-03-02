@@ -1,51 +1,52 @@
 <html xmlns:wicket>
 <wicket:panel>
-	<div class="TysanMemberPanel">
-		<a wicket:id="messages" href="online.html">(<span
-			wicket:id="count">0</span>) unread messages
-		</a>&nbsp;&nbsp;&nbsp; <a wicket:id="online" href="online.html">(<span
-			wicket:id="count">0</span>) members online
-		</a>&nbsp;&nbsp;&nbsp; <a wicket:id="forums" href="forums.html">Forums
-			(<span wicket:id="count">0</span> unread)
-		</a>&nbsp;&nbsp;&nbsp; <a wicket:id="overview" href="overview.html">Overview</a>&nbsp;&nbsp;&nbsp;
-		<a wicket:id="logout" href="logout.html">Logout</a>
-		<div wicket:id="onlinewindow">
-			<div wicket:id="otterSniperPanel"></div>
-			<table>
-				<tr>
-					<th colspan="3">Website Users</th>
-				</tr>
-				<tr wicket:id="members">
-					<td colspan="3"><span wicket:id="link"></span></td>
-				</tr>
-				<tr>
-					<td colspan="3">&nbsp;</td>
-				</tr>
+    <div class="TysanMemberPanel">
+        <a wicket:id="messages" href="online.html">(<span
+                wicket:id="count">0</span>) unread messages
+        </a>&nbsp;&nbsp;&nbsp; <a wicket:id="online" href="online.html">(<span
+            wicket:id="count">0</span>) members online
+    </a>&nbsp;&nbsp;&nbsp; <a wicket:id="forums" href="forums.html">Forums
+        (<span wicket:id="count">0</span> unread)
+    </a>&nbsp;&nbsp;&nbsp; <a wicket:id="overview"
+                              href="overview.html">Overview</a>&nbsp;&nbsp;&nbsp;
+        <a wicket:id="logout" href="logout.html">Logout</a>
+        <div wicket:id="onlinewindow">
+            <div wicket:id="otterSniperPanel"></div>
+            <table>
+                <tr>
+                    <th colspan="3">Website Users</th>
+                </tr>
+                <tr wicket:id="members">
+                    <td colspan="3"><span wicket:id="link"></span></td>
+                </tr>
+                <tr>
+                    <td colspan="3">&nbsp;</td>
+                </tr>
 
 
-				<tr>
-					<th colspan="3">Voice Chat Users</th>
-				</tr>
-				<wicket:container wicket:id="servers">
+                <tr>
+                    <th colspan="3">Voice Chat Users</th>
+                </tr>
+                <wicket:container wicket:id="servers">
 
-					<tr>
-						<td colspan="3">
+                    <tr>
+                        <td colspan="3">
 
-							<div id="murmur-server-status" class="mumble-viewer"
-								wicket:id="server"
-								data-token="ae027122cda7a0c27f8c725e27fcd909d90e7153"
-								data-id="1538"></div>
-						</td>
-					</tr>
-					<tr>
-						<td><a wicket:id="url"></a></td>
-						<th>Password</th>
-						<td wicket:id="password"></td>
-					</tr>
+                            <div id="murmur-server-status" class="mumble-viewer"
+                                 wicket:id="server"
+                                 data-token="ae027122cda7a0c27f8c725e27fcd909d90e7153"
+                                 data-id="1538"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a wicket:id="url"></a></td>
+                        <th>Password</th>
+                        <td wicket:id="password"></td>
+                    </tr>
 
-				</wicket:container>
-			</table>
-		</div>
-	</div>
+                </wicket:container>
+            </table>
+        </div>
+    </div>
 </wicket:panel>
 </html>

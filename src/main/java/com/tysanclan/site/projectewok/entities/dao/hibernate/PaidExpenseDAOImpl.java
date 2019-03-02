@@ -26,8 +26,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("request")
-class PaidExpenseDAOImpl extends HibernateDAO<PaidExpense, PaidExpenseFilter> implements
-		PaidExpenseDAO {
-
+class PaidExpenseDAOImpl extends HibernateDAO<PaidExpense, PaidExpenseFilter>
+		implements PaidExpenseDAO {
 
 }

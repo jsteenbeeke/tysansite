@@ -9,21 +9,21 @@
 	Public License for more details. You should have received a copy of the GNU 
 	General Public License along with this program. If not, see <http://www.gnu.org/licenses/>. -->
 <FindBugsFilter>
-	<Match>
-		<Or>
-			<Class name="~com\.tysanclan\.site\.projectewok\..*Panel" />
-			<Class name="~com\.tysanclan\.site\.projectewok\..*Panel.*" />
-			<Class name="~com\.tysanclan\.site\.projectewok\..*Page" />
-			<Class name="~com\.tysanclan\.site\.projectewok\..*Page.*" />
-			<Class name="~com\.tysanclan\.site\.projectewok\..*LastPostLink" />
-			<Class name="com.tysanclan.site.projectewok.WicketTesterProvider" />
-		</Or>
-		<Bug pattern="SE_BAD_FIELD" />
-	</Match>
-	<Match>
-		<!-- DAO field is a serializable proxy -->
-		<Class name="com.tysanclan.site.projectewok.components.ForumDataProvider" />
-		<Field name="dao" />
-		<Bug pattern="SE_BAD_FIELD" />
-	</Match>
+  <Match>
+    <Or>
+      <Class name="~com\.tysanclan\.site\.projectewok\..*Panel"/>
+      <Class name="~com\.tysanclan\.site\.projectewok\..*Panel.*"/>
+      <Class name="~com\.tysanclan\.site\.projectewok\..*Page"/>
+      <Class name="~com\.tysanclan\.site\.projectewok\..*Page.*"/>
+      <Class name="~com\.tysanclan\.site\.projectewok\..*LastPostLink"/>
+      <Class name="com.tysanclan.site.projectewok.WicketTesterProvider"/>
+    </Or>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+  <Match>
+    <!-- DAO field is a serializable proxy -->
+    <Class name="com.tysanclan.site.projectewok.components.ForumDataProvider"/>
+    <Field name="dao"/>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
 </FindBugsFilter>

@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class RealmDAOImpl extends HibernateDAO<Realm, RealmFilter> implements
-		com.tysanclan.site.projectewok.entities.dao.RealmDAO {
+class RealmDAOImpl extends HibernateDAO<Realm, RealmFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.RealmDAO {
 
 }

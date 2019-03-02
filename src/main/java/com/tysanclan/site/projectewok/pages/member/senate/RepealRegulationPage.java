@@ -17,18 +17,8 @@
  */
 package com.tysanclan.site.projectewok.pages.member.senate;
 
-import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.NaiveRenderer;
-import org.apache.wicket.Component;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.NaiveRenderer;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.DemocracyService;
@@ -38,6 +28,14 @@ import com.tysanclan.site.projectewok.entities.dao.RegulationChangeDAO;
 import com.tysanclan.site.projectewok.entities.dao.RegulationDAO;
 import com.tysanclan.site.projectewok.entities.filter.RegulationChangeFilter;
 import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
+import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -53,7 +51,7 @@ public class RepealRegulationPage extends AbstractMemberPage {
 	private RegulationChangeDAO regulationChangeDAO;
 
 	/**
-	 * 
+	 *
 	 */
 	public RepealRegulationPage() {
 		super("Repeal Regulation");
@@ -62,7 +60,7 @@ public class RepealRegulationPage extends AbstractMemberPage {
 	}
 
 	/**
-	 	 */
+	 */
 	private Form<RegulationChange> createRepealForm() {
 		Form<RegulationChange> form = new Form<RegulationChange>("repealForm") {
 			private static final long serialVersionUID = 1L;
@@ -76,7 +74,8 @@ public class RepealRegulationPage extends AbstractMemberPage {
 			@SuppressWarnings("unchecked")
 			@Override
 			protected void onSubmit() {
-				DropDownChoice<Regulation> regulationChoice = (DropDownChoice<Regulation>) get("regulation");
+				DropDownChoice<Regulation> regulationChoice = (DropDownChoice<Regulation>) get(
+						"regulation");
 
 				Regulation regulation = regulationChoice.getModelObject();
 
@@ -106,29 +105,30 @@ public class RepealRegulationPage extends AbstractMemberPage {
 				.setEscapeModelStrings(false).setVisible(false)
 				.setOutputMarkupId(true).setOutputMarkupPlaceholderTag(true));
 
-		form.add(new DropDownChoice<Regulation>("regulation", ModelMaker.wrap(
-				(Regulation) null, true), ModelMaker.wrapChoices(regulationDAO
-				.findAll().toJavaList()), new NaiveRenderer<Regulation>() {
-			private static final long serialVersionUID = 1L;
+		form.add(new DropDownChoice<Regulation>("regulation",
+				ModelMaker.wrap((Regulation) null, true),
+				ModelMaker.wrapChoices(regulationDAO.findAll().toJavaList()),
+				new NaiveRenderer<Regulation>() {
+					private static final long serialVersionUID = 1L;
 
-			/**
-			 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(java.lang.Object)
-			 */
-			@Override
-			public Object getDisplayValue(Regulation object) {
-				return object.getName();
-			}
+					/**
+					 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(java.lang.Object)
+					 */
+					@Override
+					public Object getDisplayValue(Regulation object) {
+						return object.getName();
+					}
 
-			/**
-			 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getIdValue(java.lang.Object,
-			 *      int)
-			 */
-			@Override
-			public String getIdValue(Regulation object, int index) {
-				return object.getId().toString();
-			}
-		}).setNullValid(false).add(
-				new AjaxFormComponentUpdatingBehavior("onchange") {
+					/**
+					 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getIdValue(java.lang.Object,
+					 *      int)
+					 */
+					@Override
+					public String getIdValue(Regulation object, int index) {
+						return object.getId().toString();
+					}
+				}).setNullValid(false)
+				.add(new AjaxFormComponentUpdatingBehavior("onchange") {
 					private static final long serialVersionUID = 1L;
 
 					@SuppressWarnings("unchecked")

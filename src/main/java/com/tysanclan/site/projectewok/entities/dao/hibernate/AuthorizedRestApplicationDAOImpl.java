@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 class AuthorizedRestApplicationDAOImpl extends
-		HibernateDAO<AuthorizedRestApplication, AuthorizedRestApplicationFilter> implements
-		AuthorizedRestApplicationDAO {
+		HibernateDAO<AuthorizedRestApplication, AuthorizedRestApplicationFilter>
+		implements AuthorizedRestApplicationDAO {
 
 }

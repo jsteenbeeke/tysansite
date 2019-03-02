@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class DonationDAOImpl extends HibernateDAO<Donation, DonationFilter> implements
-		com.tysanclan.site.projectewok.entities.dao.DonationDAO {
+class DonationDAOImpl extends HibernateDAO<Donation, DonationFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.DonationDAO {
 
 }

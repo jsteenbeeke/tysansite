@@ -17,15 +17,14 @@
  */
 package com.tysanclan.site.projectewok.components;
 
+import com.tysanclan.site.projectewok.util.DateUtil;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.panel.Panel;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.panel.Panel;
-
-import com.tysanclan.site.projectewok.util.DateUtil;
 
 /**
  * @author Jeroen Steenbeeke
@@ -34,7 +33,7 @@ public class DateLabel extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 
+	 *
 	 */
 	public DateLabel(String id, Date date) {
 		super(id);
@@ -63,8 +62,8 @@ public class DateLabel extends Panel {
 					break;
 			}
 
-			SimpleDateFormat sdf = new SimpleDateFormat("d'" + postfix
-					+ " of' MMMM yyyy", Locale.US);
+			SimpleDateFormat sdf = new SimpleDateFormat(
+					"d'" + postfix + " of' MMMM yyyy", Locale.US);
 
 			add(new Label("label", sdf.format(date)));
 		} else {

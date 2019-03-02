@@ -17,28 +17,27 @@
  */
 package com.tysanclan.site.projectewok.beans.impl;
 
-import java.util.Date;
-import java.util.List;
-
+import com.tysanclan.site.projectewok.entities.Notification;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.dao.NotificationDAO;
+import com.tysanclan.site.projectewok.entities.dao.UserDAO;
+import com.tysanclan.site.projectewok.entities.filter.NotificationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.tysanclan.site.projectewok.entities.Notification;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.NotificationDAO;
-import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.filter.NotificationFilter;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class NotificationServiceImpl implements
-		com.tysanclan.site.projectewok.beans.NotificationService {
+class NotificationServiceImpl
+		implements com.tysanclan.site.projectewok.beans.NotificationService {
 	@Autowired
 	private NotificationDAO notificationDAO;
 
@@ -65,7 +64,8 @@ class NotificationServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void dismissNotification(Notification notification) {
-		notificationDAO.load(notification.getId()).forEach(notificationDAO::delete);
+		notificationDAO.load(notification.getId())
+				.forEach(notificationDAO::delete);
 	}
 
 	/**

@@ -24,7 +24,7 @@ import com.tysanclan.site.projectewok.entities.filter.AcceptanceVoteFilter;
 /**
  * @author Jeroen Steenbeeke
  */
-public interface AcceptanceVoteDAO extends
-		DAO<AcceptanceVote, AcceptanceVoteFilter> {
+public interface AcceptanceVoteDAO
+		extends DAO<AcceptanceVote, AcceptanceVoteFilter> {
 
 }

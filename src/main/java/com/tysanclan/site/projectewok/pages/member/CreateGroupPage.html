@@ -1,58 +1,67 @@
 <html xmlns:wicket>
 <wicket:extend>
-	<div class="jqui-tabs">
-		<ul>
-			<li><a href="#tabs-1">Gaming Group</a></li>
-			<li><a href="#tabs-2">Social Group</a></li>
-			<li><a href="#tabs-3">Pending Requests</a></li>
-		</ul>
+    <div class="jqui-tabs">
+        <ul>
+            <li><a href="#tabs-1">Gaming Group</a></li>
+            <li><a href="#tabs-2">Social Group</a></li>
+            <li><a href="#tabs-3">Pending Requests</a></li>
+        </ul>
 
-		<div id="tabs-1">
-			<form wicket:id="creategaminggroupform">
-				<b>Game</b><br /> <select wicket:id="gamerealm"></select><br /> <br />
-				<b>Name of group</b><br /> <input type="text" wicket:id="name" /><br />
-				<br /> <b>Public description</b><br /> This is the description
-				that everyone will be able to see.<br />
-				<textarea wicket:id="publicdescription" cols="60" rows="10"></textarea>
-				<br /> <b>Motivation</b><br /> Why do you want to create this
-				group?
-				<textarea wicket:id="motivation" cols="60" rows="10"></textarea>
-				<br /> <input type="submit" value="Request" class="SubmitButton" />
-			</form>
-		</div>
-		<div id="tabs-2">
-			<form wicket:id="createsocialgroupform">
-				<b>Name of group</b><br /> <input type="text" wicket:id="name" /><br />
-				<br /> <b>Public description</b><br /> This is the description
-				that everyone will be able to see.<br />
-				<textarea wicket:id="publicdescription" cols="60" rows="10"></textarea>
-				<br /> <b>Motivation</b><br /> Why do you want to create this
-				group?
-				<textarea wicket:id="motivation" cols="60" rows="10"></textarea>
-				<br /> <input type="submit" value="Request" class="SubmitButton" />
-			</form>
-		</div>
-		<div id="tabs-3">
-			<span wicket:id="pendingtext"></span><br />
-			<br />
+        <div id="tabs-1">
+            <form wicket:id="creategaminggroupform">
+                <b>Game</b><br/> <select wicket:id="gamerealm"></select><br/>
+                <br/>
+                <b>Name of group</b><br/> <input type="text"
+                                                 wicket:id="name"/><br/>
+                <br/> <b>Public description</b><br/> This is the description
+                that everyone will be able to see.<br/>
+                <textarea wicket:id="publicdescription" cols="60"
+                          rows="10"></textarea>
+                <br/> <b>Motivation</b><br/> Why do you want to create this
+                group?
+                <textarea wicket:id="motivation" cols="60" rows="10"></textarea>
+                <br/> <input type="submit" value="Request"
+                             class="SubmitButton"/>
+            </form>
+        </div>
+        <div id="tabs-2">
+            <form wicket:id="createsocialgroupform">
+                <b>Name of group</b><br/> <input type="text"
+                                                 wicket:id="name"/><br/>
+                <br/> <b>Public description</b><br/> This is the description
+                that everyone will be able to see.<br/>
+                <textarea wicket:id="publicdescription" cols="60"
+                          rows="10"></textarea>
+                <br/> <b>Motivation</b><br/> Why do you want to create this
+                group?
+                <textarea wicket:id="motivation" cols="60" rows="10"></textarea>
+                <br/> <input type="submit" value="Request"
+                             class="SubmitButton"/>
+            </form>
+        </div>
+        <div id="tabs-3">
+            <span wicket:id="pendingtext"></span><br/>
+            <br/>
 
-			<wicket:enclosure child="requests">
-				<table style="width: 100%;">
-					<tr>
-						<th>Group name</th>
-						<th>Group type</th>
-						<th>Description</th>
-						<th>Motivation</th>
-					</tr>
-					<tr wicket:id="requests">
-						<td style="text-align: center;" wicket:id="name"></td>
-						<td style="text-align: center;" wicket:id="type"></td>
-						<td style="text-align: center;" wicket:id="description"></td>
-						<td style="text-align: center;" wicket:id="motivation"></td>
-					</tr>
-				</table>
-			</wicket:enclosure>
-		</div>
-	</div>
+            <wicket:enclosure child="requests">
+                <table style="width: 100%;">
+                    <tr>
+                        <th>Group name</th>
+                        <th>Group type</th>
+                        <th>Description</th>
+                        <th>Motivation</th>
+                    </tr>
+                    <tr wicket:id="requests">
+                        <td style="text-align: center;" wicket:id="name"></td>
+                        <td style="text-align: center;" wicket:id="type"></td>
+                        <td style="text-align: center;"
+                            wicket:id="description"></td>
+                        <td style="text-align: center;"
+                            wicket:id="motivation"></td>
+                    </tr>
+                </table>
+            </wicket:enclosure>
+        </div>
+    </div>
 </wicket:extend>
 </html>

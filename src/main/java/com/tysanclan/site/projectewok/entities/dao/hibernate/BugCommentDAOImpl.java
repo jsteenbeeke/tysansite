@@ -29,7 +29,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class BugCommentDAOImpl extends HibernateDAO<BugComment, BugCommentFilter> implements
-		com.tysanclan.site.projectewok.entities.dao.BugCommentDAO {
+class BugCommentDAOImpl extends HibernateDAO<BugComment, BugCommentFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.BugCommentDAO {
 
 }

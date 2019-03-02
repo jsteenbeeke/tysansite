@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class PenaltyPointDAOImpl extends HibernateDAO<PenaltyPoint, PenaltyPointFilter> implements
-		com.tysanclan.site.projectewok.entities.dao.PenaltyPointDAO {
+class PenaltyPointDAOImpl extends HibernateDAO<PenaltyPoint, PenaltyPointFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.PenaltyPointDAO {
 
 }

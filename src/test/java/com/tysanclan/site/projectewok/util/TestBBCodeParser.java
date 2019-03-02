@@ -1,11 +1,10 @@
 package com.tysanclan.site.projectewok.util;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
-
 import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
 import com.tysanclan.site.projectewok.util.bbcode.BBParseException;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class TestBBCodeParser {
 	@Test(timeout = 3000L)
@@ -42,8 +41,7 @@ public class TestBBCodeParser {
 
 	@Test
 	public void testQuote() throws BBParseException {
-		assertEquals(
-				"<blockquote><p><b>Quote</b></p> <p>Test</p></blockquote>",
+		assertEquals("<blockquote><p><b>Quote</b></p> <p>Test</p></blockquote>",
 				BBCodeUtil.toHtml("[quote]Test[/quote]"));
 		assertEquals(
 				"<blockquote><p><b>Quoting Prospero</b></p> <p>Test</p></blockquote>",

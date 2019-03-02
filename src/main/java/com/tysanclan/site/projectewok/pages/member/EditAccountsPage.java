@@ -17,18 +17,6 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.beans.GameService;
@@ -40,6 +28,17 @@ import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.UserGameRealm;
 import com.tysanclan.site.projectewok.entities.dao.GameDAO;
 import com.tysanclan.site.projectewok.model.GameRealmCartesian;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -52,7 +51,7 @@ public class EditAccountsPage extends AbstractMemberPage {
 	private GameDAO gameDAO;
 
 	/**
-	 * 
+	 *
 	 */
 	public EditAccountsPage() {
 		super("Edit Accounts");
@@ -69,7 +68,8 @@ public class EditAccountsPage extends AbstractMemberPage {
 			@SuppressWarnings("unchecked")
 			@Override
 			protected void onSubmit() {
-				DropDownChoice<GameRealmCartesian> cartesianChoice = (DropDownChoice<GameRealmCartesian>) get("choices");
+				DropDownChoice<GameRealmCartesian> cartesianChoice = (DropDownChoice<GameRealmCartesian>) get(
+						"choices");
 				GameRealmCartesian cartesian = cartesianChoice.getModelObject();
 
 				gameService.addPlayedGame(getUser(), cartesian.getGame(),
@@ -90,12 +90,11 @@ public class EditAccountsPage extends AbstractMemberPage {
 		}
 
 		for (UserGameRealm ugr : getUser().getPlayedGames()) {
-			cartesians.remove(new GameRealmCartesian(ugr.getGame(), ugr
-					.getRealm()));
+			cartesians.remove(new GameRealmCartesian(ugr.getGame(),
+					ugr.getRealm()));
 		}
 
-		form.add(new DropDownChoice<>("choices",
-				new Model<>(null), cartesians,
+		form.add(new DropDownChoice<>("choices", new Model<>(null), cartesians,
 				new GameRealmCartesianRenderer()));
 
 		add(form);

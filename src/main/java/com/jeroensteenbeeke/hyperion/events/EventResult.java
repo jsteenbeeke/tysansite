@@ -15,12 +15,11 @@
  */
 package com.jeroensteenbeeke.hyperion.events;
 
-import java.util.List;
+import com.google.common.collect.Lists;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
-
-import com.google.common.collect.Lists;
+import java.util.List;
 
 public class EventResult {
 	private final boolean abort;
@@ -50,7 +49,7 @@ public class EventResult {
 	String getMessage() {
 		return message;
 	}
-	
+
 	@Nonnull
 	public static EventResult ok(@Nonnull List<Event<?>> triggered) {
 		return new EventResult(false, null, triggered);
@@ -63,6 +62,6 @@ public class EventResult {
 
 	@Nonnull
 	public static EventResult abort(@Nonnull String message) {
-		return new EventResult(true, message, Lists.<Event<?>> newArrayList());
+		return new EventResult(true, message, Lists.<Event<?>>newArrayList());
 	}
 }

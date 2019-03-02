@@ -17,6 +17,10 @@
  */
 package com.tysanclan.site.projectewok.components;
 
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.entities.GameAccount;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.UserGameRealm;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -24,11 +28,6 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
-
-import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
-import com.tysanclan.site.projectewok.entities.GameAccount;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.UserGameRealm;
 
 /**
  * @author Jeroen Steenbeeke
@@ -41,25 +40,25 @@ public class UserContactInfoPanel extends Panel {
 
 		add(new MemberListItem("user", user));
 
-		String aimAddress = user.getProfile() != null ? user.getProfile()
-				.getInstantMessengerAddress() : "";
+		String aimAddress = user.getProfile() != null ?
+				user.getProfile().getInstantMessengerAddress() :
+				"";
 
-		add(new Label("aim", aimAddress).add(
-				AttributeModifier.replace("href", "aim:addbuddy?screenname="
-						+ aimAddress)).setVisible(
-				aimAddress != null && !aimAddress.isEmpty()));
+		add(new Label("aim", aimAddress).add(AttributeModifier
+				.replace("href", "aim:addbuddy?screenname=" + aimAddress))
+				.setVisible(aimAddress != null && !aimAddress.isEmpty()));
 		add(new DateLabel("lastlogin", user.getLastAction()));
 
 		WebMarkupContainer accounts = new WebMarkupContainer("accounts");
 
-		accounts.add(new ListView<UserGameRealm>("realms", ModelMaker.wrap(user
-				.getPlayedGames())) {
+		accounts.add(new ListView<UserGameRealm>("realms",
+				ModelMaker.wrap(user.getPlayedGames())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void populateItem(ListItem<UserGameRealm> item) {
-				item.setModel(new CompoundPropertyModel<UserGameRealm>(item
-						.getModel()));
+				item.setModel(new CompoundPropertyModel<UserGameRealm>(
+						item.getModel()));
 
 				StringBuilder builder = new StringBuilder();
 

@@ -48,8 +48,8 @@ import java.util.List;
  */
 @Component
 @Scope("request")
-class UserDAOImpl extends HibernateDAO<User, UserFilter> implements
-		com.tysanclan.site.projectewok.entities.dao.UserDAO {
+class UserDAOImpl extends HibernateDAO<User, UserFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.UserDAO {
 
 	@Autowired
 	private IEventDispatcher dispatcher;
@@ -57,7 +57,6 @@ class UserDAOImpl extends HibernateDAO<User, UserFilter> implements
 	public void setDispatcher(IEventDispatcher dispatcher) {
 		this.dispatcher = dispatcher;
 	}
-
 
 	@Override
 	public long countByRank(Rank rank) {
@@ -82,10 +81,13 @@ class UserDAOImpl extends HibernateDAO<User, UserFilter> implements
 		filter.username().equalsIgnoreCase(username);
 
 		return getUniqueByFilter(filter).filter(u -> {
-			if (!Argon2PasswordHasher.checkExistingPassword(password.toCharArray()).withHash(u.getArgon2hash())) {
+			if (!Argon2PasswordHasher
+					.checkExistingPassword(password.toCharArray())
+					.withHash(u.getArgon2hash())) {
 				try {
-					if (!Argon2PasswordHasher
-							.checkExistingPassword(MemberUtil.legacyHashPassword(password).toCharArray())
+					if (!Argon2PasswordHasher.checkExistingPassword(
+							MemberUtil.legacyHashPassword(password)
+									.toCharArray())
 							.withHash(u.getArgon2hash())) {
 						return false;
 					}
@@ -115,15 +117,18 @@ class UserDAOImpl extends HibernateDAO<User, UserFilter> implements
 		Root<User> root = query.from(User.class);
 
 		Subquery<Long> subquery = query.subquery(Long.class);
-		Root<AcceptanceVote> acceptanceVoteRoot = subquery.from(AcceptanceVote.class);
+		Root<AcceptanceVote> acceptanceVoteRoot = subquery
+				.from(AcceptanceVote.class);
 
-		subquery.select(acceptanceVoteRoot.get(AcceptanceVote_.trialMember).get(User_.id));
+		subquery.select(acceptanceVoteRoot.get(AcceptanceVote_.trialMember)
+				.get(User_.id));
 
-		query.select(root).where(criteriaBuilder.not(root.get(User_.id).in(subquery)),
-								 criteriaBuilder.equal(root.get(User_.rank), Rank.TRIAL),
-								 criteriaBuilder.lessThanOrEqualTo(root.get(User_.joinDate), fourteenDaysAgo)
-		);
-
+		query.select(root)
+				.where(criteriaBuilder.not(root.get(User_.id).in(subquery)),
+						criteriaBuilder.equal(root.get(User_.rank), Rank.TRIAL),
+						criteriaBuilder
+								.lessThanOrEqualTo(root.get(User_.joinDate),
+										fourteenDaysAgo));
 
 		return entityManager.createQuery(query).getResultList();
 	}

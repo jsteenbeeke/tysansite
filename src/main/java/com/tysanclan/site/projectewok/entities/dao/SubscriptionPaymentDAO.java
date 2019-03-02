@@ -21,7 +21,8 @@ import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.SubscriptionPayment;
 import com.tysanclan.site.projectewok.entities.filter.SubscriptionPaymentFilter;
 
-public interface SubscriptionPaymentDAO extends DAO<SubscriptionPayment, SubscriptionPaymentFilter> {
+public interface SubscriptionPaymentDAO
+		extends DAO<SubscriptionPayment, SubscriptionPaymentFilter> {
 
 	String getConfirmationKey(SubscriptionPayment payment);
 

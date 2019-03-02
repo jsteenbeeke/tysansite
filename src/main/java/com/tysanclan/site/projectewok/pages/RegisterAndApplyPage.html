@@ -1,78 +1,93 @@
 <html xmlns:wicket>
 
 <wicket:extend>
-	<h2>Why should I join?</h2>
-		The Tysan Clan has been around for over a decade and has proven itself to be a resilient clan well
-		able to withstand the test of time. Throughout our lifetime we have managed to maintain a high standard
-		of legit gameplay, mature members, and fun people to hang out with.
-		
-		<h2>What kind of people are you looking for?</h2>
-		We are looking for people who like playing online games in a friendly environment. While we do play competitive games from time
-		to time, and we do encourage getting better at them, it is not our goal to become pro players. Many of our members are parents,
-		and we understand that family comes first, even if Tysan is a family of sorts as well. As such, we only accept those who have
-		demonstrated themselves to be mature persons with a friendly attitude and a slight amount of insanity.
-		
-		<h2>So how do I join?</h2>
-		Please fill out the form below, where you can create an account and add your motivations. <br />
-	<br />
-		
-		Basically you are required to write a short motivation about why you wish to join Tysan, and amend it
-		should questions arise (though this is generally not the case). After you submit, another member must volunteer to
-		be your Mentor, and at least one Senator needs to approve your application.
-		
-		<h2>How does this Trial Membership work?</h2> 
-		A Trial membership is basically meant to get to know you better. We will use your trial time to see if we would like
-		you to stay a member. During the Trial you will be assisted by a Mentor to guide you and introduce you to people. After
-		two weeks, we will vote whether or not we want you to stay a member, and if 60% of the Clan votes in favor, you will
-		become a Junior Member.
-		
-		<form wicket:id="registerform">
-		<table>
-			<tr>
-				<th>Username</th>
-				<td><input type="text" wicket:id="username" /></td>
-			</tr>
-			<tr>
-				<th>Password</th>
-				<td><input type="password" wicket:id="password" /></td>
-			</tr>
-			<tr>
-				<th>Confirm Password</th>
-				<td><input type="password" wicket:id="password2" /></td>
-			</tr>
-			<tr>
-				<th>E-Mail address</th>
-				<td><input type="text" wicket:id="mail" /></td>
-			</tr>
-			<tr>
-				<th rowspan="2">Challenge</th>
-				<td><img wicket:id="captcha" alt="Proof that you are human" />
-				</td>
-			</tr>
-			<tr>
-				<td><input type="text" wicket:id="captchaResponse" /></td>
-			</tr>
-			<tr>
-				<th>Primary Clan Game</th>
-				<td><select wicket:id="gamerealm"></select></td>
-			</tr>
-			<tr>
-				<th>What other games do you play?</th>
-				<td><textarea wicket:id="othergames" cols="80" rows="8"></textarea></td>
-			</tr>
-			<tr>
-				<th>What kind of person are you?</th>
-				<td><textarea wicket:id="sortofperson" cols="80" rows="8"></textarea></td>
-			</tr>
-			<tr>
-				<th>What are you looking for in a clan?</th>
-				<td><textarea wicket:id="lookingfor" cols="80" rows="8"></textarea></td>
-			</tr>
-			<tr>
-				<td colspan="2" style="text-align: center;"><input
-					type="submit" value="Apply" class="SubmitButton" /></td>
-			</tr>
-		</table>
-	</form>
+    <h2>Why should I join?</h2>
+    The Tysan Clan has been around for over a decade and has proven itself to be
+    a resilient clan well
+    able to withstand the test of time. Throughout our lifetime we have managed
+    to maintain a high standard
+    of legit gameplay, mature members, and fun people to hang out with.
+
+    <h2>What kind of people are you looking for?</h2>
+    We are looking for people who like playing online games in a friendly
+    environment. While we do play competitive games from time
+    to time, and we do encourage getting better at them, it is not our goal to
+    become pro players. Many of our members are parents,
+    and we understand that family comes first, even if Tysan is a family of
+    sorts as well. As such, we only accept those who have
+    demonstrated themselves to be mature persons with a friendly attitude and a
+    slight amount of insanity.
+
+    <h2>So how do I join?</h2>
+    Please fill out the form below, where you can create an account and add your
+    motivations. <br/>
+    <br/>
+
+    Basically you are required to write a short motivation about why you wish to
+    join Tysan, and amend it
+    should questions arise (though this is generally not the case). After you
+    submit, another member must volunteer to
+    be your Mentor, and at least one Senator needs to approve your application.
+
+    <h2>How does this Trial Membership work?</h2>
+    A Trial membership is basically meant to get to know you better. We will use
+    your trial time to see if we would like
+    you to stay a member. During the Trial you will be assisted by a Mentor to
+    guide you and introduce you to people. After
+    two weeks, we will vote whether or not we want you to stay a member, and if
+    60% of the Clan votes in favor, you will
+    become a Junior Member.
+
+    <form wicket:id="registerform">
+        <table>
+            <tr>
+                <th>Username</th>
+                <td><input type="text" wicket:id="username"/></td>
+            </tr>
+            <tr>
+                <th>Password</th>
+                <td><input type="password" wicket:id="password"/></td>
+            </tr>
+            <tr>
+                <th>Confirm Password</th>
+                <td><input type="password" wicket:id="password2"/></td>
+            </tr>
+            <tr>
+                <th>E-Mail address</th>
+                <td><input type="text" wicket:id="mail"/></td>
+            </tr>
+            <tr>
+                <th rowspan="2">Challenge</th>
+                <td><img wicket:id="captcha" alt="Proof that you are human"/>
+                </td>
+            </tr>
+            <tr>
+                <td><input type="text" wicket:id="captchaResponse"/></td>
+            </tr>
+            <tr>
+                <th>Primary Clan Game</th>
+                <td><select wicket:id="gamerealm"></select></td>
+            </tr>
+            <tr>
+                <th>What other games do you play?</th>
+                <td><textarea wicket:id="othergames" cols="80"
+                              rows="8"></textarea></td>
+            </tr>
+            <tr>
+                <th>What kind of person are you?</th>
+                <td><textarea wicket:id="sortofperson" cols="80"
+                              rows="8"></textarea></td>
+            </tr>
+            <tr>
+                <th>What are you looking for in a clan?</th>
+                <td><textarea wicket:id="lookingfor" cols="80"
+                              rows="8"></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center;"><input
+                        type="submit" value="Apply" class="SubmitButton"/></td>
+            </tr>
+        </table>
+    </form>
 </wicket:extend>
 </html>

@@ -56,8 +56,8 @@ public class User extends BaseDomainObject implements DomainObject {
 	/**
 	 * @author Jeroen Steenbeeke
 	 */
-	public static final class CaseInsensitiveUserComparator implements
-			Comparator<User>, Serializable {
+	public static final class CaseInsensitiveUserComparator
+			implements Comparator<User>, Serializable {
 		private static final long serialVersionUID = 1L;
 
 		@Override
@@ -443,7 +443,7 @@ public class User extends BaseDomainObject implements DomainObject {
 
 	/**
 	 * Sets the Endorses of this User
-	 * 
+	 *
 	 * @param endorses
 	 *            The Endorses of this User
 	 */
@@ -460,7 +460,7 @@ public class User extends BaseDomainObject implements DomainObject {
 
 	/**
 	 * Sets the EndorsedBy of this User
-	 * 
+	 *
 	 * @param endorsedBy
 	 *            The EndorsedBy of this User
 	 */
@@ -507,7 +507,7 @@ public class User extends BaseDomainObject implements DomainObject {
 
 	/**
 	 * Sets the Profile of this User
-	 * 
+	 *
 	 * @param profile
 	 *            The Profile of this User
 	 */
@@ -524,7 +524,7 @@ public class User extends BaseDomainObject implements DomainObject {
 
 	/**
 	 * Sets the PenaltyPoints of this User
-	 * 
+	 *
 	 * @param penaltyPoints
 	 *            The PenaltyPoints of this User
 	 */

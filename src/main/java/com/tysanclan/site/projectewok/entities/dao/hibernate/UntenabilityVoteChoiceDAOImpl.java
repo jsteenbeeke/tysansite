@@ -29,7 +29,8 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 class UntenabilityVoteChoiceDAOImpl extends
-		HibernateDAO<UntenabilityVoteChoice, UntenabilityVoteChoiceFilter> implements
+		HibernateDAO<UntenabilityVoteChoice, UntenabilityVoteChoiceFilter>
+		implements
 		com.tysanclan.site.projectewok.entities.dao.UntenabilityVoteChoiceDAO {
 
 }

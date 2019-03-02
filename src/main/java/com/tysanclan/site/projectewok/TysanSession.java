@@ -17,15 +17,6 @@
  */
 package com.tysanclan.site.projectewok;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
-import io.vavr.control.Option;
-import org.apache.wicket.Session;
-import org.apache.wicket.protocol.http.WebSession;
-import org.apache.wicket.request.Request;
-
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
@@ -33,11 +24,19 @@ import com.tysanclan.site.projectewok.util.forum.ForumViewContext;
 import com.tysanclan.site.projectewok.util.forum.MemberForumViewContext;
 import com.tysanclan.site.projectewok.util.forum.PublicForumViewContext;
 import com.tysanclan.site.projectewok.util.forum.ShadowForumViewContext;
+import io.vavr.control.Option;
+import org.apache.wicket.Session;
+import org.apache.wicket.protocol.http.WebSession;
+import org.apache.wicket.request.Request;
 import org.springframework.context.ApplicationContext;
+
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Session for Tysan site logins
- * 
+ *
  * @author Jeroen Steenbeeke
  */
 public class TysanSession extends WebSession {
@@ -63,7 +62,8 @@ public class TysanSession extends WebSession {
 		if (userId != null) {
 			TysanApplication application = TysanApplication.get();
 
-			ApplicationContext applicationContext = application.getApplicationContext();
+			ApplicationContext applicationContext = application
+					.getApplicationContext();
 			UserDAO bean = applicationContext.getBean(UserDAO.class);
 			Option<User> userOption = bean.load(userId);
 			return userOption;
@@ -80,7 +80,8 @@ public class TysanSession extends WebSession {
 
 		Option<User> u = tsession.getUser();
 
-		if (u.isEmpty() || u.filter(_u -> _u.getRank() == Rank.FORUM).isDefined())
+		if (u.isEmpty() || u.filter(_u -> _u.getRank() == Rank.FORUM)
+				.isDefined())
 			return new PublicForumViewContext();
 
 		if (u.filter(_u -> _u.getRank() == Rank.BANNED).isDefined())

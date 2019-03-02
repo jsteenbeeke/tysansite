@@ -17,30 +17,19 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
+import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 import org.hibernate.annotations.Cache;
 
-import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Entity
 @Table(indexes = { //
-@Index(name = "IDX_EmailChangeConfirmation_USER", columnList = "user_id") })
+		@Index(name = "IDX_EmailChangeConfirmation_USER", columnList = "user_id") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class EmailChangeConfirmation extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;
@@ -99,7 +88,7 @@ public class EmailChangeConfirmation extends BaseDomainObject {
 
 	/**
 	 * Sets the Email of this EmailChangeConfirmation
-	 * 
+	 *
 	 * @param email
 	 *            The Email of this EmailChangeConfirmation
 	 */
@@ -116,7 +105,7 @@ public class EmailChangeConfirmation extends BaseDomainObject {
 
 	/**
 	 * Sets the User of this EmailChangeConfirmation
-	 * 
+	 *
 	 * @param user
 	 *            The User of this EmailChangeConfirmation
 	 */
@@ -133,7 +122,7 @@ public class EmailChangeConfirmation extends BaseDomainObject {
 
 	/**
 	 * Sets the Initialized of this EmailChangeConfirmation
-	 * 
+	 *
 	 * @param initialized
 	 *            The Initialized of this EmailChangeConfirmation
 	 */
@@ -150,7 +139,7 @@ public class EmailChangeConfirmation extends BaseDomainObject {
 
 	/**
 	 * Sets the ActivationKey of this EmailChangeConfirmation
-	 * 
+	 *
 	 * @param activationKey
 	 *            The ActivationKey of this EmailChangeConfirmation
 	 */

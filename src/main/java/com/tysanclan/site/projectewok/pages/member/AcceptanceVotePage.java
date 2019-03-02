@@ -17,19 +17,6 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.ContextImage;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
@@ -48,6 +35,18 @@ import com.tysanclan.site.projectewok.entities.dao.AcceptanceVoteDAO;
 import com.tysanclan.site.projectewok.entities.dao.ForumPostDAO;
 import com.tysanclan.site.projectewok.entities.filter.ForumPostFilter;
 import com.tysanclan.site.projectewok.pages.MemberPage;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.ContextImage;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -62,7 +61,7 @@ public class AcceptanceVotePage extends AbstractMemberPage {
 	private AcceptanceVoteDAO acceptanceVoteDAO;
 
 	/**
-	 * 
+	 *
 	 */
 	public AcceptanceVotePage() {
 		super("Acceptance votes");
@@ -86,8 +85,9 @@ public class AcceptanceVotePage extends AbstractMemberPage {
 				AcceptanceVoteVerdict mentorVote = null;
 
 				for (AcceptanceVoteVerdict verdict : vote.getVerdicts()) {
-					if (verdict.getCaster().equals(
-							verdict.getVote().getTrialMember().getMentor())) {
+					if (verdict.getCaster()
+							.equals(verdict.getVote().getTrialMember()
+									.getMentor())) {
 						mentorVote = verdict;
 					}
 
@@ -141,8 +141,8 @@ public class AcceptanceVotePage extends AbstractMemberPage {
 							.setVisible(false));
 				}
 
-				mentorWarning.setVisible(mentorVote != null
-						&& !mentorVote.isInFavor());
+				mentorWarning.setVisible(
+						mentorVote != null && !mentorVote.isInFavor());
 
 				item.add(mentorWarning);
 
@@ -152,8 +152,8 @@ public class AcceptanceVotePage extends AbstractMemberPage {
 				item.add(profileLink);
 
 				item.add(new IconLink.Builder("images/icons/tick.png",
-						new DefaultClickResponder<AcceptanceVote>(ModelMaker
-								.wrap(vote)) {
+						new DefaultClickResponder<AcceptanceVote>(
+								ModelMaker.wrap(vote)) {
 
 							private static final long serialVersionUID = 1L;
 
@@ -168,8 +168,8 @@ public class AcceptanceVotePage extends AbstractMemberPage {
 								AcceptanceVote av = getModelObject();
 								User caster = getUser();
 
-								democracyService.castAcceptanceVote(av, caster,
-										true);
+								democracyService
+										.castAcceptanceVote(av, caster, true);
 
 								setResponsePage(new AcceptanceVotePage());
 							}
@@ -179,8 +179,8 @@ public class AcceptanceVotePage extends AbstractMemberPage {
 								+ " as a member").newInstance("yes"));
 
 				item.add(new IconLink.Builder("images/icons/cross.png",
-						new DefaultClickResponder<AcceptanceVote>(ModelMaker
-								.wrap(vote)) {
+						new DefaultClickResponder<AcceptanceVote>(
+								ModelMaker.wrap(vote)) {
 
 							private static final long serialVersionUID = 1L;
 
@@ -195,29 +195,29 @@ public class AcceptanceVotePage extends AbstractMemberPage {
 								AcceptanceVote av = getModelObject();
 								User caster = getUser();
 
-								democracyService.castAcceptanceVote(av, caster,
-										false);
+								democracyService
+										.castAcceptanceVote(av, caster, false);
 
 								setResponsePage(new AcceptanceVotePage());
 							}
 
-						})
-						.setText(
-								"No, I would prefer it if  "
-										+ trialMember.getUsername()
-										+ " would no longer remain a member"
-										+ (getUser().equals(mentor) ? ". WARNING: AS MENTOR OF THIS APPLICANT YOUR VOTE WILL BE VISIBLE IF YOU VOTE AGAINST YOUR OWN PUPIL"
-												: "")).newInstance("no"));
+						}).setText(
+						"No, I would prefer it if  " + trialMember.getUsername()
+								+ " would no longer remain a member"
+								+ (getUser().equals(mentor) ?
+								". WARNING: AS MENTOR OF THIS APPLICANT YOUR VOTE WILL BE VISIBLE IF YOU VOTE AGAINST YOUR OWN PUPIL" :
+								"")).newInstance("no"));
 
-				item.add(new Label("count", new Model<Integer>(vote
-						.getVerdicts().size())));
+				item.add(new Label("count",
+						new Model<Integer>(vote.getVerdicts().size())));
 
 				ForumPostFilter filter = new ForumPostFilter();
 				filter.shadow(false);
 				filter.poster(trialMember);
 				filter.time().orderBy(false);
 
-				List<ForumPost> posts = forumPostDAO.findByFilter(filter).toJavaList();
+				List<ForumPost> posts = forumPostDAO.findByFilter(filter)
+						.toJavaList();
 
 				posts = forumService.filterPosts(getUser(), false, posts);
 
@@ -234,7 +234,8 @@ public class AcceptanceVotePage extends AbstractMemberPage {
 					protected void populateItem(ListItem<ForumPost> item1) {
 						ForumPost post = item1.getModelObject();
 
-						item1.add(new AutoThreadLink("thread", post.getThread()));
+						item1.add(
+								new AutoThreadLink("thread", post.getThread()));
 
 						item1.add(new DateTimeLabel("time", post.getTime()));
 					}
@@ -246,7 +247,8 @@ public class AcceptanceVotePage extends AbstractMemberPage {
 				item.add(new WebMarkupContainer("noPosts")
 						.setVisible(!lastPosts.isVisible()));
 
-				WebMarkupContainer vacation = new WebMarkupContainer("vacation");
+				WebMarkupContainer vacation = new WebMarkupContainer(
+						"vacation");
 				vacation.add(new Label("username", trialMember.getUsername()));
 
 				vacation.setVisible(trialMember.isVacation());
@@ -257,11 +259,11 @@ public class AcceptanceVotePage extends AbstractMemberPage {
 
 				if (myVote != null) {
 					if (myVote.isInFavor()) {
-						text = "You have voted in favor of "
-								+ trialMember.getUsername();
+						text = "You have voted in favor of " + trialMember
+								.getUsername();
 					} else {
-						text = "You have voted against "
-								+ trialMember.getUsername();
+						text = "You have voted against " + trialMember
+								.getUsername();
 					}
 				}
 

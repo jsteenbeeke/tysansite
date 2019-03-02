@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class RoleDAOImpl extends HibernateDAO<Role, RoleFilter> implements
-		com.tysanclan.site.projectewok.entities.dao.RoleDAO {
+class RoleDAOImpl extends HibernateDAO<Role, RoleFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.RoleDAO {
 
 }

@@ -29,7 +29,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class Diablo2AccountDAOImpl extends HibernateDAO<Diablo2Account, Diablo2AccountFilter> implements
+class Diablo2AccountDAOImpl
+		extends HibernateDAO<Diablo2Account, Diablo2AccountFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.Diablo2AccountDAO {
 
 }

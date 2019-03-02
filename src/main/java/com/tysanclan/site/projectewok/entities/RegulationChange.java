@@ -17,38 +17,23 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-import org.hibernate.annotations.Type;
-
-import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @javax.persistence.Entity
 @Table(indexes = { //
-		@Index(name = "IDX_REGULATIONCHANGE_REGULATION", columnList = "regulation_id"), //
+		@Index(name = "IDX_REGULATIONCHANGE_REGULATION", columnList = "regulation_id"),
+		//
 		@Index(name = "IDX_REGULATIONCHANGE_PROPOSER", columnList = "proposer_id") })
 @org.hibernate.annotations.Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class RegulationChange extends BaseDomainObject {
@@ -59,8 +44,8 @@ public class RegulationChange extends BaseDomainObject {
 
 		@Override
 		public String toString() {
-			return name().substring(0, 1).toUpperCase()
-					+ name().substring(1).toLowerCase();
+			return name().substring(0, 1).toUpperCase() + name().substring(1)
+					.toLowerCase();
 		}
 	}
 
@@ -134,7 +119,7 @@ public class RegulationChange extends BaseDomainObject {
 
 	/**
 	 * Sets the Veto of this RegulationChange
-	 * 
+	 *
 	 * @param veto
 	 *            The Veto of this RegulationChange
 	 */
@@ -151,7 +136,7 @@ public class RegulationChange extends BaseDomainObject {
 
 	/**
 	 * Sets the Regulation of this RegulationChange
-	 * 
+	 *
 	 * @param regulation
 	 *            The Regulation of this RegulationChange
 	 */
@@ -168,7 +153,7 @@ public class RegulationChange extends BaseDomainObject {
 
 	/**
 	 * Sets the Votes of this RegulationChange
-	 * 
+	 *
 	 * @param votes
 	 *            The Votes of this RegulationChange
 	 */

@@ -19,7 +19,6 @@ package com.tysanclan.site.projectewok.beans.impl;
 
 import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
 import com.tysanclan.rest.api.data.Rank;
-import com.tysanclan.rest.api.util.HashException;
 import com.tysanclan.site.projectewok.entities.*;
 import com.tysanclan.site.projectewok.entities.dao.*;
 import com.tysanclan.site.projectewok.entities.filter.ActivationFilter;
@@ -49,8 +48,8 @@ import java.util.*;
  */
 @Component
 @Scope("request")
-class UserServiceImpl implements
-		com.tysanclan.site.projectewok.beans.UserService {
+class UserServiceImpl
+		implements com.tysanclan.site.projectewok.beans.UserService {
 	private static final Logger logger = LoggerFactory
 			.getLogger(UserServiceImpl.class);
 
@@ -96,8 +95,9 @@ class UserServiceImpl implements
 		if (!hasUser(username)) {
 			User user = new User();
 
-			String checkedPassword = MemberUtil.isHashedPassword(password) ? password
-					: MemberUtil.hashPassword(password);
+			String checkedPassword = MemberUtil.isHashedPassword(password) ?
+					password :
+					MemberUtil.hashPassword(password);
 
 			user.setCustomTitle("");
 			user.setEMail(email);
@@ -111,8 +111,9 @@ class UserServiceImpl implements
 			user.setRetired(false);
 			userDAO.save(user);
 
-			logger.info(StringUtil.combineStrings("Created user ",
-												  user.getUsername(), " (uid ", user.getId(), ")"));
+			logger.info(StringUtil
+					.combineStrings("Created user ", user.getUsername(),
+							" (uid ", user.getId(), ")"));
 
 			return user;
 		}
@@ -157,8 +158,8 @@ class UserServiceImpl implements
 			user.setJoinDate(new Date(joinTime));
 			userDAO.update(user);
 
-			logService.logSystemAction("Membership", StringUtil.combineStrings(
-					"User ", user.getUsername(), " imported"));
+			logService.logSystemAction("Membership", StringUtil
+					.combineStrings("User ", user.getUsername(), " imported"));
 
 			return true;
 		}).getOrElse(false);
@@ -276,7 +277,7 @@ class UserServiceImpl implements
 		return activationDAO.load(activation.getId()).map(_activation -> {
 
 			logService.logUserAction(activation.getUser(), "User",
-									 "Account has been activated");
+					"Account has been activated");
 
 			activationDAO.delete(_activation);
 
@@ -333,7 +334,8 @@ class UserServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void processPasswordReset(PasswordRequest request, String password) {
-		Option<PasswordRequest> passwordRequestOption = passwordRequestDAO.load(request.getId());
+		Option<PasswordRequest> passwordRequestOption = passwordRequestDAO
+				.load(request.getId());
 		if (passwordRequestOption.isDefined()) {
 			PasswordRequest _request = passwordRequestOption.get();
 			User user = _request.getUser();
@@ -351,7 +353,8 @@ class UserServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void expireRequest(PasswordRequest request) {
-		passwordRequestDAO.load(request.getId()).forEach(passwordRequestDAO::delete);
+		passwordRequestDAO.load(request.getId())
+				.forEach(passwordRequestDAO::delete);
 	}
 
 	/**
@@ -360,8 +363,8 @@ class UserServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void expireConfirmation(EmailChangeConfirmation confirmation) {
-		emailChangeConfirmationDAO
-				.load(confirmation.getId()).forEach(emailChangeConfirmationDAO::delete);
+		emailChangeConfirmationDAO.load(confirmation.getId())
+				.forEach(emailChangeConfirmationDAO::delete);
 	}
 
 	@Override
@@ -541,7 +544,7 @@ class UserServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public EmailChangeConfirmation createEmailChangeRequest(User user,
-															String email) {
+			String email) {
 		return userDAO.load(user.getId()).map(_user -> {
 
 			EmailChangeConfirmation confirmation = new EmailChangeConfirmation();
@@ -552,10 +555,12 @@ class UserServiceImpl implements
 
 			emailChangeConfirmationDAO.save(confirmation);
 
-			String mailBody = mailService.getEmailChangeMailBody(
-					_user.getUsername(), confirmation.getActivationKey());
+			String mailBody = mailService
+					.getEmailChangeMailBody(_user.getUsername(),
+							confirmation.getActivationKey());
 
-			mailService.sendHTMLMail(email, "Tysan Clan E-Mail Change", mailBody);
+			mailService
+					.sendHTMLMail(email, "Tysan Clan E-Mail Change", mailBody);
 
 			return confirmation;
 		}).getOrNull();
@@ -584,16 +589,16 @@ class UserServiceImpl implements
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void banUser(User banner, User user) {
 		userDAO.load(user.getId())
-			   .filter(_user -> _user.getRank() == Rank.FORUM)
-			   .forEach(_user -> {
-				   _user.setRank(Rank.BANNED);
-				   userDAO.update(_user);
+				.filter(_user -> _user.getRank() == Rank.FORUM)
+				.forEach(_user -> {
+					_user.setRank(Rank.BANNED);
+					userDAO.update(_user);
 
-				   logService.logUserAction(banner, "Forums",
-											"Forum user " + _user.getUsername()
-													+ " was banned from the forums");
+					logService.logUserAction(banner, "Forums",
+							"Forum user " + _user.getUsername()
+									+ " was banned from the forums");
 
-			   });
+				});
 
 	}
 
@@ -605,16 +610,16 @@ class UserServiceImpl implements
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void unbanUser(User unbanner, User user) {
 		userDAO.load(user.getId())
-			   .filter(_user -> _user.getRank() == Rank.BANNED)
-			   .forEach(_user -> {
-				   _user.setRank(Rank.FORUM);
-				   userDAO.update(_user);
+				.filter(_user -> _user.getRank() == Rank.BANNED)
+				.forEach(_user -> {
+					_user.setRank(Rank.FORUM);
+					userDAO.update(_user);
 
-				   logService.logUserAction(unbanner, "Forums",
-											"Forum user " + _user.getUsername()
-													+ " may once again access the forums");
+					logService.logUserAction(unbanner, "Forums",
+							"Forum user " + _user.getUsername()
+									+ " may once again access the forums");
 
-			   });
+				});
 
 	}
 
@@ -623,8 +628,8 @@ class UserServiceImpl implements
 	public void warnUserForInactivity(Long userId) {
 		userDAO.load(userId).forEach(u -> {
 			mailService.sendHTMLMail(u.getEMail(),
-									 "Please remember to log in to the Tysan Clan website",
-									 mailService.getInactivityWarningMail(u));
+					"Please remember to log in to the Tysan Clan website",
+					mailService.getInactivityWarningMail(u));
 
 			logger.info("Notified " + u.getUsername() + " of inactivity");
 

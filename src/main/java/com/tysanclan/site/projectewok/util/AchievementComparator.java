@@ -17,11 +17,11 @@
  */
 package com.tysanclan.site.projectewok.util;
 
-import java.util.Comparator;
-
 import com.tysanclan.site.projectewok.entities.Achievement;
 import com.tysanclan.site.projectewok.entities.Game;
 import com.tysanclan.site.projectewok.entities.Group;
+
+import java.util.Comparator;
 
 /**
  * @author Jeroen Steenbeeke

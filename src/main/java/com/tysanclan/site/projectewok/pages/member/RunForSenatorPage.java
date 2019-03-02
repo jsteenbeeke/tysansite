@@ -17,23 +17,6 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.math.BigDecimal;
-import java.text.NumberFormat;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-
-import io.vavr.collection.Seq;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.beans.DemocracyService;
@@ -44,6 +27,17 @@ import com.tysanclan.site.projectewok.entities.dao.DonationDAO;
 import com.tysanclan.site.projectewok.entities.filter.DonationFilter;
 import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.MemberUtil;
+import io.vavr.collection.Seq;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.util.*;
 
 /**
  * @author Jeroen Steenbeeke
@@ -58,7 +52,7 @@ public class RunForSenatorPage extends AbstractMemberPage {
 	private DonationDAO donationDAO;
 
 	/**
-	 * 
+	 *
 	 */
 	public RunForSenatorPage() {
 		super("Run for Senator");
@@ -117,7 +111,7 @@ public class RunForSenatorPage extends AbstractMemberPage {
 	}
 
 	/**
-	 	 */
+	 */
 	private BigDecimal getDonatedAmount() {
 		Calendar cal = DateUtil.getCalendarInstance();
 		cal.add(Calendar.MONTH, -6);

@@ -17,12 +17,12 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 import java.util.regex.Matcher;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Jeroen Steenbeeke
@@ -33,10 +33,8 @@ public class TestYoutubeRegex {
 
 	@Test
 	public void testRegex() {
-		Matcher m1 = YouTubeUrlValidator.REGEX
-		        .matcher(url1);
-		Matcher m2 = YouTubeUrlValidator.REGEX
-		        .matcher(url2);
+		Matcher m1 = YouTubeUrlValidator.REGEX.matcher(url1);
+		Matcher m2 = YouTubeUrlValidator.REGEX.matcher(url2);
 
 		assertTrue(m1.matches());
 		assertTrue(m2.matches());

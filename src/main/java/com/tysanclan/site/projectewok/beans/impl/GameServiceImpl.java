@@ -46,8 +46,8 @@ import java.util.List;
  */
 @Component
 @Scope("request")
-class GameServiceImpl implements
-		com.tysanclan.site.projectewok.beans.GameService {
+class GameServiceImpl
+		implements com.tysanclan.site.projectewok.beans.GameService {
 	private static final Logger log = LoggerFactory
 			.getLogger(GameServiceImpl.class);
 
@@ -203,7 +203,7 @@ class GameServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public GamePetition createPetition(User user, String name, Realm realm,
-									   byte[] icon) {
+			byte[] icon) {
 		Dimension d = ImageUtil.getImageDimensions(icon);
 
 		if (d.width < 48 || d.height < 48) {
@@ -228,8 +228,8 @@ class GameServiceImpl implements
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
-	public GamePetition createPetition(User user, String name,
-									   String realmName, byte[] icon) {
+	public GamePetition createPetition(User user, String name, String realmName,
+			byte[] icon) {
 		GamePetition petition = new GamePetition();
 		petition.setImage(icon);
 		petition.setName(name);
@@ -249,7 +249,8 @@ class GameServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public Game createGameFromPetition(GamePetition petition) {
-		if (petition.getSignatures().size() >= getRequiredPetitionSignatures()) {
+		if (petition.getSignatures().size()
+				>= getRequiredPetitionSignatures()) {
 			Game game = new Game();
 			game.setActive(true);
 			game.setCoordinator(petition.getRequester());
@@ -261,8 +262,9 @@ class GameServiceImpl implements
 			Realm realm;
 
 			if (petition.getNewRealmName() != null) {
-				realm = realmService.createRealm(petition.getNewRealmName(),
-						game, petition.getRequester());
+				realm = realmService
+						.createRealm(petition.getNewRealmName(), game,
+								petition.getRequester());
 			} else {
 				game.getRealms().add(petition.getRealm());
 				gameDAO.update(game);
@@ -368,12 +370,9 @@ class GameServiceImpl implements
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void checkPetitionExpired(GamePetition petition) {
 		if (petition.getExpires().before(new Date())) {
-			logService
-					.logSystemAction(
-							"Petitions",
-							"Petition for game "
-									+ petition.getName()
-									+ " has expired without reaching the required amount of signatures");
+			logService.logSystemAction("Petitions",
+					"Petition for game " + petition.getName()
+							+ " has expired without reaching the required amount of signatures");
 			String message = "The petition for new game " + petition.getName()
 					+ " has expired without gaining enough signatures";
 			notifyPetitionParticipants(petition, message);
@@ -395,7 +394,7 @@ class GameServiceImpl implements
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	protected void notifyPetitionParticipants(GamePetition petition,
-											  String message) {
+			String message) {
 		notificationService.notifyUser(petition.getRequester(), message);
 		for (User user : petition.getSignatures()) {
 			notificationService.notifyUser(user, message);
@@ -405,7 +404,7 @@ class GameServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public GameAccount createMinecraftAccount(UserGameRealm userGameRealm,
-											  String username) {
+			String username) {
 		MinecraftAccount account = new MinecraftAccount();
 
 		account.setName(username);
@@ -417,7 +416,7 @@ class GameServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public GameAccount createDiablo2Account(UserGameRealm userGameRealm,
-											String username) {
+			String username) {
 		Diablo2Account account = new Diablo2Account();
 
 		account.setName(username);
@@ -429,7 +428,7 @@ class GameServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public GameAccount createRealIDAccount(UserGameRealm userGameRealm,
-										   String email) {
+			String email) {
 		RealIdAccount account = new RealIdAccount();
 
 		account.setName(email);
@@ -440,8 +439,8 @@ class GameServiceImpl implements
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
-	public GameAccount createLeagueOfLegendsAccount(
-			UserGameRealm userGameRealm, String username) {
+	public GameAccount createLeagueOfLegendsAccount(UserGameRealm userGameRealm,
+			String username) {
 		LeagueOfLegendsAccount account = new LeagueOfLegendsAccount();
 
 		account.setName(username);
@@ -453,7 +452,7 @@ class GameServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public GameAccount createStarCraft2Account(UserGameRealm userGameRealm,
-											   String username, int characterCode) {
+			String username, int characterCode) {
 		StarCraft2CharAccount account = new StarCraft2CharAccount();
 
 		account.setCharacterCode(characterCode);
@@ -465,10 +464,9 @@ class GameServiceImpl implements
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	protected GameAccount trySaveAccount(GameAccount account) {
-		if (account.isValid()
-				&& isValidAccountType(account.getUserGameRealm().getGame(),
-				account.getUserGameRealm().getRealm(),
-				account.getType())) {
+		if (account.isValid() && isValidAccountType(
+				account.getUserGameRealm().getGame(),
+				account.getUserGameRealm().getRealm(), account.getType())) {
 			gameAccountDAO.save(account);
 		} else {
 			return null;
@@ -478,7 +476,8 @@ class GameServiceImpl implements
 	}
 
 	@Override
-	public boolean isValidAccountType(Game game, Realm realm, AccountType type) {
+	public boolean isValidAccountType(Game game, Realm realm,
+			AccountType type) {
 		AllowedAccountTypeFilter filter = new AllowedAccountTypeFilter();
 
 		filter.game(game);
@@ -554,49 +553,47 @@ class GameServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void removeFromRealm(User user, Realm _realm, Game _game) {
-		realmDAO.load(_realm.getId()).forEach(realm -> gameDAO.load(_game.getId()).forEach(game -> {
+		realmDAO.load(_realm.getId())
+				.forEach(realm -> gameDAO.load(_game.getId()).forEach(game -> {
 
-			realm.getGames().remove(game);
-			game.getRealms().remove(realm);
+					realm.getGames().remove(game);
+					game.getRealms().remove(realm);
 
-			logService.logUserAction(user, "Games", game.getName()
-					+ " is no longer played on " + realm.getName());
+					logService.logUserAction(user, "Games",
+							game.getName() + " is no longer played on " + realm
+									.getName());
 
-			if (realm.getGames().isEmpty()) {
-				for (GamingGroup group : realm.getGroups()) {
-					logService.logSystemAction("Groups", "Group " + group.getName()
-							+ " has been disbanded due to its realm being removed");
-					groupDAO.delete(group);
-				}
+					if (realm.getGames().isEmpty()) {
+						for (GamingGroup group : realm.getGroups()) {
+							logService.logSystemAction("Groups",
+									"Group " + group.getName()
+											+ " has been disbanded due to its realm being removed");
+							groupDAO.delete(group);
+						}
 
-				logService
-						.logSystemAction(
-								"Realms",
-								"Realm "
-										+ realm.getName()
+						logService.logSystemAction("Realms",
+								"Realm " + realm.getName()
 										+ " no longer has any active games and has therefore been removed");
 
-				realmDAO.delete(realm);
+						realmDAO.delete(realm);
 
-			}
+					}
 
-			if (game.getRealms().isEmpty()) {
-				for (GamingGroup group : game.getGroups()) {
-					logService.logSystemAction("Groups", "Group " + group.getName()
-							+ " has been disbanded due to its game being removed");
-					groupDAO.delete(group);
-				}
+					if (game.getRealms().isEmpty()) {
+						for (GamingGroup group : game.getGroups()) {
+							logService.logSystemAction("Groups",
+									"Group " + group.getName()
+											+ " has been disbanded due to its game being removed");
+							groupDAO.delete(group);
+						}
 
-				logService
-						.logSystemAction(
-								"Games",
-								"Game "
-										+ game.getName()
+						logService.logSystemAction("Games",
+								"Game " + game.getName()
 										+ " no longer has any active realms and has therefore been removed");
 
-				gameDAO.delete(game);
-			}
-		}));
+						gameDAO.delete(game);
+					}
+				}));
 	}
 
 	@Override
@@ -635,25 +632,23 @@ class GameServiceImpl implements
 
 			if (MemberUtil.isMember(user) && user.getRank() != Rank.TRIAL) {
 				boolean wasReplaced = game.getCoordinator() == null;
-				if (game.getCoordinator() != null
-						&& !game.getCoordinator().equals(user)) {
-					notificationService.notifyUser(
-							game.getCoordinator(),
-							"You are no longer supervisor for the game "
-									+ game.getName());
+				if (game.getCoordinator() != null && !game.getCoordinator()
+						.equals(user)) {
+					notificationService.notifyUser(game.getCoordinator(),
+							"You are no longer supervisor for the game " + game
+									.getName());
 					wasReplaced = true;
 				}
 
 				game.setCoordinator(user);
 
 				if (wasReplaced) {
-					notificationService
-							.notifyUser(
-									game.getCoordinator(),
-									"You are now supervisor for the game "
-											+ game.getName());
+					notificationService.notifyUser(game.getCoordinator(),
+							"You are now supervisor for the game " + game
+									.getName());
 					logService.logUserAction(game.getCoordinator(), "Game",
-							"User is now supervisor for game " + game.getName());
+							"User is now supervisor for game " + game
+									.getName());
 				}
 			}
 		});

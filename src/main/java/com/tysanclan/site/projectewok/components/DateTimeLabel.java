@@ -17,14 +17,13 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import java.util.Date;
-
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.panel.Panel;
-
 import com.tysanclan.site.projectewok.TysanSession;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.util.DateUtil;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.panel.Panel;
+
+import java.util.Date;
 
 /**
  * @author Jeroen Steenbeeke
@@ -35,18 +34,14 @@ public class DateTimeLabel extends Panel {
 	public DateTimeLabel(String id, Date date) {
 		super(id);
 
-		String timezone = TysanSession.session()
-				.flatMap(TysanSession::getUser)
-				.map(User::getTimezone)
-				.getOrNull();
+		String timezone = TysanSession.session().flatMap(TysanSession::getUser)
+				.map(User::getTimezone).getOrNull();
 
 		if (timezone != null) {
-			add(new Label("label", DateUtil
-					.getTimezoneFormattedString(date,
-							timezone)));
+			add(new Label("label",
+					DateUtil.getTimezoneFormattedString(date, timezone)));
 		} else {
-			add(new Label("label", DateUtil
-					.getESTFormattedString(date)));
+			add(new Label("label", DateUtil.getESTFormattedString(date)));
 		}
 	}
 }

@@ -25,6 +25,7 @@ import com.tysanclan.site.projectewok.entities.filter.MobileUserAgentFilter;
  *
  * @author Jeroen Steenbeeke
  */
-public interface MobileUserAgentDAO extends DAO<MobileUserAgent, MobileUserAgentFilter> {
+public interface MobileUserAgentDAO
+		extends DAO<MobileUserAgent, MobileUserAgentFilter> {
 
 }

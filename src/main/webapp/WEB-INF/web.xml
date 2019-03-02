@@ -14,7 +14,7 @@
 		 http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
-	<display-name>Project Ewok</display-name>
+  <display-name>Project Ewok</display-name>
 
   <context-param>
     <param-name>contextConfigLocation</param-name>
@@ -22,78 +22,90 @@
   </context-param>
   <context-param>
     <param-name>contextClass</param-name>
-    <param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+    <param-value>
+      org.springframework.web.context.support.AnnotationConfigWebApplicationContext
+    </param-value>
   </context-param>
 
-	<!-- Do not put session ID in URL, Jetty 7+ -->
-	<context-param>
-		<param-name>org.eclipse.jetty.servlet.SessionIdPathParameterName</param-name>
-		<param-value>none</param-value>
-	</context-param>
+  <!-- Do not put session ID in URL, Jetty 7+ -->
+  <context-param>
+    <param-name>org.eclipse.jetty.servlet.SessionIdPathParameterName
+    </param-name>
+    <param-value>none</param-value>
+  </context-param>
 
-	<!-- Do not put session ID in URL, Jetty 6 -->
-	<context-param>
-		<param-name>org.mortbay.jetty.servlet.SessionIdPathParameterName</param-name>
-		<param-value>none</param-value>
-	</context-param>
+  <!-- Do not put session ID in URL, Jetty 6 -->
+  <context-param>
+    <param-name>org.mortbay.jetty.servlet.SessionIdPathParameterName
+    </param-name>
+    <param-value>none</param-value>
+  </context-param>
 
-	
-	<context-param>
-		<param-name>resteasy.servlet.mapping.prefix</param-name>
-		<param-value>/rs/</param-value>
-	</context-param>
 
-	<filter>
-		<filter-name>rest</filter-name>
-		<filter-class>org.jboss.resteasy.plugins.server.servlet.FilterDispatcher</filter-class>
-	</filter>
+  <context-param>
+    <param-name>resteasy.servlet.mapping.prefix</param-name>
+    <param-value>/rs/</param-value>
+  </context-param>
+
+  <filter>
+    <filter-name>rest</filter-name>
+    <filter-class>org.jboss.resteasy.plugins.server.servlet.FilterDispatcher
+    </filter-class>
+  </filter>
 
   <filter>
     <filter-name>oeiv</filter-name>
-    <filter-class>org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter</filter-class>
+    <filter-class>
+      org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter
+    </filter-class>
   </filter>
 
-	<filter>
-		<filter-name>Tysan</filter-name>
-		<filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
-		<init-param>
-			<param-name>applicationClassName</param-name>
-			<param-value>com.tysanclan.site.projectewok.TysanApplication</param-value>
-		</init-param>
-	</filter>
+  <filter>
+    <filter-name>Tysan</filter-name>
+    <filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
+    <init-param>
+      <param-name>applicationClassName</param-name>
+      <param-value>com.tysanclan.site.projectewok.TysanApplication</param-value>
+    </init-param>
+  </filter>
 
-	<filter-mapping>
-		<filter-name>oeiv</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
+  <filter-mapping>
+    <filter-name>oeiv</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
 
-	<filter-mapping>
-		<filter-name>Tysan</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
+  <filter-mapping>
+    <filter-name>Tysan</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
 
 
-	<servlet>
-		<servlet-name>resteasy-servlet</servlet-name>
-		<servlet-class>
-			org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher
-		</servlet-class>
-	</servlet>
+  <servlet>
+    <servlet-name>resteasy-servlet</servlet-name>
+    <servlet-class>
+      org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher
+    </servlet-class>
+  </servlet>
 
-	<servlet-mapping>
-		<servlet-name>resteasy-servlet</servlet-name>
-		<url-pattern>/rs/*</url-pattern>
-	</servlet-mapping>
-
-	<listener>
-		<listener-class>org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap</listener-class>
-	</listener>
+  <servlet-mapping>
+    <servlet-name>resteasy-servlet</servlet-name>
+    <url-pattern>/rs/*</url-pattern>
+  </servlet-mapping>
 
   <listener>
-    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    <listener-class>
+      org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap
+    </listener-class>
   </listener>
 
   <listener>
-    <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+    <listener-class>org.springframework.web.context.ContextLoaderListener
+    </listener-class>
+  </listener>
+
+  <listener>
+    <listener-class>
+      org.springframework.web.context.request.RequestContextListener
+    </listener-class>
   </listener>
 </web-app>

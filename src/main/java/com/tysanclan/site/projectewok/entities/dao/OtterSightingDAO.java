@@ -25,5 +25,6 @@ import com.tysanclan.site.projectewok.entities.filter.OtterSightingFilter;
  *
  * @author Jeroen Steenbeeke
  */
-public interface OtterSightingDAO extends DAO<OtterSighting, OtterSightingFilter> {
+public interface OtterSightingDAO
+		extends DAO<OtterSighting, OtterSightingFilter> {
 }

@@ -21,7 +21,8 @@ import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.PaymentRequest;
 import com.tysanclan.site.projectewok.entities.filter.PaymentRequestFilter;
 
-public interface PaymentRequestDAO extends DAO<PaymentRequest, PaymentRequestFilter> {
+public interface PaymentRequestDAO
+		extends DAO<PaymentRequest, PaymentRequestFilter> {
 
 	String getConfirmationKey(PaymentRequest request);
 

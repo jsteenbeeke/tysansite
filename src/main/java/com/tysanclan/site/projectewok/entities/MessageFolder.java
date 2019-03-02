@@ -17,29 +17,18 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
-import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
+import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 import org.hibernate.annotations.Cache;
 
-import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Entity
 @Table(indexes = { //
-@Index(name = "IDX_MESSAGEFOLDER_OWNER", columnList = "owner_id"),
+		@Index(name = "IDX_MESSAGEFOLDER_OWNER", columnList = "owner_id"),
 		@Index(name = "IDX_MESSAGEFOLDER_PARENT", columnList = "parent_id") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class MessageFolder extends BaseDomainObject {
@@ -96,7 +85,7 @@ public class MessageFolder extends BaseDomainObject {
 
 	/**
 	 * Sets the Name of this MessageFolder
-	 * 
+	 *
 	 * @param name
 	 *            The Name of this MessageFolder
 	 */
@@ -113,7 +102,7 @@ public class MessageFolder extends BaseDomainObject {
 
 	/**
 	 * Sets the Owner of this MessageFolder
-	 * 
+	 *
 	 * @param owner
 	 *            The Owner of this MessageFolder
 	 */
@@ -130,7 +119,7 @@ public class MessageFolder extends BaseDomainObject {
 
 	/**
 	 * Sets the Parent of this MessageFolder
-	 * 
+	 *
 	 * @param parent
 	 *            The Parent of this MessageFolder
 	 */

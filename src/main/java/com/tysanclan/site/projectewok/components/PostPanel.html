@@ -27,19 +27,27 @@
                             <br/>
                         </wicket:enclosure>
 
+                        <wicket:enclosure
+                                child="disney">Disney Mastery: <span
+                                wicket:id="disney">25%</span>
+                            <br/>
+                        </wicket:enclosure>
 
-                        <span style="display: inline;" wicket:id="sendMessage"></span><span
+                        <span style="display: inline;"
+                              wicket:id="sendMessage"></span><span
                                 wicket:id="viewProfile"></span><br/> <br/>
                         <wicket:enclosure
                                 child="rank">
                             <div>
-                                <span wicket:id="rank"></span> <span wicket:id="rankName"></span>
+                                <span wicket:id="rank"></span> <span
+                                    wicket:id="rankName"></span>
                             </div>
                             <br/>
                         </wicket:enclosure>
                         <img wicket:id="avatar"/> <br/>
                         <p wicket:id="realms">
-                            <b>Realm:</b> <span wicket:id="realm"></span><br/> <b>Accounts:</b>
+                            <b>Realm:</b> <span wicket:id="realm"></span><br/>
+                            <b>Accounts:</b>
                             <span wicket:id="accounts"></span><br/>
                         </p>
                         <wicket:enclosure child="donations">
@@ -49,13 +57,15 @@
                         <span wicket:id="posttime">25th of October, 2008 @ 11:38</span><br/>
                         <wicket:enclosure child="icon">
                             <br/>
-                            <img wicket:id="icon" alt="Unread message" title="Unread message"/>
+                            <img wicket:id="icon" alt="Unread message"
+                                 title="Unread message"/>
                         </wicket:enclosure>
                     </td>
                     <td style="vertical-align: top; padding-left: 5px;">
                         <div wicket:id="branchnote">
-                            Off-topic responses in this thread were branched to <span
-                                wicket:id="source"></span>
+                            Off-topic responses in this thread were branched to
+                            <span
+                                    wicket:id="source"></span>
                         </div>
                         <span wicket:id="body">This is a test</span>
                         <wicket:enclosure
@@ -70,9 +80,12 @@
                     <tr>
                         <td colspan="2" style="text-align: center;"><a
                                 wicket:id="edit"><img style="border: 0px;"
-                                                      src="images/icons/page_white_edit.png" alt="Edit"
-                                                      title="Edit post"/></a> <a wicket:id="delete"><img
-                                style="border: 0px;" src="images/icons/page_white_delete.png"
+                                                      src="images/icons/page_white_edit.png"
+                                                      alt="Edit"
+                                                      title="Edit post"/></a> <a
+                                wicket:id="delete"><img
+                                style="border: 0px;"
+                                src="images/icons/page_white_delete.png"
                                 alt="Delete" title="Delete post"/></a></td>
                     </tr>
                 </wicket:enclosure>

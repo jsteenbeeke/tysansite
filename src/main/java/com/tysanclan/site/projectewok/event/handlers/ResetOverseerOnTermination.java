@@ -17,13 +17,6 @@
  */
 package com.tysanclan.site.projectewok.event.handlers;
 
-import java.util.List;
-
-import io.vavr.collection.Seq;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.jeroensteenbeeke.hyperion.events.EventHandler;
 import com.jeroensteenbeeke.hyperion.events.EventResult;
 import com.tysanclan.site.projectewok.entities.Realm;
@@ -31,9 +24,13 @@ import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.RealmDAO;
 import com.tysanclan.site.projectewok.entities.filter.RealmFilter;
 import com.tysanclan.site.projectewok.event.MembershipTerminatedEvent;
+import io.vavr.collection.Seq;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-public class ResetOverseerOnTermination implements
-		EventHandler<MembershipTerminatedEvent> {
+public class ResetOverseerOnTermination
+		implements EventHandler<MembershipTerminatedEvent> {
 	@Autowired
 	private RealmDAO realmDAO;
 

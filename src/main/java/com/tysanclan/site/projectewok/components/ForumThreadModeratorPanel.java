@@ -17,12 +17,6 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import org.apache.wicket.Session;
-import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanSession;
 import com.tysanclan.site.projectewok.beans.ForumService;
@@ -30,13 +24,11 @@ import com.tysanclan.site.projectewok.entities.ForumThread;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.EventDAO;
 import com.tysanclan.site.projectewok.entities.dao.TrialDAO;
-import com.tysanclan.site.projectewok.pages.forum.ConfirmForumThreadDeletePage;
-import com.tysanclan.site.projectewok.pages.forum.ConfirmForumThreadLockPage;
-import com.tysanclan.site.projectewok.pages.forum.ConfirmForumThreadStickyPage;
-import com.tysanclan.site.projectewok.pages.forum.ConfirmForumThreadUnlockPage;
-import com.tysanclan.site.projectewok.pages.forum.ConfirmForumThreadUnstickyPage;
-import com.tysanclan.site.projectewok.pages.forum.ForumThreadMovePage;
-import com.tysanclan.site.projectewok.pages.forum.ForumThreadSplitPage;
+import com.tysanclan.site.projectewok.pages.forum.*;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -53,8 +45,7 @@ public class ForumThreadModeratorPanel extends Panel {
 	@SpringBean
 	private EventDAO eventDAO;
 
-	public ForumThreadModeratorPanel(String id,
-									 ForumThread thread) {
+	public ForumThreadModeratorPanel(String id, ForumThread thread) {
 		super(id);
 
 		IModel<ForumThread> model = ModelMaker.wrap(thread);
@@ -64,23 +55,19 @@ public class ForumThreadModeratorPanel extends Panel {
 
 			@Override
 			public void onClick() {
-				setResponsePage(new ConfirmForumThreadDeletePage(
-						getModelObject()));
+				setResponsePage(
+						new ConfirmForumThreadDeletePage(getModelObject()));
 			}
-		}
-					.setVisible(!thread.isLocked()
-										&& !thread.isPostSticky()
-										&& trialDAO
-							.getTrialByThread(thread) == null
-										&& eventDAO
-							.getEventByThread(thread) == null));
+		}.setVisible(!thread.isLocked() && !thread.isPostSticky()
+				&& trialDAO.getTrialByThread(thread) == null
+				&& eventDAO.getEventByThread(thread) == null));
 		add(new Link<ForumThread>("lock", model) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick() {
-				setResponsePage(new ConfirmForumThreadLockPage(
-						getModelObject()));
+				setResponsePage(
+						new ConfirmForumThreadLockPage(getModelObject()));
 			}
 		}.setVisible(!thread.isLocked()));
 
@@ -89,8 +76,8 @@ public class ForumThreadModeratorPanel extends Panel {
 
 			@Override
 			public void onClick() {
-				setResponsePage(new ConfirmForumThreadUnlockPage(
-						getModelObject()));
+				setResponsePage(
+						new ConfirmForumThreadUnlockPage(getModelObject()));
 			}
 		}.setVisible(thread.isLocked()));
 
@@ -99,49 +86,42 @@ public class ForumThreadModeratorPanel extends Panel {
 
 			@Override
 			public void onClick() {
-				setResponsePage(new ConfirmForumThreadStickyPage(
-						getModelObject()));
+				setResponsePage(
+						new ConfirmForumThreadStickyPage(getModelObject()));
 			}
-		}.setVisible(!thread.isLocked()
-							 && !thread.isPostSticky()));
+		}.setVisible(!thread.isLocked() && !thread.isPostSticky()));
 
 		add(new Link<ForumThread>("unsticky", model) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick() {
-				setResponsePage(new ConfirmForumThreadUnstickyPage(
-						getModelObject()));
+				setResponsePage(
+						new ConfirmForumThreadUnstickyPage(getModelObject()));
 			}
-		}.setVisible(!thread.isLocked()
-							 && thread.isPostSticky()));
+		}.setVisible(!thread.isLocked() && thread.isPostSticky()));
 
-		User u = TysanSession.session().flatMap(TysanSession::getUser).getOrNull();
+		User u = TysanSession.session().flatMap(TysanSession::getUser)
+				.getOrNull();
 
 		add(new Link<ForumThread>("move", model) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick() {
-				setResponsePage(new ForumThreadMovePage(
-						getModelObject()));
+				setResponsePage(new ForumThreadMovePage(getModelObject()));
 			}
-		}
-					.setVisible(!forumService
-							.getValidDestinationForums(
-									thread.getForum(), u)
-							.isEmpty()
-										&& !thread.isLocked()
-										&& !thread.isPostSticky()));
+		}.setVisible(
+				!forumService.getValidDestinationForums(thread.getForum(), u)
+						.isEmpty() && !thread.isLocked() && !thread
+						.isPostSticky()));
 		add(new Link<ForumThread>("split", model) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick() {
-				setResponsePage(new ForumThreadSplitPage(
-						getModelObject()));
+				setResponsePage(new ForumThreadSplitPage(getModelObject()));
 			}
-		}.setVisible(!thread.isLocked()
-							 && thread.getPosts().size() > 1));
+		}.setVisible(!thread.isLocked() && thread.getPosts().size() > 1));
 	}
 }

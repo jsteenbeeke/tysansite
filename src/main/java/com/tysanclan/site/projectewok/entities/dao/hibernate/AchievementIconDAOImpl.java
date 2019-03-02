@@ -29,8 +29,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class AchievementIconDAOImpl extends HibernateDAO<AchievementIcon, AchievementIconFilter>
-		implements
+class AchievementIconDAOImpl
+		extends HibernateDAO<AchievementIcon, AchievementIconFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.AchievementIconDAO {
 
 }

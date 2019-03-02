@@ -17,15 +17,14 @@
  */
 package com.tysanclan.site.projectewok.pages;
 
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.entities.Regulation;
 import com.tysanclan.site.projectewok.entities.dao.RegulationDAO;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -39,8 +38,8 @@ public class RegulationPage extends TysanPage {
 	public RegulationPage() {
 		super("Regulations");
 
-		add(new ListView<Regulation>("regulations", ModelMaker.wrap(dao
-				.findAll().toJavaList())) {
+		add(new ListView<Regulation>("regulations",
+				ModelMaker.wrap(dao.findAll().toJavaList())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

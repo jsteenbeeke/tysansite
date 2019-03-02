@@ -17,17 +17,16 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-
 import com.tysanclan.site.projectewok.entities.ForumThread;
 import com.tysanclan.site.projectewok.pages.ForumThreadPage;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public class AutoThreadLink extends
-		LoginAwareLink<ThreadLink, BookmarkablePageLink<ForumThread>> {
+public class AutoThreadLink
+		extends LoginAwareLink<ThreadLink, BookmarkablePageLink<ForumThread>> {
 	private static final long serialVersionUID = 1L;
 
 	private final boolean condition;
@@ -55,8 +54,8 @@ public class AutoThreadLink extends
 		BookmarkablePageLink<ForumThread> bpl = new BookmarkablePageLink<ForumThread>(
 				LINK_LABEL, ForumThreadPage.class, pp);
 
-		condition = super.isLoggedInCondition()
-				&& (thread.isShadow() || thread.getForum().isMembersOnly());
+		condition = super.isLoggedInCondition() && (thread.isShadow() || thread
+				.getForum().isMembersOnly());
 
 		setLoggedInLink(tl);
 		setNotLoggedInLink(bpl);

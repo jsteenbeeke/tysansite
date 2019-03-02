@@ -17,13 +17,7 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.SortedMap;
-import java.util.TreeMap;
-
+import com.tysanclan.site.projectewok.util.DateUtil;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -31,7 +25,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 
-import com.tysanclan.site.projectewok.util.DateUtil;
+import java.util.*;
 
 /**
  * @author Jeroen Steenbeeke
@@ -42,7 +36,7 @@ public abstract class CalendarPanel extends Panel {
 	private final Calendar calendar;
 
 	/**
-	 * 
+	 *
 	 */
 	public CalendarPanel(String id, final Calendar calendar) {
 		super(id);
@@ -57,7 +51,8 @@ public abstract class CalendarPanel extends Panel {
 
 			@Override
 			protected void populateItem(ListItem<Integer> item) {
-				SortedMap<Integer, List<Date>> calendarLayout = getCalendarLayout(calendar);
+				SortedMap<Integer, List<Date>> calendarLayout = getCalendarLayout(
+						calendar);
 				List<Date> days = calendarLayout.get(item.getModelObject());
 
 				item.add(createDaysListView(days, item.getModelObject()));
@@ -82,8 +77,8 @@ public abstract class CalendarPanel extends Panel {
 			protected void populateItem(ListItem<Date> item) {
 				item.add(getDateComponent("content", item.getModelObject()));
 				if (item.getModelObject() != null) {
-					item.add(AttributeModifier.replace("class",
-							new Model<String>("Calendar")));
+					item.add(AttributeModifier
+							.replace("class", new Model<String>("Calendar")));
 				}
 			}
 
@@ -128,8 +123,10 @@ public abstract class CalendarPanel extends Panel {
 
 			cal.add(Calendar.DAY_OF_MONTH, 1);
 
-			if (cal.get(Calendar.MONTH) != month && weeksMap.containsKey(week)) {
-				while (cal.get(Calendar.DAY_OF_WEEK) != cal.getFirstDayOfWeek()) {
+			if (cal.get(Calendar.MONTH) != month && weeksMap
+					.containsKey(week)) {
+				while (cal.get(Calendar.DAY_OF_WEEK) != cal
+						.getFirstDayOfWeek()) {
 					weeksMap.get(week).add(null);
 					cal.add(Calendar.DAY_OF_MONTH, 1);
 				}

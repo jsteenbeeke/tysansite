@@ -17,6 +17,14 @@
  */
 package com.tysanclan.site.projectewok.components;
 
+import com.tysanclan.site.projectewok.TysanSession;
+import com.tysanclan.site.projectewok.beans.ForumService;
+import com.tysanclan.site.projectewok.entities.Forum;
+import com.tysanclan.site.projectewok.entities.ForumCategory;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.dao.ForumCategoryDAO;
+import com.tysanclan.site.projectewok.entities.dao.ForumDAO;
+import com.tysanclan.site.projectewok.entities.dao.ForumThreadDAO;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.ContextImage;
@@ -26,15 +34,6 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.tysanclan.site.projectewok.TysanSession;
-import com.tysanclan.site.projectewok.beans.ForumService;
-import com.tysanclan.site.projectewok.entities.Forum;
-import com.tysanclan.site.projectewok.entities.ForumCategory;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.ForumCategoryDAO;
-import com.tysanclan.site.projectewok.entities.dao.ForumDAO;
-import com.tysanclan.site.projectewok.entities.dao.ForumThreadDAO;
 
 /**
  * @author Jeroen Steenbeeke
@@ -54,8 +53,8 @@ public class ForumOverviewPanel extends Panel {
 	public ForumOverviewPanel(String id) {
 		super(id);
 
-		DataView<ForumCategory> cats = new DataView<ForumCategory>(
-				"categories", ForumDataProvider.of(forumCategoryDAO)) {
+		DataView<ForumCategory> cats = new DataView<ForumCategory>("categories",
+				ForumDataProvider.of(forumCategoryDAO)) {
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean
@@ -67,8 +66,7 @@ public class ForumOverviewPanel extends Panel {
 				String catName = cat.getName();
 
 				User user = TysanSession.session()
-						.flatMap(TysanSession::getUser)
-						.getOrNull();
+						.flatMap(TysanSession::getUser).getOrNull();
 
 				boolean active = user == null || !user.isCollapseForums();
 
@@ -107,14 +105,15 @@ public class ForumOverviewPanel extends Panel {
 										.size())));
 
 						User u = TysanSession.session()
-								.flatMap(TysanSession::getUser)
-								.getOrNull();
+								.flatMap(TysanSession::getUser).getOrNull();
 
-						int unreadCount = u != null ? forumService
-								.getForumUnreadCount(u, forum) : 0;
+						int unreadCount = u != null ?
+								forumService.getForumUnreadCount(u, forum) :
+								0;
 
-						innerItem.add(new Label("unread", new Model<Integer>(
-								unreadCount)).setVisible(u != null));
+						innerItem.add(new Label("unread",
+								new Model<Integer>(unreadCount))
+								.setVisible(u != null));
 
 						StringBuilder modList = new StringBuilder();
 						for (User mod : forum.getModerators()) {
@@ -129,8 +128,8 @@ public class ForumOverviewPanel extends Panel {
 							modList.append("-");
 						}
 
-						innerItem.add(new Label("moderators", modList
-								.toString()));
+						innerItem.add(new Label("moderators",
+								modList.toString()));
 					}
 
 				};
@@ -148,8 +147,7 @@ public class ForumOverviewPanel extends Panel {
 			@Override
 			public void onClick() {
 				User user = TysanSession.session()
-						.flatMap(TysanSession::getUser)
-						.getOrNull();
+						.flatMap(TysanSession::getUser).getOrNull();
 
 				if (user != null) {
 					forumService.clearUnreadPosts(user);
@@ -161,8 +159,7 @@ public class ForumOverviewPanel extends Panel {
 
 		markAsReadLink.add(new ContextImage("icon", "images/icons/eye.png"));
 
-		User user = TysanSession.session()
-				.flatMap(TysanSession::getUser)
+		User user = TysanSession.session().flatMap(TysanSession::getUser)
 				.getOrNull();
 
 		markAsReadLink.setVisible(user != null);

@@ -28,7 +28,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class CompoundVoteChoiceDAOImpl extends HibernateDAO<CompoundVoteChoice, CompoundVoteChoiceFilter>
+class CompoundVoteChoiceDAOImpl
+		extends HibernateDAO<CompoundVoteChoice, CompoundVoteChoiceFilter>
 		implements
 		com.tysanclan.site.projectewok.entities.dao.CompoundVoteChoiceDAO {
 

@@ -28,7 +28,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class UntenabilityVoteDAOImpl extends HibernateDAO<UntenabilityVote, UntenabilityVoteFilter>
+class UntenabilityVoteDAOImpl
+		extends HibernateDAO<UntenabilityVote, UntenabilityVoteFilter>
 		implements
 		com.tysanclan.site.projectewok.entities.dao.UntenabilityVoteDAO {
 

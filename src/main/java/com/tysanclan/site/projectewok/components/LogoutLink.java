@@ -17,10 +17,9 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import org.apache.wicket.markup.html.link.Link;
-
 import com.tysanclan.site.projectewok.auth.TysanLoginSecured;
 import com.tysanclan.site.projectewok.pages.NewsPage;
+import org.apache.wicket.markup.html.link.Link;
 
 /**
  * @author Jeroen Steenbeeke

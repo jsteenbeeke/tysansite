@@ -17,17 +17,16 @@
  */
 package com.tysanclan.site.projectewok.auth;
 
-import java.util.Arrays;
-
+import com.tysanclan.site.projectewok.TysanSession;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
+import com.tysanclan.site.projectewok.util.MemberUtil;
 import io.vavr.control.Option;
 import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.application.IComponentInstantiationListener;
 
-import com.tysanclan.site.projectewok.TysanSession;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
-import com.tysanclan.site.projectewok.util.MemberUtil;
+import java.util.Arrays;
 
 /**
  * Component instantiation listener that takes care of security checks for

@@ -31,14 +31,15 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Component
 @Scope("request")
-class EventDAOImpl extends HibernateDAO<Event, EventFilter> implements
-		com.tysanclan.site.projectewok.entities.dao.EventDAO {
+class EventDAOImpl extends HibernateDAO<Event, EventFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.EventDAO {
 	/**
 	 * @see com.tysanclan.site.projectewok.entities.dao.EventDAO#getEventByThread(com.tysanclan.site.projectewok.entities.ForumThread)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public Event getEventByThread(ForumThread thread) {
-		return getUniqueByFilter(new EventFilter().eventThread(thread)).getOrNull();
+		return getUniqueByFilter(new EventFilter().eventThread(thread))
+				.getOrNull();
 	}
 }

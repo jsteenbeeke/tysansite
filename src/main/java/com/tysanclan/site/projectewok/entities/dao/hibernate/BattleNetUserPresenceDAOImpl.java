@@ -28,7 +28,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class BattleNetUserPresenceDAOImpl extends
-		HibernateDAO<BattleNetUserPresence, BattleNetUserPresenceFilter> implements
+class BattleNetUserPresenceDAOImpl
+		extends HibernateDAO<BattleNetUserPresence, BattleNetUserPresenceFilter>
+		implements
 		com.tysanclan.site.projectewok.entities.dao.BattleNetUserPresenceDAO {
 }

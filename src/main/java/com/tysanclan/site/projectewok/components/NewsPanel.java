@@ -17,13 +17,12 @@
  */
 package com.tysanclan.site.projectewok.components;
 
+import com.tysanclan.site.projectewok.entities.ForumThread;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-
-import com.tysanclan.site.projectewok.entities.ForumThread;
 
 /**
  * @author Jeroen Steenbeeke
@@ -35,8 +34,8 @@ public class NewsPanel extends Panel {
 		super(id);
 
 		add(new Label("title", thread.getTitle()));
-		BBCodePanel content = new BBCodePanel("content", thread.getPosts()
-				.get(0).getContent());
+		BBCodePanel content = new BBCodePanel("content",
+				thread.getPosts().get(0).getContent());
 		add(content);
 
 		add(new DateLabel("postdate", thread.getPostTime()));
@@ -48,9 +47,10 @@ public class NewsPanel extends Panel {
 		PageParameters params = new PageParameters();
 		params.add("threadid", Long.toString(thread.getId()));
 
-		add(new AutoThreadLink("replylink", thread, "("
-				+ Integer.toString(thread.getPosts().size() - 1) + ") replies"));
-		add(new ContextImage("icon", new Model<String>(
-				"images/icons/comments.png")));
+		add(new AutoThreadLink("replylink", thread,
+				"(" + Integer.toString(thread.getPosts().size() - 1)
+						+ ") replies"));
+		add(new ContextImage("icon",
+				new Model<String>("images/icons/comments.png")));
 	}
 }

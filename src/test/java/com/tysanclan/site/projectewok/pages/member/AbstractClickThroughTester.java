@@ -46,7 +46,8 @@ public abstract class AbstractClickThroughTester extends TysanPageTester {
 	protected abstract long determineUserId();
 
 	protected static long userIdOfRank(Rank rank) {
-		UserDAO userDAO = TysanApplication.get().getApplicationContext().getBean(UserDAO.class);
+		UserDAO userDAO = TysanApplication.get().getApplicationContext()
+				.getBean(UserDAO.class);
 		List<User> byRank = userDAO.findByRank(rank);
 
 		if (byRank.isEmpty()) {
@@ -55,34 +56,38 @@ public abstract class AbstractClickThroughTester extends TysanPageTester {
 
 		User user = byRank.get(random.nextInt(byRank.size()));
 
-
 		return user.getId();
 
 	}
 
 	protected static long userIdOfGroupMember() {
-		GroupDAO groupDAO = TysanApplication.get().getApplicationContext().getBean(GroupDAO.class);
+		GroupDAO groupDAO = TysanApplication.get().getApplicationContext()
+				.getBean(GroupDAO.class);
 
-		Group group = groupDAO.findAll().getOrElseThrow(IllegalStateException::new);
+		Group group = groupDAO.findAll()
+				.getOrElseThrow(IllegalStateException::new);
 
 		return group.getGroupMembers().get(0).getId();
 
 	}
 
 	protected static long userIdOfGroupLeader(Group.JoinPolicy joinPolicy) {
-		GroupDAO groupDAO = TysanApplication.get().getApplicationContext().getBean(GroupDAO.class);
+		GroupDAO groupDAO = TysanApplication.get().getApplicationContext()
+				.getBean(GroupDAO.class);
 
 		GroupFilter filter = new GroupFilter();
 		filter.joinPolicy(joinPolicy);
 
-		Group group = groupDAO.findByFilter(filter).getOrElseThrow(IllegalStateException::new);
+		Group group = groupDAO.findByFilter(filter)
+				.getOrElseThrow(IllegalStateException::new);
 
 		return group.getLeader().getId();
 
 	}
 
 	protected static long userIdWithRole(Role.RoleType roleType) {
-		RoleService roleService = TysanApplication.get().getApplicationContext().getBean(RoleService.class);
+		RoleService roleService = TysanApplication.get().getApplicationContext()
+				.getBean(RoleService.class);
 
 		return roleService.getRoleByType(roleType).getAssignedTo().getId();
 	}

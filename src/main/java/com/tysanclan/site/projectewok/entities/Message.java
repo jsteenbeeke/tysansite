@@ -17,28 +17,15 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.annotation.Nullable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.Type;
-
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 import com.tysanclan.rest.api.data.RestMessage;
 import com.tysanclan.site.projectewok.util.SerializableFunction;
+import org.hibernate.annotations.Cache;
+
+import javax.annotation.Nullable;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author Jeroen Steenbeeke
@@ -46,7 +33,7 @@ import com.tysanclan.site.projectewok.util.SerializableFunction;
 @Entity
 @Table(indexes = { //
 		@Index(name = "IDX_MESSAGE_SENDER", columnList = "sender_id"), //
-		@Index(name = "IDX_MESSAGE_CONVERSATION", columnList = "conversation_id")})
+		@Index(name = "IDX_MESSAGE_CONVERSATION", columnList = "conversation_id") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class Message extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;
@@ -59,7 +46,7 @@ public class Message extends BaseDomainObject {
 		public RestMessage apply(@Nullable Message input) {
 			if (input != null) {
 				return new RestMessage(input.getSendTime(), input.getContent(),
-									   User.toRestFunction().apply(input.getSender()));
+						User.toRestFunction().apply(input.getSender()));
 			}
 
 			return null;

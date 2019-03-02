@@ -17,17 +17,10 @@
  */
 package com.tysanclan.site.projectewok.beans;
 
-import java.util.List;
-
-import com.tysanclan.site.projectewok.entities.Committee;
-import com.tysanclan.site.projectewok.entities.Game;
-import com.tysanclan.site.projectewok.entities.GamingGroup;
-import com.tysanclan.site.projectewok.entities.Group;
+import com.tysanclan.site.projectewok.entities.*;
 import com.tysanclan.site.projectewok.entities.Group.JoinPolicy;
-import com.tysanclan.site.projectewok.entities.GroupCreationRequest;
-import com.tysanclan.site.projectewok.entities.Realm;
-import com.tysanclan.site.projectewok.entities.SocialGroup;
-import com.tysanclan.site.projectewok.entities.User;
+
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke

@@ -17,16 +17,15 @@
  */
 package com.tysanclan.site.projectewok.event.handlers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.jeroensteenbeeke.hyperion.events.EventHandler;
 import com.jeroensteenbeeke.hyperion.events.EventResult;
 import com.tysanclan.site.projectewok.beans.RoleService;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.event.MembershipTerminatedEvent;
+import org.springframework.beans.factory.annotation.Autowired;
 
-public class ResetRolesAndRemoveNominationsOnTermination implements
-		EventHandler<MembershipTerminatedEvent> {
+public class ResetRolesAndRemoveNominationsOnTermination
+		implements EventHandler<MembershipTerminatedEvent> {
 	@Autowired
 	private RoleService roleService;
 

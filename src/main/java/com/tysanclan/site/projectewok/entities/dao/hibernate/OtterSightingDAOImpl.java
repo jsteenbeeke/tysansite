@@ -29,7 +29,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class OtterSightingDAOImpl extends HibernateDAO<OtterSighting, OtterSightingFilter> implements
+class OtterSightingDAOImpl
+		extends HibernateDAO<OtterSighting, OtterSightingFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.OtterSightingDAO {
 
 }

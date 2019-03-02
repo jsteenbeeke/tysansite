@@ -1,14 +1,13 @@
 package com.tysanclan.site.projectewok.components;
 
+import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
+import com.tysanclan.site.projectewok.util.bbcode.BBParseException;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-
-import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
-import com.tysanclan.site.projectewok.util.bbcode.BBParseException;
 
 public class BBCodePanel extends Panel {
 	private static final long serialVersionUID = 1L;
@@ -20,8 +19,8 @@ public class BBCodePanel extends Panel {
 	public BBCodePanel(String id, IModel<String> text) {
 		super(id);
 
-		add(new Label("text", new BBCodeModel(text)).setEscapeModelStrings(
-				false).setRenderBodyOnly(true));
+		add(new Label("text", new BBCodeModel(text))
+				.setEscapeModelStrings(false).setRenderBodyOnly(true));
 	}
 
 	@Override

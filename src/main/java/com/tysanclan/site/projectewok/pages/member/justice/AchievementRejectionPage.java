@@ -17,17 +17,8 @@
  */
 package com.tysanclan.site.projectewok.pages.member.justice;
 
-import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.NaiveRenderer;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.NaiveRenderer;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.AchievementService;
@@ -36,12 +27,20 @@ import com.tysanclan.site.projectewok.entities.Regulation;
 import com.tysanclan.site.projectewok.entities.dao.RegulationDAO;
 import com.tysanclan.site.projectewok.entities.filter.RegulationFilter;
 import com.tysanclan.site.projectewok.pages.member.AbstractSingleAccordionMemberPage;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @TysanRankSecured(Rank.TRUTHSAYER)
-public class AchievementRejectionPage extends AbstractSingleAccordionMemberPage {
+public class AchievementRejectionPage
+		extends AbstractSingleAccordionMemberPage {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
@@ -56,8 +55,8 @@ public class AchievementRejectionPage extends AbstractSingleAccordionMemberPage 
 		final CheckBox charterCheckBox = new CheckBox("charter",
 				new Model<Boolean>(false));
 		final DropDownChoice<Regulation> regulationChoice = new DropDownChoice<Regulation>(
-				"regulation", ModelMaker.wrap((Regulation) null),
-				ModelMaker.wrapChoices(regulationDAO.findByFilter(filter).toJavaList()),
+				"regulation", ModelMaker.wrap((Regulation) null), ModelMaker
+				.wrapChoices(regulationDAO.findByFilter(filter).toJavaList()),
 				new NaiveRenderer<Regulation>() {
 					private static final long serialVersionUID = 1L;
 
@@ -74,7 +73,7 @@ public class AchievementRejectionPage extends AbstractSingleAccordionMemberPage 
 
 		Form<AchievementProposal> rejectForm = new Form<AchievementProposal>(
 				"rejectForm", new CompoundPropertyModel<AchievementProposal>(
-						ModelMaker.wrap(proposal))) {
+				ModelMaker.wrap(proposal))) {
 
 			private static final long serialVersionUID = 1L;
 

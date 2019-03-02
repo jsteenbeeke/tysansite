@@ -25,6 +25,7 @@ import com.tysanclan.site.projectewok.entities.filter.PasswordRequestFilter;
  *
  * @author Jeroen Steenbeeke
  */
-public interface PasswordRequestDAO extends DAO<PasswordRequest, PasswordRequestFilter> {
+public interface PasswordRequestDAO
+		extends DAO<PasswordRequest, PasswordRequestFilter> {
 
 }

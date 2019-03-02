@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class ElectionDAOImpl extends HibernateDAO<Election, ElectionFilter> implements
-		com.tysanclan.site.projectewok.entities.dao.ElectionDAO {
+class ElectionDAOImpl extends HibernateDAO<Election, ElectionFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.ElectionDAO {
 
 }

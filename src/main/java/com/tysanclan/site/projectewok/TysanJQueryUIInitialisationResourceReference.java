@@ -25,8 +25,8 @@ import org.wicketstuff.wiquery.ui.JQueryUIJavaScriptResourceReference;
 
 import java.util.List;
 
-public class TysanJQueryUIInitialisationResourceReference extends
-		JavaScriptResourceReference {
+public class TysanJQueryUIInitialisationResourceReference
+		extends JavaScriptResourceReference {
 	private static final long serialVersionUID = 4490574626493003959L;
 
 	private static TysanJQueryUIInitialisationResourceReference instance = new TysanJQueryUIInitialisationResourceReference();
@@ -42,8 +42,7 @@ public class TysanJQueryUIInitialisationResourceReference extends
 
 	@Override
 	public List<HeaderItem> getDependencies() {
-		return ImmutableList.of(
-				JavaScriptHeaderItem.forReference(JQueryUIJavaScriptResourceReference.get())
-		);
+		return ImmutableList.of(JavaScriptHeaderItem
+				.forReference(JQueryUIJavaScriptResourceReference.get()));
 	}
 }

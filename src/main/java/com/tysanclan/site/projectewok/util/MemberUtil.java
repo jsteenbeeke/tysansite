@@ -17,11 +17,6 @@
  */
 package com.tysanclan.site.projectewok.util;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import com.jeroensteenbeeke.hyperion.password.argon2.Argon2PasswordHasher;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.rest.api.util.HashException;
@@ -29,7 +24,11 @@ import com.tysanclan.rest.api.util.HashUtil;
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.auth.TysanSecurity;
 import com.tysanclan.site.projectewok.entities.User;
-import de.mkammerer.argon2.Argon2;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -47,15 +46,15 @@ public class MemberUtil {
 
 	/**
 	 * Checks whether or not the user is a member
-	 * 
+	 *
 	 * @param user
 	 *            The user to check
 	 * @return <code>true</code> if the user is a member, <code>false</code>
 	 *         otherwise
 	 */
 	public static boolean isMember(User user) {
-		return user != null
-				&& (user.getRank() != Rank.BANNED && user.getRank() != Rank.FORUM);
+		return user != null && (user.getRank() != Rank.BANNED
+				&& user.getRank() != Rank.FORUM);
 	}
 
 	public static boolean isHashedPassword(String password) {
@@ -64,7 +63,7 @@ public class MemberUtil {
 
 	/**
 	 * Checks if the given user can be a mentor
-	 * 
+	 *
 	 * @param user
 	 *            The user to check
 	 * @return {@code true} if the user can be a mentor, {@code false} otherwise
@@ -119,19 +118,23 @@ public class MemberUtil {
 	}
 
 	public static String hashPassword(String password) {
-		int keyLength = System.getProperty("ewok.testmode") != null ? 8 : User.KEY_LENGTH;
-		int iterations = System.getProperty("ewok.testmode") != null ? 4 : User.ITERATIONS;
+		int keyLength = System.getProperty("ewok.testmode") != null ?
+				8 :
+				User.KEY_LENGTH;
+		int iterations = System.getProperty("ewok.testmode") != null ?
+				4 :
+				User.ITERATIONS;
 
 		return Argon2PasswordHasher.hashNewPassword(password.toCharArray())
-				.withHashLength(keyLength)
-				.withIterations(iterations)
+				.withHashLength(keyLength).withIterations(iterations)
 				.withPHCIssue9DefaultMemorySettings()
 				.withPHCIssue9DefaultParallelism();
 	}
 
-	public static String legacyHashPassword(String password) throws HashException {
-		return HashUtil.sha1Hash(StringUtil.combineStrings(password,
-				PASSWORD_SALT));
+	public static String legacyHashPassword(String password)
+			throws HashException {
+		return HashUtil
+				.sha1Hash(StringUtil.combineStrings(password, PASSWORD_SALT));
 
 	}
 

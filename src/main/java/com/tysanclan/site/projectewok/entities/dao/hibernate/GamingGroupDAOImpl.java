@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class GamingGroupDAOImpl extends HibernateDAO<GamingGroup, GamingGroupFilter> implements
-		com.tysanclan.site.projectewok.entities.dao.GamingGroupDAO {
+class GamingGroupDAOImpl extends HibernateDAO<GamingGroup, GamingGroupFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.GamingGroupDAO {
 
 }

@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("request")
-public class RestApplicationChallengeDAOImpl
-		extends HibernateDAO<RestApplicationChallenge, RestApplicationChallengeFilter>
+public class RestApplicationChallengeDAOImpl extends
+		HibernateDAO<RestApplicationChallenge, RestApplicationChallengeFilter>
 		implements RestApplicationChallengeDAO {
 
 }

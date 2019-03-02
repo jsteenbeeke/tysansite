@@ -21,15 +21,14 @@ import com.jeroensteenbeeke.hyperion.tardis.scheduler.HyperionTask;
 import com.jeroensteenbeeke.hyperion.tardis.scheduler.ServiceProvider;
 import com.tysanclan.site.projectewok.TysanTaskGroup;
 import com.tysanclan.site.projectewok.beans.UserService;
-import com.tysanclan.site.projectewok.entities.dao.InactivityNotificationDAO;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
  */
 public class WarnInactiveMembersTask extends HyperionTask {
 	public WarnInactiveMembersTask() {
-		super("Send warning e-mail to inactive members", TysanTaskGroup.MEMBERS);
+		super("Send warning e-mail to inactive members",
+				TysanTaskGroup.MEMBERS);
 	}
 
 	@Override

@@ -17,9 +17,6 @@
  */
 package com.tysanclan.site.projectewok.pages.forum;
 
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
@@ -29,6 +26,8 @@ import com.tysanclan.site.projectewok.components.ThreadLink;
 import com.tysanclan.site.projectewok.entities.ForumPost;
 import com.tysanclan.site.projectewok.entities.ForumThread;
 import com.tysanclan.site.projectewok.pages.ForumThreadPage;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 @TysanMemberSecured
 public class ConfirmForumThreadUnstickyPage extends TysanPage {
@@ -57,8 +56,8 @@ public class ConfirmForumThreadUnstickyPage extends TysanPage {
 						ConfirmForumThreadUnstickyPage.this.getUser())) {
 					error("Unable to unsticky thread: Permission denied");
 				}
-				setResponsePage(new ForumThreadPage(getModelObject().getId(),
-						1, false));
+				setResponsePage(new ForumThreadPage(getModelObject().getId(), 1,
+						false));
 			}
 		};
 

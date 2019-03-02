@@ -1,41 +1,44 @@
 <html xmlns:wicket>
 <wicket:panel>
-	<div class="jqui-accordion">
-		<h2>
-			<a>Participants</a>
-		</h2>
-		<div>
-			<wicket:container wicket:id="participants">
-				<div wicket:id="participant"></div>
-			</wicket:container>
-		</div>
-	</div>
-	<br />
+    <div class="jqui-accordion">
+        <h2>
+            <a>Participants</a>
+        </h2>
+        <div>
+            <wicket:container wicket:id="participants">
+                <div wicket:id="participant"></div>
+            </wicket:container>
+        </div>
+    </div>
+    <br/>
 
-	<wicket:container wicket:id="messages">
-		<div class="jqui-accordion">
-			<h2>
-				<a>From <span wicket:id="user"></span> at <span wicket:id="time"></span></a>
-			</h2>
-			<div>
-				<div wicket:id="content"></div>
-			</div>
-		</div>
-		<br />
-	</wicket:container>
+    <wicket:container wicket:id="messages">
+        <div class="jqui-accordion">
+            <h2>
+                <a>From <span wicket:id="user"></span> at <span
+                        wicket:id="time"></span></a>
+            </h2>
+            <div>
+                <div wicket:id="content"></div>
+            </div>
+        </div>
+        <br/>
+    </wicket:container>
 
-	<div class="jqui-accordion">
-		<wicket:enclosure child="respondForm">
-			<h2>
-				<a wicket:id="respondheader">Respond</a>
-			</h2>
-			<div>
-				<form wicket:id="respondForm">
-					<textarea wicket:id="messagecontent" rows="8" cols="60"></textarea>
-					<br /> <input class="SubmitButton" type="submit" value="Send" />
-				</form>
-			</div>
-		</wicket:enclosure>
-	</div>
+    <div class="jqui-accordion">
+        <wicket:enclosure child="respondForm">
+            <h2>
+                <a wicket:id="respondheader">Respond</a>
+            </h2>
+            <div>
+                <form wicket:id="respondForm">
+                    <textarea wicket:id="messagecontent" rows="8"
+                              cols="60"></textarea>
+                    <br/> <input class="SubmitButton" type="submit"
+                                 value="Send"/>
+                </form>
+            </div>
+        </wicket:enclosure>
+    </div>
 </wicket:panel>
 </html>

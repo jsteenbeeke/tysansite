@@ -1,39 +1,43 @@
 <html xmlns:wicket>
 <wicket:extend>
-	<div class="jqui-accordion">
-		<h2>
-			<a>Create Committee</a>
-		</h2>
-		<div>
-			<form wicket:id="committeeform">
-				<b>Committee name</b><br /> <input wicket:id="name" type="text" /><br />
-				<br /> <b>Committee public description</b><br />
-				<textarea wicket:id="description" cols="60" rows="10"></textarea>
-				<br />
-				<br /> <b>Committee chairman</b><br /> <select wicket:id="leader">
-					<option>Prospero</option>
-					<option>LordInfiniti</option>
-				</select><br />
-				<br /> <input type="submit" value="Create" class="SubmitButton" />
-			</form>
-		</div>
-		<h2>
-			<a>Disband Committee</a>
-		</h2>
-		<div>
-			<table style="width: 100%;">
-				<tr>
-					<th style="width: 50%;">Committee</th>
-					<th style="width: 25%;">Chairman</th>
-					<th style="width: 25%;">Disband</th>
-				</tr>
-				<tr wicket:id="committees">
-					<td style="text-align: center;" wicket:id="name"></td>
-					<td style="text-align: center;"><span wicket:id="chairman"></span></td>
-					<td style="text-align: center;"><div wicket:id="disband"></div></td>
-				</tr>
-			</table>
-		</div>
-	</div>
+    <div class="jqui-accordion">
+        <h2>
+            <a>Create Committee</a>
+        </h2>
+        <div>
+            <form wicket:id="committeeform">
+                <b>Committee name</b><br/> <input wicket:id="name" type="text"/><br/>
+                <br/> <b>Committee public description</b><br/>
+                <textarea wicket:id="description" cols="60"
+                          rows="10"></textarea>
+                <br/>
+                <br/> <b>Committee chairman</b><br/> <select wicket:id="leader">
+                <option>Prospero</option>
+                <option>LordInfiniti</option>
+            </select><br/>
+                <br/> <input type="submit" value="Create" class="SubmitButton"/>
+            </form>
+        </div>
+        <h2>
+            <a>Disband Committee</a>
+        </h2>
+        <div>
+            <table style="width: 100%;">
+                <tr>
+                    <th style="width: 50%;">Committee</th>
+                    <th style="width: 25%;">Chairman</th>
+                    <th style="width: 25%;">Disband</th>
+                </tr>
+                <tr wicket:id="committees">
+                    <td style="text-align: center;" wicket:id="name"></td>
+                    <td style="text-align: center;"><span
+                            wicket:id="chairman"></span></td>
+                    <td style="text-align: center;">
+                        <div wicket:id="disband"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
 </wicket:extend>
 </html>

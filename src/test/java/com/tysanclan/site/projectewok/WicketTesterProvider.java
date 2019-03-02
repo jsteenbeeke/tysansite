@@ -22,11 +22,10 @@ import org.apache.wicket.util.tester.WicketTester;
 /**
  * Test Utility class for providing WicketTester instances. Ensures that no
  * duplicate objectrepositories are made
- * 
+ *
  * @author Jeroen Steenbeeke
  */
-public enum WicketTesterProvider {
-	INST;
+public enum WicketTesterProvider {INST;
 
 	private WicketTester tester = null;
 

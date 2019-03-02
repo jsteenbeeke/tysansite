@@ -1,15 +1,13 @@
 package com.tysanclan.site.projectewok.components.resources;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.util.Date;
-import java.util.List;
-
 import com.google.common.collect.Lists;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.util.DateUtil;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.Date;
+import java.util.List;
 
 public class DaysInTysanImageResource extends AbstractDynamicTysanImage {
 
@@ -28,8 +26,8 @@ public class DaysInTysanImageResource extends AbstractDynamicTysanImage {
 			}
 		});
 
-		int numberOfMemberDays = DateUtil.daysBetween(user.getJoinDate(),
-				new Date());
+		int numberOfMemberDays = DateUtil
+				.daysBetween(user.getJoinDate(), new Date());
 		texts.add(new DynamicImageTextPoint(numberOfMemberDays + " days!", 30,
 				100) {
 			@Override

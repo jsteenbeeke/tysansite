@@ -17,11 +17,11 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import org.hibernate.annotations.Cache;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-
-import org.hibernate.annotations.Cache;
 
 /**
  *
@@ -36,8 +36,7 @@ public class StarCraft2CharAccount extends GameAccount {
 	@Column
 	private int characterCode;
 
-
-	/** 
+	/**
 	 * Creates a new StarCraft2CharAccount object
 	 */
 	public StarCraft2CharAccount() {

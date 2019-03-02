@@ -17,22 +17,12 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
-import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
+import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @author Jeroen Steenbeeke
@@ -97,7 +87,7 @@ public class RegulationChangeVote extends BaseDomainObject {
 
 	/**
 	 * Sets the RegulationChange of this RegulationChangeVote
-	 * 
+	 *
 	 * @param regulationChange
 	 *            The RegulationChange of this RegulationChangeVote
 	 */
@@ -114,7 +104,7 @@ public class RegulationChangeVote extends BaseDomainObject {
 
 	/**
 	 * Sets the Senator of this RegulationChangeVote
-	 * 
+	 *
 	 * @param senator
 	 *            The Senator of this RegulationChangeVote
 	 */
@@ -131,7 +121,7 @@ public class RegulationChangeVote extends BaseDomainObject {
 
 	/**
 	 * Sets the InFavor of this RegulationChangeVote
-	 * 
+	 *
 	 * @param inFavor
 	 *            The InFavor of this RegulationChangeVote
 	 */

@@ -79,7 +79,7 @@ public class FinancePage extends AbstractMemberPage {
 	private RoleService roleService;
 
 	/**
-	 * 
+	 *
 	 */
 	public FinancePage() {
 		super("Clan Finances");
@@ -103,8 +103,8 @@ public class FinancePage extends AbstractMemberPage {
 		DateTime year1997 = new DateTime(1997, 1, 1, 12, 0, 0, 0);
 
 		for (Expense expense : expenses) {
-			if (expense.getEnd() == null
-					|| expense.getEnd().after(now.toDate())) {
+			if (expense.getEnd() == null || expense.getEnd()
+					.after(now.toDate())) {
 				switch (expense.getPeriod()) {
 					case MONTHLY:
 						sum = sum.add(expense.getAmount().multiply(factor12));
@@ -119,8 +119,8 @@ public class FinancePage extends AbstractMemberPage {
 						sum = sum.add(expense.getAmount());
 						break;
 					case BIANNUALLY:
-						sum = sum.add(expense.getAmount().divide(factor2,
-								RoundingMode.HALF_UP));
+						sum = sum.add(expense.getAmount()
+								.divide(factor2, RoundingMode.HALF_UP));
 						break;
 				}
 
@@ -147,27 +147,24 @@ public class FinancePage extends AbstractMemberPage {
 				switch (expense.getPeriod()) {
 					case MONTHLY:
 						regularity = "Monthly";
-						yearlyExpense = new DollarSignModel(
-								new Model<>(expense.getAmount()
-										.multiply(factor12)));
+						yearlyExpense = new DollarSignModel(new Model<>(
+								expense.getAmount().multiply(factor12)));
 						break;
 					case QUARTERLY:
 						regularity = "Quarterly";
-						yearlyExpense = new DollarSignModel(
-								new Model<>(expense.getAmount()
-										.multiply(factor4)));
+						yearlyExpense = new DollarSignModel(new Model<>(
+								expense.getAmount().multiply(factor4)));
 						break;
 					case SEMIANNUALLY:
 						regularity = "Semiannually";
-						yearlyExpense = new DollarSignModel(
-								new Model<>(expense.getAmount()
-										.multiply(factor2)));
+						yearlyExpense = new DollarSignModel(new Model<>(
+								expense.getAmount().multiply(factor2)));
 						break;
 					case BIANNUALLY:
 						regularity = "Biannually";
-						yearlyExpense = new DollarSignModel(
-								new Model<>(expense.getAmount()
-										.divide(factor2, RoundingMode.HALF_UP)));
+						yearlyExpense = new DollarSignModel(new Model<>(
+								expense.getAmount().divide(factor2,
+										RoundingMode.HALF_UP)));
 						break;
 					default:
 						amountPerTermVisible = false;
@@ -179,41 +176,45 @@ public class FinancePage extends AbstractMemberPage {
 
 				item.add(new Label("regularity", regularity));
 
-				item.add(new Label("amounteach", new DollarSignModel(
-						new Model<>(expense.getAmount())))
+				item.add(new Label("amounteach",
+						new DollarSignModel(new Model<>(expense.getAmount())))
 						.setVisible(amountPerTermVisible));
 				item.add(new Label("annualfee", yearlyExpense));
 			}
 		});
 
-		add(new Label("annualcost", new DollarSignModel(new Model<>(
-				sum))));
+		add(new Label("annualcost", new DollarSignModel(new Model<>(sum))));
 
 		FinancialTimeline timeline = new FinancialTimeline(expenseDAO,
 				donationDAO, subscriptionDAO, paidExpenseDAO);
 
 		// Finance overview charts
 
-		add(GraphUtil.makeCashFlowLineChart("monthlychart", "Cash flow last month",
-				timeline.getCashFlow(oneMonthAgo, now)));
-		add(GraphUtil.makeCashFlowLineChart("yearlychart", "Cash flow last year",
-				timeline.getCashFlow(oneYearAgo, now)));
-		add(GraphUtil.makeCashFlowLineChart("alltimechart", "Cash flow all time",
-				timeline.getCashFlow(year1997, now)));
+		add(GraphUtil
+				.makeCashFlowLineChart("monthlychart", "Cash flow last month",
+						timeline.getCashFlow(oneMonthAgo, now)));
+		add(GraphUtil
+				.makeCashFlowLineChart("yearlychart", "Cash flow last year",
+						timeline.getCashFlow(oneYearAgo, now)));
+		add(GraphUtil
+				.makeCashFlowLineChart("alltimechart", "Cash flow all time",
+						timeline.getCashFlow(year1997, now)));
 		add(GraphUtil.makePieChart("monthlyparticipation",
 				"Participation last month",
 				timeline.getParticipation(oneMonthAgo, now)));
-		add(GraphUtil.makePieChart("annualparticipation",
-				"Participation last year",
-				timeline.getParticipation(oneYearAgo, now)));
-		add(GraphUtil.makePieChart("alltimeparticipation",
-				"All time participation",
-				timeline.getParticipation(year1997, now)));
+		add(GraphUtil
+				.makePieChart("annualparticipation", "Participation last year",
+						timeline.getParticipation(oneYearAgo, now)));
+		add(GraphUtil
+				.makePieChart("alltimeparticipation", "All time participation",
+						timeline.getParticipation(year1997, now)));
 
-		add(GraphUtil.makeReservesBarChart("reserves",
-				"Cash reserves by donator", timeline.getReservesAt(now)));
+		add(GraphUtil
+				.makeReservesBarChart("reserves", "Cash reserves by donator",
+						timeline.getReservesAt(now)));
 
-		add(new BookmarkablePageLink<CharterPage>("charter", CharterPage.class));
+		add(new BookmarkablePageLink<CharterPage>("charter",
+				CharterPage.class));
 		add(new WebMarkupContainer("un").add(AttributeModifier.replace("value",
 				"Tysan Donation by " + getUser().getUsername())));
 		User treasurer = roleService.getTreasurer();

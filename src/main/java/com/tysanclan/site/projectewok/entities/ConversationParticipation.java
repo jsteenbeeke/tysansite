@@ -17,36 +17,25 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
+import com.tysanclan.site.projectewok.util.SerializableFunction;
+import org.hibernate.annotations.Cache;
+
+import javax.annotation.Nullable;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.annotation.Nullable;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Cache;
-
-import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
-import com.tysanclan.site.projectewok.util.SerializableFunction;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Entity
 @Table(indexes = { //
-		@Index(name = "IDX_ConversationParticipation_Conversation", columnList = "conversation_id"), //
-		@Index(name = "IDX_ConversationParticipation_User", columnList = "user_id"), //
+		@Index(name = "IDX_ConversationParticipation_Conversation", columnList = "conversation_id"),
+		//
+		@Index(name = "IDX_ConversationParticipation_User", columnList = "user_id"),
+		//
 		@Index(name = "IDX_ConversationParticipation_Folder", columnList = "messageFolder_id") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class ConversationParticipation extends BaseDomainObject {
@@ -118,7 +107,7 @@ public class ConversationParticipation extends BaseDomainObject {
 
 	/**
 	 * Sets the Conversation of this ConversationParticipation
-	 * 
+	 *
 	 * @param conversation
 	 *            The Conversation of this ConversationParticipation
 	 */
@@ -135,7 +124,7 @@ public class ConversationParticipation extends BaseDomainObject {
 
 	/**
 	 * Sets the User of this ConversationParticipation
-	 * 
+	 *
 	 * @param user
 	 *            The User of this ConversationParticipation
 	 */
@@ -152,7 +141,7 @@ public class ConversationParticipation extends BaseDomainObject {
 
 	/**
 	 * Sets the MessageFolder of this ConversationParticipation
-	 * 
+	 *
 	 * @param messageFolder
 	 *            The MessageFolder of this ConversationParticipation
 	 */
@@ -169,7 +158,7 @@ public class ConversationParticipation extends BaseDomainObject {
 
 	/**
 	 * Sets the ReadMessages of this ConversationParticipation
-	 * 
+	 *
 	 * @param readMessages
 	 *            The ReadMessages of this ConversationParticipation
 	 */

@@ -28,7 +28,8 @@ import java.util.List;
  *
  * @author Jeroen Steenbeeke
  */
-public interface AchievementRequestDAO extends DAO<AchievementRequest, AchievementRequestFilter> {
+public interface AchievementRequestDAO
+		extends DAO<AchievementRequest, AchievementRequestFilter> {
 
 	List<AchievementRequest> getPendingGroupRequests(Group group);
 

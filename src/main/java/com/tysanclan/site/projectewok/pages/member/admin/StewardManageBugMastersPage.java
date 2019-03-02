@@ -40,8 +40,8 @@ import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 @TysanMemberSecured
-public class StewardManageBugMastersPage extends
-		AbstractSingleAccordionMemberPage {
+public class StewardManageBugMastersPage
+		extends AbstractSingleAccordionMemberPage {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
@@ -60,28 +60,26 @@ public class StewardManageBugMastersPage extends
 			throw new RestartResponseAtInterceptPageException(
 					AccessDeniedPage.class);
 
-		add(
-				new DataView<User>("current", FilterDataProvider.of(
-						getFilter(true, true), userDAO)) {
-					private static final long serialVersionUID = 1L;
+		add(new DataView<User>("current",
+				FilterDataProvider.of(getFilter(true, true), userDAO)) {
+			private static final long serialVersionUID = 1L;
 
-					@Override
-					protected void populateItem(Item<User> item) {
-						User user = item.getModelObject();
+			@Override
+			protected void populateItem(Item<User> item) {
+				User user = item.getModelObject();
 
-						item.add(new MemberListItem("user", user));
-						item.add(new IconLink.Builder(
-								"images/icons/delete.png", new DeleteResponder(
-										user)).newInstance("delete"));
+				item.add(new MemberListItem("user", user));
+				item.add(new IconLink.Builder("images/icons/delete.png",
+						new DeleteResponder(user)).newInstance("delete"));
 
-					}
+			}
 
-				});
+		});
 
-		final DropDownChoice<User> userChoice = new DropDownChoice<User>(
-				"user", ModelMaker.wrap((User) null),
-				ModelMaker.wrapChoices(userDAO.findByFilter(getFilter(false,
-						false)).toJavaList()), LambdaRenderer.of(User::getUsername));
+		final DropDownChoice<User> userChoice = new DropDownChoice<User>("user",
+				ModelMaker.wrap((User) null), ModelMaker.wrapChoices(
+				userDAO.findByFilter(getFilter(false, false)).toJavaList()),
+				LambdaRenderer.of(User::getUsername));
 
 		Form<User> addMasterForm = new Form<User>("addMasterForm") {
 			private static final long serialVersionUID = 1L;

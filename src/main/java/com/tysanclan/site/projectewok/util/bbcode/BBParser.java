@@ -1,17 +1,9 @@
 package com.tysanclan.site.projectewok.util.bbcode;
 
+import com.tysanclan.site.projectewok.util.bbcode.ast.*;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.tysanclan.site.projectewok.util.bbcode.ast.BoldNode;
-import com.tysanclan.site.projectewok.util.bbcode.ast.ImageNode;
-import com.tysanclan.site.projectewok.util.bbcode.ast.ItalicNode;
-import com.tysanclan.site.projectewok.util.bbcode.ast.QuoteNode;
-import com.tysanclan.site.projectewok.util.bbcode.ast.StrikeThroughNode;
-import com.tysanclan.site.projectewok.util.bbcode.ast.TextNode;
-import com.tysanclan.site.projectewok.util.bbcode.ast.URLNode;
-import com.tysanclan.site.projectewok.util.bbcode.ast.UnderlineNode;
-import com.tysanclan.site.projectewok.util.bbcode.ast.YouTubeNode;
 
 class BBParser {
 	private static final char CLOSE = ']';
@@ -29,50 +21,43 @@ class BBParser {
 					ParseBuffer buffer) throws BBParseException {
 				parser.parseYoutube(current, buffer);
 			}
-		},
-		BOLD("[b]", "[/b]") {
+		}, BOLD("[b]", "[/b]") {
 			@Override
 			public void invokeParser(BBParser parser, BBAstNode current,
 					ParseBuffer buffer) throws BBParseException {
 				parser.parseBold(current, buffer);
 			}
-		},
-		UNDERLINE("[u]", "[/u]") {
+		}, UNDERLINE("[u]", "[/u]") {
 			@Override
 			public void invokeParser(BBParser parser, BBAstNode current,
 					ParseBuffer buffer) throws BBParseException {
 				parser.parseUnderline(current, buffer);
 			}
-		},
-		ITALIC("[i]", "[/i]") {
+		}, ITALIC("[i]", "[/i]") {
 			@Override
 			public void invokeParser(BBParser parser, BBAstNode current,
 					ParseBuffer buffer) throws BBParseException {
 				parser.parseItalic(current, buffer);
 			}
-		},
-		STRIKETHROUGH("[s]", "[/s]") {
+		}, STRIKETHROUGH("[s]", "[/s]") {
 			@Override
 			public void invokeParser(BBParser parser, BBAstNode current,
 					ParseBuffer buffer) throws BBParseException {
 				parser.parseStrikeThrough(current, buffer);
 			}
-		},
-		QUOTE("[quote", "[/quote]") {
+		}, QUOTE("[quote", "[/quote]") {
 			@Override
 			public void invokeParser(BBParser parser, BBAstNode current,
 					ParseBuffer buffer) throws BBParseException {
 				parser.parseQuote(current, buffer);
 			}
-		},
-		URL("[url", "[/url]") {
+		}, URL("[url", "[/url]") {
 			@Override
 			public void invokeParser(BBParser parser, BBAstNode current,
 					ParseBuffer buffer) throws BBParseException {
 				parser.parseUrl(current, buffer);
 			}
-		},
-		IMG("[img", "[/img]") {
+		}, IMG("[img", "[/img]") {
 			@Override
 			public void invokeParser(BBParser parser, BBAstNode current,
 					ParseBuffer buffer) throws BBParseException {
@@ -245,16 +230,17 @@ class BBParser {
 		parseTag(buffer, node, TagRecognition.BOLD);
 	}
 
-	private void parseTag(ParseBuffer buffer, BBAstNode node, TagRecognition rec)
-			throws BBParseException {
+	private void parseTag(ParseBuffer buffer, BBAstNode node,
+			TagRecognition rec) throws BBParseException {
 		String lookahead = tokenStream.peekTokens(rec.terminator.length());
 
 		String prevLookahead = null;
 
 		while (!rec.terminator.equals(lookahead)) {
-			if (!tokenStream.hasMoreTokens() || lookahead.equals(prevLookahead)) {
-				throw new BBParseException(String.format("Missing %s tag",
-						rec.terminator));
+			if (!tokenStream.hasMoreTokens() || lookahead
+					.equals(prevLookahead)) {
+				throw new BBParseException(
+						String.format("Missing %s tag", rec.terminator));
 			}
 
 			parseText(node, buffer);

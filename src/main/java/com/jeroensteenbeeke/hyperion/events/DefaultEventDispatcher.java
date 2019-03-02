@@ -15,13 +15,9 @@
  */
 package com.jeroensteenbeeke.hyperion.events;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -31,12 +27,14 @@ import org.springframework.context.annotation.ClassPathScanningCandidateComponen
 import org.springframework.core.type.filter.AssignableTypeFilter;
 import org.springframework.util.ClassUtils;
 
-import com.google.common.collect.LinkedHashMultimap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Multimap;
+import javax.annotation.Nonnull;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
-public class DefaultEventDispatcher implements IEventDispatcher,
-		ApplicationContextAware {
+public class DefaultEventDispatcher
+		implements IEventDispatcher, ApplicationContextAware {
 	private Multimap<Class<? extends Event<?>>, Class<? extends EventHandler<?>>> handlers = LinkedHashMultimap
 			.create();
 
@@ -60,7 +58,8 @@ public class DefaultEventDispatcher implements IEventDispatcher,
 			for (Class<?> cls : scanner.getComponentClasses(pkg)) {
 				Class<? extends Event<?>> eventClass = getEventClass(cls);
 
-				handlers.put(eventClass, (Class<? extends EventHandler<?>>) cls);
+				handlers.put(eventClass,
+						(Class<? extends EventHandler<?>>) cls);
 			}
 		}
 	}
@@ -70,7 +69,7 @@ public class DefaultEventDispatcher implements IEventDispatcher,
 	public void dispatchEvent(@Nonnull Event<?> event) {
 		AutowireCapableBeanFactory factory = applicationContext
 				.getAutowireCapableBeanFactory();
-		List<Event<?>> queue = Lists.<Event<?>> newArrayList(event);
+		List<Event<?>> queue = Lists.<Event<?>>newArrayList(event);
 
 		while (!queue.isEmpty()) {
 			Event<?> evt = queue.remove(0);
@@ -124,8 +123,8 @@ public class DefaultEventDispatcher implements IEventDispatcher,
 
 	}
 
-	static final class ClasspathScanner extends
-			ClassPathScanningCandidateComponentProvider {
+	static final class ClasspathScanner
+			extends ClassPathScanningCandidateComponentProvider {
 		public ClasspathScanner(Class<?> targetClass) {
 			super(false);
 			addIncludeFilter(new AssignableTypeFilter(targetClass));
@@ -134,10 +133,11 @@ public class DefaultEventDispatcher implements IEventDispatcher,
 		public final List<Class<?>> getComponentClasses(String basePackage) {
 			List<Class<?>> classes = new ArrayList<Class<?>>();
 
-			for (BeanDefinition candidate : findCandidateComponents(basePackage)) {
-				Class<?> cls = ClassUtils.resolveClassName(
-						candidate.getBeanClassName(),
-						ClassUtils.getDefaultClassLoader());
+			for (BeanDefinition candidate : findCandidateComponents(
+					basePackage)) {
+				Class<?> cls = ClassUtils
+						.resolveClassName(candidate.getBeanClassName(),
+								ClassUtils.getDefaultClassLoader());
 
 				classes.add(cls);
 			}

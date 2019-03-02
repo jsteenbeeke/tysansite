@@ -17,32 +17,20 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
+import com.tysanclan.site.projectewok.entities.Role.RoleType;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
-import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
-import com.tysanclan.site.projectewok.entities.Role.RoleType;
-
 @Entity
 @Table(indexes = { //
-@Index(name = "IDX_ROLETRANSFER_CAND", columnList = "candidate_id") //
+		@Index(name = "IDX_ROLETRANSFER_CAND", columnList = "candidate_id") //
 })
 public class RoleTransfer extends BaseDomainObject {
 	private static final long serialVersionUID = 1L;

@@ -17,9 +17,12 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import java.util.Calendar;
-import java.util.Date;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.beans.ProfileService;
+import com.tysanclan.site.projectewok.entities.Profile;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.pages.MemberPage;
+import com.tysanclan.site.projectewok.util.DateUtil;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
@@ -37,12 +40,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
-import com.tysanclan.site.projectewok.beans.ProfileService;
-import com.tysanclan.site.projectewok.entities.Profile;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.pages.MemberPage;
-import com.tysanclan.site.projectewok.util.DateUtil;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * @author Jeroen Steenbeeke
@@ -57,7 +56,7 @@ public abstract class ProfilePanel extends Panel {
 	private Date selectedDate = null;
 
 	/**
-	 * 
+	 *
 	 */
 	public ProfilePanel(String id, User user) {
 		super(id);
@@ -71,7 +70,7 @@ public abstract class ProfilePanel extends Panel {
 		Form<User> profileForm = new Form<User>("profile",
 				ModelMaker.wrap(user)) {
 			/**
-			 * 
+			 *
 			 */
 			private static final long serialVersionUID = 1L;
 
@@ -87,15 +86,21 @@ public abstract class ProfilePanel extends Panel {
 				User u = getModelObject();
 				Profile profile = u.getProfile();
 
-				TextField<String> realnameField = (TextField<String>) get("realname");
-				TextField<String> photoURLField = (TextField<String>) get("photoURL");
-				TextField<String> skypeField = (TextField<String>) get("skypename");
-				TextField<String> twitterField = (TextField<String>) get("twitter");
+				TextField<String> realnameField = (TextField<String>) get(
+						"realname");
+				TextField<String> photoURLField = (TextField<String>) get(
+						"photoURL");
+				TextField<String> skypeField = (TextField<String>) get(
+						"skypename");
+				TextField<String> twitterField = (TextField<String>) get(
+						"twitter");
 
 				CheckBox photoPublicCheckbox = (CheckBox) get("public");
 				CheckBox skypePublicBox = (CheckBox) get("skypepublic");
-				TextArea<String> publicdescField = (TextArea<String>) get("publicdesc");
-				TextArea<String> privatedescField = (TextArea<String>) get("privatedesc");
+				TextArea<String> publicdescField = (TextArea<String>) get(
+						"publicdesc");
+				TextArea<String> privatedescField = (TextArea<String>) get(
+						"privatedesc");
 
 				String realname = realnameField.getModelObject();
 				Date birthDate = getSelectedDate();
@@ -124,13 +129,13 @@ public abstract class ProfilePanel extends Panel {
 				if (!isBothNullOrEquals(aimName,
 						profile.getInstantMessengerAddress())
 						|| !isBothNullOrEquals(skypePublic,
-								profile.isInstantMessengerPublic())) {
+						profile.isInstantMessengerPublic())) {
 					profileService.setAIMAddress(profile, aimName, skypePublic);
 				}
 
 				if (!isBothNullOrEquals(photoURL, profile.getPhotoURL())
 						|| !isBothNullOrEquals(photoPublic,
-								profile.isPhotoPublic())) {
+						profile.isPhotoPublic())) {
 					profileService.setPhotoURL(profile, photoURL, photoPublic);
 				}
 				if (!isBothNullOrEquals(publicdesc,
@@ -199,7 +204,8 @@ public abstract class ProfilePanel extends Panel {
 				profile != null ? profile.getTwitterUID() : "")));
 
 		TextField<String> photoURLField = new TextField<String>("photoURL",
-				new Model<String>(profile != null ? profile.getPhotoURL() : ""));
+				new Model<String>(
+						profile != null ? profile.getPhotoURL() : ""));
 		photoURLField.setOutputMarkupId(true);
 		photoURLField.setOutputMarkupPlaceholderTag(true);
 

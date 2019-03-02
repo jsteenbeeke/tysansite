@@ -17,15 +17,6 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import java.util.Arrays;
-
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.GameService;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
@@ -33,6 +24,14 @@ import com.tysanclan.site.projectewok.entities.GameAccount;
 import com.tysanclan.site.projectewok.entities.GameAccount.AccountType;
 import com.tysanclan.site.projectewok.entities.UserGameRealm;
 import com.tysanclan.site.projectewok.pages.member.EditAccountsPage;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.Arrays;
 
 /**
  * @author Jeroen Steenbeeke
@@ -46,18 +45,19 @@ public class AccountPanel extends Panel {
 	private IModel<UserGameRealm> ugrModel;
 
 	/**
-	 * 
+	 *
 	 */
 	public AccountPanel(String id, UserGameRealm userGameRealm) {
 		super(id);
 
 		ugrModel = ModelMaker.wrap(userGameRealm);
 
-		add(new Label("realmgamename", userGameRealm.getGame().getName()
-				+ " on " + userGameRealm.getRealm().getName()));
+		add(new Label("realmgamename",
+				userGameRealm.getGame().getName() + " on " + userGameRealm
+						.getRealm().getName()));
 
-		add(new ListView<GameAccount>("accounts", ModelMaker.wrap(userGameRealm
-				.getAccounts())) {
+		add(new ListView<GameAccount>("accounts",
+				ModelMaker.wrap(userGameRealm.getAccounts())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -66,8 +66,8 @@ public class AccountPanel extends Panel {
 
 				item.add(new Label("name", account.toString()));
 				item.add(new IconLink.Builder("images/icons/cross.png",
-						new DefaultClickResponder<GameAccount>(ModelMaker
-								.wrap(account)) {
+						new DefaultClickResponder<GameAccount>(
+								ModelMaker.wrap(account)) {
 
 							private static final long serialVersionUID = 1L;
 

@@ -60,67 +60,64 @@ public class UserAgentPage extends AbstractSingleAccordionMemberPage {
 		MobileUserAgentFilter filter = new MobileUserAgentFilter();
 		filter.identifier().orderBy(true);
 
-		add(
-				new DataView<MobileUserAgent>("agents", FilterDataProvider.of(
-						filter, userAgentDAO)) {
+		add(new DataView<MobileUserAgent>("agents",
+				FilterDataProvider.of(filter, userAgentDAO)) {
 
-					private static final long serialVersionUID = 1L;
+			private static final long serialVersionUID = 1L;
 
-					@Override
-					protected void populateItem(final Item<MobileUserAgent> item) {
-						MobileUserAgent agent = item.getModelObject();
+			@Override
+			protected void populateItem(final Item<MobileUserAgent> item) {
+				MobileUserAgent agent = item.getModelObject();
 
-						item.add(new Label("identifier", agent.getIdentifier()));
+				item.add(new Label("identifier", agent.getIdentifier()));
 
-						String curr = "Unknown";
+				String curr = "Unknown";
 
-						if (agent.getMobile() != null) {
-							if (agent.getMobile()) {
-								curr = "Mobile";
-							} else {
-								curr = "Normal";
-							}
-						}
-
-						item.add(new Label("current", curr));
-
-						item.add(new IconLink.Builder("images/icons/phone.png",
-								new DefaultClickResponder<MobileUserAgent>(
-										ModelMaker.wrap(agent)) {
-									private static final long serialVersionUID = 1L;
-
-									@Override
-									public void onClick() {
-										userAgentService.setAgentStatus(
-												getModelObject(), true);
-
-										setResponsePage(new UserAgentPage());
-									}
-
-								}).newInstance("yes")
-								.setVisible(
-										agent.getMobile() == null
-												|| !agent.getMobile()));
-						item.add(new IconLink.Builder(
-								"images/icons/computer.png",
-								new DefaultClickResponder<MobileUserAgent>(
-										ModelMaker.wrap(agent)) {
-									private static final long serialVersionUID = 1L;
-
-									@Override
-									public void onClick() {
-										userAgentService.setAgentStatus(
-												getModelObject(), false);
-
-										setResponsePage(new UserAgentPage());
-
-										setResponsePage(new UserAgentPage());
-									}
-
-								}).newInstance("no").setVisible(
-								agent.getMobile() == null || agent.getMobile()));
+				if (agent.getMobile() != null) {
+					if (agent.getMobile()) {
+						curr = "Mobile";
+					} else {
+						curr = "Normal";
 					}
+				}
 
-				});
+				item.add(new Label("current", curr));
+
+				item.add(new IconLink.Builder("images/icons/phone.png",
+						new DefaultClickResponder<MobileUserAgent>(
+								ModelMaker.wrap(agent)) {
+							private static final long serialVersionUID = 1L;
+
+							@Override
+							public void onClick() {
+								userAgentService
+										.setAgentStatus(getModelObject(), true);
+
+								setResponsePage(new UserAgentPage());
+							}
+
+						}).newInstance("yes").setVisible(
+						agent.getMobile() == null || !agent.getMobile()));
+				item.add(new IconLink.Builder("images/icons/computer.png",
+						new DefaultClickResponder<MobileUserAgent>(
+								ModelMaker.wrap(agent)) {
+							private static final long serialVersionUID = 1L;
+
+							@Override
+							public void onClick() {
+								userAgentService
+										.setAgentStatus(getModelObject(),
+												false);
+
+								setResponsePage(new UserAgentPage());
+
+								setResponsePage(new UserAgentPage());
+							}
+
+						}).newInstance("no").setVisible(
+						agent.getMobile() == null || agent.getMobile()));
+			}
+
+		});
 	}
 }

@@ -22,7 +22,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 
 /**
  * A panel to edit a forum post
- * 
+ *
  * @author Jeroen Steenbeeke
  */
 public class ForumPostEditorPanel extends Panel {

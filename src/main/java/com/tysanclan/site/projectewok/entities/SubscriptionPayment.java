@@ -17,26 +17,16 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
 import com.google.common.base.Predicate;
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
+
 @Entity
 @Table(indexes = { //
-@Index(name = "IDX_SUBPAYMENT_SUB", columnList = "subscription_id"), //
+		@Index(name = "IDX_SUBPAYMENT_SUB", columnList = "subscription_id"), //
 		@Index(name = "IDX_SUBPAYMENT_USER", columnList = "user_id") })
 public class SubscriptionPayment extends BaseDomainObject {
 

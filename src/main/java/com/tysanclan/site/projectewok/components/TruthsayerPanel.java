@@ -17,39 +17,27 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.components.RequiresAttentionLink.AttentionType;
 import com.tysanclan.site.projectewok.components.RequiresAttentionLink.IRequiresAttentionCondition;
-import com.tysanclan.site.projectewok.entities.dao.AchievementIconDAO;
-import com.tysanclan.site.projectewok.entities.dao.AchievementProposalDAO;
-import com.tysanclan.site.projectewok.entities.dao.AchievementRequestDAO;
-import com.tysanclan.site.projectewok.entities.dao.TrialDAO;
-import com.tysanclan.site.projectewok.entities.dao.UserDAO;
+import com.tysanclan.site.projectewok.entities.dao.*;
 import com.tysanclan.site.projectewok.entities.filter.AchievementIconFilter;
 import com.tysanclan.site.projectewok.entities.filter.AchievementProposalFilter;
 import com.tysanclan.site.projectewok.entities.filter.TrialFilter;
 import com.tysanclan.site.projectewok.entities.filter.UserFilter;
 import com.tysanclan.site.projectewok.pages.member.TruthsayerStepDownPage;
-import com.tysanclan.site.projectewok.pages.member.justice.AchievementApprovalPage;
-import com.tysanclan.site.projectewok.pages.member.justice.AchievementIconApprovalPage;
-import com.tysanclan.site.projectewok.pages.member.justice.ForumUserManagementPage;
-import com.tysanclan.site.projectewok.pages.member.justice.ImpeachmentInitiationPage;
-import com.tysanclan.site.projectewok.pages.member.justice.TrialConfirmationPage;
-import com.tysanclan.site.projectewok.pages.member.justice.TruthSayerEditUserPage;
-import com.tysanclan.site.projectewok.pages.member.justice.TruthsayerAchievementProposalPage;
-import com.tysanclan.site.projectewok.pages.member.justice.UntenabilityPage;
+import com.tysanclan.site.projectewok.pages.member.justice.*;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @TysanMemberSecured
 public class TruthsayerPanel extends TysanOverviewPanel<Void> {
-	public class PendingAchievementProposalCondition implements
-			IRequiresAttentionCondition {
+	public class PendingAchievementProposalCondition
+			implements IRequiresAttentionCondition {
 		private static final long serialVersionUID = 1L;
 
 		@Override
@@ -71,8 +59,8 @@ public class TruthsayerPanel extends TysanOverviewPanel<Void> {
 		}
 	}
 
-	public class PendingAchievementIconCondition implements
-			IRequiresAttentionCondition {
+	public class PendingAchievementIconCondition
+			implements IRequiresAttentionCondition {
 
 		private static final long serialVersionUID = 1L;
 
@@ -115,8 +103,8 @@ public class TruthsayerPanel extends TysanOverviewPanel<Void> {
 		}
 	}
 
-	public class PendingAchievementRequestCondition implements
-			IRequiresAttentionCondition {
+	public class PendingAchievementRequestCondition
+			implements IRequiresAttentionCondition {
 		private static final long serialVersionUID = 1L;
 
 		@Override

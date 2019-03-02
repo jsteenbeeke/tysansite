@@ -17,12 +17,12 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import org.hibernate.annotations.Cache;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
-
-import org.hibernate.annotations.Cache;
 
 /**
  * @author Jeroen Steenbeeke
@@ -52,7 +52,7 @@ public class GroupForum extends Forum {
 
 	/**
 	 * Sets the Group of this GroupForum
-	 * 
+	 *
 	 * @param group
 	 *            The Group of this GroupForum
 	 */

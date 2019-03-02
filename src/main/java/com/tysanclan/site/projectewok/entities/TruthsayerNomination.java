@@ -17,34 +17,21 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
+import org.hibernate.annotations.Cache;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Cache;
-
-import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Entity
 @Table(indexes = { //
-@Index(name = "IDX_TruthsayerNomination_User", columnList = "user_id") })
+		@Index(name = "IDX_TruthsayerNomination_User", columnList = "user_id") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class TruthsayerNomination extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;
@@ -101,7 +88,7 @@ public class TruthsayerNomination extends BaseDomainObject {
 
 	/**
 	 * Sets the User of this TruthsayerNomination
-	 * 
+	 *
 	 * @param user
 	 *            The User of this TruthsayerNomination
 	 */
@@ -118,7 +105,7 @@ public class TruthsayerNomination extends BaseDomainObject {
 
 	/**
 	 * Sets the VoteStart of this TruthsayerNomination
-	 * 
+	 *
 	 * @param voteStart
 	 *            The VoteStart of this TruthsayerNomination
 	 */
@@ -135,7 +122,7 @@ public class TruthsayerNomination extends BaseDomainObject {
 
 	/**
 	 * Sets the Votes of this TruthsayerNomination
-	 * 
+	 *
 	 * @param votes
 	 *            The Votes of this TruthsayerNomination
 	 */

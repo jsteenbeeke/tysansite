@@ -1,24 +1,27 @@
 <html xmlns:wicket>
 <wicket:extend>
-	<table class="fullWidth">
-		<tr>
-			<th>Item</th>
-			<th>Amount</th>
-			<th>Cancel</th>
-		</tr>
-		<tr wicket:id="pending">
-			<td class="centeredCell" wicket:id="description"></td>
-			<td class="centeredCell" wicket:id="amount"></td>
-			<td class="centeredCell"><div wicket:id="delete"></div></td>
-		</tr>
-	</table>
+    <table class="fullWidth">
+        <tr>
+            <th>Item</th>
+            <th>Amount</th>
+            <th>Cancel</th>
+        </tr>
+        <tr wicket:id="pending">
+            <td class="centeredCell" wicket:id="description"></td>
+            <td class="centeredCell" wicket:id="amount"></td>
+            <td class="centeredCell">
+                <div wicket:id="delete"></div>
+            </td>
+        </tr>
+    </table>
 
-	<form wicket:id="requestForm">
-		<b>Description</b><br /> <input type="text" wicket:id="description" /><br />
+    <form wicket:id="requestForm">
+        <b>Description</b><br/> <input type="text"
+                                       wicket:id="description"/><br/>
 
-		<b>Amount</b><br /> <input type="text" wicket:id="amount" /><br />
+        <b>Amount</b><br/> <input type="text" wicket:id="amount"/><br/>
 
-		<input type="submit" value="Request" class="SubmitButton" />
-	</form>
+        <input type="submit" value="Request" class="SubmitButton"/>
+    </form>
 </wicket:extend>
 </html>

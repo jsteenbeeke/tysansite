@@ -17,18 +17,14 @@
  */
 package com.tysanclan.site.projectewok.beans.impl;
 
-import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.SortedSet;
-import java.util.TreeMap;
-import java.util.TreeSet;
-
+import com.tysanclan.site.projectewok.beans.NotificationService;
+import com.tysanclan.site.projectewok.entities.*;
+import com.tysanclan.site.projectewok.entities.Expense.ExpensePeriod;
+import com.tysanclan.site.projectewok.entities.dao.*;
+import com.tysanclan.site.projectewok.entities.filter.DonationFilter;
+import com.tysanclan.site.projectewok.entities.filter.ExpenseFilter;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
+import com.tysanclan.site.projectewok.util.DateUtil;
 import io.vavr.collection.Seq;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,34 +33,17 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.tysanclan.site.projectewok.beans.NotificationService;
-import com.tysanclan.site.projectewok.entities.Donation;
-import com.tysanclan.site.projectewok.entities.Expense;
-import com.tysanclan.site.projectewok.entities.Expense.ExpensePeriod;
-import com.tysanclan.site.projectewok.entities.PaidExpense;
-import com.tysanclan.site.projectewok.entities.PaymentRequest;
-import com.tysanclan.site.projectewok.entities.Subscription;
-import com.tysanclan.site.projectewok.entities.SubscriptionPayment;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.DonationDAO;
-import com.tysanclan.site.projectewok.entities.dao.ExpenseDAO;
-import com.tysanclan.site.projectewok.entities.dao.PaidExpenseDAO;
-import com.tysanclan.site.projectewok.entities.dao.PaymentRequestDAO;
-import com.tysanclan.site.projectewok.entities.dao.SubscriptionDAO;
-import com.tysanclan.site.projectewok.entities.dao.SubscriptionPaymentDAO;
-import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.filter.DonationFilter;
-import com.tysanclan.site.projectewok.entities.filter.ExpenseFilter;
-import com.tysanclan.site.projectewok.entities.filter.UserFilter;
-import com.tysanclan.site.projectewok.util.DateUtil;
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class FinanceServiceImpl implements
-		com.tysanclan.site.projectewok.beans.FinanceService {
+class FinanceServiceImpl
+		implements com.tysanclan.site.projectewok.beans.FinanceService {
 	@Autowired
 	private ExpenseDAO expenseDAO;
 
@@ -127,7 +106,8 @@ class FinanceServiceImpl implements
 		this.roleService = roleService;
 	}
 
-	public void setNotificationService(NotificationService notificationService) {
+	public void setNotificationService(
+			NotificationService notificationService) {
 		this.notificationService = notificationService;
 	}
 
@@ -138,7 +118,7 @@ class FinanceServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public Expense createExpense(String name, BigDecimal amount,
-								 ExpensePeriod period, Date start) {
+			ExpensePeriod period, Date start) {
 		Expense expense = new Expense();
 		expense.setName(name);
 		expense.setAmount(amount);
@@ -157,16 +137,15 @@ class FinanceServiceImpl implements
 			User treasurer = roleService.getTreasurer();
 
 			notificationService.notifyUser(treasurer,
-					"Subscriber donation of "
-							+ payment.getSubscription().getAmount() + " by "
-							+ payment.getUser()
+					"Subscriber donation of " + payment.getSubscription()
+							.getAmount() + " by " + payment.getUser()
 							+ ", please verify at your Paypal account");
 
 			payment.setPaid(true);
 			subscriptionPaymentDAO.update(payment);
 
-			createDonation(payment.getUser(), payment.getSubscription()
-					.getAmount(), new Date());
+			createDonation(payment.getUser(),
+					payment.getSubscription().getAmount(), new Date());
 
 			return true;
 		}
@@ -181,7 +160,7 @@ class FinanceServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public Donation createDonation(User donator, BigDecimal amount,
-								   Date donationTime) {
+			Date donationTime) {
 		Donation donation = new Donation();
 		donation.setAmount(amount);
 		donation.setDonationTime(donationTime);
@@ -218,7 +197,7 @@ class FinanceServiceImpl implements
 	 */
 	@Override
 	public SortedMap<Date, BigDecimal> calculateContributions(Date start,
-															  Date end) {
+			Date end) {
 		SortedMap<Date, BigDecimal> expenses = new TreeMap<Date, BigDecimal>();
 
 		addDonationMutations(start, end, expenses);
@@ -273,8 +252,8 @@ class FinanceServiceImpl implements
 
 		Seq<Donation> donations = donationDAO.findAll();
 		for (Donation donation : donations) {
-			if (!donation.getDonationTime().before(start)
-					&& !donation.getDonationTime().after(end)) {
+			if (!donation.getDonationTime().before(start) && !donation
+					.getDonationTime().after(end)) {
 				result.add(donation);
 			}
 		}
@@ -283,7 +262,7 @@ class FinanceServiceImpl implements
 	}
 
 	private void addExpenseMutations(Date _start, Date end,
-									 SortedMap<Date, BigDecimal> mutations) {
+			SortedMap<Date, BigDecimal> mutations) {
 		Date start = _start;
 
 		ExpenseFilter filter = new ExpenseFilter();
@@ -295,16 +274,13 @@ class FinanceServiceImpl implements
 
 		filter.start(start);
 
-
 		Seq<Expense> expenses = expenseDAO.findByFilter(filter);
 		for (Expense expense : expenses) {
 			for (Date date : getPaymentDates(expense)) {
 				if (!date.before(start) && !date.after(end)) {
 					if (mutations.containsKey(date)) {
-						mutations.put(
-								date,
-								mutations.get(date).subtract(
-										expense.getAmount()));
+						mutations.put(date, mutations.get(date)
+								.subtract(expense.getAmount()));
 					} else {
 						mutations.put(date, expense.getAmount().negate());
 					}
@@ -314,7 +290,7 @@ class FinanceServiceImpl implements
 	}
 
 	private void addDonationMutations(Date start, Date end,
-									  SortedMap<Date, BigDecimal> mutations) {
+			SortedMap<Date, BigDecimal> mutations) {
 		DonationFilter dFilter = new DonationFilter();
 		dFilter.donationTime().between(start, end);
 		Seq<Donation> donations = donationDAO.findByFilter(dFilter);
@@ -333,11 +309,13 @@ class FinanceServiceImpl implements
 		SortedSet<Date> result = new TreeSet<Date>();
 		Calendar cal = Calendar.getInstance();
 
-		Date start = expense.getStart() != null ? expense.getStart()
-				: DateUtil.tysanFoundation;
+		Date start = expense.getStart() != null ?
+				expense.getStart() :
+				DateUtil.tysanFoundation;
 
-		cal.setTime(expense.getLastPayment() != null ? expense.getLastPayment()
-				: start);
+		cal.setTime(expense.getLastPayment() != null ?
+				expense.getLastPayment() :
+				start);
 
 		while (!cal.getTime().before(start)) {
 			int field = Calendar.YEAR;
@@ -375,8 +353,8 @@ class FinanceServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void updateExpense(Expense _expense, String expenseName,
-							  BigDecimal amount, ExpensePeriod period, Date startDate,
-							  Date endDate) {
+			BigDecimal amount, ExpensePeriod period, Date startDate,
+			Date endDate) {
 		expenseDAO.load(_expense.getId()).forEach(expense -> {
 			expense.setName(expenseName);
 			expense.setAmount(amount);
@@ -434,7 +412,7 @@ class FinanceServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public boolean subscribe(User subscriber, BigDecimal amount,
-							 ExpensePeriod interval) {
+			ExpensePeriod interval) {
 		if (subscriber.getSubscription() == null) {
 			Subscription subscription = new Subscription();
 			subscription.setAmount(amount);
@@ -454,7 +432,7 @@ class FinanceServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public PaymentRequest requestPayment(User requester, String itemRequested,
-										 BigDecimal amount) {
+			BigDecimal amount) {
 		PaymentRequest request = new PaymentRequest();
 		request.setAmount(amount);
 		request.setItem(itemRequested);
@@ -477,8 +455,8 @@ class FinanceServiceImpl implements
 			for (Expense e : expenseDAO.findAll()) {
 				Date d = e.getStart();
 
-				while ((e.getEnd() == null || !d.after(e.getEnd()))
-						&& !d.after(now)) {
+				while ((e.getEnd() == null || !d.after(e.getEnd())) && !d
+						.after(now)) {
 					PaidExpense pe = new PaidExpense();
 					pe.setAmount(e.getAmount());
 					pe.setPaidBy(prospero);

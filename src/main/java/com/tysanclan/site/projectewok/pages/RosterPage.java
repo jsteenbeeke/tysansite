@@ -98,8 +98,7 @@ public class RosterPage extends TysanPage {
 			values.put("Trial Members", 100 * trialMemberCount / total);
 		}
 
-		add(GraphUtil.makePieChart("chart", "Member Distribution",
-				values));
+		add(GraphUtil.makePieChart("chart", "Member Distribution", values));
 
 		User chancellor = null;
 		List<User> senators = new LinkedList<User>();

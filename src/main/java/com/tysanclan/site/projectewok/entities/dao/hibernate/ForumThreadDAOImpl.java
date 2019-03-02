@@ -33,8 +33,8 @@ import java.util.List;
  */
 @Component
 @Scope("request")
-class ForumThreadDAOImpl extends HibernateDAO<ForumThread, ForumThreadFilter> implements
-		com.tysanclan.site.projectewok.entities.dao.ForumThreadDAO {
+class ForumThreadDAOImpl extends HibernateDAO<ForumThread, ForumThreadFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.ForumThreadDAO {
 	/**
 	 * @see com.tysanclan.site.projectewok.entities.dao.ForumThreadDAO#findByPostTime(com.tysanclan.site.projectewok.entities.Forum)
 	 */
@@ -49,14 +49,14 @@ class ForumThreadDAOImpl extends HibernateDAO<ForumThread, ForumThreadFilter> im
 
 	@Override
 	public int countByContext(User user, Forum contextObject,
-							  ForumViewContext context) {
+			ForumViewContext context) {
 		return context.countThreads(entityManager, contextObject, user);
 	}
 
 	@Override
 	public List<ForumThread> findByContext(User user, Forum contextObject,
-										   ForumViewContext context, int first, int count) {
-		return context.getThreads(entityManager, contextObject, user, first,
-								  count);
+			ForumViewContext context, int first, int count) {
+		return context
+				.getThreads(entityManager, contextObject, user, first, count);
 	}
 }

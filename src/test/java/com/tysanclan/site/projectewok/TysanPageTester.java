@@ -23,7 +23,6 @@ import org.apache.wicket.protocol.http.mock.MockHttpServletRequest;
 import org.apache.wicket.protocol.http.mock.MockHttpSession;
 import org.apache.wicket.protocol.http.mock.MockServletContext;
 import org.apache.wicket.util.tester.WicketTester;
-import org.hibernate.SessionFactory;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -53,14 +52,13 @@ public abstract class TysanPageTester {
 	@BeforeClass
 	public static void setUp() throws Exception {
 		System.setProperty("ewok.testmode", "true");
-		handler = InMemory.run("ewok")
-						  .withContextPath("/tysantest")
-						  .withoutShowingSql()
-						  .atPort(8383)
-						  .orElseThrow(() -> new IllegalStateException(
-								  "Could not start webserver"));
+		handler = InMemory.run("ewok").withContextPath("/tysantest")
+				.withoutShowingSql().atPort(8383).orElseThrow(
+						() -> new IllegalStateException(
+								"Could not start webserver"));
 
-		TysanApplication application = TysanApplicationReference.INSTANCE.getApplication();
+		TysanApplication application = TysanApplicationReference.INSTANCE
+				.getApplication();
 		ThreadContext.setApplication(application);
 
 		tester = new WicketTester(application, false);
@@ -76,7 +74,6 @@ public abstract class TysanPageTester {
 	@Before
 	public void startRequest() {
 
-
 		MockServletContext sctx = new MockServletContext(
 				tester.getApplication(), "/src/main/webapp/");
 		MockHttpServletRequest request = new MockHttpServletRequest(
@@ -85,7 +82,8 @@ public abstract class TysanPageTester {
 
 		RequestContextHolder.setRequestAttributes(attr);
 
-		ApplicationContext context = TysanApplication.get().getApplicationContext();
+		ApplicationContext context = TysanApplication.get()
+				.getApplicationContext();
 		beanFactory = context.getAutowireCapableBeanFactory();
 		emf = context.getBean(EntityManagerFactory.class);
 		EntityManager em = context.getBean(EntityManager.class);
@@ -108,7 +106,6 @@ public abstract class TysanPageTester {
 	protected <T> T getBean(Class<T> beanClass) {
 		return beanFactory.getBean(beanClass);
 	}
-
 
 	protected void logIn(Long userId) {
 		TysanSession session = (TysanSession) tester.getSession();

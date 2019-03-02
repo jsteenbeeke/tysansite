@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class UpdateMarkDAOImpl extends HibernateDAO<UpdateMark, UpdateMarkFilter> implements
-		com.tysanclan.site.projectewok.entities.dao.UpdateMarkDAO {
+class UpdateMarkDAOImpl extends HibernateDAO<UpdateMark, UpdateMarkFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.UpdateMarkDAO {
 
 }

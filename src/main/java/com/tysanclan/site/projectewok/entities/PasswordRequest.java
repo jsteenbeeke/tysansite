@@ -17,30 +17,19 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
+import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 import org.hibernate.annotations.Cache;
 
-import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Entity
 @Table(indexes = { //
-@Index(name = "IDX_PASSWORDREQUEST_USER", columnList = "user_id") })
+		@Index(name = "IDX_PASSWORDREQUEST_USER", columnList = "user_id") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class PasswordRequest extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;
@@ -96,7 +85,7 @@ public class PasswordRequest extends BaseDomainObject {
 
 	/**
 	 * Sets the Key of this PasswordRequest
-	 * 
+	 *
 	 * @param key
 	 *            The Key of this PasswordRequest
 	 */
@@ -113,7 +102,7 @@ public class PasswordRequest extends BaseDomainObject {
 
 	/**
 	 * Sets the Requested of this PasswordRequest
-	 * 
+	 *
 	 * @param requested
 	 *            The Requested of this PasswordRequest
 	 */
@@ -130,7 +119,7 @@ public class PasswordRequest extends BaseDomainObject {
 
 	/**
 	 * Sets the User of this PasswordRequest
-	 * 
+	 *
 	 * @param user
 	 *            The User of this PasswordRequest
 	 */

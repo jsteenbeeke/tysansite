@@ -17,14 +17,12 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
-import java.io.Serializable;
-
-import javax.persistence.*;
-
-import org.hibernate.annotations.Cache;
-
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 import com.tysanclan.site.projectewok.entities.GameAccount.AccountType;
+import org.hibernate.annotations.Cache;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  *

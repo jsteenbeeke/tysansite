@@ -119,10 +119,11 @@ public class TysanMemberPanel extends TysanTopPanel {
 
 		};
 
-		User user = TysanSession.session().flatMap(TysanSession::getUser).getOrNull();
+		User user = TysanSession.session().flatMap(TysanSession::getUser)
+				.getOrNull();
 
-		link.add(new Label("count", new Model<>((user != null) ? forumService
-						.countUnread(user) : 0)));
+		link.add(new Label("count", new Model<>(
+				(user != null) ? forumService.countUnread(user) : 0)));
 
 		add(link);
 	}
@@ -139,14 +140,14 @@ public class TysanMemberPanel extends TysanTopPanel {
 		window.add(new OtterSniperPanel("otterSniperPanel", 4));
 
 		AjaxLink<Dialog> link = new AjaxLink<Dialog>("online",
-													 new Model<>(window)) {
+				new Model<>(window)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				if (target != null) {
-					target.appendJavaScript(getModelObject().open().render()
-															.toString());
+					target.appendJavaScript(
+							getModelObject().open().render().toString());
 				}
 
 			}
@@ -154,16 +155,16 @@ public class TysanMemberPanel extends TysanTopPanel {
 		};
 
 		link.add(new Label("count", new MembersOnlineCountModel())
-						 .setOutputMarkupId(true));
+				.setOutputMarkupId(true));
 
-		window.add(new ListView<User>("members", ModelMaker.wrap(userService
-																		 .getMembersOnline())) {
+		window.add(new ListView<User>("members",
+				ModelMaker.wrap(userService.getMembersOnline())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void populateItem(ListItem<User> item) {
-				MemberListItem memberLink = new MemberListItem("link", item
-						.getModelObject());
+				MemberListItem memberLink = new MemberListItem("link",
+						item.getModelObject());
 
 				item.add(memberLink);
 
@@ -171,22 +172,21 @@ public class TysanMemberPanel extends TysanTopPanel {
 
 		});
 
-		window.add(new ListView<MumbleServer>("servers", ModelMaker
-				.wrap(serverDAO.findAll().toJavaList())) {
+		window.add(new ListView<MumbleServer>("servers",
+				ModelMaker.wrap(serverDAO.findAll().toJavaList())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void populateItem(ListItem<MumbleServer> item) {
 				MumbleServer server = item.getModelObject();
 
-				item.add(new WebMarkupContainer("server").add(
-						AttributeModifier.replace("data-token",
-												  server.getApiToken())).add(
-						AttributeModifier.replace("data-id",
-												  server.getServerID())));
+				item.add(new WebMarkupContainer("server").add(AttributeModifier
+						.replace("data-token", server.getApiToken()))
+						.add(AttributeModifier
+								.replace("data-id", server.getServerID())));
 
-				item.add(new ExternalLink("url", server.getUrl()).setBody(Model
-																				  .of(server.getUrl())));
+				item.add(new ExternalLink("url", server.getUrl())
+						.setBody(Model.of(server.getUrl())));
 				item.add(new Label("password", server.getPassword()));
 
 			}
@@ -284,7 +284,8 @@ public class TysanMemberPanel extends TysanTopPanel {
 			int count = 0;
 
 			for (ConversationParticipation participation : participations) {
-				Set<Message> unread = new HashSet<>(participation.getConversation().getMessages());
+				Set<Message> unread = new HashSet<>(
+						participation.getConversation().getMessages());
 				unread.removeAll(participation.getReadMessages());
 				count += unread.size();
 			}

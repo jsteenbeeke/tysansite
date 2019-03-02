@@ -25,6 +25,7 @@ import com.tysanclan.site.projectewok.entities.filter.RegulationChangeVoteFilter
  *
  * @author Jeroen Steenbeeke
  */
-public interface RegulationChangeVoteDAO extends DAO<RegulationChangeVote, RegulationChangeVoteFilter> {
+public interface RegulationChangeVoteDAO
+		extends DAO<RegulationChangeVote, RegulationChangeVoteFilter> {
 
 }

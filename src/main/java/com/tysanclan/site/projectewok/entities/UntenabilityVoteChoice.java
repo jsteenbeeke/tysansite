@@ -17,31 +17,19 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
-import java.io.Serializable;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
+import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Entity
 @Table(indexes = { //
-@Index(name = "IDX_UntenabilityVoteChoice_Vote", columnList = "vote_id"),
+		@Index(name = "IDX_UntenabilityVoteChoice_Vote", columnList = "vote_id"),
 		@Index(name = "IDX_UntenabilityVote_Caster", columnList = "caster_id") })
 @Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class UntenabilityVoteChoice extends BaseDomainObject {
@@ -98,7 +86,7 @@ public class UntenabilityVoteChoice extends BaseDomainObject {
 
 	/**
 	 * Sets the Vote of this UntenabilityVoteChoice
-	 * 
+	 *
 	 * @param vote
 	 *            The Vote of this UntenabilityVoteChoice
 	 */
@@ -115,7 +103,7 @@ public class UntenabilityVoteChoice extends BaseDomainObject {
 
 	/**
 	 * Sets the InFavor of this UntenabilityVoteChoice
-	 * 
+	 *
 	 * @param inFavor
 	 *            The InFavor of this UntenabilityVoteChoice
 	 */
@@ -132,7 +120,7 @@ public class UntenabilityVoteChoice extends BaseDomainObject {
 
 	/**
 	 * Sets the Caster of this UntenabilityVoteChoice
-	 * 
+	 *
 	 * @param caster
 	 *            The Caster of this UntenabilityVoteChoice
 	 */

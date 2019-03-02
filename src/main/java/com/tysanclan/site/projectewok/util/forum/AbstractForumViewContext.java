@@ -30,15 +30,19 @@ public abstract class AbstractForumViewContext implements ForumViewContext {
 
 	private static final long serialVersionUID = 1L;
 
-	protected <T extends DomainObject> List<T> listOf(EntityManager em, CriteriaQuery<T> criteriaQuery, int limit, int offset) {
-		return em.createQuery(criteriaQuery).setFirstResult(offset).setMaxResults(limit).getResultList();
+	protected <T extends DomainObject> List<T> listOf(EntityManager em,
+			CriteriaQuery<T> criteriaQuery, int limit, int offset) {
+		return em.createQuery(criteriaQuery).setFirstResult(offset)
+				.setMaxResults(limit).getResultList();
 	}
 
-	protected <T extends DomainObject> List<T> listOf(EntityManager em, CriteriaQuery<T> criteriaQuery) {
+	protected <T extends DomainObject> List<T> listOf(EntityManager em,
+			CriteriaQuery<T> criteriaQuery) {
 		return em.createQuery(criteriaQuery).getResultList();
 	}
 
 	protected int count(EntityManager em, CriteriaQuery<Long> criteriaQuery) {
-		return ((Number) em.createQuery(criteriaQuery).getSingleResult()).intValue();
+		return ((Number) em.createQuery(criteriaQuery).getSingleResult())
+				.intValue();
 	}
 }

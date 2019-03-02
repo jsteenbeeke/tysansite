@@ -17,18 +17,15 @@
  */
 package com.tysanclan.site.projectewok.util.forum;
 
-import java.util.List;
-
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.entities.*;
-import org.hibernate.SQLQuery;
-import org.hibernate.Session;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -39,7 +36,8 @@ public class MemberForumViewContext extends AbstractForumViewContext {
 	@Override
 	public int countCategories(EntityManager em, User viewer) {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-		CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+		CriteriaQuery<Long> criteriaQuery = criteriaBuilder
+				.createQuery(Long.class);
 
 		Root<ForumCategory> root = criteriaQuery.from(ForumCategory.class);
 
@@ -49,16 +47,20 @@ public class MemberForumViewContext extends AbstractForumViewContext {
 		Subquery<Long> groupSubquery = criteriaQuery.subquery(Long.class);
 		Root<Group> groupRoot = groupSubquery.from(Group.class);
 		groupSubquery.select(groupRoot.get(Group_.id));
-		groupSubquery.where(criteriaBuilder.isMember(viewer, groupRoot.get(Group_.groupMembers)));
+		groupSubquery.where(criteriaBuilder
+				.isMember(viewer, groupRoot.get(Group_.groupMembers)));
 
 		Subquery<Long> groupForumSubquery = criteriaQuery.subquery(Long.class);
-		Root<GroupForum> groupForumRoot = groupForumSubquery.from(GroupForum.class);
+		Root<GroupForum> groupForumRoot = groupForumSubquery
+				.from(GroupForum.class);
 		groupForumSubquery.select(groupForumRoot.get(GroupForum_.id));
 
 		subquery.select(subqueryRoot);
-		subquery.where(criteriaBuilder.or(criteriaBuilder.not(subqueryRoot.get(Forum_.id).in(groupForumSubquery)),
-										  subqueryRoot.get(GroupForum_.id).in(groupSubquery)),
-					   criteriaBuilder.equal(subqueryRoot.get(Forum_.category), root.get(ForumCategory_.id)));
+		subquery.where(criteriaBuilder.or(criteriaBuilder
+						.not(subqueryRoot.get(Forum_.id).in(groupForumSubquery)),
+				subqueryRoot.get(GroupForum_.id).in(groupSubquery)),
+				criteriaBuilder.equal(subqueryRoot.get(Forum_.category),
+						root.get(ForumCategory_.id)));
 
 		criteriaQuery.select(criteriaBuilder.count(root));
 		criteriaQuery.where(criteriaBuilder.exists(subquery));
@@ -69,10 +71,11 @@ public class MemberForumViewContext extends AbstractForumViewContext {
 
 	@Override
 	public List<ForumCategory> getCategories(EntityManager em, User viewer,
-											 int offset, int count) {
+			int offset, int count) {
 
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-		CriteriaQuery<ForumCategory> criteriaQuery = criteriaBuilder.createQuery(ForumCategory.class);
+		CriteriaQuery<ForumCategory> criteriaQuery = criteriaBuilder
+				.createQuery(ForumCategory.class);
 
 		Root<ForumCategory> root = criteriaQuery.from(ForumCategory.class);
 
@@ -82,16 +85,20 @@ public class MemberForumViewContext extends AbstractForumViewContext {
 		Subquery<Long> groupSubquery = criteriaQuery.subquery(Long.class);
 		Root<Group> groupRoot = groupSubquery.from(Group.class);
 		groupSubquery.select(groupRoot.get(Group_.id));
-		groupSubquery.where(criteriaBuilder.isMember(viewer, groupRoot.get(Group_.groupMembers)));
+		groupSubquery.where(criteriaBuilder
+				.isMember(viewer, groupRoot.get(Group_.groupMembers)));
 
 		Subquery<Long> groupForumSubquery = criteriaQuery.subquery(Long.class);
-		Root<GroupForum> groupForumRoot = groupForumSubquery.from(GroupForum.class);
+		Root<GroupForum> groupForumRoot = groupForumSubquery
+				.from(GroupForum.class);
 		groupForumSubquery.select(groupForumRoot.get(GroupForum_.id));
 
 		subquery.select(subqueryRoot);
-		subquery.where(criteriaBuilder.or(criteriaBuilder.not(subqueryRoot.get(Forum_.id).in(groupForumSubquery)),
-										  subqueryRoot.get(GroupForum_.id).in(groupSubquery)),
-					   criteriaBuilder.equal(subqueryRoot.get(Forum_.category), root.get(ForumCategory_.id)));
+		subquery.where(criteriaBuilder.or(criteriaBuilder
+						.not(subqueryRoot.get(Forum_.id).in(groupForumSubquery)),
+				subqueryRoot.get(GroupForum_.id).in(groupSubquery)),
+				criteriaBuilder.equal(subqueryRoot.get(Forum_.category),
+						root.get(ForumCategory_.id)));
 
 		criteriaQuery.select(root);
 		criteriaQuery.where(criteriaBuilder.exists(subquery));
@@ -99,47 +106,55 @@ public class MemberForumViewContext extends AbstractForumViewContext {
 	}
 
 	@Override
-	public int countForums(EntityManager em, ForumCategory context, User viewer) {
+	public int countForums(EntityManager em, ForumCategory context,
+			User viewer) {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-		CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+		CriteriaQuery<Long> criteriaQuery = criteriaBuilder
+				.createQuery(Long.class);
 
 		Root<Forum> root = criteriaQuery.from(Forum.class);
 		Subquery<Long> groupSubquery = criteriaQuery.subquery(Long.class);
 		Root<Group> groupRoot = groupSubquery.from(Group.class);
 		groupSubquery.select(groupRoot.get(Group_.id));
-		groupSubquery.where(criteriaBuilder.isMember(viewer, groupRoot.get(Group_.groupMembers)));
+		groupSubquery.where(criteriaBuilder
+				.isMember(viewer, groupRoot.get(Group_.groupMembers)));
 
 		Subquery<Long> groupForumSubquery = criteriaQuery.subquery(Long.class);
-		Root<GroupForum> groupForumRoot = groupForumSubquery.from(GroupForum.class);
+		Root<GroupForum> groupForumRoot = groupForumSubquery
+				.from(GroupForum.class);
 		groupForumSubquery.select(groupForumRoot.get(GroupForum_.id));
 
 		criteriaQuery.select(criteriaBuilder.count(root));
-		criteriaQuery.where(criteriaBuilder.or(criteriaBuilder.not(root.get(Forum_.id).in(groupForumSubquery)),
-											   root.get(GroupForum_.id).in(groupSubquery)));
+		criteriaQuery.where(criteriaBuilder.or(criteriaBuilder
+						.not(root.get(Forum_.id).in(groupForumSubquery)),
+				root.get(GroupForum_.id).in(groupSubquery)));
 
 		return count(em, criteriaQuery);
 	}
 
 	@Override
 	public List<Forum> getForums(EntityManager em, ForumCategory context,
-								 User viewer, int offset, int count) {
+			User viewer, int offset, int count) {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-		CriteriaQuery<Forum> criteriaQuery = criteriaBuilder.createQuery(Forum.class);
+		CriteriaQuery<Forum> criteriaQuery = criteriaBuilder
+				.createQuery(Forum.class);
 
 		Root<Forum> root = criteriaQuery.from(Forum.class);
 		Subquery<Long> groupSubquery = criteriaQuery.subquery(Long.class);
 		Root<Group> groupRoot = groupSubquery.from(Group.class);
 		groupSubquery.select(groupRoot.get(Group_.id));
-		groupSubquery.where(criteriaBuilder.isMember(viewer, groupRoot.get(Group_.groupMembers)));
+		groupSubquery.where(criteriaBuilder
+				.isMember(viewer, groupRoot.get(Group_.groupMembers)));
 
 		Subquery<Long> groupForumSubquery = criteriaQuery.subquery(Long.class);
-		Root<GroupForum> groupForumRoot = groupForumSubquery.from(GroupForum.class);
+		Root<GroupForum> groupForumRoot = groupForumSubquery
+				.from(GroupForum.class);
 		groupForumSubquery.select(groupForumRoot.get(GroupForum_.id));
 
 		criteriaQuery.select(root);
-		criteriaQuery
-				.where(criteriaBuilder.or(criteriaBuilder.not(root.get(Forum_.id).in(groupForumSubquery)),
-										  root.get(GroupForum_.id).in(groupSubquery)))
+		criteriaQuery.where(criteriaBuilder.or(criteriaBuilder
+						.not(root.get(Forum_.id).in(groupForumSubquery)),
+				root.get(GroupForum_.id).in(groupSubquery)))
 				.orderBy(criteriaBuilder.asc(root.get(Forum_.position)));
 
 		return listOf(em, criteriaQuery, count, offset);
@@ -148,35 +163,42 @@ public class MemberForumViewContext extends AbstractForumViewContext {
 	@Override
 	public int countThreads(EntityManager em, Forum context, User viewer) {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-		CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+		CriteriaQuery<Long> criteriaQuery = criteriaBuilder
+				.createQuery(Long.class);
 		Root<ForumThread> root = criteriaQuery.from(ForumThread.class);
 
-		Subquery<ForumPost> forumPostQuery = criteriaQuery.subquery(ForumPost.class);
+		Subquery<ForumPost> forumPostQuery = criteriaQuery
+				.subquery(ForumPost.class);
 		Root<ForumPost> forumPostRoot = forumPostQuery.from(ForumPost.class);
 		forumPostQuery.select(forumPostRoot);
-		forumPostQuery.where(criteriaBuilder.equal(forumPostRoot.get(ForumPost_.shadow), false),
-							 criteriaBuilder.equal(forumPostRoot.get(ForumPost_.thread), root.get(ForumThread_.id)));
+		forumPostQuery.where(criteriaBuilder
+						.equal(forumPostRoot.get(ForumPost_.shadow), false),
+				criteriaBuilder.equal(forumPostRoot.get(ForumPost_.thread),
+						root.get(ForumThread_.id)));
 
 		Subquery<User> userOfRankQuery = criteriaQuery.subquery(User.class);
 		Root<User> userOfRankRoot = userOfRankQuery.from(User.class);
 		userOfRankQuery.select(userOfRankRoot);
-		userOfRankQuery.where(userOfRankRoot.get(User_.rank).in(Rank.CHANCELLOR, Rank.SENATOR, Rank.TRUTHSAYER),
-							  criteriaBuilder.equal(userOfRankRoot.get(User_.id), viewer.getId()));
+		userOfRankQuery.where(userOfRankRoot.get(User_.rank)
+						.in(Rank.CHANCELLOR, Rank.SENATOR, Rank.TRUTHSAYER),
+				criteriaBuilder
+						.equal(userOfRankRoot.get(User_.id), viewer.getId()));
 
 		Subquery<Trial> trialQuery = criteriaQuery.subquery(Trial.class);
 		Root<Trial> trialRoot = trialQuery.from(Trial.class);
 		trialQuery.select(trialRoot);
-		trialQuery.where(criteriaBuilder.equal(trialRoot.get(Trial_.trialThread), root.get(ForumThread_.id)),
-						 criteriaBuilder.notEqual(trialRoot.get(Trial_.accused), viewer),
-						 criteriaBuilder.not(criteriaBuilder.exists(userOfRankQuery))
-		);
+		trialQuery.where(criteriaBuilder
+						.equal(trialRoot.get(Trial_.trialThread),
+								root.get(ForumThread_.id)),
+				criteriaBuilder.notEqual(trialRoot.get(Trial_.accused), viewer),
+				criteriaBuilder.not(criteriaBuilder.exists(userOfRankQuery)));
 
 		criteriaQuery.select(criteriaBuilder.count(root));
-		criteriaQuery.where(criteriaBuilder.equal(root.get(ForumThread_.forum), context),
-							criteriaBuilder.equal(root.get(ForumThread_.shadow), false),
-							criteriaBuilder.not(criteriaBuilder.exists(trialQuery)),
-							criteriaBuilder.exists(forumPostQuery)
-		);
+		criteriaQuery.where(criteriaBuilder
+						.equal(root.get(ForumThread_.forum), context),
+				criteriaBuilder.equal(root.get(ForumThread_.shadow), false),
+				criteriaBuilder.not(criteriaBuilder.exists(trialQuery)),
+				criteriaBuilder.exists(forumPostQuery));
 
 		return count(em, criteriaQuery);
 
@@ -184,37 +206,46 @@ public class MemberForumViewContext extends AbstractForumViewContext {
 
 	@Override
 	public List<ForumThread> getThreads(EntityManager em, Forum context,
-										User viewer, int offset, int count) {
+			User viewer, int offset, int count) {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-		CriteriaQuery<ForumThread> criteriaQuery = criteriaBuilder.createQuery(ForumThread.class);
+		CriteriaQuery<ForumThread> criteriaQuery = criteriaBuilder
+				.createQuery(ForumThread.class);
 		Root<ForumThread> root = criteriaQuery.from(ForumThread.class);
 
-		Subquery<ForumPost> forumPostQuery = criteriaQuery.subquery(ForumPost.class);
+		Subquery<ForumPost> forumPostQuery = criteriaQuery
+				.subquery(ForumPost.class);
 		Root<ForumPost> forumPostRoot = forumPostQuery.from(ForumPost.class);
 		forumPostQuery.select(forumPostRoot);
-		forumPostQuery.where(criteriaBuilder.equal(forumPostRoot.get(ForumPost_.shadow), false),
-							 criteriaBuilder.equal(forumPostRoot.get(ForumPost_.thread), root.get(ForumThread_.id)));
+		forumPostQuery.where(criteriaBuilder
+						.equal(forumPostRoot.get(ForumPost_.shadow), false),
+				criteriaBuilder.equal(forumPostRoot.get(ForumPost_.thread),
+						root.get(ForumThread_.id)));
 
 		Subquery<User> userOfRankQuery = criteriaQuery.subquery(User.class);
 		Root<User> userOfRankRoot = userOfRankQuery.from(User.class);
 		userOfRankQuery.select(userOfRankRoot);
-		userOfRankQuery.where(userOfRankRoot.get(User_.rank).in(Rank.CHANCELLOR, Rank.SENATOR, Rank.TRUTHSAYER),
-							  criteriaBuilder.equal(userOfRankRoot.get(User_.id), viewer.getId()));
+		userOfRankQuery.where(userOfRankRoot.get(User_.rank)
+						.in(Rank.CHANCELLOR, Rank.SENATOR, Rank.TRUTHSAYER),
+				criteriaBuilder
+						.equal(userOfRankRoot.get(User_.id), viewer.getId()));
 
 		Subquery<Trial> trialQuery = criteriaQuery.subquery(Trial.class);
 		Root<Trial> trialRoot = trialQuery.from(Trial.class);
 		trialQuery.select(trialRoot);
-		trialQuery.where(criteriaBuilder.equal(trialRoot.get(Trial_.trialThread), root.get(ForumThread_.id)),
-						 criteriaBuilder.notEqual(trialRoot.get(Trial_.accused), viewer),
-						 criteriaBuilder.not(criteriaBuilder.exists(userOfRankQuery))
-		);
+		trialQuery.where(criteriaBuilder
+						.equal(trialRoot.get(Trial_.trialThread),
+								root.get(ForumThread_.id)),
+				criteriaBuilder.notEqual(trialRoot.get(Trial_.accused), viewer),
+				criteriaBuilder.not(criteriaBuilder.exists(userOfRankQuery)));
 
 		criteriaQuery.select(root);
-		criteriaQuery.where(criteriaBuilder.equal(root.get(ForumThread_.forum), context),
-							criteriaBuilder.equal(root.get(ForumThread_.shadow), false),
-							criteriaBuilder.not(criteriaBuilder.exists(trialQuery)),
-							criteriaBuilder.exists(forumPostQuery)
-		).orderBy(criteriaBuilder.desc(root.get(ForumThread_.lastPost)));;
+		criteriaQuery.where(criteriaBuilder
+						.equal(root.get(ForumThread_.forum), context),
+				criteriaBuilder.equal(root.get(ForumThread_.shadow), false),
+				criteriaBuilder.not(criteriaBuilder.exists(trialQuery)),
+				criteriaBuilder.exists(forumPostQuery))
+				.orderBy(criteriaBuilder.desc(root.get(ForumThread_.lastPost)));
+		;
 
 		return listOf(em, criteriaQuery, count, offset);
 	}
@@ -222,28 +253,30 @@ public class MemberForumViewContext extends AbstractForumViewContext {
 	@Override
 	public int countPosts(EntityManager em, ForumThread context, User viewer) {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-		CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+		CriteriaQuery<Long> criteriaQuery = criteriaBuilder
+				.createQuery(Long.class);
 		Root<ForumPost> root = criteriaQuery.from(ForumPost.class);
 
 		criteriaQuery.select(criteriaBuilder.count(root));
-		criteriaQuery.where(criteriaBuilder.equal(root.get(ForumPost_.shadow), false),
-							criteriaBuilder.equal(root.get(ForumPost_.thread), context)
-		);
+		criteriaQuery.where(criteriaBuilder
+						.equal(root.get(ForumPost_.shadow), false),
+				criteriaBuilder.equal(root.get(ForumPost_.thread), context));
 
 		return count(em, criteriaQuery);
 	}
 
 	@Override
 	public List<ForumPost> getPosts(EntityManager em, ForumThread context,
-									User viewer, int offset, int count) {
+			User viewer, int offset, int count) {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-		CriteriaQuery<ForumPost> criteriaQuery = criteriaBuilder.createQuery(ForumPost.class);
+		CriteriaQuery<ForumPost> criteriaQuery = criteriaBuilder
+				.createQuery(ForumPost.class);
 		Root<ForumPost> root = criteriaQuery.from(ForumPost.class);
 
 		criteriaQuery.select(root);
-		criteriaQuery.where(criteriaBuilder.equal(root.get(ForumPost_.shadow), false),
-							criteriaBuilder.equal(root.get(ForumPost_.thread), context)
-		);
+		criteriaQuery.where(criteriaBuilder
+						.equal(root.get(ForumPost_.shadow), false),
+				criteriaBuilder.equal(root.get(ForumPost_.thread), context));
 		criteriaQuery.orderBy(criteriaBuilder.asc(root.get(ForumPost_.time)));
 
 		return listOf(em, criteriaQuery, count, offset);

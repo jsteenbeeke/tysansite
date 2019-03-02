@@ -25,6 +25,7 @@ import com.tysanclan.site.projectewok.entities.filter.UntenabilityVoteFilter;
  *
  * @author Jeroen Steenbeeke
  */
-public interface UntenabilityVoteDAO extends DAO<UntenabilityVote, UntenabilityVoteFilter> {
+public interface UntenabilityVoteDAO
+		extends DAO<UntenabilityVote, UntenabilityVoteFilter> {
 
 }

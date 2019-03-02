@@ -17,18 +17,15 @@
  */
 package com.tysanclan.site.projectewok.pages;
 
-import java.util.List;
-
+import com.tysanclan.site.projectewok.TysanPage;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.dao.UserDAO;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
 import io.vavr.collection.Seq;
 import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.tysanclan.site.projectewok.TysanPage;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.filter.UserFilter;
 
 /**
  * @author Jeroen Steenbeeke
@@ -40,7 +37,7 @@ public class HistoryPage extends TysanPage {
 	private UserDAO userDAO;
 
 	/**
-	 * 
+	 *
 	 */
 	public HistoryPage() {
 		super("Clan History");

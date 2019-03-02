@@ -39,7 +39,7 @@ public class RealmSupervisorPanel extends TysanOverviewPanel<Realm> {
 
 	public class DeadRealmsCondition implements IRequiresAttentionCondition {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
@@ -86,8 +86,8 @@ public class RealmSupervisorPanel extends TysanOverviewPanel<Realm> {
 	private GameService gameService;
 
 	public RealmSupervisorPanel(String id, Realm realm) {
-		super(id, ModelMaker.wrap(realm), "Realm Supervision: "
-				+ realm.getName());
+		super(id, ModelMaker.wrap(realm),
+				"Realm Supervision: " + realm.getName());
 
 		add(GraphUtil.makePieChart("gamesize", "Game percentages",
 				createGameSizeChart(realm)));
@@ -103,7 +103,8 @@ public class RealmSupervisorPanel extends TysanOverviewPanel<Realm> {
 			 */
 			@Override
 			public void onClick() {
-				setResponsePage(new GamingGroupSupervisionPage(getModelObject()));
+				setResponsePage(
+						new GamingGroupSupervisionPage(getModelObject()));
 
 			}
 		});

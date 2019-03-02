@@ -30,10 +30,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Scope("request")
-class AttentionSuppressionDAOImpl extends
-		HibernateDAO<AttentionSuppression, AttentionSuppressionFilter> implements
-		AttentionSuppressionDAO {
-
+class AttentionSuppressionDAOImpl
+		extends HibernateDAO<AttentionSuppression, AttentionSuppressionFilter>
+		implements AttentionSuppressionDAO {
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)

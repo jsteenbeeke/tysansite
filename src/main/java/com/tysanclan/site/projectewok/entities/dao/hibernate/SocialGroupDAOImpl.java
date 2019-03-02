@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class SocialGroupDAOImpl extends HibernateDAO<SocialGroup, SocialGroupFilter> implements
-		com.tysanclan.site.projectewok.entities.dao.SocialGroupDAO {
+class SocialGroupDAOImpl extends HibernateDAO<SocialGroup, SocialGroupFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.SocialGroupDAO {
 
 }

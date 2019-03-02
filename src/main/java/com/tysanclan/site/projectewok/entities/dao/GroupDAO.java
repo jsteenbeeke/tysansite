@@ -26,7 +26,7 @@ import java.util.List;
 
 /**
  * A Data Access Object for handling various groups
- * 
+ *
  * @author Jeroen Steenbeeke
  */
 public interface GroupDAO extends DAO<Group, GroupFilter> {

@@ -24,12 +24,12 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
- * 
+ *
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class AchievementDAOImpl extends HibernateDAO<Achievement, AchievementFilter> implements
-		com.tysanclan.site.projectewok.entities.dao.AchievementDAO {
+class AchievementDAOImpl extends HibernateDAO<Achievement, AchievementFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.AchievementDAO {
 
 }

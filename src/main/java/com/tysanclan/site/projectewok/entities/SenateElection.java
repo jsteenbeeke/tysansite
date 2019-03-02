@@ -17,19 +17,13 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
-
-import org.hibernate.annotations.Cache;
-
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.util.MemberUtil;
+import org.hibernate.annotations.Cache;
+
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Jeroen Steenbeeke
@@ -78,7 +72,7 @@ public class SenateElection extends Election {
 
 	/**
 	 * Sets the Winners of this SenateElection
-	 * 
+	 *
 	 * @param winners
 	 *            The Winners of this SenateElection
 	 */
@@ -95,7 +89,7 @@ public class SenateElection extends Election {
 
 	/**
 	 * Sets the Seats of this SenateElection
-	 * 
+	 *
 	 * @param seats
 	 *            The Seats of this SenateElection
 	 */

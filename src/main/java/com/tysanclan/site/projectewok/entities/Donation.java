@@ -17,31 +17,20 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
+import org.hibernate.annotations.Cache;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Cache;
-
-import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Entity
 @Table(indexes = { //
-@Index(name = "IDX_Donation_Donator", columnList = "donator_id"), //
+		@Index(name = "IDX_Donation_Donator", columnList = "donator_id"), //
 		@Index(name = "IDX_Donation_Time", columnList = "donationTime") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class Donation extends BaseDomainObject {
@@ -98,7 +87,7 @@ public class Donation extends BaseDomainObject {
 
 	/**
 	 * Sets the Donator of this Donation
-	 * 
+	 *
 	 * @param donator
 	 *            The Donator of this Donation
 	 */
@@ -115,7 +104,7 @@ public class Donation extends BaseDomainObject {
 
 	/**
 	 * Sets the DonationTime of this Donation
-	 * 
+	 *
 	 * @param donationTime
 	 *            The DonationTime of this Donation
 	 */
@@ -132,7 +121,7 @@ public class Donation extends BaseDomainObject {
 
 	/**
 	 * Sets the Amount of this Donation
-	 * 
+	 *
 	 * @param amount
 	 *            The Amount of this Donation
 	 */
@@ -145,8 +134,9 @@ public class Donation extends BaseDomainObject {
 	 */
 	@Override
 	public String toString() {
-		return amount.toString() + " by "
-				+ (donator != null ? donator.getUsername() : "Anonymous");
+		return amount.toString() + " by " + (donator != null ?
+				donator.getUsername() :
+				"Anonymous");
 	}
 
 	// $GS$

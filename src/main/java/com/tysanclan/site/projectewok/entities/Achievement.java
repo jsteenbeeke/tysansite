@@ -17,30 +17,13 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import com.jeroensteenbeeke.hyperion.data.DomainObject;
+import org.hibernate.annotations.Cache;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.Type;
-
-import com.jeroensteenbeeke.hyperion.data.DomainObject;
 
 /**
  *
@@ -48,7 +31,7 @@ import com.jeroensteenbeeke.hyperion.data.DomainObject;
  */
 @Entity
 @Table(indexes = { //
-@Index(columnList = "game_id", name = "IDX_Achievement_Game"),
+		@Index(columnList = "game_id", name = "IDX_Achievement_Game"),
 		@Index(columnList = "group_id", name = "IDX_Achievement_Group") //
 })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")

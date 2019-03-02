@@ -26,9 +26,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("request")
-class SubscriptionDAOImpl extends HibernateDAO<Subscription, SubscriptionFilter> implements
-		SubscriptionDAO {
-
-
+class SubscriptionDAOImpl extends HibernateDAO<Subscription, SubscriptionFilter>
+		implements SubscriptionDAO {
 
 }

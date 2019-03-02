@@ -17,26 +17,19 @@
  */
 package com.tysanclan.site.projectewok.beans;
 
-import java.util.List;
+import com.tysanclan.site.projectewok.entities.*;
 
-import com.tysanclan.site.projectewok.entities.Forum;
-import com.tysanclan.site.projectewok.entities.ForumCategory;
-import com.tysanclan.site.projectewok.entities.ForumPost;
-import com.tysanclan.site.projectewok.entities.ForumThread;
-import com.tysanclan.site.projectewok.entities.Group;
-import com.tysanclan.site.projectewok.entities.GroupForum;
-import com.tysanclan.site.projectewok.entities.NewsForum;
-import com.tysanclan.site.projectewok.entities.User;
+import java.util.List;
 
 /**
  * A service that does various forum-related actions
- * 
+ *
  * @author Jeroen Steenbeeke
  */
 public interface ForumService {
 	/**
 	 * Determine whether or not the given user can edit a post
-	 * 
+	 *
 	 * @param user
 	 *            The user to check
 	 * @param post
@@ -50,7 +43,7 @@ public interface ForumService {
 
 	/**
 	 * Creates a new forumthread in the given forum
-	 * 
+	 *
 	 * @param forum
 	 *            The forum to post the thread in
 	 * @param title
@@ -66,7 +59,7 @@ public interface ForumService {
 
 	/**
 	 * Creates a new forumthread in the given forum
-	 * 
+	 *
 	 * @param forum
 	 *            The forum to post the thread in
 	 * @param title
@@ -80,7 +73,7 @@ public interface ForumService {
 
 	/**
 	 * Deletes the given post
-	 * 
+	 *
 	 * @param post
 	 *            The post to delete
 	 * @param user
@@ -91,7 +84,7 @@ public interface ForumService {
 
 	/**
 	 * Deletes a given thread, if allowed
-	 * 
+	 *
 	 * @param thread
 	 *            The thread to delete
 	 * @param user
@@ -102,7 +95,7 @@ public interface ForumService {
 
 	/**
 	 * Edit the given post, replacing the content with the indicated content
-	 * 
+	 *
 	 * @param post
 	 *            The post to edit
 	 * @param editorContent
@@ -110,11 +103,12 @@ public interface ForumService {
 	 * @param currentUser
 	 *            The user doing the replacing
 	 */
-	public void editPost(ForumPost post, String editorContent, User currentUser);
+	public void editPost(ForumPost post, String editorContent,
+			User currentUser);
 
 	/**
 	 * Get the forum used for posting news to
-	 * 
+	 *
 	 * @return The forum used as news forum
 	 */
 	public Forum getNewsForum();
@@ -122,7 +116,7 @@ public interface ForumService {
 	/**
 	 * Determines which forums are valid move destinations for the given forum
 	 * and moderator
-	 * 
+	 *
 	 * @param forum
 	 *            The forum the thread is currently in
 	 * @param u
@@ -133,7 +127,7 @@ public interface ForumService {
 
 	/**
 	 * Determines if a given user is a moderator in the given forum
-	 * 
+	 *
 	 * @param user
 	 *            The user to check
 	 * @param forum
@@ -145,7 +139,7 @@ public interface ForumService {
 
 	/**
 	 * Locks the given thread, if allowed
-	 * 
+	 *
 	 * @param thread
 	 *            The thread to lock
 	 * @param user
@@ -156,7 +150,7 @@ public interface ForumService {
 
 	/**
 	 * Moves the given thread to the target forum
-	 * 
+	 *
 	 * @param thread
 	 *            The thread to move
 	 * @param forum
@@ -169,7 +163,7 @@ public interface ForumService {
 
 	/**
 	 * Creates a reply to the given thread
-	 * 
+	 *
 	 * @param thread
 	 *            The thread to respond to
 	 * @param content
@@ -178,12 +172,13 @@ public interface ForumService {
 	 *            The user doing the post
 	 * @return The new ForumPost, or <code>null</code> if a problem occured
 	 */
-	public ForumPost replyToThread(ForumThread thread, String content, User user);
+	public ForumPost replyToThread(ForumThread thread, String content,
+			User user);
 
 	/**
 	 * Splits a given thread, moving the indicated posts to a new thread with
 	 * the given title
-	 * 
+	 *
 	 * @param source
 	 *            The thread to split the posts from
 	 * @param splitPosts
@@ -202,7 +197,7 @@ public interface ForumService {
 
 	/**
 	 * Stickies a given thread, if allowed
-	 * 
+	 *
 	 * @param thread
 	 *            The thread to sticky
 	 * @param user
@@ -213,7 +208,7 @@ public interface ForumService {
 
 	/**
 	 * Unlocks a given thread, if allowed
-	 * 
+	 *
 	 * @param thread
 	 *            The thread to lock
 	 * @param user
@@ -224,7 +219,7 @@ public interface ForumService {
 
 	/**
 	 * Unstickies a given thread, if allowed
-	 * 
+	 *
 	 * @param thread
 	 *            The thread to unsticky
 	 * @param user

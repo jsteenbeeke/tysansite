@@ -17,8 +17,12 @@
  */
 package com.tysanclan.site.projectewok.pages;
 
-import javax.servlet.http.HttpServletResponse;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.TysanPage;
+import com.tysanclan.site.projectewok.components.ForumPanel;
+import com.tysanclan.site.projectewok.entities.Forum;
+import com.tysanclan.site.projectewok.entities.dao.ForumDAO;
+import com.tysanclan.site.projectewok.entities.dao.ForumThreadDAO;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
@@ -26,12 +30,7 @@ import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
-import com.tysanclan.site.projectewok.TysanPage;
-import com.tysanclan.site.projectewok.components.ForumPanel;
-import com.tysanclan.site.projectewok.entities.Forum;
-import com.tysanclan.site.projectewok.entities.dao.ForumDAO;
-import com.tysanclan.site.projectewok.entities.dao.ForumThreadDAO;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Jeroen Steenbeeke
@@ -84,8 +83,9 @@ public class ForumPage extends TysanPage {
 					AccessDeniedPage.class);
 		}
 
-		Forum forum = forumDAO.load(parameters.getForumId()).getOrElseThrow(() -> new RestartResponseAtInterceptPageException(
-				AccessDeniedPage.class));
+		Forum forum = forumDAO.load(parameters.getForumId()).getOrElseThrow(
+				() -> new RestartResponseAtInterceptPageException(
+						AccessDeniedPage.class));
 
 		if (!forum.canView(getUser())) {
 			throw new RestartResponseAtInterceptPageException(

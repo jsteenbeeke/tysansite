@@ -1,40 +1,40 @@
-<html xmlns:html="http://www.w3.org/1999/xhtml" xmlns:wicket>
+<html xmlns:wicket>
 <wicket:extend>
-	<form wicket:id="evidenceForm">
-		<p>
-			<b>Icon</b><br /> <img wicket:id="icon" />
-		</p>
-		<wicket:enclosure child="game">
-			<p>
-				<b>Game:</b><br /> <img wicket:id="game" />
-			</p>
-		</wicket:enclosure>
+    <form wicket:id="evidenceForm">
+        <p>
+            <b>Icon</b><br/> <img wicket:id="icon"/>
+        </p>
+        <wicket:enclosure child="game">
+            <p>
+                <b>Game:</b><br/> <img wicket:id="game"/>
+            </p>
+        </wicket:enclosure>
 
-		<wicket:enclosure child="group">
-			<p>
-				<b>group:</b><br /> <span wicket:id="group"></span>
-			</p>
-		</wicket:enclosure>
+        <wicket:enclosure child="group">
+            <p>
+                <b>group:</b><br/> <span wicket:id="group"></span>
+            </p>
+        </wicket:enclosure>
 
-		<p>
-			<b>Description:</b><br /> <span wicket:id="description"></span>
-		</p>
+        <p>
+            <b>Description:</b><br/> <span wicket:id="description"></span>
+        </p>
 
-		In order for this achievement to be granted, you must provide evidence
-		in the form of a screenshot, or a description containing hyperlinks.
+        In order for this achievement to be granted, you must provide evidence
+        in the form of a screenshot, or a description containing hyperlinks.
 
-		<p>
-			<b>Upload evidence picture:</b><br /> <input type="file"
-				wicket:id="screenshot" />
-		</p>
+        <p>
+            <b>Upload evidence picture:</b><br/> <input type="file"
+                                                        wicket:id="screenshot"/>
+        </p>
 
-		<p>
-			<b>Evidence description:</b><br />
-			<textarea cols="80" rows="25" wicket:id="evidence"></textarea>
-		</p>
+        <p>
+            <b>Evidence description:</b><br/>
+            <textarea cols="80" rows="25" wicket:id="evidence"></textarea>
+        </p>
 
-		<input type="submit" value="Submit" class="SubmitButton" />
-	</form>
+        <input type="submit" value="Submit" class="SubmitButton"/>
+    </form>
 
 </wicket:extend>
 

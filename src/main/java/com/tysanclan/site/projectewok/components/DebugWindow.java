@@ -58,18 +58,21 @@ public class DebugWindow extends Panel {
 			@SuppressWarnings("unchecked")
 			@Override
 			protected void onSubmit() {
-				TextField<String> devUsernameField = (TextField<String>) get("devusername");
-				TextField<String> usernameField = (TextField<String>) get("username");
-				PasswordTextField passwordField = (PasswordTextField) get("password");
+				TextField<String> devUsernameField = (TextField<String>) get(
+						"devusername");
+				TextField<String> usernameField = (TextField<String>) get(
+						"username");
+				PasswordTextField passwordField = (PasswordTextField) get(
+						"password");
 
 				String devUsername = devUsernameField.getModelObject();
 				String username = usernameField.getModelObject();
 				String password = passwordField.getModelObject();
 
-				boolean validUser = authService.isValidUser(devUsername,
-						password);
-				boolean validMember = authService.isValidMember(devUsername,
-						password);
+				boolean validUser = authService
+						.isValidUser(devUsername, password);
+				boolean validMember = authService
+						.isValidMember(devUsername, password);
 
 				if (validUser || validMember) {
 					UserFilter filter = new UserFilter();
@@ -79,15 +82,17 @@ public class DebugWindow extends Panel {
 
 					if (!users.isEmpty()) {
 						User user = users.get(0);
-						((TysanPage) getPage())
-								.getTysanSession().forEach(session -> {
-							session.setCurrentUserId(user.getId());
-							if (validMember) {
-								setResponsePage(new com.tysanclan.site.projectewok.pages.member.OverviewPage());
-							} else {
-								setResponsePage(new com.tysanclan.site.projectewok.pages.forum.OverviewPage());
-							}
-						});
+						((TysanPage) getPage()).getTysanSession()
+								.forEach(session -> {
+									session.setCurrentUserId(user.getId());
+									if (validMember) {
+										setResponsePage(
+												new com.tysanclan.site.projectewok.pages.member.OverviewPage());
+									} else {
+										setResponsePage(
+												new com.tysanclan.site.projectewok.pages.forum.OverviewPage());
+									}
+								});
 
 					}
 				}
@@ -95,12 +100,9 @@ public class DebugWindow extends Panel {
 			}
 		};
 
-		debugLoginForm.add(new TextField<>("devusername",
-				new Model<>("")));
-		debugLoginForm.add(new TextField<>("username", new Model<>(
-				"")));
-		debugLoginForm.add(new PasswordTextField("password", new Model<>(
-				"")));
+		debugLoginForm.add(new TextField<>("devusername", new Model<>("")));
+		debugLoginForm.add(new TextField<>("username", new Model<>("")));
+		debugLoginForm.add(new PasswordTextField("password", new Model<>("")));
 
 		add(debugLoginForm);
 	}

@@ -17,12 +17,11 @@
  */
 package com.tysanclan.site.projectewok.components;
 
+import com.tysanclan.site.projectewok.entities.Forum;
+import com.tysanclan.site.projectewok.pages.*;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.Panel;
-
-import com.tysanclan.site.projectewok.entities.Forum;
-import com.tysanclan.site.projectewok.pages.*;
 
 /**
  * @author Jeroen Steenbeeke
@@ -35,7 +34,8 @@ public class TysanMenu extends Panel {
 		add(new BookmarkablePageLink<Void>("news", NewsPage.class));
 		add(new BookmarkablePageLink<Void>("about", AboutPage.class));
 		add(new BookmarkablePageLink<Void>("charter", CharterPage.class));
-		add(new BookmarkablePageLink<Void>("regulations", RegulationPage.class));
+		add(new BookmarkablePageLink<Void>("regulations",
+				RegulationPage.class));
 		add(new BookmarkablePageLink<Void>("join", JoinOverviewPage.class));
 		add(new BookmarkablePageLink<Void>("members", RosterPage.class));
 		add(new BookmarkablePageLink<Void>("groups", GroupsPage.class));

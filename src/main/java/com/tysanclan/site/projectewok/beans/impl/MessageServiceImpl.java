@@ -17,32 +17,27 @@
  */
 package com.tysanclan.site.projectewok.beans.impl;
 
-import java.util.Date;
-import java.util.List;
-
+import com.tysanclan.site.projectewok.entities.*;
+import com.tysanclan.site.projectewok.entities.dao.ConversationDAO;
+import com.tysanclan.site.projectewok.entities.dao.ConversationParticipationDAO;
+import com.tysanclan.site.projectewok.entities.dao.MessageDAO;
+import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.tysanclan.site.projectewok.entities.Conversation;
-import com.tysanclan.site.projectewok.entities.ConversationParticipation;
-import com.tysanclan.site.projectewok.entities.Message;
-import com.tysanclan.site.projectewok.entities.MessageFolder;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.ConversationDAO;
-import com.tysanclan.site.projectewok.entities.dao.ConversationParticipationDAO;
-import com.tysanclan.site.projectewok.entities.dao.MessageDAO;
-import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class MessageServiceImpl implements
-		com.tysanclan.site.projectewok.beans.MessageService {
+class MessageServiceImpl
+		implements com.tysanclan.site.projectewok.beans.MessageService {
 	@Autowired
 	private MessageDAO messageDAO;
 
@@ -77,7 +72,7 @@ class MessageServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public ConversationParticipation createConversation(User sender,
-														List<User> participants, String title, String text) {
+			List<User> participants, String title, String text) {
 		return createConversation(sender, participants, title, text, null);
 	}
 
@@ -100,8 +95,8 @@ class MessageServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public ConversationParticipation createConversation(User sender,
-														List<User> participants, String title, String text,
-														MessageFolder folder) {
+			List<User> participants, String title, String text,
+			MessageFolder folder) {
 		if (!participants.contains(sender) && sender != null) {
 			participants.add(sender);
 		}
@@ -150,7 +145,7 @@ class MessageServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public Message respondToConversation(Conversation conversation, User user,
-										 String content) {
+			String content) {
 		Message message = new Message();
 		message.setContent(content);
 		message.setConversation(conversation);
@@ -172,7 +167,7 @@ class MessageServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void markAsRead(ConversationParticipation participation,
-						   Message object) {
+			Message object) {
 		participation.getReadMessages().add(object);
 		conversationParticipationDAO.update(participation);
 
@@ -215,19 +210,20 @@ class MessageServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void ceaseParticipation(ConversationParticipation participation) {
-		conversationParticipationDAO
-				.load(participation.getId()).forEach(_participation -> {
-			Conversation conversation = _participation.getConversation();
+		conversationParticipationDAO.load(participation.getId())
+				.forEach(_participation -> {
+					Conversation conversation = _participation
+							.getConversation();
 
-			conversation.getParticipants().remove(_participation);
+					conversation.getParticipants().remove(_participation);
 
-			conversationParticipationDAO.delete(_participation);
-			conversationDAO.update(conversation);
+					conversationParticipationDAO.delete(_participation);
+					conversationDAO.update(conversation);
 
-			if (conversation.getParticipants().isEmpty()) {
-				conversationDAO.delete(conversation);
-			}
-		});
+					if (conversation.getParticipants().isEmpty()) {
+						conversationDAO.delete(conversation);
+					}
+				});
 	}
 
 }

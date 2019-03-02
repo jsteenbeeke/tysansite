@@ -17,17 +17,17 @@
  */
 package com.tysanclan.site.projectewok.auth;
 
+import com.tysanclan.rest.api.data.Rank;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.tysanclan.rest.api.data.Rank;
-
 /**
  * Annotation indicating that an action can only be used by users with a given
  * rank.
- * 
+ *
  * @author Jeroen Steenbeeke
  */
 @Retention(RetentionPolicy.RUNTIME)

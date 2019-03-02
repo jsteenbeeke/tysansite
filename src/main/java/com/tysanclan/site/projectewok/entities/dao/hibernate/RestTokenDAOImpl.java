@@ -29,9 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Scope("request")
-class RestTokenDAOImpl extends HibernateDAO<RestToken,RestTokenFilter> implements RestTokenDAO {
-
-
+class RestTokenDAOImpl extends HibernateDAO<RestToken, RestTokenFilter>
+		implements RestTokenDAO {
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	@Override

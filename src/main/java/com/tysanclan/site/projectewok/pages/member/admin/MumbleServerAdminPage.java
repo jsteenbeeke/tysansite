@@ -17,15 +17,6 @@
  */
 package com.tysanclan.site.projectewok.pages.member.admin;
 
-import org.apache.wicket.RestartResponseAtInterceptPageException;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.MumbleService;
 import com.tysanclan.site.projectewok.beans.RoleService;
@@ -36,6 +27,14 @@ import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.MumbleServerDAO;
 import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
 import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -69,8 +68,8 @@ public class MumbleServerAdminPage extends AbstractMemberPage {
 			protected void populateItem(ListItem<MumbleServer> item) {
 				MumbleServer server = item.getModelObject();
 
-				item.add(new Label("serverId", new Model<Integer>(server
-						.getServerID())));
+				item.add(new Label("serverId",
+						new Model<Integer>(server.getServerID())));
 				item.add(new Label("name", server.getName()));
 				item.add(new Label("url", server.getUrl()));
 				item.add(new Label("password", server.getPassword()));
@@ -83,8 +82,8 @@ public class MumbleServerAdminPage extends AbstractMemberPage {
 							public void onClick() {
 								mumbleServerDAO.delete(getModelObject());
 
-								setResponsePage(new MumbleServerAdminPage(
-										getUser()));
+								setResponsePage(
+										new MumbleServerAdminPage(getUser()));
 							}
 
 						}).newInstance("del"));

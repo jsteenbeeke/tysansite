@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class GroupForumDAOImpl extends HibernateDAO<GroupForum, GroupForumFilter> implements
-		com.tysanclan.site.projectewok.entities.dao.GroupForumDAO {
+class GroupForumDAOImpl extends HibernateDAO<GroupForum, GroupForumFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.GroupForumDAO {
 
 }

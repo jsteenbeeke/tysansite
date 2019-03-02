@@ -28,8 +28,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class AcceptanceVoteVerdictDAOImpl extends
-		HibernateDAO<AcceptanceVoteVerdict, AcceptanceVoteVerdictFilter> implements
+class AcceptanceVoteVerdictDAOImpl
+		extends HibernateDAO<AcceptanceVoteVerdict, AcceptanceVoteVerdictFilter>
+		implements
 		com.tysanclan.site.projectewok.entities.dao.AcceptanceVoteVerdictDAO {
 
 }

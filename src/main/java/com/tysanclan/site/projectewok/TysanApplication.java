@@ -70,7 +70,8 @@ import java.util.*;
 /**
  * @author Jeroen Steenbeeke
  */
-public class TysanApplication extends WebApplication implements ApplicationContextProvider {
+public class TysanApplication extends WebApplication
+		implements ApplicationContextProvider {
 	private static Logger log = LoggerFactory.getLogger(TysanApplication.class);
 
 	private static String version = null;
@@ -98,7 +99,7 @@ public class TysanApplication extends WebApplication implements ApplicationConte
 				Properties props = new Properties();
 
 				InputStream stream = get().getServletContext()
-										  .getResourceAsStream("/META-INF/MANIFEST.MF");
+						.getResourceAsStream("/META-INF/MANIFEST.MF");
 
 				if (stream != null) {
 
@@ -150,13 +151,12 @@ public class TysanApplication extends WebApplication implements ApplicationConte
 		SpringComponentInjector injector = new SpringComponentInjector(this);
 		getComponentInstantiationListeners().add(injector);
 
-
 		mountBookmarkablePages();
 		mountResources();
 
 		getApplicationSettings().setAccessDeniedPage(AccessDeniedPage.class);
-		getApplicationSettings().setPageExpiredErrorPage(
-				SessionTimeoutPage.class);
+		getApplicationSettings()
+				.setPageExpiredErrorPage(SessionTimeoutPage.class);
 
 		EntityEncapsulator.setFactory(new SolsticeEntityEncapsulatorFactory());
 
@@ -177,15 +177,15 @@ public class TysanApplication extends WebApplication implements ApplicationConte
 		getResourceSettings().setUseMinifiedResources(false);
 
 		addResourceReplacement(WiQueryCoreThemeResourceReference.get(),
-							   new CssResourceReference(TysanApplication.class,
-														"themes/ui-darkness/jquery-ui-1.10.2.custom.css"));
+				new CssResourceReference(TysanApplication.class,
+						"themes/ui-darkness/jquery-ui-1.10.2.custom.css"));
 	}
 
 	private void runSitePopulator() {
-		MockServletContext sctx = new MockServletContext(
-				this, "/src/main/webapp/");
-		MockHttpServletRequest request = new MockHttpServletRequest(
-				this, new MockHttpSession(sctx), sctx);
+		MockServletContext sctx = new MockServletContext(this,
+				"/src/main/webapp/");
+		MockHttpServletRequest request = new MockHttpServletRequest(this,
+				new MockHttpSession(sctx), sctx);
 		RequestAttributes attr = new ServletRequestAttributes(request);
 
 		RequestContextHolder.setRequestAttributes(attr);
@@ -205,36 +205,59 @@ public class TysanApplication extends WebApplication implements ApplicationConte
 		Interval everyFourHours = Intervals.hours(4);
 		Interval everySixHours = Intervals.hours(6);
 
-		HyperionScheduler.getScheduler().scheduleRepeatingTask(daily, new AcceptanceVoteStartTask());
+		HyperionScheduler.getScheduler()
+				.scheduleRepeatingTask(daily, new AcceptanceVoteStartTask());
 
-		HyperionScheduler.getScheduler().scheduleRepeatingTask(everyFourHours, new AcceptanceVoteStopTask());
-		HyperionScheduler.getScheduler().scheduleRepeatingTask(daily, new AutomaticPromotionTask());
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(everyFourHours,
+				new AcceptanceVoteStopTask());
+		HyperionScheduler.getScheduler()
+				.scheduleRepeatingTask(daily, new AutomaticPromotionTask());
 
-		HyperionScheduler.getScheduler().scheduleRepeatingTask(hourly, new ChancellorElectionChecker());
-		HyperionScheduler.getScheduler().scheduleRepeatingTask(everyFourHours, new ChancellorElectionResolutionTask());
-		HyperionScheduler.getScheduler().scheduleRepeatingTask(daily, new EmailChangeConfirmationExpirationTask());
-		HyperionScheduler.getScheduler().scheduleRepeatingTask(daily, new GroupLeaderElectionResolutionTask());
-		HyperionScheduler.getScheduler().scheduleRepeatingTask(hourly, new MemberApplicationResolutionTask());
-		HyperionScheduler.getScheduler().scheduleRepeatingTask(hourly, new MembershipExpirationTask());
+		HyperionScheduler.getScheduler()
+				.scheduleRepeatingTask(hourly, new ChancellorElectionChecker());
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(everyFourHours,
+				new ChancellorElectionResolutionTask());
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(daily,
+				new EmailChangeConfirmationExpirationTask());
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(daily,
+				new GroupLeaderElectionResolutionTask());
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(hourly,
+				new MemberApplicationResolutionTask());
+		HyperionScheduler.getScheduler()
+				.scheduleRepeatingTask(hourly, new MembershipExpirationTask());
 
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(hourly,
+				new PasswordRequestExpirationTask());
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(everyFourHours,
+				new RegulationChangeResolutionTask());
+		HyperionScheduler.getScheduler()
+				.scheduleRepeatingTask(daily, new ResolveImpeachmentTask());
+		HyperionScheduler.getScheduler()
+				.scheduleRepeatingTask(hourly, new SenateElectionChecker());
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(everyFourHours,
+				new SenateElectionResolutionTask());
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(daily,
+				new TruthsayerAcceptanceVoteResolver());
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(daily,
+				new UntenabilityVoteResolutionTask());
+		HyperionScheduler.getScheduler()
+				.scheduleRepeatingTask(hourly, new AchievementProposalTask());
+		HyperionScheduler.getScheduler()
+				.scheduleRepeatingTask(hourly, new WarnInactiveMembersTask());
 
-		HyperionScheduler.getScheduler().scheduleRepeatingTask(hourly, new PasswordRequestExpirationTask());
-		HyperionScheduler.getScheduler().scheduleRepeatingTask(everyFourHours, new RegulationChangeResolutionTask());
-		HyperionScheduler.getScheduler().scheduleRepeatingTask(daily, new ResolveImpeachmentTask());
-		HyperionScheduler.getScheduler().scheduleRepeatingTask(hourly, new SenateElectionChecker());
-		HyperionScheduler.getScheduler().scheduleRepeatingTask(everyFourHours, new SenateElectionResolutionTask());
-		HyperionScheduler.getScheduler().scheduleRepeatingTask(daily, new TruthsayerAcceptanceVoteResolver());
-		HyperionScheduler.getScheduler().scheduleRepeatingTask(daily, new UntenabilityVoteResolutionTask());
-		HyperionScheduler.getScheduler().scheduleRepeatingTask(hourly, new AchievementProposalTask());
-		HyperionScheduler.getScheduler().scheduleRepeatingTask(hourly, new WarnInactiveMembersTask());
-
-		HyperionScheduler.getScheduler().scheduleRepeatingTask(everySixHours, new ResolveRoleTransferTask());
-		HyperionScheduler.getScheduler().scheduleRepeatingTask(everySixHours, new CheckSubscriptionsDueTask());
-		HyperionScheduler.getScheduler().scheduleRepeatingTask(everySixHours, new ResolveTruthsayerComplaintTask());
-		HyperionScheduler.getScheduler().scheduleRepeatingTask(Intervals.minutes(5), new RestTokenCleanupTask());
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(everySixHours,
+				new ResolveRoleTransferTask());
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(everySixHours,
+				new CheckSubscriptionsDueTask());
+		HyperionScheduler.getScheduler().scheduleRepeatingTask(everySixHours,
+				new ResolveTruthsayerComplaintTask());
+		HyperionScheduler.getScheduler()
+				.scheduleRepeatingTask(Intervals.minutes(5),
+						new RestTokenCleanupTask());
 
 		if (System.getProperty("tysan.debug") != null) {
-			HyperionScheduler.getScheduler().scheduleRepeatingTask(hourly, new NoAccountExpireTask());
+			HyperionScheduler.getScheduler()
+					.scheduleRepeatingTask(hourly, new NoAccountExpireTask());
 		}
 	}
 
@@ -268,7 +291,7 @@ public class TysanApplication extends WebApplication implements ApplicationConte
 		mountPage("/activation/${key}", ActivationPage.class);
 
 		mountPage("/resetpassword/${key}",
-				  PasswordRequestConfirmationPage.class);
+				PasswordRequestConfirmationPage.class);
 
 		mountPage("/accessdenied", AccessDeniedPage.class);
 
@@ -276,10 +299,9 @@ public class TysanApplication extends WebApplication implements ApplicationConte
 		mountPage("/tracker/requestfeature", RequestFeaturePage.class);
 
 		mountPage("/processPaymentRequest/${requestId}/${confirmationKey}",
-				  ProcessPaymentRequestPage.class);
+				ProcessPaymentRequestPage.class);
 
-		mountPage(
-				"/processSubscriptionPayment/${paymentId}/${confirmationKey}",
+		mountPage("/processSubscriptionPayment/${paymentId}/${confirmationKey}",
 				SubscriptionPaymentResolvedPage.class);
 
 		mountPage("/bug/${id}", ViewBugPage.class);
@@ -292,13 +314,13 @@ public class TysanApplication extends WebApplication implements ApplicationConte
 
 	private void mountResources() {
 		mountResource("/images/signatures/daysintysan/${username}",
-					  new DaysInTysanImageResourceReference());
+				new DaysInTysanImageResourceReference());
 		mountResource("/images/signatures/haley",
-					  new HaleyAccidentResourceReference());
+				new HaleyAccidentResourceReference());
 		mountResource("/mc-whitelist/",
-					  new MinecraftWhitelistResourceReference());
+				new MinecraftWhitelistResourceReference());
 		mountResource("/uuid-mc-whitelist/",
-					  new UUIDMinecraftWhitelistResourceReference());
+				new UUIDMinecraftWhitelistResourceReference());
 	}
 
 	/**
@@ -315,13 +337,11 @@ public class TysanApplication extends WebApplication implements ApplicationConte
 
 	@Override
 	public WebRequest newWebRequest(HttpServletRequest servletRequest,
-									String filterPath) {
+			String filterPath) {
 		WebRequest request = super.newWebRequest(servletRequest, filterPath);
-		getSessionStore().setAttribute(
-				request,
-				"wickery-theme",
+		getSessionStore().setAttribute(request, "wickery-theme",
 				new CssResourceReference(TysanApplication.class,
-										 "themes/ui-darkness/jquery-ui-1.7.2.custom.css"));
+						"themes/ui-darkness/jquery-ui-1.7.2.custom.css"));
 
 		return request;
 	}
@@ -363,8 +383,8 @@ public class TysanApplication extends WebApplication implements ApplicationConte
 		}
 	}
 
-	public static class VersionDescriptor implements
-			Comparable<VersionDescriptor> {
+	public static class VersionDescriptor
+			implements Comparable<VersionDescriptor> {
 		public static VersionDescriptor of(String ver) {
 			String[] versionData = ver.split("\\.", 4);
 

@@ -1,39 +1,46 @@
 <html xmlns:wicket>
 <wicket:extend>
-	<div class="jqui-tabs-auto">
-		<ul>
-			<li><a href="#tabs-1">Messages</a></li>
-			<li><a href="#tabs-2">Send Messages</a></li>
-		</ul>
-		<div id="tabs-1">
-			<table style="width: 100%;">
-				<tr>
-					<th colspan="2" style="width: 50%;">Message</th>
-					<th style="width: 30%;">Participants</th>
-					<th style="width: 20%;">Remove</th>
-				</tr>
-				<tr wicket:id="messages">
-					<td style="text-align: center;"><img wicket:id="unread" /></td>
-					<td style="text-align: center;"><a wicket:id="link"><span
-							wicket:id="title"></span></a></td>
-					<td style="text-align: center;" wicket:id="participants"></td>
-					<td style="text-align: center;"><div wicket:id="remove"></div></td>
-				</tr>
-				<tr>
-					<td colspan="4" wicket:id="paging" style="text-align: center;"></td>
-				</tr>
-			</table>
-		</div>
-		<div id="tabs-2">
-			<form wicket:id="newMessageForm">
-				Title:<br /> <input wicket:id="title" type="text" size="45" /><br />
-				Recipients:<br /> <select wicket:id="userselect" class="Choice">
-					<option>Prospero</option>
-				</select><br /> Message:<br />
-				<textarea wicket:id="messagecontent" rows="15" cols="80"></textarea>
-				<br /> <input class="SubmitButton" type="submit" value="Send" />
-			</form>
-		</div>
-	</div>
+    <div class="jqui-tabs-auto">
+        <ul>
+            <li><a href="#tabs-1">Messages</a></li>
+            <li><a href="#tabs-2">Send Messages</a></li>
+        </ul>
+        <div id="tabs-1">
+            <table style="width: 100%;">
+                <tr>
+                    <th colspan="2" style="width: 50%;">Message</th>
+                    <th style="width: 30%;">Participants</th>
+                    <th style="width: 20%;">Remove</th>
+                </tr>
+                <tr wicket:id="messages">
+                    <td style="text-align: center;"><img wicket:id="unread"/>
+                    </td>
+                    <td style="text-align: center;"><a wicket:id="link"><span
+                            wicket:id="title"></span></a></td>
+                    <td style="text-align: center;"
+                        wicket:id="participants"></td>
+                    <td style="text-align: center;">
+                        <div wicket:id="remove"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" wicket:id="paging"
+                        style="text-align: center;"></td>
+                </tr>
+            </table>
+        </div>
+        <div id="tabs-2">
+            <form wicket:id="newMessageForm">
+                Title:<br/> <input wicket:id="title" type="text"
+                                   size="45"/><br/>
+                Recipients:<br/> <select wicket:id="userselect" class="Choice">
+                <option>Prospero</option>
+            </select><br/> Message:<br/>
+                <textarea wicket:id="messagecontent" rows="15"
+                          cols="80"></textarea>
+                <br/> <input class="SubmitButton" type="submit" value="Send"/>
+            </form>
+        </div>
+    </div>
 </wicket:extend>
 </html>

@@ -25,6 +25,7 @@ import com.tysanclan.site.projectewok.entities.filter.AchievementIconFilter;
  *
  * @author Jeroen Steenbeeke
  */
-public interface AchievementIconDAO extends DAO<AchievementIcon, AchievementIconFilter> {
+public interface AchievementIconDAO
+		extends DAO<AchievementIcon, AchievementIconFilter> {
 
 }

@@ -17,15 +17,6 @@
  */
 package com.tysanclan.site.projectewok.pages.member.group;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.beans.GroupService;
@@ -34,6 +25,13 @@ import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import com.tysanclan.site.projectewok.entities.filter.UserFilter;
 import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -60,7 +58,8 @@ public class InviteGroupMemberPage extends AbstractMemberPage {
 			@SuppressWarnings("unchecked")
 			@Override
 			protected void onSubmit() {
-				DropDownChoice<User> userChoice = (DropDownChoice<User>) get("user");
+				DropDownChoice<User> userChoice = (DropDownChoice<User>) get(
+						"user");
 
 				Group gr = getModelObject();
 				User user = userChoice.getModelObject();
@@ -82,15 +81,16 @@ public class InviteGroupMemberPage extends AbstractMemberPage {
 		filter.orRank(Rank.JUNIOR_MEMBER);
 		filter.orRank(Rank.TRIAL);
 
-		List<User> users = new LinkedList<>(userDAO.findByFilter(filter).asJava());
+		List<User> users = new LinkedList<>(
+				userDAO.findByFilter(filter).asJava());
 
 		users.removeAll(group.getInvitedMembers());
 		users.removeAll(group.getGroupMembers());
 
 		users.sort(Comparator.comparing(o -> o.getUsername().toLowerCase()));
 
-		addForm.add(new DropDownChoice<>("user", ModelMaker
-				.wrap((User) null), ModelMaker.wrap(users)));
+		addForm.add(new DropDownChoice<>("user", ModelMaker.wrap((User) null),
+				ModelMaker.wrap(users)));
 
 		add(addForm);
 

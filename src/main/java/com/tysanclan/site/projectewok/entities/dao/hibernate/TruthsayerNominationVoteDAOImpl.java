@@ -29,7 +29,8 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 class TruthsayerNominationVoteDAOImpl extends
-		HibernateDAO<TruthsayerNominationVote, TruthsayerNominationVoteFilter> implements
+		HibernateDAO<TruthsayerNominationVote, TruthsayerNominationVoteFilter>
+		implements
 		com.tysanclan.site.projectewok.entities.dao.TruthsayerNominationVoteDAO {
 
 }

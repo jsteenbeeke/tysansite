@@ -17,15 +17,11 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import static org.junit.Assert.assertTrue;
-
-import java.util.Calendar;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
 import org.junit.Test;
+
+import java.util.*;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Jeroen Steenbeeke

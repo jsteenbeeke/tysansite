@@ -18,8 +18,8 @@ import org.slf4j.LoggerFactory;
 import java.util.Set;
 
 public class ErrorReporterListener extends AbstractRequestCycleListener {
-	private static final Set<String> RESOLVE_AS_404 = Sets.newHashSet("png",
-			"js", "css", "jpg", "gif");
+	private static final Set<String> RESOLVE_AS_404 = Sets
+			.newHashSet("png", "js", "css", "jpg", "gif");
 
 	private static Logger log = LoggerFactory
 			.getLogger(ErrorReporterListener.class);
@@ -47,21 +47,21 @@ public class ErrorReporterListener extends AbstractRequestCycleListener {
 			if (request instanceof WebRequest) {
 				WebRequest wr = (WebRequest) request;
 				referrer = wr.getHeader("referer"); // Yes, this is mis-spelled
-													// in the protocol
+				// in the protocol
 			}
 
 		}
 
 		final String extension = StringUtil.getFileExtension(target);
 
-		if (extension != null && !extension.isEmpty()
-				&& RESOLVE_AS_404.contains(extension)) {
+		if (extension != null && !extension.isEmpty() && RESOLVE_AS_404
+				.contains(extension)) {
 			return null;
 		}
 		log.error(ex.getMessage(), ex);
 
-		return new RenderPageRequestHandler(new ExceptionPageProvider(target,
-				referrer, ex));
+		return new RenderPageRequestHandler(
+				new ExceptionPageProvider(target, referrer, ex));
 
 	}
 }

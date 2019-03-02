@@ -25,6 +25,7 @@ import com.tysanclan.site.projectewok.entities.filter.CompoundVoteChoiceFilter;
  *
  * @author Jeroen Steenbeeke
  */
-public interface CompoundVoteChoiceDAO extends DAO<CompoundVoteChoice, CompoundVoteChoiceFilter> {
+public interface CompoundVoteChoiceDAO
+		extends DAO<CompoundVoteChoice, CompoundVoteChoiceFilter> {
 
 }

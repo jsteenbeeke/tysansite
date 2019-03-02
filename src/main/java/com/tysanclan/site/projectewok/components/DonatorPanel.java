@@ -17,13 +17,11 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import java.math.BigDecimal;
-import java.text.NumberFormat;
-import java.util.Calendar;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-
+import com.tysanclan.site.projectewok.entities.Donation;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.dao.DonationDAO;
+import com.tysanclan.site.projectewok.entities.filter.DonationFilter;
+import com.tysanclan.site.projectewok.util.DateUtil;
 import io.vavr.collection.Seq;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.image.ContextImage;
@@ -32,11 +30,12 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.tysanclan.site.projectewok.entities.Donation;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.DonationDAO;
-import com.tysanclan.site.projectewok.entities.filter.DonationFilter;
-import com.tysanclan.site.projectewok.util.DateUtil;
+import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.util.Calendar;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * @author Jeroen Steenbeeke
@@ -78,15 +77,14 @@ public class DonatorPanel extends Panel {
 			protected void populateItem(ListItem<BigDecimal> item) {
 				BigDecimal bdValue = item.getModelObject();
 
-				String dollarLabel = NumberFormat
-						.getCurrencyInstance(Locale.US).format(
-								bdValue.doubleValue())
+				String dollarLabel = NumberFormat.getCurrencyInstance(Locale.US)
+						.format(bdValue.doubleValue())
 						+ " donated in the last 6 months";
 
 				item.add(new ContextImage("dollar",
-						"images/icons/money_dollar.png").add(
-						AttributeModifier.replace("alt", dollarLabel)).add(
-						AttributeModifier.replace("title", dollarLabel)));
+						"images/icons/money_dollar.png")
+						.add(AttributeModifier.replace("alt", dollarLabel))
+						.add(AttributeModifier.replace("title", dollarLabel)));
 			}
 
 		});

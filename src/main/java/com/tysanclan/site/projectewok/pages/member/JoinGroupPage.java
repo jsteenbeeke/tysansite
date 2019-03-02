@@ -17,10 +17,12 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import io.vavr.collection.Seq;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
+import com.tysanclan.site.projectewok.beans.GroupService;
+import com.tysanclan.site.projectewok.components.GroupLink;
+import com.tysanclan.site.projectewok.entities.Group;
+import com.tysanclan.site.projectewok.entities.dao.GroupDAO;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.link.Link;
@@ -28,12 +30,8 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
-import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
-import com.tysanclan.site.projectewok.beans.GroupService;
-import com.tysanclan.site.projectewok.components.GroupLink;
-import com.tysanclan.site.projectewok.entities.Group;
-import com.tysanclan.site.projectewok.entities.dao.GroupDAO;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -77,12 +75,15 @@ public class JoinGroupPage extends AbstractMemberPage {
 			}
 		}
 
-		String appliedDescription = applied.isEmpty() ? "You have not applied to any groups"
-				: "You have applied to the following groups: ";
-		String invitedDescription = invited.isEmpty() ? "You have not been invited to join any groups"
-				: "You have been invited to join the following groups: ";
-		String availableDescription = available.isEmpty() ? "There are no groups available for you to join"
-				: "You can apply to join the following groups: ";
+		String appliedDescription = applied.isEmpty() ?
+				"You have not applied to any groups" :
+				"You have applied to the following groups: ";
+		String invitedDescription = invited.isEmpty() ?
+				"You have not been invited to join any groups" :
+				"You have been invited to join the following groups: ";
+		String availableDescription = available.isEmpty() ?
+				"There are no groups available for you to join" :
+				"You can apply to join the following groups: ";
 
 		add(new Label("applied-description", appliedDescription));
 		add(new Label("invited-description", invitedDescription));
@@ -161,8 +162,8 @@ public class JoinGroupPage extends AbstractMemberPage {
 
 					@Override
 					public void onClick() {
-						groupService.acceptInvitation(getUser(),
-								getModelObject());
+						groupService
+								.acceptInvitation(getUser(), getModelObject());
 
 						setResponsePage(new JoinGroupPage());
 					}
@@ -183,8 +184,8 @@ public class JoinGroupPage extends AbstractMemberPage {
 
 					@Override
 					public void onClick() {
-						groupService.declineInvitation(getUser(),
-								getModelObject());
+						groupService
+								.declineInvitation(getUser(), getModelObject());
 
 						setResponsePage(new JoinGroupPage());
 					}

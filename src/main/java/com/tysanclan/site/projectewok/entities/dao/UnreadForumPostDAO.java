@@ -26,7 +26,8 @@ import com.tysanclan.site.projectewok.entities.filter.UnreadForumPostFilter;
 /**
  * @author Ties
  */
-public interface UnreadForumPostDAO extends DAO<UnreadForumPost, UnreadForumPostFilter> {
+public interface UnreadForumPostDAO
+		extends DAO<UnreadForumPost, UnreadForumPostFilter> {
 
 	void markAsRead(User user, ForumPost post);
 

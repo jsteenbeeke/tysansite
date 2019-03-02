@@ -25,6 +25,7 @@ import com.tysanclan.site.projectewok.entities.filter.StarCraft2CharAccountFilte
  *
  * @author Jeroen Steenbeeke
  */
-public interface StarCraft2CharAccountDAO extends DAO<StarCraft2CharAccount, StarCraft2CharAccountFilter> {
+public interface StarCraft2CharAccountDAO
+		extends DAO<StarCraft2CharAccount, StarCraft2CharAccountFilter> {
 
 }

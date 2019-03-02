@@ -1,8 +1,7 @@
 package com.tysanclan.site.projectewok.pages.member;
 
-import org.junit.Test;
-
 import com.tysanclan.site.projectewok.pages.member.group.LeaveGroupPage;
+import org.junit.Test;
 
 public class GroupMemberTest extends AbstractClickThroughTester {
 	@Override

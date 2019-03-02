@@ -23,37 +23,46 @@ import static org.mockito.Mockito.when;
 @RunWith(JUnit4.class)
 public class HttpProfileRepositoryTests {
 
-    private HttpClient client;
-    private Gson gson = new Gson();
+	private HttpClient client;
+	private Gson gson = new Gson();
 
-    @Test
-    public void findProfilesByCriteria_someProfileNames_returnsExpectedProfiles() throws Exception{
-        client = mock(HttpClient.class);
-        String someAgent = "someAgent";
+	@Test
+	public void findProfilesByCriteria_someProfileNames_returnsExpectedProfiles()
+			throws Exception {
+		client = mock(HttpClient.class);
+		String someAgent = "someAgent";
 
-        Profile someProfile = getProfile("someName");
-        Profile someOtherProfile = getProfile("someOtherName");
-        Profile[] profiles = {someProfile, someOtherProfile};
+		Profile someProfile = getProfile("someName");
+		Profile someOtherProfile = getProfile("someOtherName");
+		Profile[] profiles = { someProfile, someOtherProfile };
 
-        setProfilesForUrl(client, new URL("https://api.mojang.com/profiles/" + someAgent), profiles);
-        ProfileRepository repository = new HttpProfileRepository(someAgent, client);
+		setProfilesForUrl(client,
+				new URL("https://api.mojang.com/profiles/" + someAgent),
+				profiles);
+		ProfileRepository repository = new HttpProfileRepository(someAgent,
+				client);
 
-        Profile[] actual = repository.findProfilesByNames("someName", "someOtherName");
+		Profile[] actual = repository
+				.findProfilesByNames("someName", "someOtherName");
 
-        assertThat(actual.length, is(equalTo(2)));
-        assertThat(actual, hasItemInArray(hasProperty("name", CoreMatchers.is("someName"))));
-        assertThat(actual, hasItemInArray(hasProperty("name", CoreMatchers.is("someOtherName"))));
-    }
+		assertThat(actual.length, is(equalTo(2)));
+		assertThat(actual, hasItemInArray(
+				hasProperty("name", CoreMatchers.is("someName"))));
+		assertThat(actual, hasItemInArray(
+				hasProperty("name", CoreMatchers.is("someOtherName"))));
+	}
 
-    private void setProfilesForUrl(HttpClient mock, URL url, Profile[] profiles) throws IOException {
-        String jsonString = gson.toJson(profiles);
-        when(mock.post(eq(url), any(HttpBody.class), anyList())).thenReturn(jsonString);
-    }
+	private void setProfilesForUrl(HttpClient mock, URL url, Profile[] profiles)
+			throws IOException {
+		String jsonString = gson.toJson(profiles);
+		when(mock.post(eq(url), any(HttpBody.class), anyList()))
+				.thenReturn(jsonString);
+	}
 
-    private static Profile getProfile(String name) {
-        Profile profile = new Profile();
-        profile.setName(name);
-        return profile;
-    }
+	private static Profile getProfile(String name) {
+		Profile profile = new Profile();
+		profile.setName(name);
+		return profile;
+	}
 
 }

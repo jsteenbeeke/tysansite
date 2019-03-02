@@ -17,19 +17,18 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import java.math.BigDecimal;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.beans.FinanceService;
+import com.tysanclan.site.projectewok.entities.Expense.ExpensePeriod;
+import com.tysanclan.site.projectewok.entities.Subscription;
+import com.tysanclan.site.projectewok.entities.User;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
-import com.tysanclan.site.projectewok.beans.FinanceService;
-import com.tysanclan.site.projectewok.entities.Expense.ExpensePeriod;
-import com.tysanclan.site.projectewok.entities.Subscription;
-import com.tysanclan.site.projectewok.entities.User;
+import java.math.BigDecimal;
 
 public class ViewSubscriptionPanel extends Panel {
 
@@ -61,8 +60,8 @@ public class ViewSubscriptionPanel extends Panel {
 		add(new Label("interval", period.getOmschrijving()));
 		add(new Label("due", new Model<>(due)));
 
-		add(new Form<Subscription>("unsubscribe", ModelMaker.wrap(user
-				.getSubscription())) {
+		add(new Form<Subscription>("unsubscribe",
+				ModelMaker.wrap(user.getSubscription())) {
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean
@@ -77,8 +76,8 @@ public class ViewSubscriptionPanel extends Panel {
 					return;
 				}
 
-				setResponsePage(ViewSubscriptionPanel.this.onSubmitLink
-						.createPage());
+				setResponsePage(
+						ViewSubscriptionPanel.this.onSubmitLink.createPage());
 			}
 		}.setVisible(due == 0));
 	}

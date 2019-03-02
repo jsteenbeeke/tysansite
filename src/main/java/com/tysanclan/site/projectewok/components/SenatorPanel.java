@@ -17,47 +17,24 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.tysanclan.site.projectewok.components.RequiresAttentionLink.AttentionType;
 import com.tysanclan.site.projectewok.components.RequiresAttentionLink.IRequiresAttentionCondition;
-import com.tysanclan.site.projectewok.entities.AchievementProposal;
-import com.tysanclan.site.projectewok.entities.AchievementProposalVote;
-import com.tysanclan.site.projectewok.entities.Impeachment;
-import com.tysanclan.site.projectewok.entities.ImpeachmentVote;
-import com.tysanclan.site.projectewok.entities.RegulationChange;
-import com.tysanclan.site.projectewok.entities.RegulationChangeVote;
-import com.tysanclan.site.projectewok.entities.RoleTransfer;
-import com.tysanclan.site.projectewok.entities.RoleTransferApproval;
-import com.tysanclan.site.projectewok.entities.TruthsayerComplaint;
-import com.tysanclan.site.projectewok.entities.TruthsayerNomination;
-import com.tysanclan.site.projectewok.entities.TruthsayerNominationVote;
-import com.tysanclan.site.projectewok.entities.dao.AchievementProposalDAO;
-import com.tysanclan.site.projectewok.entities.dao.ImpeachmentDAO;
-import com.tysanclan.site.projectewok.entities.dao.RegulationChangeDAO;
-import com.tysanclan.site.projectewok.entities.dao.RoleTransferDAO;
-import com.tysanclan.site.projectewok.entities.dao.TruthsayerComplaintDAO;
-import com.tysanclan.site.projectewok.entities.dao.TruthsayerNominationDAO;
+import com.tysanclan.site.projectewok.entities.*;
+import com.tysanclan.site.projectewok.entities.dao.*;
 import com.tysanclan.site.projectewok.entities.filter.RoleTransferFilter;
 import com.tysanclan.site.projectewok.entities.filter.TruthsayerNominationFilter;
 import com.tysanclan.site.projectewok.pages.member.SenatorStepDownPage;
 import com.tysanclan.site.projectewok.pages.member.justice.ImpeachmentPage;
-import com.tysanclan.site.projectewok.pages.member.senate.AchievementProposalApprovalPage;
-import com.tysanclan.site.projectewok.pages.member.senate.AddRegulationPage;
-import com.tysanclan.site.projectewok.pages.member.senate.KeyRoleNominationApprovalPage;
-import com.tysanclan.site.projectewok.pages.member.senate.ModifyRegulationPage;
-import com.tysanclan.site.projectewok.pages.member.senate.RegulationModificationPage;
-import com.tysanclan.site.projectewok.pages.member.senate.RepealRegulationPage;
-import com.tysanclan.site.projectewok.pages.member.senate.SenateTruthsayerComplaintPage;
-import com.tysanclan.site.projectewok.pages.member.senate.TruthsayerVotePage;
+import com.tysanclan.site.projectewok.pages.member.senate.*;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
  */
 public class SenatorPanel extends TysanOverviewPanel<Void> {
-	public class TruthsayerComplaintCondition implements
-			IRequiresAttentionCondition {
+	public class TruthsayerComplaintCondition
+			implements IRequiresAttentionCondition {
 		private static final long serialVersionUID = 1L;
 
 		private TruthsayerComplaint getComplaint() {
@@ -87,16 +64,16 @@ public class SenatorPanel extends TysanOverviewPanel<Void> {
 		}
 	}
 
-	public class KeyRoleNominationCondition implements
-			IRequiresAttentionCondition {
+	public class KeyRoleNominationCondition
+			implements IRequiresAttentionCondition {
 		private static final long serialVersionUID = 1L;
 
 		private RoleTransfer getActiveTransfer() {
 			RoleTransferFilter filter = new RoleTransferFilter();
 			filter.accepted(true);
 
-			outer: for (RoleTransfer transfer : roleTransferDAO
-					.findByFilter(filter)) {
+			outer:
+			for (RoleTransfer transfer : roleTransferDAO.findByFilter(filter)) {
 				for (RoleTransferApproval app : transfer.getApprovedBy()) {
 					if (app.getApprovedBy().equals(getUser()))
 						continue outer;
@@ -129,8 +106,8 @@ public class SenatorPanel extends TysanOverviewPanel<Void> {
 		}
 	}
 
-	public class TruthsayerNominatedCondition implements
-			IRequiresAttentionCondition {
+	public class TruthsayerNominatedCondition
+			implements IRequiresAttentionCondition {
 		private static final long serialVersionUID = 1L;
 
 		@Override
@@ -160,8 +137,8 @@ public class SenatorPanel extends TysanOverviewPanel<Void> {
 		}
 	}
 
-	public class RegulationChangeCondition implements
-			IRequiresAttentionCondition {
+	public class RegulationChangeCondition
+			implements IRequiresAttentionCondition {
 
 		private static final long serialVersionUID = 1L;
 
@@ -189,8 +166,8 @@ public class SenatorPanel extends TysanOverviewPanel<Void> {
 		}
 	}
 
-	public class AchievementProposalCondition implements
-			IRequiresAttentionCondition {
+	public class AchievementProposalCondition
+			implements IRequiresAttentionCondition {
 		private static final long serialVersionUID = 1L;
 
 		@Override
@@ -320,7 +297,8 @@ public class SenatorPanel extends TysanOverviewPanel<Void> {
 
 		add(createConditionalVisibilityLink("keyrolevote",
 				KeyRoleNominationApprovalPage.class,
-				"Approve key role nomination", new KeyRoleNominationCondition()));
+				"Approve key role nomination",
+				new KeyRoleNominationCondition()));
 
 		add(new Link<Void>("stepdown") {
 			private static final long serialVersionUID = 1L;

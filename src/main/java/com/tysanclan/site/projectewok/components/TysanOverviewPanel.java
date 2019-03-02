@@ -17,15 +17,13 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.LinkedList;
-import java.util.List;
-
+import com.tysanclan.site.projectewok.TysanPage;
+import com.tysanclan.site.projectewok.TysanSession;
+import com.tysanclan.site.projectewok.auth.TysanSecurity;
+import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
+import com.tysanclan.site.projectewok.components.RequiresAttentionLink.IRequiresAttentionCondition;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.dao.AttentionSuppressionDAO;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -37,13 +35,14 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.tysanclan.site.projectewok.TysanPage;
-import com.tysanclan.site.projectewok.TysanSession;
-import com.tysanclan.site.projectewok.auth.TysanSecurity;
-import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
-import com.tysanclan.site.projectewok.components.RequiresAttentionLink.IRequiresAttentionCondition;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.AttentionSuppressionDAO;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -127,8 +126,8 @@ public abstract class TysanOverviewPanel<T> extends Panel {
 	}
 
 	protected RequiresAttentionLink createConditionalVisibilityLink(String id,
-																	final Class<? extends TysanPage> pageClass, String text,
-																	IRequiresAttentionCondition condition) {
+			final Class<? extends TysanPage> pageClass, String text,
+			IRequiresAttentionCondition condition) {
 		return createConditionalVisibilityLink(id, null, pageClass, text,
 				condition);
 	}
@@ -179,10 +178,8 @@ public abstract class TysanOverviewPanel<T> extends Panel {
 						}
 					}
 					if (cns.getParameterTypes().length == 1
-							&& modelObject != null
-							&& cns.getParameterTypes()[0]
-							.isAssignableFrom(modelObject
-									.getClass())) {
+							&& modelObject != null && cns.getParameterTypes()[0]
+							.isAssignableFrom(modelObject.getClass())) {
 						if (!cns.isAnnotationPresent(NoAuto.class)) {
 							modelParamConstructor = (Constructor<? extends TysanPage>) cns;
 						}
@@ -191,14 +188,13 @@ public abstract class TysanOverviewPanel<T> extends Panel {
 
 				try {
 					if (userParamConstructor != null) {
-						setResponsePage(userParamConstructor
-								.newInstance(getUser()));
+						setResponsePage(
+								userParamConstructor.newInstance(getUser()));
 					} else if (noParamConstructor != null) {
-						setResponsePage(noParamConstructor
-								.newInstance());
+						setResponsePage(noParamConstructor.newInstance());
 					} else if (modelParamConstructor != null) {
-						setResponsePage(modelParamConstructor
-								.newInstance(modelObject));
+						setResponsePage(
+								modelParamConstructor.newInstance(modelObject));
 					}
 				} catch (IllegalArgumentException e) {
 					logger.error(e.getMessage(), e);
@@ -221,14 +217,14 @@ public abstract class TysanOverviewPanel<T> extends Panel {
 	}
 
 	protected RequiresAttentionLink createLink(String id,
-											   final Class<? extends TysanPage> pageClass, String text,
-											   IRequiresAttentionCondition condition) {
+			final Class<? extends TysanPage> pageClass, String text,
+			IRequiresAttentionCondition condition) {
 		return createLink(id, null, pageClass, text, condition);
 	}
 
 	protected <U> RequiresAttentionLink createLink(String id,
-												   IModel<U> linkModel, final Class<? extends TysanPage> pageClass,
-												   String text, IRequiresAttentionCondition condition) {
+			IModel<U> linkModel, final Class<? extends TysanPage> pageClass,
+			String text, IRequiresAttentionCondition condition) {
 		RequiresAttentionLink.Builder builder = createBasicBuilder(pageClass,
 				linkModel, text);
 
@@ -238,8 +234,7 @@ public abstract class TysanOverviewPanel<T> extends Panel {
 	}
 
 	protected final User getUser() {
-		return TysanSession.session()
-				.flatMap(TysanSession::getUser)
+		return TysanSession.session().flatMap(TysanSession::getUser)
 				.getOrNull();
 	}
 

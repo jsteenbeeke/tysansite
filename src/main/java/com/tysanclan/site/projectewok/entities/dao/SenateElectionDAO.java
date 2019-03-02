@@ -25,6 +25,7 @@ import com.tysanclan.site.projectewok.entities.filter.SenateElectionFilter;
  *
  * @author Jeroen Steenbeeke
  */
-public interface SenateElectionDAO extends DAO<SenateElection, SenateElectionFilter> {
+public interface SenateElectionDAO
+		extends DAO<SenateElection, SenateElectionFilter> {
 
 }

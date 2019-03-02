@@ -17,17 +17,16 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.List;
-
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.DemocracyService;
 import com.tysanclan.site.projectewok.entities.ChancellorElection;
 import com.tysanclan.site.projectewok.entities.User;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -35,8 +34,8 @@ import com.tysanclan.site.projectewok.entities.User;
 @TysanRankSecured({ Rank.CHANCELLOR, Rank.SENATOR, Rank.TRUTHSAYER,
 		Rank.REVERED_MEMBER, Rank.SENIOR_MEMBER, Rank.FULL_MEMBER,
 		Rank.JUNIOR_MEMBER })
-public class ChancellorElectionPage extends
-		AbstractElectionPage<ChancellorElection> {
+public class ChancellorElectionPage
+		extends AbstractElectionPage<ChancellorElection> {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean

@@ -26,13 +26,13 @@ import java.util.List;
 
 /**
  * A DAO for handling users
- * 
+ *
  * @author Jeroen Steenbeeke
  */
 public interface UserDAO extends DAO<User, UserFilter> {
 	/**
 	 * Counts the number of users holding a given rank
-	 * 
+	 *
 	 * @param rank
 	 *            The rank to count
 	 * @return The number of users holding that rank
@@ -41,7 +41,7 @@ public interface UserDAO extends DAO<User, UserFilter> {
 
 	/**
 	 * Loads the user based on the username and password
-	 * 
+	 *
 	 * @param username
 	 *            The username of the requested user
 	 * @param password

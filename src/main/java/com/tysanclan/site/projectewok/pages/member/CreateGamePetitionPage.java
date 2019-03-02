@@ -17,29 +17,27 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.List;
-
-import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.LambdaRenderer;
-import org.apache.wicket.Component;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.form.upload.FileUpload;
-import org.apache.wicket.markup.html.form.upload.FileUploadField;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.LambdaRenderer;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.GameService;
 import com.tysanclan.site.projectewok.beans.RealmService;
 import com.tysanclan.site.projectewok.entities.GamePetition;
 import com.tysanclan.site.projectewok.entities.Realm;
+import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.upload.FileUpload;
+import org.apache.wicket.markup.html.form.upload.FileUploadField;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -58,9 +56,8 @@ public class CreateGamePetitionPage extends AbstractSingleAccordionMemberPage {
 	public CreateGamePetitionPage() {
 		super("Create Game Petition");
 
-		add(
-				new Label("count", new Model<Integer>(gameService
-						.getRequiredPetitionSignatures())));
+		add(new Label("count", new Model<Integer>(
+				gameService.getRequiredPetitionSignatures())));
 
 		Form<GamePetition> form = new Form<GamePetition>("petitionForm") {
 			private static final long serialVersionUID = 1L;
@@ -75,8 +72,10 @@ public class CreateGamePetitionPage extends AbstractSingleAccordionMemberPage {
 				FileUpload upload = iconField.getFileUpload();
 
 				TextField<String> nameField = (TextField<String>) get("name");
-				DropDownChoice<Realm> realmChoice = (DropDownChoice<Realm>) get("realm");
-				TextField<String> realmField = (TextField<String>) get("newRealm");
+				DropDownChoice<Realm> realmChoice = (DropDownChoice<Realm>) get(
+						"realm");
+				TextField<String> realmField = (TextField<String>) get(
+						"newRealm");
 
 				String name = nameField.getModelObject();
 				Realm realm = realmChoice.getModelObject();

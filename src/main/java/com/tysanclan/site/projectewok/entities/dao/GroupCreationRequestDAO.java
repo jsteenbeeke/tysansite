@@ -25,6 +25,7 @@ import com.tysanclan.site.projectewok.entities.filter.GroupCreationRequestFilter
  *
  * @author Jeroen Steenbeeke
  */
-public interface GroupCreationRequestDAO extends DAO<GroupCreationRequest, GroupCreationRequestFilter> {
+public interface GroupCreationRequestDAO
+		extends DAO<GroupCreationRequest, GroupCreationRequestFilter> {
 
 }

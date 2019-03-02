@@ -23,7 +23,8 @@ import com.tysanclan.site.projectewok.entities.AttentionSuppression;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.filter.AttentionSuppressionFilter;
 
-public interface AttentionSuppressionDAO extends DAO<AttentionSuppression, AttentionSuppressionFilter> {
+public interface AttentionSuppressionDAO
+		extends DAO<AttentionSuppression, AttentionSuppressionFilter> {
 	boolean isSuppressed(
 			Class<? extends IRequiresAttentionCondition> conditionClass,
 			Long dismissalId, User user);

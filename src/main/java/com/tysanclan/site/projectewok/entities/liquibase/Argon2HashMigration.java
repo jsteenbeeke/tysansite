@@ -22,20 +22,22 @@ public class Argon2HashMigration implements CustomTaskChange {
 
 		final JdbcConnection conn = (JdbcConnection) database.getConnection();
 		try {
-			PreparedStatement preparedStatement = conn.prepareStatement("select id, password from tuser");
+			PreparedStatement preparedStatement = conn
+					.prepareStatement("select id, password from tuser");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				long id = resultSet.getLong("id");
 				String oldPassword = resultSet.getString("password");
 
-				String newHash = Argon2PasswordHasher.hashNewPassword(oldPassword.toCharArray())
-											   .withHashLength(User.KEY_LENGTH)
-											   .withIterations(User.ITERATIONS)
-											   .withPHCIssue9DefaultMemorySettings()
-											   .withPHCIssue9DefaultParallelism();
+				String newHash = Argon2PasswordHasher
+						.hashNewPassword(oldPassword.toCharArray())
+						.withHashLength(User.KEY_LENGTH)
+						.withIterations(User.ITERATIONS)
+						.withPHCIssue9DefaultMemorySettings()
+						.withPHCIssue9DefaultParallelism();
 
-
-				preparedStatement = conn.prepareStatement("update tuser set argon2hash = ?, legacyhash = true where id = ?");
+				preparedStatement = conn.prepareStatement(
+						"update tuser set argon2hash = ?, legacyhash = true where id = ?");
 				preparedStatement.setString(1, newHash);
 				preparedStatement.setLong(2, id);
 

@@ -17,15 +17,15 @@
  */
 package com.tysanclan.site.projectewok.beans.impl;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-
 import com.google.common.collect.ImmutableList;
+import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.site.projectewok.entities.*;
+import com.tysanclan.site.projectewok.entities.dao.*;
+import com.tysanclan.site.projectewok.entities.filter.ForumFilter;
+import com.tysanclan.site.projectewok.entities.filter.ForumPostFilter;
+import com.tysanclan.site.projectewok.util.MemberUtil;
+import com.tysanclan.site.projectewok.util.StringUtil;
+import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
 import io.vavr.collection.Seq;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,38 +34,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.tysanclan.rest.api.data.Rank;
-import com.tysanclan.site.projectewok.entities.Event;
-import com.tysanclan.site.projectewok.entities.Forum;
-import com.tysanclan.site.projectewok.entities.ForumCategory;
-import com.tysanclan.site.projectewok.entities.ForumPost;
-import com.tysanclan.site.projectewok.entities.ForumThread;
-import com.tysanclan.site.projectewok.entities.Group;
-import com.tysanclan.site.projectewok.entities.GroupForum;
-import com.tysanclan.site.projectewok.entities.NewsForum;
-import com.tysanclan.site.projectewok.entities.Trial;
-import com.tysanclan.site.projectewok.entities.UnreadForumPost;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.EventDAO;
-import com.tysanclan.site.projectewok.entities.dao.ForumCategoryDAO;
-import com.tysanclan.site.projectewok.entities.dao.ForumDAO;
-import com.tysanclan.site.projectewok.entities.dao.ForumPostDAO;
-import com.tysanclan.site.projectewok.entities.dao.ForumThreadDAO;
-import com.tysanclan.site.projectewok.entities.dao.GroupDAO;
-import com.tysanclan.site.projectewok.entities.dao.NewsForumDAO;
-import com.tysanclan.site.projectewok.entities.dao.TrialDAO;
-import com.tysanclan.site.projectewok.entities.dao.UnreadForumPostDAO;
-import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.filter.ForumFilter;
-import com.tysanclan.site.projectewok.entities.filter.ForumPostFilter;
-import com.tysanclan.site.projectewok.util.MemberUtil;
-import com.tysanclan.site.projectewok.util.StringUtil;
-import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
+import java.io.Serializable;
+import java.util.*;
 
 @Component
 @Scope("request")
-class ForumServiceImpl implements
-		com.tysanclan.site.projectewok.beans.ForumService {
+class ForumServiceImpl
+		implements com.tysanclan.site.projectewok.beans.ForumService {
 	@Autowired
 	private ForumDAO forumDAO;
 	@Autowired
@@ -148,7 +123,9 @@ class ForumServiceImpl implements
 	public boolean canView(User _user, Forum _forum) {
 
 		return forumDAO.load(_forum.getId()).map(forum -> {
-			User user = _user != null ? userDAO.load(_user.getId()).getOrNull() : null;
+			User user = _user != null ?
+					userDAO.load(_user.getId()).getOrNull() :
+					null;
 
 			return forum.canView(user);
 		}).getOrElse(false);
@@ -158,7 +135,9 @@ class ForumServiceImpl implements
 	@Transactional(propagation = Propagation.REQUIRED)
 	public boolean canReply(User _user, Forum _forum) {
 		return forumDAO.load(_forum.getId()).map(forum -> {
-			User user = _user != null ? userDAO.load(_user.getId()).getOrNull() : null;
+			User user = _user != null ?
+					userDAO.load(_user.getId()).getOrNull() :
+					null;
 
 			return forum.canReply(user);
 		}).getOrElse(false);
@@ -167,7 +146,7 @@ class ForumServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public ForumThread createForumThread(Forum forum, String title,
-										 String content, User user) {
+			String content, User user) {
 		ForumThread nt = createEmptyForumThread(forum, title, user);
 		return forumDAO.load(forum.getId()).map(f2 -> {
 			ForumPost post = new ForumPost();
@@ -195,7 +174,7 @@ class ForumServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public ForumThread createEmptyForumThread(Forum forum, String title,
-											  User user) {
+			User user) {
 		ForumThread nt = new ForumThread();
 		nt.setForum(forum);
 		nt.setPoster(user);
@@ -210,15 +189,15 @@ class ForumServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public boolean deletePost(ForumPost post, User user) {
-		if (post.getPoster().equals(user)
-				|| isModerator(user, post.getThread().getForum())) {
+		if (post.getPoster().equals(user) || isModerator(user,
+				post.getThread().getForum())) {
 			forumPostDAO.delete(post);
 			post.getThread().getPosts().remove(post);
 			forumThreadDAO.update(post.getThread());
 
-			logService.logUserAction(user, "Forum", StringUtil.combineStrings(
-					"Post ", post.getId(), " by ", post.getPoster()
-							.getUsername(), " deleted"));
+			logService.logUserAction(user, "Forum", StringUtil
+					.combineStrings("Post ", post.getId(), " by ",
+							post.getPoster().getUsername(), " deleted"));
 
 			if (post.getThread().getPosts().isEmpty()) {
 				return deleteThread(post.getThread(), null);
@@ -234,7 +213,8 @@ class ForumServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public boolean deleteThread(ForumThread thread, User user) {
-		if (isModerator(user, thread.getForum()) || thread.getPosts().isEmpty()) {
+		if (isModerator(user, thread.getForum()) || thread.getPosts()
+				.isEmpty()) {
 			Event event = eventDAO.getEventByThread(thread);
 			Trial trial = trialDAO.getTrialByThread(thread);
 
@@ -252,8 +232,8 @@ class ForumServiceImpl implements
 			forumDAO.update(thread.getForum());
 			forumThreadDAO.delete(thread);
 
-			logService.logUserAction(user, "Forum", StringUtil.combineStrings(
-					"Thread ", thread.getTitle(), " deleted"));
+			logService.logUserAction(user, "Forum", StringUtil
+					.combineStrings("Thread ", thread.getTitle(), " deleted"));
 
 			return true;
 		}
@@ -264,9 +244,8 @@ class ForumServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void editPost(ForumPost post, String content, User currentUser) {
-		if (post.getPoster().equals(currentUser)
-				|| post.getThread().getForum().getModerators()
-				.contains(currentUser)
+		if (post.getPoster().equals(currentUser) || post.getThread().getForum()
+				.getModerators().contains(currentUser)
 				|| currentUser.getRank() == Rank.TRUTHSAYER) {
 			post.setContent(BBCodeUtil.stripTags(content));
 			forumPostDAO.update(post);
@@ -322,10 +301,10 @@ class ForumServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public List<Forum> getValidDestinationForums(Forum _forum, User u) {
-		return forumDAO.load(_forum.getId()).map(forum -> forumDAO.findAll()
-				.filter(f -> isModerator(u, f))
-				.filter(f -> f.canView(u))
-				.filter(f -> !f.equals(forum)).toJavaList()).getOrElse(ImmutableList::of);
+		return forumDAO.load(_forum.getId())
+				.map(forum -> forumDAO.findAll().filter(f -> isModerator(u, f))
+						.filter(f -> f.canView(u)).filter(f -> !f.equals(forum))
+						.toJavaList()).getOrElse(ImmutableList::of);
 	}
 
 	@Override
@@ -356,8 +335,8 @@ class ForumServiceImpl implements
 			thread.setLocked(true);
 			forumThreadDAO.update(thread);
 
-			logService.logUserAction(user, "Forum", StringUtil.combineStrings(
-					"Thread ", thread.getTitle(), " locked"));
+			logService.logUserAction(user, "Forum", StringUtil
+					.combineStrings("Thread ", thread.getTitle(), " locked"));
 
 			return true;
 		}
@@ -373,31 +352,36 @@ class ForumServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public boolean moveThread(ForumThread _thread, Forum _forum, User _user) {
-		return forumThreadDAO.load(_thread.getId()).flatMap(thread -> forumDAO.load(_forum.getId()).flatMap(forum -> userDAO.load(_user.getId()).map(user -> {
-			if (isModerator(user, forum) && isModerator(user, thread.getForum())) {
-				forum.getThreads().add(thread);
-				thread.getForum().getThreads().remove(thread);
+		return forumThreadDAO.load(_thread.getId()).flatMap(
+				thread -> forumDAO.load(_forum.getId()).flatMap(
+						forum -> userDAO.load(_user.getId()).map(user -> {
+							if (isModerator(user, forum) && isModerator(user,
+									thread.getForum())) {
+								forum.getThreads().add(thread);
+								thread.getForum().getThreads().remove(thread);
 
-				forumDAO.update(thread.getForum());
+								forumDAO.update(thread.getForum());
 
-				thread.setForum(forum);
+								thread.setForum(forum);
 
-				forumDAO.update(forum);
-				forumThreadDAO.update(thread);
+								forumDAO.update(forum);
+								forumThreadDAO.update(thread);
 
-				logService.logUserAction(user, "Forum", StringUtil.combineStrings(
-						"Thread ", thread.getTitle(), " moved"));
+								logService.logUserAction(user, "Forum",
+										StringUtil.combineStrings("Thread ",
+												thread.getTitle(), " moved"));
 
-				return true;
-			}
+								return true;
+							}
 
-			return false;
-		}))).getOrElse(false);
+							return false;
+						}))).getOrElse(false);
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
-	public ForumPost replyToThread(ForumThread thread, String content, User user) {
+	public ForumPost replyToThread(ForumThread thread, String content,
+			User user) {
 		Date posttime = new Date();
 
 		ForumPost post = new ForumPost();
@@ -450,8 +434,8 @@ class ForumServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public ForumThread splitThread(ForumThread source,
-								   List<ForumPost> splitPosts, String splitTitle, String splitOpening,
-								   User user) {
+			List<ForumPost> splitPosts, String splitTitle, String splitOpening,
+			User user) {
 		if (isModerator(user, source.getForum())) {
 			ForumThread target = createForumThread(source.getForum(),
 					splitTitle, splitOpening, user);
@@ -475,11 +459,9 @@ class ForumServiceImpl implements
 					notification.setBranchTo(target);
 					forumPostDAO.update(notification);
 
-					logService.logUserAction(
-							user,
-							"Forum",
-							StringUtil.combineStrings("Thread ",
-									source.getTitle(), " split"));
+					logService.logUserAction(user, "Forum", StringUtil
+							.combineStrings("Thread ", source.getTitle(),
+									" split"));
 
 					return target;
 				}
@@ -513,8 +495,8 @@ class ForumServiceImpl implements
 			thread.setPostSticky(true);
 			forumThreadDAO.update(thread);
 
-			logService.logUserAction(user, "Forum", StringUtil.combineStrings(
-					"Thread ", thread.getTitle(), " stickied"));
+			logService.logUserAction(user, "Forum", StringUtil
+					.combineStrings("Thread ", thread.getTitle(), " stickied"));
 
 			return true;
 		}
@@ -533,8 +515,8 @@ class ForumServiceImpl implements
 			thread.setLocked(false);
 			forumThreadDAO.update(thread);
 
-			logService.logUserAction(user, "Forum", StringUtil.combineStrings(
-					"Thread ", thread.getTitle(), " unlocked"));
+			logService.logUserAction(user, "Forum", StringUtil
+					.combineStrings("Thread ", thread.getTitle(), " unlocked"));
 
 			return true;
 		}
@@ -553,8 +535,9 @@ class ForumServiceImpl implements
 			thread.setPostSticky(false);
 			forumThreadDAO.update(thread);
 
-			logService.logUserAction(user, "Forum", StringUtil.combineStrings(
-					"Thread ", thread.getTitle(), " unstickied"));
+			logService.logUserAction(user, "Forum", StringUtil
+					.combineStrings("Thread ", thread.getTitle(),
+							" unstickied"));
 
 			return true;
 		}
@@ -565,7 +548,7 @@ class ForumServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public ForumCategory createCategory(User user, String name,
-										boolean allowPublicGroups) {
+			boolean allowPublicGroups) {
 		ForumCategory forumCategory = new ForumCategory();
 		forumCategory.setName(name);
 		forumCategory.setAllowPublicGroupForums(allowPublicGroups);
@@ -580,7 +563,7 @@ class ForumServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public Forum createForum(String name, String description,
-							 boolean allowPublicAccess, ForumCategory category, User user) {
+			boolean allowPublicAccess, ForumCategory category, User user) {
 		int maxPos = 1;
 
 		for (Forum forum : category.getForums()) {
@@ -617,7 +600,7 @@ class ForumServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public GroupForum createGroupForum(String name, String description,
-									   ForumCategory category, Group group) {
+			ForumCategory category, Group group) {
 		int maxPos = 1;
 
 		for (Forum forum : category.getForums()) {
@@ -639,9 +622,9 @@ class ForumServiceImpl implements
 
 		category.getForums().add(forum);
 
-		logService.logSystemAction("Forum", StringUtil.combineStrings(
-				"Group forum ", name, " for group ", group.getName(),
-				" created"));
+		logService.logSystemAction("Forum", StringUtil
+				.combineStrings("Group forum ", name, " for group ",
+						group.getName(), " created"));
 
 		return forum;
 	}
@@ -654,7 +637,7 @@ class ForumServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public NewsForum createNewsForum(String name, String description,
-									 boolean allowPublicAccess, ForumCategory category) {
+			boolean allowPublicAccess, ForumCategory category) {
 		int maxPos = 1;
 
 		for (Forum forum : category.getForums()) {
@@ -691,8 +674,9 @@ class ForumServiceImpl implements
 		forum.setMembersOnly(true);
 		forumDAO.update(forum);
 
-		logService.logUserAction(user, "Forum", StringUtil.combineStrings(
-				"Forum ", forum.getName(), " is now members-only"));
+		logService.logUserAction(user, "Forum", StringUtil
+				.combineStrings("Forum ", forum.getName(),
+						" is now members-only"));
 
 		return true;
 	}
@@ -707,8 +691,9 @@ class ForumServiceImpl implements
 		forum.setMembersOnly(true);
 		forumDAO.update(forum);
 
-		logService.logUserAction(user, "Forum", StringUtil.combineStrings(
-				"Forum ", forum.getName(), " is no longer members-only"));
+		logService.logUserAction(user, "Forum", StringUtil
+				.combineStrings("Forum ", forum.getName(),
+						" is no longer members-only"));
 
 		return true;
 	}
@@ -723,9 +708,9 @@ class ForumServiceImpl implements
 		forum.setInteractive(interactive);
 		forumDAO.update(forum);
 
-		logService.logUserAction(user, "Forum", StringUtil.combineStrings(
-				"Forum ", forum.getName(), " is now ", interactive ? ""
-						: "not ", "interactive"));
+		logService.logUserAction(user, "Forum", StringUtil
+				.combineStrings("Forum ", forum.getName(), " is now ",
+						interactive ? "" : "not ", "interactive"));
 
 	}
 
@@ -747,7 +732,8 @@ class ForumServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public boolean isGroupMember(User user, Group group) {
-		return groupDAO.load(group.getId()).filter(g -> g.getGroupMembers().contains(user)).isDefined();
+		return groupDAO.load(group.getId())
+				.filter(g -> g.getGroupMembers().contains(user)).isDefined();
 	}
 
 	/**
@@ -780,8 +766,8 @@ class ForumServiceImpl implements
 			_forum.setName(newName);
 			forumDAO.update(_forum);
 
-			logService.logUserAction(user, "Forum", "Name of forum " + oldName
-					+ " changed to " + newName);
+			logService.logUserAction(user, "Forum",
+					"Name of forum " + oldName + " changed to " + newName);
 		});
 	}
 
@@ -791,14 +777,15 @@ class ForumServiceImpl implements
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
-	public void setForumDescription(Forum forum, String description, User user) {
+	public void setForumDescription(Forum forum, String description,
+			User user) {
 		forumDAO.load(forum.getId()).forEach(_forum -> {
 
 			_forum.setDescription(BBCodeUtil.stripTags(description));
 			forumDAO.update(_forum);
 
-			logService.logUserAction(user, "Forum", "Description of forum "
-					+ _forum.getName() + " changed");
+			logService.logUserAction(user, "Forum",
+					"Description of forum " + _forum.getName() + " changed");
 		});
 	}
 
@@ -810,9 +797,10 @@ class ForumServiceImpl implements
 
 			forumDAO.update(_forum);
 
-			logService.logUserAction(user, "Forum", "Forum " + _forum.getName()
-					+ " is now " + (membersOnly ? " " : "not ")
-					+ " visible for non-members");
+			logService.logUserAction(user, "Forum",
+					"Forum " + _forum.getName() + " is now " + (membersOnly ?
+							" " :
+							"not ") + " visible for non-members");
 		});
 	}
 
@@ -823,15 +811,16 @@ class ForumServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void setModeratorOnlyRestriction(User user, Forum forum,
-											boolean membersOnly) {
+			boolean membersOnly) {
 		forumDAO.load(forum.getId()).forEach(_forum -> {
 			_forum.setPublicAccess(membersOnly);
 
 			forumDAO.update(_forum);
 
-			logService.logUserAction(user, "Forum", "Forum " + _forum.getName()
-					+ " is now " + (membersOnly ? " " : "not ")
-					+ " accessible for non-members");
+			logService.logUserAction(user, "Forum",
+					"Forum " + _forum.getName() + " is now " + (membersOnly ?
+							" " :
+							"not ") + " accessible for non-members");
 		});
 
 	}
@@ -846,8 +835,8 @@ class ForumServiceImpl implements
 		return forumDAO.load(forum.getId()).map(_forum -> {
 			if (_forum.getThreads().isEmpty()) {
 
-				logService.logUserAction(user, "Forum", "Forum " + forum.getName()
-						+ " deleted");
+				logService.logUserAction(user, "Forum",
+						"Forum " + forum.getName() + " deleted");
 
 				forumCategoryDAO.evict(_forum.getCategory());
 				forumDAO.evict(_forum);
@@ -935,29 +924,33 @@ class ForumServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void moveToCategory(User user, Forum forum,
-							   ForumCategory forumCategory) {
-		forumDAO.load(forum.getId()).forEach(_forum -> forumCategoryDAO.load(forumCategory.getId()).forEach(_category -> {
-			if (!_category.equals(_forum.getCategory())) {
-				_forum.setCategory(_category);
-				int maxPos = 1;
-				for (Forum next : _category.getForums()) {
-					if (maxPos < next.getPosition()) {
-						maxPos = next.getPosition();
-					}
-				}
-				maxPos++;
+			ForumCategory forumCategory) {
+		forumDAO.load(forum.getId()).forEach(
+				_forum -> forumCategoryDAO.load(forumCategory.getId())
+						.forEach(_category -> {
+							if (!_category.equals(_forum.getCategory())) {
+								_forum.setCategory(_category);
+								int maxPos = 1;
+								for (Forum next : _category.getForums()) {
+									if (maxPos < next.getPosition()) {
+										maxPos = next.getPosition();
+									}
+								}
+								maxPos++;
 
-				_forum.setPosition(maxPos);
+								_forum.setPosition(maxPos);
 
-				forumDAO.update(_forum);
+								forumDAO.update(_forum);
 
-				logService.logUserAction(user, "Forum", "Forum " + _forum.getName()
-						+ " moved to category " + _category.getName());
+								logService.logUserAction(user, "Forum",
+										"Forum " + _forum.getName()
+												+ " moved to category "
+												+ _category.getName());
 
-				forumCategoryDAO.evict(_category);
-				forumCategoryDAO.evict(forumCategory);
-			}
-		}));
+								forumCategoryDAO.evict(_category);
+								forumCategoryDAO.evict(forumCategory);
+							}
+						}));
 	}
 
 	/**
@@ -1042,7 +1035,8 @@ class ForumServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public int countUnread(User _user) {
-		User user = userDAO.load(_user.getId()).getOrElseThrow(IllegalStateException::new);
+		User user = userDAO.load(_user.getId())
+				.getOrElseThrow(IllegalStateException::new);
 
 		if (user.getUnreadForumPosts() == null) {
 			return 0;
@@ -1107,8 +1101,8 @@ class ForumServiceImpl implements
 			Forum forum = thread.getForum();
 
 			if (forum.canView(user)) {
-				if (post.getPoster() == null
-						|| !(post.getPoster().equals(user))) {
+				if (post.getPoster() == null || !(post.getPoster()
+						.equals(user))) {
 					UnreadForumPost upost = new UnreadForumPost(user, post);
 					unreadForumPostDAO.save(upost);
 					user.getUnreadForumPosts().add(upost);
@@ -1153,25 +1147,26 @@ class ForumServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<ForumPost> filterPosts(User user, boolean publicView,
-									   List<ForumPost> originalPosts) {
+			List<ForumPost> originalPosts) {
 		List<ForumPost> pList = new LinkedList<ForumPost>();
 		for (ForumPost _fp : originalPosts) {
 			forumPostDAO.load(_fp.getId()).forEach(fp -> {
 
 				if (publicView) {
-					if (!fp.getThread().getForum().isMembersOnly()
-							&& !fp.isShadow()) {
+					if (!fp.getThread().getForum().isMembersOnly() && !fp
+							.isShadow()) {
 						pList.add(fp);
 					}
 				} else {
 					if (user != null) {
-						forumDAO.load(fp.getThread().getForum().getId()).forEach(f -> {
+						forumDAO.load(fp.getThread().getForum().getId())
+								.forEach(f -> {
 
-							if (f.isAccessible(user) && (!fp.isShadow() || fp
-									.getPoster().equals(user))) {
-								pList.add(fp);
-							}
-						});
+									if (f.isAccessible(user) && (!fp.isShadow()
+											|| fp.getPoster().equals(user))) {
+										pList.add(fp);
+									}
+								});
 					}
 				}
 			});
@@ -1183,14 +1178,14 @@ class ForumServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<ForumThread> filterThreads(User user, Forum _forum,
-										   boolean publicView) {
+			boolean publicView) {
 		return forumDAO.load(_forum.getId()).map(forum -> {
 			List<ForumThread> tList = new LinkedList<ForumThread>();
 
 			for (ForumThread ft : forum.getThreads()) {
 				if (publicView) {
-					if (!forum.isMembersOnly() && !ft.isShadow()
-							&& forum.isAccessible(user)) {
+					if (!forum.isMembersOnly() && !ft.isShadow() && forum
+							.isAccessible(user)) {
 						tList.add(ft);
 					}
 				} else {
@@ -1212,7 +1207,7 @@ class ForumServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<ForumCategory> filterCategories(User user,
-												List<ForumCategory> in, final boolean publicView) {
+			List<ForumCategory> in, final boolean publicView) {
 		List<ForumCategory> out = new LinkedList<ForumCategory>();
 
 		for (ForumCategory fc : in) {
@@ -1227,7 +1222,7 @@ class ForumServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<Forum> filterForums(User user, List<Forum> in,
-									final boolean publicView) {
+			final boolean publicView) {
 		List<Forum> out = new LinkedList<Forum>();
 
 		for (Forum f : in) {
@@ -1251,8 +1246,8 @@ class ForumServiceImpl implements
 		return thread.getPosts().get(0);
 	}
 
-	private static class ForumThreadComparator implements
-			Comparator<ForumThread>, Serializable {
+	private static class ForumThreadComparator
+			implements Comparator<ForumThread>, Serializable {
 		private static final long serialVersionUID = 1L;
 
 		/**
@@ -1277,7 +1272,7 @@ class ForumServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<ForumThread> fiterAndSortThreads(User user, Forum forum,
-												 boolean publicView) {
+			boolean publicView) {
 		// Filter shadow threads
 		List<ForumThread> tList = filterThreads(user, forum, publicView);
 

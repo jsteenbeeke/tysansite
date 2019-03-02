@@ -17,29 +17,20 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.TimeZone;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.beans.UserService;
+import com.tysanclan.site.projectewok.entities.User;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
 
-import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
-import com.tysanclan.site.projectewok.beans.UserService;
-import com.tysanclan.site.projectewok.entities.User;
+import java.util.*;
 
 /**
  * @author Jeroen Steenbeeke
@@ -50,7 +41,7 @@ public abstract class PrimaryPreferencesPanel extends Panel {
 	private WebMarkupContainer image;
 
 	/**
-	 * 
+	 *
 	 */
 	public PrimaryPreferencesPanel(String id, User user) {
 		super(id);
@@ -71,10 +62,14 @@ public abstract class PrimaryPreferencesPanel extends Panel {
 				User _user = getModelObject();
 				Long user_id = _user.getId();
 
-				DropDownChoice<String> tzChoice = (DropDownChoice<String>) get("timezone");
-				TextField<String> customTitleField = (TextField<String>) get("customTitle");
-				TextField<String> imageURLField = (TextField<String>) get("imageURL");
-				TextArea<String> signatureArea = (TextArea<String>) get("signature");
+				DropDownChoice<String> tzChoice = (DropDownChoice<String>) get(
+						"timezone");
+				TextField<String> customTitleField = (TextField<String>) get(
+						"customTitle");
+				TextField<String> imageURLField = (TextField<String>) get(
+						"imageURL");
+				TextArea<String> signatureArea = (TextArea<String>) get(
+						"signature");
 				CheckBox collapseBox = (CheckBox) get("collapseForums");
 
 				String timezone = tzChoice.getModelObject();
@@ -100,14 +95,14 @@ public abstract class PrimaryPreferencesPanel extends Panel {
 		timezones.addAll(Arrays.asList(TimeZone.getAvailableIDs()));
 		Collections.sort(timezones);
 
-		settingsForm.add(new CheckBox("collapseForums", new Model<>(user
-				.isCollapseForums())));
+		settingsForm.add(new CheckBox("collapseForums",
+				new Model<>(user.isCollapseForums())));
 
 		settingsForm.add(new DropDownChoice<>("timezone",
 				new Model<>(user.getTimezone()), timezones));
 		settingsForm.add(new TextField<>("customTitle",
-				new Model<>(user.getCustomTitle())).add(StringValidator
-				.maximumLength(255)));
+				new Model<>(user.getCustomTitle()))
+				.add(StringValidator.maximumLength(255)));
 
 		TextField<String> urlField = new TextField<String>("imageURL",
 				new Model<>(user.getImageURL()));
@@ -148,7 +143,8 @@ public abstract class PrimaryPreferencesPanel extends Panel {
 		settingsForm.add(new BBCodeTextArea("signature", user.getSignature()));
 
 		image = new WebMarkupContainer("preview");
-		if (user.getImageURL() == null || user.getImageURL().isEmpty() || "#".equals(user.getImageURL())) {
+		if (user.getImageURL() == null || user.getImageURL().isEmpty() || "#"
+				.equals(user.getImageURL())) {
 			image.setVisible(false);
 		} else {
 			image.add(AttributeModifier.replace("src", user.getImageURL()));

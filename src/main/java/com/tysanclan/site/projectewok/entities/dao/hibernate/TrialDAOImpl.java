@@ -29,8 +29,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class TrialDAOImpl extends HibernateDAO<Trial, TrialFilter> implements
-		com.tysanclan.site.projectewok.entities.dao.TrialDAO {
+class TrialDAOImpl extends HibernateDAO<Trial, TrialFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.TrialDAO {
 
 	/**
 	 * @see com.tysanclan.site.projectewok.entities.dao.TrialDAO#getTrialByThread(com.tysanclan.site.projectewok.entities.ForumThread)
@@ -42,6 +42,5 @@ class TrialDAOImpl extends HibernateDAO<Trial, TrialFilter> implements
 
 		return getUniqueByFilter(filter).getOrNull();
 	}
-
 
 }

@@ -17,12 +17,6 @@
  */
 package com.tysanclan.site.projectewok.pages.member.justice;
 
-import java.util.List;
-
-import io.vavr.collection.Seq;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
@@ -35,6 +29,9 @@ import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import com.tysanclan.site.projectewok.entities.filter.UserFilter;
 import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
 import com.tysanclan.site.projectewok.pages.member.OverviewPage;
+import io.vavr.collection.Seq;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -50,7 +47,7 @@ public class ImpeachmentInitiationPage extends AbstractMemberPage {
 	private ImpeachmentDAO impeachmentDAO;
 
 	/**
-	 * 
+	 *
 	 */
 	public ImpeachmentInitiationPage() {
 		super("Impeach Chancellor");
@@ -61,8 +58,8 @@ public class ImpeachmentInitiationPage extends AbstractMemberPage {
 		Seq<User> chancellors = userDAO.findByFilter(filter);
 		User chancellor = chancellors.isEmpty() ? null : chancellors.get(0);
 
-		String chancellorName = chancellor != null ? chancellor.getUsername()
-				: "Nobody";
+		String chancellorName =
+				chancellor != null ? chancellor.getUsername() : "Nobody";
 
 		add(new IconLink.Builder("images/icons/tick.png",
 				new DefaultClickResponder<User>(ModelMaker.wrap(getUser())) {
@@ -96,8 +93,8 @@ public class ImpeachmentInitiationPage extends AbstractMemberPage {
 					}
 				}).setText("No, I do not want to impeach " + chancellorName)
 				.newInstance("no").setVisible(impeachmentDAO.countAll() == 0));
-		add(new WebMarkupContainer("alreadyactive").setVisible(impeachmentDAO
-				.countAll() != 0));
+		add(new WebMarkupContainer("alreadyactive")
+				.setVisible(impeachmentDAO.countAll() != 0));
 
 	}
 }

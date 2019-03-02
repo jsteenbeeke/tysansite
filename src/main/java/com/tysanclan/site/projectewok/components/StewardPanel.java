@@ -17,9 +17,6 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.RoleService;
 import com.tysanclan.site.projectewok.components.RequiresAttentionLink.AttentionType;
@@ -28,17 +25,13 @@ import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.MobileUserAgentDAO;
 import com.tysanclan.site.projectewok.entities.filter.MobileUserAgentFilter;
 import com.tysanclan.site.projectewok.pages.member.PaypalSettingsPage;
-import com.tysanclan.site.projectewok.pages.member.admin.GameRealmAllowAccountTypePage;
-import com.tysanclan.site.projectewok.pages.member.admin.RequestPaymentPage;
-import com.tysanclan.site.projectewok.pages.member.admin.SiteWideNotificationPage;
-import com.tysanclan.site.projectewok.pages.member.admin.StewardManageBugMastersPage;
-import com.tysanclan.site.projectewok.pages.member.admin.StewardRestAgentPage;
-import com.tysanclan.site.projectewok.pages.member.admin.StewardTransferPage;
-import com.tysanclan.site.projectewok.pages.member.admin.UserAgentPage;
+import com.tysanclan.site.projectewok.pages.member.admin.*;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class StewardPanel extends TysanOverviewPanel<User> {
-	public class UnknownUserAgentsCondition implements
-			IRequiresAttentionCondition {
+	public class UnknownUserAgentsCondition
+			implements IRequiresAttentionCondition {
 		private static final long serialVersionUID = 1L;
 
 		@Override
@@ -77,8 +70,8 @@ public class StewardPanel extends TysanOverviewPanel<User> {
 			private static final long serialVersionUID = 1L;
 
 			/**
-			* @see org.apache.wicket.markup.html.link.Link#onClick()
-			*/
+			 * @see org.apache.wicket.markup.html.link.Link#onClick()
+			 */
 			@Override
 			public void onClick() {
 				setResponsePage(new StewardManageBugMastersPage());
@@ -89,8 +82,8 @@ public class StewardPanel extends TysanOverviewPanel<User> {
 			private static final long serialVersionUID = 1L;
 
 			/**
-			* @see org.apache.wicket.markup.html.link.Link#onClick()
-			*/
+			 * @see org.apache.wicket.markup.html.link.Link#onClick()
+			 */
 			@Override
 			public void onClick() {
 				setResponsePage(new SiteWideNotificationPage(getModelObject()));
@@ -101,8 +94,8 @@ public class StewardPanel extends TysanOverviewPanel<User> {
 			private static final long serialVersionUID = 1L;
 
 			/**
-			* @see org.apache.wicket.markup.html.link.Link#onClick()
-			*/
+			 * @see org.apache.wicket.markup.html.link.Link#onClick()
+			 */
 			@Override
 			public void onClick() {
 				setResponsePage(new GameRealmAllowAccountTypePage());
@@ -119,8 +112,8 @@ public class StewardPanel extends TysanOverviewPanel<User> {
 			private static final long serialVersionUID = 1L;
 
 			/**
-			* @see org.apache.wicket.markup.html.link.Link#onClick()
-			*/
+			 * @see org.apache.wicket.markup.html.link.Link#onClick()
+			 */
 			@Override
 			public void onClick() {
 				setResponsePage(new RequestPaymentPage(getUser()));
@@ -131,8 +124,8 @@ public class StewardPanel extends TysanOverviewPanel<User> {
 			private static final long serialVersionUID = 1L;
 
 			/**
-			* @see org.apache.wicket.markup.html.link.Link#onClick()
-			*/
+			 * @see org.apache.wicket.markup.html.link.Link#onClick()
+			 */
 			@Override
 			public void onClick() {
 				setResponsePage(new StewardRestAgentPage());
@@ -143,8 +136,8 @@ public class StewardPanel extends TysanOverviewPanel<User> {
 			private static final long serialVersionUID = 1L;
 
 			/**
-			* @see org.apache.wicket.markup.html.link.Link#onClick()
-			*/
+			 * @see org.apache.wicket.markup.html.link.Link#onClick()
+			 */
 			@Override
 			public void onClick() {
 				setResponsePage(new StewardTransferPage());

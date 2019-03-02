@@ -17,15 +17,8 @@
  */
 package com.tysanclan.site.projectewok.pages.member.justice;
 
-import java.util.List;
-
-import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.NaiveRenderer;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.NaiveRenderer;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.DemocracyService;
@@ -34,6 +27,11 @@ import com.tysanclan.site.projectewok.entities.UntenabilityVote;
 import com.tysanclan.site.projectewok.entities.dao.RegulationDAO;
 import com.tysanclan.site.projectewok.entities.dao.UntenabilityVoteDAO;
 import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -49,7 +47,7 @@ public class UntenabilityPage extends AbstractMemberPage {
 	private UntenabilityVoteDAO untenabilityVoteDAO;
 
 	/**
-	 * 
+	 *
 	 */
 	public UntenabilityPage() {
 		super("Untenability Vote");
@@ -66,7 +64,8 @@ public class UntenabilityPage extends AbstractMemberPage {
 			@SuppressWarnings("unchecked")
 			@Override
 			protected void onSubmit() {
-				DropDownChoice<Regulation> regulationChoice = (DropDownChoice<Regulation>) get("regulation");
+				DropDownChoice<Regulation> regulationChoice = (DropDownChoice<Regulation>) get(
+						"regulation");
 				Regulation regulation = regulationChoice.getModelObject();
 
 				democracyService.createUntenabilityVote(getUser(), regulation);
@@ -82,10 +81,11 @@ public class UntenabilityPage extends AbstractMemberPage {
 			regulations.remove(vote.getRegulation());
 		}
 
-		initiateForm.add(new DropDownChoice<Regulation>("regulation",
-				ModelMaker.wrap(regulations.isEmpty() ? (Regulation) null
-						: regulations.get(0), true), ModelMaker
-						.wrapChoices(regulations),
+		initiateForm.add(new DropDownChoice<Regulation>("regulation", ModelMaker
+				.wrap(regulations.isEmpty() ?
+						(Regulation) null :
+						regulations.get(0), true),
+				ModelMaker.wrapChoices(regulations),
 				new NaiveRenderer<Regulation>() {
 					private static final long serialVersionUID = 1L;
 

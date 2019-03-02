@@ -25,6 +25,7 @@ import com.tysanclan.site.projectewok.entities.filter.Diablo2AccountFilter;
  *
  * @author Jeroen Steenbeeke
  */
-public interface Diablo2AccountDAO extends DAO<Diablo2Account, Diablo2AccountFilter> {
+public interface Diablo2AccountDAO
+		extends DAO<Diablo2Account, Diablo2AccountFilter> {
 
 }

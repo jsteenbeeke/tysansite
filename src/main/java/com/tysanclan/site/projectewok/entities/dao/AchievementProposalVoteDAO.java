@@ -25,6 +25,7 @@ import com.tysanclan.site.projectewok.entities.filter.AchievementProposalVoteFil
  *
  * @author Jeroen Steenbeeke
  */
-public interface AchievementProposalVoteDAO extends DAO<AchievementProposalVote, AchievementProposalVoteFilter> {
+public interface AchievementProposalVoteDAO
+		extends DAO<AchievementProposalVote, AchievementProposalVoteFilter> {
 
 }

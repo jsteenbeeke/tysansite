@@ -17,17 +17,16 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.Random;
-
+import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
+import com.tysanclan.site.projectewok.beans.MembershipService;
+import com.tysanclan.site.projectewok.entities.User;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
-import com.tysanclan.site.projectewok.beans.MembershipService;
-import com.tysanclan.site.projectewok.entities.User;
+import java.util.Random;
 
 /**
  * @author Jeroen Steenbeeke
@@ -39,14 +38,12 @@ public class FeelingLuckyPage extends AbstractSingleAccordionMemberPage {
 	private static final Random rand = new Random();
 
 	/**
-	 * 
+	 *
 	 */
 	public FeelingLuckyPage() {
 		super("Feeling lucky");
 
-		add(
-				new Label("score",
-						new Model<>(getUser().getLuckyScore())));
+		add(new Label("score", new Model<>(getUser().getLuckyScore())));
 
 		add(new Form<User>("luckyForm") {
 			private static final long serialVersionUID = 1L;

@@ -17,17 +17,7 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import org.apache.wicket.markup.html.form.Button;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.PasswordTextField;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.tysanclan.site.projectewok.TysanPage;
-import com.tysanclan.site.projectewok.TysanSession;
 import com.tysanclan.site.projectewok.TysanTopPanel;
 import com.tysanclan.site.projectewok.beans.AuthenticationService;
 import com.tysanclan.site.projectewok.beans.MembershipService;
@@ -37,6 +27,14 @@ import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import com.tysanclan.site.projectewok.entities.filter.ActivationFilter;
 import com.tysanclan.site.projectewok.pages.ActivationNotificationPage;
 import com.tysanclan.site.projectewok.pages.PasswordRequestPage;
+import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.PasswordTextField;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TysanLoginPanel extends TysanTopPanel {
 	private static final long serialVersionUID = 1L;
@@ -82,12 +80,12 @@ public class TysanLoginPanel extends TysanTopPanel {
 				String un = username.getModelObject();
 				String pw = password.getModelObject();
 
-				boolean validMember = authenticationService.isValidMember(un,
-						pw);
+				boolean validMember = authenticationService
+						.isValidMember(un, pw);
 				// Performance step, do not check valid user if already valid
 				// member
-				boolean validUser = !validMember
-						&& authenticationService.isValidUser(un, pw);
+				boolean validUser = !validMember && authenticationService
+						.isValidUser(un, pw);
 
 				if (validMember || validUser) {
 					User u = userDAO.load(un, pw);
@@ -105,17 +103,20 @@ public class TysanLoginPanel extends TysanTopPanel {
 							setResponsePage(new ActivationNotificationPage(
 									activationDAO.findByFilter(filter).get(0)));
 						} else {
-							((TysanPage) getPage())
-									.getTysanSession().forEach(session -> {
-								session.setPreviousLogin(u.getLastAction());
-								session.setCurrentUserId(u.getId());
+							((TysanPage) getPage()).getTysanSession()
+									.forEach(session -> {
+										session.setPreviousLogin(
+												u.getLastAction());
+										session.setCurrentUserId(u.getId());
 
-								if (validMember) {
-									setResponsePage(new com.tysanclan.site.projectewok.pages.member.OverviewPage());
-								} else {
-									setResponsePage(new com.tysanclan.site.projectewok.pages.forum.OverviewPage());
-								}
-							});
+										if (validMember) {
+											setResponsePage(
+													new com.tysanclan.site.projectewok.pages.member.OverviewPage());
+										} else {
+											setResponsePage(
+													new com.tysanclan.site.projectewok.pages.forum.OverviewPage());
+										}
+									});
 						}
 
 						membershipService.onLogin(u);

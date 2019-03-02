@@ -25,6 +25,7 @@ import com.tysanclan.site.projectewok.entities.filter.AchievementProposalFilter;
  *
  * @author Jeroen Steenbeeke
  */
-public interface AchievementProposalDAO extends DAO<AchievementProposal, AchievementProposalFilter> {
+public interface AchievementProposalDAO
+		extends DAO<AchievementProposal, AchievementProposalFilter> {
 
 }

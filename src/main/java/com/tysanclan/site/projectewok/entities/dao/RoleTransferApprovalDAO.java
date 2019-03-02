@@ -21,6 +21,7 @@ import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.RoleTransferApproval;
 import com.tysanclan.site.projectewok.entities.filter.RoleTransferApprovalFilter;
 
-public interface RoleTransferApprovalDAO extends DAO<RoleTransferApproval, RoleTransferApprovalFilter> {
+public interface RoleTransferApprovalDAO
+		extends DAO<RoleTransferApproval, RoleTransferApprovalFilter> {
 
 }

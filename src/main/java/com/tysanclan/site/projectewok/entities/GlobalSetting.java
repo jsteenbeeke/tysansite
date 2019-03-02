@@ -17,13 +17,12 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
-import java.io.Serializable;
+import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-
-import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
+import java.io.Serializable;
 
 /**
  *
@@ -42,8 +41,7 @@ public class GlobalSetting extends BaseDomainObject {
 				setting.setValue("");
 				return setting;
 			}
-		},
-		BLAH {
+		}, BLAH {
 			@Override
 			public GlobalSetting getNewDefaultGlobalSetting() {
 				GlobalSetting setting = new GlobalSetting();

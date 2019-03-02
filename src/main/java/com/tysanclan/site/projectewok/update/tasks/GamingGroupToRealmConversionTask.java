@@ -17,22 +17,20 @@
  */
 package com.tysanclan.site.projectewok.update.tasks;
 
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
-
 import com.tysanclan.site.projectewok.entities.Game;
 import com.tysanclan.site.projectewok.entities.Realm;
 import com.tysanclan.site.projectewok.update.DefaultUpdateTask;
 import com.tysanclan.site.projectewok.update.Update;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public class GamingGroupToRealmConversionTask extends
-        DefaultUpdateTask {
+public class GamingGroupToRealmConversionTask extends DefaultUpdateTask {
 	/**
-     * 
-     */
+	 *
+	 */
 	public GamingGroupToRealmConversionTask() {
 		super("1.1");
 	}
@@ -43,8 +41,7 @@ public class GamingGroupToRealmConversionTask extends
 		Realm realm = new Realm();
 		realm.setChannel("Op Tysan");
 		realm.setGames(session.createCriteria(Game.class)
-		        .add(Restrictions.eq("name", "Diablo 2"))
-		        .list());
+				.add(Restrictions.eq("name", "Diablo 2")).list());
 		realm.setName("USEast");
 		realm.setOverseer(null);
 

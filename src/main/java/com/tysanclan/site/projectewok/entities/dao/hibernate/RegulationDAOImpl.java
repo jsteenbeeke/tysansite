@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class RegulationDAOImpl extends HibernateDAO<Regulation, RegulationFilter> implements
-		com.tysanclan.site.projectewok.entities.dao.RegulationDAO {
+class RegulationDAOImpl extends HibernateDAO<Regulation, RegulationFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.RegulationDAO {
 
 }

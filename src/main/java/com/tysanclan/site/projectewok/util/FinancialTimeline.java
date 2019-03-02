@@ -38,8 +38,8 @@ import java.util.stream.Collectors;
 
 public class FinancialTimeline {
 
-	private static class SerializableEntry<K, V> implements Serializable,
-			Entry<K, V> {
+	private static class SerializableEntry<K, V>
+			implements Serializable, Entry<K, V> {
 		private static final long serialVersionUID = 1L;
 
 		private K k;
@@ -74,31 +74,30 @@ public class FinancialTimeline {
 			Function<Entry<DateTime, BigDecimal>, Entry<DateTime, BigDecimal>> {
 		public Entry<DateTime, BigDecimal> apply(
 				Entry<DateTime, BigDecimal> input) {
-			return new SerializableEntry<>(input.getKey(),
-					input.getValue());
+			return new SerializableEntry<>(input.getKey(), input.getValue());
 		}
 	}
 
-	public static class SpendingComparator implements
-			Comparator<Entry<DateTime, BigDecimal>> {
+	public static class SpendingComparator
+			implements Comparator<Entry<DateTime, BigDecimal>> {
 
 		@Override
 		public int compare(Entry<DateTime, BigDecimal> o1,
-						   Entry<DateTime, BigDecimal> o2) {
+				Entry<DateTime, BigDecimal> o2) {
 			return o1.getKey().compareTo(o2.getKey());
 		}
 	}
 
-	public static class ReserveToBigDecimalFunction implements
-			EntryTransformer<User, Reserve, BigDecimal> {
+	public static class ReserveToBigDecimalFunction
+			implements EntryTransformer<User, Reserve, BigDecimal> {
 		@Override
 		public BigDecimal transformEntry(User key, Reserve value) {
 			return value.getAmount();
 		}
 	}
 
-	public static class SumFunction implements
-			Function<Collection<BigDecimal>, BigDecimal> {
+	public static class SumFunction
+			implements Function<Collection<BigDecimal>, BigDecimal> {
 		private static final SumFunction INSTANCE = new SumFunction();
 
 		@Override
@@ -140,8 +139,8 @@ public class FinancialTimeline {
 		public int hashCode() {
 			final int prime = 31;
 			int result = 1;
-			result = prime * result
-					+ ((amount == null) ? 0 : amount.hashCode());
+			result =
+					prime * result + ((amount == null) ? 0 : amount.hashCode());
 			result = prime * result + ((user == null) ? 0 : user.hashCode());
 			return result;
 		}
@@ -193,8 +192,8 @@ public class FinancialTimeline {
 		public int hashCode() {
 			final int prime = 31;
 			int result = 1;
-			result = prime * result
-					+ ((amount == null) ? 0 : amount.hashCode());
+			result =
+					prime * result + ((amount == null) ? 0 : amount.hashCode());
 			result = prime * result + ((time == null) ? 0 : time.hashCode());
 			result = prime * result + ((user == null) ? 0 : user.hashCode());
 			return result;
@@ -295,19 +294,19 @@ public class FinancialTimeline {
 					.newTreeSet(new SpendingComparator());
 
 			Map<DateTime, BigDecimal> transformed = Maps
-					.transformEntries(
-							spendings,
+					.transformEntries(spendings,
 							new EntryTransformer<DateTime, List<BigDecimal>, BigDecimal>() {
 								private SumFunction function = new SumFunction();
 
 								@Override
 								public BigDecimal transformEntry(DateTime key,
-																 List<BigDecimal> value) {
+										List<BigDecimal> value) {
 									return function.apply(value);
 								}
 							});
 
-			entries.addAll(transformed.entrySet().stream().map(new EntryCopy()).collect(Collectors.toList()));
+			entries.addAll(transformed.entrySet().stream().map(new EntryCopy())
+					.collect(Collectors.toList()));
 
 			// Loop through actual expenses and subtract from existing reserves
 			spendings:
@@ -315,8 +314,8 @@ public class FinancialTimeline {
 				if (!e.getKey().isAfter(time)) {
 					BigDecimal open = e.getValue();
 
-					while (open.compareTo(BigDecimal.ZERO) > 0
-							&& !result.isEmpty()) {
+					while (open.compareTo(BigDecimal.ZERO) > 0 && !result
+							.isEmpty()) {
 						Entry<User, Reserve> first = null;
 						boolean found = false;
 
@@ -325,7 +324,8 @@ public class FinancialTimeline {
 						while (iterator.hasNext()) {
 							first = iterator.next();
 
-							if (!first.getValue().getTime().isAfter(e.getKey())) {
+							if (!first.getValue().getTime()
+									.isAfter(e.getKey())) {
 								found = true;
 								break;
 							}
@@ -345,20 +345,20 @@ public class FinancialTimeline {
 							open = open.subtract(amount);
 						} else {
 							BigDecimal remainder = amount.subtract(open);
-							result.put(
-									first.getKey(),
-									new Reserve(reserve.getTime(), reserve
-											.getUser(), remainder));
+							result.put(first.getKey(),
+									new Reserve(reserve.getTime(),
+											reserve.getUser(), remainder));
 							open = BigDecimal.ZERO;
 						}
 					}
 				}
 			}
 
-			Multimap<User, BigDecimal> aggregated = Multimaps.transformEntries(
-					result, new ReserveToBigDecimalFunction());
-			Map<User, BigDecimal> results = io.vavr.collection.HashMap.ofAll(aggregated.asMap())
-					.mapValues(SumFunction.INSTANCE)
+			Multimap<User, BigDecimal> aggregated = Multimaps
+					.transformEntries(result,
+							new ReserveToBigDecimalFunction());
+			Map<User, BigDecimal> results = io.vavr.collection.HashMap
+					.ofAll(aggregated.asMap()).mapValues(SumFunction.INSTANCE)
 					.toJavaMap();
 			buffer.put(time, results);
 
@@ -366,13 +366,15 @@ public class FinancialTimeline {
 		}
 
 		public void addReserve(DateTime dt, User user, BigDecimal amount) {
-			reserves.merge(dt,
-					ImmutableList.of(new Reserve(dt, user, amount)),
-					(a, b) -> ImmutableList.<Reserve>builder().addAll(a).addAll(b).build());
+			reserves.merge(dt, ImmutableList.of(new Reserve(dt, user, amount)),
+					(a, b) -> ImmutableList.<Reserve>builder().addAll(a)
+							.addAll(b).build());
 		}
 
 		public void spend(DateTime dt, BigDecimal amount) {
-			spendings.merge(dt, ImmutableList.of(amount), (a, b) -> ImmutableList.<BigDecimal>builder().addAll(a).addAll(b).build());
+			spendings.merge(dt, ImmutableList.of(amount),
+					(a, b) -> ImmutableList.<BigDecimal>builder().addAll(a)
+							.addAll(b).build());
 		}
 
 	}
@@ -400,7 +402,7 @@ public class FinancialTimeline {
 	private String exhaustionPoint = null;
 
 	public FinancialTimeline(ExpenseDAO expenseDAO, DonationDAO donationDAO,
-							 SubscriptionDAO subscriptionDAO, PaidExpenseDAO paidExpenseDAO) {
+			SubscriptionDAO subscriptionDAO, PaidExpenseDAO paidExpenseDAO) {
 		this.expenseDAO = expenseDAO;
 		this.donationDAO = donationDAO;
 		this.subscriptionDAO = subscriptionDAO;
@@ -416,7 +418,9 @@ public class FinancialTimeline {
 		df.donationTime().orderBy(true);
 		for (Donation d : donationDAO.findByFilter(df)) {
 			DateTime dt = new DateTime(d.getDonationTime());
-			mutations.merge(dt, ImmutableList.of(d.getAmount()), (a, b) -> ImmutableList.<BigDecimal>builder().addAll(a).addAll(b).build());
+			mutations.merge(dt, ImmutableList.of(d.getAmount()),
+					(a, b) -> ImmutableList.<BigDecimal>builder().addAll(a)
+							.addAll(b).build());
 			reserve.addReserve(dt, d.getDonator(), d.getAmount());
 		}
 
@@ -425,7 +429,10 @@ public class FinancialTimeline {
 
 		for (PaidExpense expense : paidExpenseDAO.findByFilter(pef)) {
 			DateTime dt = new DateTime(expense.getPaymentDate());
-			mutations.merge(dt, ImmutableList.of(expense.getAmount().abs().negate()), (a, b) -> ImmutableList.<BigDecimal>builder().addAll(a).addAll(b).build());
+			mutations.merge(dt,
+					ImmutableList.of(expense.getAmount().abs().negate()),
+					(a, b) -> ImmutableList.<BigDecimal>builder().addAll(a)
+							.addAll(b).build());
 			reserve.spend(dt, expense.getAmount());
 		}
 
@@ -497,13 +504,16 @@ public class FinancialTimeline {
 			DateTime c = now;
 
 			DateTime eStart = new DateTime(e.getStart());
-			DateTime eEnd = e.getEnd() != null ? new DateTime(e.getEnd())
-					: null;
+			DateTime eEnd =
+					e.getEnd() != null ? new DateTime(e.getEnd()) : null;
 
-			while (!c.isAfter(threeYearsFromNow)
-					&& (e.getEnd() == null || !c.isAfter(eEnd))) {
+			while (!c.isAfter(threeYearsFromNow) && (e.getEnd() == null || !c
+					.isAfter(eEnd))) {
 				if (!c.isBefore(eStart)) {
-					futureMutations.merge(c, ImmutableList.of(e.getAmount().abs().negate()), (a, b) -> ImmutableList.<BigDecimal>builder().addAll(a).addAll(b).build());
+					futureMutations.merge(c,
+							ImmutableList.of(e.getAmount().abs().negate()),
+							(a, b) -> ImmutableList.<BigDecimal>builder()
+									.addAll(a).addAll(b).build());
 				}
 
 				c = new DateTime(e.getPeriod().nextDate(c.toDate()));
@@ -518,7 +528,9 @@ public class FinancialTimeline {
 
 			while (!c.isAfter(threeYearsFromNow)) {
 				if (!c.isBefore(sStart)) {
-					futureMutations.merge(c, ImmutableList.of(s.getAmount()), (a, b) -> ImmutableList.<BigDecimal>builder().addAll(a).addAll(b).build());
+					futureMutations.merge(c, ImmutableList.of(s.getAmount()),
+							(a, b) -> ImmutableList.<BigDecimal>builder()
+									.addAll(a).addAll(b).build());
 				}
 
 				c = new DateTime(s.getInterval().nextDate(c.toDate()));
@@ -529,8 +541,8 @@ public class FinancialTimeline {
 			current = current.add(SumFunction.INSTANCE.apply(e.getValue()));
 
 			if (current.compareTo(BigDecimal.ZERO) < 0) {
-				exhaustionPoint = "until "
-						+ e.getKey().toString("dd MMMM yyyy");
+				exhaustionPoint =
+						"until " + e.getKey().toString("dd MMMM yyyy");
 				break;
 			}
 		}
@@ -541,46 +553,45 @@ public class FinancialTimeline {
 		return exhaustionPoint;
 	}
 
-	public SortedMap<String, BigDecimal> getReservesAt(
-			DateTime time) {
+	public SortedMap<String, BigDecimal> getReservesAt(DateTime time) {
 		SortedMap<String, BigDecimal> series = new TreeMap<>();
 
 		Map<User, BigDecimal> reservesAt = reserve.getReservesAt(time);
 
 		for (Entry<User, BigDecimal> e : reservesAt.entrySet()) {
-			series.put(e.getKey() != null ? e.getKey().getUsername()
-					: "Anonymous", e.getValue());
+			series.put(
+					e.getKey() != null ? e.getKey().getUsername() : "Anonymous",
+					e.getValue());
 		}
 
 		return series;
 
 	}
 
-	public Map<String, BigDecimal> getParticipation(
-			DateTime start, DateTime end) {
+	public Map<String, BigDecimal> getParticipation(DateTime start,
+			DateTime end) {
 		Map<String, BigDecimal> series = new HashMap<>();
 
 		Multimap<String, BigDecimal> amounts = HashMultimap.create();
 
 		for (Entry<DateTime, Contribution> e : contributionsByDate.entries()) {
 			if (!e.getKey().isBefore(start) && !e.getKey().isAfter(end)) {
-				amounts.put(e.getValue().getUser() != null ? e.getValue()
-						.getUser().getUsername() : "Anonymous", e.getValue()
-						.getAmount());
+				amounts.put(e.getValue().getUser() != null ?
+						e.getValue().getUser().getUsername() :
+						"Anonymous", e.getValue().getAmount());
 			}
 		}
 
 		io.vavr.collection.HashMap.ofAll(amounts.asMap())
-				.mapValues(SumFunction.INSTANCE)
-				.forEach(series::put);
+				.mapValues(SumFunction.INSTANCE).forEach(series::put);
 
 		return series;
 	}
 
-	public SortedMap<Date,BigDecimal> getCashFlow(
-			DateTime start, DateTime end) {
+	public SortedMap<Date, BigDecimal> getCashFlow(DateTime start,
+			DateTime end) {
 
-		SortedMap<Date,BigDecimal> series = new TreeMap<>();
+		SortedMap<Date, BigDecimal> series = new TreeMap<>();
 
 		for (Entry<DateTime, BigDecimal> e : cashFlow.entrySet()) {
 			if (!e.getKey().isBefore(start) && !e.getKey().isAfter(end)) {

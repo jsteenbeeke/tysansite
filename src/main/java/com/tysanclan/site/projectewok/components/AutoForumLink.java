@@ -17,17 +17,16 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-
 import com.tysanclan.site.projectewok.entities.Forum;
 import com.tysanclan.site.projectewok.pages.ForumPage;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public class AutoForumLink extends
-		LoginAwareLink<ForumLink, BookmarkablePageLink<Forum>> {
+public class AutoForumLink
+		extends LoginAwareLink<ForumLink, BookmarkablePageLink<Forum>> {
 	private static final long serialVersionUID = 1L;
 
 	private final boolean condition;
@@ -45,7 +44,7 @@ public class AutoForumLink extends
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public AutoForumLink(String id, Forum forum, String text, long pageIndex) {
 		super(id, text);

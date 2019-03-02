@@ -29,6 +29,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 class EmailChangeConfirmationDAOImpl extends
-		HibernateDAO<EmailChangeConfirmation, EmailChangeConfirmationFilter> implements
+		HibernateDAO<EmailChangeConfirmation, EmailChangeConfirmationFilter>
+		implements
 		com.tysanclan.site.projectewok.entities.dao.EmailChangeConfirmationDAO {
 }

@@ -28,7 +28,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class RealmPetitionDAOImpl extends HibernateDAO<RealmPetition, RealmPetitionFilter> implements
+class RealmPetitionDAOImpl
+		extends HibernateDAO<RealmPetition, RealmPetitionFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.RealmPetitionDAO {
 
 }

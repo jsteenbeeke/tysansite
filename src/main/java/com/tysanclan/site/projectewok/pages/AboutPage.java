@@ -76,7 +76,8 @@ public class AboutPage extends TysanPage {
 			leader = users.get(0);
 			add(new MemberListItem("leader", leader));
 		} else {
-			add(new Label("leader", "<i>None</i>").setEscapeModelStrings(false));
+			add(new Label("leader", "<i>None</i>")
+					.setEscapeModelStrings(false));
 		}
 
 		UserFilter senateFilter = new UserFilter();
@@ -95,7 +96,8 @@ public class AboutPage extends TysanPage {
 
 		});
 
-		add(new ListView<Game>("games", ModelMaker.wrap(gameDAO.findAll().toJavaList())) {
+		add(new ListView<Game>("games",
+				ModelMaker.wrap(gameDAO.findAll().toJavaList())) {
 			private static final long serialVersionUID = 1L;
 
 			/**
@@ -108,8 +110,8 @@ public class AboutPage extends TysanPage {
 				final int rowCount = game.getRealms().size();
 				final String gameName = game.getName();
 
-				item.add(new ListView<Realm>("realms", ModelMaker.wrap(game
-						.getRealms())) {
+				item.add(new ListView<Realm>("realms",
+						ModelMaker.wrap(game.getRealms())) {
 					private static final long serialVersionUID = 1L;
 
 					@SpringBean
@@ -131,8 +133,9 @@ public class AboutPage extends TysanPage {
 							gameNameLabel.setVisible(false);
 							supervisorContainer.setVisible(false);
 						} else {
-							AttributeModifier mod = AttributeModifier.replace(
-									"rowspan", Integer.toString(rowCount));
+							AttributeModifier mod = AttributeModifier
+									.replace("rowspan",
+											Integer.toString(rowCount));
 							iconContainer.add(mod);
 							gameNameLabel.add(mod);
 							supervisorContainer.add(mod);
@@ -153,21 +156,21 @@ public class AboutPage extends TysanPage {
 
 						realmLink.add(new Label("name", realm.getName()));
 
-						innerItem.add(new Label("playercount", Integer
-								.toString(gameService
-										.countPlayers(_game, realm))));
+						innerItem.add(new Label("playercount", Integer.toString(
+								gameService.countPlayers(_game, realm))));
 
 						innerItem.add(realmLink);
 
 						iconContainer.add(new Image("icon",
-								new ByteArrayResource(ImageUtil
-										.getMimeType(_game.getImage()), _game
-										.getImage())));
+								new ByteArrayResource(
+										ImageUtil.getMimeType(_game.getImage()),
+										_game.getImage())));
 
 						if (_game.getCoordinator() != null) {
 
-							supervisorContainer.add(new MemberListItem(
-									"supervisor", _game.getCoordinator()));
+							supervisorContainer
+									.add(new MemberListItem("supervisor",
+											_game.getCoordinator()));
 						} else {
 							supervisorContainer
 									.add(new Label("supervisor", "-"));
@@ -190,8 +193,8 @@ public class AboutPage extends TysanPage {
 		activeMemberFilter.orRank(Rank.TRIAL);
 		activeMemberFilter.retired(false);
 
-		add(new Label("activecount", new Model<Long>(
-				userDAO.countByFilter(activeMemberFilter))));
+		add(new Label("activecount",
+				new Model<Long>(userDAO.countByFilter(activeMemberFilter))));
 
 		UserFilter allMemberFilter = new UserFilter();
 		allMemberFilter.rank(Rank.CHANCELLOR);
@@ -203,8 +206,8 @@ public class AboutPage extends TysanPage {
 		allMemberFilter.orRank(Rank.JUNIOR_MEMBER);
 		allMemberFilter.orRank(Rank.TRIAL);
 
-		add(new Label("membercount", new Model<>(
-				userDAO.countByFilter(allMemberFilter))));
+		add(new Label("membercount",
+				new Model<>(userDAO.countByFilter(allMemberFilter))));
 
 		addRank(Rank.CHANCELLOR, "The leader of the Clan, has executive power");
 		addRank(Rank.SENATOR, "A member of the Senate, has legislative power");

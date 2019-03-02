@@ -1,14 +1,5 @@
 package com.tysanclan.site.projectewok.pages.member.admin;
 
-import org.apache.wicket.RestartResponseAtInterceptPageException;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.RestService;
 import com.tysanclan.site.projectewok.beans.RoleService;
@@ -20,6 +11,14 @@ import com.tysanclan.site.projectewok.entities.dao.AuthorizedRestApplicationDAO;
 import com.tysanclan.site.projectewok.entities.filter.AuthorizedRestApplicationFilter;
 import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
 import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class StewardRestAgentPage extends AbstractMemberPage {
 	private static final long serialVersionUID = 1L;
@@ -44,8 +43,8 @@ public class StewardRestAgentPage extends AbstractMemberPage {
 		activeFilter.active(true);
 		activeFilter.name().orderBy(true);
 
-		add(new ListView<AuthorizedRestApplication>("active",
-				ModelMaker.wrap(appDAO.findByFilter(activeFilter).toJavaList())) {
+		add(new ListView<AuthorizedRestApplication>("active", ModelMaker
+				.wrap(appDAO.findByFilter(activeFilter).toJavaList())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -55,8 +54,8 @@ public class StewardRestAgentPage extends AbstractMemberPage {
 
 				item.add(new Label("name", application.getName()));
 				item.add(new Label("clientid", application.getClientId()));
-				item.add(new RevealablePasswordField("clientsecret", Model
-						.of(application.getClientSecret()))
+				item.add(new RevealablePasswordField("clientsecret",
+						Model.of(application.getClientSecret()))
 						.setResetPassword(false));
 				item.add(new IconLink.Builder(
 						"images/icons/application_delete.png",
@@ -66,8 +65,8 @@ public class StewardRestAgentPage extends AbstractMemberPage {
 
 							@Override
 							public void onClick() {
-								restService.deactivateApplication(item
-										.getModelObject());
+								restService.deactivateApplication(
+										item.getModelObject());
 
 								setResponsePage(new StewardRestAgentPage());
 							}
@@ -80,8 +79,8 @@ public class StewardRestAgentPage extends AbstractMemberPage {
 		inactiveFilter.active(false);
 		inactiveFilter.name().orderBy(true);
 
-		add(new ListView<AuthorizedRestApplication>("inactive",
-				ModelMaker.wrap(appDAO.findByFilter(inactiveFilter).toJavaList())) {
+		add(new ListView<AuthorizedRestApplication>("inactive", ModelMaker
+				.wrap(appDAO.findByFilter(inactiveFilter).toJavaList())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -90,16 +89,15 @@ public class StewardRestAgentPage extends AbstractMemberPage {
 				AuthorizedRestApplication application = item.getModelObject();
 
 				item.add(new Label("name", application.getName()));
-				item.add(new IconLink.Builder(
-						"images/icons/application_go.png",
+				item.add(new IconLink.Builder("images/icons/application_go.png",
 						new DefaultClickResponder<AuthorizedRestApplication>() {
 
 							private static final long serialVersionUID = 1L;
 
 							@Override
 							public void onClick() {
-								restService.activateApplication(item
-										.getModelObject());
+								restService.activateApplication(
+										item.getModelObject());
 
 								setResponsePage(new StewardRestAgentPage());
 							}
@@ -112,8 +110,8 @@ public class StewardRestAgentPage extends AbstractMemberPage {
 
 							@Override
 							public void onClick() {
-								restService.deleteApplication(item
-										.getModelObject());
+								restService.deleteApplication(
+										item.getModelObject());
 
 								setResponsePage(new StewardRestAgentPage());
 							}

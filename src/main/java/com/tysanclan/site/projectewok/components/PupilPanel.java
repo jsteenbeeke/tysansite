@@ -17,14 +17,13 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import java.util.Calendar;
-
-import org.apache.wicket.markup.html.WebMarkupContainer;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.util.DateUtil;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+
+import java.util.Calendar;
 
 /**
  * @author Jeroen Steenbeeke
@@ -34,7 +33,7 @@ public class PupilPanel extends TysanOverviewPanel<User> {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 
+	 *
 	 */
 	public PupilPanel(String id, User pupil) {
 		super(id, ModelMaker.wrap(pupil), "Mentor");

@@ -17,8 +17,6 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
@@ -26,6 +24,7 @@ import com.tysanclan.site.projectewok.beans.DemocracyService;
 import com.tysanclan.site.projectewok.components.IconLink;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
 import com.tysanclan.site.projectewok.entities.User;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -53,8 +52,8 @@ public class SenatorStepDownPage extends AbstractMemberPage {
 
 						setResponsePage(new OverviewPage());
 					}
-				}).setText("Yes, I want to stop being a Senator").newInstance(
-				"yes"));
+				}).setText("Yes, I want to stop being a Senator")
+				.newInstance("yes"));
 		add(new IconLink.Builder("images/icons/cross.png",
 				new DefaultClickResponder<User>(ModelMaker.wrap(getUser())) {
 					private static final long serialVersionUID = 1L;

@@ -1,9 +1,8 @@
 package com.tysanclan.site.projectewok.pages.member;
 
 import com.tysanclan.rest.api.data.Rank;
-import org.junit.Test;
-
 import com.tysanclan.site.projectewok.components.PupilPanel;
+import org.junit.Test;
 
 public class TrialMemberTest extends AbstractClickThroughTester {
 	@Override

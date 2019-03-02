@@ -25,6 +25,7 @@ import com.tysanclan.site.projectewok.entities.filter.BattleNetUserPresenceFilte
  *
  * @author Jeroen Steenbeeke
  */
-public interface BattleNetUserPresenceDAO extends DAO<BattleNetUserPresence, BattleNetUserPresenceFilter> {
+public interface BattleNetUserPresenceDAO
+		extends DAO<BattleNetUserPresence, BattleNetUserPresenceFilter> {
 
 }

@@ -32,7 +32,8 @@ public class ChancellorElectionResolutionTask extends HyperionTask {
 
 	@Override
 	public void run(ServiceProvider provider) {
-		provider.getService(DemocracyService.class).resolveChancellorElections();
+		provider.getService(DemocracyService.class)
+				.resolveChancellorElections();
 
 	}
 }

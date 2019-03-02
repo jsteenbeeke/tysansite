@@ -23,6 +23,7 @@ import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.util.DateUtil;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.WicketAjaxJQueryResourceReference;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
@@ -54,15 +55,22 @@ public abstract class InlineDatePicker extends WebMarkupContainer {
 		super(id);
 
 		selectedDate = date == null ? generateDefaultDate() : date;
+		options = new Options();
+
+	}
+
+	@Override
+	protected void onConfigure() {
+		super.onConfigure();
+
 
 		DateSelectAjaxBehavior behavior = new DateSelectAjaxBehavior();
 		add(behavior);
 
-		options = new Options();
-		options.set("onSelect", behavior.getInnerEvent());
+		options.set("onSelect", behavior.generateCallback());
 		options.set("dateFormat", "'mm/dd/yy'");
 		options.set("defaultDate",
-					new SimpleDateFormat("MM/dd/yy").format(selectedDate));
+				new SimpleDateFormat("MM/dd/yy").format(selectedDate));
 	}
 
 	/**
@@ -101,25 +109,23 @@ public abstract class InlineDatePicker extends WebMarkupContainer {
 		super.renderHead(response);
 
 		response.render(JavaScriptHeaderItem
-								.forReference(JQueryUIJavaScriptResourceReference.get()));
+				.forReference(JQueryUIJavaScriptResourceReference.get()));
+		response.render(JavaScriptHeaderItem.forReference(WicketAjaxJQueryResourceReference.get()));
 
 		JsStatement statement = new JsStatement();
 
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(selectedDate);
-		statement
-				.append("var bDate")
-				.append(getMarkupId())
-				.append(" = new Date(); bDate")
-				.append(getMarkupId())
+		statement.append("var bDate").append(getMarkupId())
+				.append(" = new Date(); bDate").append(getMarkupId())
 				.append(".setFullYear(" + calendar.get(Calendar.YEAR) + ", "
-								+ calendar.get(Calendar.MONTH) + ", "
-								+ calendar.get(Calendar.DAY_OF_MONTH) + ");");
+						+ calendar.get(Calendar.MONTH) + ", " + calendar
+						.get(Calendar.DAY_OF_MONTH) + ");");
 
 		options.set("defaultDate", String.format("bDate%s", getMarkupId()));
 
-		JsStatement statement2 = new JsQuery(this).$().chain("datepicker",
-															 options.toString());
+		JsStatement statement2 = new JsQuery(this).$()
+				.chain("datepicker", options.toString());
 
 		statement.append(statement2.render());
 
@@ -131,18 +137,6 @@ public abstract class InlineDatePicker extends WebMarkupContainer {
 	private class DateSelectAjaxBehavior extends AbstractDefaultAjaxBehavior {
 		private static final long serialVersionUID = 1L;
 
-		private OnSelectEvent innerEvent;
-
-		public DateSelectAjaxBehavior() {
-			innerEvent = new OnSelectEvent();
-		}
-
-		/**
-		 * @return the innerEvent
-		 */
-		public OnSelectEvent getInnerEvent() {
-			return innerEvent;
-		}
 
 		/**
 		 * @see org.apache.wicket.ajax.AbstractDefaultAjaxBehavior#respond(org.apache.wicket.ajax.AjaxRequestTarget)
@@ -150,20 +144,22 @@ public abstract class InlineDatePicker extends WebMarkupContainer {
 		@Override
 		protected void respond(AjaxRequestTarget target) {
 			String date = this.getComponent().getRequest().getQueryParameters()
-							  .getParameterValue("date").toString();
+					.getParameterValue("date").toString();
 
 			TimeZone tz = DateUtil.NEW_YORK;
-			User user = TysanSession.session().flatMap(TysanSession::getUser).getOrNull();
+			User user = TysanSession.session().flatMap(TysanSession::getUser)
+					.getOrNull();
 			if (user != null && user.getTimezone() != null) {
 				tz = TimeZone.getTimeZone(user.getTimezone());
 			}
 
-			Calendar cal = user != null ? DateUtil
-					.getMidnightCalendarByUnadjustedDate(new Date(), tz)
-					: DateUtil.getCalendarInstance();
+			Calendar cal = user != null ?
+					DateUtil.getMidnightCalendarByUnadjustedDate(new Date(),
+							tz) :
+					DateUtil.getCalendarInstance();
 
-			if (!date.matches("\\d{2}\\/\\d{2}\\/\\d{4}")
-					&& !date.matches("\\d{2}-\\d{2}-\\d{4}")) {
+			if (!date.matches("\\d{2}\\/\\d{2}\\/\\d{4}") && !date
+					.matches("\\d{2}-\\d{2}-\\d{4}")) {
 				error("Invalid date selected");
 				return;
 			}
@@ -185,25 +181,18 @@ public abstract class InlineDatePicker extends WebMarkupContainer {
 			InlineDatePicker.this.onDateSelected(ddate, target);
 		}
 
-		private class OnSelectEvent extends JsScopeUiDatePickerDateTextEvent {
-			private static final long serialVersionUID = 1L;
+		private String generateCallback() {
+			JsStatement stat = new JsStatement().$(InlineDatePicker.this)
+					.chain("val");
 
-			@Override
-			protected void execute(JsScopeContext scopeContext) {
-				JsStatement stat = new JsStatement().$(InlineDatePicker.this)
-													.chain("val");
-
-				String val = stat.render().toString();
-				if (val.endsWith(";")) {
-					val = val.substring(0, val.length() - 1);
-				}
-
-				scopeContext.append("wicketAjaxGet('" + getCallbackUrl()
-											+ "&date='+" + val
-											+ ", null,null, function() {return true;})");
-
+			String val = stat.render().toString();
+			if (val.endsWith(";")) {
+				val = val.substring(0, val.length() - 1);
 			}
 
+			return "function() { Wicket.Ajax.get({'u': '" + getCallbackUrl()
+					+ "&date='+encodeURI(" + val
+					+ ")}); }";
 		}
 
 	}

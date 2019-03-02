@@ -29,8 +29,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class JoinApplicationDAOImpl extends HibernateDAO<JoinApplication, JoinApplicationFilter>
-		implements
+class JoinApplicationDAOImpl
+		extends HibernateDAO<JoinApplication, JoinApplicationFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.JoinApplicationDAO {
 	/**
 	 * @see com.tysanclan.site.projectewok.entities.dao.JoinApplicationDAO#getJoinApplicationByThread(com.tysanclan.site.projectewok.entities.ForumThread)

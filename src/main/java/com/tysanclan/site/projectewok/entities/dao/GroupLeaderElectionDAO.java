@@ -26,7 +26,8 @@ import com.tysanclan.site.projectewok.entities.filter.GroupLeaderElectionFilter;
  *
  * @author Jeroen Steenbeeke
  */
-public interface GroupLeaderElectionDAO extends DAO<GroupLeaderElection, GroupLeaderElectionFilter> {
+public interface GroupLeaderElectionDAO
+		extends DAO<GroupLeaderElection, GroupLeaderElectionFilter> {
 
 	void flush();
 

@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class MessageDAOImpl extends HibernateDAO<Message, MessageFilter> implements
-		com.tysanclan.site.projectewok.entities.dao.MessageDAO {
+class MessageDAOImpl extends HibernateDAO<Message, MessageFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.MessageDAO {
 
 }

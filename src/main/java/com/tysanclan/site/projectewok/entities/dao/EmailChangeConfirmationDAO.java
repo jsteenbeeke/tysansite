@@ -25,6 +25,7 @@ import com.tysanclan.site.projectewok.entities.filter.EmailChangeConfirmationFil
  *
  * @author Jeroen Steenbeeke
  */
-public interface EmailChangeConfirmationDAO extends DAO<EmailChangeConfirmation, EmailChangeConfirmationFilter> {
+public interface EmailChangeConfirmationDAO
+		extends DAO<EmailChangeConfirmation, EmailChangeConfirmationFilter> {
 
 }

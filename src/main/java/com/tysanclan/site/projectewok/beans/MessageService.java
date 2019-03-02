@@ -17,14 +17,10 @@
  */
 package com.tysanclan.site.projectewok.beans;
 
+import com.tysanclan.site.projectewok.entities.*;
+
 import java.util.Date;
 import java.util.List;
-
-import com.tysanclan.site.projectewok.entities.Conversation;
-import com.tysanclan.site.projectewok.entities.ConversationParticipation;
-import com.tysanclan.site.projectewok.entities.Message;
-import com.tysanclan.site.projectewok.entities.MessageFolder;
-import com.tysanclan.site.projectewok.entities.User;
 
 /**
  * @author Jeroen Steenbeeke

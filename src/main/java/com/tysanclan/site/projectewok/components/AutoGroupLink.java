@@ -17,21 +17,20 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-
 import com.tysanclan.site.projectewok.entities.Group;
 import com.tysanclan.site.projectewok.pages.GroupPage;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public class AutoGroupLink extends
-		LoginAwareLink<GroupLink, BookmarkablePageLink<Group>> {
+public class AutoGroupLink
+		extends LoginAwareLink<GroupLink, BookmarkablePageLink<Group>> {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 
+	 *
 	 */
 	public AutoGroupLink(String id, Group group) {
 		super(id, group.getName());
@@ -40,8 +39,9 @@ public class AutoGroupLink extends
 
 		PageParameters params = new PageParameters();
 		params.add("groupid", group.getId().toString());
-		setNotLoggedInLink(new BookmarkablePageLink<Group>(LINK_LABEL,
-				GroupPage.class, params));
+		setNotLoggedInLink(
+				new BookmarkablePageLink<Group>(LINK_LABEL, GroupPage.class,
+						params));
 	}
 
 	/**

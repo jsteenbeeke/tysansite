@@ -1,13 +1,12 @@
 package com.tysanclan.site.projectewok.components;
 
+import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.IModel;
-
-import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
 
 public class BBCodeTextArea extends TextArea<String> {
 
@@ -35,8 +34,8 @@ public class BBCodeTextArea extends TextArea<String> {
 		response.render(CssHeaderItem.forUrl("css/bbcode.css"));
 		response.render(JavaScriptHeaderItem
 				.forReference(BBCodeTextAreaPluginResource.get()));
-		response.render(OnDomReadyHeaderItem.forScript(String.format(
-				"$('#%s').bbedit();", getMarkupId())));
+		response.render(OnDomReadyHeaderItem
+				.forScript(String.format("$('#%s').bbedit();", getMarkupId())));
 	}
 
 	public static class BBCodeFilterModel implements IModel<String> {

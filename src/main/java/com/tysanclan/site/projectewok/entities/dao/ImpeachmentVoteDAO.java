@@ -25,6 +25,7 @@ import com.tysanclan.site.projectewok.entities.filter.ImpeachmentVoteFilter;
  *
  * @author Jeroen Steenbeeke
  */
-public interface ImpeachmentVoteDAO extends DAO<ImpeachmentVote, ImpeachmentVoteFilter> {
+public interface ImpeachmentVoteDAO
+		extends DAO<ImpeachmentVote, ImpeachmentVoteFilter> {
 
 }

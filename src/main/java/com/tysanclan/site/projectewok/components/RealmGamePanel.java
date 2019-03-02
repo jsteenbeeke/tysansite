@@ -17,13 +17,12 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.entities.*;
+import com.tysanclan.site.projectewok.entities.dao.UserGameRealmDAO;
+import com.tysanclan.site.projectewok.entities.filter.UserGameRealmFilter;
+import com.tysanclan.site.projectewok.util.ImageUtil;
+import com.tysanclan.site.projectewok.util.MemberUtil;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
@@ -34,16 +33,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.resource.ByteArrayResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
-import com.tysanclan.site.projectewok.entities.Game;
-import com.tysanclan.site.projectewok.entities.GameAccount;
-import com.tysanclan.site.projectewok.entities.GamingGroup;
-import com.tysanclan.site.projectewok.entities.Realm;
-import com.tysanclan.site.projectewok.entities.UserGameRealm;
-import com.tysanclan.site.projectewok.entities.dao.UserGameRealmDAO;
-import com.tysanclan.site.projectewok.entities.filter.UserGameRealmFilter;
-import com.tysanclan.site.projectewok.util.ImageUtil;
-import com.tysanclan.site.projectewok.util.MemberUtil;
+import java.util.*;
 
 /**
  * @author Jeroen Steenbeeke
@@ -55,20 +45,22 @@ public class RealmGamePanel extends Panel {
 	private UserGameRealmDAO userGameRealmDAO;
 
 	/**
-	 * 
+	 *
 	 */
 	public RealmGamePanel(String id, Realm realm, Game game) {
 		super(id);
 
 		add(new Label("name", game.getName()));
-		add(new Image("icon", new ByteArrayResource(ImageUtil.getMimeType(game
-				.getImage()), game.getImage())));
+		add(new Image("icon",
+				new ByteArrayResource(ImageUtil.getMimeType(game.getImage()),
+						game.getImage())));
 
 		UserGameRealmFilter filter = new UserGameRealmFilter();
 		filter.realm(realm);
 		filter.game(game);
 
-		List<UserGameRealm> ugrs = new LinkedList<UserGameRealm>(userGameRealmDAO.findByFilter(filter).asJava());
+		List<UserGameRealm> ugrs = new LinkedList<UserGameRealm>(
+				userGameRealmDAO.findByFilter(filter).asJava());
 		Set<UserGameRealm> removeUGR = new HashSet<UserGameRealm>();
 
 		for (UserGameRealm ugr : ugrs) {
@@ -91,7 +83,7 @@ public class RealmGamePanel extends Panel {
 			@Override
 			public int compare(UserGameRealm o1, UserGameRealm o2) {
 				return o1.getUser().getUsername()
-						 .compareToIgnoreCase(o2.getUser().getUsername());
+						.compareToIgnoreCase(o2.getUser().getUsername());
 			}
 		});
 
@@ -131,8 +123,8 @@ public class RealmGamePanel extends Panel {
 
 		add(container);
 
-		container.add(new ListView<GamingGroup>("gaminggroups", ModelMaker
-				.wrap(groups)) {
+		container.add(new ListView<GamingGroup>("gaminggroups",
+				ModelMaker.wrap(groups)) {
 			private static final long serialVersionUID = 1L;
 
 			/**

@@ -17,23 +17,8 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-
-import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.NaiveRenderer;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.NaiveRenderer;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.beans.LawEnforcementService;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
@@ -45,6 +30,19 @@ import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.pages.ForumThreadPage;
 import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.MemberUtil;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * @author Jeroen Steenbeeke
@@ -53,7 +51,7 @@ public class TrialPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 
+	 *
 	 */
 	public TrialPanel(String id, Trial trial, User user) {
 		super(id);
@@ -64,8 +62,8 @@ public class TrialPanel extends Panel {
 			add(new Label("accused", trial.getAccused().getUsername()));
 		}
 
-		add(new ListView<Regulation>("regulations", ModelMaker.wrap(trial
-				.getRegulations())) {
+		add(new ListView<Regulation>("regulations",
+				ModelMaker.wrap(trial.getRegulations())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -83,8 +81,8 @@ public class TrialPanel extends Panel {
 			add(new Label("truthsayer", trial.getJudge().getUsername()));
 		}
 
-		add(new BBCodePanel("evidence", trial.getMotivation()).setVisible(trial
-				.getJudge().equals(user)));
+		add(new BBCodePanel("evidence", trial.getMotivation())
+				.setVisible(trial.getJudge().equals(user)));
 
 		ForumThread thread = trial.getTrialThread();
 
@@ -98,8 +96,9 @@ public class TrialPanel extends Panel {
 		cal.set(Calendar.MONTH, cal2.get(Calendar.MONTH));
 		cal.set(Calendar.YEAR, cal2.get(Calendar.YEAR));
 
-		boolean canVerdictBePassed = trial.getAccused().getRank() == Rank.TRIAL
-				|| new Date().after(cal.getTime());
+		boolean canVerdictBePassed =
+				trial.getAccused().getRank() == Rank.TRIAL || new Date()
+						.after(cal.getTime());
 		boolean hasVerdict = trial.getVerdict() != null;
 		boolean isJudge = user != null && user.equals(trial.getJudge());
 
@@ -118,55 +117,57 @@ public class TrialPanel extends Panel {
 			protected void onSubmit() {
 				Trial t = getModelObject();
 
-				DropDownChoice<Verdict> verdictChoice = (DropDownChoice<Verdict>) get("verdict");
+				DropDownChoice<Verdict> verdictChoice = (DropDownChoice<Verdict>) get(
+						"verdict");
 
 				Verdict verdict = verdictChoice.getModelObject();
 
 				lawEnforcementService.passVerdict(t, verdict);
 
-				setResponsePage(new ForumThreadPage(t.getTrialThread().getId(),
-						1, false));
+				setResponsePage(
+						new ForumThreadPage(t.getTrialThread().getId(), 1,
+								false));
 			}
 
 		};
 
 		verdictForm.add(new DropDownChoice<Verdict>("verdict",
-				new Model<Verdict>(Verdict.INNOCENT), Arrays.asList(Verdict
-						.values()), new NaiveRenderer<Verdict>() {
+				new Model<Verdict>(Verdict.INNOCENT),
+				Arrays.asList(Verdict.values()), new NaiveRenderer<Verdict>() {
 
-					/**
-					 * 
-					 */
-					private static final long serialVersionUID = 1L;
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = 1L;
 
-					@Override
-					public Object getDisplayValue(Verdict object) {
-						switch (object) {
-							case INNOCENT:
-								return "Member is innocent";
-							case MINOR:
-								return "Member is guilty, but will only be given a warning";
-							case MEDIUM:
-								return "Member is guilty, and will be reprimanded";
-							case MAJOR:
-								return "Member is guilty and will be banned immediately";
-							default:
-								return "I have no idea";
-						}
+			@Override
+			public Object getDisplayValue(Verdict object) {
+				switch (object) {
+					case INNOCENT:
+						return "Member is innocent";
+					case MINOR:
+						return "Member is guilty, but will only be given a warning";
+					case MEDIUM:
+						return "Member is guilty, and will be reprimanded";
+					case MAJOR:
+						return "Member is guilty and will be banned immediately";
+					default:
+						return "I have no idea";
+				}
 
-					}
+			}
 
-					@Override
-					public String getIdValue(Verdict object, int index) {
-						return object.toString();
-					}
-				}));
+			@Override
+			public String getIdValue(Verdict object, int index) {
+				return object.toString();
+			}
+		}));
 
 		verdictForm.setVisible(canVerdictBePassed && !hasVerdict && isJudge);
 
-		add(new IconLink.Builder(
-				trial.isRestrained() ? "images/icons/lock_delete.png"
-						: "images/icons/lock.png",
+		add(new IconLink.Builder(trial.isRestrained() ?
+				"images/icons/lock_delete.png" :
+				"images/icons/lock.png",
 				new DefaultClickResponder<Trial>(ModelMaker.wrap(trial)) {
 					private static final long serialVersionUID = 1L;
 
@@ -186,15 +187,15 @@ public class TrialPanel extends Panel {
 							lawEnforcementService.restrainAccused(t);
 						}
 
-						setResponsePage(new ForumThreadPage(t.getTrialThread()
-								.getId(), 1, false));
+						setResponsePage(
+								new ForumThreadPage(t.getTrialThread().getId(),
+										1, false));
 					}
 
-				})
-				.setText(
-						trial.isRestrained() ? "Lift restraint"
-								: "Restrain the accused")
-				.newInstance("restrain").setVisible(isJudge));
+				}).setText(trial.isRestrained() ?
+				"Lift restraint" :
+				"Restrain the accused").newInstance("restrain")
+				.setVisible(isJudge));
 
 		if (hasVerdict) {
 			switch (trial.getVerdict()) {

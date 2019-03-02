@@ -1,18 +1,7 @@
 package com.tysanclan.site.projectewok.rs.services;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.jboss.resteasy.core.Dispatcher;
 import org.jboss.resteasy.core.ResourceInvoker;
 import org.jboss.resteasy.core.ResourceMethodInvoker;
@@ -22,8 +11,17 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.stereotype.Component;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Component
 @Path("/overview")
@@ -87,14 +85,13 @@ public class OverviewResource implements BeanFactoryAware {
 			Map<String, ResourceDescription> descriptions = Maps.newHashMap();
 
 			for (Map.Entry<String, List<ResourceInvoker>> entry : bound) {
-				Method aMethod = entry.getValue()
-									  .get(0).getMethod();
+				Method aMethod = entry.getValue().get(0).getMethod();
 				String basePath = aMethod.getDeclaringClass()
 						.getAnnotation(Path.class).value();
 
 				if (!descriptions.containsKey(basePath)) {
-					descriptions.put(basePath,
-							new ResourceDescription(basePath));
+					descriptions
+							.put(basePath, new ResourceDescription(basePath));
 				}
 
 				for (ResourceInvoker invoker : entry.getValue()) {
@@ -109,8 +106,8 @@ public class OverviewResource implements BeanFactoryAware {
 						}
 					}
 
-					descriptions.get(basePath).addMethod(basePath + subPath,
-							method);
+					descriptions.get(basePath)
+							.addMethod(basePath + subPath, method);
 				}
 			}
 

@@ -23,7 +23,6 @@ import com.tysanclan.site.projectewok.entities.UnreadForumPost;
 import com.tysanclan.site.projectewok.entities.UnreadForumPost_;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.filter.UnreadForumPostFilter;
-import org.hibernate.Query;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -38,20 +37,22 @@ import javax.persistence.criteria.Root;
  */
 @Component
 @Scope("request")
-public class UnreadForumPostDAOImpl extends HibernateDAO<UnreadForumPost, UnreadForumPostFilter>
-		implements
+public class UnreadForumPostDAOImpl
+		extends HibernateDAO<UnreadForumPost, UnreadForumPostFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.UnreadForumPostDAO {
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void markAsRead(User user, ForumPost post) {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		CriteriaDelete<UnreadForumPost> delete = criteriaBuilder.createCriteriaDelete(UnreadForumPost.class);
+		CriteriaDelete<UnreadForumPost> delete = criteriaBuilder
+				.createCriteriaDelete(UnreadForumPost.class);
 		Root<UnreadForumPost> root = delete.from(UnreadForumPost.class);
 
-		entityManager
-				.createQuery(delete.where(criteriaBuilder.equal(root.get(UnreadForumPost_.user), user),
-										  criteriaBuilder.equal(root.get(UnreadForumPost_.forumPost), post)))
+		entityManager.createQuery(delete.where(
+				criteriaBuilder.equal(root.get(UnreadForumPost_.user), user),
+				criteriaBuilder
+						.equal(root.get(UnreadForumPost_.forumPost), post)))
 				.executeUpdate();
 	}
 

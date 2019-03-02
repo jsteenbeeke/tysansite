@@ -24,7 +24,7 @@ import com.tysanclan.site.projectewok.entities.filter.TruthsayerNominationFilter
 /**
  * @author Jeroen Steenbeeke
  */
-public interface TruthsayerNominationDAO extends
-		DAO<TruthsayerNomination, TruthsayerNominationFilter> {
+public interface TruthsayerNominationDAO
+		extends DAO<TruthsayerNomination, TruthsayerNominationFilter> {
 
 }

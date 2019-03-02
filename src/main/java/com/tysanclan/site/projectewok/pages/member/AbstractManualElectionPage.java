@@ -17,11 +17,10 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.entities.Election;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -29,14 +28,14 @@ import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
-import com.tysanclan.site.projectewok.entities.Election;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.UserDAO;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Non-JQuery alternative to the election page
- * 
+ *
  * @author Jeroen Steenbeeke
  */
 public abstract class AbstractManualElectionPage extends AbstractMemberPage {
@@ -45,7 +44,7 @@ public abstract class AbstractManualElectionPage extends AbstractMemberPage {
 	private List<Long> preferences;
 
 	/**
-	 * 
+	 *
 	 */
 	public AbstractManualElectionPage(String title, Election election) {
 		super(title);
@@ -57,8 +56,8 @@ public abstract class AbstractManualElectionPage extends AbstractMemberPage {
 		final boolean isNominationOpen = election.isNominationOpen();
 		final int totalSize = election.getCandidates().size();
 
-		add(new Label("label", isNominationOpen ? "Candidates"
-				: "Cast your vote!"));
+		add(new Label("label",
+				isNominationOpen ? "Candidates" : "Cast your vote!"));
 
 		preferences = new LinkedList<Long>();
 
@@ -76,7 +75,8 @@ public abstract class AbstractManualElectionPage extends AbstractMemberPage {
 			@SuppressWarnings("unchecked")
 			@Override
 			protected void onSubmit() {
-				DropDownChoice<User> userChoice = (DropDownChoice<User>) get("candidate");
+				DropDownChoice<User> userChoice = (DropDownChoice<User>) get(
+						"candidate");
 				Label positionLabel = (Label) get("position");
 
 				preferences.add(userChoice.getModelObject().getId());
@@ -90,7 +90,8 @@ public abstract class AbstractManualElectionPage extends AbstractMemberPage {
 
 					onVoteSubmit(users);
 				} else {
-					List<User> remaining = new LinkedList<>(userChoice.getChoices());
+					List<User> remaining = new LinkedList<>(
+							userChoice.getChoices());
 					remaining.remove(userChoice.getModelObject());
 
 					positionLabel.replaceWith(new Label("position",
@@ -119,8 +120,9 @@ public abstract class AbstractManualElectionPage extends AbstractMemberPage {
 
 		voteForm.add(new Label("position", new Model<Integer>(1)));
 
-		voteForm.add(new DropDownChoice<User>("candidate", ModelMaker.wrap(
-				(User) null, true), ModelMaker.wrapChoices(candidates)));
+		voteForm.add(new DropDownChoice<User>("candidate",
+				ModelMaker.wrap((User) null, true),
+				ModelMaker.wrapChoices(candidates)));
 
 		add(voteForm);
 	}

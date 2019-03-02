@@ -17,12 +17,11 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
-import java.util.regex.Pattern;
+import org.hibernate.annotations.Cache;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-
-import org.hibernate.annotations.Cache;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -35,10 +34,9 @@ import org.hibernate.annotations.Cache;
 public class RealIdAccount extends GameAccount {
 	public static final long serialVersionUID = 1L;
 
-	private static final Pattern pattern = Pattern
-			.compile(
-					"^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*((\\.[A-Za-z]{2,}){1}$)",
-					Pattern.CASE_INSENSITIVE);
+	private static final Pattern pattern = Pattern.compile(
+			"^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*((\\.[A-Za-z]{2,}){1}$)",
+			Pattern.CASE_INSENSITIVE);
 
 	// $P$
 

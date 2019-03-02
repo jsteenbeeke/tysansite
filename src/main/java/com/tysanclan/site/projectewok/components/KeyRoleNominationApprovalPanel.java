@@ -17,20 +17,19 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import com.tysanclan.site.projectewok.entities.User;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanSession;
 import com.tysanclan.site.projectewok.beans.RoleService;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
 import com.tysanclan.site.projectewok.entities.RoleTransfer;
 import com.tysanclan.site.projectewok.entities.RoleTransferApproval;
+import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.pages.member.senate.KeyRoleNominationApprovalPage;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class KeyRoleNominationApprovalPanel extends Panel {
 	private static final long serialVersionUID = 1L;
@@ -45,8 +44,7 @@ public class KeyRoleNominationApprovalPanel extends Panel {
 
 		this.transferModel = ModelMaker.wrap(transfer);
 
-		User user = TysanSession.session()
-				.flatMap(TysanSession::getUser)
+		User user = TysanSession.session().flatMap(TysanSession::getUser)
 				.getOrNull();
 
 		RoleTransferApproval app = null;
@@ -73,25 +71,28 @@ public class KeyRoleNominationApprovalPanel extends Panel {
 
 						@Override
 						public void onClick() {
-							roleService.approveCandidate(transferModel
-									.getObject(), user);
+							roleService
+									.approveCandidate(transferModel.getObject(),
+											user);
 
-							setResponsePage(new KeyRoleNominationApprovalPage());
+							setResponsePage(
+									new KeyRoleNominationApprovalPage());
 						}
 					}).setText(
 					"Yes, I think " + transfer.getCandidate().getUsername()
-							+ " would be a suitable "
-							+ transfer.getRoleType().toString()).newInstance(
-					"yes"));
+							+ " would be a suitable " + transfer.getRoleType()
+							.toString()).newInstance("yes"));
 			add(new IconLink.Builder("images/icons/cross.png",
 					new DefaultClickResponder<Void>() {
 						private static final long serialVersionUID = 1L;
 
 						@Override
 						public void onClick() {
-							roleService.objectToTransfer(user, transferModel.getObject());
+							roleService.objectToTransfer(user,
+									transferModel.getObject());
 
-							setResponsePage(new KeyRoleNominationApprovalPage());
+							setResponsePage(
+									new KeyRoleNominationApprovalPage());
 						}
 					}).setText(
 					"No, I disagree with this nomination, denying this position to "

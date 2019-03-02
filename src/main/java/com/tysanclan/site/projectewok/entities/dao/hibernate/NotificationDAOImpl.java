@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class NotificationDAOImpl extends HibernateDAO<Notification, NotificationFilter> implements
-		com.tysanclan.site.projectewok.entities.dao.NotificationDAO {
+class NotificationDAOImpl extends HibernateDAO<Notification, NotificationFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.NotificationDAO {
 
 }

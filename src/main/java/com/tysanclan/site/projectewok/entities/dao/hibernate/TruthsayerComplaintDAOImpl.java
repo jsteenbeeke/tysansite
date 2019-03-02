@@ -25,7 +25,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("request")
-class TruthsayerComplaintDAOImpl extends HibernateDAO<TruthsayerComplaint, TruthsayerComplaintFilter>
+class TruthsayerComplaintDAOImpl
+		extends HibernateDAO<TruthsayerComplaint, TruthsayerComplaintFilter>
 		implements
 		com.tysanclan.site.projectewok.entities.dao.TruthsayerComplaintDAO {
 

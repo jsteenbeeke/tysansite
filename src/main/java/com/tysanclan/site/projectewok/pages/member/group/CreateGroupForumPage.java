@@ -17,8 +17,13 @@
  */
 package com.tysanclan.site.projectewok.pages.member.group;
 
-import java.util.List;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.TysanPage;
+import com.tysanclan.site.projectewok.beans.ForumService;
+import com.tysanclan.site.projectewok.entities.ForumCategory;
+import com.tysanclan.site.projectewok.entities.Group;
+import com.tysanclan.site.projectewok.entities.dao.ForumCategoryDAO;
+import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
 import io.vavr.collection.Seq;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.form.Form;
@@ -28,14 +33,6 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
-import com.tysanclan.site.projectewok.TysanPage;
-import com.tysanclan.site.projectewok.beans.ForumService;
-import com.tysanclan.site.projectewok.entities.ForumCategory;
-import com.tysanclan.site.projectewok.entities.Group;
-import com.tysanclan.site.projectewok.entities.dao.ForumCategoryDAO;
-import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
 
 /**
  * @author Jeroen Steenbeeke
@@ -49,7 +46,7 @@ public class CreateGroupForumPage extends TysanPage {
 	private IModel<ForumCategory> categoryModel;
 
 	/**
-	 * 
+	 *
 	 */
 	public CreateGroupForumPage(Group group) {
 		super("Add forum for group " + group.getName());
@@ -75,7 +72,8 @@ public class CreateGroupForumPage extends TysanPage {
 			@Override
 			protected void onSubmit() {
 				TextField<String> nameField = (TextField<String>) get("name");
-				TextArea<String> descriptionArea = (TextArea<String>) get("description");
+				TextArea<String> descriptionArea = (TextArea<String>) get(
+						"description");
 
 				String name = nameField.getModelObject();
 				String description = descriptionArea.getModelObject();

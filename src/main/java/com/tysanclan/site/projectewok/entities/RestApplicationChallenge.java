@@ -1,11 +1,10 @@
 package com.tysanclan.site.projectewok.entities;
 
-import java.io.Serializable;
-import java.util.Date;
+import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 
 import javax.persistence.*;
-
-import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
+import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(indexes = {
@@ -14,10 +13,8 @@ public class RestApplicationChallenge extends BaseDomainObject {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE,
-			generator = "RestApplicationChallenge")
-	@SequenceGenerator(name = "RestApplicationChallenge",
-			sequenceName = "SEQ_ID_RestApplicationChallenge")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RestApplicationChallenge")
+	@SequenceGenerator(name = "RestApplicationChallenge", sequenceName = "SEQ_ID_RestApplicationChallenge")
 	private Long id;
 
 	@Column(nullable = false, unique = true)

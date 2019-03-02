@@ -25,7 +25,7 @@ public interface AuthenticationService {
 	/**
 	 * Determines whether or not the given login credentials represent a valid
 	 * member
-	 * 
+	 *
 	 * @param username
 	 *            The username presented
 	 * @param password
@@ -38,7 +38,7 @@ public interface AuthenticationService {
 	/**
 	 * Determines whether or not the given login credentials represent a valid
 	 * user
-	 * 
+	 *
 	 * @param username
 	 *            The username presented
 	 * @param password

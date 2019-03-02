@@ -17,19 +17,6 @@
  */
 package com.tysanclan.site.projectewok.pages.forum;
 
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-
-import com.tysanclan.site.projectewok.entities.filter.ForumThreadFilter;
-import io.vavr.collection.Seq;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.TysanSession;
@@ -44,9 +31,21 @@ import com.tysanclan.site.projectewok.entities.Trial;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.ForumThreadDAO;
 import com.tysanclan.site.projectewok.entities.dao.TrialDAO;
+import com.tysanclan.site.projectewok.entities.filter.ForumThreadFilter;
 import com.tysanclan.site.projectewok.entities.filter.TrialFilter;
 import com.tysanclan.site.projectewok.pages.ForumThreadPage;
 import com.tysanclan.site.projectewok.util.DateUtil;
+import io.vavr.collection.Seq;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -63,8 +62,8 @@ public class ReplyPage extends TysanPage {
 		final ForumPostEditorPanel editor = new ForumPostEditorPanel("editor",
 				"");
 
-		Form<Long> form = new Form<Long>("replyform", new Model<Long>(
-				thread.getId())) {
+		Form<Long> form = new Form<Long>("replyform",
+				new Model<Long>(thread.getId())) {
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean
@@ -79,13 +78,15 @@ public class ReplyPage extends TysanPage {
 			@Override
 			protected void onSubmit() {
 				threadDAO.load(getModelObject()).forEach(ft -> {
-					User currentUser = TysanSession.session().flatMap(TysanSession::getUser).getOrNull();
+					User currentUser = TysanSession.session()
+							.flatMap(TysanSession::getUser).getOrNull();
 
 					Calendar oneWeekAgo = DateUtil.getCalendarInstance();
 					oneWeekAgo.add(Calendar.WEEK_OF_YEAR, -1);
 
 					TrialFilter filter = new TrialFilter();
-					filter.trialThread(new ForumThreadFilter().postTime().greaterThan(oneWeekAgo.getTime()));
+					filter.trialThread(new ForumThreadFilter().postTime()
+							.greaterThan(oneWeekAgo.getTime()));
 					filter.restrained(true);
 					filter.accused(currentUser);
 
@@ -98,20 +99,22 @@ public class ReplyPage extends TysanPage {
 						}
 					}
 
-					if (trials.isEmpty()
-							|| hasThread
-							|| (!ft.getPosts().isEmpty() && ft.getPosts().get(0)
-							.getPoster().equals(getUser()))) {
-						ForumPost post = forumService.replyToThread(ft,
-								editor.getEditorContent(), currentUser);
+					if (trials.isEmpty() || hasThread || (
+							!ft.getPosts().isEmpty() && ft.getPosts().get(0)
+									.getPoster().equals(getUser()))) {
+						ForumPost post = forumService
+								.replyToThread(ft, editor.getEditorContent(),
+										currentUser);
 
 						forumService.markForumPostRead(currentUser, post);
 
-						int page = ((ft.getPosts().size() - 1) / ForumThread.POSTS_PER_PAGE) + 1;
+						int page = ((ft.getPosts().size() - 1)
+								/ ForumThread.POSTS_PER_PAGE) + 1;
 
 						mService.registerAction(currentUser);
 
-						setResponsePage(new ForumThreadPage(ft.getId(), page, false));
+						setResponsePage(
+								new ForumThreadPage(ft.getId(), page, false));
 					} else {
 						error("Your posting privileges have been revoked due to a currently running trial, you can only post in your Trial threads");
 					}

@@ -31,7 +31,6 @@ public class PasswordRequestExpirationTask extends HyperionTask {
 
 	}
 
-
 	@Override
 	public void run(ServiceProvider provider) {
 		provider.getService(UserService.class).expirePasswordRequests();

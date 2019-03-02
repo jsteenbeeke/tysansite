@@ -17,10 +17,17 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import java.util.List;
-
+import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.site.projectewok.beans.RoleService;
+import com.tysanclan.site.projectewok.entities.Role;
+import com.tysanclan.site.projectewok.entities.Role.RoleType;
+import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.TruthsayerNominationDAO;
+import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import com.tysanclan.site.projectewok.entities.filter.TruthsayerNominationFilter;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
+import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
+import com.tysanclan.site.projectewok.pages.member.InactiveKeyRoleTransferPage;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -29,15 +36,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.tysanclan.rest.api.data.Rank;
-import com.tysanclan.site.projectewok.beans.RoleService;
-import com.tysanclan.site.projectewok.entities.Role;
-import com.tysanclan.site.projectewok.entities.Role.RoleType;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.filter.UserFilter;
-import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
-import com.tysanclan.site.projectewok.pages.member.InactiveKeyRoleTransferPage;
+import java.util.List;
 
 public class InactiveKeyRoleTransferPanel extends Panel {
 
@@ -70,9 +69,10 @@ public class InactiveKeyRoleTransferPanel extends Panel {
 		filter.orRank(Rank.SENIOR_MEMBER);
 		filter.username().orderBy(true);
 
-		List<User> users = userDAO.findByFilter(filter).filter(u ->
-				nominationDAO.findByFilter(new TruthsayerNominationFilter().user(u)).isEmpty()
-				).toJavaList();
+		List<User> users = userDAO.findByFilter(filter)
+				.filter(u -> nominationDAO
+						.findByFilter(new TruthsayerNominationFilter().user(u))
+						.isEmpty()).toJavaList();
 
 		final DropDownChoice<User> userChoice = new TysanDropDownChoice<User>(
 				"user", null, users);
@@ -95,8 +95,8 @@ public class InactiveKeyRoleTransferPanel extends Panel {
 		};
 
 		nominationForm.add(userChoice);
-		nominationForm.add(new Label("name", role.getName())
-				.setRenderBodyOnly(true));
+		nominationForm
+				.add(new Label("name", role.getName()).setRenderBodyOnly(true));
 		nominationForm.add(new Label("name2", role.getName())
 				.setRenderBodyOnly(true));
 		nominationForm.add(new Label("name3", role.getName())

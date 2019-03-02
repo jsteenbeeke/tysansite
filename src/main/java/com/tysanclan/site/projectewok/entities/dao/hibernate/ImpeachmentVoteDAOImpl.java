@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class ImpeachmentVoteDAOImpl extends HibernateDAO<ImpeachmentVote, ImpeachmentVoteFilter>
-		implements
+class ImpeachmentVoteDAOImpl
+		extends HibernateDAO<ImpeachmentVote, ImpeachmentVoteFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.ImpeachmentVoteDAO {
 }

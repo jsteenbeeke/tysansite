@@ -21,8 +21,6 @@ import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
 import com.tysanclan.site.projectewok.entities.JoinApplication;
 import com.tysanclan.site.projectewok.entities.JoinVerdict;
 import com.tysanclan.site.projectewok.entities.filter.JoinVerdictFilter;
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -35,9 +33,8 @@ import java.util.List;
  */
 @Component
 @Scope("request")
-class JoinVerdictDAOImpl extends HibernateDAO<JoinVerdict, JoinVerdictFilter> implements
-		com.tysanclan.site.projectewok.entities.dao.JoinVerdictDAO {
-
+class JoinVerdictDAOImpl extends HibernateDAO<JoinVerdict, JoinVerdictFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.JoinVerdictDAO {
 
 	@Override
 	@Transactional(propagation = Propagation.NESTED, readOnly = false)

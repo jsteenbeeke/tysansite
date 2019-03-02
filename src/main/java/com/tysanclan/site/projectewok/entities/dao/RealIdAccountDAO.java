@@ -25,6 +25,7 @@ import com.tysanclan.site.projectewok.entities.filter.RealIdAccountFilter;
  *
  * @author Jeroen Steenbeeke
  */
-public interface RealIdAccountDAO extends DAO<RealIdAccount, RealIdAccountFilter> {
+public interface RealIdAccountDAO
+		extends DAO<RealIdAccount, RealIdAccountFilter> {
 
 }

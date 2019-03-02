@@ -17,17 +17,6 @@
  */
 package com.tysanclan.site.projectewok.pages.member.admin;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.apache.wicket.RestartResponseAtInterceptPageException;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.tysanclan.site.projectewok.beans.GameService;
 import com.tysanclan.site.projectewok.beans.RoleService;
 import com.tysanclan.site.projectewok.components.IconLink;
@@ -38,12 +27,22 @@ import com.tysanclan.site.projectewok.entities.Realm;
 import com.tysanclan.site.projectewok.model.GameRealmCartesian;
 import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
 import com.tysanclan.site.projectewok.pages.member.AbstractSingleAccordionMemberPage;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public class GameRealmAllowAccountTypePage extends
-		AbstractSingleAccordionMemberPage {
+public class GameRealmAllowAccountTypePage
+		extends AbstractSingleAccordionMemberPage {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
@@ -70,103 +69,101 @@ public class GameRealmAllowAccountTypePage extends
 			}
 		}
 
-		add(
-				new ListView<AccountType>("types", Arrays.asList(AccountType
-						.values())) {
+		add(new ListView<AccountType>("types",
+				Arrays.asList(AccountType.values())) {
 
-					private static final long serialVersionUID = 1L;
+			private static final long serialVersionUID = 1L;
 
-					@Override
-					protected void populateItem(ListItem<AccountType> item) {
-						Label name = new Label("type", item.getModelObject()
-								.toString());
+			@Override
+			protected void populateItem(ListItem<AccountType> item) {
+				Label name = new Label("type",
+						item.getModelObject().toString());
 
-						name.setRenderBodyOnly(true);
+				name.setRenderBodyOnly(true);
 
-						item.add(name);
-					}
+				item.add(name);
+			}
 
-				});
+		});
 
-		add(
-				new ListView<GameRealmCartesian>("realms", gameRealms) {
+		add(new ListView<GameRealmCartesian>("realms", gameRealms) {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void populateItem(
+					final ListItem<GameRealmCartesian> item) {
+				GameRealmCartesian cart = item.getModelObject();
+
+				item.add(new Label("game", cart.getGame().getName()));
+				item.add(new Label("realm", cart.getRealm().getName()));
+
+				item.add(new ListView<AccountType>("types",
+						Arrays.asList(AccountType.values())) {
 
 					private static final long serialVersionUID = 1L;
 
 					@Override
 					protected void populateItem(
-							final ListItem<GameRealmCartesian> item) {
-						GameRealmCartesian cart = item.getModelObject();
+							final ListItem<AccountType> iitem) {
+						GameRealmCartesian crt = item.getModelObject();
 
-						item.add(new Label("game", cart.getGame().getName()));
-						item.add(new Label("realm", cart.getRealm().getName()));
+						AccountType type = iitem.getModelObject();
 
-						item.add(new ListView<AccountType>("types", Arrays
-								.asList(AccountType.values())) {
+						boolean allowed = gameService
+								.isValidAccountType(crt.getGame(),
+										crt.getRealm(), type);
 
-							private static final long serialVersionUID = 1L;
+						if (!allowed) {
+							iitem.add(new IconLink.Builder(
+									"images/icons/tick.png",
+									new DefaultClickResponder<AccountType>(
+											new Model<AccountType>(type)) {
+										private static final long serialVersionUID = 1L;
 
-							@Override
-							protected void populateItem(
-									final ListItem<AccountType> iitem) {
-								GameRealmCartesian crt = item.getModelObject();
+										@Override
+										public void onClick() {
+											GameRealmCartesian c = item
+													.getModelObject();
+											AccountType acc = iitem
+													.getModelObject();
 
-								AccountType type = iitem.getModelObject();
+											gameService.allowAccountType(
+													c.getGame(), c.getRealm(),
+													acc);
 
-								boolean allowed = gameService
-										.isValidAccountType(crt.getGame(),
-												crt.getRealm(), type);
+											setResponsePage(
+													new GameRealmAllowAccountTypePage());
+										}
+									}).newInstance("button"));
+						} else {
+							iitem.add(new IconLink.Builder(
+									"images/icons/cross.png",
+									new DefaultClickResponder<AccountType>(
+											new Model<AccountType>(type)) {
+										private static final long serialVersionUID = 1L;
 
-								if (!allowed) {
-									iitem.add(new IconLink.Builder(
-											"images/icons/tick.png",
-											new DefaultClickResponder<AccountType>(
-													new Model<AccountType>(type)) {
-												private static final long serialVersionUID = 1L;
+										@Override
+										public void onClick() {
+											GameRealmCartesian c = item
+													.getModelObject();
+											AccountType acc = iitem
+													.getModelObject();
 
-												@Override
-												public void onClick() {
-													GameRealmCartesian c = item
-															.getModelObject();
-													AccountType acc = iitem
-															.getModelObject();
+											gameService.disallowAccountType(
+													c.getGame(), c.getRealm(),
+													acc);
 
-													gameService.allowAccountType(
-															c.getGame(),
-															c.getRealm(), acc);
-
-													setResponsePage(new GameRealmAllowAccountTypePage());
-												}
-											}).newInstance("button"));
-								} else {
-									iitem.add(new IconLink.Builder(
-											"images/icons/cross.png",
-											new DefaultClickResponder<AccountType>(
-													new Model<AccountType>(type)) {
-												private static final long serialVersionUID = 1L;
-
-												@Override
-												public void onClick() {
-													GameRealmCartesian c = item
-															.getModelObject();
-													AccountType acc = iitem
-															.getModelObject();
-
-													gameService
-															.disallowAccountType(
-																	c.getGame(),
-																	c.getRealm(),
-																	acc);
-
-													setResponsePage(new GameRealmAllowAccountTypePage());
-												}
-											}).newInstance("button"));
-								}
-							}
-
-						});
+											setResponsePage(
+													new GameRealmAllowAccountTypePage());
+										}
+									}).newInstance("button"));
+						}
 					}
 
 				});
+			}
+
+		});
 	}
 }

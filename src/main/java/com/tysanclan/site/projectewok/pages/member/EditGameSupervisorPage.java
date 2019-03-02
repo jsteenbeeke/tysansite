@@ -17,17 +17,6 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.Collections;
-import java.util.List;
-
-import com.tysanclan.site.projectewok.entities.UserGameRealm;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.TysanPage;
@@ -36,8 +25,17 @@ import com.tysanclan.site.projectewok.beans.GameService;
 import com.tysanclan.site.projectewok.entities.Game;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.User.CaseInsensitiveUserComparator;
+import com.tysanclan.site.projectewok.entities.UserGameRealm;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import com.tysanclan.site.projectewok.entities.filter.UserFilter;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -52,7 +50,7 @@ public class EditGameSupervisorPage extends TysanPage {
 	private UserDAO userDAO;
 
 	/**
-	 * 
+	 *
 	 */
 	public EditGameSupervisorPage(Game game) {
 		super("Game Supervisor for " + game.getName());
@@ -89,9 +87,10 @@ public class EditGameSupervisorPage extends TysanPage {
 		filter.orRank(Rank.FULL_MEMBER);
 		filter.orRank(Rank.JUNIOR_MEMBER);
 
-		List<User> users = userDAO.findByFilter(filter).filter(
-				u -> u.getPlayedGames().stream().map(UserGameRealm::getGame).anyMatch(game::equals)
-		).toJavaList();
+		List<User> users = userDAO.findByFilter(filter)
+				.filter(u -> u.getPlayedGames().stream()
+						.map(UserGameRealm::getGame).anyMatch(game::equals))
+				.toJavaList();
 		users.sort(new CaseInsensitiveUserComparator());
 
 		userSelect = new DropDownChoice<>("coordinator", users);

@@ -4,8 +4,6 @@ import com.tysanclan.site.projectewok.entities.Role;
 import com.tysanclan.site.projectewok.pages.member.admin.HeraldTransferPage;
 import com.tysanclan.site.projectewok.pages.member.admin.MumbleServerAdminPage;
 import com.tysanclan.site.projectewok.pages.member.admin.RequestPaymentPage;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 public class HeraldTest extends AbstractClickThroughTester {

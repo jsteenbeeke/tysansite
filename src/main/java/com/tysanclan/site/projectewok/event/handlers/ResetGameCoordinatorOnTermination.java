@@ -17,8 +17,6 @@
  */
 package com.tysanclan.site.projectewok.event.handlers;
 
-import java.util.List;
-
 import com.jeroensteenbeeke.hyperion.events.EventHandler;
 import com.jeroensteenbeeke.hyperion.events.EventResult;
 import com.tysanclan.site.projectewok.entities.Game;
@@ -27,8 +25,8 @@ import com.tysanclan.site.projectewok.entities.filter.GameFilter;
 import com.tysanclan.site.projectewok.event.MembershipTerminatedEvent;
 import io.vavr.collection.Seq;
 
-public class ResetGameCoordinatorOnTermination implements
-		EventHandler<MembershipTerminatedEvent> {
+public class ResetGameCoordinatorOnTermination
+		implements EventHandler<MembershipTerminatedEvent> {
 	private GameDAO gameDAO;
 
 	public void setGameDAO(GameDAO gameDAO) {

@@ -17,9 +17,6 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import org.apache.wicket.RestartResponseAtInterceptPageException;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.RoleService;
@@ -27,6 +24,8 @@ import com.tysanclan.site.projectewok.components.InactiveKeyRoleTransferPanel;
 import com.tysanclan.site.projectewok.entities.Role.RoleType;
 import com.tysanclan.site.projectewok.entities.RoleTransfer;
 import com.tysanclan.site.projectewok.entities.User;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 @TysanRankSecured(Rank.CHANCELLOR)
 public class InactiveKeyRoleTransferPage extends AbstractMemberPage {

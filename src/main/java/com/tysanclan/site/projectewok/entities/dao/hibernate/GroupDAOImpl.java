@@ -35,8 +35,8 @@ import java.util.List;
  */
 @Component
 @Scope("request")
-class GroupDAOImpl extends HibernateDAO<Group, GroupFilter> implements
-		com.tysanclan.site.projectewok.entities.dao.GroupDAO {
+class GroupDAOImpl extends HibernateDAO<Group, GroupFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.GroupDAO {
 
 	@Override
 	public List<Group> getMemberGroups(User user) {
@@ -44,7 +44,8 @@ class GroupDAOImpl extends HibernateDAO<Group, GroupFilter> implements
 		CriteriaQuery<Group> query = criteriaBuilder.createQuery(Group.class);
 		Root<Group> root = query.from(Group.class);
 
-		query.select(root).where(criteriaBuilder.equal(root.get(Group_.groupMembers), user));
+		query.select(root).where(criteriaBuilder
+				.equal(root.get(Group_.groupMembers), user));
 
 		return entityManager.createQuery(query).getResultList();
 	}

@@ -17,9 +17,16 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import java.util.LinkedList;
-import java.util.List;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
+import com.tysanclan.site.projectewok.beans.MessageService;
+import com.tysanclan.site.projectewok.components.models.EntityClickListener;
+import com.tysanclan.site.projectewok.entities.ConversationParticipation;
+import com.tysanclan.site.projectewok.entities.Message;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.dao.ConversationDAO;
+import com.tysanclan.site.projectewok.entities.dao.ConversationParticipationDAO;
+import com.tysanclan.site.projectewok.util.DateUtil;
 import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -33,16 +40,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.time.Duration;
 
-import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
-import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
-import com.tysanclan.site.projectewok.beans.MessageService;
-import com.tysanclan.site.projectewok.components.models.EntityClickListener;
-import com.tysanclan.site.projectewok.entities.ConversationParticipation;
-import com.tysanclan.site.projectewok.entities.Message;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.ConversationDAO;
-import com.tysanclan.site.projectewok.entities.dao.ConversationParticipationDAO;
-import com.tysanclan.site.projectewok.util.DateUtil;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -76,8 +75,8 @@ public class ConversationContentPanel extends Panel {
 			}
 		}
 
-		add(new ListView<Message>("messages", new MessageList(participation
-				.getConversation().getId())) {
+		add(new ListView<Message>("messages",
+				new MessageList(participation.getConversation().getId())) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -85,16 +84,16 @@ public class ConversationContentPanel extends Panel {
 			protected void populateItem(ListItem<Message> item) {
 				Message message = item.getModelObject();
 
-				item.add(new Label("user",
-						message.getSender() != null ? message.getSender()
-								.getUsername() : "System"));
+				item.add(new Label("user", message.getSender() != null ?
+						message.getSender().getUsername() :
+						"System"));
 				item.add(new Label("time", DateUtil.getTimezoneFormattedString(
 						message.getSendTime(), getUser().getTimezone())));
 				item.add(new BBCodePanel("content", message.getContent()));
 			}
 
-		}.setOutputMarkupId(true).add(
-				new AjaxSelfUpdatingTimerBehavior(Duration.seconds(15))));
+		}.setOutputMarkupId(true)
+				.add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(15))));
 
 		List<ConversationParticipation> plist = new LinkedList<ConversationParticipation>();
 		plist.addAll(participation.getConversation().getParticipants());
@@ -104,9 +103,10 @@ public class ConversationContentPanel extends Panel {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void populateItem(ListItem<ConversationParticipation> item) {
-				item.add(new MemberListItem("participant", item
-						.getModelObject().getUser()));
+			protected void populateItem(
+					ListItem<ConversationParticipation> item) {
+				item.add(new MemberListItem("participant",
+						item.getModelObject().getUser()));
 
 			}
 
@@ -123,8 +123,9 @@ public class ConversationContentPanel extends Panel {
 				String message = getEditorComponent().getModelObject();
 				ConversationParticipation part = getModelObject();
 
-				Message msg = messageService.respondToConversation(
-						part.getConversation(), part.getUser(), message);
+				Message msg = messageService
+						.respondToConversation(part.getConversation(),
+								part.getUser(), message);
 
 				messageService.markAsRead(part, msg);
 
@@ -132,8 +133,8 @@ public class ConversationContentPanel extends Panel {
 			}
 		};
 
-		editorVisible = participation.getConversation().getParticipants()
-				.size() > 1;
+		editorVisible =
+				participation.getConversation().getParticipants().size() > 1;
 
 		add(new WebMarkupContainer("respondheader").setVisible(editorVisible));
 
@@ -149,7 +150,8 @@ public class ConversationContentPanel extends Panel {
 	}
 
 	public ConversationParticipation getParticipation() {
-		return conversationParticipationDAO.load(participationId).getOrElseThrow(IllegalArgumentException::new);
+		return conversationParticipationDAO.load(participationId)
+				.getOrElseThrow(IllegalArgumentException::new);
 	}
 
 	private User getUser() {
@@ -187,7 +189,7 @@ public class ConversationContentPanel extends Panel {
 		private ConversationDAO conversationDAO;
 
 		/**
-		 * 
+		 *
 		 */
 		public MessageList(Long conversationID) {
 			this.conversationID = conversationID;
@@ -202,7 +204,9 @@ public class ConversationContentPanel extends Panel {
 				Injector.get().inject(this);
 			}
 
-			return conversationDAO.load(conversationID).getOrElseThrow(IllegalArgumentException::new).getMessages();
+			return conversationDAO.load(conversationID)
+					.getOrElseThrow(IllegalArgumentException::new)
+					.getMessages();
 		}
 
 		/**

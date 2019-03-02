@@ -7,8 +7,8 @@ public class DaysInTysanImageResourceReference extends ResourceReference {
 
 	private static final long serialVersionUID = 1L;
 
-	public DaysInTysanImageResourceReference(){
-	    super(DaysInTysanImageResourceReference.class, "daysInTysan");
+	public DaysInTysanImageResourceReference() {
+		super(DaysInTysanImageResourceReference.class, "daysInTysan");
 	}
 
 	@Override

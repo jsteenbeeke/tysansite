@@ -33,7 +33,7 @@ public class TysanSecurityException extends Exception {
 	/**
 	 * Constructs an instance of <code>TysanSecurityException</code> with the
 	 * specified detail message.
-	 * 
+	 *
 	 * @param msg
 	 *            the detail message.
 	 */

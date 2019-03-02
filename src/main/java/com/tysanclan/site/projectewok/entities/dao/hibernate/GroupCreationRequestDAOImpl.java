@@ -28,8 +28,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class GroupCreationRequestDAOImpl extends
-		HibernateDAO<GroupCreationRequest, GroupCreationRequestFilter> implements
+class GroupCreationRequestDAOImpl
+		extends HibernateDAO<GroupCreationRequest, GroupCreationRequestFilter>
+		implements
 		com.tysanclan.site.projectewok.entities.dao.GroupCreationRequestDAO {
 
 }

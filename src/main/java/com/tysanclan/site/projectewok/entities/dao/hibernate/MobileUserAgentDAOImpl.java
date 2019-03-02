@@ -29,8 +29,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class MobileUserAgentDAOImpl extends HibernateDAO<MobileUserAgent, MobileUserAgentFilter>
-		implements
+class MobileUserAgentDAOImpl
+		extends HibernateDAO<MobileUserAgent, MobileUserAgentFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.MobileUserAgentDAO {
 
 }

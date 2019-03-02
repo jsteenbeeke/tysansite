@@ -17,9 +17,6 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.RoleService;
 import com.tysanclan.site.projectewok.components.RequiresAttentionLink.AttentionType;
@@ -30,10 +27,12 @@ import com.tysanclan.site.projectewok.pages.member.PaypalSettingsPage;
 import com.tysanclan.site.projectewok.pages.member.admin.CaretakerFinancePage;
 import com.tysanclan.site.projectewok.pages.member.admin.PaymentRequestApprovalPage;
 import com.tysanclan.site.projectewok.pages.member.admin.TreasurerTransferPage;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class TreasurerPanel extends TysanOverviewPanel<User> {
-	public class PendingPaymentRequestCondition implements
-			IRequiresAttentionCondition {
+	public class PendingPaymentRequestCondition
+			implements IRequiresAttentionCondition {
 		private static final long serialVersionUID = 1L;
 
 		@Override
@@ -68,8 +67,8 @@ public class TreasurerPanel extends TysanOverviewPanel<User> {
 			private static final long serialVersionUID = 1L;
 
 			/**
-			* @see org.apache.wicket.markup.html.link.Link#onClick()
-			*/
+			 * @see org.apache.wicket.markup.html.link.Link#onClick()
+			 */
 			@Override
 			public void onClick() {
 				setResponsePage(new CaretakerFinancePage(getModelObject()));

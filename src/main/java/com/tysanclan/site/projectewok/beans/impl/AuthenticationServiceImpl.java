@@ -17,21 +17,20 @@
  */
 package com.tysanclan.site.projectewok.beans.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class AuthenticationServiceImpl implements
-		com.tysanclan.site.projectewok.beans.AuthenticationService {
+class AuthenticationServiceImpl
+		implements com.tysanclan.site.projectewok.beans.AuthenticationService {
 	@Autowired
 	private UserDAO userDAO;
 
@@ -73,8 +72,8 @@ class AuthenticationServiceImpl implements
 		User u = userDAO.load(username, password);
 
 		if (u != null) {
-			return u.getRank() == Rank.BANNED || u.getRank() == Rank.FORUM
-					&& u.getRank() != Rank.HERO;
+			return u.getRank() == Rank.BANNED
+					|| u.getRank() == Rank.FORUM && u.getRank() != Rank.HERO;
 		}
 
 		return false;

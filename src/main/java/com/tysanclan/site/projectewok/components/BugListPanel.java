@@ -63,23 +63,24 @@ public abstract class BugListPanel extends Panel {
 						.setRenderBodyOnly(true));
 
 				item.add(link);
-				item.add(new DateLabel("lastUpdate",
-						bug.getUpdated() != null ? bug.getUpdated() : bug
-								.getReported()));
+				item.add(new DateLabel("lastUpdate", bug.getUpdated() != null ?
+						bug.getUpdated() :
+						bug.getReported()));
 				if (bug.getReporter() != null) {
-					item.add(new MemberListItem("reportedBy", bug.getReporter()));
+					item.add(new MemberListItem("reportedBy",
+							bug.getReporter()));
 				} else {
 					item.add(new BBCodePanel("reportedBy",
 							"[i]Someone not logged in[/i]"));
 				}
 				if (bug.getAssignedTo() != null) {
-					item.add(new MemberListItem("assignedTo", bug
-							.getAssignedTo()));
+					item.add(new MemberListItem("assignedTo",
+							bug.getAssignedTo()));
 				} else {
 					item.add(new BBCodePanel("assignedTo", "[i]Nobody[/i]"));
 				}
-				item.add(new Label("status", new Model<BugStatus>(bug
-						.getStatus())));
+				item.add(new Label("status",
+						new Model<BugStatus>(bug.getStatus())));
 
 			}
 		};

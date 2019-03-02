@@ -1,15 +1,14 @@
 package com.mojang.api.profiles;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import io.vavr.collection.Array;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(JUnit4.class)
 public class HttpProfileRepositoryIntegrationTests {
@@ -32,11 +31,14 @@ public class HttpProfileRepositoryIntegrationTests {
 			throws Exception {
 		ProfileRepository repository = new HttpProfileRepository("minecraft");
 
-		Profile[] profiles = repository.findProfilesByNames("mollstam",
-				"KrisJelbring");
+		Profile[] profiles = repository
+				.findProfilesByNames("mollstam", "KrisJelbring");
 
-		assertEquals(Array.of("KrisJelbring", "mollstam"), Array.of(profiles).map(Profile::getName).sorted());
-		assertEquals(Array.of("7125ba8b1c864508b92bb5c042ccfe2b", "f8cdb6839e9043eea81939f85d9c5d69"), Array.of(profiles).map(Profile::getId).sorted());
+		assertEquals(Array.of("KrisJelbring", "mollstam"),
+				Array.of(profiles).map(Profile::getName).sorted());
+		assertEquals(Array.of("7125ba8b1c864508b92bb5c042ccfe2b",
+				"f8cdb6839e9043eea81939f85d9c5d69"),
+				Array.of(profiles).map(Profile::getId).sorted());
 	}
 
 	@Test

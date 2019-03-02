@@ -17,10 +17,10 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import org.hibernate.annotations.Cache;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-
-import org.hibernate.annotations.Cache;
 
 /**
  * @author Jeroen Steenbeeke

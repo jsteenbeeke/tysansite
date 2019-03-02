@@ -25,8 +25,7 @@ import com.tysanclan.site.projectewok.entities.filter.JoinApplicationFilter;
 /**
  * @author Jeroen Steenbeeke
  */
-public interface JoinApplicationDAO extends
-		DAO<JoinApplication, JoinApplicationFilter> {
-	JoinApplication getJoinApplicationByThread(
-	        ForumThread thread);
+public interface JoinApplicationDAO
+		extends DAO<JoinApplication, JoinApplicationFilter> {
+	JoinApplication getJoinApplicationByThread(ForumThread thread);
 }

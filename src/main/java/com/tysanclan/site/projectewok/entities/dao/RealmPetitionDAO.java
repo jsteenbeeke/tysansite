@@ -25,6 +25,7 @@ import com.tysanclan.site.projectewok.entities.filter.RealmPetitionFilter;
  *
  * @author Jeroen Steenbeeke
  */
-public interface RealmPetitionDAO extends DAO<RealmPetition, RealmPetitionFilter> {
+public interface RealmPetitionDAO
+		extends DAO<RealmPetition, RealmPetitionFilter> {
 
 }

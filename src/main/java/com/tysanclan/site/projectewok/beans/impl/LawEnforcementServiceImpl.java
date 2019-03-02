@@ -17,43 +17,12 @@
  */
 package com.tysanclan.site.projectewok.beans.impl;
 
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-
-import io.vavr.collection.Seq;
-import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
 import com.tysanclan.rest.api.data.Rank;
-import com.tysanclan.site.projectewok.entities.ForumThread;
+import com.tysanclan.site.projectewok.entities.*;
 import com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType;
-import com.tysanclan.site.projectewok.entities.PenaltyPoint;
-import com.tysanclan.site.projectewok.entities.Regulation;
-import com.tysanclan.site.projectewok.entities.Trial;
 import com.tysanclan.site.projectewok.entities.Trial.Verdict;
-import com.tysanclan.site.projectewok.entities.TruthsayerComplaint;
-import com.tysanclan.site.projectewok.entities.TruthsayerComplaintVote;
-import com.tysanclan.site.projectewok.entities.TruthsayerNomination;
-import com.tysanclan.site.projectewok.entities.TruthsayerNominationVote;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.PenaltyPointDAO;
-import com.tysanclan.site.projectewok.entities.dao.TrialDAO;
-import com.tysanclan.site.projectewok.entities.dao.TruthsayerComplaintDAO;
-import com.tysanclan.site.projectewok.entities.dao.TruthsayerComplaintVoteDAO;
-import com.tysanclan.site.projectewok.entities.dao.TruthsayerNominationDAO;
-import com.tysanclan.site.projectewok.entities.dao.TruthsayerNominationVoteDAO;
-import com.tysanclan.site.projectewok.entities.dao.UserDAO;
+import com.tysanclan.site.projectewok.entities.dao.*;
 import com.tysanclan.site.projectewok.entities.filter.PenaltyPointFilter;
 import com.tysanclan.site.projectewok.entities.filter.TruthsayerComplaintFilter;
 import com.tysanclan.site.projectewok.entities.filter.TruthsayerNominationFilter;
@@ -62,14 +31,23 @@ import com.tysanclan.site.projectewok.event.MemberStatusEvent;
 import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.MemberUtil;
 import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
+import io.vavr.collection.Seq;
+import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class LawEnforcementServiceImpl implements
-		com.tysanclan.site.projectewok.beans.LawEnforcementService {
+class LawEnforcementServiceImpl
+		implements com.tysanclan.site.projectewok.beans.LawEnforcementService {
 	@Autowired
 	private com.tysanclan.site.projectewok.beans.LogService logService;
 
@@ -191,7 +169,8 @@ class LawEnforcementServiceImpl implements
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
-	public TruthsayerNomination nominateTruthsayer(User nominator, User nominee) {
+	public TruthsayerNomination nominateTruthsayer(User nominator,
+			User nominee) {
 		if (nominator.getRank() == Rank.CHANCELLOR) {
 			TruthsayerNominationFilter filter = new TruthsayerNominationFilter();
 			filter.user(nominee);
@@ -223,15 +202,16 @@ class LawEnforcementServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void acceptTruthsayerNomination(TruthsayerNomination nomination) {
-		truthsayerNominationDAO
-				.load(nomination.getId()).forEach(_nomination -> {
-			logService.logUserAction(_nomination.getUser(), "Truthsayers",
-					"User has accepted his nomination as Truthsayer");
+		truthsayerNominationDAO.load(nomination.getId())
+				.forEach(_nomination -> {
+					logService
+							.logUserAction(_nomination.getUser(), "Truthsayers",
+									"User has accepted his nomination as Truthsayer");
 
-			_nomination.setVoteStart(new Date());
+					_nomination.setVoteStart(new Date());
 
-			truthsayerNominationDAO.update(_nomination);
-		});
+					truthsayerNominationDAO.update(_nomination);
+				});
 	}
 
 	/**
@@ -240,14 +220,15 @@ class LawEnforcementServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void declineTruthsayerNomination(TruthsayerNomination nomination) {
-		truthsayerNominationDAO
-				.load(nomination.getId()).forEach(_nomination -> {
+		truthsayerNominationDAO.load(nomination.getId())
+				.forEach(_nomination -> {
 
-			truthsayerNominationDAO.delete(_nomination);
+					truthsayerNominationDAO.delete(_nomination);
 
-			logService.logUserAction(_nomination.getUser(), "Truthsayers",
-					"User has declined his nomination as Truthsayer");
-		});
+					logService
+							.logUserAction(_nomination.getUser(), "Truthsayers",
+									"User has declined his nomination as Truthsayer");
+				});
 	}
 
 	/**
@@ -257,21 +238,21 @@ class LawEnforcementServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void voteAgainst(User senator, TruthsayerNomination nomination) {
-		truthsayerNominationDAO
-				.load(nomination.getId()).forEach(_nomination -> {
+		truthsayerNominationDAO.load(nomination.getId())
+				.forEach(_nomination -> {
 
-			castVote(senator, _nomination, false);
+					castVote(senator, _nomination, false);
 
-			logService.logUserAction(senator, "Truthsayers",
-					"Has voted against accepting "
-							+ _nomination.getUser().getUsername()
-							+ " as a Truthsayer");
-		});
+					logService.logUserAction(senator, "Truthsayers",
+							"Has voted against accepting " + _nomination
+									.getUser().getUsername()
+									+ " as a Truthsayer");
+				});
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	protected void castVote(User senator, TruthsayerNomination _nomination,
-							boolean verdict) {
+			boolean verdict) {
 		for (TruthsayerNominationVote vote : _nomination.getVotes()) {
 			if (vote.getSenator().equals(senator)) {
 				return;
@@ -295,16 +276,16 @@ class LawEnforcementServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void voteInFavor(User senator, TruthsayerNomination nomination) {
-		truthsayerNominationDAO
-				.load(nomination.getId()).forEach(_nomination -> {
+		truthsayerNominationDAO.load(nomination.getId())
+				.forEach(_nomination -> {
 
-			castVote(senator, _nomination, true);
+					castVote(senator, _nomination, true);
 
-			logService.logUserAction(senator, "Truthsayers",
-					"Has voted in favor of accepting "
-							+ _nomination.getUser().getUsername()
-							+ " as a Truthsayer");
-		});
+					logService.logUserAction(senator, "Truthsayers",
+							"Has voted in favor of accepting " + _nomination
+									.getUser().getUsername()
+									+ " as a Truthsayer");
+				});
 	}
 
 	/**
@@ -313,48 +294,50 @@ class LawEnforcementServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void resolveNomination(TruthsayerNomination nomination) {
-		truthsayerNominationDAO
-				.load(nomination.getId()).forEach(_nomination -> {
-			int yesCount = 0, noCount = 0;
+		truthsayerNominationDAO.load(nomination.getId())
+				.forEach(_nomination -> {
+					int yesCount = 0, noCount = 0;
 
-			for (TruthsayerNominationVote vote : _nomination.getVotes()) {
-				if (vote.getVerdict()) {
-					yesCount++;
-				} else {
-					noCount++;
-				}
-			}
+					for (TruthsayerNominationVote vote : _nomination
+							.getVotes()) {
+						if (vote.getVerdict()) {
+							yesCount++;
+						} else {
+							noCount++;
+						}
+					}
 
-			boolean verdict = true;
+					boolean verdict = true;
 
-			if (yesCount > 0 || noCount > 0) {
-				int total = yesCount + noCount;
-				int fraction = (100 * yesCount) / total;
-				if (fraction < 51) {
-					verdict = false;
-				}
-			}
+					if (yesCount > 0 || noCount > 0) {
+						int total = yesCount + noCount;
+						int fraction = (100 * yesCount) / total;
+						if (fraction < 51) {
+							verdict = false;
+						}
+					}
 
-			User user = _nomination.getUser();
+					User user = _nomination.getUser();
 
-			if (verdict) {
-				user.setRank(Rank.TRUTHSAYER);
+					if (verdict) {
+						user.setRank(Rank.TRUTHSAYER);
 
-				userDAO.update(user);
+						userDAO.update(user);
 
-				logService.logSystemAction("Truthsayers",
-						"User " + user.getUsername()
-								+ " was accepted as Truthsayer by the Senate");
+						logService.logSystemAction("Truthsayers",
+								"User " + user.getUsername()
+										+ " was accepted as Truthsayer by the Senate");
 
-				notificationService.notifyUser(user, "You are now a Truthsayer");
-			} else {
-				logService.logSystemAction("Truthsayers",
-						"User " + user.getUsername()
-								+ " was not accepted as Truthsayer by the Senate");
-			}
+						notificationService
+								.notifyUser(user, "You are now a Truthsayer");
+					} else {
+						logService.logSystemAction("Truthsayers",
+								"User " + user.getUsername()
+										+ " was not accepted as Truthsayer by the Senate");
+					}
 
-			truthsayerNominationDAO.delete(_nomination);
-		});
+					truthsayerNominationDAO.delete(_nomination);
+				});
 	}
 
 	/**
@@ -365,28 +348,29 @@ class LawEnforcementServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public Trial startTrial(User accuser, User accused, String motivation,
-							Collection<Regulation> regulations) {
+			Collection<Regulation> regulations) {
 		if (accuser == null || accused == null || motivation == null
 				|| regulations == null || regulations.isEmpty()) {
 			return null;
 		}
 
-		return userDAO.load(accuser.getId()).flatMap(_accuser -> userDAO.load(accused.getId()).map(_accused -> {
-			Trial trial = new Trial();
-			trial.setAccused(_accused);
-			trial.setAccuser(_accuser);
-			trial.setTrialThread(null);
-			trial.setMotivation(BBCodeUtil.stripTags(motivation));
-			List<Regulation> _regulations = new LinkedList<>(regulations);
+		return userDAO.load(accuser.getId()).flatMap(
+				_accuser -> userDAO.load(accused.getId()).map(_accused -> {
+					Trial trial = new Trial();
+					trial.setAccused(_accused);
+					trial.setAccuser(_accuser);
+					trial.setTrialThread(null);
+					trial.setMotivation(BBCodeUtil.stripTags(motivation));
+					List<Regulation> _regulations = new LinkedList<>(
+							regulations);
 
-			trial.setRegulations(_regulations);
+					trial.setRegulations(_regulations);
 
-			trialDAO.save(trial);
+					trialDAO.save(trial);
 
-			return trial;
+					return trial;
 
-		})).getOrElseThrow(IllegalStateException::new);
-
+				})).getOrElseThrow(IllegalStateException::new);
 
 	}
 
@@ -398,7 +382,6 @@ class LawEnforcementServiceImpl implements
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public Trial confirmTrial(User truthsayer, Trial _trial) {
 		return trialDAO.load(_trial.getId()).map(trial -> {
-
 
 			if (truthsayer.getRank() != Rank.TRUTHSAYER) {
 				return null;
@@ -421,7 +404,8 @@ class LawEnforcementServiceImpl implements
 				filter2.rank(Rank.CHANCELLOR);
 				filter2.orRank(Rank.SENATOR);
 
-				truthsayers = truthsayers.appendAll(userDAO.findByFilter(filter2));
+				truthsayers = truthsayers
+						.appendAll(userDAO.findByFilter(filter2));
 			}
 
 			if (truthsayers.contains(trial.getAccuser())) {
@@ -437,30 +421,28 @@ class LawEnforcementServiceImpl implements
 				return null;
 			}
 
-			ForumThread thread = forumService.createEmptyForumThread(
-					forumService.getInteractionForum(), "Trial for "
-							+ trial.getAccused().getUsername(), truthsayer);
+			ForumThread thread = forumService
+					.createEmptyForumThread(forumService.getInteractionForum(),
+							"Trial for " + trial.getAccused().getUsername(),
+							truthsayer);
 
 			trial.setTrialThread(thread);
 			trial.setJudge(truthsayers.get(new Random(trial.getId())
 					.nextInt(truthsayers.size())));
 			trialDAO.update(trial);
 
-			forumService
-					.replyToThread(
-							thread,
-							"<strong><span style=\"text-decoration: underline;\">Autogenerated post</span></strong><br /><p>Our member "
-									+ trial.getAccused().getUsername()
-									+ " has been accused of rules violations</p>",
-							trial.getJudge());
+			forumService.replyToThread(thread,
+					"<strong><span style=\"text-decoration: underline;\">Autogenerated post</span></strong><br /><p>Our member "
+							+ trial.getAccused().getUsername()
+							+ " has been accused of rules violations</p>",
+					trial.getJudge());
 
 			notificationService.notifyUser(trial.getAccused(),
 					"You have been accused of violating one or more regulations");
 
 			notificationService.notifyUser(trial.getAccuser(),
-					"Your request for a trial against "
-							+ trial.getAccused().getUsername()
-							+ " has been granted");
+					"Your request for a trial against " + trial.getAccused()
+							.getUsername() + " has been granted");
 
 			return trial;
 		}).getOrElseThrow(IllegalStateException::new);
@@ -480,9 +462,8 @@ class LawEnforcementServiceImpl implements
 			trialDAO.delete(trial);
 
 			notificationService.notifyUser(trial.getAccuser(),
-					"Your request for a trial against "
-							+ trial.getAccused().getUsername()
-							+ " has been dismissed");
+					"Your request for a trial against " + trial.getAccused()
+							.getUsername() + " has been dismissed");
 		});
 	}
 
@@ -527,25 +508,21 @@ class LawEnforcementServiceImpl implements
 		if (points > 0) {
 			switch (trial.getAccused().getRank()) {
 				case SENATOR:
-					trial.getAccused().setRank(
-							MemberUtil.determineRankByJoinDate(trial
-									.getAccused().getJoinDate()));
+					trial.getAccused().setRank(MemberUtil
+							.determineRankByJoinDate(
+									trial.getAccused().getJoinDate()));
 					userDAO.update(trial.getAccused());
-					logService
-							.logUserAction(trial.getJudge(), "Justice",
-									"User was removed from the Senate as per Charter section 3.2.3.2");
+					logService.logUserAction(trial.getJudge(), "Justice",
+							"User was removed from the Senate as per Charter section 3.2.3.2");
 
-					notificationService
-							.notifyUser(
-									trial.getAccused(),
-									"You were removed from the Senate for a Regulation violation (Charter section 3.2.3.2)");
+					notificationService.notifyUser(trial.getAccused(),
+							"You were removed from the Senate for a Regulation violation (Charter section 3.2.3.2)");
 					break;
 				case TRUTHSAYER:
 					trial.getAccused().setRank(Rank.FORUM);
 					userDAO.update(trial.getAccused());
-					logService
-							.logUserAction(trial.getJudge(), "Justice",
-									"User membership was terminated as per Charter section 3.3.3.1");
+					logService.logUserAction(trial.getJudge(), "Justice",
+							"User membership was terminated as per Charter section 3.3.3.1");
 					return;
 				default:
 					break;
@@ -583,8 +560,8 @@ class LawEnforcementServiceImpl implements
 
 				membershipService.terminateMembership(user, true);
 
-				dispatcher.dispatchEvent(new MemberStatusEvent(
-						ChangeType.FORCED_OUT, user));
+				dispatcher.dispatchEvent(
+						new MemberStatusEvent(ChangeType.FORCED_OUT, user));
 
 				userService.banUser(null, user);
 			}
@@ -602,13 +579,12 @@ class LawEnforcementServiceImpl implements
 			trial.setRestrained(true);
 			trialDAO.update(trial);
 
-			logService.logUserAction(trial.getJudge(), "Justice", "Has restricted "
-					+ trial.getAccused().getUsername() + "'s posting privileges");
+			logService.logUserAction(trial.getJudge(), "Justice",
+					"Has restricted " + trial.getAccused().getUsername()
+							+ "'s posting privileges");
 
-			notificationService
-					.notifyUser(
-							trial.getAccused(),
-							"You were restrained for misbehavior during trial, you can only post in trial threads that concern you until they have been resolved");
+			notificationService.notifyUser(trial.getAccused(),
+					"You were restrained for misbehavior during trial, you can only post in trial threads that concern you until they have been resolved");
 		});
 	}
 
@@ -623,9 +599,8 @@ class LawEnforcementServiceImpl implements
 			trialDAO.update(trial);
 
 			logService.logUserAction(trial.getJudge(), "Justice",
-					"Has lifted the restriction of "
-							+ trial.getAccused().getUsername()
-							+ "'s posting privileges");
+					"Has lifted the restriction of " + trial.getAccused()
+							.getUsername() + "'s posting privileges");
 			notificationService.notifyUser(trial.getAccused(),
 					"Your restraint has been lifted");
 		});
@@ -644,18 +619,16 @@ class LawEnforcementServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void complaintToSenate(TruthsayerComplaint complaint,
-								  boolean byChancellor) {
+			boolean byChancellor) {
 		complaint.setMediated(true);
 		complaint.setStart(new Date());
 
 		if (byChancellor) {
-			notificationService
-					.notifyUser(complaint.getTruthsayer(),
-							"The Chancellor has passed a complaint against you to the Senate");
+			notificationService.notifyUser(complaint.getTruthsayer(),
+					"The Chancellor has passed a complaint against you to the Senate");
 		} else {
-			notificationService
-					.notifyUser(complaint.getTruthsayer(),
-							"A complaint filed against you has been automatically passed to the Senate");
+			notificationService.notifyUser(complaint.getTruthsayer(),
+					"A complaint filed against you has been automatically passed to the Senate");
 
 		}
 
@@ -665,7 +638,7 @@ class LawEnforcementServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void fileComplaint(User complainer, User truthsayer,
-							  String motivation) {
+			String motivation) {
 		TruthsayerComplaint complaint = new TruthsayerComplaint();
 		complaint.setComplainer(complainer);
 		complaint.setMediated(false);
@@ -689,7 +662,7 @@ class LawEnforcementServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void passComplaintVote(TruthsayerComplaint complaint, User senator,
-								  boolean inFavor) {
+			boolean inFavor) {
 		for (TruthsayerComplaintVote vote : complaint.getVotes()) {
 			if (vote.getCaster().equals(senator)) {
 				return;
@@ -712,8 +685,7 @@ class LawEnforcementServiceImpl implements
 		UserFilter filter = new UserFilter();
 		filter.rank(Rank.SENATOR);
 
-		Set<User> abstainingSenators =
-				userDAO.findByFilter(filter).toJavaSet();
+		Set<User> abstainingSenators = userDAO.findByFilter(filter).toJavaSet();
 
 		int yes = 0;
 		int no = 0;
@@ -736,7 +708,8 @@ class LawEnforcementServiceImpl implements
 		User user = complaint.getTruthsayer();
 
 		if (percentage >= 66) {
-			user.setRank(MemberUtil.determineRankByJoinDate(user.getJoinDate()));
+			user.setRank(
+					MemberUtil.determineRankByJoinDate(user.getJoinDate()));
 			logService.logUserAction(user, "Justice",
 					"Has been stripped of Truthsayer privileges by the Senate ("
 							+ percentage + "%)");

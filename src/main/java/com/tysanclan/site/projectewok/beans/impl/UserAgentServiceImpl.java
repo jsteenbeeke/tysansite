@@ -17,6 +17,9 @@
  */
 package com.tysanclan.site.projectewok.beans.impl;
 
+import com.tysanclan.site.projectewok.beans.UserAgentService;
+import com.tysanclan.site.projectewok.entities.MobileUserAgent;
+import com.tysanclan.site.projectewok.entities.dao.MobileUserAgentDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +27,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.tysanclan.site.projectewok.beans.UserAgentService;
-import com.tysanclan.site.projectewok.entities.MobileUserAgent;
-import com.tysanclan.site.projectewok.entities.dao.MobileUserAgentDAO;
 
 /**
  * @author Jeroen Steenbeeke
@@ -55,8 +54,10 @@ class UserAgentServiceImpl implements UserAgentService {
 
 			userAgentDAO.update(agent);
 
-			log.info("User agent " + agent.getIdentifier() + " is "
-					+ (approved ? "" : "not ") + " a mobile phone");
+			log.info(
+					"User agent " + agent.getIdentifier() + " is " + (approved ?
+							"" :
+							"not ") + " a mobile phone");
 		});
 
 	}

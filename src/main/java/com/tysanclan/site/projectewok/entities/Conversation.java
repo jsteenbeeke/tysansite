@@ -17,33 +17,18 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
-import javax.annotation.Nullable;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.SequenceGenerator;
-
-import org.hibernate.annotations.Cache;
-
 import com.google.common.base.Functions;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 import com.tysanclan.site.projectewok.util.SerializableFunction;
+import org.hibernate.annotations.Cache;
+
+import javax.annotation.Nullable;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * @author Jeroen Steenbeeke
@@ -84,9 +69,8 @@ public class Conversation extends BaseDomainObject {
 						.transform(input.getMessages(),
 								Message.toRestFunction());
 				Set<com.tysanclan.rest.api.data.RestUser> participants = Sets
-						.newHashSet(Iterables.transform(
-								input.getParticipants(), Functions.compose(User
-										.toRestFunction(),
+						.newHashSet(Iterables.transform(input.getParticipants(),
+								Functions.compose(User.toRestFunction(),
 										ConversationParticipation
 												.toUserFunction())));
 
@@ -153,7 +137,7 @@ public class Conversation extends BaseDomainObject {
 
 	/**
 	 * Sets the Messages of this Conversation
-	 * 
+	 *
 	 * @param messages
 	 *            The Messages of this Conversation
 	 */
@@ -170,7 +154,7 @@ public class Conversation extends BaseDomainObject {
 
 	/**
 	 * Sets the Title of this Conversation
-	 * 
+	 *
 	 * @param title
 	 *            The Title of this Conversation
 	 */

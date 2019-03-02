@@ -35,7 +35,8 @@ import java.util.List;
  */
 @Component
 @Scope("request")
-class UserGameRealmDAOImpl extends HibernateDAO<UserGameRealm, UserGameRealmFilter> implements
+class UserGameRealmDAOImpl
+		extends HibernateDAO<UserGameRealm, UserGameRealmFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.UserGameRealmDAO {
 
 	/**
@@ -64,15 +65,10 @@ class UserGameRealmDAOImpl extends HibernateDAO<UserGameRealm, UserGameRealmFilt
 
 	protected UserGameRealmFilter createDefaultFilter() {
 		UserGameRealmFilter filter = new UserGameRealmFilter();
-		filter.user(new UserFilter()
-							.rank(Rank.CHANCELLOR)
-							.orRank(Rank.SENATOR)
-							.orRank(Rank.TRUTHSAYER)
-							.orRank(Rank.REVERED_MEMBER)
-							.orRank(Rank.SENIOR_MEMBER)
-							.orRank(Rank.FULL_MEMBER)
-							.orRank(Rank.JUNIOR_MEMBER)
-		);
+		filter.user(new UserFilter().rank(Rank.CHANCELLOR).orRank(Rank.SENATOR)
+				.orRank(Rank.TRUTHSAYER).orRank(Rank.REVERED_MEMBER)
+				.orRank(Rank.SENIOR_MEMBER).orRank(Rank.FULL_MEMBER)
+				.orRank(Rank.JUNIOR_MEMBER));
 		return filter;
 	}
 
@@ -81,7 +77,6 @@ class UserGameRealmDAOImpl extends HibernateDAO<UserGameRealm, UserGameRealmFilt
 		UserGameRealmFilter filter = createDefaultFilter();
 		filter.game(game);
 
-
 		return properties(filter.user(), filter).distinct().size();
 
 	}
@@ -89,22 +84,22 @@ class UserGameRealmDAOImpl extends HibernateDAO<UserGameRealm, UserGameRealmFilt
 	@Override
 	public void removeUserGameRealmsByRealm(Realm realm) {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		CriteriaDelete<UserGameRealm> criteriaDelete = criteriaBuilder.createCriteriaDelete(UserGameRealm.class);
+		CriteriaDelete<UserGameRealm> criteriaDelete = criteriaBuilder
+				.createCriteriaDelete(UserGameRealm.class);
 		Root<UserGameRealm> root = criteriaDelete.from(UserGameRealm.class);
 
-		entityManager
-				.createQuery(criteriaDelete.where(criteriaBuilder.equal(root.get(UserGameRealm_.realm), realm)))
-				.executeUpdate();
+		entityManager.createQuery(criteriaDelete.where(criteriaBuilder
+				.equal(root.get(UserGameRealm_.realm), realm))).executeUpdate();
 	}
 
 	@Override
 	public void removeUserGameRealmsByGame(Game game) {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		CriteriaDelete<UserGameRealm> criteriaDelete = criteriaBuilder.createCriteriaDelete(UserGameRealm.class);
+		CriteriaDelete<UserGameRealm> criteriaDelete = criteriaBuilder
+				.createCriteriaDelete(UserGameRealm.class);
 		Root<UserGameRealm> root = criteriaDelete.from(UserGameRealm.class);
 
-		entityManager
-				.createQuery(criteriaDelete.where(criteriaBuilder.equal(root.get(UserGameRealm_.game), game)))
-				.executeUpdate();
+		entityManager.createQuery(criteriaDelete.where(criteriaBuilder
+				.equal(root.get(UserGameRealm_.game), game))).executeUpdate();
 	}
 }

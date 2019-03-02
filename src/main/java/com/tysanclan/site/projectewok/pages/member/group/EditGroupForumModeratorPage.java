@@ -17,11 +17,14 @@
  */
 package com.tysanclan.site.projectewok.pages.member.group;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.TysanPage;
+import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
+import com.tysanclan.site.projectewok.beans.ForumService;
+import com.tysanclan.site.projectewok.entities.Group;
+import com.tysanclan.site.projectewok.entities.GroupForum;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -33,14 +36,10 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
-import com.tysanclan.site.projectewok.TysanPage;
-import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
-import com.tysanclan.site.projectewok.beans.ForumService;
-import com.tysanclan.site.projectewok.entities.Group;
-import com.tysanclan.site.projectewok.entities.GroupForum;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -100,8 +99,9 @@ public class EditGroupForumModeratorPage extends TysanPage {
 						User moderator = getModelObject();
 
 						setResponsePage(new EditGroupForumModeratorPage(
-								(GroupForum) forumService.removeModerator(
-										getUser(), getForum(), moderator)));
+								(GroupForum) forumService
+										.removeModerator(getUser(), getForum(),
+												moderator)));
 					}
 				};
 
@@ -127,13 +127,15 @@ public class EditGroupForumModeratorPage extends TysanPage {
 			@SuppressWarnings("unchecked")
 			@Override
 			protected void onSubmit() {
-				DropDownChoice<User> userChoice = (DropDownChoice<User>) get("userSelect");
+				DropDownChoice<User> userChoice = (DropDownChoice<User>) get(
+						"userSelect");
 
 				User moderator = userChoice.getModelObject();
 
 				setResponsePage(new EditGroupForumModeratorPage(
-						(GroupForum) forumService.addModerator(getUser(),
-								getModelObject(), moderator)));
+						(GroupForum) forumService
+								.addModerator(getUser(), getModelObject(),
+										moderator)));
 			}
 
 		};
@@ -152,9 +154,9 @@ public class EditGroupForumModeratorPage extends TysanPage {
 
 		});
 
-		addModeratorForm.add(new DropDownChoice<User>("userSelect", ModelMaker
-				.wrap(users.isEmpty() ? null : users.get(0), true), ModelMaker
-				.wrap(users)).setNullValid(false));
+		addModeratorForm.add(new DropDownChoice<User>("userSelect",
+				ModelMaker.wrap(users.isEmpty() ? null : users.get(0), true),
+				ModelMaker.wrap(users)).setNullValid(false));
 
 		addModeratorForm.setVisible(!users.isEmpty());
 

@@ -29,7 +29,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class RealIdAccountDAOImpl extends HibernateDAO<RealIdAccount, RealIdAccountFilter> implements
+class RealIdAccountDAOImpl
+		extends HibernateDAO<RealIdAccount, RealIdAccountFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.RealIdAccountDAO {
 
 }

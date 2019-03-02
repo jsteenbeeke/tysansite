@@ -21,7 +21,7 @@ import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.TruthsayerComplaintVote;
 import com.tysanclan.site.projectewok.entities.filter.TruthsayerComplaintVoteFilter;
 
-public interface TruthsayerComplaintVoteDAO extends
-		DAO<TruthsayerComplaintVote, TruthsayerComplaintVoteFilter> {
+public interface TruthsayerComplaintVoteDAO
+		extends DAO<TruthsayerComplaintVote, TruthsayerComplaintVoteFilter> {
 
 }

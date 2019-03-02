@@ -17,14 +17,13 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.Calendar;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TimeZone;
-import java.util.TreeMap;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.TysanSession;
+import com.tysanclan.site.projectewok.components.MemberListItem;
+import com.tysanclan.site.projectewok.entities.Election;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.dao.UserDAO;
+import com.tysanclan.site.projectewok.util.DateUtil;
 import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -36,24 +35,18 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.protocol.http.request.WebClientInfo;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
-import com.tysanclan.site.projectewok.TysanSession;
-import com.tysanclan.site.projectewok.components.MemberListItem;
-import com.tysanclan.site.projectewok.entities.Election;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.util.DateUtil;
 import org.wicketstuff.wiquery.core.javascript.JsQuery;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 import org.wicketstuff.wiquery.ui.draggable.DraggableBehavior;
 import org.wicketstuff.wiquery.ui.droppable.DroppableAjaxBehavior;
 
+import java.util.*;
+
 /**
  * @author Jeroen Steenbeeke
  */
-public abstract class AbstractElectionPage<T extends Election> extends
-		AbstractMemberPage {
+public abstract class AbstractElectionPage<T extends Election>
+		extends AbstractMemberPage {
 	private static final long serialVersionUID = 1L;
 
 	private final Map<Integer, Long> votes;
@@ -65,7 +58,7 @@ public abstract class AbstractElectionPage<T extends Election> extends
 			T election);
 
 	/**
-	 * 
+	 *
 	 */
 	public AbstractElectionPage(String title, T election) {
 		super(title);
@@ -75,9 +68,8 @@ public abstract class AbstractElectionPage<T extends Election> extends
 		WebClientInfo clientInfo = TysanSession.get().getClientInfo();
 
 		// If user is using IE7, offer him an alternative
-		if (!isNominationOpen
-				&& (clientInfo.getUserAgent().contains("MSIE") || clientInfo
-						.getUserAgent().contains("Trident"))) {
+		if (!isNominationOpen && (clientInfo.getUserAgent().contains("MSIE")
+				|| clientInfo.getUserAgent().contains("Trident"))) {
 			throw new RestartResponseAtInterceptPageException(
 					getInternetExplorerAlternativePage(election));
 		}
@@ -103,8 +95,8 @@ public abstract class AbstractElectionPage<T extends Election> extends
 
 						@Override
 						public JsStatement widget() {
-							return new JsQuery(getComponent()).$().chain(
-									"draggable", "{ revert: true }");
+							return new JsQuery(getComponent()).$()
+									.chain("draggable", "{ revert: true }");
 
 						}
 					});
@@ -117,22 +109,21 @@ public abstract class AbstractElectionPage<T extends Election> extends
 
 		};
 
-		add(new Label("label", isNominationOpen ? "Candidates"
-				: "Cast your vote!"));
+		add(new Label("label",
+				isNominationOpen ? "Candidates" : "Cast your vote!"));
 
-		TimeZone tz = getUser().getTimezone() != null ? TimeZone
-				.getTimeZone(getUser().getTimezone()) : DateUtil.NEW_YORK;
+		TimeZone tz = getUser().getTimezone() != null ?
+				TimeZone.getTimeZone(getUser().getTimezone()) :
+				DateUtil.NEW_YORK;
 
 		Calendar cal = Calendar.getInstance(tz, Locale.US);
 		cal.setTime(election.getStart());
 		cal.add(Calendar.WEEK_OF_YEAR, 1);
 
-		Label explanation = new Label(
-				"explanation",
-				isNominationOpen ? "Voting will commence "
-						+ DateUtil.getTimezoneFormattedString(cal.getTime(),
-								tz.getID())
-						: "Drag and drop the candidates of your choice to cast your vote. Place your favorites at the top and your least favorites at the bottom. The order you give them will determine their score. The higher their position the higher the score");
+		Label explanation = new Label("explanation", isNominationOpen ?
+				"Voting will commence " + DateUtil
+						.getTimezoneFormattedString(cal.getTime(), tz.getID()) :
+				"Drag and drop the candidates of your choice to cast your vote. Place your favorites at the top and your least favorites at the bottom. The order you give them will determine their score. The higher their position the higher the score");
 
 		Form<Void> castVoteForm = new Form<Void>("voteform") {
 			private static final long serialVersionUID = 1L;
@@ -148,7 +139,8 @@ public abstract class AbstractElectionPage<T extends Election> extends
 				List<User> userList = new LinkedList<User>();
 
 				for (Integer position : getVotes().keySet()) {
-					userDAO.load(getVotes().get(position)).forEach(userList::add);
+					userDAO.load(getVotes().get(position))
+							.forEach(userList::add);
 				}
 
 				onVoteSubmit(userList);
@@ -168,13 +160,13 @@ public abstract class AbstractElectionPage<T extends Election> extends
 
 			@Override
 			protected void populateItem(ListItem<Integer> item) {
-				item.add(new Label("position", new Model<>(item
-						.getIndex() + 1)));
+				item.add(new Label("position",
+						new Model<>(item.getIndex() + 1)));
 
 				final int index = item.getIndex();
 
-				item.add(new Label("score", new Model<>(item
-						.getModelObject())));
+				item.add(
+						new Label("score", new Model<>(item.getModelObject())));
 				WebMarkupContainer container = new WebMarkupContainer("target");
 				container.setOutputMarkupId(true)
 						.setOutputMarkupPlaceholderTag(true);
@@ -197,7 +189,8 @@ public abstract class AbstractElectionPage<T extends Election> extends
 
 								getVotes().put(index, mli.getUser().getId());
 
-								if (votes.size() == AbstractElectionPage.this.candidates) {
+								if (votes.size()
+										== AbstractElectionPage.this.candidates) {
 									submitButton.setVisible(true);
 									if (target != null) {
 										target.add(submitButton);

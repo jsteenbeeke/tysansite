@@ -35,8 +35,8 @@ import java.util.Date;
  */
 @Component
 @Scope("request")
-class ProfileServiceImpl implements
-		com.tysanclan.site.projectewok.beans.ProfileService {
+class ProfileServiceImpl
+		implements com.tysanclan.site.projectewok.beans.ProfileService {
 	@Autowired
 	private UserDAO userDAO;
 
@@ -85,7 +85,7 @@ class ProfileServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void setPhotoURL(Profile profile, String url,
-							boolean publiclyViewable) {
+			boolean publiclyViewable) {
 		profileDAO.load(profile.getId()).forEach(_profile -> {
 
 			_profile.setPhotoURL(BBCodeUtil.filterURL(url));
@@ -101,7 +101,8 @@ class ProfileServiceImpl implements
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
-	public void setAIMAddress(Profile profile, String aimName, Boolean aimPublic) {
+	public void setAIMAddress(Profile profile, String aimName,
+			Boolean aimPublic) {
 		profileDAO.load(profile.getId()).forEach(_profile -> {
 
 			_profile.setInstantMessengerAddress(aimName);

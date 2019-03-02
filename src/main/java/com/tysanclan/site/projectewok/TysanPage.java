@@ -144,8 +144,8 @@ public class TysanPage extends WebPage {
 
 			}
 
-		}.setVisible(Application.get()
-				.getConfigurationType() == RuntimeConfigurationType.DEVELOPMENT));
+		}.setVisible(Application.get().getConfigurationType()
+				== RuntimeConfigurationType.DEVELOPMENT));
 
 		User u = getUser();
 		WebMarkupContainer subMenu = new WebMarkupContainer("topMenu");
@@ -168,36 +168,35 @@ public class TysanPage extends WebPage {
 		add(new Label("version", TysanApplication.getApplicationVersion()));
 
 		if (u != null) {
-			get("version").add(
-					new AjaxSelfUpdatingTimerBehavior(Duration.seconds(30)) {
-						private static final long serialVersionUID = 1L;
+			get("version").add(new AjaxSelfUpdatingTimerBehavior(
+					Duration.seconds(30)) {
+				private static final long serialVersionUID = 1L;
 
-						/**
-						 * @see org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior#onPostProcessTarget(org.apache.wicket.ajax.AjaxRequestTarget)
-						 */
-						@Override
-						protected void onPostProcessTarget(
-								AjaxRequestTarget target) {
-							Dialog d = getNotificationWindow();
-							TysanSession t = TysanSession.get();
-							int i = 0;
+				/**
+				 * @see org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior#onPostProcessTarget(org.apache.wicket.ajax.AjaxRequestTarget)
+				 */
+				@Override
+				protected void onPostProcessTarget(AjaxRequestTarget target) {
+					Dialog d = getNotificationWindow();
+					TysanSession t = TysanSession.get();
+					int i = 0;
 
-							for (SiteWideNotification swn : TysanApplication
-									.get().getActiveNotifications()) {
-								if (t != null && !t.notificationSeen(swn)) {
-									swn.display(d);
-									i++;
-								}
-							}
-
-							if (i > 0) {
-								d.setAutoOpen(true);
-								d.setVisible(true);
-								target.add(d);
-								getNotificationWindow().open(target);
-							}
+					for (SiteWideNotification swn : TysanApplication.get()
+							.getActiveNotifications()) {
+						if (t != null && !t.notificationSeen(swn)) {
+							swn.display(d);
+							i++;
 						}
-					});
+					}
+
+					if (i > 0) {
+						d.setAutoOpen(true);
+						d.setVisible(true);
+						target.add(d);
+						getNotificationWindow().open(target);
+					}
+				}
+			});
 
 		}
 		addAnimalPanel();
@@ -208,8 +207,13 @@ public class TysanPage extends WebPage {
 	}
 
 	private String getTitleSuffix() {
-		return isAprilFoolsDay(2017) ? " - The Texas Clan"
-				: " - The Tysan Clan ";
+		if (isAprilFoolsDay(2019)) {
+			return " - The Disney Clan";
+		} else if (isAprilFoolsDay(2017)) {
+			return " - The Texas Clan";
+		}
+
+		return " - The Tysan Clan ";
 	}
 
 	public void setAutoCollapse(boolean autoCollapse) {
@@ -303,7 +307,9 @@ public class TysanPage extends WebPage {
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 
-		if (isAprilFoolsDay(2017)) {
+		if (isAprilFoolsDay(2019)) {
+			response.render(CssHeaderItem.forUrl("css/styled.css"));
+		} else if (isAprilFoolsDay(2017)) {
 			response.render(CssHeaderItem.forUrl("css/texas.css"));
 		} else {
 			response.render(CssHeaderItem.forUrl("css/style.css"));
@@ -403,8 +409,7 @@ public class TysanPage extends WebPage {
 			public Object getValue(StringValue value) {
 				return value.toOptionalBoolean();
 			}
-		},
-		INT {
+		}, INT {
 			@Override
 			protected void checkType(StringValue value)
 					throws PageParameterExtractorException {
@@ -420,8 +425,7 @@ public class TysanPage extends WebPage {
 			public Object getValue(StringValue value) {
 				return value.toOptionalInteger();
 			}
-		},
-		LONG {
+		}, LONG {
 			@Override
 			protected void checkType(StringValue value)
 					throws PageParameterExtractorException {
@@ -437,8 +441,7 @@ public class TysanPage extends WebPage {
 			public Object getValue(StringValue value) {
 				return value.toOptionalLong();
 			}
-		},
-		STRING {
+		}, STRING {
 			@Override
 			protected void checkType(StringValue value)
 					throws PageParameterExtractorException {
@@ -457,7 +460,7 @@ public class TysanPage extends WebPage {
 		};
 
 		public void check(PageParameters params, String identifier,
-						  boolean required) throws PageParameterExtractorException {
+				boolean required) throws PageParameterExtractorException {
 			StringValue value = params.get(identifier);
 
 			if (value.isEmpty() || value.isNull()) {
@@ -551,9 +554,7 @@ public class TysanPage extends WebPage {
 			try {
 				Constructor<T> con = targetClass.getConstructor(pClass);
 				return con.newInstance(p);
-			} catch (NoSuchMethodException | SecurityException
-					| InstantiationException | IllegalAccessException
-					| IllegalArgumentException | InvocationTargetException e) {
+			} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 				throw new PageParameterExtractorException(
 						"Cannot store parameters in target class: %s",
 						e.getMessage());
@@ -566,7 +567,7 @@ public class TysanPage extends WebPage {
 		private static final long serialVersionUID = 1L;
 
 		public PageParameterExtractorException(String message,
-											   Object... params) {
+				Object... params) {
 			super(String.format(message, params));
 		}
 
@@ -582,13 +583,13 @@ public class TysanPage extends WebPage {
 		private final PageParameterExtractorBuilder prev;
 
 		private PageParameterExtractorBuilder(String identifier,
-											  ParamType paramType, boolean required) {
+				ParamType paramType, boolean required) {
 			this(identifier, paramType, required, null);
 		}
 
 		private PageParameterExtractorBuilder(String identifier,
-											  ParamType paramType, boolean required,
-											  PageParameterExtractorBuilder prev) {
+				ParamType paramType, boolean required,
+				PageParameterExtractorBuilder prev) {
 			super();
 			this.identifier = identifier;
 			this.paramType = paramType;
@@ -649,7 +650,7 @@ public class TysanPage extends WebPage {
 		}
 
 		private void addType(PageParameterExtractor extractor,
-							 PageParameters params) {
+				PageParameters params) {
 			if (prev != null) {
 				prev.addType(extractor, params);
 			}

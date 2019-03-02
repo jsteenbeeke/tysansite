@@ -17,8 +17,15 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.List;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.site.projectewok.auth.TysanRankSecured;
+import com.tysanclan.site.projectewok.beans.ForumService;
+import com.tysanclan.site.projectewok.entities.Forum;
+import com.tysanclan.site.projectewok.entities.ForumCategory;
+import com.tysanclan.site.projectewok.entities.GroupForum;
+import com.tysanclan.site.projectewok.entities.NewsForum;
+import com.tysanclan.site.projectewok.entities.dao.ForumCategoryDAO;
 import io.vavr.collection.Seq;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -31,16 +38,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
-import com.tysanclan.rest.api.data.Rank;
-import com.tysanclan.site.projectewok.auth.TysanRankSecured;
-import com.tysanclan.site.projectewok.beans.ForumService;
-import com.tysanclan.site.projectewok.entities.Forum;
-import com.tysanclan.site.projectewok.entities.ForumCategory;
-import com.tysanclan.site.projectewok.entities.GroupForum;
-import com.tysanclan.site.projectewok.entities.NewsForum;
-import com.tysanclan.site.projectewok.entities.dao.ForumCategoryDAO;
-
 /**
  * @author Jeroen Steenbeeke
  */
@@ -52,7 +49,7 @@ public class ForumManagementPage extends AbstractMemberPage {
 	private ForumCategoryDAO forumCategoryDAO;
 
 	/**
-	 * 
+	 *
 	 */
 	public ForumManagementPage() {
 		super("Forum Management");
@@ -65,7 +62,7 @@ public class ForumManagementPage extends AbstractMemberPage {
 	}
 
 	/**
-	 	 */
+	 */
 	private ListView<ForumCategory> createCategoryListView() {
 		return new ListView<ForumCategory>("categories",
 				ModelMaker.wrap(forumCategoryDAO.findAll().toJavaList())) {
@@ -82,8 +79,8 @@ public class ForumManagementPage extends AbstractMemberPage {
 						"add", ModelMaker.wrap(category)) {
 
 					/**
-					* 
-					*/
+					 *
+					 */
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -118,15 +115,15 @@ public class ForumManagementPage extends AbstractMemberPage {
 						"images/icons/cross.png"));
 				deleteLink.add(new Label("name2", category.getName()));
 				item.add(deleteLink);
-				item.add(new Label(
-						"allowpublic",
-						category.isAllowPublicGroupForums() ? "This category may contain public group forums"
-								: "This category may not contains public group forums"));
+				item.add(new Label("allowpublic",
+						category.isAllowPublicGroupForums() ?
+								"This category may contain public group forums" :
+								"This category may not contains public group forums"));
 
 				final int total = category.getForums().size();
 
-				item.add(new ListView<Forum>("forums", ModelMaker.wrap(category
-						.getForums())) {
+				item.add(new ListView<Forum>("forums",
+						ModelMaker.wrap(category.getForums())) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -172,7 +169,8 @@ public class ForumManagementPage extends AbstractMemberPage {
 
 						};
 
-						moveDownLink.setVisible(innerItem.getIndex() != (total - 1));
+						moveDownLink.setVisible(
+								innerItem.getIndex() != (total - 1));
 
 						moveDownLink.add(new ContextImage("icon",
 								"images/icons/arrow_down.png"));
@@ -200,8 +198,9 @@ public class ForumManagementPage extends AbstractMemberPage {
 									int target = index - 1;
 									ForumCategory targetCat = cats.get(target);
 
-									forumService.moveToCategory(getUser(),
-											_forum, targetCat);
+									forumService
+											.moveToCategory(getUser(), _forum,
+													targetCat);
 
 									setResponsePage(new ForumManagementPage());
 								}
@@ -239,8 +238,9 @@ public class ForumManagementPage extends AbstractMemberPage {
 									int target = index + 1;
 									ForumCategory targetCat = cats.get(target);
 
-									forumService.moveToCategory(getUser(),
-											_forum, targetCat);
+									forumService
+											.moveToCategory(getUser(), _forum,
+													targetCat);
 
 									setResponsePage(new ForumManagementPage());
 								}
@@ -249,9 +249,9 @@ public class ForumManagementPage extends AbstractMemberPage {
 
 						};
 
-						catNextLink.setVisible(catindex != (forumCategoryDAO
-								.countAll() - 1)
-								&& !(forum instanceof GroupForum));
+						catNextLink.setVisible(
+								catindex != (forumCategoryDAO.countAll() - 1)
+										&& !(forum instanceof GroupForum));
 
 						catNextLink.add(new ContextImage("icon",
 								"images/icons/book_next.png"));
@@ -264,8 +264,8 @@ public class ForumManagementPage extends AbstractMemberPage {
 
 							@Override
 							public void onClick() {
-								setResponsePage(new EditForumPage(
-										getModelObject()));
+								setResponsePage(
+										new EditForumPage(getModelObject()));
 							}
 
 						};
@@ -332,7 +332,7 @@ public class ForumManagementPage extends AbstractMemberPage {
 	}
 
 	/**
-	 	 */
+	 */
 	private Form<ForumCategory> createAddCategoryForm() {
 		Form<ForumCategory> addForm = new Form<ForumCategory>("addform") {
 			private static final long serialVersionUID = 1L;
@@ -346,7 +346,8 @@ public class ForumManagementPage extends AbstractMemberPage {
 			@SuppressWarnings("unchecked")
 			@Override
 			protected void onSubmit() {
-				TextField<String> nameField = (TextField<String>) get("catname");
+				TextField<String> nameField = (TextField<String>) get(
+						"catname");
 				CheckBox checkbox = (CheckBox) get("allowpublic");
 
 				String name = nameField.getModelObject();

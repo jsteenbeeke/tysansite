@@ -40,81 +40,95 @@ import java.util.List;
 @Component
 @Scope("request")
 class InactivityNotificationDAOImpl extends
-		HibernateDAO<InactivityNotification, InactivityNotificationFilter> implements
+		HibernateDAO<InactivityNotification, InactivityNotificationFilter>
+		implements
 		com.tysanclan.site.projectewok.entities.dao.InactivityNotificationDAO {
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void deleteNotificationForUser(User user) {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		CriteriaDelete<InactivityNotification> criteriaDelete = criteriaBuilder.createCriteriaDelete(InactivityNotification.class);
-		Root<InactivityNotification> root = criteriaDelete.from(InactivityNotification.class);
+		CriteriaDelete<InactivityNotification> criteriaDelete = criteriaBuilder
+				.createCriteriaDelete(InactivityNotification.class);
+		Root<InactivityNotification> root = criteriaDelete
+				.from(InactivityNotification.class);
 
-
-		entityManager
-				.createQuery(criteriaDelete.where(criteriaBuilder.equal(root.get(InactivityNotification_.user), user)))
+		entityManager.createQuery(criteriaDelete.where(criteriaBuilder
+				.equal(root.get(InactivityNotification_.user), user)))
 				.executeUpdate();
 	}
 
 	@Override
 	public List<Long> getUnnotifiedInactiveUsers() {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+		CriteriaQuery<Long> criteriaQuery = criteriaBuilder
+				.createQuery(Long.class);
 
 		Root<User> root = criteriaQuery.from(User.class);
 
-		Subquery<InactivityNotification> subquery = criteriaQuery.subquery(InactivityNotification.class);
-		Root<InactivityNotification> subqueryRoot = subquery.from(InactivityNotification.class);
+		Subquery<InactivityNotification> subquery = criteriaQuery
+				.subquery(InactivityNotification.class);
+		Root<InactivityNotification> subqueryRoot = subquery
+				.from(InactivityNotification.class);
 
 		criteriaQuery.select(root.get(User_.id));
-		criteriaQuery.where(
-				criteriaBuilder.not(
-						criteriaBuilder.exists(subquery
-													   .select(subqueryRoot)
-													   .where(criteriaBuilder.equal(subqueryRoot.get(InactivityNotification_.user), root
-															   .get(User_.id))))
-				),
-				criteriaBuilder.or(
-						getRegularMemberInactivityCriterion(criteriaBuilder, root),
-						getRetiredMemberInactivityCriterion(criteriaBuilder, root),
-						getVacationMemberInactivityCriterion(criteriaBuilder, root),
-						getTrialMemberInactivityCriterion(criteriaBuilder, root)
-				)
-		);
+		criteriaQuery.where(criteriaBuilder.not(criteriaBuilder
+				.exists(subquery.select(subqueryRoot).where(criteriaBuilder
+						.equal(subqueryRoot.get(InactivityNotification_.user),
+								root.get(User_.id))))), criteriaBuilder
+				.or(getRegularMemberInactivityCriterion(criteriaBuilder, root),
+						getRetiredMemberInactivityCriterion(criteriaBuilder,
+								root),
+						getVacationMemberInactivityCriterion(criteriaBuilder,
+								root),
+						getTrialMemberInactivityCriterion(criteriaBuilder,
+								root)));
 
 		return entityManager.createQuery(criteriaQuery).getResultList();
 	}
 
-	private Predicate getRegularMemberInactivityCriterion(CriteriaBuilder criteriaBuilder, Root<User> userRoot) {
-		return criteriaBuilder.and(
-				criteriaBuilder.equal(userRoot.get(User_.retired), false),
-				criteriaBuilder.equal(userRoot.get(User_.vacation), false),
-				userRoot.get(User_.rank).in(MemberUtil.getNonTrialRanks()),
-				criteriaBuilder.lessThanOrEqualTo(userRoot.get(User_.lastAction), DateUtil.daysAgo(12))
-		);
+	private Predicate getRegularMemberInactivityCriterion(
+			CriteriaBuilder criteriaBuilder, Root<User> userRoot) {
+		return criteriaBuilder
+				.and(criteriaBuilder.equal(userRoot.get(User_.retired), false),
+						criteriaBuilder
+								.equal(userRoot.get(User_.vacation), false),
+						userRoot.get(User_.rank)
+								.in(MemberUtil.getNonTrialRanks()),
+						criteriaBuilder.lessThanOrEqualTo(
+								userRoot.get(User_.lastAction),
+								DateUtil.daysAgo(12)));
 	}
 
-	private Predicate getRetiredMemberInactivityCriterion(CriteriaBuilder criteriaBuilder, Root<User> userRoot) {
-		return criteriaBuilder.and(
-				criteriaBuilder.equal(userRoot.get(User_.retired), true),
-				userRoot.get(User_.rank).in(MemberUtil.getNonTrialRanks()),
-				criteriaBuilder.lessThanOrEqualTo(userRoot.get(User_.lastAction), DateUtil.monthsAgo(11))
-		);
+	private Predicate getRetiredMemberInactivityCriterion(
+			CriteriaBuilder criteriaBuilder, Root<User> userRoot) {
+		return criteriaBuilder
+				.and(criteriaBuilder.equal(userRoot.get(User_.retired), true),
+						userRoot.get(User_.rank)
+								.in(MemberUtil.getNonTrialRanks()),
+						criteriaBuilder.lessThanOrEqualTo(
+								userRoot.get(User_.lastAction),
+								DateUtil.monthsAgo(11)));
 	}
 
-	private Predicate getVacationMemberInactivityCriterion(CriteriaBuilder criteriaBuilder, Root<User> userRoot) {
-		return criteriaBuilder.and(
-				criteriaBuilder.equal(userRoot.get(User_.retired), false),
-				criteriaBuilder.equal(userRoot.get(User_.vacation), true),
-				userRoot.get(User_.rank).in(MemberUtil.getNonTrialRanks()),
-				criteriaBuilder.lessThanOrEqualTo(userRoot.get(User_.lastAction), DateUtil.daysAgo(55))
-		);
+	private Predicate getVacationMemberInactivityCriterion(
+			CriteriaBuilder criteriaBuilder, Root<User> userRoot) {
+		return criteriaBuilder
+				.and(criteriaBuilder.equal(userRoot.get(User_.retired), false),
+						criteriaBuilder
+								.equal(userRoot.get(User_.vacation), true),
+						userRoot.get(User_.rank)
+								.in(MemberUtil.getNonTrialRanks()),
+						criteriaBuilder.lessThanOrEqualTo(
+								userRoot.get(User_.lastAction),
+								DateUtil.daysAgo(55)));
 	}
 
-	private Predicate getTrialMemberInactivityCriterion(CriteriaBuilder criteriaBuilder, Root<User> userRoot) {
-		return criteriaBuilder.and(
-				criteriaBuilder.equal(userRoot.get(User_.rank), Rank.TRIAL),
-				criteriaBuilder.lessThanOrEqualTo(userRoot.get(User_.lastAction), DateUtil.daysAgo(5))
-		);
+	private Predicate getTrialMemberInactivityCriterion(
+			CriteriaBuilder criteriaBuilder, Root<User> userRoot) {
+		return criteriaBuilder.and(criteriaBuilder
+				.equal(userRoot.get(User_.rank), Rank.TRIAL), criteriaBuilder
+				.lessThanOrEqualTo(userRoot.get(User_.lastAction),
+						DateUtil.daysAgo(5)));
 	}
 }

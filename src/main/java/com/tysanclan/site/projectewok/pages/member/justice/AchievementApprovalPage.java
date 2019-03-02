@@ -17,14 +17,6 @@
  */
 package com.tysanclan.site.projectewok.pages.member.justice;
 
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.request.resource.ByteArrayResource;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
@@ -38,6 +30,13 @@ import com.tysanclan.site.projectewok.entities.Game;
 import com.tysanclan.site.projectewok.entities.dao.AchievementRequestDAO;
 import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
 import com.tysanclan.site.projectewok.util.ImageUtil;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.request.resource.ByteArrayResource;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -55,14 +54,14 @@ public class AchievementApprovalPage extends AbstractMemberPage {
 	public AchievementApprovalPage() {
 		super("Achievement requests");
 
-		add(new ListView<AchievementRequest>("requests",
-				ModelMaker.wrap(requestDAO
-						.getNonGroupPendingAchievementRequests())) {
+		add(new ListView<AchievementRequest>("requests", ModelMaker
+				.wrap(requestDAO.getNonGroupPendingAchievementRequests())) {
 
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void populateItem(final ListItem<AchievementRequest> item) {
+			protected void populateItem(
+					final ListItem<AchievementRequest> item) {
 				AchievementRequest request = item.getModelObject();
 				Achievement achievement = request.getAchievement();
 				Game game = achievement.getGame();
@@ -74,16 +73,18 @@ public class AchievementApprovalPage extends AbstractMemberPage {
 
 				byte[] gameImage = game != null ? game.getImage() : new byte[0];
 
-				item.add(new Image("icon", new ByteArrayResource(ImageUtil
-						.getMimeType(iconImage), iconImage)));
-				item.add(new Image("game", new ByteArrayResource(ImageUtil
-						.getMimeType(gameImage), gameImage))
-						.setVisible(game != null));
+				item.add(new Image("icon",
+						new ByteArrayResource(ImageUtil.getMimeType(iconImage),
+								iconImage)));
+				item.add(new Image("game",
+						new ByteArrayResource(ImageUtil.getMimeType(gameImage),
+								gameImage)).setVisible(game != null));
 
-				item.add(new Label("description", request.getAchievement()
-						.getDescription()).setEscapeModelStrings(false));
-				item.add(new MemberListItem("requester", request
-						.getRequestedBy()));
+				item.add(new Label("description",
+						request.getAchievement().getDescription())
+						.setEscapeModelStrings(false));
+				item.add(new MemberListItem("requester",
+						request.getRequestedBy()));
 
 				if (request.getEvidencePicture() != null) {
 					byte[] evidence = request.getEvidencePicture();
@@ -111,9 +112,8 @@ public class AchievementApprovalPage extends AbstractMemberPage {
 								setResponsePage(new AchievementApprovalPage());
 
 							}
-						})
-						.setText(
-								"Yes, the requirements for this achievement have been met")
+						}).setText(
+						"Yes, the requirements for this achievement have been met")
 						.newInstance("yes"));
 				item.add(new IconLink.Builder("images/icons/cross.png",
 						new DefaultClickResponder<AchievementRequest>(
@@ -128,9 +128,8 @@ public class AchievementApprovalPage extends AbstractMemberPage {
 								setResponsePage(new AchievementApprovalPage());
 
 							}
-						})
-						.setText(
-								"No, the requirements for this achievement have not been met")
+						}).setText(
+						"No, the requirements for this achievement have not been met")
 						.newInstance("no"));
 
 			}

@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class NewsForumDAOImpl extends HibernateDAO<NewsForum, NewsForumFilter> implements
-		com.tysanclan.site.projectewok.entities.dao.NewsForumDAO {
+class NewsForumDAOImpl extends HibernateDAO<NewsForum, NewsForumFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.NewsForumDAO {
 
 }

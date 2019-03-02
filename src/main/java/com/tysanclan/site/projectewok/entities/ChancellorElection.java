@@ -17,15 +17,14 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.site.projectewok.util.MemberUtil;
+import org.hibernate.annotations.Cache;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
-
-import org.hibernate.annotations.Cache;
-
-import com.tysanclan.rest.api.data.Rank;
-import com.tysanclan.site.projectewok.util.MemberUtil;
 
 /**
  * @author Jeroen Steenbeeke
@@ -70,7 +69,7 @@ public class ChancellorElection extends Election {
 
 	/**
 	 * Sets the Winner of this ChancellorElection
-	 * 
+	 *
 	 * @param winner
 	 *            The Winner of this ChancellorElection
 	 */

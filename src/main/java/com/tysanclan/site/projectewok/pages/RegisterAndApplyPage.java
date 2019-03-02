@@ -17,35 +17,26 @@
  */
 package com.tysanclan.site.projectewok.pages;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import org.apache.wicket.extensions.markup.html.captcha.CaptchaImageResource;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.PasswordTextField;
-import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.beans.GameService;
 import com.tysanclan.site.projectewok.beans.MailService;
 import com.tysanclan.site.projectewok.beans.MembershipService;
 import com.tysanclan.site.projectewok.beans.UserService;
 import com.tysanclan.site.projectewok.components.renderer.GameRealmCartesianRenderer;
-import com.tysanclan.site.projectewok.entities.Activation;
-import com.tysanclan.site.projectewok.entities.ForumThread;
-import com.tysanclan.site.projectewok.entities.Game;
-import com.tysanclan.site.projectewok.entities.Realm;
-import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.*;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import com.tysanclan.site.projectewok.entities.filter.UserFilter;
 import com.tysanclan.site.projectewok.model.GameRealmCartesian;
 import com.tysanclan.site.projectewok.util.StringUtil;
 import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
+import org.apache.wicket.extensions.markup.html.captcha.CaptchaImageResource;
+import org.apache.wicket.markup.html.form.*;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class RegisterAndApplyPage extends TysanPage {
 
@@ -101,8 +92,8 @@ public class RegisterAndApplyPage extends TysanPage {
 		final PasswordTextField tfPassword = new PasswordTextField("password",
 				new Model<>(""));
 		tfPassword.setRequired(true);
-		final PasswordTextField tfPassword2 = new PasswordTextField(
-				"password2", new Model<>(""));
+		final PasswordTextField tfPassword2 = new PasswordTextField("password2",
+				new Model<>(""));
 		tfPassword2.setRequired(true);
 
 		final TextField<String> tfCaptcha = new TextField<String>(
@@ -162,13 +153,13 @@ public class RegisterAndApplyPage extends TysanPage {
 					RegisterAndApplyPage.this
 							.error("Password must be at least 8 characters");
 				}
-				if (valid
-						&& !tfPassword.getModelObject().equals(
-								tfPassword2.getModelObject())) {
+				if (valid && !tfPassword.getModelObject()
+						.equals(tfPassword2.getModelObject())) {
 					valid = false;
 					RegisterAndApplyPage.this.error("Passwords do not match");
 				}
-				if (valid && !StringUtil.isValidEMail(tfMail.getModelObject())) {
+				if (valid && !StringUtil
+						.isValidEMail(tfMail.getModelObject())) {
 					valid = false;
 					RegisterAndApplyPage.this
 							.error("Please provide a valid e-mail address");
@@ -195,12 +186,12 @@ public class RegisterAndApplyPage extends TysanPage {
 				Game game = null;
 				Realm realm = null;
 
-				String otherGames = BBCodeUtil.stripTags(otherGamesDescription
-						.getModelObject());
-				String sortOfPerson = BBCodeUtil.stripTags(sortOfPersonArea
-						.getModelObject());
-				String lookingFor = BBCodeUtil.stripTags(lookingForArea
-						.getModelObject());
+				String otherGames = BBCodeUtil
+						.stripTags(otherGamesDescription.getModelObject());
+				String sortOfPerson = BBCodeUtil
+						.stripTags(sortOfPersonArea.getModelObject());
+				String lookingFor = BBCodeUtil
+						.stripTags(lookingForArea.getModelObject());
 
 				if (StringUtil.countWords(sortOfPerson) < 30) {
 					RegisterAndApplyPage.this
@@ -228,20 +219,19 @@ public class RegisterAndApplyPage extends TysanPage {
 				}
 
 				if (valid) {
-					User user = userService.createUser(
-							tfUsername.getModelObject(),
-							tfPassword.getModelObject(),
-							tfMail.getModelObject());
+					User user = userService
+							.createUser(tfUsername.getModelObject(),
+									tfPassword.getModelObject(),
+									tfMail.getModelObject());
 					if (user != null) {
 						Activation activation = userService
 								.getActivationByUser(user);
 
-						mailService.sendHTMLMail(
-								tfMail.getModelObject(),
-								"Tysan Clan Forums",
-								mailService.getActivationMailBody(
-										user.getUsername(),
-										activation.getActivationKey()));
+						mailService.sendHTMLMail(tfMail.getModelObject(),
+								"Tysan Clan Forums", mailService
+										.getActivationMailBody(
+												user.getUsername(),
+												activation.getActivationKey()));
 
 						StringBuilder motivation = new StringBuilder();
 						motivation
@@ -260,13 +250,13 @@ public class RegisterAndApplyPage extends TysanPage {
 						motivation.append("\n\n");
 
 						ForumThread thread = membershipService
-								.applyForMembership(user,
-										motivation.toString(), game, realm);
+								.applyForMembership(user, motivation.toString(),
+										game, realm);
 
 						membershipService.registerAction(user);
 
-						setResponsePage(new ForumThreadPage(thread.getId(), 1,
-								false));
+						setResponsePage(
+								new ForumThreadPage(thread.getId(), 1, false));
 
 					}
 				}

@@ -17,14 +17,6 @@
  */
 package com.tysanclan.site.projectewok.pages;
 
-import java.util.List;
-
-import io.vavr.collection.Seq;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.beans.MailService;
@@ -35,6 +27,11 @@ import com.tysanclan.site.projectewok.entities.dao.PasswordRequestDAO;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import com.tysanclan.site.projectewok.entities.filter.PasswordRequestFilter;
 import com.tysanclan.site.projectewok.entities.filter.UserFilter;
+import io.vavr.collection.Seq;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -104,8 +101,9 @@ public class PasswordRequestPage extends TysanPage {
 
 		requestPasswordForm.setVisible(user != null);
 
-		requestPasswordForm.add(new TextField<>("username",
-				new Model<>(_username)).setEnabled(false));
+		requestPasswordForm
+				.add(new TextField<>("username", new Model<>(_username))
+						.setEnabled(false));
 
 		add(requestPasswordForm);
 

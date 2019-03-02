@@ -24,7 +24,8 @@ import com.tysanclan.site.projectewok.entities.filter.BattleNetChannelFilter;
 /**
  * @author Jeroen Steenbeeke
  */
-public interface BattleNetChannelDAO extends DAO<BattleNetChannel, BattleNetChannelFilter> {
+public interface BattleNetChannelDAO
+		extends DAO<BattleNetChannel, BattleNetChannelFilter> {
 
 	String getPasswordByUID(String identifier);
 

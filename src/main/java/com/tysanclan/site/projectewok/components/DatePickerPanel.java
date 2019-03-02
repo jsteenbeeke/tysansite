@@ -36,38 +36,33 @@ public class DatePickerPanel extends Panel {
 
 	private DatePicker<String> datePicker;
 
-	
 	public DatePickerPanel(String id, Date date) {
 		super(id);
 		initComponents(date);
 	}
 
 	/**
-     * 
-     */
+	 *
+	 */
 	public DatePickerPanel(String id) {
 		super(id);
 		initComponents(new Date());
 	}
 
-	
 	private void initComponents(Date date) {
 		String modelData;
 
 		if (date == null) {
 			modelData = "";
 		} else {
-			Calendar cal = Calendar.getInstance(
-			        DateUtil.NEW_YORK, Locale.US);
+			Calendar cal = Calendar.getInstance(DateUtil.NEW_YORK, Locale.US);
 			cal.setTime(date);
 
-			SimpleDateFormat format = new SimpleDateFormat(
-			        "MM/dd/yy");
+			SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy");
 			modelData = format.format(cal.getTime());
 		}
 
-		datePicker = new DatePicker<String>("date",
-		        new Model<String>(modelData));
+		datePicker = new DatePicker<>("date", new Model<>(modelData));
 		datePicker.setDateFormat("mm/dd/yy");
 
 		add(datePicker);
@@ -90,8 +85,7 @@ public class DatePickerPanel extends Panel {
 		}
 
 		try {
-			return new SimpleDateFormat("MM/dd/yy")
-			        .parse(input);
+			return new SimpleDateFormat("MM/dd/yy").parse(input);
 		} catch (ParseException e) {
 			return new Date();
 		}

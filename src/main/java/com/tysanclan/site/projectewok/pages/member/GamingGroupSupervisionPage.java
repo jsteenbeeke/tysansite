@@ -67,8 +67,9 @@ public class GamingGroupSupervisionPage extends AbstractMemberPage {
 			users.addAll(group.getGroupMembers());
 		}
 
-		add(GraphUtil.makePieChart("rankcomposition",
-				"Overall rank composition", createCompositionChart(users))
+		add(GraphUtil
+				.makePieChart("rankcomposition", "Overall rank composition",
+						createCompositionChart(users))
 				.setVisible(!users.isEmpty()));
 		add(GraphUtil.makeDonationsBarChart("groupsize", "Group sizes",
 				createGroupSizeChart(groups)).setVisible(!users.isEmpty()));
@@ -109,7 +110,7 @@ public class GamingGroupSupervisionPage extends AbstractMemberPage {
 	}
 
 	/**
-	 	 */
+	 */
 	private SortedMap<String, Integer> createCompositionChart(
 			List<User> users) {
 		SortedMap<String, Integer> series = new TreeMap<>();

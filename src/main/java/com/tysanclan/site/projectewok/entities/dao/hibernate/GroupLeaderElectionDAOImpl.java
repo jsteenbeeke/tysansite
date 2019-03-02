@@ -31,10 +31,10 @@ import java.util.Date;
  */
 @Component
 @Scope("request")
-class GroupLeaderElectionDAOImpl extends HibernateDAO<GroupLeaderElection, GroupLeaderElectionFilter>
+class GroupLeaderElectionDAOImpl
+		extends HibernateDAO<GroupLeaderElection, GroupLeaderElectionFilter>
 		implements
 		com.tysanclan.site.projectewok.entities.dao.GroupLeaderElectionDAO {
-
 
 	@Override
 	public void restartElectionsWithParticipant(User participant) {

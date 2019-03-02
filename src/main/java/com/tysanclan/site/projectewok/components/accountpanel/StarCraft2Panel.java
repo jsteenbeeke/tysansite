@@ -17,19 +17,18 @@
  */
 package com.tysanclan.site.projectewok.components.accountpanel;
 
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.validation.validator.RangeValidator;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.GameService;
 import com.tysanclan.site.projectewok.entities.GameAccount;
 import com.tysanclan.site.projectewok.entities.GameAccount.AccountType;
 import com.tysanclan.site.projectewok.entities.UserGameRealm;
 import com.tysanclan.site.projectewok.pages.member.EditAccountsPage;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.validation.validator.RangeValidator;
 
 public class StarCraft2Panel extends Panel {
 	private static final long serialVersionUID = 1L;
@@ -53,7 +52,8 @@ public class StarCraft2Panel extends Panel {
 				UserGameRealm ugr = getModelObject();
 
 				TextField<String> nameField = (TextField<String>) get("name");
-				TextField<Integer> charCodeField = (TextField<Integer>) get("charCode");
+				TextField<Integer> charCodeField = (TextField<Integer>) get(
+						"charCode");
 
 				GameAccount acc = gameService.createStarCraft2Account(ugr,
 						nameField.getModelObject(),
@@ -69,10 +69,9 @@ public class StarCraft2Panel extends Panel {
 
 		};
 
-		form.add(new TextField<>("name", new Model<>(""))
-				.setRequired(true));
-		form.add(new TextField<>("charCode", new Model<>(0),
-								 Integer.class).add(new RangeValidator<>(0, 999)));
+		form.add(new TextField<>("name", new Model<>("")).setRequired(true));
+		form.add(new TextField<>("charCode", new Model<>(0), Integer.class)
+				.add(new RangeValidator<>(0, 999)));
 
 		setVisible(gameService.isValidAccountType(userGameRealm.getGame(),
 				userGameRealm.getRealm(), AccountType.STARCRAFT2));

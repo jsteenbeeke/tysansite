@@ -1,120 +1,138 @@
 <html xmlns:wicket>
 <wicket:extend>
-	<div class="jqui-tabs">
-		<ul>
-			<li><a href="#tabs-1">Basic Settings</a></li>
-			<li><a href="#tabs-2">Profile</a></li>
-			<li><a href="#tabs-3">Change Password</a></li>
-			<li><a href="#tabs-4">Change E-Mail</a></li>
-			<li><a href="#tabs-5">Retirement</a></li>
-			<li><a href="#tabs-6">Vacation</a></li>
-			<li><a href="#tabs-7">Leave Tysan</a></li>
-		</ul>
-		<div id="tabs-1">
-			<span wicket:id="prefPanel"></span>
-		</div>
-		<div id="tabs-2">
-			<span wicket:id="profilePanel"></span>
-		</div>
+    <div class="jqui-tabs">
+        <ul>
+            <li><a href="#tabs-1">Basic Settings</a></li>
+            <li><a href="#tabs-2">Profile</a></li>
+            <li><a href="#tabs-3">Change Password</a></li>
+            <li><a href="#tabs-4">Change E-Mail</a></li>
+            <li><a href="#tabs-5">Retirement</a></li>
+            <li><a href="#tabs-6">Vacation</a></li>
+            <li><a href="#tabs-7">Leave Tysan</a></li>
+        </ul>
+        <div id="tabs-1">
+            <span wicket:id="prefPanel"></span>
+        </div>
+        <div id="tabs-2">
+            <span wicket:id="profilePanel"></span>
+        </div>
 
-		<div id="tabs-3">
-			<span wicket:id="passwordPanel"></span>
-		</div>
+        <div id="tabs-3">
+            <span wicket:id="passwordPanel"></span>
+        </div>
 
-		<div id="tabs-4">
-			<span wicket:id="mailPanel"></span>
-		</div>
+        <div id="tabs-4">
+            <span wicket:id="mailPanel"></span>
+        </div>
 
-		<div id="tabs-5">
-			Any member who has been with the clan for two years or longer has the
-			option to become a retired member, under a number of conditions:
-			<ul>
-				<li>The member in question holds the rank of Senior Member or
-					Revered Member (and therefore, holds no position as Chancellor,
-					Senator or Truthsayer)</li>
-				<li>The member in question is not the leader of any gaming
-					group</li>
-			</ul>
-			Becoming a retired member has the following consequences:
-			<ul>
-				<li>A retired member may not create gaming groups, nor lead
-					them - though he is free to join them</li>
-				<li>A retired member can not be elected as Chancellor or
-					Senator (nor can he receive nominations for these positions), nor
-					be appointed as Truthsayer</li>
-				<li>A retired member will not have his membership terminated,
-					unless he does not log in for a full year</li>
-			</ul>
+        <div id="tabs-5">
+            Any member who has been with the clan for two years or longer has
+            the
+            option to become a retired member, under a number of conditions:
+            <ul>
+                <li>The member in question holds the rank of Senior Member or
+                    Revered Member (and therefore, holds no position as
+                    Chancellor,
+                    Senator or Truthsayer)
+                </li>
+                <li>The member in question is not the leader of any gaming
+                    group
+                </li>
+            </ul>
+            Becoming a retired member has the following consequences:
+            <ul>
+                <li>A retired member may not create gaming groups, nor lead
+                    them - though he is free to join them
+                </li>
+                <li>A retired member can not be elected as Chancellor or
+                    Senator (nor can he receive nominations for these
+                    positions), nor
+                    be appointed as Truthsayer
+                </li>
+                <li>A retired member will not have his membership terminated,
+                    unless he does not log in for a full year
+                </li>
+            </ul>
 
-			<span wicket:id="no">You do not qualify to become a retired
+            <span wicket:id="no">You do not qualify to become a retired
 				member</span>
-			<form wicket:id="unretire">
-				<p>You are currently a retired member. If you wish to end your
-					retired status, please proceed by clicking the button labelled
-					Cease.</p>
+            <form wicket:id="unretire">
+                <p>You are currently a retired member. If you wish to end your
+                    retired status, please proceed by clicking the button
+                    labelled
+                    Cease.</p>
 
-				<p>
-					<input type="submit" value="Cease" class="SubmitButton" />
-				</p>
-			</form>
-			<form wicket:id="retire">
-				<p>You are currently eligible to become a retired member. If you
-					wish to become a retired member, please click the button labelled
-					Retire. Note that your retirement can be revoked at any time if you
-					so choose.</p>
+                <p>
+                    <input type="submit" value="Cease" class="SubmitButton"/>
+                </p>
+            </form>
+            <form wicket:id="retire">
+                <p>You are currently eligible to become a retired member. If you
+                    wish to become a retired member, please click the button
+                    labelled
+                    Retire. Note that your retirement can be revoked at any time
+                    if you
+                    so choose.</p>
 
-				<p>
-					<input type="submit" value="Retire" class="SubmitButton" />
-				</p>
-			</form>
-		</div>
+                <p>
+                    <input type="submit" value="Retire" class="SubmitButton"/>
+                </p>
+            </form>
+        </div>
 
-		<div id="tabs-6">
-			<p>When going away for an extended period of time (more than 14
-				days), it is recommended to activate Vacation Mode. Normally, your
-				membership is terminated if you do not log in once every 14 days.
-				When vacation mode is active, this period is extended to 60 days,
-				but only if you do not log in during your vacation!</p>
+        <div id="tabs-6">
+            <p>When going away for an extended period of time (more than 14
+                days), it is recommended to activate Vacation Mode. Normally,
+                your
+                membership is terminated if you do not log in once every 14
+                days.
+                When vacation mode is active, this period is extended to 60
+                days,
+                but only if you do not log in during your vacation!</p>
 
-			<p wicket:id="trialwarning">Since you are currently in your trial
-				period, please consider the following: why did you join Tysan if you
-				knew you wouldn't be around during your trial period. Having
-				Vacation mode active during your trial period will negatively affect
-				your acceptance vote.</p>
+            <p wicket:id="trialwarning">Since you are currently in your trial
+                period, please consider the following: why did you join Tysan if
+                you
+                knew you wouldn't be around during your trial period. Having
+                Vacation mode active during your trial period will negatively
+                affect
+                your acceptance vote.</p>
 
-			<p>
-				To activate vacation mode, press the Activate button below. <b>BEWARE!
-					PUSHING THIS BUTTON WILL LOG YOU OUT, AND THE SECOND YOU LOG IN
-					AGAIN YOUR VACATION MODE WILL BE DEACTIVATED!</b>
-			</p>
+            <p>
+                To activate vacation mode, press the Activate button below. <b>BEWARE!
+                PUSHING THIS BUTTON WILL LOG YOU OUT, AND THE SECOND YOU LOG IN
+                AGAIN YOUR VACATION MODE WILL BE DEACTIVATED!</b>
+            </p>
 
-			<p>
-			<form wicket:id="vacation">
-				<input type="submit" value="Activate" class="SubmitButton" />
-			</form>
-			</p>
+            <p>
+            <form wicket:id="vacation">
+                <input type="submit" value="Activate" class="SubmitButton"/>
+            </form>
+            </p>
 
 
+        </div>
 
-		</div>
-
-		<div id="tabs-7">
-			<p>We understand that we can not keep everybody happy, and that
-				at times people will choose to go their own way. If you no longer
-				wish to remain a member of the Tysan Clan, you can use the button
-				below to terminate your membership. Once you have pressed the
-				button, your account will be turned back into a regular forum
-				account.</p>
-			<p>Whatever your reasons are for leaving, we would like that you
-				share them with us. After you have terminated your membership,
-				please make a forum thread to explain your reasons for leaving.</p>
-			<p>
-			<form wicket:id="terminate">
-				<input type="submit" value="Terminate" class="SubmitButton" />
-			</form>
-			</p>
-		</div>
-	</div>
+        <div id="tabs-7">
+            <p>We understand that we can not keep everybody happy, and that
+                at times people will choose to go their own way. If you no
+                longer
+                wish to remain a member of the Tysan Clan, you can use the
+                button
+                below to terminate your membership. Once you have pressed the
+                button, your account will be turned back into a regular forum
+                account.</p>
+            <p>Whatever your reasons are for leaving, we would like that you
+                share them with us. After you have terminated your membership,
+                please make a forum thread to explain your reasons for
+                leaving.</p>
+            <p>
+            <form wicket:id="terminate">
+                <input type="submit" value="Terminate" class="SubmitButton"/>
+            </form>
+            </p>
+        </div>
+    </div>
 </wicket:extend>
 </html>
 

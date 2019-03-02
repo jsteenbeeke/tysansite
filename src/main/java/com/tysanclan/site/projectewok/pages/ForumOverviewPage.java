@@ -17,12 +17,11 @@
  */
 package com.tysanclan.site.projectewok.pages;
 
-import com.tysanclan.site.projectewok.TysanSession;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-
 import com.tysanclan.site.projectewok.TysanPage;
+import com.tysanclan.site.projectewok.TysanSession;
 import com.tysanclan.site.projectewok.components.ForumOverviewPanel;
 import com.tysanclan.site.projectewok.entities.User;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 
 /**
  * @author Jeroen Steenbeeke

@@ -17,40 +17,33 @@
  */
 package com.tysanclan.site.projectewok.util.forum;
 
-import java.io.Serializable;
-import java.util.List;
-
-import org.hibernate.Session;
-
-import com.tysanclan.site.projectewok.entities.Forum;
-import com.tysanclan.site.projectewok.entities.ForumCategory;
-import com.tysanclan.site.projectewok.entities.ForumPost;
-import com.tysanclan.site.projectewok.entities.ForumThread;
-import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.*;
 
 import javax.persistence.EntityManager;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
  */
 public interface ForumViewContext extends Serializable {
 	List<ForumCategory> getCategories(EntityManager em, User viewer, int offset,
-									  int count);
+			int count);
 
 	int countCategories(EntityManager em, User viewer);
 
 	List<Forum> getForums(EntityManager em, ForumCategory context, User viewer,
-						  int offset, int count);
+			int offset, int count);
 
 	int countForums(EntityManager em, ForumCategory context, User viewer);
 
 	List<ForumThread> getThreads(EntityManager em, Forum context, User viewer,
-								 int offset, int count);
+			int offset, int count);
 
 	int countThreads(EntityManager em, Forum context, User viewer);
 
 	List<ForumPost> getPosts(EntityManager em, ForumThread context, User viewer,
-							 int offset, int count);
+			int offset, int count);
 
 	int countPosts(EntityManager em, ForumThread context, User viewer);
 

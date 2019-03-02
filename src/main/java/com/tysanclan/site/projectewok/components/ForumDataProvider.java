@@ -17,17 +17,16 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import java.util.Iterator;
-import java.util.List;
-
-import org.apache.wicket.markup.repeater.data.IDataProvider;
-import org.apache.wicket.model.IModel;
-
 import com.jeroensteenbeeke.hyperion.data.DomainObject;
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanSession;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.ContextBasedForumDAO;
+import org.apache.wicket.markup.repeater.data.IDataProvider;
+import org.apache.wicket.model.IModel;
+
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -66,8 +65,7 @@ public class ForumDataProvider<T extends DomainObject, C extends DomainObject, D
 
 	@Override
 	public Iterator<? extends T> iterator(long first, long count) {
-		User user = TysanSession.session()
-				.flatMap(TysanSession::getUser)
+		User user = TysanSession.session().flatMap(TysanSession::getUser)
 				.getOrNull();
 
 		List<T> list = dao.findByContext(user, context.getObject(),
@@ -78,8 +76,7 @@ public class ForumDataProvider<T extends DomainObject, C extends DomainObject, D
 
 	@Override
 	public long size() {
-		User user = TysanSession.session()
-				.flatMap(TysanSession::getUser)
+		User user = TysanSession.session().flatMap(TysanSession::getUser)
 				.getOrNull();
 
 		return dao.countByContext(user, context.getObject(),

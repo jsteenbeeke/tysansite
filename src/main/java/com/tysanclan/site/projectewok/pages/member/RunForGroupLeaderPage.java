@@ -17,13 +17,12 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.DemocracyService;
 import com.tysanclan.site.projectewok.components.IconLink;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
 import com.tysanclan.site.projectewok.entities.GroupLeaderElection;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -56,8 +55,8 @@ public class RunForGroupLeaderPage extends AbstractMemberPage {
 
 					}
 
-				}).setText("Yes, I want to run for group leader").newInstance(
-				"yes"));
+				}).setText("Yes, I want to run for group leader")
+				.newInstance("yes"));
 		add(new IconLink.Builder("images/icons/cross.png",
 				new DefaultClickResponder<GroupLeaderElection>(
 						ModelMaker.wrap(election)) {

@@ -27,13 +27,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("request")
-class SubscriptionPaymentDAOImpl extends HibernateDAO<SubscriptionPayment, SubscriptionPaymentFilter>
+class SubscriptionPaymentDAOImpl
+		extends HibernateDAO<SubscriptionPayment, SubscriptionPaymentFilter>
 		implements SubscriptionPaymentDAO {
 	@Override
 	public String getConfirmationKey(SubscriptionPayment payment) {
-		return HashUtil.sha1Hash(payment.getId()
-				+ payment.getUser().getUsername()).throwIfNotOk(IllegalStateException::new);
+		return HashUtil
+				.sha1Hash(payment.getId() + payment.getUser().getUsername())
+				.throwIfNotOk(IllegalStateException::new);
 	}
-
 
 }

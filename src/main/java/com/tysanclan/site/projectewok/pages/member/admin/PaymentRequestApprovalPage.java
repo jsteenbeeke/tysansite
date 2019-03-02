@@ -17,8 +17,14 @@
  */
 package com.tysanclan.site.projectewok.pages.member.admin;
 
-import java.math.BigDecimal;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.beans.RoleService;
+import com.tysanclan.site.projectewok.components.MemberListItem;
+import com.tysanclan.site.projectewok.entities.PaymentRequest;
+import com.tysanclan.site.projectewok.entities.dao.PaymentRequestDAO;
+import com.tysanclan.site.projectewok.model.DollarSignModel;
+import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
+import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.basic.Label;
@@ -28,18 +34,11 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
-import com.tysanclan.site.projectewok.beans.RoleService;
-import com.tysanclan.site.projectewok.components.MemberListItem;
-import com.tysanclan.site.projectewok.entities.PaymentRequest;
-import com.tysanclan.site.projectewok.entities.dao.PaymentRequestDAO;
-import com.tysanclan.site.projectewok.model.DollarSignModel;
-import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
-import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
+import java.math.BigDecimal;
 
 public class PaymentRequestApprovalPage extends AbstractMemberPage {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -57,8 +56,8 @@ public class PaymentRequestApprovalPage extends AbstractMemberPage {
 					AccessDeniedPage.class);
 		}
 
-		add(new ListView<PaymentRequest>("requests", ModelMaker.wrap(requestDAO
-				.findAll().toJavaList())) {
+		add(new ListView<PaymentRequest>("requests",
+				ModelMaker.wrap(requestDAO.findAll().toJavaList())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -66,34 +65,32 @@ public class PaymentRequestApprovalPage extends AbstractMemberPage {
 				PaymentRequest request = item.getModelObject();
 
 				item.add(new Label("header", request.getItem()));
-				item.add(new MemberListItem("requester", request.getRequester()));
+				item.add(new MemberListItem("requester",
+						request.getRequester()));
 				item.add(new Label("amount", new DollarSignModel(
 						new Model<BigDecimal>(request.getAmount()))));
 
 				item.add(new Label("desc", request.getItem()));
 
 				item.add(new HiddenField<String>("paypalAddress",
-						new Model<String>(request.getRequester()
-								.getPaypalAddress())).add(AttributeModifier
-						.replace("name", "business")));
-				item.add(new HiddenField<String>("itemname", new Model<String>(
-						request.getItem())));
+						new Model<String>(
+								request.getRequester().getPaypalAddress()))
+						.add(AttributeModifier.replace("name", "business")));
+				item.add(new HiddenField<String>("itemname",
+						new Model<String>(request.getItem())));
 
 				item.add(new HiddenField<String>("itemdesc", new Model<String>(
 						"The Tysan Clan - " + request.getItem()))
-						.add(AttributeModifier.replace("name", "item_name"))); //
-				item.add(new HiddenField<String>("amount2", new Model<String>(
-						request.getAmount().toString())).add(AttributeModifier
-						.replace("name", "amount")));
-				item.add(new HiddenField<String>("returnUrl",
-						new Model<String>(
-								"https://www.tysanclan.com/processPaymentRequest/"
-										+ request.getId()
-										+ "/"
-										+ requestDAO
-												.getConfirmationKey(request)
-										+ "/")).add(AttributeModifier.replace(
-						"name", "return")));
+						.add(AttributeModifier
+								.replace("name", "item_name"))); //
+				item.add(new HiddenField<String>("amount2",
+						new Model<String>(request.getAmount().toString()))
+						.add(AttributeModifier.replace("name", "amount")));
+				item.add(new HiddenField<String>("returnUrl", new Model<String>(
+						"https://www.tysanclan.com/processPaymentRequest/"
+								+ request.getId() + "/" + requestDAO
+								.getConfirmationKey(request) + "/"))
+						.add(AttributeModifier.replace("name", "return")));
 			}
 		});
 	}

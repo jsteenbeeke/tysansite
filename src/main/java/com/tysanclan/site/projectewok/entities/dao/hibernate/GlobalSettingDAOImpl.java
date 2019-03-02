@@ -32,7 +32,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Component
 @Scope("request")
-class GlobalSettingDAOImpl extends HibernateDAO<GlobalSetting, GlobalSettingFilter> implements
+class GlobalSettingDAOImpl
+		extends HibernateDAO<GlobalSetting, GlobalSettingFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.GlobalSettingDAO {
 	@Override
 	public Option<GlobalSetting> get(String id) {

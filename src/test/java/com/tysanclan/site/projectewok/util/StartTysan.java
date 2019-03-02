@@ -28,9 +28,7 @@ public class StartTysan {
 	public static void main(String[] args) throws Exception {
 		System.setProperty("ewok.testmode", "true");
 
-		InMemory.run("ewok")
-				.withContextPath("/tysan")
-				.atPort(8081)
+		InMemory.run("ewok").withContextPath("/tysan").atPort(8081)
 				.ifPresent(InMemory.Handler::waitForKeyPress);
 	}
 }

@@ -27,7 +27,8 @@ import io.vavr.control.Option;
  *
  * @author Jeroen Steenbeeke
  */
-public interface GlobalSettingDAO extends DAO<GlobalSetting, GlobalSettingFilter> {
+public interface GlobalSettingDAO
+		extends DAO<GlobalSetting, GlobalSettingFilter> {
 	Option<GlobalSetting> get(String id);
 
 	GlobalSetting getGlobalSetting(GlobalSettings id);

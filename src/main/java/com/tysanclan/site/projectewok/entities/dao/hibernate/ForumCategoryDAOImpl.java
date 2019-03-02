@@ -32,7 +32,8 @@ import java.util.List;
  */
 @Component
 @Scope("request")
-class ForumCategoryDAOImpl extends HibernateDAO<ForumCategory, ForumCategoryFilter> implements
+class ForumCategoryDAOImpl
+		extends HibernateDAO<ForumCategory, ForumCategoryFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.ForumCategoryDAO {
 
 	@Override

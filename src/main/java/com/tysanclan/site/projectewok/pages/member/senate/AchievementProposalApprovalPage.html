@@ -1,26 +1,30 @@
-<html xmlns:html="http://www.w3.org/1999/xhtml" xmlns:wicket>
+<html xmlns:wicket>
 <wicket:extend>
-	<table style="width: 100%;">
-		<thead>
-			<tr>
-				<th colspan="2">Achievement</th>
-				<th>Game</th>
-				<th>Group</th>
-				<th>Description</th>
-				<th colspan="3">Vote</th>
-			</tr>
-		</thead>
-		<tr wicket:id="proposals">
-			<td style="text-align: center;"><img wicket:id="icon" /></td>
-			<td style="text-align: center;" wicket:id="name"></td>
-			<td style="text-align: center;" wicket:id="game"></td>
-			<td style="text-align: center;" wicket:id="group"></td>
-			<td style="text-align: center;" wicket:id="description"></td>
-			<td style="text-align: center;" wicket:id="current"></td>
-			<td style="text-align: center;"><div wicket:id="yes"></div></td>
-			<td style="text-align: center;"><div wicket:id="no"></div></td>
-		</tr>
-	</table>
+    <table style="width: 100%;">
+        <thead>
+        <tr>
+            <th colspan="2">Achievement</th>
+            <th>Game</th>
+            <th>Group</th>
+            <th>Description</th>
+            <th colspan="3">Vote</th>
+        </tr>
+        </thead>
+        <tr wicket:id="proposals">
+            <td style="text-align: center;"><img wicket:id="icon"/></td>
+            <td style="text-align: center;" wicket:id="name"></td>
+            <td style="text-align: center;" wicket:id="game"></td>
+            <td style="text-align: center;" wicket:id="group"></td>
+            <td style="text-align: center;" wicket:id="description"></td>
+            <td style="text-align: center;" wicket:id="current"></td>
+            <td style="text-align: center;">
+                <div wicket:id="yes"></div>
+            </td>
+            <td style="text-align: center;">
+                <div wicket:id="no"></div>
+            </td>
+        </tr>
+    </table>
 </wicket:extend>
 
 </html>

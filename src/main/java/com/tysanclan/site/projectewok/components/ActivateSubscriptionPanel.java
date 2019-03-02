@@ -17,9 +17,11 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import java.math.BigDecimal;
-import java.util.Arrays;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.beans.FinanceService;
+import com.tysanclan.site.projectewok.entities.Expense.ExpensePeriod;
+import com.tysanclan.site.projectewok.entities.Expense.ExpensePeriodRenderer;
+import com.tysanclan.site.projectewok.entities.User;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
@@ -28,11 +30,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.RangeValidator;
 
-import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
-import com.tysanclan.site.projectewok.beans.FinanceService;
-import com.tysanclan.site.projectewok.entities.Expense.ExpensePeriod;
-import com.tysanclan.site.projectewok.entities.Expense.ExpensePeriodRenderer;
-import com.tysanclan.site.projectewok.entities.User;
+import java.math.BigDecimal;
+import java.util.Arrays;
 
 public class ActivateSubscriptionPanel extends Panel {
 

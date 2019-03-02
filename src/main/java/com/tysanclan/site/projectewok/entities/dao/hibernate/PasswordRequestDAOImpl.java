@@ -28,8 +28,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class PasswordRequestDAOImpl extends HibernateDAO<PasswordRequest, PasswordRequestFilter>
-		implements
+class PasswordRequestDAOImpl
+		extends HibernateDAO<PasswordRequest, PasswordRequestFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.PasswordRequestDAO {
 
 }

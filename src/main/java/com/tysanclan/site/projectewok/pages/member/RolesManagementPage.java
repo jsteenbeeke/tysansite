@@ -59,7 +59,7 @@ public class RolesManagementPage extends AbstractMemberPage {
 	private RoleDAO roleDAO;
 
 	/**
-	 * 
+	 *
 	 */
 	public RolesManagementPage() {
 		super("Roles management");
@@ -83,7 +83,8 @@ public class RolesManagementPage extends AbstractMemberPage {
 				item.add(new Label("name", role.getName()));
 
 				if (role.getAssignedTo() != null) {
-					item.add(new MemberListItem("member", role.getAssignedTo()));
+					item.add(
+							new MemberListItem("member", role.getAssignedTo()));
 				} else {
 					item.add(new Label("member", "-"));
 				}
@@ -103,7 +104,8 @@ public class RolesManagementPage extends AbstractMemberPage {
 					@SuppressWarnings("unchecked")
 					@Override
 					protected void onSubmit() {
-						DropDownChoice<User> userChoice = (DropDownChoice<User>) get("user");
+						DropDownChoice<User> userChoice = (DropDownChoice<User>) get(
+								"user");
 
 						User user = userChoice.getModelObject();
 
@@ -128,16 +130,16 @@ public class RolesManagementPage extends AbstractMemberPage {
 
 				List<User> users = userDAO.findByFilter(f).toJavaList();
 
-				reassignForm.add(new DropDownChoice<>("user", ModelMaker
-						.wrap(users.get(0), true), ModelMaker.wrap(users))
-						.setNullValid(false));
+				reassignForm.add(new DropDownChoice<>("user",
+						ModelMaker.wrap(users.get(0), true),
+						ModelMaker.wrap(users)).setNullValid(false));
 
 				reassignDialog.add(reassignForm);
 
 				item.add(reassignDialog);
 
-				AjaxLink<Dialog> reassignLink = new AjaxLink<Dialog>(
-						"reassign", new Model<>(reassignDialog)) {
+				AjaxLink<Dialog> reassignLink = new AjaxLink<Dialog>("reassign",
+						new Model<>(reassignDialog)) {
 					private static final long serialVersionUID = 1L;
 
 					/**
@@ -198,8 +200,8 @@ public class RolesManagementPage extends AbstractMemberPage {
 
 				};
 
-				yesDeleteLink.add(new ContextImage("icon",
-						"images/icons/tick.png"));
+				yesDeleteLink
+						.add(new ContextImage("icon", "images/icons/tick.png"));
 
 				deletedialog.add(yesDeleteLink);
 
@@ -251,8 +253,8 @@ public class RolesManagementPage extends AbstractMemberPage {
 
 				item.add(new WebMarkupContainer("nonreassignable")
 						.setVisible(!role.isReassignable()));
-				item.add(new WebMarkupContainer("noneditable").setVisible(!role
-						.isReassignable()));
+				item.add(new WebMarkupContainer("noneditable")
+						.setVisible(!role.isReassignable()));
 				item.add(new WebMarkupContainer("nondeletable")
 						.setVisible(!role.isReassignable()));
 
@@ -276,7 +278,8 @@ public class RolesManagementPage extends AbstractMemberPage {
 			@Override
 			protected void onSubmit() {
 				TextField<String> nameField = (TextField<String>) get("name");
-				TextArea<String> descriptionArea = (TextArea<String>) get("description");
+				TextArea<String> descriptionArea = (TextArea<String>) get(
+						"description");
 
 				String name = nameField.getModelObject();
 				String description = descriptionArea.getModelObject();
@@ -290,8 +293,7 @@ public class RolesManagementPage extends AbstractMemberPage {
 		};
 
 		addRoleForm.add(new TextField<String>("name", new Model<String>("")));
-		addRoleForm
-				.add(new BBCodeTextArea("description", ""));
+		addRoleForm.add(new BBCodeTextArea("description", ""));
 
 		add(addRoleForm);
 	}

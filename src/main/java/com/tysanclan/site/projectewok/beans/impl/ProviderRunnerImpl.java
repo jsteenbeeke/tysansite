@@ -17,6 +17,8 @@
  */
 package com.tysanclan.site.projectewok.beans.impl;
 
+import com.tysanclan.site.projectewok.StartupResourceProvider;
+import com.tysanclan.site.projectewok.beans.ProviderRunner;
 import org.apache.wicket.SharedResources;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,9 +29,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.tysanclan.site.projectewok.StartupResourceProvider;
-import com.tysanclan.site.projectewok.beans.ProviderRunner;
 
 /**
  * @author Jeroen Steenbeeke
@@ -50,7 +49,8 @@ class ProviderRunnerImpl implements ProviderRunner, ApplicationContextAware {
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	@Override
-	public void run(SharedResources resources, StartupResourceProvider provider) {
+	public void run(SharedResources resources,
+			StartupResourceProvider provider) {
 		log.info("Loading resources from " + provider.getClass().getName());
 
 		context.getAutowireCapableBeanFactory().autowireBean(provider);

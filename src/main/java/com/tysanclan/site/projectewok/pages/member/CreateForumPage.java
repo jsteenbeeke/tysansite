@@ -17,14 +17,6 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.TysanPage;
@@ -32,6 +24,13 @@ import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.ForumService;
 import com.tysanclan.site.projectewok.entities.Forum;
 import com.tysanclan.site.projectewok.entities.ForumCategory;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -57,7 +56,8 @@ public class CreateForumPage extends TysanPage {
 			@Override
 			protected void onSubmit() {
 				TextField<String> nameField = (TextField<String>) get("name");
-				TextArea<String> descriptionArea = (TextArea<String>) get("description");
+				TextArea<String> descriptionArea = (TextArea<String>) get(
+						"description");
 
 				CheckBox publicAccessBox = (CheckBox) get("publicaccess");
 				CheckBox membersOnlyBox = (CheckBox) get("membersonly");
@@ -84,8 +84,9 @@ public class CreateForumPage extends TysanPage {
 
 				ForumCategory cat = getModelObject();
 
-				Forum forum = forumService.createForum(name, description,
-						publicAccess, cat, getUser());
+				Forum forum = forumService
+						.createForum(name, description, publicAccess, cat,
+								getUser());
 
 				if (membersOnly) {
 					forumService.setMembersOnly(getUser(), forum, membersOnly);

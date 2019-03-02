@@ -17,17 +17,6 @@
  */
 package com.tysanclan.site.projectewok.beans.impl;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import io.vavr.collection.Seq;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.entities.Role;
 import com.tysanclan.site.projectewok.entities.Role.RoleType;
@@ -42,14 +31,23 @@ import com.tysanclan.site.projectewok.entities.filter.RoleFilter;
 import com.tysanclan.site.projectewok.entities.filter.RoleTransferFilter;
 import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
+import io.vavr.collection.Seq;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class RoleServiceImpl implements
-		com.tysanclan.site.projectewok.beans.RoleService {
+class RoleServiceImpl
+		implements com.tysanclan.site.projectewok.beans.RoleService {
 	@Autowired
 	private RoleDAO roleDAO;
 
@@ -68,7 +66,8 @@ class RoleServiceImpl implements
 	@Autowired
 	private com.tysanclan.site.projectewok.beans.NotificationService notificationService;
 
-	public void setTransferDAO(RoleTransferApprovalDAO roleTransferApprovalDAO) {
+	public void setTransferDAO(
+			RoleTransferApprovalDAO roleTransferApprovalDAO) {
 		this.roleTransferApprovalDAO = roleTransferApprovalDAO;
 	}
 
@@ -84,7 +83,7 @@ class RoleServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public Role createRole(User user, String name, String description,
-						   RoleType type) {
+			RoleType type) {
 		Role role = new Role();
 		role.setName(name);
 		role.setDescription(BBCodeUtil.stripTags(description));
@@ -92,8 +91,8 @@ class RoleServiceImpl implements
 		role.setAssignedTo(null);
 		roleDAO.save(role);
 
-		logService.logUserAction(user, "Roles", "Role " + role.getName()
-				+ " created");
+		logService.logUserAction(user, "Roles",
+				"Role " + role.getName() + " created");
 
 		return role;
 	}
@@ -124,18 +123,19 @@ class RoleServiceImpl implements
 	@Transactional(propagation = Propagation.REQUIRED)
 	public boolean assignTo(Long assigner_id, Long role_id, Long user_id) {
 		return roleDAO.load(role_id).map(role -> {
-			User user = user_id != null ? userDAO.load(user_id).getOrNull() : null;
-			User assigner = assigner_id != null ? userDAO.load(assigner_id).getOrNull() : null;
+			User user =
+					user_id != null ? userDAO.load(user_id).getOrNull() : null;
+			User assigner = assigner_id != null ?
+					userDAO.load(assigner_id).getOrNull() :
+					null;
 
 			if (role != null && user != null) {
 				role.setAssignedTo(user);
 				roleDAO.update(role);
 
-				logService.logUserAction(
-						assigner,
-						"Roles",
-						"Role " + role.getName() + " assigned to "
-								+ user.getUsername());
+				logService.logUserAction(assigner, "Roles",
+						"Role " + role.getName() + " assigned to " + user
+								.getUsername());
 
 				notificationService.notifyUser(user,
 						"You have been given the role of " + role.getName());
@@ -176,8 +176,8 @@ class RoleServiceImpl implements
 
 			logService.logUserAction(candidate, "Organization",
 					"User was nominated for " + type.toString());
-			notificationService.notifyUser(candidate, "You were nominated for "
-					+ type.toString());
+			notificationService.notifyUser(candidate,
+					"You were nominated for " + type.toString());
 		}
 
 	}
@@ -185,19 +185,22 @@ class RoleServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void objectToTransfer(User user, RoleTransfer transfer) {
-		if (user.getRank() == Rank.SENATOR || user.getRank() == Rank.CHANCELLOR) {
+		if (user.getRank() == Rank.SENATOR
+				|| user.getRank() == Rank.CHANCELLOR) {
 			User current = getCurrentPersonWithRole(transfer.getRoleType());
 
 			if (current != null) {
-				notificationService.notifyUser(current, "Your nomination of "
-						+ transfer.getCandidate().getUsername() + " for "
-						+ transfer.getRoleType().toString()
-						+ " was rejected by " + user.getUsername());
+				notificationService.notifyUser(current,
+						"Your nomination of " + transfer.getCandidate()
+								.getUsername() + " for " + transfer
+								.getRoleType().toString() + " was rejected by "
+								+ user.getUsername());
 			}
 
-			logService.logUserAction(user, "Organization", "Has rejected "
-					+ transfer.getCandidate().getUsername()
-					+ " as candidate for " + transfer.getRoleType().toString());
+			logService.logUserAction(user, "Organization",
+					"Has rejected " + transfer.getCandidate().getUsername()
+							+ " as candidate for " + transfer.getRoleType()
+							.toString());
 
 			roleTransferDAO.delete(transfer);
 
@@ -235,10 +238,12 @@ class RoleServiceImpl implements
 				roleDAO.getUniqueByFilter(filter).forEach(role -> {
 
 					notificationService.notifyUser(transfer.getCandidate(),
-							"You have been approved as "
-									+ transfer.getRoleType().toString());
-					logService.logUserAction(transfer.getCandidate(), "Organization",
-							"Has been approved as the new " + transfer.getRoleType());
+							"You have been approved as " + transfer
+									.getRoleType().toString());
+					logService.logUserAction(transfer.getCandidate(),
+							"Organization",
+							"Has been approved as the new " + transfer
+									.getRoleType());
 
 					role.setAssignedTo(transfer.getCandidate());
 					roleTransferDAO.delete(transfer);
@@ -283,16 +288,16 @@ class RoleServiceImpl implements
 			User current = getCurrentPersonWithRole(transfer.getRoleType());
 
 			if (current != null) {
-				notificationService.notifyUser(current, "Your nomination of "
-						+ transfer.getCandidate().getUsername() + " for "
-						+ transfer.getRoleType().toString()
-						+ " was removed due to membership termination");
+				notificationService.notifyUser(current,
+						"Your nomination of " + transfer.getCandidate()
+								.getUsername() + " for " + transfer
+								.getRoleType().toString()
+								+ " was removed due to membership termination");
 			}
 
 			logService.logUserAction(transfer.getCandidate(), "Organization",
-					"Was removed as candidate for "
-							+ transfer.getRoleType().toString()
-							+ " due to membership termination");
+					"Was removed as candidate for " + transfer.getRoleType()
+							.toString() + " due to membership termination");
 
 		}
 
@@ -366,7 +371,8 @@ class RoleServiceImpl implements
 
 				if (role.getAssignedTo() != null) {
 					notificationService.notifyUser(user,
-							"Your role of " + role.getName() + " has been deleted");
+							"Your role of " + role.getName()
+									+ " has been deleted");
 				}
 			} else {
 				throw new RuntimeException(
@@ -412,12 +418,13 @@ class RoleServiceImpl implements
 				_role.setName(name);
 				roleDAO.update(_role);
 
-				logService.logUserAction(user, "Roles", "The role " + oldName
-						+ " has been renamed to " + name);
+				logService.logUserAction(user, "Roles",
+						"The role " + oldName + " has been renamed to " + name);
 
 				if (role.getAssignedTo() != null) {
-					notificationService.notifyUser(user, "Your role of " + oldName
-							+ " has been renamed to " + name);
+					notificationService.notifyUser(user,
+							"Your role of " + oldName + " has been renamed to "
+									+ name);
 				}
 			} else {
 				throw new RuntimeException(

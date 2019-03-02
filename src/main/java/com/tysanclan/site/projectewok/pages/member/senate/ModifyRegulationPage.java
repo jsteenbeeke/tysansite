@@ -17,20 +17,8 @@
  */
 package com.tysanclan.site.projectewok.pages.member.senate;
 
-import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.NaiveRenderer;
-import org.apache.wicket.Component;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
-import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.NaiveRenderer;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.DemocracyService;
@@ -39,6 +27,16 @@ import com.tysanclan.site.projectewok.entities.Regulation;
 import com.tysanclan.site.projectewok.entities.RegulationChange;
 import com.tysanclan.site.projectewok.entities.dao.RegulationDAO;
 import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
+import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -51,7 +49,7 @@ public class ModifyRegulationPage extends AbstractMemberPage {
 	private RegulationDAO regulationDAO;
 
 	/**
-	 * 
+	 *
 	 */
 	public ModifyRegulationPage() {
 		super("Modify Regulation");
@@ -61,7 +59,7 @@ public class ModifyRegulationPage extends AbstractMemberPage {
 	}
 
 	/**
-	 	 */
+	 */
 	private Form<RegulationChange> createModifyForm() {
 		Form<RegulationChange> form = new Form<RegulationChange>("editForm") {
 			private static final long serialVersionUID = 1L;
@@ -75,9 +73,12 @@ public class ModifyRegulationPage extends AbstractMemberPage {
 			@SuppressWarnings("unchecked")
 			@Override
 			protected void onSubmit() {
-				TextArea<String> descriptionArea = (TextArea<String>) get("description");
-				TextField<String> newTitleField = (TextField<String>) get("newTitle");
-				DropDownChoice<Regulation> regulationChoice = (DropDownChoice<Regulation>) get("regulation");
+				TextArea<String> descriptionArea = (TextArea<String>) get(
+						"description");
+				TextField<String> newTitleField = (TextField<String>) get(
+						"newTitle");
+				DropDownChoice<Regulation> regulationChoice = (DropDownChoice<Regulation>) get(
+						"regulation");
 
 				String newDescription = descriptionArea.getModelObject();
 				String newTitle = newTitleField.getModelObject();
@@ -100,37 +101,36 @@ public class ModifyRegulationPage extends AbstractMemberPage {
 
 		form.add(new TextField<>("newTitle", new Model<>("")));
 
-		form.add(new BBCodeTextArea("description", "")
-				.setRequired(true));
+		form.add(new BBCodeTextArea("description", "").setRequired(true));
 
 		form.add(new Label("example", new Model<>(""))
 				.setEscapeModelStrings(false).setVisible(false)
 				.setOutputMarkupId(true).setOutputMarkupPlaceholderTag(true));
 
-		form.add(new DropDownChoice<>("regulation", ModelMaker.wrap(
-				(Regulation) null, true), ModelMaker.wrapChoices(regulationDAO
-																		 .findAll()
-																		 .toJavaList()), new NaiveRenderer<Regulation>() {
-			private static final long serialVersionUID = 1L;
+		form.add(new DropDownChoice<>("regulation",
+				ModelMaker.wrap((Regulation) null, true),
+				ModelMaker.wrapChoices(regulationDAO.findAll().toJavaList()),
+				new NaiveRenderer<Regulation>() {
+					private static final long serialVersionUID = 1L;
 
-			/**
-			 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(java.lang.Object)
-			 */
-			@Override
-			public Object getDisplayValue(Regulation object) {
-				return object.getName();
-			}
+					/**
+					 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(java.lang.Object)
+					 */
+					@Override
+					public Object getDisplayValue(Regulation object) {
+						return object.getName();
+					}
 
-			/**
-			 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getIdValue(java.lang.Object,
-			 * int)
-			 */
-			@Override
-			public String getIdValue(Regulation object, int index) {
-				return object.getId().toString();
-			}
-		}).setNullValid(false).add(
-				new AjaxFormComponentUpdatingBehavior("onchange") {
+					/**
+					 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getIdValue(java.lang.Object,
+					 * int)
+					 */
+					@Override
+					public String getIdValue(Regulation object, int index) {
+						return object.getId().toString();
+					}
+				}).setNullValid(false)
+				.add(new AjaxFormComponentUpdatingBehavior("onchange") {
 					private static final long serialVersionUID = 1L;
 
 					@SuppressWarnings("unchecked")

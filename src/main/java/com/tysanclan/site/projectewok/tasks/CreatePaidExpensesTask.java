@@ -29,6 +29,7 @@ public class CreatePaidExpensesTask extends HyperionTask {
 
 	@Override
 	public void run(ServiceProvider provider) {
-		provider.getService(FinanceService.class).transformExpensesToPaidExpenses();
+		provider.getService(FinanceService.class)
+				.transformExpensesToPaidExpenses();
 	}
 }

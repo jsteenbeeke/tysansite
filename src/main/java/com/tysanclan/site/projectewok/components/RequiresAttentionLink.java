@@ -17,13 +17,6 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import java.io.Serializable;
-import java.util.List;
-
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.IDetachable;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.tysanclan.site.projectewok.TysanSession;
 import com.tysanclan.site.projectewok.components.IconLink.ClickResponder;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
@@ -31,6 +24,12 @@ import com.tysanclan.site.projectewok.entities.AttentionSuppression;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.AttentionSuppressionDAO;
 import com.tysanclan.site.projectewok.pages.member.OverviewPage;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IDetachable;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -46,8 +45,8 @@ public class RequiresAttentionLink extends Panel {
 	}
 
 	public static enum AttentionType {
-		INFO("images/icons/information.png"), WARNING("images/icons/error.png"), ERROR(
-				"images/icons/delete.png");
+		INFO("images/icons/information.png"), WARNING(
+				"images/icons/error.png"), ERROR("images/icons/delete.png");
 
 		private String iconPath;
 
@@ -88,19 +87,19 @@ public class RequiresAttentionLink extends Panel {
 		 * @param invisibleIfNotNotified
 		 *            the invisibleIfNotNotified to set
 		 */
-		public Builder setInvisibleIfNotNotified(boolean invisibleIfNotNotified) {
+		public Builder setInvisibleIfNotNotified(
+				boolean invisibleIfNotNotified) {
 			this.invisibleIfNotNotified = invisibleIfNotNotified;
 			return this;
 		}
 
 		public RequiresAttentionLink newInstance(String id,
-												 IRequiresAttentionCondition condition,
-												 AttentionSuppressionDAO attentionDAO) {
+				IRequiresAttentionCondition condition,
+				AttentionSuppressionDAO attentionDAO) {
 			RequiresAttentionLink instance = new RequiresAttentionLink(id,
 					condition);
 
-			User user = TysanSession.session()
-					.flatMap(TysanSession::getUser)
+			User user = TysanSession.session().flatMap(TysanSession::getUser)
 					.getOrNull();
 
 			instance.label = new IconLink.Builder("", responder)
@@ -115,8 +114,8 @@ public class RequiresAttentionLink extends Panel {
 
 			instance.add(instance.label);
 
-			instance.dismissed = attentionDAO.isSuppressed(
-					condition.getClass(), condition.getDismissableId(), user);
+			instance.dismissed = attentionDAO.isSuppressed(condition.getClass(),
+					condition.getDismissableId(), user);
 
 			if (!instance.dismissed && active) {
 				conditionList.add(id);
@@ -153,15 +152,15 @@ public class RequiresAttentionLink extends Panel {
 	private AttentionSuppressionDAO attentionDAO;
 
 	private RequiresAttentionLink(String id,
-								  IRequiresAttentionCondition condition) {
+			IRequiresAttentionCondition condition) {
 		super(id);
 
 		this.attentionType = condition.requiresAttention();
 		this.dismissalId = condition.getDismissableId();
 		this.conditionClass = condition.getClass();
 
-		String iconPath = attentionType != null ? attentionType.getIconPath()
-				: "";
+		String iconPath =
+				attentionType != null ? attentionType.getIconPath() : "";
 
 		icon = new IconLink.Builder(iconPath,
 				new DefaultClickResponder<AttentionSuppression>() {
@@ -196,8 +195,7 @@ public class RequiresAttentionLink extends Panel {
 	}
 
 	private User getUser() {
-		return TysanSession.session()
-				.flatMap(TysanSession::getUser)
+		return TysanSession.session().flatMap(TysanSession::getUser)
 				.getOrNull();
 	}
 

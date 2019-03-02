@@ -17,11 +17,11 @@
  */
 package com.tysanclan.site.projectewok.update;
 
-import static org.junit.Assert.assertTrue;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Jeroen Steenbeeke

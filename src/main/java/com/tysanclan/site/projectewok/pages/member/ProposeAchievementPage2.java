@@ -17,10 +17,16 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.LinkedList;
-import java.util.List;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.LambdaRenderer;
+import com.tysanclan.site.projectewok.beans.AchievementService;
+import com.tysanclan.site.projectewok.beans.GameService;
+import com.tysanclan.site.projectewok.components.BBCodeTextArea;
+import com.tysanclan.site.projectewok.components.StoredImageResource;
+import com.tysanclan.site.projectewok.entities.AchievementIcon;
+import com.tysanclan.site.projectewok.entities.AchievementProposal;
+import com.tysanclan.site.projectewok.entities.Game;
+import com.tysanclan.site.projectewok.entities.Group;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -33,15 +39,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
-import com.tysanclan.site.projectewok.beans.AchievementService;
-import com.tysanclan.site.projectewok.beans.GameService;
-import com.tysanclan.site.projectewok.components.BBCodeTextArea;
-import com.tysanclan.site.projectewok.components.StoredImageResource;
-import com.tysanclan.site.projectewok.entities.AchievementIcon;
-import com.tysanclan.site.projectewok.entities.AchievementProposal;
-import com.tysanclan.site.projectewok.entities.Game;
-import com.tysanclan.site.projectewok.entities.Group;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -56,8 +55,9 @@ public class ProposeAchievementPage2 extends AbstractSingleAccordionMemberPage {
 		private final String description;
 
 		private AchievementType() {
-			this.description = name().substring(0, 1).toUpperCase() +
-					name().substring(1).toLowerCase();
+			this.description =
+					name().substring(0, 1).toUpperCase() + name().substring(1)
+							.toLowerCase();
 		}
 
 		@Override
@@ -108,13 +108,14 @@ public class ProposeAchievementPage2 extends AbstractSingleAccordionMemberPage {
 		groupContainer.setOutputMarkupPlaceholderTag(true);
 		groupContainer.setOutputMarkupId(true);
 
-		final DropDownChoice<Game> gameChoice = new DropDownChoice<Game>(
-				"game", ModelMaker.wrap((Game) null), ModelMaker.wrap(games),
+		final DropDownChoice<Game> gameChoice = new DropDownChoice<Game>("game",
+				ModelMaker.wrap((Game) null), ModelMaker.wrap(games),
 				LambdaRenderer.of(Game::getName));
 		gameContainer.add(gameChoice);
 
 		final DropDownChoice<Group> groupChoice = new DropDownChoice<Group>(
-				"group", ModelMaker.wrap((Group) null), ModelMaker.wrap(groups));
+				"group", ModelMaker.wrap((Group) null),
+				ModelMaker.wrap(groups));
 		groupContainer.add(groupChoice);
 
 		final TextField<String> nameField = new TextField<String>("name",
@@ -229,8 +230,8 @@ public class ProposeAchievementPage2 extends AbstractSingleAccordionMemberPage {
 
 		};
 
-		proposalForm.add(new Image("icon", new StoredImageResource(icon
-				.getImage())));
+		proposalForm.add(new Image("icon",
+				new StoredImageResource(icon.getImage())));
 
 		proposalForm.add(typeChoice);
 		proposalForm.add(groupContainer);

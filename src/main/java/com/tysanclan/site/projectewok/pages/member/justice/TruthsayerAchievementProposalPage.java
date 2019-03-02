@@ -64,16 +64,19 @@ public class TruthsayerAchievementProposalPage extends AbstractMemberPage {
 				AchievementProposal proposal = item.getModelObject();
 
 				item.add(new Label("name", proposal.getName()));
-				item.add(new Image("icon", new StoredImageResource(proposal
-						.getIcon().getImage())));
-				item.add(new Image("game", new StoredImageResource(proposal
-						.getGame() != null ? proposal.getGame().getImage()
-						: new byte[0])).setVisible(proposal.getGame() != null));
+				item.add(new Image("icon", new StoredImageResource(
+						proposal.getIcon().getImage())));
+				item.add(new Image("game", new StoredImageResource(
+						proposal.getGame() != null ?
+								proposal.getGame().getImage() :
+								new byte[0]))
+						.setVisible(proposal.getGame() != null));
 
 				boolean hasGroup = proposal.getGroup() != null;
 
-				item.add(new Label("group", hasGroup ? proposal.getGroup()
-						.getName() : "-").setVisible(hasGroup));
+				item.add(new Label("group",
+						hasGroup ? proposal.getGroup().getName() : "-")
+						.setVisible(hasGroup));
 				item.add(new Label("description", proposal.getDescription())
 						.setEscapeModelStrings(false));
 
@@ -87,7 +90,8 @@ public class TruthsayerAchievementProposalPage extends AbstractMemberPage {
 							public void onClick() {
 								service.approveProposal(getModelObject(),
 										getUser());
-								setResponsePage(new TruthsayerAchievementProposalPage());
+								setResponsePage(
+										new TruthsayerAchievementProposalPage());
 							}
 
 						}).setText("Yes, this achievement is in order")
@@ -104,9 +108,8 @@ public class TruthsayerAchievementProposalPage extends AbstractMemberPage {
 										getModelObject()));
 							}
 
-						})
-						.setText(
-								"No, this achievement would be in violation of Regulations")
+						}).setText(
+						"No, this achievement would be in violation of Regulations")
 						.newInstance("no"));
 			}
 

@@ -17,13 +17,6 @@
  */
 package com.tysanclan.site.projectewok.pages.member.senate;
 
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
@@ -32,6 +25,12 @@ import com.tysanclan.site.projectewok.entities.RegulationChange;
 import com.tysanclan.site.projectewok.entities.RegulationChange.ChangeType;
 import com.tysanclan.site.projectewok.entities.dao.RegulationChangeDAO;
 import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -54,12 +53,13 @@ public class VetoPage extends AbstractMemberPage {
 			protected void populateItem(ListItem<RegulationChange> item) {
 				RegulationChange change = item.getModelObject();
 
-				String name = change.getChangeType() == ChangeType.ADD ? change
-						.getTitle() : change.getRegulation().getName();
+				String name = change.getChangeType() == ChangeType.ADD ?
+						change.getTitle() :
+						change.getRegulation().getName();
 
-				item.add(new Label("title", ""
-						+ change.getChangeType().toString() + " regulation "
-						+ name));
+				item.add(new Label("title",
+						"" + change.getChangeType().toString() + " regulation "
+								+ name));
 
 				if (change.getChangeType() == ChangeType.MODIFY) {
 					item.add(new Label("name", change.getTitle()));
@@ -68,8 +68,9 @@ public class VetoPage extends AbstractMemberPage {
 				}
 
 				if (change.getChangeType() != ChangeType.ADD) {
-					item.add(new Label("current", change.getRegulation()
-							.getContents()).setEscapeModelStrings(false));
+					item.add(new Label("current",
+							change.getRegulation().getContents())
+							.setEscapeModelStrings(false));
 				} else {
 					item.add(new WebMarkupContainer("current")
 							.setVisible(false));
@@ -82,8 +83,8 @@ public class VetoPage extends AbstractMemberPage {
 							.setEscapeModelStrings(false));
 				}
 
-				item.add(new Form<RegulationChange>("vetoForm", ModelMaker
-						.wrap(change)) {
+				item.add(new Form<RegulationChange>("vetoForm",
+						ModelMaker.wrap(change)) {
 
 					private static final long serialVersionUID = 1L;
 
@@ -98,8 +99,8 @@ public class VetoPage extends AbstractMemberPage {
 
 				}.setVisible(!change.isVeto()));
 
-				item.add(new WebMarkupContainer("veto").setVisible(change
-						.isVeto()));
+				item.add(new WebMarkupContainer("veto")
+						.setVisible(change.isVeto()));
 			}
 
 		});

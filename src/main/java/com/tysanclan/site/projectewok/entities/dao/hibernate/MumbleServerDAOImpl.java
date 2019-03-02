@@ -29,7 +29,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class MumbleServerDAOImpl extends HibernateDAO<MumbleServer, MumbleServerFilter> implements
-		com.tysanclan.site.projectewok.entities.dao.MumbleServerDAO {
+class MumbleServerDAOImpl extends HibernateDAO<MumbleServer, MumbleServerFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.MumbleServerDAO {
 
 }

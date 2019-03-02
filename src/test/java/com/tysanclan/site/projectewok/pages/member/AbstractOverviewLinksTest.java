@@ -19,13 +19,12 @@ package com.tysanclan.site.projectewok.pages.member;
 
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.TysanApplication;
+import com.tysanclan.site.projectewok.TysanPageTester;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import org.apache.wicket.Page;
 import org.junit.After;
 import org.junit.Before;
-
-import com.tysanclan.site.projectewok.TysanPageTester;
 
 import java.util.List;
 import java.util.Random;
@@ -43,7 +42,8 @@ public abstract class AbstractOverviewLinksTest extends TysanPageTester {
 	protected abstract long determineUserId();
 
 	protected static long userIdOfRank(Rank rank) {
-		UserDAO userDAO = TysanApplication.get().getApplicationContext().getBean(UserDAO.class);
+		UserDAO userDAO = TysanApplication.get().getApplicationContext()
+				.getBean(UserDAO.class);
 		List<User> byRank = userDAO.findByRank(rank);
 
 		if (byRank.isEmpty()) {
@@ -51,7 +51,6 @@ public abstract class AbstractOverviewLinksTest extends TysanPageTester {
 		}
 
 		User user = byRank.get(random.nextInt(byRank.size()));
-
 
 		return user.getId();
 
@@ -70,7 +69,8 @@ public abstract class AbstractOverviewLinksTest extends TysanPageTester {
 		logOut();
 	}
 
-	protected final void verifyIconLink(String id, Class<? extends Page> target) {
+	protected final void verifyIconLink(String id,
+			Class<? extends Page> target) {
 		verifyLink(id + ":label:link", target);
 	}
 

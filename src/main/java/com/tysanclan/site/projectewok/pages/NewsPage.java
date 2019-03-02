@@ -53,13 +53,14 @@ public class NewsPage extends TysanPage {
 		filter.forum(forum);
 		filter.postTime().orderBy(false);
 
-		DataView<ForumThread> newsItems = new DataView<ForumThread>(
-				"newsitems", FilterDataProvider.of(filter, forumThreadDAO)) {
+		DataView<ForumThread> newsItems = new DataView<ForumThread>("newsitems",
+				FilterDataProvider.of(filter, forumThreadDAO)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void populateItem(Item<ForumThread> item) {
-				User u = getTysanSession().flatMap(TysanSession::getUser).getOrNull();
+				User u = getTysanSession().flatMap(TysanSession::getUser)
+						.getOrNull();
 
 				item.add(new NewsPanel("newspanel", item.getModelObject(),
 						u == null));

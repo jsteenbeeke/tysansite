@@ -28,8 +28,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("request")
-class ConversationDAOImpl extends HibernateDAO<Conversation, ConversationFilter> implements
-		com.tysanclan.site.projectewok.entities.dao.ConversationDAO {
-
+class ConversationDAOImpl extends HibernateDAO<Conversation, ConversationFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.ConversationDAO {
 
 }

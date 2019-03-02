@@ -17,18 +17,6 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.List;
-
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
@@ -45,6 +33,17 @@ import com.tysanclan.site.projectewok.entities.dao.CommitteeDAO;
 import com.tysanclan.site.projectewok.entities.filter.CommitteeFilter;
 import com.tysanclan.site.projectewok.pages.GroupPage;
 import com.tysanclan.site.projectewok.pages.member.group.DisbandGroupPage;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -63,7 +62,7 @@ public class CommitteePage extends AbstractMemberPage {
 	private CommitteeDAO committeeDAO;
 
 	/**
-	 * 
+	 *
 	 */
 	public CommitteePage() {
 		super("Committee Management");
@@ -80,9 +79,11 @@ public class CommitteePage extends AbstractMemberPage {
 			@SuppressWarnings("unchecked")
 			@Override
 			protected void onSubmit() {
-				TextArea<String> descriptionArea = (TextArea<String>) get("description");
+				TextArea<String> descriptionArea = (TextArea<String>) get(
+						"description");
 				TextField<String> nameField = (TextField<String>) get("name");
-				DropDownChoice<User> userChoice = (DropDownChoice<User>) get("leader");
+				DropDownChoice<User> userChoice = (DropDownChoice<User>) get(
+						"leader");
 
 				String description = descriptionArea.getModelObject();
 				String name = nameField.getModelObject();
@@ -95,8 +96,8 @@ public class CommitteePage extends AbstractMemberPage {
 				} else if (leader == null) {
 					error("You must select a chairman for this committee");
 				} else {
-					Committee committee = groupService.createCommittee(name,
-							description);
+					Committee committee = groupService
+							.createCommittee(name, description);
 					groupService.setGroupLeader(leader, committee);
 					groupService.addUserToGroup(leader, committee);
 					logService.logUserAction(getUser(), "Groups",
@@ -109,13 +110,11 @@ public class CommitteePage extends AbstractMemberPage {
 		};
 
 		List<User> users = userService.getMembers();
-		createForm
-				.add(new DropDownChoice<User>("leader", ModelMaker.wrap(
-						(User) null, true), ModelMaker.wrap(users))
-						.setNullValid(false));
+		createForm.add(new DropDownChoice<User>("leader",
+				ModelMaker.wrap((User) null, true), ModelMaker.wrap(users))
+				.setNullValid(false));
 
-		createForm
-				.add(new BBCodeTextArea("description", ""));
+		createForm.add(new BBCodeTextArea("description", ""));
 		createForm.add(new TextField<String>("name", new Model<String>("")));
 
 		add(createForm);
@@ -123,8 +122,8 @@ public class CommitteePage extends AbstractMemberPage {
 		CommitteeFilter filter = new CommitteeFilter();
 		filter.name().orderBy(true);
 
-		add(new ListView<Committee>("committees", ModelMaker.wrap(committeeDAO
-				.findByFilter(filter).toJavaList())) {
+		add(new ListView<Committee>("committees", ModelMaker
+				.wrap(committeeDAO.findByFilter(filter).toJavaList())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -134,18 +133,18 @@ public class CommitteePage extends AbstractMemberPage {
 				item.add(new Label("name", committee.getName()));
 				item.add(new MemberListItem("chairman", committee.getLeader()));
 				IconLink.Builder builder = new Builder(
-						"images/icons/delete.png", new DisbandResponder(
-								committee));
+						"images/icons/delete.png",
+						new DisbandResponder(committee));
 				item.add(builder.newInstance("disband"));
 
 			}
 
-			class DisbandResponder extends
-					IconLink.DefaultClickResponder<Committee> {
+			class DisbandResponder
+					extends IconLink.DefaultClickResponder<Committee> {
 				private static final long serialVersionUID = 1L;
 
 				/**
-				 * 
+				 *
 				 */
 				public DisbandResponder(Committee committee) {
 					super(ModelMaker.wrap(committee));

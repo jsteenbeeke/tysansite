@@ -17,20 +17,19 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.List;
-
-import com.tysanclan.site.projectewok.entities.dao.TruthsayerNominationDAO;
-import com.tysanclan.site.projectewok.entities.filter.TruthsayerNominationFilter;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.LawEnforcementService;
 import com.tysanclan.site.projectewok.components.TysanDropDownChoice;
 import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.dao.TruthsayerNominationDAO;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
+import com.tysanclan.site.projectewok.entities.filter.TruthsayerNominationFilter;
 import com.tysanclan.site.projectewok.entities.filter.UserFilter;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -63,7 +62,8 @@ public class TruthsayerNominationPage extends AbstractMemberPage {
 			@SuppressWarnings("unchecked")
 			@Override
 			protected void onSubmit() {
-				TysanDropDownChoice<User> userChoice = (TysanDropDownChoice<User>) get("user");
+				TysanDropDownChoice<User> userChoice = (TysanDropDownChoice<User>) get(
+						"user");
 				User user = userChoice.getModelObject();
 
 				if (user != null) {
@@ -84,8 +84,10 @@ public class TruthsayerNominationPage extends AbstractMemberPage {
 		filter.orRank(Rank.SENIOR_MEMBER);
 		filter.username().orderBy(false);
 
-		List<User> users = userDAO.findByFilter(filter).filter(user -> nominationDAO.countByFilter(new TruthsayerNominationFilter().user(user)) == 0
-		).toJavaList();
+		List<User> users = userDAO.findByFilter(filter).filter(user ->
+				nominationDAO.countByFilter(
+						new TruthsayerNominationFilter().user(user)) == 0)
+				.toJavaList();
 
 		nominateForm.add(new TysanDropDownChoice<User>("user", null, users)
 				.setNullValid(false));

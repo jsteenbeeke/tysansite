@@ -17,10 +17,6 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
@@ -34,6 +30,9 @@ import com.tysanclan.site.projectewok.entities.GamingGroup;
 import com.tysanclan.site.projectewok.entities.Group;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.pages.VacationPage;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -109,8 +108,8 @@ public class MemberPreferencesPage extends AbstractMemberPage {
 			default:
 		}
 
-		add(new WebMarkupContainer("no").setVisible(!retireable
-				&& !user.isRetired()));
+		add(new WebMarkupContainer("no")
+				.setVisible(!retireable && !user.isRetired()));
 
 		add(new Form<User>("unretire", ModelMaker.wrap(user)) {
 			private static final long serialVersionUID = 1L;
@@ -145,8 +144,8 @@ public class MemberPreferencesPage extends AbstractMemberPage {
 			protected void onSubmit() {
 				User _user = getModelObject();
 				userService.setUserRetirement(_user.getId(), true);
-				logService.logUserAction(_user, "Membership",
-						"User has retired");
+				logService
+						.logUserAction(_user, "Membership", "User has retired");
 				setResponsePage(new MemberPreferencesPage());
 
 			}

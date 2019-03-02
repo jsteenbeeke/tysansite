@@ -17,14 +17,6 @@
  */
 package com.tysanclan.site.projectewok.pages.member.senate;
 
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.ContextImage;
-import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.LawEnforcementService;
 import com.tysanclan.site.projectewok.components.MemberListItem;
@@ -33,6 +25,13 @@ import com.tysanclan.site.projectewok.entities.TruthsayerNominationVote;
 import com.tysanclan.site.projectewok.entities.dao.TruthsayerNominationDAO;
 import com.tysanclan.site.projectewok.entities.filter.TruthsayerNominationFilter;
 import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.ContextImage;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -49,8 +48,9 @@ public class TruthsayerVotePage extends AbstractMemberPage {
 		TruthsayerNominationFilter filter = new TruthsayerNominationFilter();
 		filter.voteStart().isNotNull();
 
-		add(new ListView<TruthsayerNomination>("nominations",
-				ModelMaker.wrap(truthsayerNominationDAO.findByFilter(filter).toJavaList())) {
+		add(new ListView<TruthsayerNomination>("nominations", ModelMaker
+				.wrap(truthsayerNominationDAO.findByFilter(filter)
+						.toJavaList())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -98,8 +98,8 @@ public class TruthsayerVotePage extends AbstractMemberPage {
 
 					@Override
 					public void onClick() {
-						lawEnforcementService.voteInFavor(getUser(),
-								getModelObject());
+						lawEnforcementService
+								.voteInFavor(getUser(), getModelObject());
 						setResponsePage(new TruthsayerVotePage());
 
 					}
@@ -121,8 +121,8 @@ public class TruthsayerVotePage extends AbstractMemberPage {
 
 					@Override
 					public void onClick() {
-						lawEnforcementService.voteAgainst(getUser(),
-								getModelObject());
+						lawEnforcementService
+								.voteAgainst(getUser(), getModelObject());
 						setResponsePage(new TruthsayerVotePage());
 					}
 
@@ -134,8 +134,9 @@ public class TruthsayerVotePage extends AbstractMemberPage {
 
 				item.add(noLink);
 
-				item.add(new Label("vote", myVote == null ? null : myVote
-						.getVerdict() ? "Yes" : "No")
+				item.add(new Label("vote", myVote == null ?
+						null :
+						myVote.getVerdict() ? "Yes" : "No")
 						.setVisible(myVote != null));
 
 			}

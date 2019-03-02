@@ -17,14 +17,6 @@
  */
 package com.tysanclan.site.projectewok.pages;
 
-import org.apache.wicket.extensions.markup.html.captcha.CaptchaImageResource;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.PasswordTextField;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.beans.MailService;
 import com.tysanclan.site.projectewok.beans.UserService;
@@ -33,6 +25,13 @@ import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import com.tysanclan.site.projectewok.entities.filter.UserFilter;
 import com.tysanclan.site.projectewok.util.StringUtil;
+import org.apache.wicket.extensions.markup.html.captcha.CaptchaImageResource;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.PasswordTextField;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class RegistrationPage extends TysanPage {
 	private static final long serialVersionUID = 1L;
@@ -60,8 +59,8 @@ public class RegistrationPage extends TysanPage {
 		final PasswordTextField tfPassword = new PasswordTextField("password",
 				new Model<>(""));
 		tfPassword.setRequired(true);
-		final PasswordTextField tfPassword2 = new PasswordTextField(
-				"password2", new Model<>(""));
+		final PasswordTextField tfPassword2 = new PasswordTextField("password2",
+				new Model<>(""));
 		tfPassword2.setRequired(true);
 
 		final TextField<String> tfCaptcha = new TextField<String>(
@@ -115,13 +114,13 @@ public class RegistrationPage extends TysanPage {
 					RegistrationPage.this
 							.error("Password must be at least 8 characters");
 				}
-				if (valid
-						&& !tfPassword.getModelObject().equals(
-								tfPassword2.getModelObject())) {
+				if (valid && !tfPassword.getModelObject()
+						.equals(tfPassword2.getModelObject())) {
 					valid = false;
 					RegistrationPage.this.error("Passwords do not match");
 				}
-				if (valid && !StringUtil.isValidEMail(tfMail.getModelObject())) {
+				if (valid && !StringUtil
+						.isValidEMail(tfMail.getModelObject())) {
 					valid = false;
 					RegistrationPage.this
 							.error("Please provide a valid e-mail address");
@@ -151,15 +150,14 @@ public class RegistrationPage extends TysanPage {
 					if (user != null) {
 						Activation activation = ub.getActivationByUser(user);
 
-						mailService.sendHTMLMail(
-								tfMail.getModelObject(),
-								"Tysan Clan Forums",
-								mailService.getActivationMailBody(
-										user.getUsername(),
-										activation.getActivationKey()));
+						mailService.sendHTMLMail(tfMail.getModelObject(),
+								"Tysan Clan Forums", mailService
+										.getActivationMailBody(
+												user.getUsername(),
+												activation.getActivationKey()));
 
-						info("You have succesfully registered as "
-								+ tfUsername.getModelObject());
+						info("You have succesfully registered as " + tfUsername
+								.getModelObject());
 						tfUsername.clearInput();
 						tfMail.clearInput();
 

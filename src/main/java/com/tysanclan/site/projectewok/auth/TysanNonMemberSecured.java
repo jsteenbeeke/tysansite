@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
 /**
  * Annotation indicating a page or component can only be used by non-Tysan
  * members
- * 
+ *
  * @author Jeroen Steenbeeke
  */
 @Retention(RetentionPolicy.RUNTIME)

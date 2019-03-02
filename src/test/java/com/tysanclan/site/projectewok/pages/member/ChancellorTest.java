@@ -110,18 +110,22 @@ public class ChancellorTest extends AbstractClickThroughTester {
 
 	@Test
 	public void testInactiveKeyRole() {
-		RoleService roleService = TysanApplication.get().getApplicationContext().getBean(RoleService.class);
+		RoleService roleService = TysanApplication.get().getApplicationContext()
+				.getBean(RoleService.class);
 		User herald = roleService.getHerald();
 		roleService.removeRoles(herald);
 
 		overview();
 		getTester().assertComponent("chancellorpanel", ChancellorPanel.class);
-		getTester().assertComponent("chancellorpanel:inactivekeyrole", RequiresAttentionLink.class);
+		getTester().assertComponent("chancellorpanel:inactivekeyrole",
+				RequiresAttentionLink.class);
 
 		getTester().clickLink("chancellorpanel:inactivekeyrole:label:link");
 		getTester().assertRenderedPage(InactiveKeyRoleTransferPage.class);
 
-		roleService.assignTo(herald.getId(), roleService.getRoleByType(Role.RoleType.HERALD).getId(), herald.getId());
+		roleService.assignTo(herald.getId(),
+				roleService.getRoleByType(Role.RoleType.HERALD).getId(),
+				herald.getId());
 	}
 
 	@Test

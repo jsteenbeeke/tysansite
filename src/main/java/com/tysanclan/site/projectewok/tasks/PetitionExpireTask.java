@@ -28,7 +28,6 @@ import com.tysanclan.site.projectewok.beans.RealmService;
  */
 public class PetitionExpireTask extends HyperionTask {
 
-
 	public PetitionExpireTask() {
 		super("Expires", TysanTaskGroup.CLEANUP);
 	}

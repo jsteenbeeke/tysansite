@@ -23,7 +23,6 @@ import com.tysanclan.site.projectewok.entities.filter.ConversationParticipationF
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Query;
 import javax.persistence.criteria.*;
 
 /**
@@ -43,16 +42,21 @@ class ConversationParticipationDAOImpl extends
 	public long countUnreadMessages(User user) {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
-		Root<ConversationParticipation> root = query.from(ConversationParticipation.class);
+		Root<ConversationParticipation> root = query
+				.from(ConversationParticipation.class);
 		Subquery<Long> subquery = query.subquery(Long.class);
 		Root<Message> subqueryRoot = subquery.from(Message.class);
 
-		Join<Message, Conversation> join = subqueryRoot.join(Message_.conversation);
-		subquery.select(criteriaBuilder.count(join)).where(criteriaBuilder.equal(join.get(Conversation_.id), root.get(ConversationParticipation_.conversation)));
+		Join<Message, Conversation> join = subqueryRoot
+				.join(Message_.conversation);
+		subquery.select(criteriaBuilder.count(join)).where(criteriaBuilder
+				.equal(join.get(Conversation_.id),
+						root.get(ConversationParticipation_.conversation)));
 
-		query.select(criteriaBuilder.count(root)).where(criteriaBuilder.lessThan(criteriaBuilder.size(root.get(ConversationParticipation_.readMessages)),
-																				 subquery.as(Integer.class)
-																				 ));
+		query.select(criteriaBuilder.count(root)).where(criteriaBuilder
+				.lessThan(criteriaBuilder.size(root
+								.get(ConversationParticipation_.readMessages)),
+						subquery.as(Integer.class)));
 
 		return entityManager.createQuery(query).getSingleResult();
 	}

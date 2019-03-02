@@ -17,13 +17,6 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.image.ContextImage;
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanSession;
 import com.tysanclan.site.projectewok.beans.HumorService;
@@ -32,6 +25,12 @@ import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.GlobalSettingDAO;
 import com.tysanclan.site.projectewok.entities.dao.OtterSightingDAO;
 import com.tysanclan.site.projectewok.entities.filter.OtterSightingFilter;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.image.ContextImage;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Ties
@@ -70,8 +69,7 @@ public class OtterSniperPanel extends Panel {
 			otterId = otterNumber;
 		}
 
-		User currentUser = TysanSession.session()
-				.flatMap(TysanSession::getUser)
+		User currentUser = TysanSession.session().flatMap(TysanSession::getUser)
 				.getOrNull();
 
 		OtterSightingFilter filter = new OtterSightingFilter();
@@ -99,8 +97,8 @@ public class OtterSniperPanel extends Panel {
 			}
 		};
 
-		otterLink.add(new ContextImage("gnome", "images/blah/"
-				+ otters[otterId]));
+		otterLink.add(new ContextImage("gnome",
+				"images/blah/" + otters[otterId]));
 
 		livingGnomeContainer = new WebMarkupContainer("livingGnomeContainer");
 		livingGnomeContainer.setOutputMarkupPlaceholderTag(true);
@@ -109,13 +107,14 @@ public class OtterSniperPanel extends Panel {
 
 		deadGnomeContainer = new WebMarkupContainer("deadGnomeContainer");
 		deadGnomeContainer.setOutputMarkupPlaceholderTag(true);
-		deadGnomeContainer.add(new ContextImage("otter",
-				"images/blah/welldonesir.png"));
+		deadGnomeContainer
+				.add(new ContextImage("otter", "images/blah/welldonesir.png"));
 		deadGnomeContainer.setVisible(false);
 		add(livingGnomeContainer);
 		add(deadGnomeContainer);
 
-		this.setVisible(globalSetting.getGlobalSetting(GlobalSettings.BLAH)
-				.getValue().equals("allhailblah"));
+		this.setVisible(
+				globalSetting.getGlobalSetting(GlobalSettings.BLAH).getValue()
+						.equals("allhailblah"));
 	}
 }

@@ -1,9 +1,9 @@
 package com.tysanclan.site.projectewok.util.bbcode;
 
-import java.util.List;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+
+import java.util.List;
 
 public abstract class DefaultNode implements BBAstNode {
 	private final List<BBAstNode> children = Lists.newLinkedList();

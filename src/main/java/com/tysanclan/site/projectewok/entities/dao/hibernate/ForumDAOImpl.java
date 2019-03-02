@@ -34,19 +34,22 @@ import java.util.List;
  */
 @Component
 @Scope("request")
-class ForumDAOImpl extends HibernateDAO<Forum, ForumFilter> implements
-		com.tysanclan.site.projectewok.entities.dao.ForumDAO {
+class ForumDAOImpl extends HibernateDAO<Forum, ForumFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.ForumDAO {
 	@Override
 	public boolean isPostUnread(User user, ForumPost post) {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+		CriteriaQuery<Long> criteriaQuery = criteriaBuilder
+				.createQuery(Long.class);
 		Root<UnreadForumPost> root = criteriaQuery.from(UnreadForumPost.class);
 
 		criteriaQuery.select(criteriaBuilder.count(root));
-		criteriaQuery.where(criteriaBuilder.equal(root.get(UnreadForumPost_.forumPost), post),
+		criteriaQuery.where(criteriaBuilder
+						.equal(root.get(UnreadForumPost_.forumPost), post),
 				criteriaBuilder.equal(root.get(UnreadForumPost_.user), user));
 
-		return ((Number) entityManager.createQuery(criteriaQuery).getSingleResult()).intValue() == 1;
+		return ((Number) entityManager.createQuery(criteriaQuery)
+				.getSingleResult()).intValue() == 1;
 	}
 
 	@Override
@@ -58,7 +61,7 @@ class ForumDAOImpl extends HibernateDAO<Forum, ForumFilter> implements
 	@Override
 	public List<Forum> findByContext(User user, ForumCategory contextObject,
 			ForumViewContext context, int first, int count) {
-		return context.getForums(entityManager, contextObject, user, first,
-				count);
+		return context
+				.getForums(entityManager, contextObject, user, first, count);
 	}
 }

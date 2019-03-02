@@ -21,8 +21,6 @@ import com.jeroensteenbeeke.hyperion.tardis.scheduler.HyperionTask;
 import com.jeroensteenbeeke.hyperion.tardis.scheduler.ServiceProvider;
 import com.tysanclan.site.projectewok.TysanTaskGroup;
 import com.tysanclan.site.projectewok.beans.RoleService;
-import com.tysanclan.site.projectewok.entities.dao.RoleTransferDAO;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class ResolveRoleTransferTask extends HyperionTask {
 	public ResolveRoleTransferTask() {

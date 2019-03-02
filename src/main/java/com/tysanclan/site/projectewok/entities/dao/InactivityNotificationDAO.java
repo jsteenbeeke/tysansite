@@ -28,7 +28,8 @@ import java.util.List;
  *
  * @author Jeroen Steenbeeke
  */
-public interface InactivityNotificationDAO extends DAO<InactivityNotification, InactivityNotificationFilter> {
+public interface InactivityNotificationDAO
+		extends DAO<InactivityNotification, InactivityNotificationFilter> {
 	List<Long> getUnnotifiedInactiveUsers();
 
 	void deleteNotificationForUser(User user);

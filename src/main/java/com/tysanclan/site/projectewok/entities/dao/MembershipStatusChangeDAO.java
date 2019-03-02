@@ -27,7 +27,8 @@ import java.util.SortedMap;
 /**
  * @author Jeroen Steenbeeke
  */
-public interface MembershipStatusChangeDAO extends DAO<MembershipStatusChange, MembershipStatusChangeFilter> {
+public interface MembershipStatusChangeDAO
+		extends DAO<MembershipStatusChange, MembershipStatusChangeFilter> {
 
 	SortedMap<Date, Long> getMutationsByDate(Date start, Date end);
 

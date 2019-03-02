@@ -24,12 +24,13 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
- * 
+ *
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class AllowedAccountTypeDAOImpl extends HibernateDAO<AllowedAccountType, AllowedAccountTypeFilter>
+class AllowedAccountTypeDAOImpl
+		extends HibernateDAO<AllowedAccountType, AllowedAccountTypeFilter>
 		implements
 		com.tysanclan.site.projectewok.entities.dao.AllowedAccountTypeDAO {
 }

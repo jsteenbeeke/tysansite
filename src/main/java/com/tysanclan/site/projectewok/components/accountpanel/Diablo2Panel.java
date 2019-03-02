@@ -17,18 +17,17 @@
  */
 package com.tysanclan.site.projectewok.components.accountpanel;
 
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.GameService;
 import com.tysanclan.site.projectewok.entities.GameAccount;
 import com.tysanclan.site.projectewok.entities.GameAccount.AccountType;
 import com.tysanclan.site.projectewok.entities.UserGameRealm;
 import com.tysanclan.site.projectewok.pages.member.EditAccountsPage;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class Diablo2Panel extends Panel {
 	private static final long serialVersionUID = 1L;
@@ -53,8 +52,8 @@ public class Diablo2Panel extends Panel {
 
 				TextField<String> nameField = (TextField<String>) get("name");
 
-				GameAccount acc = gameService.createDiablo2Account(ugr,
-						nameField.getModelObject());
+				GameAccount acc = gameService
+						.createDiablo2Account(ugr, nameField.getModelObject());
 
 				if (acc == null) {
 					error("Invalid account name");
@@ -66,8 +65,7 @@ public class Diablo2Panel extends Panel {
 
 		};
 
-		form.add(new TextField<>("name", new Model<>(""))
-				.setRequired(true));
+		form.add(new TextField<>("name", new Model<>("")).setRequired(true));
 
 		setVisible(gameService.isValidAccountType(userGameRealm.getGame(),
 				userGameRealm.getRealm(), AccountType.DIABLO2));

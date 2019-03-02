@@ -45,8 +45,8 @@ import java.util.List;
  */
 @Component
 @Scope("request")
-class RealmServiceImpl implements
-		com.tysanclan.site.projectewok.beans.RealmService {
+class RealmServiceImpl
+		implements com.tysanclan.site.projectewok.beans.RealmService {
 	private static final Logger log = LoggerFactory
 			.getLogger(RealmServiceImpl.class);
 
@@ -88,7 +88,8 @@ class RealmServiceImpl implements
 	 * @param notificationService
 	 *            the notificationService to set
 	 */
-	public void setNotificationService(NotificationService notificationService) {
+	public void setNotificationService(
+			NotificationService notificationService) {
 		this.notificationService = notificationService;
 	}
 
@@ -134,9 +135,10 @@ class RealmServiceImpl implements
 			addPlayedGame(user, petition.getGame(), realm);
 		}
 
-		String message = "The petition for expanding "
-				+ petition.getGame().getName() + " to realm "
-				+ petition.getName() + " has passed succesfully!";
+		String message =
+				"The petition for expanding " + petition.getGame().getName()
+						+ " to realm " + petition.getName()
+						+ " has passed succesfully!";
 
 		logService.logSystemAction("Petitions", message);
 		notifyPetitionParticipants(petition, message);
@@ -153,7 +155,8 @@ class RealmServiceImpl implements
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
-	public RealmPetition createRealmPetition(String name, User user, Game game) {
+	public RealmPetition createRealmPetition(String name, User user,
+			Game game) {
 
 		RealmPetition petition = new RealmPetition();
 		petition.setGame(game);
@@ -178,9 +181,9 @@ class RealmServiceImpl implements
 						+ " has expired without gaining enough signatures";
 
 			} else {
-				message = "The petition for expanding "
-						+ petition.getGame().getName() + " to realm "
-						+ petition.getRealm().getName()
+				message = "The petition for expanding " + petition.getGame()
+						.getName() + " to realm " + petition.getRealm()
+						.getName()
 						+ " has expired without gaining enough signatures";
 			}
 
@@ -200,7 +203,8 @@ class RealmServiceImpl implements
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public RealmPetition createRealmPetition(Realm realm, User user, Game game) {
+	public RealmPetition createRealmPetition(Realm realm, User user,
+			Game game) {
 		RealmPetition petition = new RealmPetition();
 		petition.setGame(game);
 		petition.setRequester(user);
@@ -281,10 +285,9 @@ class RealmServiceImpl implements
 		realmDAO.load(_realm.getId()).forEach(realm -> {
 			if (MemberUtil.isMember(user) && user.getRank() != Rank.TRIAL) {
 				boolean wasReplaced = realm.getOverseer() == null;
-				if (realm.getOverseer() != null
-						&& !realm.getOverseer().equals(user)) {
-					notificationService.notifyUser(
-							realm.getOverseer(),
+				if (realm.getOverseer() != null && !realm.getOverseer()
+						.equals(user)) {
+					notificationService.notifyUser(realm.getOverseer(),
 							"You are no longer supervisor for the realm "
 									+ realm.getName());
 					wasReplaced = true;
@@ -293,12 +296,12 @@ class RealmServiceImpl implements
 				realm.setOverseer(user);
 
 				if (wasReplaced) {
-					notificationService.notifyUser(
-							realm.getOverseer(),
-							"You are now supervisor for the realm "
-									+ realm.getName());
+					notificationService.notifyUser(realm.getOverseer(),
+							"You are now supervisor for the realm " + realm
+									.getName());
 					logService.logUserAction(realm.getOverseer(), "Realm",
-							"User is now supervisor for realm " + realm.getName());
+							"User is now supervisor for realm " + realm
+									.getName());
 				}
 			}
 		});
@@ -329,7 +332,7 @@ class RealmServiceImpl implements
 	 */
 	@Transactional(propagation = Propagation.REQUIRED)
 	protected void notifyPetitionParticipants(RealmPetition petition,
-											String message) {
+			String message) {
 		notificationService.notifyUser(petition.getRequester(), message);
 		for (User user : petition.getSignatures()) {
 			notificationService.notifyUser(user, message);
@@ -354,8 +357,9 @@ class RealmServiceImpl implements
 			addPlayedGame(user, game, realm);
 		}
 
-		String message = "The petition for expanding " + game.getName()
-				+ " to realm " + realm.getName() + " has passed succesfully!";
+		String message =
+				"The petition for expanding " + game.getName() + " to realm "
+						+ realm.getName() + " has passed succesfully!";
 
 		logService.logSystemAction("Petitions", message);
 		notifyPetitionParticipants(petition, message);
@@ -375,7 +379,8 @@ class RealmServiceImpl implements
 			petition.getSignatures().add(user);
 			realmPetitionDAO.update(petition);
 
-			if (petition.getSignatures().size() >= getRequiredPetitionSignatures()) {
+			if (petition.getSignatures().size()
+					>= getRequiredPetitionSignatures()) {
 				// Trigger check
 				if (petition.getName() != null) {
 					createRealmFromPetition(petition);

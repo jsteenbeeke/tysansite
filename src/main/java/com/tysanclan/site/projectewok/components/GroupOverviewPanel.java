@@ -17,54 +17,38 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import java.util.Calendar;
-import java.util.List;
-
-import io.vavr.collection.Seq;
-import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.hibernate.Hibernate;
-
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
 import com.tysanclan.site.projectewok.components.RequiresAttentionLink.AttentionType;
 import com.tysanclan.site.projectewok.components.RequiresAttentionLink.IRequiresAttentionCondition;
-import com.tysanclan.site.projectewok.entities.Committee;
-import com.tysanclan.site.projectewok.entities.CompoundVote;
-import com.tysanclan.site.projectewok.entities.Group;
+import com.tysanclan.site.projectewok.entities.*;
 import com.tysanclan.site.projectewok.entities.Group.JoinPolicy;
-import com.tysanclan.site.projectewok.entities.GroupLeaderElection;
-import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.AchievementRequestDAO;
 import com.tysanclan.site.projectewok.entities.dao.GroupLeaderElectionDAO;
 import com.tysanclan.site.projectewok.entities.filter.GroupLeaderElectionFilter;
 import com.tysanclan.site.projectewok.pages.member.RunForGroupLeaderPage;
-import com.tysanclan.site.projectewok.pages.member.group.AcceptGroupApplicationPage;
-import com.tysanclan.site.projectewok.pages.member.group.DisbandGroupPage;
-import com.tysanclan.site.projectewok.pages.member.group.EditGroupDescriptionPage;
-import com.tysanclan.site.projectewok.pages.member.group.EditMOTDPage;
-import com.tysanclan.site.projectewok.pages.member.group.GroupAchievementApprovalPage;
-import com.tysanclan.site.projectewok.pages.member.group.GroupForumManagementPage;
-import com.tysanclan.site.projectewok.pages.member.group.GroupJoinPolicyPage;
-import com.tysanclan.site.projectewok.pages.member.group.GroupLeaderElectionPage;
-import com.tysanclan.site.projectewok.pages.member.group.GroupMemberManagementPage;
-import com.tysanclan.site.projectewok.pages.member.group.InviteGroupMemberPage;
-import com.tysanclan.site.projectewok.pages.member.group.LeaveGroupPage;
+import com.tysanclan.site.projectewok.pages.member.group.*;
 import com.tysanclan.site.projectewok.util.DateUtil;
+import io.vavr.collection.Seq;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.hibernate.Hibernate;
+
+import java.util.Calendar;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @TysanMemberSecured
 public class GroupOverviewPanel extends TysanOverviewPanel<Group> {
-	public class GroupLeaderElectionCondition implements
-			IRequiresAttentionCondition {
+	public class GroupLeaderElectionCondition
+			implements IRequiresAttentionCondition {
 
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
@@ -97,11 +81,11 @@ public class GroupOverviewPanel extends TysanOverviewPanel<Group> {
 		}
 	}
 
-	public class RunForGroupLeaderCondition implements
-			IRequiresAttentionCondition {
+	public class RunForGroupLeaderCondition
+			implements IRequiresAttentionCondition {
 
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
@@ -110,8 +94,8 @@ public class GroupOverviewPanel extends TysanOverviewPanel<Group> {
 			GroupLeaderElection election = getElection();
 
 			if (election != null && election.isNominationOpen()
-					&& getUser().getRank() != Rank.TRIAL
-					&& !election.getCandidates().contains(getUser())) {
+					&& getUser().getRank() != Rank.TRIAL && !election
+					.getCandidates().contains(getUser())) {
 				return AttentionType.INFO;
 
 			}
@@ -131,18 +115,18 @@ public class GroupOverviewPanel extends TysanOverviewPanel<Group> {
 		}
 	}
 
-	public class GroupAchievementRequestCondition implements
-			IRequiresAttentionCondition {
+	public class GroupAchievementRequestCondition
+			implements IRequiresAttentionCondition {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
 		@Override
 		public AttentionType requiresAttention() {
-			if (getUser().equals(getModelObject().getLeader())
-					&& requestDAO.getPendingGroupRequests(getModelObject())
-							.size() > 0) {
+			if (getUser().equals(getModelObject().getLeader()) &&
+					requestDAO.getPendingGroupRequests(getModelObject()).size()
+							> 0) {
 				return AttentionType.WARNING;
 			}
 
@@ -155,10 +139,10 @@ public class GroupOverviewPanel extends TysanOverviewPanel<Group> {
 		}
 	}
 
-	public class GroupApplicationCondition implements
-			IRequiresAttentionCondition {
+	public class GroupApplicationCondition
+			implements IRequiresAttentionCondition {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
@@ -166,8 +150,8 @@ public class GroupOverviewPanel extends TysanOverviewPanel<Group> {
 		public AttentionType requiresAttention() {
 			Group g = getModelObject();
 
-			if (!g.getAppliedMembers().isEmpty()
-					&& getUser().equals(g.getLeader())
+			if (!g.getAppliedMembers().isEmpty() && getUser()
+					.equals(g.getLeader())
 					&& g.getJoinPolicy() == JoinPolicy.APPLICATION) {
 				return AttentionType.WARNING;
 			}
@@ -241,12 +225,12 @@ public class GroupOverviewPanel extends TysanOverviewPanel<Group> {
 					public void onClick() {
 						setResponsePage(new EditMOTDPage(getModelObject()));
 					}
-				}).newInstance("editmotd").setVisible(
-				user.equals(group.getLeader())));
+				}).newInstance("editmotd")
+				.setVisible(user.equals(group.getLeader())));
 
-		add(new BBCodePanel("motd", group.getMessageOfTheDay())
-				.setVisible(group.getMessageOfTheDay() != null
-						&& !group.getMessageOfTheDay().isEmpty()));
+		add(new BBCodePanel("motd", group.getMessageOfTheDay()).setVisible(
+				group.getMessageOfTheDay() != null && !group
+						.getMessageOfTheDay().isEmpty()));
 
 		add(new Link<Group>("invite", ModelMaker.wrap(group)) {
 			private static final long serialVersionUID = 1L;
@@ -287,7 +271,8 @@ public class GroupOverviewPanel extends TysanOverviewPanel<Group> {
 
 			@Override
 			public void onClick() {
-				setResponsePage(new GroupMemberManagementPage(getModelObject()));
+				setResponsePage(
+						new GroupMemberManagementPage(getModelObject()));
 			}
 		};
 

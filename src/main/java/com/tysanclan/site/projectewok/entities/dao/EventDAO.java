@@ -29,7 +29,7 @@ public interface EventDAO extends DAO<Event, EventFilter> {
 
 	/**
 	 * Checks if the given thread has an Event tied to it
-	 * 
+	 *
 	 * @param thread
 	 *            The thread to check for
 	 * @return The {@code ForumThread} belonging to this Event, or {@code null}

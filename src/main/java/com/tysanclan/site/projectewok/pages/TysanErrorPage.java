@@ -17,9 +17,10 @@
  */
 package com.tysanclan.site.projectewok.pages;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.TysanPage;
+import com.tysanclan.site.projectewok.beans.BugTrackerService;
+import com.tysanclan.site.projectewok.entities.Bug;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
@@ -28,10 +29,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
-import com.tysanclan.site.projectewok.TysanPage;
-import com.tysanclan.site.projectewok.beans.BugTrackerService;
-import com.tysanclan.site.projectewok.entities.Bug;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * @author Jeroen Steenbeeke
@@ -75,17 +74,14 @@ public class TysanErrorPage extends TysanPage {
 
 		if (known) {
 			if (report.getComments().isEmpty()) {
-				add(new Label(
-						"issuedescriptor",
+				add(new Label("issuedescriptor",
 						"This issue has already been reported, but the person who last encountered it did not write a report of what he or she was doing when it happened. Please help us by doing so"));
 			} else {
-				add(new Label(
-						"issuedescriptor",
+				add(new Label("issuedescriptor",
 						"This issue has already been reported and described, so we probably already know enough to solve it. Still, if you feel you may have vital info to help us solve it, please fill out what you were doing when the error occurred."));
 			}
 		} else {
-			add(new Label(
-					"issuedescriptor",
+			add(new Label("issuedescriptor",
 					"We have not encountered this issue before. It would be of great help if you could tell us what you were trying to do when the error occurred."));
 		}
 

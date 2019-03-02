@@ -17,16 +17,15 @@
  */
 package com.tysanclan.site.projectewok.util;
 
+import com.google.common.base.Function;
+
+import javax.annotation.Nullable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.StringTokenizer;
-
-import javax.annotation.Nullable;
-
-import com.google.common.base.Function;
 
 /**
  * @author Jeroen Steenbeeke
@@ -51,8 +50,9 @@ public class StringUtil {
 
 	public static String generateRequestKey(int baseLength, int variance) {
 		StringBuilder key = new StringBuilder();
-		int size = variance > 0 ? random.nextInt(variance) + baseLength
-				: baseLength;
+		int size = variance > 0 ?
+				random.nextInt(variance) + baseLength :
+				baseLength;
 
 		for (int i = 0; i < size; i++) {
 			int mode = random.nextInt(3);
@@ -138,7 +138,8 @@ public class StringUtil {
 					res2.append(" ");
 				}
 
-				if (token.startsWith("http://") || token.startsWith("https://")) {
+				if (token.startsWith("http://") || token
+						.startsWith("https://")) {
 					res2.append("<a class=\"Yellow\" href=\"");
 					res2.append(token);
 					res2.append("\">");
@@ -158,7 +159,8 @@ public class StringUtil {
 
 	private static void mode2Resolve(StringBuilder result,
 			StringBuilder currLink) {
-		result.append("<a class=\"Yellow\" href=\"http://twitter.com/#search?q=%23");
+		result.append(
+				"<a class=\"Yellow\" href=\"http://twitter.com/#search?q=%23");
 		result.append(urlEncode(currLink.substring(1)));
 		result.append("\">");
 		result.append(currLink.toString());
@@ -205,14 +207,16 @@ public class StringUtil {
 		return new CapitalizeFirstFunction();
 	}
 
-	private static final class CapitalizeFirstFunction implements
-			Function<String, String> {
+	private static final class CapitalizeFirstFunction
+			implements Function<String, String> {
 		@Override
 		@Nullable
 		public String apply(@Nullable String input) {
 
-			return input != null ? String.format("%s%s", input.substring(0, 1)
-					.toUpperCase(), input.substring(1)) : null;
+			return input != null ?
+					String.format("%s%s", input.substring(0, 1).toUpperCase(),
+							input.substring(1)) :
+					null;
 		}
 	}
 

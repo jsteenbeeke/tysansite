@@ -32,7 +32,8 @@ public class GroupLeaderElectionResolutionTask extends HyperionTask {
 
 	@Override
 	public void run(ServiceProvider provider) {
-		provider.getService(DemocracyService.class).resolveGroupLeaderElections();
+		provider.getService(DemocracyService.class)
+				.resolveGroupLeaderElections();
 	}
 
 }

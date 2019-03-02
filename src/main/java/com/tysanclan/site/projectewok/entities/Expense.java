@@ -17,26 +17,18 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
+import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.NaiveRenderer;
+import com.tysanclan.site.projectewok.util.DateUtil;
+import com.tysanclan.site.projectewok.util.StringUtil;
+import org.apache.wicket.markup.html.form.IChoiceRenderer;
+import org.hibernate.annotations.Cache;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-
-import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.NaiveRenderer;
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
-import org.hibernate.annotations.Cache;
-
-import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
-import com.tysanclan.site.projectewok.util.DateUtil;
-import com.tysanclan.site.projectewok.util.StringUtil;
 
 /**
  * @author Jeroen Steenbeeke
@@ -46,8 +38,9 @@ import com.tysanclan.site.projectewok.util.StringUtil;
 public class Expense extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;
 
-	public static class ExpensePeriodRenderer implements
-			IChoiceRenderer<ExpensePeriod>, NaiveRenderer<ExpensePeriod> {
+	public static class ExpensePeriodRenderer
+			implements IChoiceRenderer<ExpensePeriod>,
+			NaiveRenderer<ExpensePeriod> {
 		private static final long serialVersionUID = 1L;
 
 		private final boolean lowercased;
@@ -59,8 +52,9 @@ public class Expense extends BaseDomainObject {
 		@Override
 		public Object getDisplayValue(ExpensePeriod object) {
 
-			return lowercased ? object.getOmschrijving() : object
-					.getOmschrijving().toLowerCase();
+			return lowercased ?
+					object.getOmschrijving() :
+					object.getOmschrijving().toLowerCase();
 		}
 
 		@Override
@@ -80,8 +74,7 @@ public class Expense extends BaseDomainObject {
 
 				return cal.getTime();
 			}
-		},
-		QUARTERLY("Every 3 months") {
+		}, QUARTERLY("Every 3 months") {
 			@Override
 			public Date nextDate(Date curr) {
 				Calendar cal = DateUtil.getCalendarInstance();
@@ -91,8 +84,7 @@ public class Expense extends BaseDomainObject {
 
 				return cal.getTime();
 			}
-		},
-		SEMIANNUALLY("Every 6 months") {
+		}, SEMIANNUALLY("Every 6 months") {
 			@Override
 			public Date nextDate(Date curr) {
 				Calendar cal = DateUtil.getCalendarInstance();
@@ -102,8 +94,7 @@ public class Expense extends BaseDomainObject {
 
 				return cal.getTime();
 			}
-		},
-		ANNUALLY("Every year") {
+		}, ANNUALLY("Every year") {
 			@Override
 			public Date nextDate(Date curr) {
 				Calendar cal = DateUtil.getCalendarInstance();
@@ -113,8 +104,7 @@ public class Expense extends BaseDomainObject {
 
 				return cal.getTime();
 			}
-		},
-		BIANNUALLY("Every two years") {
+		}, BIANNUALLY("Every two years") {
 			@Override
 			public Date nextDate(Date curr) {
 				Calendar cal = DateUtil.getCalendarInstance();
@@ -141,8 +131,9 @@ public class Expense extends BaseDomainObject {
 		 */
 		@Override
 		public String toString() {
-			return StringUtil.combineStrings(name().substring(0, 1)
-					.toUpperCase(), name().substring(1).toLowerCase());
+			return StringUtil
+					.combineStrings(name().substring(0, 1).toUpperCase(),
+							name().substring(1).toLowerCase());
 		}
 
 		public abstract Date nextDate(Date curr);
@@ -209,7 +200,7 @@ public class Expense extends BaseDomainObject {
 
 	/**
 	 * Sets the Amount of this Expense
-	 * 
+	 *
 	 * @param amount
 	 *            The Amount of this Expense
 	 */
@@ -256,7 +247,7 @@ public class Expense extends BaseDomainObject {
 
 	/**
 	 * Sets the Start of this Expense
-	 * 
+	 *
 	 * @param start
 	 *            The Start of this Expense
 	 */
@@ -273,7 +264,7 @@ public class Expense extends BaseDomainObject {
 
 	/**
 	 * Sets the End of this Expense
-	 * 
+	 *
 	 * @param end
 	 *            The End of this Expense
 	 */
@@ -290,7 +281,7 @@ public class Expense extends BaseDomainObject {
 
 	/**
 	 * Sets the LastPayment of this Expense
-	 * 
+	 *
 	 * @param lastPayment
 	 *            The LastPayment of this Expense
 	 */

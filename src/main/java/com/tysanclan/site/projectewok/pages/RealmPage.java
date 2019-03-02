@@ -17,8 +17,14 @@
  */
 package com.tysanclan.site.projectewok.pages;
 
-import javax.servlet.http.HttpServletResponse;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.TysanPage;
+import com.tysanclan.site.projectewok.beans.RealmService;
+import com.tysanclan.site.projectewok.components.MemberListItem;
+import com.tysanclan.site.projectewok.components.RealmGamePanel;
+import com.tysanclan.site.projectewok.entities.Game;
+import com.tysanclan.site.projectewok.entities.Realm;
+import com.tysanclan.site.projectewok.entities.dao.RealmDAO;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -30,14 +36,7 @@ import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
-import com.tysanclan.site.projectewok.TysanPage;
-import com.tysanclan.site.projectewok.beans.RealmService;
-import com.tysanclan.site.projectewok.components.MemberListItem;
-import com.tysanclan.site.projectewok.components.RealmGamePanel;
-import com.tysanclan.site.projectewok.entities.Game;
-import com.tysanclan.site.projectewok.entities.Realm;
-import com.tysanclan.site.projectewok.entities.dao.RealmDAO;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Jeroen Steenbeeke
@@ -71,15 +70,16 @@ public class RealmPage extends TysanPage {
 
 		RealmPageParams parameters;
 		try {
-			parameters = requiredLong("id").forParameters(params).toClass(
-					RealmPageParams.class);
+			parameters = requiredLong("id").forParameters(params)
+					.toClass(RealmPageParams.class);
 		} catch (PageParameterExtractorException e) {
 			throw new AbortWithHttpErrorCodeException(
 					HttpServletResponse.SC_NOT_FOUND);
 		}
 
-		Realm realm = realmDAO.load(parameters.getId()).getOrElseThrow(() -> new RestartResponseAtInterceptPageException(
-				AccessDeniedPage.class));
+		Realm realm = realmDAO.load(parameters.getId()).getOrElseThrow(
+				() -> new RestartResponseAtInterceptPageException(
+						AccessDeniedPage.class));
 
 		init(realm);
 	}
@@ -98,8 +98,8 @@ public class RealmPage extends TysanPage {
 		} else {
 			add(new Label("supervisor", "-"));
 		}
-		add(new Label("playercount", new Model<Integer>(
-				realmService.countActivePlayers(realm))));
+		add(new Label("playercount",
+				new Model<Integer>(realmService.countActivePlayers(realm))));
 
 		add(new ListView<Game>("games", ModelMaker.wrap(realm.getGames())) {
 			private static final long serialVersionUID = 1L;

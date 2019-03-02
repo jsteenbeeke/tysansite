@@ -34,32 +34,32 @@ import java.util.List;
  */
 @Component
 @Scope("request")
-class ForumPostDAOImpl extends HibernateDAO<ForumPost, ForumPostFilter> implements
-		com.tysanclan.site.projectewok.entities.dao.ForumPostDAO {
-
+class ForumPostDAOImpl extends HibernateDAO<ForumPost, ForumPostFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.ForumPostDAO {
 
 	@Override
 	public int getUnreadSize(User user) {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+		CriteriaQuery<Long> criteriaQuery = criteriaBuilder
+				.createQuery(Long.class);
 		Root<UnreadForumPost> root = criteriaQuery.from(UnreadForumPost.class);
 
-		criteriaQuery.select(criteriaBuilder.count(root)).where(
-				criteriaBuilder.equal(root.get(UnreadForumPost_.user), user)
-		);
+		criteriaQuery.select(criteriaBuilder.count(root)).where(criteriaBuilder
+				.equal(root.get(UnreadForumPost_.user), user));
 
-		return ((Number) entityManager.createQuery(criteriaQuery).getSingleResult()).intValue();
+		return ((Number) entityManager.createQuery(criteriaQuery)
+				.getSingleResult()).intValue();
 	}
 
 	@Override
 	public int countByContext(User user, ForumThread contextObject,
-							  ForumViewContext context) {
+			ForumViewContext context) {
 		return context.countPosts(entityManager, contextObject, user);
 	}
 
 	@Override
 	public List<ForumPost> findByContext(User user, ForumThread contextObject,
-										 ForumViewContext context, int first, int count) {
+			ForumViewContext context, int first, int count) {
 		return context
 				.getPosts(entityManager, contextObject, user, first, count);
 	}

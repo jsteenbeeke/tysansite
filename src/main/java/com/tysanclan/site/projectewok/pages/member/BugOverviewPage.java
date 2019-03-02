@@ -17,8 +17,6 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.beans.BugTrackerService;
 import com.tysanclan.site.projectewok.components.BugListPanel;
@@ -26,11 +24,12 @@ import com.tysanclan.site.projectewok.entities.Bug;
 import com.tysanclan.site.projectewok.entities.Bug.BugStatus;
 import com.tysanclan.site.projectewok.entities.Bug.ReportType;
 import com.tysanclan.site.projectewok.entities.filter.BugFilter;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 @TysanMemberSecured
 public class BugOverviewPage extends AbstractMemberPage {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 

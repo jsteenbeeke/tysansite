@@ -35,9 +35,8 @@ import java.util.List;
  */
 @Component
 @Scope("request")
-class ProfileDAOImpl extends HibernateDAO<Profile, ProfileFilter> implements
-		com.tysanclan.site.projectewok.entities.dao.ProfileDAO {
-
+class ProfileDAOImpl extends HibernateDAO<Profile, ProfileFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.ProfileDAO {
 
 	/**
 	 * @see com.tysanclan.site.projectewok.entities.dao.ProfileDAO#getSkypeUsers()
@@ -47,15 +46,10 @@ class ProfileDAOImpl extends HibernateDAO<Profile, ProfileFilter> implements
 	public List<User> getSkypeUsers() {
 		ProfileFilter filter = new ProfileFilter();
 		filter.instantMessengerAddress().isNotNull();
-		filter.user(new UserFilter()
-							.rank(Rank.CHANCELLOR)
-							.orRank(Rank.SENATOR)
-							.orRank(Rank.TRUTHSAYER)
-							.orRank(Rank.REVERED_MEMBER)
-							.orRank(Rank.SENIOR_MEMBER)
-							.orRank(Rank.FULL_MEMBER)
-							.orRank(Rank.JUNIOR_MEMBER)
-							.orRank(Rank.TRIAL)
+		filter.user(new UserFilter().rank(Rank.CHANCELLOR).orRank(Rank.SENATOR)
+				.orRank(Rank.TRUTHSAYER).orRank(Rank.REVERED_MEMBER)
+				.orRank(Rank.SENIOR_MEMBER).orRank(Rank.FULL_MEMBER)
+				.orRank(Rank.JUNIOR_MEMBER).orRank(Rank.TRIAL)
 
 		);
 

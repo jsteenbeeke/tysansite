@@ -17,36 +17,24 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import com.jeroensteenbeeke.hyperion.data.DomainObject;
+import com.tysanclan.site.projectewok.util.DateUtil;
+import org.hibernate.annotations.Cache;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.hibernate.annotations.Cache;
-
-import com.jeroensteenbeeke.hyperion.data.DomainObject;
-import com.tysanclan.site.projectewok.util.DateUtil;
-
 /**
  * @author Jeroen Steenbeeke
  */
 @Entity
 @Table(indexes = { //
-@Index(name = "IDX_REALMPETITION_REQUESTER", columnList = "requester_id"), //
+		@Index(name = "IDX_REALMPETITION_REQUESTER", columnList = "requester_id"),
+		//
 		@Index(name = "IDX_REALMPETITION_GAME", columnList = "game_id"), //
 		@Index(name = "IDX_REALMPETITION_REALM", columnList = "realm_id") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
@@ -114,7 +102,7 @@ public class RealmPetition implements DomainObject {
 
 	/**
 	 * Sets the Requester of this RealmPetition
-	 * 
+	 *
 	 * @param requester
 	 *            The Requester of this RealmPetition
 	 */
@@ -131,7 +119,7 @@ public class RealmPetition implements DomainObject {
 
 	/**
 	 * Sets the Game of this RealmPetition
-	 * 
+	 *
 	 * @param game
 	 *            The Game of this RealmPetition
 	 */
@@ -148,7 +136,7 @@ public class RealmPetition implements DomainObject {
 
 	/**
 	 * Sets the Name of this RealmPetition
-	 * 
+	 *
 	 * @param name
 	 *            The Name of this RealmPetition
 	 */
@@ -165,7 +153,7 @@ public class RealmPetition implements DomainObject {
 
 	/**
 	 * Sets the Signatures of this RealmPetition
-	 * 
+	 *
 	 * @param signatures
 	 *            The Signatures of this RealmPetition
 	 */

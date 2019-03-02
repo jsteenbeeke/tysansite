@@ -17,37 +17,24 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
+import com.tysanclan.site.projectewok.util.DateUtil;
+import org.hibernate.annotations.Cache;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OrderBy;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.hibernate.annotations.Cache;
-
-import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
-import com.tysanclan.site.projectewok.util.DateUtil;
-
 /**
  * @author Jeroen Steenbeeke
  */
 @Entity
 @Table(indexes = { //
-@Index(name = "IDX_GAMEPETITION_REQUESTER", columnList = "requester_id"), //
+		@Index(name = "IDX_GAMEPETITION_REQUESTER", columnList = "requester_id"),
+		//
 		@Index(name = "IDX_GAMEPETITION_REALM", columnList = "realm_id") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class GamePetition extends BaseDomainObject {
@@ -119,7 +106,7 @@ public class GamePetition extends BaseDomainObject {
 
 	/**
 	 * Sets the Requester of this GamePetition
-	 * 
+	 *
 	 * @param requester
 	 *            The Requester of this GamePetition
 	 */
@@ -136,7 +123,7 @@ public class GamePetition extends BaseDomainObject {
 
 	/**
 	 * Sets the Signatures of this GamePetition
-	 * 
+	 *
 	 * @param signatures
 	 *            The Signatures of this GamePetition
 	 */
@@ -153,7 +140,7 @@ public class GamePetition extends BaseDomainObject {
 
 	/**
 	 * Sets the Name of this GamePetition
-	 * 
+	 *
 	 * @param name
 	 *            The Name of this GamePetition
 	 */
@@ -170,7 +157,7 @@ public class GamePetition extends BaseDomainObject {
 
 	/**
 	 * Sets the Image of this GamePetition
-	 * 
+	 *
 	 * @param image
 	 *            The Image of this GamePetition
 	 */

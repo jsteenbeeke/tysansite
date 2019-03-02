@@ -69,19 +69,21 @@ public class ChancellorAchievementPage extends AbstractMemberPage {
 
 				item.add(new Label("name", proposal.getName()));
 
-				item.add(new Image("icon", new ByteArrayResource(ImageUtil
-						.getMimeType(icon.getImage()), icon.getImage())));
+				item.add(new Image("icon", new ByteArrayResource(
+						ImageUtil.getMimeType(icon.getImage()),
+						icon.getImage())));
 
 				byte[] gameImage = game != null ? game.getImage() : new byte[0];
 
-				item.add(new Image("game", new ByteArrayResource(ImageUtil
-						.getMimeType(gameImage), gameImage))
-						.setVisible(game != null));
+				item.add(new Image("game",
+						new ByteArrayResource(ImageUtil.getMimeType(gameImage),
+								gameImage)).setVisible(game != null));
 
 				boolean hasGroup = proposal.getGroup() != null;
 
-				item.add(new Label("group", hasGroup ? proposal.getGroup()
-						.getName() : "-").setVisible(hasGroup));
+				item.add(new Label("group",
+						hasGroup ? proposal.getGroup().getName() : "-")
+						.setVisible(hasGroup));
 				item.add(new Label("description", proposal.getDescription())
 						.setEscapeModelStrings(false));
 
@@ -95,7 +97,8 @@ public class ChancellorAchievementPage extends AbstractMemberPage {
 							public void onClick() {
 								service.checkProposal(getUser(),
 										getModelObject());
-								setResponsePage(new ChancellorAchievementPage());
+								setResponsePage(
+										new ChancellorAchievementPage());
 							}
 
 						}).setText("Yes, this achievement is fine with me")
@@ -111,7 +114,8 @@ public class ChancellorAchievementPage extends AbstractMemberPage {
 								service.vetoProposal(getUser(),
 										getModelObject());
 
-								setResponsePage(new ChancellorAchievementPage());
+								setResponsePage(
+										new ChancellorAchievementPage());
 							}
 
 						}).setText(

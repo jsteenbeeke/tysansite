@@ -17,9 +17,8 @@
  */
 package com.tysanclan.site.projectewok.beans;
 
-import org.apache.wicket.SharedResources;
-
 import com.tysanclan.site.projectewok.StartupResourceProvider;
+import org.apache.wicket.SharedResources;
 
 public interface ProviderRunner {
 
