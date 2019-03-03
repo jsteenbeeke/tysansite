@@ -2,6 +2,9 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+  <property name="clobType" value="text" dbms="postgresql"/>
+  <property name="clobType" value="varchar(8192)" dbms="h2"/>
+
   <changeSet author="postgres (generated)" id="01-import-existing-schema-1">
     <preConditions onFail="MARK_RAN">
       <not>
@@ -888,7 +891,7 @@
       <column name="id" type="BIGINT">
         <constraints primaryKey="true" primaryKeyName="achievement_pkey"/>
       </column>
-      <column name="description" type="TEXT">
+      <column name="description" type="${clobType}">
         <constraints nullable="false"/>
       </column>
       <column name="name" type="VARCHAR(255)">
@@ -975,7 +978,7 @@
         <constraints primaryKey="true"
                      primaryKeyName="achievementrequest_pkey"/>
       </column>
-      <column name="evidencedescription" type="TEXT"/>
+      <column name="evidencedescription" type="${clobType}"/>
       <column name="evidencepicture" type="OID"/>
       <column name="achievement_id" type="BIGINT"/>
       <column name="requestedby_id" type="BIGINT"/>
@@ -1160,7 +1163,7 @@
       <column name="id" type="BIGINT">
         <constraints primaryKey="true" primaryKeyName="bug_pkey"/>
       </column>
-      <column name="description" type="TEXT">
+      <column name="description" type="${clobType}">
         <constraints nullable="false"/>
       </column>
       <column name="reporttype" type="VARCHAR(255)">
@@ -1489,7 +1492,7 @@
       <column name="id" type="BIGINT">
         <constraints primaryKey="true" primaryKeyName="forumpost_pkey"/>
       </column>
-      <column name="content" type="TEXT"/>
+      <column name="content" type="${clobType}"/>
       <column name="shadow" type="BOOLEAN"/>
       <column name="time" type="TIMESTAMP WITHOUT TIME ZONE"/>
       <column name="branchto_id" type="BIGINT"/>
@@ -1660,8 +1663,8 @@
         <constraints primaryKey="true"
                      primaryKeyName="groupcreationrequest_pkey"/>
       </column>
-      <column name="description" type="TEXT"/>
-      <column name="motivation" type="TEXT"/>
+      <column name="description" type="${clobType}"/>
+      <column name="motivation" type="${clobType}"/>
       <column name="name" type="VARCHAR(255)"/>
       <column name="game_id" type="BIGINT"/>
       <column name="realm_id" type="BIGINT"/>
@@ -1899,7 +1902,7 @@
       <column name="id" type="BIGINT">
         <constraints primaryKey="true" primaryKeyName="message_pkey"/>
       </column>
-      <column name="content" type="TEXT"/>
+      <column name="content" type="${clobType}"/>
       <column name="senttime" type="TIMESTAMP WITHOUT TIME ZONE"/>
       <column name="conversation_id" type="BIGINT"/>
       <column name="sender_id" type="BIGINT"/>
@@ -2094,8 +2097,8 @@
       <column name="instantmessengerpublic" type="BOOLEAN"/>
       <column name="photopublic" type="BOOLEAN"/>
       <column name="photourl" type="VARCHAR(255)"/>
-      <column name="privatedescription" type="TEXT"/>
-      <column name="publicdescription" type="TEXT"/>
+      <column name="privatedescription" type="${clobType}"/>
+      <column name="publicdescription" type="${clobType}"/>
       <column name="realname" type="VARCHAR(255)"/>
       <column name="twitteruid" type="VARCHAR(255)"/>
       <column name="user_id" type="BIGINT"/>
@@ -2233,7 +2236,7 @@
       <column name="id" type="BIGINT">
         <constraints primaryKey="true" primaryKeyName="regulation_pkey"/>
       </column>
-      <column name="contents" type="TEXT"/>
+      <column name="contents" type="${clobType}"/>
       <column name="name" type="VARCHAR(255)"/>
       <column name="drafter_id" type="BIGINT"/>
     </createTable>
@@ -2251,7 +2254,7 @@
         <constraints primaryKey="true" primaryKeyName="regulationchange_pkey"/>
       </column>
       <column name="changetype" type="VARCHAR(255)"/>
-      <column name="description" type="TEXT"/>
+      <column name="description" type="${clobType}"/>
       <column name="start" type="TIMESTAMP WITHOUT TIME ZONE"/>
       <column name="title" type="VARCHAR(255)"/>
       <column name="veto" type="BOOLEAN"/>
@@ -2460,11 +2463,11 @@
       <column name="id" type="BIGINT">
         <constraints primaryKey="true" primaryKeyName="tgroup_pkey"/>
       </column>
-      <column name="description" type="TEXT"/>
+      <column name="description" type="${clobType}"/>
       <column name="joinpolicy" type="VARCHAR(255)">
         <constraints nullable="false"/>
       </column>
-      <column name="messageoftheday" type="TEXT"/>
+      <column name="messageoftheday" type="${clobType}"/>
       <column name="name" type="VARCHAR(255)">
         <constraints nullable="false"/>
       </column>
@@ -2485,7 +2488,7 @@
       <column name="id" type="BIGINT">
         <constraints primaryKey="true" primaryKeyName="trial_pkey"/>
       </column>
-      <column name="motivation" type="TEXT"/>
+      <column name="motivation" type="${clobType}"/>
       <column name="restrained" type="BOOLEAN"/>
       <column name="verdict" type="VARCHAR(255)"/>
       <column name="accused_id" type="BIGINT"/>
@@ -2545,7 +2548,7 @@
         <constraints primaryKey="true"
                      primaryKeyName="truthsayercomplaint_pkey"/>
       </column>
-      <column name="complaint" type="TEXT">
+      <column name="complaint" type="${clobType}">
         <constraints nullable="false"/>
       </column>
       <column name="mediated" type="BOOLEAN">
@@ -2652,7 +2655,7 @@
       <column name="retired" type="BOOLEAN">
         <constraints nullable="false"/>
       </column>
-      <column name="signature" type="TEXT"/>
+      <column name="signature" type="${clobType}"/>
       <column name="timezone" type="VARCHAR(255)"/>
       <column name="username" type="VARCHAR(255)">
         <constraints nullable="false"/>
@@ -2689,7 +2692,7 @@
       <column name="id" type="BIGINT">
         <constraints primaryKey="true" primaryKeyName="tweet_pkey"/>
       </column>
-      <column name="contents" type="TEXT">
+      <column name="contents" type="${clobType}">
         <constraints nullable="false"/>
       </column>
       <column name="name" type="VARCHAR(255)">

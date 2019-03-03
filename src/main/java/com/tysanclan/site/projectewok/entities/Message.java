@@ -62,7 +62,6 @@ public class Message extends BaseDomainObject {
 	private User sender;
 
 	@Column
-	@Lob
 	private String content;
 
 	@Column

@@ -46,11 +46,9 @@ public class AchievementRequest implements DomainObject {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private User requestedBy;
 
-	@Lob
 	@Column
 	private byte[] evidencePicture;
 
-	@Lob
 	@Column
 
 	private String evidenceDescription;

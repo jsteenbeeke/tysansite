@@ -46,11 +46,9 @@ public class GroupCreationRequest extends BaseDomainObject {
 	private String name;
 
 	@Column
-	@Lob
 	private String motivation;
 
 	@Column
-	@Lob
 	private String description;
 
 	@ManyToOne(fetch = FetchType.LAZY)

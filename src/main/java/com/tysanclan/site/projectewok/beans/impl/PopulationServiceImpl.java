@@ -18,6 +18,7 @@
 package com.tysanclan.site.projectewok.beans.impl;
 
 import com.jeroensteenbeeke.hyperion.tardis.scheduler.ApplicationContextServiceProvider;
+import com.jeroensteenbeeke.hyperion.util.Randomizer;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.beans.*;
 import com.tysanclan.site.projectewok.entities.*;
@@ -343,7 +344,7 @@ public class PopulationServiceImpl
 
 			for (int k = 0; k < ((i % 2) + (i % 5)); k++) {
 				poster = posters[j++ % posters.length];
-				forumService.replyToThread(thread, "This is test response " + k,
+				forumService.replyToThread(thread, "This is test response " + k + ". " + Randomizer.random(4000),
 						poster);
 			}
 

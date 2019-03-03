@@ -45,8 +45,6 @@ public class TruthsayerComplaint extends BaseDomainObject {
 	private User complainer;
 
 	@Column(nullable = false)
-	@Lob
-
 	private String complaint;
 
 	@Column(nullable = false)

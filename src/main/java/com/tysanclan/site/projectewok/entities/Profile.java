@@ -49,13 +49,9 @@ public class Profile extends BaseDomainObject {
 	private Date birthDate;
 
 	@Column
-	@Lob
-
 	private String privateDescription;
 
 	@Column
-	@Lob
-
 	private String publicDescription;
 
 	@Column

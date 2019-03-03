@@ -74,8 +74,6 @@ public class RegulationChange extends BaseDomainObject {
 	private String title;
 
 	@Column(nullable = true)
-	@Lob
-
 	private String description;
 
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)

@@ -48,7 +48,6 @@ public class Game extends BaseDomainObject {
 	private boolean active;
 
 	@Column
-	@Lob
 	private byte[] image;
 
 	@ManyToOne(fetch = FetchType.LAZY)

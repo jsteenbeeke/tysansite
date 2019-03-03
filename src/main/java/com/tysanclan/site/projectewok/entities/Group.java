@@ -57,8 +57,6 @@ public abstract class Group extends BaseDomainObject {
 	private Long id;
 
 	@Column
-	@Lob
-
 	private String description;
 
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -77,8 +75,6 @@ public abstract class Group extends BaseDomainObject {
 	private JoinPolicy joinPolicy;
 
 	@Column(nullable = true)
-	@Lob
-
 	private String messageOfTheDay;
 
 	// $P$

@@ -100,8 +100,6 @@ public class Bug extends BaseDomainObject {
 	private String title;
 
 	@Column(nullable = false)
-	@Lob
-
 	private String description;
 
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)

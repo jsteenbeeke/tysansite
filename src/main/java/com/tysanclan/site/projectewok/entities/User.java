@@ -95,8 +95,6 @@ public class User extends BaseDomainObject implements DomainObject {
 	private Rank oldRank;
 
 	@Column
-
-	@Lob
 	private String signature;
 
 	@Column(nullable = false, unique = true)

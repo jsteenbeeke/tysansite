@@ -43,8 +43,6 @@ public class ForumPost extends BaseDomainObject {
 	private ForumThread branchTo;
 
 	@Column
-	@Lob
-
 	private String content;
 
 	@Id

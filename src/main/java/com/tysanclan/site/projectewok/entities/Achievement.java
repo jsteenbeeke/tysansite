@@ -61,8 +61,6 @@ public class Achievement implements DomainObject {
 	private AchievementIcon icon;
 
 	@Column(nullable = false)
-	@Lob
-
 	private String description;
 
 	// $P$

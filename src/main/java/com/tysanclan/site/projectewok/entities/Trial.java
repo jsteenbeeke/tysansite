@@ -67,8 +67,6 @@ public class Trial extends BaseDomainObject {
 	private Verdict verdict;
 
 	@Column
-	@Lob
-
 	private String motivation;
 
 	@Column(nullable = true)

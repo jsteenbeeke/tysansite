@@ -43,8 +43,6 @@ public class Regulation extends BaseDomainObject {
 	private String name;
 
 	@Column
-	@Lob
-
 	private String contents;
 
 	@ManyToOne(fetch = FetchType.LAZY)
