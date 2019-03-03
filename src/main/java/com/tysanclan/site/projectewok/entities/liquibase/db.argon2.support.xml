@@ -62,7 +62,7 @@
     </createTable>
 
     <createIndex tableName="disneyhunt" indexName="idx_disneyhunt_player">
-      <column name="user_Id"/>
+      <column name="user_id"/>
     </createIndex>
     <addForeignKeyConstraint baseTableName="disneyhunt"
                              baseColumnNames="user_id"
