@@ -132,7 +132,7 @@ public class User extends BaseDomainObject implements DomainObject {
 	private User endorses;
 
 	@OneToMany(mappedBy = "endorsesForSenate", fetch = FetchType.LAZY)
-	private Set<User> endorsedForSenateBy;
+	private Set<User> endorsedForSenateBy = new HashSet<>();
 
 	@OneToMany(mappedBy = "requestedBy", fetch = FetchType.LAZY)
 	private List<AchievementRequest> achievementRequests;
@@ -166,7 +166,7 @@ public class User extends BaseDomainObject implements DomainObject {
 	private List<User> pupils;
 
 	@OneToMany(mappedBy = "donator", fetch = FetchType.LAZY)
-	private List<Donation> donations;
+	private List<Donation> donations = new LinkedList<>();
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
 	private List<UnreadForumPost> unreadForumPosts;
@@ -174,7 +174,7 @@ public class User extends BaseDomainObject implements DomainObject {
 	@Column(nullable = false, columnDefinition = "boolean default false not null")
 	private boolean bugReportMaster;
 
-	@Column(nullable = true)
+	@Column
 	private String paypalAddress;
 
 	@OneToMany(mappedBy = "requester", fetch = FetchType.LAZY)

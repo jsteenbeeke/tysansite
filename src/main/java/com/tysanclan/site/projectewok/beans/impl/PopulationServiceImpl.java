@@ -22,10 +22,13 @@ import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.beans.*;
 import com.tysanclan.site.projectewok.entities.*;
 import com.tysanclan.site.projectewok.entities.Role.RoleType;
+import com.tysanclan.site.projectewok.entities.dao.ElectionDAO;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
 import com.tysanclan.site.projectewok.tasks.ChancellorElectionChecker;
 import com.tysanclan.site.projectewok.tasks.SenateElectionChecker;
 import com.tysanclan.site.projectewok.util.DateUtil;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -65,7 +68,13 @@ public class PopulationServiceImpl
 	private FinanceService financeService;
 
 	@Autowired
+	private DemocracyService democracyService;
+
+	@Autowired
 	private UserDAO userDAO;
+
+	@Autowired
+	private ElectionDAO electionDAO;
 
 	private ApplicationContext context;
 
@@ -96,15 +105,15 @@ public class PopulationServiceImpl
 	public void createDebugSite() {
 		Map<Rank, Integer> userTypes = new HashMap<Rank, Integer>();
 		userTypes.put(Rank.CHANCELLOR, 1);
-		userTypes.put(Rank.SENATOR, 5);
+		userTypes.put(Rank.SENATOR, 3);
 		userTypes.put(Rank.TRUTHSAYER, 3);
-		userTypes.put(Rank.REVERED_MEMBER, 4);
-		userTypes.put(Rank.SENIOR_MEMBER, 8);
-		userTypes.put(Rank.FULL_MEMBER, 23);
-		userTypes.put(Rank.JUNIOR_MEMBER, 17);
-		userTypes.put(Rank.TRIAL, 7);
-		userTypes.put(Rank.FORUM, 27);
-		userTypes.put(Rank.BANNED, 3);
+		userTypes.put(Rank.REVERED_MEMBER, 2);
+		userTypes.put(Rank.SENIOR_MEMBER, 4);
+		userTypes.put(Rank.FULL_MEMBER, 8);
+		userTypes.put(Rank.JUNIOR_MEMBER, 4);
+		userTypes.put(Rank.TRIAL, 2);
+		userTypes.put(Rank.FORUM, 8);
+		userTypes.put(Rank.BANNED, 1);
 
 		Map<Rank, Long> joinTime = new HashMap<Rank, Long>();
 		Calendar cal = DateUtil.getCalendarInstance();
@@ -309,7 +318,6 @@ public class PopulationServiceImpl
 
 		ChancellorElectionChecker checker2 = new ChancellorElectionChecker();
 		checker2.run(new ApplicationContextServiceProvider(context));
-
 	}
 
 	private void generateShadowThread(Forum forum, User ban) {

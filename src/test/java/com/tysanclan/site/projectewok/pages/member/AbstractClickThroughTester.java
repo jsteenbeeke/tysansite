@@ -165,6 +165,7 @@ public abstract class AbstractClickThroughTester extends TysanPageTester {
 	public void testTrial() {
 		if (allowTrial) {
 			overview();
+			getTester().assertComponent("basicpanel:trial", Link.class);
 			getTester().clickLink("basicpanel:trial");
 			getTester().assertRenderedPage(StartTrialPage.class);
 		}
@@ -174,6 +175,7 @@ public abstract class AbstractClickThroughTester extends TysanPageTester {
 	public void testComplaintPage() {
 		if (allowTrial) {
 			overview();
+			getTester().assertComponent("basicpanel:complaint", Link.class);
 			getTester().clickLink("basicpanel:complaint");
 			getTester().assertRenderedPage(TruthsayerComplaintPage.class);
 		}

@@ -41,7 +41,7 @@ public class GraphUtil {
 	public static <T extends Number> WebMarkupContainer makePieChart(String id,
 			String title, Map<String, T> data) {
 		if (data.isEmpty()) {
-			WebMarkupContainer container = new WebMarkupContainer("id");
+			WebMarkupContainer container = new WebMarkupContainer(id);
 			container.setVisible(false);
 			return container;
 		}
@@ -70,7 +70,7 @@ public class GraphUtil {
 	public static WebMarkupContainer makeReservesBarChart(String id,
 			String title, SortedMap<String, BigDecimal> donationsPerUser) {
 		if (donationsPerUser.isEmpty()) {
-			WebMarkupContainer container = new WebMarkupContainer("id");
+			WebMarkupContainer container = new WebMarkupContainer(id);
 			container.setVisible(false);
 			return container;
 		}
@@ -103,7 +103,7 @@ public class GraphUtil {
 	public static <T extends Number> WebMarkupContainer makeDonationsBarChart(
 			String id, String title, SortedMap<String, T> donationsPerUser) {
 		if (donationsPerUser.isEmpty()) {
-			WebMarkupContainer container = new WebMarkupContainer("id");
+			WebMarkupContainer container = new WebMarkupContainer(id);
 			container.setVisible(false);
 			return container;
 		}
@@ -138,7 +138,7 @@ public class GraphUtil {
 	public static WebMarkupContainer makeMemberCountLineChart(String id,
 			String title, SortedMap<Date, Integer> counts) {
 		if (counts.isEmpty()) {
-			WebMarkupContainer container = new WebMarkupContainer("id");
+			WebMarkupContainer container = new WebMarkupContainer(id);
 			container.setVisible(false);
 			return container;
 		}
@@ -172,7 +172,7 @@ public class GraphUtil {
 	public static WebMarkupContainer makeCashFlowLineChart(String id,
 			String title, SortedMap<Date, BigDecimal> cashFlow) {
 		if (cashFlow.isEmpty()) {
-			WebMarkupContainer container = new WebMarkupContainer("id");
+			WebMarkupContainer container = new WebMarkupContainer(id);
 			container.setVisible(false);
 			return container;
 		}
