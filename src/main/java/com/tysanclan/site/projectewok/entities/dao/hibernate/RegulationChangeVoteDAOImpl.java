@@ -17,31 +17,20 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.RegulationChangeVote;
+import com.tysanclan.site.projectewok.entities.filter.RegulationChangeVoteFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.RegulationChangeVote;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class RegulationChangeVoteDAOImpl extends
-		EwokHibernateDAO<RegulationChangeVote> implements
+class RegulationChangeVoteDAOImpl
+		extends HibernateDAO<RegulationChangeVote, RegulationChangeVoteFilter>
+		implements
 		com.tysanclan.site.projectewok.entities.dao.RegulationChangeVoteDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<RegulationChangeVote> filter) {
-		Criteria criteria = getSession().createCriteria(
-				RegulationChangeVote.class);
 
-		// if (filter instanceof RegulationChangeVoteFilter) {
-		// RegulationChangeVoteFilter cf = (RegulationChangeVoteFilter) filter;
-		// }
-
-		return criteria;
-	}
 }

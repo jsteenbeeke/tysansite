@@ -17,39 +17,19 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
+import org.hibernate.annotations.Cache;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.OrderBy;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.Type;
-
-import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Entity
 @Table(indexes = { //
-@Index(name = "IDX_TRIAL_ACCUSED", columnList = "accused_id"), //
+		@Index(name = "IDX_TRIAL_ACCUSED", columnList = "accused_id"), //
 		@Index(name = "IDX_TRIAL_ACCUSER", columnList = "accuser_id"), //
 		@Index(name = "IDX_TRIAL_JUDGE", columnList = "judge_id"), //
 		@Index(name = "IDX_TRIAL_THREAD", columnList = "trialThread_id") })
@@ -57,7 +37,7 @@ import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 public class Trial extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;
 
-	public static enum Verdict {
+	public enum Verdict {
 		INNOCENT, MINOR, MEDIUM, MAJOR;
 	}
 
@@ -88,7 +68,7 @@ public class Trial extends BaseDomainObject {
 
 	@Column
 	@Lob
-	@Type(type = "org.hibernate.type.StringClobType")
+
 	private String motivation;
 
 	@Column(nullable = true)
@@ -131,7 +111,7 @@ public class Trial extends BaseDomainObject {
 
 	/**
 	 * Sets the Accused of this Trial
-	 * 
+	 *
 	 * @param accused
 	 *            The Accused of this Trial
 	 */
@@ -148,7 +128,7 @@ public class Trial extends BaseDomainObject {
 
 	/**
 	 * Sets the Judge of this Trial
-	 * 
+	 *
 	 * @param judge
 	 *            The Judge of this Trial
 	 */
@@ -180,7 +160,7 @@ public class Trial extends BaseDomainObject {
 
 	/**
 	 * Sets the TrialThread of this Trial
-	 * 
+	 *
 	 * @param trialThread
 	 *            The TrialThread of this Trial
 	 */

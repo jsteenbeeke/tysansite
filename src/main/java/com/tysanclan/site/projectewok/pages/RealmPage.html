@@ -1,30 +1,30 @@
 <html xmlns:wicket>
 <wicket:extend>
-	<a wicket:id="back">Back to About Page</a>
-	<br />
+    <a wicket:id="back">Back to About Page</a>
+    <br/>
 
-	<div class="jqui-accordion">
-		<h2>
-			<a wicket:id="name"></a>
-		</h2>
-		<div>
-			<table>
-				<tr>
-					<th>Realm Supervisor</th>
-					<td><span wicket:id="supervisor"></span></td>
-				</tr>
-				<tr>
-					<th>Active players</th>
-					<td wicket:id="playercount"></td>
-				</tr>
-			</table>
-		</div>
-	</div>
+    <div class="jqui-accordion">
+        <h2>
+            <a wicket:id="name"></a>
+        </h2>
+        <div>
+            <table>
+                <tr>
+                    <th>Realm Supervisor</th>
+                    <td><span wicket:id="supervisor"></span></td>
+                </tr>
+                <tr>
+                    <th>Active players</th>
+                    <td wicket:id="playercount"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
 
-	<wicket:container wicket:id="games">
-		<br />
-		<span wicket:id="game"></span>
-	</wicket:container>
+    <wicket:container wicket:id="games">
+        <br/>
+        <span wicket:id="game"></span>
+    </wicket:container>
 </wicket:extend>
 </html>
 

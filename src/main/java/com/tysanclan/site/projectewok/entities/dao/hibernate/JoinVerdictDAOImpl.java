@@ -17,52 +17,32 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import java.util.List;
-
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.JoinApplication;
+import com.tysanclan.site.projectewok.entities.JoinVerdict;
+import com.tysanclan.site.projectewok.entities.filter.JoinVerdictFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.JoinApplication;
-import com.tysanclan.site.projectewok.entities.JoinVerdict;
-import com.tysanclan.site.projectewok.entities.dao.filters.JoinVerdictFilter;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class JoinVerdictDAOImpl extends EwokHibernateDAO<JoinVerdict> implements
-		com.tysanclan.site.projectewok.entities.dao.JoinVerdictDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<JoinVerdict> filter) {
-		Criteria criteria = getSession().createCriteria(JoinVerdict.class);
-
-		JoinVerdictFilter jvf = (JoinVerdictFilter) filter;
-
-		if (jvf.getJoinApplication() != null) {
-			criteria.add(Restrictions.eq("application",
-					jvf.getJoinApplication()));
-		}
-		if (jvf.getSenator() != null) {
-			criteria.add(Restrictions.eq("user", jvf.getSenator()));
-		}
-
-		return criteria;
-	}
+class JoinVerdictDAOImpl extends HibernateDAO<JoinVerdict, JoinVerdictFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.JoinVerdictDAO {
 
 	@Override
 	@Transactional(propagation = Propagation.NESTED, readOnly = false)
 	public void deleteForApplication(JoinApplication application) {
-		Criteria criteria = getSession().createCriteria(JoinVerdict.class);
-		criteria.add(Restrictions.eq("application", application));
+		JoinVerdictFilter filter = new JoinVerdictFilter();
+		filter.application(application);
 
-		List<JoinVerdict> list = listOf(criteria);
+		List<JoinVerdict> list = findByFilter(filter).toJavaList();
 
 		for (JoinVerdict v : list) {
 			delete(v);

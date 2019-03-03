@@ -17,10 +17,15 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.site.projectewok.TysanPage;
+import com.tysanclan.site.projectewok.beans.ForumService;
+import com.tysanclan.site.projectewok.entities.Forum;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.User.CaseInsensitiveUserComparator;
+import com.tysanclan.site.projectewok.entities.dao.UserDAO;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -31,15 +36,8 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
-import com.tysanclan.rest.api.data.Rank;
-import com.tysanclan.site.projectewok.TysanPage;
-import com.tysanclan.site.projectewok.beans.ForumService;
-import com.tysanclan.site.projectewok.entities.Forum;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.User.CaseInsensitiveUserComparator;
-import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -53,7 +51,7 @@ public class EditForumModeratorPage extends TysanPage {
 	private UserDAO userDAO;
 
 	/**
-	 * 
+	 *
 	 */
 	public EditForumModeratorPage(Forum forum) {
 		super("Moderator Management");
@@ -62,10 +60,9 @@ public class EditForumModeratorPage extends TysanPage {
 
 		add(new Label("stitle", "Moderators for forum " + forum.getName()));
 
-		List<User> moderators = new LinkedList<User>();
-		moderators.addAll(forum.getModerators());
+		List<User> moderators = new LinkedList<>(forum.getModerators());
 
-		Collections.sort(moderators, new CaseInsensitiveUserComparator());
+		moderators.sort(new CaseInsensitiveUserComparator());
 
 		add(new ListView<User>("moderators", ModelMaker.wrap(moderators)) {
 			private static final long serialVersionUID = 1L;
@@ -117,12 +114,13 @@ public class EditForumModeratorPage extends TysanPage {
 			@SuppressWarnings("unchecked")
 			@Override
 			protected void onSubmit() {
-				DropDownChoice<User> userChoice = (DropDownChoice<User>) get("userSelect");
+				DropDownChoice<User> userChoice = (DropDownChoice<User>) get(
+						"userSelect");
 
 				User moderator = userChoice.getModelObject();
 
-				forumService.addModerator(getUser(), getModelObject(),
-						moderator);
+				forumService
+						.addModerator(getUser(), getModelObject(), moderator);
 
 				setResponsePage(new EditForumModeratorPage(getModelObject()));
 			}
@@ -130,19 +128,19 @@ public class EditForumModeratorPage extends TysanPage {
 		};
 
 		UserFilter filter = new UserFilter();
-		filter.addRank(Rank.CHANCELLOR);
-		filter.addRank(Rank.SENATOR);
-		filter.addRank(Rank.TRUTHSAYER);
-		filter.addRank(Rank.REVERED_MEMBER);
-		filter.addRank(Rank.SENIOR_MEMBER);
-		filter.addRank(Rank.FULL_MEMBER);
-		filter.addRank(Rank.JUNIOR_MEMBER);
-		filter.addOrderBy("username", true);
+		filter.rank(Rank.CHANCELLOR);
+		filter.orRank(Rank.SENATOR);
+		filter.orRank(Rank.TRUTHSAYER);
+		filter.orRank(Rank.REVERED_MEMBER);
+		filter.orRank(Rank.SENIOR_MEMBER);
+		filter.orRank(Rank.FULL_MEMBER);
+		filter.orRank(Rank.JUNIOR_MEMBER);
+		filter.username().orderBy(true);
 
-		List<User> users = userDAO.findByFilter(filter);
+		List<User> users = userDAO.findByFilter(filter).toJavaList();
 
-		addModeratorForm.add(new DropDownChoice<User>("userSelect", ModelMaker
-				.wrap(users.get(0), true), ModelMaker.wrap(users))
+		addModeratorForm.add(new DropDownChoice<User>("userSelect",
+				ModelMaker.wrap(users.get(0), true), ModelMaker.wrap(users))
 				.setNullValid(false));
 
 		add(addModeratorForm);

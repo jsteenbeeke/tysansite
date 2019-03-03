@@ -17,17 +17,15 @@
  */
 package com.tysanclan.site.projectewok.components.models;
 
-import java.io.Serializable;
-
+import com.jeroensteenbeeke.hyperion.data.DomainObject;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 
-import com.jeroensteenbeeke.hyperion.data.DomainObject;
+import java.io.Serializable;
 
 /**
  * @author Jeroen Steenbeeke
  */
 public interface EntityClickListener<T extends DomainObject>
-        extends Serializable {
-	public void onEntityClick(AjaxRequestTarget target,
-	        T entity);
+		extends Serializable {
+	void onEntityClick(AjaxRequestTarget target, T entity);
 }

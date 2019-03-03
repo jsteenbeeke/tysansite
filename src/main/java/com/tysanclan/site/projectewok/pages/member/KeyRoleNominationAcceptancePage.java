@@ -17,17 +17,16 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.RoleService;
 import com.tysanclan.site.projectewok.components.IconLink;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
 import com.tysanclan.site.projectewok.entities.RoleTransfer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 @TysanRankSecured({ Rank.FULL_MEMBER, Rank.SENIOR_MEMBER, Rank.REVERED_MEMBER,
 		Rank.CHANCELLOR, Rank.TRUTHSAYER, Rank.SENATOR })
@@ -68,9 +67,8 @@ public class KeyRoleNominationAcceptancePage extends AbstractMemberPage {
 
 						setResponsePage(new OverviewPage());
 					}
-				})
-				.setText(
-						"No, I would rather have someone else take this position in my stead")
+				}).setText(
+				"No, I would rather have someone else take this position in my stead")
 				.newInstance("no"));
 
 	}

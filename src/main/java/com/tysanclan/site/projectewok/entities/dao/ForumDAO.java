@@ -17,17 +17,18 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.Forum;
 import com.tysanclan.site.projectewok.entities.ForumCategory;
 import com.tysanclan.site.projectewok.entities.ForumPost;
 import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.filter.ForumFilter;
 
 /**
  * @author Jeroen Steenbeeke
  *
  */
-public interface ForumDAO extends EwokDAO<Forum>,
+public interface ForumDAO extends DAO<Forum, ForumFilter>,
 		ContextBasedForumDAO<Forum, ForumCategory> {
 
 	boolean isPostUnread(User user, ForumPost post);

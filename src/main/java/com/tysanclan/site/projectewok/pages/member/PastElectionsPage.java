@@ -17,17 +17,17 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.rest.api.util.HashException;
+import com.tysanclan.rest.api.util.HashUtil;
+import com.tysanclan.site.projectewok.components.MemberListItem;
+import com.tysanclan.site.projectewok.components.OtterSniperPanel;
+import com.tysanclan.site.projectewok.entities.*;
+import com.tysanclan.site.projectewok.entities.dao.ChancellorElectionDAO;
+import com.tysanclan.site.projectewok.entities.dao.ElectionDAO;
+import com.tysanclan.site.projectewok.entities.dao.SenateElectionDAO;
+import com.tysanclan.site.projectewok.entities.filter.ElectionFilter;
+import com.tysanclan.site.projectewok.util.DateUtil;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -37,23 +37,9 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.hibernate.Hibernate;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
-import com.tysanclan.rest.api.util.HashException;
-import com.tysanclan.rest.api.util.HashUtil;
-import com.tysanclan.site.projectewok.components.MemberListItem;
-import com.tysanclan.site.projectewok.components.OtterSniperPanel;
-import com.tysanclan.site.projectewok.entities.ChancellorElection;
-import com.tysanclan.site.projectewok.entities.CompoundVote;
-import com.tysanclan.site.projectewok.entities.CompoundVoteChoice;
-import com.tysanclan.site.projectewok.entities.Election;
-import com.tysanclan.site.projectewok.entities.GroupLeaderElection;
-import com.tysanclan.site.projectewok.entities.SenateElection;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.ChancellorElectionDAO;
-import com.tysanclan.site.projectewok.entities.dao.ElectionDAO;
-import com.tysanclan.site.projectewok.entities.dao.SenateElectionDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.ElectionFilter;
-import com.tysanclan.site.projectewok.util.DateUtil;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @author Jeroen Steenbeeke
@@ -71,7 +57,7 @@ public class PastElectionsPage extends AbstractMemberPage {
 	private SenateElectionDAO senateElectionDAO;
 
 	/**
-	 * 
+	 *
 	 */
 	public PastElectionsPage() {
 		super("Past Elections");
@@ -83,8 +69,8 @@ public class PastElectionsPage extends AbstractMemberPage {
 		calendar.add(Calendar.DAY_OF_YEAR, -1);
 
 		ElectionFilter filter = new ElectionFilter();
-		filter.setStartBefore(calendar.getTime());
-		filter.addOrderBy("start", false);
+		filter.start().lessThan(calendar.getTime());
+		filter.start().orderBy(false);
 
 		List<Election> elections = new LinkedList<Election>();
 
@@ -106,18 +92,18 @@ public class PastElectionsPage extends AbstractMemberPage {
 				DateFormat format = new SimpleDateFormat("EEEE d MMMM yyyy",
 						Locale.US);
 
-				List<User> candidates = new LinkedList<User>();
-				candidates.addAll(election.getCandidates());
+				List<User> candidates = new LinkedList<>(
+						election.getCandidates());
 
-				Collections.sort(candidates, new Comparator<User>() {
+				candidates.sort(new Comparator<User>() {
 					/**
-					 * @see java.util.Comparator#compare(java.lang.Object,
-					 *      java.lang.Object)
+					 * @see Comparator#compare(Object,
+					 *      Object)
 					 */
 					@Override
 					public int compare(User o1, User o2) {
-						return o1.getUsername().compareToIgnoreCase(
-								o2.getUsername());
+						return o1.getUsername()
+								.compareToIgnoreCase(o2.getUsername());
 					}
 				});
 
@@ -133,8 +119,9 @@ public class PastElectionsPage extends AbstractMemberPage {
 				List<User> winners = new LinkedList<User>();
 
 				if (electionClass == ChancellorElection.class) {
-					ChancellorElection ce = chancellorElectionDAO.load(election
-							.getId());
+					ChancellorElection ce = chancellorElectionDAO
+							.load(election.getId())
+							.getOrElseThrow(IllegalStateException::new);
 					type = "Chancellor";
 					if (ce.getWinner() != null) {
 						winners.add(ce.getWinner());
@@ -142,8 +129,8 @@ public class PastElectionsPage extends AbstractMemberPage {
 				} else if (electionClass == SenateElection.class) {
 					type = "Senate";
 					winnersLabel = "Winners:";
-					SenateElection se = senateElectionDAO
-							.load(election.getId());
+					SenateElection se = senateElectionDAO.load(election.getId())
+							.getOrElseThrow(IllegalStateException::new);
 					winners.addAll(se.getWinners());
 				}
 
@@ -164,23 +151,14 @@ public class PastElectionsPage extends AbstractMemberPage {
 					votes.add(v);
 				}
 
-				Collections.sort(votes, new Comparator<CompoundVote>() {
+				votes.sort((o1, o2) -> o1.getCaster().getUsername()
+						.compareToIgnoreCase(o2.getCaster().getUsername()));
 
-					@Override
-					public int compare(CompoundVote o1, CompoundVote o2) {
-						return o1
-								.getCaster()
-								.getUsername()
-								.compareToIgnoreCase(
-										o2.getCaster().getUsername());
-					}
-
-				});
-
-				item.add(new Label("title", type + " election of "
-						+ format.format(cal.getTime())));
+				item.add(new Label("title",
+						type + " election of " + format.format(cal.getTime())));
 				item.add(new Label("winnerslabel", winnersLabel));
-				item.add(new ListView<User>("winners", ModelMaker.wrap(winners)) {
+				item.add(new ListView<User>("winners",
+						ModelMaker.wrap(winners)) {
 					private static final long serialVersionUID = 1L;
 
 					/**
@@ -188,26 +166,28 @@ public class PastElectionsPage extends AbstractMemberPage {
 					 */
 					@Override
 					protected void populateItem(ListItem<User> innerItem) {
-						innerItem.add(new MemberListItem("winner", innerItem
-								.getModelObject()));
+						innerItem.add(new MemberListItem("winner",
+								innerItem.getModelObject()));
 					}
 				});
 
 				item.add(new WebMarkupContainer("candidatesheader")
-						.add(AttributeModifier.replace("colspan", Integer
-								.toString(election.getCandidates().size()))));
+						.add(AttributeModifier.replace("colspan",
+								Integer.toString(
+										election.getCandidates().size()))));
 
-				item.add(new ListView<CompoundVote>("votes", ModelMaker
-						.wrap(votes)) {
+				item.add(new ListView<CompoundVote>("votes",
+						ModelMaker.wrap(votes)) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					protected void populateItem(ListItem<CompoundVote> innerItem) {
+					protected void populateItem(
+							ListItem<CompoundVote> innerItem) {
 						CompoundVote vote = innerItem.getModelObject();
 
 						if (vote.getCaster().equals(getUser())) {
-							innerItem.add(new Label("userdescriptor", getUser()
-									.getUsername()));
+							innerItem.add(new Label("userdescriptor",
+									getUser().getUsername()));
 						} else {
 							innerItem.add(new Label("userdescriptor",
 									getScrambledUsername(vote))
@@ -225,17 +205,15 @@ public class PastElectionsPage extends AbstractMemberPage {
 									@Override
 									public int compare(CompoundVoteChoice o1,
 											CompoundVoteChoice o2) {
-										return o1
-												.getVotesFor()
-												.getUsername()
+										return o1.getVotesFor().getUsername()
 												.compareToIgnoreCase(
 														o2.getVotesFor()
 																.getUsername());
 									}
 								});
 
-						innerItem.add(new ListView<CompoundVoteChoice>(
-								"scores", ModelMaker.wrap(scores)) {
+						innerItem.add(new ListView<CompoundVoteChoice>("scores",
+								ModelMaker.wrap(scores)) {
 
 							private static final long serialVersionUID = 1L;
 
@@ -255,8 +233,8 @@ public class PastElectionsPage extends AbstractMemberPage {
 
 				});
 
-				item.add(new ListView<User>("candidates", ModelMaker
-						.wrap(candidates)) {
+				item.add(new ListView<User>("candidates",
+						ModelMaker.wrap(candidates)) {
 					private static final long serialVersionUID = 1L;
 
 					/**
@@ -264,14 +242,14 @@ public class PastElectionsPage extends AbstractMemberPage {
 					 */
 					@Override
 					protected void populateItem(ListItem<User> innerItem) {
-						innerItem.add(new MemberListItem("candidate", innerItem
-								.getModelObject()));
+						innerItem.add(new MemberListItem("candidate",
+								innerItem.getModelObject()));
 
 					}
 				});
 
-				item.add(new ListView<User>("totals", ModelMaker
-						.wrap(candidates)) {
+				item.add(new ListView<User>("totals",
+						ModelMaker.wrap(candidates)) {
 					private static final long serialVersionUID = 1L;
 
 					/**
@@ -280,8 +258,8 @@ public class PastElectionsPage extends AbstractMemberPage {
 					@Override
 					protected void populateItem(ListItem<User> innerItem) {
 						User user = innerItem.getModelObject();
-						innerItem.add(new Label("total", new Model<Integer>(
-								totals.get(user.getId()))));
+						innerItem.add(new Label("total",
+								new Model<Integer>(totals.get(user.getId()))));
 					}
 				});
 
@@ -292,8 +270,9 @@ public class PastElectionsPage extends AbstractMemberPage {
 	}
 
 	private String getScrambledUsername(CompoundVote vote) {
-		String prehash = vote.getCaster().getUsername()
-				+ vote.getElection().getStart().getTime() + vote.getId();
+		String prehash =
+				vote.getCaster().getUsername() + vote.getElection().getStart()
+						.getTime() + vote.getId();
 
 		int hashHash = getHashHash(prehash);
 

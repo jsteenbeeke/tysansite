@@ -26,7 +26,7 @@ public class RevealablePasswordField extends PasswordTextField {
 
 		response.render(JavaScriptHeaderItem
 				.forReference(RevealablePasswordFieldResourceReference.get()));
-		response.render(OnDomReadyHeaderItem.forScript(String.format(
-				"$('#%s').revealable();", getMarkupId())));
+		response.render(OnDomReadyHeaderItem.forScript(
+				String.format("$('#%s').revealable();", getMarkupId())));
 	}
 }

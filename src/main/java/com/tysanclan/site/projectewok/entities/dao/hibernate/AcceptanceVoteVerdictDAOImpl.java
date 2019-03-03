@@ -17,32 +17,20 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.AcceptanceVoteVerdict;
+import com.tysanclan.site.projectewok.entities.filter.AcceptanceVoteVerdictFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.AcceptanceVoteVerdict;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class AcceptanceVoteVerdictDAOImpl extends
-		EwokHibernateDAO<AcceptanceVoteVerdict> implements
+class AcceptanceVoteVerdictDAOImpl
+		extends HibernateDAO<AcceptanceVoteVerdict, AcceptanceVoteVerdictFilter>
+		implements
 		com.tysanclan.site.projectewok.entities.dao.AcceptanceVoteVerdictDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<AcceptanceVoteVerdict> filter) {
-		Criteria criteria = getSession().createCriteria(
-				AcceptanceVoteVerdict.class);
 
-		// if (filter instanceof AcceptanceVoteVerdictFilter) {
-		// AcceptanceVoteVerdictFilter cf = (AcceptanceVoteVerdictFilter)
-		// filter;
-		// }
-
-		return criteria;
-	}
 }

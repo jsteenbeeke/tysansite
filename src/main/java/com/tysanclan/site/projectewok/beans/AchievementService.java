@@ -17,16 +17,9 @@
  */
 package com.tysanclan.site.projectewok.beans;
 
-import java.util.List;
+import com.tysanclan.site.projectewok.entities.*;
 
-import com.tysanclan.site.projectewok.entities.Achievement;
-import com.tysanclan.site.projectewok.entities.AchievementIcon;
-import com.tysanclan.site.projectewok.entities.AchievementProposal;
-import com.tysanclan.site.projectewok.entities.AchievementRequest;
-import com.tysanclan.site.projectewok.entities.Game;
-import com.tysanclan.site.projectewok.entities.Group;
-import com.tysanclan.site.projectewok.entities.Regulation;
-import com.tysanclan.site.projectewok.entities.User;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke 

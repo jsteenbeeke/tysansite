@@ -17,13 +17,7 @@
  */
 package com.tysanclan.site.projectewok.pages.member.senate;
 
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.DemocracyService;
@@ -34,6 +28,11 @@ import com.tysanclan.site.projectewok.entities.RegulationChange.ChangeType;
 import com.tysanclan.site.projectewok.entities.RegulationChangeVote;
 import com.tysanclan.site.projectewok.entities.dao.RegulationChangeDAO;
 import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -46,25 +45,26 @@ public class RegulationModificationPage extends AbstractMemberPage {
 	private RegulationChangeDAO regulationChangeDAO;
 
 	/**
-	 * 
+	 *
 	 */
 	public RegulationModificationPage() {
 		super("Regulations");
 
 		add(new ListView<RegulationChange>("votes",
-				ModelMaker.wrap(regulationChangeDAO.findAll())) {
+				ModelMaker.wrap(regulationChangeDAO.findAll().toJavaList())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void populateItem(ListItem<RegulationChange> item) {
 				RegulationChange change = item.getModelObject();
 
-				String name = change.getChangeType() == ChangeType.ADD ? change
-						.getTitle() : change.getRegulation().getName();
+				String name = change.getChangeType() == ChangeType.ADD ?
+						change.getTitle() :
+						change.getRegulation().getName();
 
-				item.add(new Label("title", ""
-						+ change.getChangeType().toString() + " regulation "
-						+ name));
+				item.add(new Label("title",
+						"" + change.getChangeType().toString() + " regulation "
+								+ name));
 
 				if (change.getChangeType() == ChangeType.MODIFY) {
 					item.add(new Label("name", change.getTitle()));
@@ -73,8 +73,9 @@ public class RegulationModificationPage extends AbstractMemberPage {
 				}
 
 				if (change.getChangeType() != ChangeType.ADD) {
-					item.add(new Label("current", change.getRegulation()
-							.getContents()).setEscapeModelStrings(false));
+					item.add(new Label("current",
+							change.getRegulation().getContents())
+							.setEscapeModelStrings(false));
 				} else {
 					item.add(new WebMarkupContainer("current")
 							.setVisible(false));
@@ -108,12 +109,12 @@ public class RegulationModificationPage extends AbstractMemberPage {
 					}
 				}
 
-				item.add(new WebMarkupContainer("veto").setVisible(change
-						.isVeto()));
+				item.add(new WebMarkupContainer("veto")
+						.setVisible(change.isVeto()));
 
 				item.add(new IconLink.Builder("images/icons/tick.png",
-						new DefaultClickResponder<RegulationChange>(ModelMaker
-								.wrap(change)) {
+						new DefaultClickResponder<RegulationChange>(
+								ModelMaker.wrap(change)) {
 							private static final long serialVersionUID = 1L;
 
 							@SpringBean
@@ -128,14 +129,13 @@ public class RegulationModificationPage extends AbstractMemberPage {
 										getModelObject(), true);
 							}
 						}).setText(
-						"Yes, I want to "
-								+ change.getChangeType().toString()
-										.toLowerCase() + " this regulation")
+						"Yes, I want to " + change.getChangeType().toString()
+								.toLowerCase() + " this regulation")
 						.newInstance("yes"));
 
 				item.add(new IconLink.Builder("images/icons/cross.png",
-						new DefaultClickResponder<RegulationChange>(ModelMaker
-								.wrap(change)) {
+						new DefaultClickResponder<RegulationChange>(
+								ModelMaker.wrap(change)) {
 							private static final long serialVersionUID = 1L;
 
 							@SpringBean
@@ -151,9 +151,8 @@ public class RegulationModificationPage extends AbstractMemberPage {
 							}
 
 						}).setText(
-						"No, I do not want to "
-								+ change.getChangeType().toString()
-										.toLowerCase() + " this regulation")
+						"No, I do not want to " + change.getChangeType()
+								.toString().toLowerCase() + " this regulation")
 						.newInstance("no"));
 
 			}

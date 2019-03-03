@@ -17,13 +17,15 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.RealmPetition;
+import com.tysanclan.site.projectewok.entities.filter.RealmPetitionFilter;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface RealmPetitionDAO extends EwokDAO<RealmPetition> {
+public interface RealmPetitionDAO
+		extends DAO<RealmPetition, RealmPetitionFilter> {
 
 }

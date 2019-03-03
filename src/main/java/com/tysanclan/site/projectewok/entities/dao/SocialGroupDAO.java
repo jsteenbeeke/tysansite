@@ -17,12 +17,13 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.SocialGroup;
+import com.tysanclan.site.projectewok.entities.filter.SocialGroupFilter;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public interface SocialGroupDAO extends EwokDAO<SocialGroup> {
+public interface SocialGroupDAO extends DAO<SocialGroup, SocialGroupFilter> {
 
 }

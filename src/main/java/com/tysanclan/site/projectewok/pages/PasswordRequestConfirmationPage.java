@@ -17,10 +17,13 @@
  */
 package com.tysanclan.site.projectewok.pages;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.TysanPage;
+import com.tysanclan.site.projectewok.beans.UserService;
+import com.tysanclan.site.projectewok.entities.PasswordRequest;
+import com.tysanclan.site.projectewok.entities.dao.PasswordRequestDAO;
+import com.tysanclan.site.projectewok.entities.filter.PasswordRequestFilter;
+import io.vavr.collection.Seq;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
@@ -29,12 +32,7 @@ import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
-import com.tysanclan.site.projectewok.TysanPage;
-import com.tysanclan.site.projectewok.beans.UserService;
-import com.tysanclan.site.projectewok.entities.PasswordRequest;
-import com.tysanclan.site.projectewok.entities.dao.PasswordRequestDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.PasswordRequestFilter;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Jeroen Steenbeeke
@@ -59,25 +57,24 @@ public class PasswordRequestConfirmationPage extends TysanPage {
 	private PasswordRequestDAO passwordRequestDAO;
 
 	/**
-	 * 
+	 *
 	 */
 	public PasswordRequestConfirmationPage(PageParameters params) {
 		super("Reset password");
 
 		PasswordRequestConfirmationPageParams parameters;
 		try {
-			parameters = requiredString("key").forParameters(params).toClass(
-					PasswordRequestConfirmationPageParams.class);
+			parameters = requiredString("key").forParameters(params)
+					.toClass(PasswordRequestConfirmationPageParams.class);
 		} catch (PageParameterExtractorException e) {
 			throw new AbortWithHttpErrorCodeException(
 					HttpServletResponse.SC_NOT_FOUND);
 		}
 
 		PasswordRequestFilter filter = new PasswordRequestFilter();
-		filter.setKey(parameters.getKey());
+		filter.key(parameters.getKey());
 
-		List<PasswordRequest> requests = passwordRequestDAO
-				.findByFilter(filter);
+		Seq<PasswordRequest> requests = passwordRequestDAO.findByFilter(filter);
 		if (requests.isEmpty()) {
 			throw new RestartResponseAtInterceptPageException(NewsPage.class);
 		}
@@ -98,16 +95,17 @@ public class PasswordRequestConfirmationPage extends TysanPage {
 			protected void onSubmit() {
 				boolean valid = true;
 
-				PasswordTextField tfPassword = (PasswordTextField) get("password");
-				PasswordTextField tfPassword2 = (PasswordTextField) get("password2");
+				PasswordTextField tfPassword = (PasswordTextField) get(
+						"password");
+				PasswordTextField tfPassword2 = (PasswordTextField) get(
+						"password2");
 
 				if (valid && tfPassword.getModelObject().length() < 8) {
 					valid = false;
 					error("Password must be at least 8 characters");
 				}
-				if (valid
-						&& !tfPassword.getModelObject().equals(
-								tfPassword2.getModelObject())) {
+				if (valid && !tfPassword.getModelObject()
+						.equals(tfPassword2.getModelObject())) {
 					valid = false;
 					error("Passwords do not match");
 				}
@@ -126,8 +124,8 @@ public class PasswordRequestConfirmationPage extends TysanPage {
 
 		requestForm
 				.add(new PasswordTextField("password", new Model<String>("")));
-		requestForm.add(new PasswordTextField("password2",
-				new Model<String>("")));
+		requestForm
+				.add(new PasswordTextField("password2", new Model<String>("")));
 
 		add(requestForm);
 

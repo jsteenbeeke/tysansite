@@ -17,11 +17,11 @@
  */
 package com.tysanclan.site.projectewok.beans;
 
-import java.util.Date;
-import java.util.Map;
-
 import com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType;
 import com.tysanclan.site.projectewok.entities.User;
+
+import java.util.Date;
+import java.util.Map;
 
 /**
  * @author Jeroen Steenbeeke

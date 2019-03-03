@@ -22,12 +22,12 @@ import org.apache.wicket.markup.html.basic.Label;
 /**
  * @author Jeroen Steenbeeke
  */
-public abstract class AbstractSingleAccordionMemberPage extends
-		AbstractMemberPage {
+public abstract class AbstractSingleAccordionMemberPage
+		extends AbstractMemberPage {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 
+	 *
 	 */
 	public AbstractSingleAccordionMemberPage(String title) {
 		super(title);

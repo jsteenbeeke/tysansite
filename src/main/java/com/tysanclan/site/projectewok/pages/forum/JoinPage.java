@@ -17,18 +17,16 @@
  */
 package com.tysanclan.site.projectewok.pages.forum;
 
-import java.util.List;
-
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.auth.TysanNonMemberSecured;
 import com.tysanclan.site.projectewok.components.ThreadLink;
 import com.tysanclan.site.projectewok.entities.JoinApplication;
 import com.tysanclan.site.projectewok.entities.dao.JoinApplicationDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.JoinApplicationFilter;
+import com.tysanclan.site.projectewok.entities.filter.JoinApplicationFilter;
+import io.vavr.collection.Seq;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -47,8 +45,8 @@ public class JoinPage extends TysanPage {
 		WebMarkupContainer container2 = new WebMarkupContainer("container2");
 
 		JoinApplicationFilter filter = new JoinApplicationFilter();
-		filter.setApplicant(getUser());
-		List<JoinApplication> applications = joinApplicationDAO
+		filter.applicant(getUser());
+		Seq<JoinApplication> applications = joinApplicationDAO
 				.findByFilter(filter);
 
 		int count = applications.size();
@@ -68,8 +66,9 @@ public class JoinPage extends TysanPage {
 		add(container);
 		container.setVisible(count == 0);
 
-		container2.add(new ThreadLink("join", applications.isEmpty() ? null
-				: applications.get(0).getJoinThread()));
+		container2.add(new ThreadLink("join", applications.isEmpty() ?
+				null :
+				applications.get(0).getJoinThread()));
 		add(container2);
 
 		container2.setVisible(count > 0);

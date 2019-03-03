@@ -1,12 +1,5 @@
 package com.tysanclan.site.projectewok.components.resources;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.wicket.request.resource.AbstractResource;
-import org.apache.wicket.request.resource.ContentDisposition;
-import org.apache.wicket.util.time.Time;
-
 import com.mojang.api.profiles.HttpProfileRepository;
 import com.mojang.api.profiles.Profile;
 import com.tysanclan.site.projectewok.TysanApplication;
@@ -16,6 +9,12 @@ import com.tysanclan.site.projectewok.entities.GameAccount.AccountType;
 import com.tysanclan.site.projectewok.entities.UserGameRealm;
 import com.tysanclan.site.projectewok.entities.dao.GameDAO;
 import com.tysanclan.site.projectewok.util.MemberUtil;
+import io.vavr.collection.Seq;
+import org.apache.wicket.request.resource.AbstractResource;
+import org.apache.wicket.request.resource.ContentDisposition;
+import org.apache.wicket.util.time.Time;
+
+import java.util.ArrayList;
 
 public class UUIDMinecraftWhitelistResource extends AbstractResource {
 
@@ -23,7 +22,7 @@ public class UUIDMinecraftWhitelistResource extends AbstractResource {
 
 	public String getCurrentWhitelist() {
 
-		List<Game> games = TysanApplication.getApplicationContext()
+		Seq<Game> games = TysanApplication.get().getApplicationContext()
 				.getBean(GameDAO.class).findAll();
 		ArrayList<String> whitelist = new ArrayList<String>();
 
@@ -32,8 +31,8 @@ public class UUIDMinecraftWhitelistResource extends AbstractResource {
 		for (Game g : games) {
 			for (UserGameRealm ugr : g.getPlayers()) {
 				for (GameAccount acc : ugr.getAccounts()) {
-					if (acc.getType() == AccountType.MINECRAFT
-							&& MemberUtil.isMember(ugr.getUser())) {
+					if (acc.getType() == AccountType.MINECRAFT && MemberUtil
+							.isMember(ugr.getUser())) {
 						whitelist.add(acc.getName());
 					}
 				}
@@ -76,14 +75,15 @@ public class UUIDMinecraftWhitelistResource extends AbstractResource {
 					id.substring(12, 16), //
 					id.substring(16, 20), //
 					id.substring(20, 32) //
-					);
+			);
 		}
 
 		return id;
 	}
 
 	@Override
-	protected ResourceResponse newResourceResponse(final Attributes attributes) {
+	protected ResourceResponse newResourceResponse(
+			final Attributes attributes) {
 		final ResourceResponse response = new ResourceResponse();
 
 		response.setLastModified(Time.now());

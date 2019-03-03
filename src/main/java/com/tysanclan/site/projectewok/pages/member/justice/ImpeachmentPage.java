@@ -17,13 +17,7 @@
  */
 package com.tysanclan.site.projectewok.pages.member.justice;
 
-import java.util.List;
-
-import org.apache.wicket.RestartResponseAtInterceptPageException;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.DemocracyService;
@@ -36,6 +30,10 @@ import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.ImpeachmentDAO;
 import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
 import com.tysanclan.site.projectewok.pages.member.OverviewPage;
+import io.vavr.collection.Seq;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -50,7 +48,7 @@ public class ImpeachmentPage extends AbstractMemberPage {
 	public ImpeachmentPage() {
 		super("Impeach Chancellor");
 
-		List<Impeachment> impeachments = impeachmentDAO.findAll();
+		Seq<Impeachment> impeachments = impeachmentDAO.findAll();
 
 		if (impeachments.isEmpty()) {
 			throw new RestartResponseAtInterceptPageException(
@@ -73,10 +71,11 @@ public class ImpeachmentPage extends AbstractMemberPage {
 			}
 		}
 
-		add(new Label("vote", myVote == null ? "You have not yet voted"
-				: myVote.isInFavor() ? "You have voted to impeach "
-						+ chancellor : "You have voted not to impeach "
-						+ chancellor));
+		add(new Label("vote", myVote == null ?
+				"You have not yet voted" :
+				myVote.isInFavor() ?
+						"You have voted to impeach " + chancellor :
+						"You have voted not to impeach " + chancellor));
 
 		add(new IconLink.Builder("images/icons/tick.png",
 				new DefaultClickResponder<User>(ModelMaker.wrap(getUser())) {
@@ -90,8 +89,8 @@ public class ImpeachmentPage extends AbstractMemberPage {
 					 */
 					@Override
 					public void onClick() {
-						democracyService.castImpeachmentVote(getModelObject(),
-								true);
+						democracyService
+								.castImpeachmentVote(getModelObject(), true);
 
 						setResponsePage(new ImpeachmentPage());
 					}
@@ -109,8 +108,8 @@ public class ImpeachmentPage extends AbstractMemberPage {
 					 */
 					@Override
 					public void onClick() {
-						democracyService.castImpeachmentVote(getModelObject(),
-								false);
+						democracyService
+								.castImpeachmentVote(getModelObject(), false);
 
 						setResponsePage(new ImpeachmentPage());
 					}

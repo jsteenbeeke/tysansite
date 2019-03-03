@@ -17,15 +17,14 @@
  */
 package com.tysanclan.site.projectewok.event.handlers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.jeroensteenbeeke.hyperion.events.EventHandler;
 import com.jeroensteenbeeke.hyperion.events.EventResult;
 import com.tysanclan.site.projectewok.entities.dao.InactivityNotificationDAO;
 import com.tysanclan.site.projectewok.event.MembershipTerminatedEvent;
+import org.springframework.beans.factory.annotation.Autowired;
 
-public class RemoveInactivityNotificationsOnMembershipTermination implements
-		EventHandler<MembershipTerminatedEvent> {
+public class RemoveInactivityNotificationsOnMembershipTermination
+		implements EventHandler<MembershipTerminatedEvent> {
 	@Autowired
 	private InactivityNotificationDAO inactivityNotificationDAO;
 

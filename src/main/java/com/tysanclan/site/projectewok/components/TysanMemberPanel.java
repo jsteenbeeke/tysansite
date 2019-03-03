@@ -1,43 +1,23 @@
 /**
  * Tysan Clan Website
  * Copyright (C) 2008-2013 Jeroen Steenbeeke and Ties van de Ven
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.tysanclan.site.projectewok.components;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.Session;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.injection.Injector;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.ExternalLink;
-import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.ui.dialog.Dialog;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanSession;
 import com.tysanclan.site.projectewok.TysanTopPanel;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
@@ -50,10 +30,28 @@ import com.tysanclan.site.projectewok.entities.MumbleServer;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.ConversationParticipationDAO;
 import com.tysanclan.site.projectewok.entities.dao.MumbleServerDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.ConversationParticipationFilter;
+import com.tysanclan.site.projectewok.entities.filter.ConversationParticipationFilter;
 import com.tysanclan.site.projectewok.pages.ForumOverviewPage;
 import com.tysanclan.site.projectewok.pages.member.MessageListPage;
 import com.tysanclan.site.projectewok.pages.member.OverviewPage;
+import io.vavr.collection.Seq;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.injection.Injector;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.ExternalLink;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.wicketstuff.wiquery.ui.dialog.Dialog;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Jeroen Steenbeeke
@@ -107,7 +105,7 @@ public class TysanMemberPanel extends TysanTopPanel {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void addForumLink() {
 		Link<Void> link = new Link<Void>("forums") {
@@ -121,18 +119,18 @@ public class TysanMemberPanel extends TysanTopPanel {
 
 		};
 
-		TysanSession session = (TysanSession) Session.get();
+		User user = TysanSession.session().flatMap(TysanSession::getUser)
+				.getOrNull();
 
-		link.add(new Label("count", new Model<Integer>(
-				(session != null && session.getUser() != null) ? forumService
-						.countUnread(session.getUser()) : 0)));
+		link.add(new Label("count", new Model<>(
+				(user != null) ? forumService.countUnread(user) : 0)));
 
 		add(link);
 	}
 
 	/**
-	 	 */
-	private Dialog addMembersOnlineLink() {
+	 */
+	private void addMembersOnlineLink() {
 		Dialog window = new Dialog("onlinewindow");
 		window.setTitle("Members online");
 		window.setOutputMarkupId(true);
@@ -142,14 +140,14 @@ public class TysanMemberPanel extends TysanTopPanel {
 		window.add(new OtterSniperPanel("otterSniperPanel", 4));
 
 		AjaxLink<Dialog> link = new AjaxLink<Dialog>("online",
-				new Model<Dialog>(window)) {
+				new Model<>(window)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				if (target != null) {
-					target.appendJavaScript(getModelObject().open().render()
-							.toString());
+					target.appendJavaScript(
+							getModelObject().open().render().toString());
 				}
 
 			}
@@ -159,14 +157,14 @@ public class TysanMemberPanel extends TysanTopPanel {
 		link.add(new Label("count", new MembersOnlineCountModel())
 				.setOutputMarkupId(true));
 
-		window.add(new ListView<User>("members", ModelMaker.wrap(userService
-				.getMembersOnline())) {
+		window.add(new ListView<User>("members",
+				ModelMaker.wrap(userService.getMembersOnline())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void populateItem(ListItem<User> item) {
-				MemberListItem memberLink = new MemberListItem("link", item
-						.getModelObject());
+				MemberListItem memberLink = new MemberListItem("link",
+						item.getModelObject());
 
 				item.add(memberLink);
 
@@ -174,22 +172,21 @@ public class TysanMemberPanel extends TysanTopPanel {
 
 		});
 
-		window.add(new ListView<MumbleServer>("servers", ModelMaker
-				.wrap(serverDAO.findAll())) {
+		window.add(new ListView<MumbleServer>("servers",
+				ModelMaker.wrap(serverDAO.findAll().toJavaList())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void populateItem(ListItem<MumbleServer> item) {
 				MumbleServer server = item.getModelObject();
 
-				item.add(new WebMarkupContainer("server").add(
-						AttributeModifier.replace("data-token",
-								server.getApiToken())).add(
-						AttributeModifier.replace("data-id",
-								server.getServerID())));
+				item.add(new WebMarkupContainer("server").add(AttributeModifier
+						.replace("data-token", server.getApiToken()))
+						.add(AttributeModifier
+								.replace("data-id", server.getServerID())));
 
-				item.add(new ExternalLink("url", server.getUrl()).setBody(Model
-						.of(server.getUrl())));
+				item.add(new ExternalLink("url", server.getUrl())
+						.setBody(Model.of(server.getUrl())));
 				item.add(new Label("password", server.getPassword()));
 
 			}
@@ -198,11 +195,10 @@ public class TysanMemberPanel extends TysanTopPanel {
 
 		add(link);
 		add(window);
-		return window;
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void addOverviewLink() {
 		add(new Link<Void>("overview") {
@@ -223,9 +219,6 @@ public class TysanMemberPanel extends TysanTopPanel {
 
 		@SpringBean
 		private UserService _service;
-
-		@SpringBean
-		private MumbleServerDAO mumbleDAO;
 
 		/**
 		 * @see org.apache.wicket.model.IModel#getObject()
@@ -267,9 +260,9 @@ public class TysanMemberPanel extends TysanTopPanel {
 		private ConversationParticipationDAO _service;
 
 		/**
-		 * 
+		 *
 		 */
-		public UnreadMessagesModel(User user) {
+		UnreadMessagesModel(User user) {
 			userModel = ModelMaker.wrap(user);
 		}
 
@@ -283,16 +276,16 @@ public class TysanMemberPanel extends TysanTopPanel {
 			}
 
 			ConversationParticipationFilter filter = new ConversationParticipationFilter();
-			filter.setUser(userModel.getObject());
+			filter.user(userModel.getObject());
 
-			List<ConversationParticipation> participations = _service
+			Seq<ConversationParticipation> participations = _service
 					.findByFilter(filter);
 
 			int count = 0;
 
 			for (ConversationParticipation participation : participations) {
-				Set<Message> unread = new HashSet<Message>();
-				unread.addAll(participation.getConversation().getMessages());
+				Set<Message> unread = new HashSet<>(
+						participation.getConversation().getMessages());
 				unread.removeAll(participation.getReadMessages());
 				count += unread.size();
 			}

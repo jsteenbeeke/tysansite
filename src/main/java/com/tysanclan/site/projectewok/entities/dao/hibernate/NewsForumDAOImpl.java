@@ -17,26 +17,18 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.NewsForum;
+import com.tysanclan.site.projectewok.entities.filter.NewsForumFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.NewsForum;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class NewsForumDAOImpl extends EwokHibernateDAO<NewsForum> implements
-		com.tysanclan.site.projectewok.entities.dao.NewsForumDAO {
-	/**
-	 * @see com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO#createCriteria(com.tysanclan.site.projectewok.dataaccess.SearchFilter)
-	 */
-	@Override
-	protected Criteria createCriteria(SearchFilter<NewsForum> filter) {
-		return getSession().createCriteria(NewsForum.class);
-	}
+class NewsForumDAOImpl extends HibernateDAO<NewsForum, NewsForumFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.NewsForumDAO {
+
 }

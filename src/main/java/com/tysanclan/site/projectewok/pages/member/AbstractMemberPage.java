@@ -17,11 +17,11 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
+import com.tysanclan.site.projectewok.TysanPage;
+import com.tysanclan.site.projectewok.components.DisneyHuntPanel;
+import com.tysanclan.site.projectewok.entities.User;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
-
-import com.tysanclan.site.projectewok.TysanPage;
-import com.tysanclan.site.projectewok.entities.User;
 
 /**
  * @author Jeroen Steenbeeke
@@ -40,7 +40,7 @@ public abstract class AbstractMemberPage extends TysanPage {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void initMemberPage() {
 		add(new Link<User>("back") {
@@ -56,6 +56,8 @@ public abstract class AbstractMemberPage extends TysanPage {
 
 			}
 		});
+
+		add(new DisneyHuntPanel("disney", getUser()));
 
 	}
 

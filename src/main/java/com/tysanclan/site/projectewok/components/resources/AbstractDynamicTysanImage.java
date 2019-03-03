@@ -1,22 +1,21 @@
 package com.tysanclan.site.projectewok.components.resources;
 
-import java.awt.Graphics;
+import com.tysanclan.site.projectewok.TysanApplication;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.dao.UserDAO;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
+import io.vavr.collection.Seq;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.resource.DynamicImageResource;
+import org.apache.wicket.util.string.StringValue;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-
-import javax.imageio.ImageIO;
-
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.DynamicImageResource;
-import org.apache.wicket.util.string.StringValue;
-
-import com.tysanclan.site.projectewok.TysanApplication;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
 
 /**
  * Abstract class to easily add text to an image, so we can create many custom signatures and such
@@ -37,8 +36,8 @@ public abstract class AbstractDynamicTysanImage extends DynamicImageResource {
 		}
 
 		UserFilter filter = new UserFilter();
-		filter.setUsername(name.toOptionalString());
-		List<User> users = TysanApplication.getApplicationContext()
+		filter.username(name.toOptionalString());
+		Seq<User> users = TysanApplication.get().getApplicationContext()
 				.getBean(UserDAO.class).findByFilter(filter);
 		if (users == null || users.isEmpty()) {
 			return getErrorImage();

@@ -1,121 +1,127 @@
 <html xmlns:wicket>
 <wicket:extend>
-	<div class="jqui-tabs">
-		<ul>
-			<li><a href="#tabs-1">Donations</a></li>
-			<li><a href="#tabs-2">Expenses</a></li>
-			<li><a href="#tabs-3">Financial Stability</a></li>
-		</ul>
+    <div class="jqui-tabs">
+        <ul>
+            <li><a href="#tabs-1">Donations</a></li>
+            <li><a href="#tabs-2">Expenses</a></li>
+            <li><a href="#tabs-3">Financial Stability</a></li>
+        </ul>
 
-		<div id="tabs-1">
-			<table class="fullWidth">
-				<tr>
-					<th>Donor</th>
-					<th>Date</th>
-					<th>Amount</th>
-					<th>Delete</th>
-				</tr>
-				<tr wicket:id="donations">
-					<td class="centeredCell"><span wicket:id="donor"></span></td>
-					<td class="centeredCell" wicket:id="date"></td>
-					<td class="centeredCell" wicket:id="amount"></td>
-					<td class="centeredCell"><div wicket:id="delete"></div></td>
-				</tr>
-			</table>
+        <div id="tabs-1">
+            <table class="fullWidth">
+                <tr>
+                    <th>Donor</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Delete</th>
+                </tr>
+                <tr wicket:id="donations">
+                    <td class="centeredCell"><span wicket:id="donor"></span>
+                    </td>
+                    <td class="centeredCell" wicket:id="date"></td>
+                    <td class="centeredCell" wicket:id="amount"></td>
+                    <td class="centeredCell">
+                        <div wicket:id="delete"></div>
+                    </td>
+                </tr>
+            </table>
 
-			<h3>Add Donation</h3>
+            <h3>Add Donation</h3>
 
-			<form wicket:id="donationform">
-				<table>
-					<tr>
-						<th>Donation by</th>
-						<td><select wicket:id="userselect">
-								<option>Prospero</option>
-						</select></td>
-					</tr>
-					<tr>
-						<th>Amount donated</th>
-						<td>$ <select wicket:id="currencymajor">
-								<option>5</option>
-						</select>.<select wicket:id="currencyminor">
-								<option>95</option>
-						</select>
-						</td>
-					</tr>
-					<tr>
-						<th>Donation Date</th>
-						<td>
-							<div wicket:id="donationdate"></div>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2"><input type="submit" class="SubmitButton"
-							value="Add" /></td>
-					</tr>
-				</table>
-			</form>
-		</div>
+            <form wicket:id="donationform">
+                <table>
+                    <tr>
+                        <th>Donation by</th>
+                        <td><select wicket:id="userselect">
+                            <option>Prospero</option>
+                        </select></td>
+                    </tr>
+                    <tr>
+                        <th>Amount donated</th>
+                        <td>$ <select wicket:id="currencymajor">
+                            <option>5</option>
+                        </select>.<select wicket:id="currencyminor">
+                            <option>95</option>
+                        </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Donation Date</th>
+                        <td>
+                            <div wicket:id="donationdate"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><input type="submit"
+                                               class="SubmitButton"
+                                               value="Add"/></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
 
-		<div id="tabs-2">
-			<table class="fullWidth">
-				<tr>
-					<th>Expense</th>
-					<th>Amount</th>
-					<th>Regularity</th>
-					<th>Start</th>
-					<th>End</th>
-					<th>Edit</th>
-				</tr>
-				<tr wicket:id="expenses">
-					<td class="centeredCell" wicket:id="expense"></td>
-					<td class="centeredCell" wicket:id="amount"></td>
-					<td class="centeredCell" wicket:id="regularity"></td>
-					<td class="centeredCell" wicket:id="start"></td>
-					<td class="centeredCell"><span wicket:id="end"></span></td>
-					<td class="centeredCell"><span wicket:id="edit"></span></td>
-				</tr>
-			</table>
+        <div id="tabs-2">
+            <table class="fullWidth">
+                <tr>
+                    <th>Expense</th>
+                    <th>Amount</th>
+                    <th>Regularity</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Edit</th>
+                </tr>
+                <tr wicket:id="expenses">
+                    <td class="centeredCell" wicket:id="expense"></td>
+                    <td class="centeredCell" wicket:id="amount"></td>
+                    <td class="centeredCell" wicket:id="regularity"></td>
+                    <td class="centeredCell" wicket:id="start"></td>
+                    <td class="centeredCell"><span wicket:id="end"></span></td>
+                    <td class="centeredCell"><span wicket:id="edit"></span></td>
+                </tr>
+            </table>
 
-			<form wicket:id="addexpenseform">
-				<table>
-					<tr>
-						<th>Expense</th>
-						<td><input type="text" wicket:id="expensename" /></td>
-					</tr>
-					<tr>
-						<th>Cost</th>
-						<td>$ <select wicket:id="currencymajor">
-								<option>5</option>
-						</select>.<select wicket:id="currencyminor">
-								<option>95</option>
-						</select>
-						</td>
-					</tr>
-					<tr>
-						<th>Regularity</th>
-						<td><select wicket:id="regularity">
-								<option>Daily</option>
-						</select></td>
-					</tr>
-					<tr>
-						<th>Start</th>
-						<td>
-							<div wicket:id="startdate"></div>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2"><input type="submit" class="SubmitButton"
-							value="Add" /></td>
-					</tr>
-				</table>
-			</form>
-		</div>
-		<div id="tabs-3">
-			With current reserves (<span wicket:id="currentReserve"></span>), and
-			extrapolating costs and subscriptions for the next 3 years, Tysan
-			will remain financially stable <b wicket:id="exhaustion"></b>.
-		</div>
-	</div>
+            <form wicket:id="addexpenseform">
+                <table>
+                    <tr>
+                        <th>Expense</th>
+                        <td><input type="text" wicket:id="expensename"/></td>
+                    </tr>
+                    <tr>
+                        <th>Cost</th>
+                        <td>$ <select wicket:id="currencymajor">
+                            <option>5</option>
+                        </select>.<select wicket:id="currencyminor">
+                            <option>95</option>
+                        </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Regularity</th>
+                        <td><select wicket:id="regularity">
+                            <option>Daily</option>
+                        </select></td>
+                    </tr>
+                    <tr>
+                        <th>Start</th>
+                        <td>
+                            <div wicket:id="startdate"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><input type="submit"
+                                               class="SubmitButton"
+                                               value="Add"/></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <div id="tabs-3">
+            With current reserves (<span wicket:id="currentReserve"></span>),
+            and
+            extrapolating costs and subscriptions for the next 3 years, Tysan
+            will remain financially stable <b wicket:id="exhaustion"></b>.
+        </div>
+    </div>
 </wicket:extend>
 </html>
 

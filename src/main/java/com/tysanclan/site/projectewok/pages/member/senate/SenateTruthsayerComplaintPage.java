@@ -17,13 +17,7 @@
  */
 package com.tysanclan.site.projectewok.pages.member.senate;
 
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.LawEnforcementService;
@@ -34,13 +28,18 @@ import com.tysanclan.site.projectewok.entities.TruthsayerComplaint;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.TruthsayerComplaintDAO;
 import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 @TysanRankSecured(Rank.SENATOR)
 public class SenateTruthsayerComplaintPage extends AbstractMemberPage {
 	private static final long serialVersionUID = 1L;
 
-	public class ComplaintResponder extends
-			DefaultClickResponder<TruthsayerComplaint> {
+	public class ComplaintResponder
+			extends DefaultClickResponder<TruthsayerComplaint> {
 
 		private static final long serialVersionUID = 1L;
 
@@ -60,8 +59,9 @@ public class SenateTruthsayerComplaintPage extends AbstractMemberPage {
 
 		@Override
 		public void onClick() {
-			lawEnforcementService.passComplaintVote(getModelObject(),
-					userModel.getObject(), inFavor);
+			lawEnforcementService
+					.passComplaintVote(getModelObject(), userModel.getObject(),
+							inFavor);
 
 			setResponsePage(new SenateTruthsayerComplaintPage());
 		}
@@ -81,7 +81,7 @@ public class SenateTruthsayerComplaintPage extends AbstractMemberPage {
 		super("Truthsayer Complaints");
 
 		add(new ListView<TruthsayerComplaint>("complaints",
-				ModelMaker.wrap(complaintDAO.findAll())) {
+				ModelMaker.wrap(complaintDAO.findAll().toJavaList())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -91,22 +91,21 @@ public class SenateTruthsayerComplaintPage extends AbstractMemberPage {
 				item.add(new MemberListItem("complainer", c.getComplainer()));
 				item.add(new MemberListItem("truthsayer", c.getTruthsayer()));
 
-				item.add(new Label("title", "Complaint against "
-						+ c.getTruthsayer().getUsername()));
+				item.add(new Label("title",
+						"Complaint against " + c.getTruthsayer()
+								.getUsername()));
 				item.add(new Label("complaint", c.getComplaint())
 						.setEscapeModelStrings(false));
 
 				boolean hasVoted = c.hasVoted(getUser());
 
 				item.add(new IconLink.Builder("images/icons/tick.png",
-						new ComplaintResponder(c, getUser(), true))
-						.setText(
-								"Yes, I feel this complaint is justified, and warrants stripping the rank of Truthsayer")
+						new ComplaintResponder(c, getUser(), true)).setText(
+						"Yes, I feel this complaint is justified, and warrants stripping the rank of Truthsayer")
 						.newInstance("yes").setVisible(!hasVoted));
 				item.add(new IconLink.Builder("images/icons/cross.png",
-						new ComplaintResponder(c, getUser(), false))
-						.setText(
-								"No, I feel this complaint is without merit, and does not warrant a dismissal")
+						new ComplaintResponder(c, getUser(), false)).setText(
+						"No, I feel this complaint is without merit, and does not warrant a dismissal")
 						.newInstance("no").setVisible(!hasVoted));
 			}
 		});

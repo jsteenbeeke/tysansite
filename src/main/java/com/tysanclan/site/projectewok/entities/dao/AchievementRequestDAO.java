@@ -17,17 +17,19 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import java.util.List;
-
-import com.jeroensteenbeeke.hyperion.data.DAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.AchievementRequest;
 import com.tysanclan.site.projectewok.entities.Group;
+import com.tysanclan.site.projectewok.entities.filter.AchievementRequestFilter;
+
+import java.util.List;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface AchievementRequestDAO extends DAO<AchievementRequest> {
+public interface AchievementRequestDAO
+		extends DAO<AchievementRequest, AchievementRequestFilter> {
 
 	List<AchievementRequest> getPendingGroupRequests(Group group);
 

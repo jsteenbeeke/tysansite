@@ -17,20 +17,18 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.List;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.beans.LawEnforcementService;
+import com.tysanclan.site.projectewok.entities.TruthsayerNomination;
+import com.tysanclan.site.projectewok.entities.dao.TruthsayerNominationDAO;
+import com.tysanclan.site.projectewok.entities.filter.TruthsayerNominationFilter;
+import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
+import io.vavr.collection.Seq;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
-import com.tysanclan.site.projectewok.beans.LawEnforcementService;
-import com.tysanclan.site.projectewok.entities.TruthsayerNomination;
-import com.tysanclan.site.projectewok.entities.dao.TruthsayerNominationDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.TruthsayerNominationFilter;
-import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
 
 /**
  * @author Jeroen Steenbeeke
@@ -44,16 +42,16 @@ public class TruthsayerAcceptancePage extends AbstractMemberPage {
 	private IModel<TruthsayerNomination> nominationModel;
 
 	/**
-	 * 
+	 *
 	 */
 	public TruthsayerAcceptancePage() {
 		super("Truthsayer Invitation");
 
 		TruthsayerNominationFilter filter = new TruthsayerNominationFilter();
-		filter.setNominee(getUser());
-		filter.setStartNotSet(true);
+		filter.user(getUser());
+		filter.voteStart().isNull();
 
-		List<TruthsayerNomination> nominations = truthSayerNominationDAO
+		Seq<TruthsayerNomination> nominations = truthSayerNominationDAO
 				.findByFilter(filter);
 
 		if (nominations.isEmpty()) {
@@ -84,8 +82,8 @@ public class TruthsayerAcceptancePage extends AbstractMemberPage {
 
 		add(yesLink);
 
-		Link<TruthsayerNomination> noLink = new Link<TruthsayerNomination>(
-				"no", ModelMaker.wrap(getNomination())) {
+		Link<TruthsayerNomination> noLink = new Link<TruthsayerNomination>("no",
+				ModelMaker.wrap(getNomination())) {
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean

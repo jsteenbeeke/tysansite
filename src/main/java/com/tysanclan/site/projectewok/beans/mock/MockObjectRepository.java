@@ -17,13 +17,13 @@
  */
 package com.tysanclan.site.projectewok.beans.mock;
 
-import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-
+import com.jeroensteenbeeke.hyperion.data.DomainObject;
+import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.entities.*;
+import com.tysanclan.site.projectewok.entities.Expense.ExpensePeriod;
+import com.tysanclan.site.projectewok.entities.Group.JoinPolicy;
+import com.tysanclan.site.projectewok.entities.Role.RoleType;
+import com.tysanclan.site.projectewok.util.StringUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -32,24 +32,23 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jeroensteenbeeke.hyperion.data.DomainObject;
-import com.tysanclan.rest.api.data.Rank;
-import com.tysanclan.site.projectewok.entities.Expense.ExpensePeriod;
-import com.tysanclan.site.projectewok.entities.Group.JoinPolicy;
-import com.tysanclan.site.projectewok.entities.Role.RoleType;
-import com.tysanclan.site.projectewok.util.StringUtil;
+import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 public class MockObjectRepository implements InitializingBean {
-	private static final byte[] SMALLEST_PNG = {
-			0x47, (byte) 0x49, (byte) 0x46, (byte) 0x38, (byte) 0x39, (byte) 0x61, (byte) 0x01, (byte) 0x00,
-			(byte) 0x01, (byte) 0x00,
-			0x00, (byte) 0xff, (byte) 0x00, (byte) 0x2c, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
-			(byte) 0x01, (byte) 0x00,
-			0x01, (byte) 0x00, (byte) 0x00, (byte) 0x02, (byte) 0x00, (byte) 0x3b
+	private static final byte[] SMALLEST_PNG = { 0x47, (byte) 0x49, (byte) 0x46,
+			(byte) 0x38, (byte) 0x39, (byte) 0x61, (byte) 0x01, (byte) 0x00,
+			(byte) 0x01, (byte) 0x00, 0x00, (byte) 0xff, (byte) 0x00,
+			(byte) 0x2c, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+			(byte) 0x01, (byte) 0x00, 0x01, (byte) 0x00, (byte) 0x00,
+			(byte) 0x02, (byte) 0x00, (byte) 0x3b
 
 	};
 	private static long userCounter = 1L;
@@ -110,8 +109,8 @@ public class MockObjectRepository implements InitializingBean {
 		web.getGroupMembers().add(prospero);
 		web.setJoinPolicy(JoinPolicy.INVITATION);
 		web.setDescription(
-				"The committee in charge of developing new features for the website as well as ensuring the current " +
-						"site stays operational");
+				"The committee in charge of developing new features for the website as well as ensuring the current "
+						+ "site stays operational");
 
 		// 2
 		genUser(sess, "LordInfiniti", Rank.TRUTHSAYER);
@@ -154,8 +153,8 @@ public class MockObjectRepository implements InitializingBean {
 		lawOfSandwiches.setDrafter(prospero);
 		lawOfSandwiches.setId(1L);
 		lawOfSandwiches.setName("Law of Sandwiches");
-		lawOfSandwiches
-				.setContents("All members are required to eat ridiculously large sandwiches at all times");
+		lawOfSandwiches.setContents(
+				"All members are required to eat ridiculously large sandwiches at all times");
 		addObject(sess, lawOfSandwiches);
 
 		forums.add(f);
@@ -270,8 +269,8 @@ public class MockObjectRepository implements InitializingBean {
 	}
 
 	private Role createRole(Session sess, RoleType type) {
-		final String prettyName = StringUtil.capitalizeFirstFunction().apply(
-				type.name().toLowerCase());
+		final String prettyName = StringUtil.capitalizeFirstFunction()
+				.apply(type.name().toLowerCase());
 
 		Role role = new Role();
 		role.setAssignedTo(null);
@@ -298,7 +297,7 @@ public class MockObjectRepository implements InitializingBean {
 		next.setCustomTitle("");
 		next.setEMail(username + "@tysanclan.com");
 		next.setImageURL("");
-		next.setPassword("test");
+		next.setArgon2hash("test");
 		next.setRank(rank);
 		next.setSignature("");
 		next.setUsername(username);

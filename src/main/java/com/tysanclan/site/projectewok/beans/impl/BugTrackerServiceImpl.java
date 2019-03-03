@@ -17,16 +17,6 @@
  */
 package com.tysanclan.site.projectewok.beans.impl;
 
-import java.util.Date;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.tysanclan.site.projectewok.beans.BugTrackerService;
 import com.tysanclan.site.projectewok.entities.Bug;
 import com.tysanclan.site.projectewok.entities.Bug.BugStatus;
@@ -36,7 +26,16 @@ import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.BugCommentDAO;
 import com.tysanclan.site.projectewok.entities.dao.BugDAO;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.BugFilter;
+import com.tysanclan.site.projectewok.entities.filter.BugFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 @Component
 @Scope("request")
@@ -91,7 +90,8 @@ class BugTrackerServiceImpl implements BugTrackerService {
 
 			BugFilter filter = getExceptionFilter(exception);
 
-			Bug report = bugDAO.getUniqueByFilter(filter);
+			Bug report = bugDAO.getUniqueByFilter(filter)
+					.getOrElseThrow(IllegalStateException::new);
 
 			if (report.getStatus() == BugStatus.CLOSED
 					|| report.getStatus() == BugStatus.RESOLVED) {
@@ -176,7 +176,7 @@ class BugTrackerServiceImpl implements BugTrackerService {
 
 	private BugFilter getExceptionFilter(Exception exception) {
 		BugFilter filter = new BugFilter();
-		filter.setDescription(exceptionToString(exception));
+		filter.description(exceptionToString(exception));
 		return filter;
 	}
 

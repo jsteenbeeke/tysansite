@@ -17,14 +17,7 @@
  */
 package com.tysanclan.site.projectewok.pages.forum;
 
-import java.util.Calendar;
-
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.auth.TysanLoginSecured;
 import com.tysanclan.site.projectewok.beans.ForumService;
@@ -34,9 +27,16 @@ import com.tysanclan.site.projectewok.entities.Forum;
 import com.tysanclan.site.projectewok.entities.ForumThread;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.TrialDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.TrialFilter;
+import com.tysanclan.site.projectewok.entities.filter.ForumThreadFilter;
+import com.tysanclan.site.projectewok.entities.filter.TrialFilter;
 import com.tysanclan.site.projectewok.pages.ForumThreadPage;
 import com.tysanclan.site.projectewok.util.DateUtil;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.Calendar;
 
 @TysanLoginSecured
 public class CreateThreadPage extends TysanPage {
@@ -51,7 +51,8 @@ public class CreateThreadPage extends TysanPage {
 		final ForumPostEditorPanel editor = new ForumPostEditorPanel("content",
 				"");
 
-		Form<Forum> form = new Form<Forum>("threadform", ModelMaker.wrap(forum)) {
+		Form<Forum> form = new Form<Forum>("threadform",
+				ModelMaker.wrap(forum)) {
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean
@@ -74,22 +75,24 @@ public class CreateThreadPage extends TysanPage {
 					oneWeekAgo.add(Calendar.WEEK_OF_YEAR, -1);
 
 					TrialFilter filter = new TrialFilter();
-					filter.setStartAfter(oneWeekAgo.getTime());
-					filter.setRestrained(true);
-					filter.setAccused(u);
+					filter.trialThread(new ForumThreadFilter().postTime()
+							.greaterThan(oneWeekAgo.getTime()));
+					filter.restrained(true);
+					filter.accused(u);
 
 					long count = trialDAO.countByFilter(filter);
 
 					if (count == 0) {
-						ForumThread thread = forumService.createForumThread(
-								forum, tf.getModelObject(),
-								editor.getEditorContent(), u);
+						ForumThread thread = forumService
+								.createForumThread(forum, tf.getModelObject(),
+										editor.getEditorContent(), u);
 
 						if (thread != null) {
 							mService.registerAction(u);
 
-							setResponsePage(new ForumThreadPage(thread.getId(),
-									1, false));
+							setResponsePage(
+									new ForumThreadPage(thread.getId(), 1,
+											false));
 						} else {
 							error("Could not create new thread");
 						}

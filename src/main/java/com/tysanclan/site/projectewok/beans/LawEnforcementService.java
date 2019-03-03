@@ -17,20 +17,17 @@
  */
 package com.tysanclan.site.projectewok.beans;
 
-import java.util.Collection;
-
-import com.tysanclan.site.projectewok.entities.Regulation;
-import com.tysanclan.site.projectewok.entities.Trial;
+import com.tysanclan.site.projectewok.entities.*;
 import com.tysanclan.site.projectewok.entities.Trial.Verdict;
-import com.tysanclan.site.projectewok.entities.TruthsayerComplaint;
-import com.tysanclan.site.projectewok.entities.TruthsayerNomination;
-import com.tysanclan.site.projectewok.entities.User;
+
+import java.util.Collection;
 
 /**
  * @author Jeroen Steenbeeke
  */
 public interface LawEnforcementService {
-	public TruthsayerNomination nominateTruthsayer(User nominator, User nominee);
+	public TruthsayerNomination nominateTruthsayer(User nominator,
+			User nominee);
 
 	public void acceptTruthsayerNomination(TruthsayerNomination nomination);
 

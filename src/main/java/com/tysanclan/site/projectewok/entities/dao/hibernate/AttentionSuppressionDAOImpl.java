@@ -17,33 +17,22 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.components.RequiresAttentionLink.IRequiresAttentionCondition;
+import com.tysanclan.site.projectewok.entities.AttentionSuppression;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.dao.AttentionSuppressionDAO;
+import com.tysanclan.site.projectewok.entities.filter.AttentionSuppressionFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.components.RequiresAttentionLink.IRequiresAttentionCondition;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.AttentionSuppression;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.AttentionSuppressionDAO;
-
 @Component
 @Scope("request")
-class AttentionSuppressionDAOImpl extends
-		EwokHibernateDAO<AttentionSuppression> implements
-		AttentionSuppressionDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<AttentionSuppression> filter) {
-		Criteria criteria = getSession().createCriteria(
-				AttentionSuppression.class);
-
-		return criteria;
-	}
+class AttentionSuppressionDAOImpl
+		extends HibernateDAO<AttentionSuppression, AttentionSuppressionFilter>
+		implements AttentionSuppressionDAO {
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
@@ -58,18 +47,13 @@ class AttentionSuppressionDAOImpl extends
 
 		String containingClassName = getContainingClassName(conditionClass);
 
-		Criteria criteria = getSession().createCriteria(
-				AttentionSuppression.class);
-		criteria.add(Restrictions.eq("dismissableId", dismissalId));
-		criteria.add(Restrictions.eq("conditionClass", conditionClassName));
-		criteria.add(Restrictions.eq("containingClass", containingClassName));
-		criteria.add(Restrictions.eq("user", user));
+		AttentionSuppressionFilter filter = new AttentionSuppressionFilter();
+		filter.dismissableId(dismissalId);
+		filter.conditionClass(conditionClassName);
+		filter.containingClass(containingClassName);
+		filter.user(user);
 
-		criteria.setProjection(Projections.rowCount());
-
-		Number count = (Number) criteria.uniqueResult();
-
-		return count.intValue() > 0;
+		return countByFilter(filter) > 0;
 	}
 
 	private String getContainingClassName(

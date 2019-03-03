@@ -17,10 +17,9 @@
  */
 package com.tysanclan.site.projectewok.pages.member.admin;
 
-import org.apache.wicket.markup.html.basic.Label;
-
 import com.tysanclan.site.projectewok.entities.Role.RoleType;
 import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
+import org.apache.wicket.markup.html.basic.Label;
 
 public class TransferInProgressPage extends AbstractMemberPage {
 	private static final long serialVersionUID = 1L;

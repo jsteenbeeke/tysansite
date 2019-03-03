@@ -17,17 +17,18 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import java.util.List;
-
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.Forum;
 import com.tysanclan.site.projectewok.entities.ForumThread;
+import com.tysanclan.site.projectewok.entities.filter.ForumThreadFilter;
+
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
  *
  */
-public interface ForumThreadDAO extends EwokDAO<ForumThread>,
+public interface ForumThreadDAO extends DAO<ForumThread, ForumThreadFilter>,
 		ContextBasedForumDAO<ForumThread, Forum> {
 	public List<ForumThread> findByPostTime(Forum forum);
 }

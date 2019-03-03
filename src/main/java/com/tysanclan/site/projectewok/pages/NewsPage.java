@@ -17,12 +17,9 @@
  */
 package com.tysanclan.site.projectewok.pages;
 
-import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.markup.repeater.data.DataView;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.FilterDataProvider;
+import com.jeroensteenbeeke.hyperion.solstice.data.FilterDataProvider;
 import com.tysanclan.site.projectewok.TysanPage;
+import com.tysanclan.site.projectewok.TysanSession;
 import com.tysanclan.site.projectewok.beans.ForumService;
 import com.tysanclan.site.projectewok.components.AutoForumLink;
 import com.tysanclan.site.projectewok.components.NewsPanel;
@@ -30,7 +27,10 @@ import com.tysanclan.site.projectewok.entities.Forum;
 import com.tysanclan.site.projectewok.entities.ForumThread;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.ForumThreadDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.ForumThreadFilter;
+import com.tysanclan.site.projectewok.entities.filter.ForumThreadFilter;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -50,17 +50,17 @@ public class NewsPage extends TysanPage {
 		Forum forum = forumService.getNewsForum();
 
 		ForumThreadFilter filter = new ForumThreadFilter();
-		filter.setForum(forum);
-		filter.addOrderBy("postTime", false);
+		filter.forum(forum);
+		filter.postTime().orderBy(false);
 
-		DataView<ForumThread> newsItems = new DataView<ForumThread>(
-				"newsitems", FilterDataProvider.of(filter, forumThreadDAO)) {
+		DataView<ForumThread> newsItems = new DataView<ForumThread>("newsitems",
+				FilterDataProvider.of(filter, forumThreadDAO)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void populateItem(Item<ForumThread> item) {
-				User u = NewsPage.this.getTysanSession() != null ? NewsPage.this
-						.getTysanSession().getUser() : null;
+				User u = getTysanSession().flatMap(TysanSession::getUser)
+						.getOrNull();
 
 				item.add(new NewsPanel("newspanel", item.getModelObject(),
 						u == null));

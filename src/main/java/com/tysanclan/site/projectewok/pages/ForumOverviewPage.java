@@ -17,11 +17,11 @@
  */
 package com.tysanclan.site.projectewok.pages;
 
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-
 import com.tysanclan.site.projectewok.TysanPage;
+import com.tysanclan.site.projectewok.TysanSession;
 import com.tysanclan.site.projectewok.components.ForumOverviewPanel;
 import com.tysanclan.site.projectewok.entities.User;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 
 /**
  * @author Jeroen Steenbeeke
@@ -32,7 +32,7 @@ public class ForumOverviewPage extends TysanPage {
 	public ForumOverviewPage() {
 		super("Forums");
 
-		User u = getTysanSession() != null ? getTysanSession().getUser() : null;
+		User u = getTysanSession().flatMap(TysanSession::getUser).getOrNull();
 
 		setAutoCollapse(u != null && u.isCollapseForums());
 

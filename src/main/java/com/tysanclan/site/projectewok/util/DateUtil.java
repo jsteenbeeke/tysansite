@@ -17,17 +17,12 @@
  */
 package com.tysanclan.site.projectewok.util;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
-
+import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.NaiveRenderer;
+import com.tysanclan.site.projectewok.entities.User;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 
-import com.tysanclan.site.projectewok.entities.User;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @author Jeroen Steenbeeke
@@ -39,7 +34,7 @@ public class DateUtil {
 	/**
 	 * Returns the date, formatted along the user's timezone preferences, using
 	 * EST as a basis when in doubt
-	 * 
+	 *
 	 * @param date
 	 *            The date to format
 	 * @param user
@@ -72,7 +67,8 @@ public class DateUtil {
 		return builder;
 	}
 
-	public static String getTimezoneFormattedString(Date date, String timezone) {
+	public static String getTimezoneFormattedString(Date date,
+			String timezone) {
 		TimeZone tz = null;
 		if (timezone == null) {
 			tz = NEW_YORK;
@@ -188,7 +184,7 @@ public class DateUtil {
 	}
 
 	public static IChoiceRenderer<Integer> getTwoDigitRenderer() {
-		return new IChoiceRenderer<Integer>() {
+		return new NaiveRenderer<Integer>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -249,8 +245,8 @@ public class DateUtil {
 
 		return cal.getTime();
 	}
-	
-	  public static int daysBetween(Date d1, Date d2){
-          return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
-  }
+
+	public static int daysBetween(Date d1, Date d2) {
+		return (int) ((d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
+	}
 }

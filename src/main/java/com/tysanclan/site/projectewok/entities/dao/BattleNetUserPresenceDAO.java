@@ -17,13 +17,15 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.BattleNetUserPresence;
+import com.tysanclan.site.projectewok.entities.filter.BattleNetUserPresenceFilter;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface BattleNetUserPresenceDAO extends EwokDAO<BattleNetUserPresence> {
+public interface BattleNetUserPresenceDAO
+		extends DAO<BattleNetUserPresence, BattleNetUserPresenceFilter> {
 
 }

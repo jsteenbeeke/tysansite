@@ -17,15 +17,15 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.ForumThread;
 import com.tysanclan.site.projectewok.entities.JoinApplication;
+import com.tysanclan.site.projectewok.entities.filter.JoinApplicationFilter;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public interface JoinApplicationDAO extends
-        EwokDAO<JoinApplication> {
-	JoinApplication getJoinApplicationByThread(
-	        ForumThread thread);
+public interface JoinApplicationDAO
+		extends DAO<JoinApplication, JoinApplicationFilter> {
+	JoinApplication getJoinApplicationByThread(ForumThread thread);
 }

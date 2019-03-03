@@ -17,17 +17,16 @@
  */
 package com.tysanclan.site.projectewok.event.handlers;
 
-import java.util.List;
-
 import com.jeroensteenbeeke.hyperion.events.EventHandler;
 import com.jeroensteenbeeke.hyperion.events.EventResult;
 import com.tysanclan.site.projectewok.entities.Game;
 import com.tysanclan.site.projectewok.entities.dao.GameDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.GameFilter;
+import com.tysanclan.site.projectewok.entities.filter.GameFilter;
 import com.tysanclan.site.projectewok.event.MembershipTerminatedEvent;
+import io.vavr.collection.Seq;
 
-public class ResetGameCoordinatorOnTermination implements
-		EventHandler<MembershipTerminatedEvent> {
+public class ResetGameCoordinatorOnTermination
+		implements EventHandler<MembershipTerminatedEvent> {
 	private GameDAO gameDAO;
 
 	public void setGameDAO(GameDAO gameDAO) {
@@ -37,9 +36,9 @@ public class ResetGameCoordinatorOnTermination implements
 	@Override
 	public EventResult onEvent(MembershipTerminatedEvent event) {
 		GameFilter gfilter = new GameFilter();
-		gfilter.setCoordinator(event.getSubject());
+		gfilter.coordinator(event.getSubject());
 
-		List<Game> games = gameDAO.findByFilter(gfilter);
+		Seq<Game> games = gameDAO.findByFilter(gfilter);
 		for (Game game : games) {
 			game.setCoordinator(null);
 

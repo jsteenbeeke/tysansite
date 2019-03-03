@@ -17,41 +17,27 @@
  */
 package com.tysanclan.site.projectewok.beans.impl;
 
-import java.awt.Dimension;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-
+import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.site.projectewok.beans.AchievementService;
+import com.tysanclan.site.projectewok.entities.*;
+import com.tysanclan.site.projectewok.entities.dao.*;
+import com.tysanclan.site.projectewok.entities.filter.AchievementIconFilter;
+import com.tysanclan.site.projectewok.entities.filter.AchievementProposalFilter;
+import com.tysanclan.site.projectewok.util.DateUtil;
+import com.tysanclan.site.projectewok.util.ImageUtil;
+import com.tysanclan.site.projectewok.util.MemberUtil;
+import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.tysanclan.rest.api.data.Rank;
-import com.tysanclan.site.projectewok.beans.AchievementService;
-import com.tysanclan.site.projectewok.entities.Achievement;
-import com.tysanclan.site.projectewok.entities.AchievementIcon;
-import com.tysanclan.site.projectewok.entities.AchievementProposal;
-import com.tysanclan.site.projectewok.entities.AchievementProposalVote;
-import com.tysanclan.site.projectewok.entities.AchievementRequest;
-import com.tysanclan.site.projectewok.entities.Game;
-import com.tysanclan.site.projectewok.entities.Group;
-import com.tysanclan.site.projectewok.entities.Regulation;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.AchievementDAO;
-import com.tysanclan.site.projectewok.entities.dao.AchievementIconDAO;
-import com.tysanclan.site.projectewok.entities.dao.AchievementProposalDAO;
-import com.tysanclan.site.projectewok.entities.dao.AchievementProposalVoteDAO;
-import com.tysanclan.site.projectewok.entities.dao.AchievementRequestDAO;
-import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.AchievementIconFilter;
-import com.tysanclan.site.projectewok.entities.dao.filters.AchievementProposalFilter;
-import com.tysanclan.site.projectewok.util.DateUtil;
-import com.tysanclan.site.projectewok.util.ImageUtil;
-import com.tysanclan.site.projectewok.util.MemberUtil;
-import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
+import java.awt.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -104,7 +90,7 @@ class AchievementServiceImpl implements AchievementService {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	private void castVote(AchievementProposal proposal, User senator,
+	protected void castVote(AchievementProposal proposal, User senator,
 			boolean inFavor) {
 		AchievementProposalVote vote = getCurrentVote(proposal, senator);
 
@@ -124,7 +110,7 @@ class AchievementServiceImpl implements AchievementService {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	private AchievementProposalVote getCurrentVote(
+	protected AchievementProposalVote getCurrentVote(
 			AchievementProposal proposal, User senator) {
 		AchievementProposalVote vote = null;
 
@@ -186,17 +172,16 @@ class AchievementServiceImpl implements AchievementService {
 	public void approveRequest(User truthsayer, AchievementRequest request) {
 		Group group = request.getAchievement().getGroup();
 
-		if (truthsayer.getRank() == Rank.TRUTHSAYER
-				|| (group != null && truthsayer.equals(group.getLeader()))) {
+		if (truthsayer.getRank() == Rank.TRUTHSAYER || (group != null
+				&& truthsayer.equals(group.getLeader()))) {
 			Achievement a = request.getAchievement();
 			User recipient = request.getRequestedBy();
 
 			a.getAchievedBy().add(recipient);
 
 			notificationService.notifyUser(request.getRequestedBy(),
-					"Request for achievement "
-							+ request.getAchievement().getName()
-							+ " has been approved");
+					"Request for achievement " + request.getAchievement()
+							.getName() + " has been approved");
 
 			achievementDAO.update(a);
 			achievementRequestDAO.delete(request);
@@ -208,15 +193,14 @@ class AchievementServiceImpl implements AchievementService {
 	public void denyRequest(User truthsayer, AchievementRequest request) {
 		Group group = request.getAchievement().getGroup();
 
-		if (truthsayer.getRank() == Rank.TRUTHSAYER
-				|| (group != null && truthsayer.equals(group.getLeader()))) {
+		if (truthsayer.getRank() == Rank.TRUTHSAYER || (group != null
+				&& truthsayer.equals(group.getLeader()))) {
 
 			achievementRequestDAO.delete(request);
 
 			notificationService.notifyUser(request.getRequestedBy(),
-					"Request for achievement "
-							+ request.getAchievement().getName()
-							+ " has been denied");
+					"Request for achievement " + request.getAchievement()
+							.getName() + " has been denied");
 		}
 	}
 
@@ -224,9 +208,9 @@ class AchievementServiceImpl implements AchievementService {
 	public List<AchievementProposal> getProposedAchievements(User user) {
 		AchievementProposalFilter filter = new AchievementProposalFilter();
 
-		filter.setSuggestor(user);
+		filter.suggestor(user);
 
-		return achievementProposalDAO.findByFilter(filter);
+		return achievementProposalDAO.findByFilter(filter).toJavaList();
 	}
 
 	@Override
@@ -254,26 +238,26 @@ class AchievementServiceImpl implements AchievementService {
 				String reason = null;
 
 				if (charter && regulation != null) {
-					reason = " for incompatibility with the Charter and with regulation "
-							+ regulation.getName();
+					reason =
+							" for incompatibility with the Charter and with regulation "
+									+ regulation.getName();
 				} else if (charter) {
 					reason = " for incompatibility with the Charter";
 				} else if (regulation == null) {
 					// Never happens
 					reason = " for no apparent reason";
 				} else {
-					reason = " for incompatibility with regulation "
-							+ regulation.getName();
+					reason =
+							" for incompatibility with regulation " + regulation
+									.getName();
 				}
 
 				notificationService.notifyUser(proposal.getSuggestor(),
 						"The Truthsayers have rejected your proposed achievement "
 								+ proposal.getName() + reason);
-				logService.logUserAction(
-						truthsayer,
-						"Achievements",
-						"Has rejected proposed achievement "
-								+ proposal.getName() + reason);
+				logService.logUserAction(truthsayer, "Achievements",
+						"Has rejected proposed achievement " + proposal
+								.getName() + reason);
 			}
 		}
 	}
@@ -328,27 +312,34 @@ class AchievementServiceImpl implements AchievementService {
 	private void addOtherIcons(List<AchievementIcon> icons) {
 
 		AchievementIconFilter filter = new AchievementIconFilter();
-		filter.setUnclaimed(true);
-		filter.setCreatorOnly(false);
-		filter.setApproved(true);
-		icons.addAll(achievementIconDAO.findByFilter(filter));
+		filter.achievement().isNull();
+		filter.proposal().isNull();
+		filter.creatorOnly(false);
+		filter.approved(true);
+
+		icons.addAll(achievementIconDAO.findByFilter(filter).toJavaList());
 	}
 
 	private void addMyIcons(User user, List<AchievementIcon> icons) {
 		AchievementIconFilter filter = new AchievementIconFilter();
-		filter.setUnclaimed(true);
-		filter.setCreatorOnly(true);
-		filter.setApproved(true);
-		filter.setCreator(user);
-		icons.addAll(achievementIconDAO.findByFilter(filter));
+
+		filter.achievement().isNull();
+		filter.proposal().isNull();
+		filter.creatorOnly(true);
+		filter.approved(true);
+		filter.creator(user);
+
+		icons.addAll(achievementIconDAO.findByFilter(filter).toJavaList());
 	}
 
 	private void addClassicIcons(List<AchievementIcon> icons) {
 		AchievementIconFilter filter = new AchievementIconFilter();
-		filter.setUnclaimed(true);
-		filter.setCreatorOnlyAsNull(true);
-		filter.setApproved(true);
-		icons.addAll(achievementIconDAO.findByFilter(filter));
+		filter.achievement().isNull();
+		filter.proposal().isNull();
+		filter.creatorOnly().isNull();
+		filter.approved(true);
+
+		icons.addAll(achievementIconDAO.findByFilter(filter).toJavaList());
 	}
 
 	@Override
@@ -400,15 +391,16 @@ class AchievementServiceImpl implements AchievementService {
 		Calendar cal = DateUtil.getCalendarInstance();
 		cal.add(Calendar.DAY_OF_MONTH, -4);
 
-		filter.setStartsBefore(cal.getTime());
+		filter.startDate().lessThan(cal.getTime());
 
 		for (AchievementProposal proposal : achievementProposalDAO
 				.findByFilter(filter)) {
 
-			int senateSize = userDAO.countByRank(Rank.SENATOR);
-			int totalVotes = proposal.getChancellorVeto() == null
-					|| !proposal.getChancellorVeto().booleanValue() ? proposal
-					.getApprovedBy().size() : senateSize;
+			long senateSize = userDAO.countByRank(Rank.SENATOR);
+			long totalVotes = proposal.getChancellorVeto() == null || !proposal
+					.getChancellorVeto() ?
+					proposal.getApprovedBy().size() :
+					senateSize;
 			int inFavor = 0;
 
 			for (AchievementProposalVote vote : proposal.getApprovedBy()) {
@@ -417,13 +409,14 @@ class AchievementServiceImpl implements AchievementService {
 				}
 			}
 
-			int requiredPercentage = proposal.getChancellorVeto() == null
-					|| !proposal.getChancellorVeto().booleanValue() ? 51 : 66;
+			int requiredPercentage =
+					proposal.getChancellorVeto() == null || !proposal
+							.getChancellorVeto() ? 51 : 66;
 
 			AchievementIcon icon = proposal.getIcon();
 			icon.setProposal(null);
 
-			int perc = 100 * inFavor / totalVotes;
+			long perc = 100 * inFavor / totalVotes;
 			if (perc >= requiredPercentage) {
 				Achievement achievement = new Achievement();
 				achievement.setDescription(proposal.getDescription());
@@ -439,10 +432,8 @@ class AchievementServiceImpl implements AchievementService {
 				logService.logSystemAction("Achievements",
 						"New achievement approved: " + proposal.getName());
 
-				notificationService.notifyUser(
-						proposal.getSuggestor(),
-						"Your suggested achievement named "
-								+ proposal.getName()
+				notificationService.notifyUser(proposal.getSuggestor(),
+						"Your suggested achievement named " + proposal.getName()
 								+ " was approved by the Senate, with " + perc
 								+ "% in favor");
 
@@ -453,10 +444,8 @@ class AchievementServiceImpl implements AchievementService {
 									+ "% in favor");
 				}
 			} else {
-				notificationService.notifyUser(
-						proposal.getSuggestor(),
-						"Your suggested achievement named "
-								+ proposal.getName()
+				notificationService.notifyUser(proposal.getSuggestor(),
+						"Your suggested achievement named " + proposal.getName()
 								+ " was rejected by the Senate, with only "
 								+ perc + "% of the required ("
 								+ requiredPercentage + ") in favor");
@@ -465,8 +454,8 @@ class AchievementServiceImpl implements AchievementService {
 					notificationService.notifyUser(vote.getSenator(),
 							"Suggested achievement named " + proposal.getName()
 									+ " was rejected with " + perc
-									+ "% of the required ("
-									+ requiredPercentage + ") in favor");
+									+ "% of the required (" + requiredPercentage
+									+ ") in favor");
 				}
 
 				logService.logSystemAction("Achievements",

@@ -17,24 +17,20 @@
  */
 package com.tysanclan.site.projectewok.tasks;
 
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.HyperionTask;
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.ServiceProvider;
+import com.tysanclan.site.projectewok.TysanTaskGroup;
 import com.tysanclan.site.projectewok.beans.RestService;
-import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 
-public class RestTokenCleanupTask extends PeriodicTask {
-	@SpringBean
-	private RestService restService;
-
+public class RestTokenCleanupTask extends HyperionTask {
 	public RestTokenCleanupTask() {
-		super("Rest Token Cleanup", "Webservices",
-				ExecutionMode.EVERY_FIVE_MINUTES);
+		super("Rest Token Cleanup", TysanTaskGroup.CLEANUP);
 	}
 
 	@Override
-	public void run() {
-		restService.cleanExpiredTokens();
-		restService.timeoutChallenges();
+	public void run(ServiceProvider provider) {
+		provider.getService(RestService.class).cleanExpiredTokens();
+		provider.getService(RestService.class).timeoutChallenges();
 	}
 
 }

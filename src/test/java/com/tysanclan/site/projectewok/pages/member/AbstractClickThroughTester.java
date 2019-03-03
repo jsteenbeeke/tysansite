@@ -1,7 +1,17 @@
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.List;
-
+import com.google.common.collect.Lists;
+import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.site.projectewok.TysanApplication;
+import com.tysanclan.site.projectewok.TysanPageTester;
+import com.tysanclan.site.projectewok.beans.RoleService;
+import com.tysanclan.site.projectewok.entities.Group;
+import com.tysanclan.site.projectewok.entities.Role;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.dao.GroupDAO;
+import com.tysanclan.site.projectewok.entities.dao.UserDAO;
+import com.tysanclan.site.projectewok.entities.filter.GroupFilter;
+import com.tysanclan.site.projectewok.pages.member.justice.StartTrialPage;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.util.tester.Result;
 import org.apache.wicket.util.tester.WicketTesterHelper;
@@ -9,24 +19,77 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.common.collect.Lists;
-import com.tysanclan.site.projectewok.TysanPageTester;
-import com.tysanclan.site.projectewok.beans.RoleService;
-import com.tysanclan.site.projectewok.pages.member.justice.StartTrialPage;
+import java.util.List;
+import java.util.Random;
 
 public abstract class AbstractClickThroughTester extends TysanPageTester {
-	private final long userId;
+	private static final Random random = new Random();
+
+	private long userId;
 
 	private boolean allowTrial;
 
-	protected AbstractClickThroughTester(long userId) {
-		this(userId, true);
+	protected AbstractClickThroughTester() {
+		this(true);
 	}
 
-	protected AbstractClickThroughTester(long userId, boolean allowTrial) {
+	protected AbstractClickThroughTester(boolean allowTrial) {
 		super();
-		this.userId = userId;
 		this.allowTrial = allowTrial;
+	}
+
+	@Override
+	protected void setupAfterRequestStarted() {
+		userId = determineUserId();
+	}
+
+	protected abstract long determineUserId();
+
+	protected static long userIdOfRank(Rank rank) {
+		UserDAO userDAO = TysanApplication.get().getApplicationContext()
+				.getBean(UserDAO.class);
+		List<User> byRank = userDAO.findByRank(rank);
+
+		if (byRank.isEmpty()) {
+			throw new IllegalStateException();
+		}
+
+		User user = byRank.get(random.nextInt(byRank.size()));
+
+		return user.getId();
+
+	}
+
+	protected static long userIdOfGroupMember() {
+		GroupDAO groupDAO = TysanApplication.get().getApplicationContext()
+				.getBean(GroupDAO.class);
+
+		Group group = groupDAO.findAll()
+				.getOrElseThrow(IllegalStateException::new);
+
+		return group.getGroupMembers().get(0).getId();
+
+	}
+
+	protected static long userIdOfGroupLeader(Group.JoinPolicy joinPolicy) {
+		GroupDAO groupDAO = TysanApplication.get().getApplicationContext()
+				.getBean(GroupDAO.class);
+
+		GroupFilter filter = new GroupFilter();
+		filter.joinPolicy(joinPolicy);
+
+		Group group = groupDAO.findByFilter(filter)
+				.getOrElseThrow(IllegalStateException::new);
+
+		return group.getLeader().getId();
+
+	}
+
+	protected static long userIdWithRole(Role.RoleType roleType) {
+		RoleService roleService = TysanApplication.get().getApplicationContext()
+				.getBean(RoleService.class);
+
+		return roleService.getRoleByType(roleType).getAssignedTo().getId();
 	}
 
 	@Before
@@ -102,6 +165,7 @@ public abstract class AbstractClickThroughTester extends TysanPageTester {
 	public void testTrial() {
 		if (allowTrial) {
 			overview();
+			getTester().assertComponent("basicpanel:trial", Link.class);
 			getTester().clickLink("basicpanel:trial");
 			getTester().assertRenderedPage(StartTrialPage.class);
 		}
@@ -111,6 +175,7 @@ public abstract class AbstractClickThroughTester extends TysanPageTester {
 	public void testComplaintPage() {
 		if (allowTrial) {
 			overview();
+			getTester().assertComponent("basicpanel:complaint", Link.class);
 			getTester().clickLink("basicpanel:complaint");
 			getTester().assertRenderedPage(TruthsayerComplaintPage.class);
 		}
@@ -172,18 +237,6 @@ public abstract class AbstractClickThroughTester extends TysanPageTester {
 
 	protected List<String> generateLinks() {
 		return generateLinks(null);
-	}
-
-	protected void assignRole(Long roleId) {
-		RoleService roleService = getBean(RoleService.class);
-
-		roleService.assignTo(userId, roleId, userId);
-	}
-
-	protected void clearRole(Long roleId) {
-		RoleService roleService = getBean(RoleService.class);
-
-		roleService.assignTo(userId, roleId, null);
 	}
 
 	protected List<String> generateLinks(String prefix) {

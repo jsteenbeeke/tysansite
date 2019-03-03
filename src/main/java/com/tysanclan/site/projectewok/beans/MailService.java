@@ -28,7 +28,7 @@ public interface MailService {
 
 	/**
 	 * Sends an e-mail to the given address
-	 * 
+	 *
 	 * @param to
 	 *            The recipient of the e-mail
 	 * @param subject
@@ -40,7 +40,7 @@ public interface MailService {
 
 	/**
 	 * Generates the mail body for the activation mail sent to new users.
-	 * 
+	 *
 	 * @param username
 	 *            The username to address the user with
 	 * @param activationKey
@@ -52,19 +52,20 @@ public interface MailService {
 	/**
 	 * Generates the mail body for the activation mail sent to users who want to
 	 * change their e-mail address.
-	 * 
+	 *
 	 * @param username
 	 *            The username to address the user with
 	 * @param activationKey
 	 *            The key needed to activate the e-mail address
 	 * @return The full HTML mail body to send to the user
 	 */
-	public String getConfirmationMailBody(String username, String activationKey);
+	public String getConfirmationMailBody(String username,
+			String activationKey);
 
 	/**
 	 * Generates the mail body for the password request mail sent to users who
 	 * want to reset their password.
-	 * 
+	 *
 	 * @param username
 	 *            The username to address the user with
 	 * @param activationKey
@@ -77,8 +78,8 @@ public interface MailService {
 	public String getJoinApplicationMail(JoinApplication application,
 			boolean accepted, int inFavor, int total);
 
-	public String getAcceptanceVoteNotificationMail(User user,
-			boolean accepted, int inFavor, int total);
+	public String getAcceptanceVoteNotificationMail(User user, boolean accepted,
+			int inFavor, int total);
 
 	public String getInactivityExpirationMail(User user);
 

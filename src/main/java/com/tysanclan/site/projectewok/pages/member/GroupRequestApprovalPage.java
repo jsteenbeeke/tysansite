@@ -17,8 +17,13 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.List;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.site.projectewok.auth.TysanRankSecured;
+import com.tysanclan.site.projectewok.beans.GroupService;
+import com.tysanclan.site.projectewok.components.MemberListItem;
+import com.tysanclan.site.projectewok.entities.GroupCreationRequest;
+import com.tysanclan.site.projectewok.entities.dao.GroupCreationRequestDAO;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.image.Image;
@@ -28,13 +33,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.request.resource.ByteArrayResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
-import com.tysanclan.rest.api.data.Rank;
-import com.tysanclan.site.projectewok.auth.TysanRankSecured;
-import com.tysanclan.site.projectewok.beans.GroupService;
-import com.tysanclan.site.projectewok.components.MemberListItem;
-import com.tysanclan.site.projectewok.entities.GroupCreationRequest;
-import com.tysanclan.site.projectewok.entities.dao.GroupCreationRequestDAO;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -47,15 +46,17 @@ public class GroupRequestApprovalPage extends AbstractMemberPage {
 	private GroupCreationRequestDAO groupCreationRequestDAO;
 
 	/**
-	 * 
+	 *
 	 */
 	public GroupRequestApprovalPage() {
 		super("Group Request Approval");
 
-		List<GroupCreationRequest> requests = groupCreationRequestDAO.findAll();
+		List<GroupCreationRequest> requests = groupCreationRequestDAO.findAll()
+				.toJavaList();
 
-		String intro = (requests.size() == 0) ? "There are no pending group creation requests"
-				: "There are " + requests.size()
+		String intro = (requests.size() == 0) ?
+				"There are no pending group creation requests" :
+				"There are " + requests.size()
 						+ " pending group creation requests:";
 
 		add(new Label("pendingtext", intro));
@@ -71,14 +72,16 @@ public class GroupRequestApprovalPage extends AbstractMemberPage {
 				boolean social = request.getGame() == null;
 
 				item.add(new Label("name", request.getName()));
-				item.add(new Label("type", social ? "Social Group"
-						: "Gaming Group"));
+				item.add(new Label("type",
+						social ? "Social Group" : "Gaming Group"));
 				item.add(new MemberListItem("leader", request.getRequester()));
 				if (social) {
-					item.add(new ContextImage("icon", "images/icons/group.png"));
+					item.add(
+							new ContextImage("icon", "images/icons/group.png"));
 				} else {
-					item.add(new Image("icon", new ByteArrayResource(
-							"image/gif", request.getGame().getImage())));
+					item.add(new Image("icon",
+							new ByteArrayResource("image/gif",
+									request.getGame().getImage())));
 				}
 
 				item.add(new Label("description", request.getDescription())

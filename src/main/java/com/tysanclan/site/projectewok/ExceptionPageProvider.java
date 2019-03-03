@@ -1,13 +1,12 @@
 package com.tysanclan.site.projectewok;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import com.tysanclan.site.projectewok.pages.TysanErrorPage;
 import org.apache.wicket.core.request.handler.PageProvider;
 import org.apache.wicket.request.component.IRequestablePage;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.tysanclan.site.projectewok.pages.TysanErrorPage;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class ExceptionPageProvider extends PageProvider {
 	private Exception exception;

@@ -17,26 +17,18 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.Regulation;
+import com.tysanclan.site.projectewok.entities.filter.RegulationFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.Regulation;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class RegulationDAOImpl extends EwokHibernateDAO<Regulation> implements
-		com.tysanclan.site.projectewok.entities.dao.RegulationDAO {
-	/**
-	 * @see com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO#createCriteria(com.tysanclan.site.projectewok.dataaccess.SearchFilter)
-	 */
-	@Override
-	protected Criteria createCriteria(SearchFilter<Regulation> filter) {
-		return getSession().createCriteria(Regulation.class);
-	}
+class RegulationDAOImpl extends HibernateDAO<Regulation, RegulationFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.RegulationDAO {
+
 }

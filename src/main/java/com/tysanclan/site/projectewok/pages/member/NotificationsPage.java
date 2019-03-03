@@ -17,12 +17,7 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.beans.NotificationService;
 import com.tysanclan.site.projectewok.components.DateLabel;
@@ -30,6 +25,10 @@ import com.tysanclan.site.projectewok.components.IconLink;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
 import com.tysanclan.site.projectewok.components.OtterSniperPanel;
 import com.tysanclan.site.projectewok.entities.Notification;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -46,36 +45,33 @@ public class NotificationsPage extends AbstractSingleAccordionMemberPage {
 
 		add(new OtterSniperPanel("otterSniperPanel", 0));
 
-		add(
-				new ListView<Notification>("notifications", ModelMaker
-						.wrap(notificationService
-								.getNotificationsForUser(getUser()))) {
-					private static final long serialVersionUID = 1L;
+		add(new ListView<Notification>("notifications", ModelMaker
+				.wrap(notificationService.getNotificationsForUser(getUser()))) {
+			private static final long serialVersionUID = 1L;
 
-					@Override
-					protected void populateItem(ListItem<Notification> item) {
-						Notification notification = item.getModelObject();
-						item.add(new DateLabel("time", notification.getDate()));
-						item.add(new Label("notification", notification
-								.getMessage()));
-						item.add(new IconLink.Builder("images/icons/cross.png",
-								new DefaultClickResponder<Notification>(
-										ModelMaker.wrap(notification)) {
-									private static final long serialVersionUID = 1L;
+			@Override
+			protected void populateItem(ListItem<Notification> item) {
+				Notification notification = item.getModelObject();
+				item.add(new DateLabel("time", notification.getDate()));
+				item.add(new Label("notification", notification.getMessage()));
+				item.add(new IconLink.Builder("images/icons/cross.png",
+						new DefaultClickResponder<Notification>(
+								ModelMaker.wrap(notification)) {
+							private static final long serialVersionUID = 1L;
 
-									/**
-									* @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
-									*/
-									@Override
-									public void onClick() {
-										notificationService
-												.dismissNotification(getModelObject());
-										setResponsePage(new NotificationsPage());
-									}
+							/**
+							 * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
+							 */
+							@Override
+							public void onClick() {
+								notificationService
+										.dismissNotification(getModelObject());
+								setResponsePage(new NotificationsPage());
+							}
 
-								}).newInstance("dismiss"));
-					}
+						}).newInstance("dismiss"));
+			}
 
-				});
+		});
 	}
 }

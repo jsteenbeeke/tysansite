@@ -17,10 +17,7 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.GameService;
 import com.tysanclan.site.projectewok.components.RequiresAttentionLink.AttentionType;
 import com.tysanclan.site.projectewok.components.RequiresAttentionLink.IRequiresAttentionCondition;
@@ -28,6 +25,8 @@ import com.tysanclan.site.projectewok.entities.Game;
 import com.tysanclan.site.projectewok.entities.Realm;
 import com.tysanclan.site.projectewok.pages.member.DeadRealmRemovalPage;
 import com.tysanclan.site.projectewok.pages.member.GamingGroupSupervisionPage;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -35,7 +34,7 @@ import com.tysanclan.site.projectewok.pages.member.GamingGroupSupervisionPage;
 public class GameSupervisorPanel extends TysanOverviewPanel<Game> {
 	public class DeadRealmCondition implements IRequiresAttentionCondition {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
@@ -76,7 +75,7 @@ public class GameSupervisorPanel extends TysanOverviewPanel<Game> {
 	private GameService gameService;
 
 	/**
-	 * 
+	 *
 	 */
 	public GameSupervisorPanel(String id, Game game) {
 		super(id, ModelMaker.wrap(game), "Game Supervision: " + game.getName());
@@ -93,7 +92,8 @@ public class GameSupervisorPanel extends TysanOverviewPanel<Game> {
 			 */
 			@Override
 			public void onClick() {
-				setResponsePage(new GamingGroupSupervisionPage(getModelObject()));
+				setResponsePage(
+						new GamingGroupSupervisionPage(getModelObject()));
 
 			}
 		});

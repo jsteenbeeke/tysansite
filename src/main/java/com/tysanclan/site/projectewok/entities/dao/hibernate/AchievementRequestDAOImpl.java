@@ -17,60 +17,40 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import java.util.List;
-
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.AchievementRequest;
+import com.tysanclan.site.projectewok.entities.Group;
+import com.tysanclan.site.projectewok.entities.filter.AchievementFilter;
+import com.tysanclan.site.projectewok.entities.filter.AchievementRequestFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.AchievementRequest;
-import com.tysanclan.site.projectewok.entities.Group;
+import java.util.List;
 
 /**
- * 
+ *
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class AchievementRequestDAOImpl extends EwokHibernateDAO<AchievementRequest>
+class AchievementRequestDAOImpl
+		extends HibernateDAO<AchievementRequest, AchievementRequestFilter>
 		implements
 		com.tysanclan.site.projectewok.entities.dao.AchievementRequestDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<AchievementRequest> filter) {
-		Criteria criteria = getSession().createCriteria(
-				AchievementRequest.class);
 
-		// if (filter instanceof AchievementRequestFilter) {
-		// AchievementRequestFilter cf = (AchievementRequestFilter) filter;
-		// }
-
-		return criteria;
-	}
-
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<AchievementRequest> getPendingGroupRequests(Group group) {
-		Criteria criteria = getSession().createCriteria(
-				AchievementRequest.class);
+		AchievementRequestFilter filter = new AchievementRequestFilter();
+		filter.achievement(new AchievementFilter().group(group));
 
-		criteria.createAlias("achievement", "achievement");
-		criteria.add(Restrictions.eq("achievement.group", group));
-
-		return criteria.list();
+		return findByFilter(filter).toJavaList();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<AchievementRequest> getNonGroupPendingAchievementRequests() {
-		Criteria criteria = getSession().createCriteria(
-				AchievementRequest.class);
+		AchievementRequestFilter filter = new AchievementRequestFilter();
+		filter.achievement(new AchievementFilter().group().isNull());
 
-		criteria.createAlias("achievement", "achievement");
-		criteria.add(Restrictions.isNull("achievement.group"));
-
-		return criteria.list();
+		return findByFilter(filter).toJavaList();
 	}
 }

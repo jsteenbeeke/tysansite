@@ -17,23 +17,22 @@
  */
 package com.tysanclan.site.projectewok.pages.member.admin;
 
-import org.apache.wicket.RestartResponseAtInterceptPageException;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.markup.repeater.data.DataView;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.FilterDataProvider;
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.FilterDataProvider;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.RoleService;
 import com.tysanclan.site.projectewok.beans.UserAgentService;
 import com.tysanclan.site.projectewok.components.IconLink;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
 import com.tysanclan.site.projectewok.entities.MobileUserAgent;
 import com.tysanclan.site.projectewok.entities.dao.MobileUserAgentDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.MobileUserAgentFilter;
+import com.tysanclan.site.projectewok.entities.filter.MobileUserAgentFilter;
 import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
 import com.tysanclan.site.projectewok.pages.member.AbstractSingleAccordionMemberPage;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -59,69 +58,66 @@ public class UserAgentPage extends AbstractSingleAccordionMemberPage {
 		}
 
 		MobileUserAgentFilter filter = new MobileUserAgentFilter();
-		filter.addOrderBy("identifier", true);
+		filter.identifier().orderBy(true);
 
-		add(
-				new DataView<MobileUserAgent>("agents", FilterDataProvider.of(
-						filter, userAgentDAO)) {
+		add(new DataView<MobileUserAgent>("agents",
+				FilterDataProvider.of(filter, userAgentDAO)) {
 
-					private static final long serialVersionUID = 1L;
+			private static final long serialVersionUID = 1L;
 
-					@Override
-					protected void populateItem(final Item<MobileUserAgent> item) {
-						MobileUserAgent agent = item.getModelObject();
+			@Override
+			protected void populateItem(final Item<MobileUserAgent> item) {
+				MobileUserAgent agent = item.getModelObject();
 
-						item.add(new Label("identifier", agent.getIdentifier()));
+				item.add(new Label("identifier", agent.getIdentifier()));
 
-						String curr = "Unknown";
+				String curr = "Unknown";
 
-						if (agent.getMobile() != null) {
-							if (agent.getMobile()) {
-								curr = "Mobile";
-							} else {
-								curr = "Normal";
-							}
-						}
-
-						item.add(new Label("current", curr));
-
-						item.add(new IconLink.Builder("images/icons/phone.png",
-								new DefaultClickResponder<MobileUserAgent>(
-										ModelMaker.wrap(agent)) {
-									private static final long serialVersionUID = 1L;
-
-									@Override
-									public void onClick() {
-										userAgentService.setAgentStatus(
-												getModelObject(), true);
-
-										setResponsePage(new UserAgentPage());
-									}
-
-								}).newInstance("yes")
-								.setVisible(
-										agent.getMobile() == null
-												|| !agent.getMobile()));
-						item.add(new IconLink.Builder(
-								"images/icons/computer.png",
-								new DefaultClickResponder<MobileUserAgent>(
-										ModelMaker.wrap(agent)) {
-									private static final long serialVersionUID = 1L;
-
-									@Override
-									public void onClick() {
-										userAgentService.setAgentStatus(
-												getModelObject(), false);
-
-										setResponsePage(new UserAgentPage());
-
-										setResponsePage(new UserAgentPage());
-									}
-
-								}).newInstance("no").setVisible(
-								agent.getMobile() == null || agent.getMobile()));
+				if (agent.getMobile() != null) {
+					if (agent.getMobile()) {
+						curr = "Mobile";
+					} else {
+						curr = "Normal";
 					}
+				}
 
-				});
+				item.add(new Label("current", curr));
+
+				item.add(new IconLink.Builder("images/icons/phone.png",
+						new DefaultClickResponder<MobileUserAgent>(
+								ModelMaker.wrap(agent)) {
+							private static final long serialVersionUID = 1L;
+
+							@Override
+							public void onClick() {
+								userAgentService
+										.setAgentStatus(getModelObject(), true);
+
+								setResponsePage(new UserAgentPage());
+							}
+
+						}).newInstance("yes").setVisible(
+						agent.getMobile() == null || !agent.getMobile()));
+				item.add(new IconLink.Builder("images/icons/computer.png",
+						new DefaultClickResponder<MobileUserAgent>(
+								ModelMaker.wrap(agent)) {
+							private static final long serialVersionUID = 1L;
+
+							@Override
+							public void onClick() {
+								userAgentService
+										.setAgentStatus(getModelObject(),
+												false);
+
+								setResponsePage(new UserAgentPage());
+
+								setResponsePage(new UserAgentPage());
+							}
+
+						}).newInstance("no").setVisible(
+						agent.getMobile() == null || agent.getMobile()));
+			}
+
+		});
 	}
 }

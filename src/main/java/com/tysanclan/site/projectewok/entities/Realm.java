@@ -17,36 +17,20 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import com.jeroensteenbeeke.hyperion.data.DomainObject;
+import org.hibernate.annotations.Cache;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Cache;
-
-import com.jeroensteenbeeke.hyperion.data.DomainObject;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Entity
 @Table(indexes = { //
-@Index(name = "IDX_REALM_OVERSEER", columnList = "overseer_id") })
+		@Index(name = "IDX_REALM_OVERSEER", columnList = "overseer_id") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class Realm implements DomainObject {
 	public static final long serialVersionUID = 1L;
@@ -117,7 +101,7 @@ public class Realm implements DomainObject {
 
 	/**
 	 * Sets the Name of this Realm
-	 * 
+	 *
 	 * @param name
 	 *            The Name of this Realm
 	 */
@@ -134,7 +118,7 @@ public class Realm implements DomainObject {
 
 	/**
 	 * Sets the Channel of this Realm
-	 * 
+	 *
 	 * @param channel
 	 *            The Channel of this Realm
 	 */
@@ -151,7 +135,7 @@ public class Realm implements DomainObject {
 
 	/**
 	 * Sets the Overseer of this Realm
-	 * 
+	 *
 	 * @param overseer
 	 *            The Overseer of this Realm
 	 */
@@ -168,7 +152,7 @@ public class Realm implements DomainObject {
 
 	/**
 	 * Sets the Games of this Realm
-	 * 
+	 *
 	 * @param games
 	 *            The Games of this Realm
 	 */

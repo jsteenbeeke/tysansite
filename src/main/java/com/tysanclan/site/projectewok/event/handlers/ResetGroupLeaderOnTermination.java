@@ -17,10 +17,6 @@
  */
 package com.tysanclan.site.projectewok.event.handlers;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.google.common.collect.Lists;
 import com.jeroensteenbeeke.hyperion.events.Event;
 import com.jeroensteenbeeke.hyperion.events.EventHandler;
@@ -30,9 +26,12 @@ import com.tysanclan.site.projectewok.entities.Group;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.event.GroupWithoutLeaderEvent;
 import com.tysanclan.site.projectewok.event.MembershipTerminatedEvent;
+import org.springframework.beans.factory.annotation.Autowired;
 
-public class ResetGroupLeaderOnTermination implements
-		EventHandler<MembershipTerminatedEvent> {
+import java.util.List;
+
+public class ResetGroupLeaderOnTermination
+		implements EventHandler<MembershipTerminatedEvent> {
 	@Autowired
 	private GroupService groupService;
 
@@ -46,8 +45,8 @@ public class ResetGroupLeaderOnTermination implements
 
 		List<Group> leaderless = groupService.clearGroupLeaderStatus(user);
 
-		List<Event<?>> events = Lists.newArrayListWithExpectedSize(leaderless
-				.size());
+		List<Event<?>> events = Lists
+				.newArrayListWithExpectedSize(leaderless.size());
 
 		for (Group g : leaderless) {
 			events.add(new GroupWithoutLeaderEvent(g));

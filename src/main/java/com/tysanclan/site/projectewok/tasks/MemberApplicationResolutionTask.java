@@ -17,36 +17,23 @@
  */
 package com.tysanclan.site.projectewok.tasks;
 
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.HyperionTask;
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.ServiceProvider;
+import com.tysanclan.site.projectewok.TysanTaskGroup;
 import com.tysanclan.site.projectewok.beans.DemocracyService;
-import com.tysanclan.site.projectewok.entities.dao.JoinApplicationDAO;
-import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public class MemberApplicationResolutionTask extends PeriodicTask {
-
-	@SpringBean
-	private JoinApplicationDAO joinApplicationDAO;
-
-	@SpringBean
-	private DemocracyService democracyService;
-
-	/**
-	 * 
-	 */
+public class MemberApplicationResolutionTask extends HyperionTask {
 	public MemberApplicationResolutionTask() {
-		super("Application resolution", "Members", ExecutionMode.HOURLY);
+		super("Application resolution", TysanTaskGroup.MEMBERS);
 	}
 
-	/**
-	 * @see com.tysanclan.site.projectewok.util.scheduler.TysanTask#run()
-	 */
 	@Override
-	public void run() {
-		democracyService.resolveJoinApplications();
+	public void run(ServiceProvider provider) {
+
+		provider.getService(DemocracyService.class).resolveJoinApplications();
 	}
 
 }

@@ -17,10 +17,7 @@
  */
 package com.tysanclan.site.projectewok.pages.forum;
 
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.auth.TysanLoginSecured;
 import com.tysanclan.site.projectewok.beans.ForumService;
@@ -30,6 +27,8 @@ import com.tysanclan.site.projectewok.entities.ForumPost;
 import com.tysanclan.site.projectewok.entities.ForumThread;
 import com.tysanclan.site.projectewok.pages.ForumPage;
 import com.tysanclan.site.projectewok.pages.ForumThreadPage;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 @TysanLoginSecured
 public class ConfirmForumThreadDeletePage extends TysanPage {
@@ -55,11 +54,11 @@ public class ConfirmForumThreadDeletePage extends TysanPage {
 			@Override
 			protected void onSubmit() {
 				if (!service.deleteThread(getModelObject(),
-						ConfirmForumThreadDeletePage.this.getTysanSession()
-								.getUser())) {
+						ConfirmForumThreadDeletePage.this.getUser())) {
 					error("Unable to delete thread: Permission denied");
-					setResponsePage(new ForumThreadPage(getModelObject()
-							.getId(), 1, false));
+					setResponsePage(
+							new ForumThreadPage(getModelObject().getId(), 1,
+									false));
 				} else {
 					setResponsePage(new ForumPage(getModelObject().getForum()));
 				}

@@ -17,13 +17,14 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.AcceptanceVote;
+import com.tysanclan.site.projectewok.entities.filter.AcceptanceVoteFilter;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public interface AcceptanceVoteDAO extends
-        EwokDAO<AcceptanceVote> {
+public interface AcceptanceVoteDAO
+		extends DAO<AcceptanceVote, AcceptanceVoteFilter> {
 
 }

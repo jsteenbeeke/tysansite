@@ -17,13 +17,15 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.jeroensteenbeeke.hyperion.data.DAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.Diablo2Account;
+import com.tysanclan.site.projectewok.entities.filter.Diablo2AccountFilter;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface Diablo2AccountDAO extends DAO<Diablo2Account> {
+public interface Diablo2AccountDAO
+		extends DAO<Diablo2Account, Diablo2AccountFilter> {
 
 }

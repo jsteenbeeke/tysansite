@@ -17,57 +17,42 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import java.util.List;
-
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.site.projectewok.entities.Profile;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.filter.ProfileFilter;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.rest.api.data.Rank;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.Profile;
-import com.tysanclan.site.projectewok.entities.User;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class ProfileDAOImpl extends EwokHibernateDAO<Profile> implements
-		com.tysanclan.site.projectewok.entities.dao.ProfileDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<Profile> filter) {
-		Criteria criteria = getSession().createCriteria(Profile.class);
-
-		// if (filter instanceof ProfileFilter) {
-		// ProfileFilter cf = (ProfileFilter) filter;
-		// }
-
-		return criteria;
-	}
+class ProfileDAOImpl extends HibernateDAO<Profile, ProfileFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.ProfileDAO {
 
 	/**
 	 * @see com.tysanclan.site.projectewok.entities.dao.ProfileDAO#getSkypeUsers()
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<User> getSkypeUsers() {
-		Criteria criteria = getSession().createCriteria(User.class);
+		ProfileFilter filter = new ProfileFilter();
+		filter.instantMessengerAddress().isNotNull();
+		filter.user(new UserFilter().rank(Rank.CHANCELLOR).orRank(Rank.SENATOR)
+				.orRank(Rank.TRUTHSAYER).orRank(Rank.REVERED_MEMBER)
+				.orRank(Rank.SENIOR_MEMBER).orRank(Rank.FULL_MEMBER)
+				.orRank(Rank.JUNIOR_MEMBER).orRank(Rank.TRIAL)
 
-		criteria.createAlias("profile", "profile");
-		criteria.add(Restrictions.isNotNull("profile.instantMessengerAddress"));
-		criteria.add(Restrictions.in("rank", new Rank[] { Rank.CHANCELLOR,
-				Rank.SENATOR, Rank.TRUTHSAYER, Rank.REVERED_MEMBER,
-				Rank.SENIOR_MEMBER, Rank.FULL_MEMBER, Rank.JUNIOR_MEMBER,
-				Rank.TRIAL }));
-		criteria.addOrder(Order.asc("username"));
+		);
 
-		return criteria.list();
+		return properties(filter.user(), filter).toJavaList();
 	}
 }

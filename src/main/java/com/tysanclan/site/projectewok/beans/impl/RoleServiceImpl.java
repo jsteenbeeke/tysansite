@@ -1,31 +1,21 @@
 /**
  * Tysan Clan Website
  * Copyright (C) 2008-2013 Jeroen Steenbeeke and Ties van de Ven
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.tysanclan.site.projectewok.beans.impl;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.entities.Role;
@@ -37,18 +27,27 @@ import com.tysanclan.site.projectewok.entities.dao.RoleDAO;
 import com.tysanclan.site.projectewok.entities.dao.RoleTransferApprovalDAO;
 import com.tysanclan.site.projectewok.entities.dao.RoleTransferDAO;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.RoleFilter;
-import com.tysanclan.site.projectewok.entities.dao.filters.RoleTransferFilter;
+import com.tysanclan.site.projectewok.entities.filter.RoleFilter;
+import com.tysanclan.site.projectewok.entities.filter.RoleTransferFilter;
 import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
+import io.vavr.collection.Seq;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class RoleServiceImpl implements
-		com.tysanclan.site.projectewok.beans.RoleService {
+class RoleServiceImpl
+		implements com.tysanclan.site.projectewok.beans.RoleService {
 	@Autowired
 	private RoleDAO roleDAO;
 
@@ -67,7 +66,8 @@ class RoleServiceImpl implements
 	@Autowired
 	private com.tysanclan.site.projectewok.beans.NotificationService notificationService;
 
-	public void setTransferDAO(RoleTransferApprovalDAO roleTransferApprovalDAO) {
+	public void setTransferDAO(
+			RoleTransferApprovalDAO roleTransferApprovalDAO) {
 		this.roleTransferApprovalDAO = roleTransferApprovalDAO;
 	}
 
@@ -91,31 +91,28 @@ class RoleServiceImpl implements
 		role.setAssignedTo(null);
 		roleDAO.save(role);
 
-		logService.logUserAction(user, "Roles", "Role " + role.getName()
-				+ " created");
+		logService.logUserAction(user, "Roles",
+				"Role " + role.getName() + " created");
 
 		return role;
 	}
 
 	/**
-	 * @param roleDAO
-	 *            the roleDAO to set
+	 * @param roleDAO the roleDAO to set
 	 */
 	public void setRoleDAO(RoleDAO roleDAO) {
 		this.roleDAO = roleDAO;
 	}
 
 	/**
-	 * @param userDAO
-	 *            the userDAO to set
+	 * @param userDAO the userDAO to set
 	 */
 	public void setUserDAO(UserDAO userDAO) {
 		this.userDAO = userDAO;
 	}
 
 	/**
-	 * @param logService
-	 *            the logService to set
+	 * @param logService the logService to set
 	 */
 	public void setLogService(
 			com.tysanclan.site.projectewok.beans.LogService logService) {
@@ -125,44 +122,46 @@ class RoleServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public boolean assignTo(Long assigner_id, Long role_id, Long user_id) {
-		Role role = roleDAO.load(role_id);
-		User user = user_id != null ? userDAO.load(user_id) : null;
-		User assigner = assigner_id != null ? userDAO.load(assigner_id) : null;
+		return roleDAO.load(role_id).map(role -> {
+			User user =
+					user_id != null ? userDAO.load(user_id).getOrNull() : null;
+			User assigner = assigner_id != null ?
+					userDAO.load(assigner_id).getOrNull() :
+					null;
 
-		if (role != null && user != null) {
-			role.setAssignedTo(user);
-			roleDAO.update(role);
+			if (role != null && user != null) {
+				role.setAssignedTo(user);
+				roleDAO.update(role);
 
-			logService.logUserAction(
-					assigner,
-					"Roles",
-					"Role " + role.getName() + " assigned to "
-							+ user.getUsername());
+				logService.logUserAction(assigner, "Roles",
+						"Role " + role.getName() + " assigned to " + user
+								.getUsername());
 
-			notificationService.notifyUser(user,
-					"You have been given the role of " + role.getName());
+				notificationService.notifyUser(user,
+						"You have been given the role of " + role.getName());
 
-			return true;
-		} else if (role != null) {
-			role.setAssignedTo(null);
-			roleDAO.update(role);
+				return true;
+			} else if (role != null) {
+				role.setAssignedTo(null);
+				roleDAO.update(role);
 
-			logService.logUserAction(assigner, "Roles",
-					"Role " + role.getName() + " cleared");
+				logService.logUserAction(assigner, "Roles",
+						"Role " + role.getName() + " cleared");
 
-			return true;
-		}
+				return true;
+			}
 
-		return false;
+			return false;
+		}).getOrElse(false);
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public RoleTransfer getCurrentTransfer(RoleType type) {
 		RoleTransferFilter filter = new RoleTransferFilter();
-		filter.setRoleType(type);
+		filter.roleType(type);
 
-		return roleTransferDAO.getUniqueByFilter(filter);
+		return roleTransferDAO.getUniqueByFilter(filter).getOrNull();
 	}
 
 	@Override
@@ -177,8 +176,8 @@ class RoleServiceImpl implements
 
 			logService.logUserAction(candidate, "Organization",
 					"User was nominated for " + type.toString());
-			notificationService.notifyUser(candidate, "You were nominated for "
-					+ type.toString());
+			notificationService.notifyUser(candidate,
+					"You were nominated for " + type.toString());
 		}
 
 	}
@@ -186,19 +185,22 @@ class RoleServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void objectToTransfer(User user, RoleTransfer transfer) {
-		if (user.getRank() == Rank.SENATOR || user.getRank() == Rank.CHANCELLOR) {
+		if (user.getRank() == Rank.SENATOR
+				|| user.getRank() == Rank.CHANCELLOR) {
 			User current = getCurrentPersonWithRole(transfer.getRoleType());
 
 			if (current != null) {
-				notificationService.notifyUser(current, "Your nomination of "
-						+ transfer.getCandidate().getUsername() + " for "
-						+ transfer.getRoleType().toString()
-						+ " was rejected by " + user.getUsername());
+				notificationService.notifyUser(current,
+						"Your nomination of " + transfer.getCandidate()
+								.getUsername() + " for " + transfer
+								.getRoleType().toString() + " was rejected by "
+								+ user.getUsername());
 			}
 
-			logService.logUserAction(user, "Organization", "Has rejected "
-					+ transfer.getCandidate().getUsername()
-					+ " as candidate for " + transfer.getRoleType().toString());
+			logService.logUserAction(user, "Organization",
+					"Has rejected " + transfer.getCandidate().getUsername()
+							+ " as candidate for " + transfer.getRoleType()
+							.toString());
 
 			roleTransferDAO.delete(transfer);
 
@@ -206,10 +208,6 @@ class RoleServiceImpl implements
 
 	}
 
-	/**
-	 * @param transfer
-	 * @return
-	 */
 	private User getCurrentPersonWithRole(RoleType type) {
 		User current = null;
 		switch (type) {
@@ -231,24 +229,27 @@ class RoleServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void resolveTransfer(RoleTransfer _transfer) {
-		RoleTransfer transfer = roleTransferDAO.load(_transfer.getId());
+		roleTransferDAO.load(_transfer.getId()).forEach(transfer -> {
 
-		if (transfer.isAccepted()) {
-			RoleFilter filter = new RoleFilter();
-			filter.setRoleType(transfer.getRoleType());
+			if (transfer.isAccepted()) {
+				RoleFilter filter = new RoleFilter();
+				filter.roleType(transfer.getRoleType());
 
-			Role role = roleDAO.getUniqueByFilter(filter);
+				roleDAO.getUniqueByFilter(filter).forEach(role -> {
 
-			notificationService.notifyUser(transfer.getCandidate(),
-					"You have been approved as "
-							+ transfer.getRoleType().toString());
-			logService.logUserAction(transfer.getCandidate(), "Organization",
-					"Has been approved as the new " + transfer.getRoleType());
+					notificationService.notifyUser(transfer.getCandidate(),
+							"You have been approved as " + transfer
+									.getRoleType().toString());
+					logService.logUserAction(transfer.getCandidate(),
+							"Organization",
+							"Has been approved as the new " + transfer
+									.getRoleType());
 
-			role.setAssignedTo(transfer.getCandidate());
-			roleTransferDAO.delete(transfer);
-
-		}
+					role.setAssignedTo(transfer.getCandidate());
+					roleTransferDAO.delete(transfer);
+				});
+			}
+		});
 	}
 
 	@Override
@@ -267,7 +268,7 @@ class RoleServiceImpl implements
 	@Override
 	public void removeRoles(User user) {
 		RoleFilter rfilter = new RoleFilter();
-		rfilter.setUser(user);
+		rfilter.assignedTo(user);
 
 		for (Role role : roleDAO.findByFilter(rfilter)) {
 			role.setAssignedTo(null);
@@ -279,7 +280,7 @@ class RoleServiceImpl implements
 	@Override
 	public void removeTransfers(User user) {
 		RoleTransferFilter filter = new RoleTransferFilter();
-		filter.setUser(user);
+		filter.candidate(user);
 
 		for (RoleTransfer transfer : roleTransferDAO.findByFilter(filter)) {
 			roleTransferDAO.delete(transfer);
@@ -287,16 +288,16 @@ class RoleServiceImpl implements
 			User current = getCurrentPersonWithRole(transfer.getRoleType());
 
 			if (current != null) {
-				notificationService.notifyUser(current, "Your nomination of "
-						+ transfer.getCandidate().getUsername() + " for "
-						+ transfer.getRoleType().toString()
-						+ " was removed due to membership termination");
+				notificationService.notifyUser(current,
+						"Your nomination of " + transfer.getCandidate()
+								.getUsername() + " for " + transfer
+								.getRoleType().toString()
+								+ " was removed due to membership termination");
 			}
 
 			logService.logUserAction(transfer.getCandidate(), "Organization",
-					"Was removed as candidate for "
-							+ transfer.getRoleType().toString()
-							+ " due to membership termination");
+					"Was removed as candidate for " + transfer.getRoleType()
+							.toString() + " due to membership termination");
 
 		}
 
@@ -332,9 +333,9 @@ class RoleServiceImpl implements
 	@Override
 	public Role getRoleByType(RoleType type) {
 		RoleFilter filter = new RoleFilter();
-		filter.setRoleType(type);
+		filter.roleType(type);
 
-		List<Role> roles = roleDAO.findByFilter(filter);
+		Seq<Role> roles = roleDAO.findByFilter(filter);
 
 		if (roles.isEmpty()) {
 			return null;
@@ -356,79 +357,80 @@ class RoleServiceImpl implements
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.RoleService#deleteRole(com.tysanclan.site.projectewok.entities.User,
-	 *      com.tysanclan.site.projectewok.entities.Role)
+	 * com.tysanclan.site.projectewok.entities.Role)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void deleteRole(User user, Role role) {
-		Role _role = roleDAO.load(role.getId());
+		roleDAO.load(role.getId()).forEach(_role -> {
+			if (_role.isReassignable()) {
+				roleDAO.delete(_role);
 
-		if (_role.isReassignable()) {
-			roleDAO.delete(_role);
+				logService.logUserAction(user, "Roles",
+						"The role " + role.getName() + " has been deleted");
 
-			logService.logUserAction(user, "Roles",
-					"The role " + role.getName() + " has been deleted");
-
-			if (role.getAssignedTo() != null) {
-				notificationService.notifyUser(user,
-						"Your role of " + role.getName() + " has been deleted");
+				if (role.getAssignedTo() != null) {
+					notificationService.notifyUser(user,
+							"Your role of " + role.getName()
+									+ " has been deleted");
+				}
+			} else {
+				throw new RuntimeException(
+						"Attempt to delete the Caretaker! You've got a leak somewhere");
 			}
-		} else {
-			throw new RuntimeException(
-					"Attempt to delete the Caretaker! You've got a leak somewhere");
-		}
-
+		});
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.RoleService#setRoleDescription(com.tysanclan.site.projectewok.entities.User,
-	 *      com.tysanclan.site.projectewok.entities.Role, java.lang.String)
+	 * com.tysanclan.site.projectewok.entities.Role, java.lang.String)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void setRoleDescription(User user, Role role, String description) {
-		Role _role = roleDAO.load(role.getId());
+		roleDAO.load(role.getId()).forEach(_role -> {
+			if (_role.isReassignable()) {
+				_role.setDescription(description);
+				roleDAO.update(_role);
 
-		if (_role.isReassignable()) {
-			_role.setDescription(description);
-			roleDAO.update(_role);
-
-			logService.logUserAction(user, "Roles",
-					"The role " + role.getName()
-							+ " has an updated description ");
-		} else {
-			throw new RuntimeException(
-					"Attempt to modify the Caretaker! You've got a leak somewhere");
-		}
-
+				logService.logUserAction(user, "Roles",
+						"The role " + role.getName()
+								+ " has an updated description ");
+			} else {
+				throw new RuntimeException(
+						"Attempt to modify the Caretaker! You've got a leak somewhere");
+			}
+		});
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.RoleService#setRoleName(com.tysanclan.site.projectewok.entities.User,
-	 *      com.tysanclan.site.projectewok.entities.Role, java.lang.String)
+	 * com.tysanclan.site.projectewok.entities.Role, java.lang.String)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void setRoleName(User user, Role role, String name) {
-		Role _role = roleDAO.load(role.getId());
+		roleDAO.load(role.getId()).forEach(_role -> {
 
-		String oldName = _role.getName();
+			String oldName = _role.getName();
 
-		if (_role.isReassignable()) {
-			_role.setName(name);
-			roleDAO.update(_role);
+			if (_role.isReassignable()) {
+				_role.setName(name);
+				roleDAO.update(_role);
 
-			logService.logUserAction(user, "Roles", "The role " + oldName
-					+ " has been renamed to " + name);
+				logService.logUserAction(user, "Roles",
+						"The role " + oldName + " has been renamed to " + name);
 
-			if (role.getAssignedTo() != null) {
-				notificationService.notifyUser(user, "Your role of " + oldName
-						+ " has been renamed to " + name);
+				if (role.getAssignedTo() != null) {
+					notificationService.notifyUser(user,
+							"Your role of " + oldName + " has been renamed to "
+									+ name);
+				}
+			} else {
+				throw new RuntimeException(
+						"Attempt to modify the Caretaker! You've got a leak somewhere");
 			}
-		} else {
-			throw new RuntimeException(
-					"Attempt to modify the Caretaker! You've got a leak somewhere");
-		}
+		});
 	}
 
 	@Override
@@ -448,16 +450,16 @@ class RoleServiceImpl implements
 		cal.add(Calendar.WEEK_OF_YEAR, -1);
 
 		RoleTransferFilter filter = new RoleTransferFilter();
-		filter.setAccepted(true);
-		filter.setStartBefore(cal.getTime());
+		filter.accepted(true);
+		filter.start().lessThan(cal.getTime());
 
 		for (RoleTransfer transfer : roleTransferDAO.findByFilter(filter)) {
 			resolveTransfer(transfer);
 		}
 
 		filter = new RoleTransferFilter();
-		filter.setAccepted(false);
-		filter.setStartBefore(cal.getTime());
+		filter.accepted(false);
+		filter.start().lessThan(cal.getTime());
 
 		for (RoleTransfer transfer : roleTransferDAO.findByFilter(filter)) {
 			rejectNomination(transfer);

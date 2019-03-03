@@ -17,33 +17,23 @@
  */
 package com.tysanclan.site.projectewok.tasks;
 
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.HyperionTask;
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.ServiceProvider;
+import com.tysanclan.site.projectewok.TysanTaskGroup;
 import com.tysanclan.site.projectewok.beans.DemocracyService;
-import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public class GroupLeaderElectionResolutionTask extends PeriodicTask {
-
-	@SpringBean
-	private DemocracyService democracyService;
-
-	/**
-	 * 
-	 */
+public class GroupLeaderElectionResolutionTask extends HyperionTask {
 	public GroupLeaderElectionResolutionTask() {
-		super("Group Leader Election Resolution", "Democracy",
-				ExecutionMode.DAILY);
+		super("Group Leader Election Resolution", TysanTaskGroup.DEMOCRACY);
 	}
 
-	/**
-	 * @see com.tysanclan.site.projectewok.util.scheduler.TysanTask#run()
-	 */
 	@Override
-	public void run() {
-		democracyService.resolveGroupLeaderElections();
+	public void run(ServiceProvider provider) {
+		provider.getService(DemocracyService.class)
+				.resolveGroupLeaderElections();
 	}
 
 }

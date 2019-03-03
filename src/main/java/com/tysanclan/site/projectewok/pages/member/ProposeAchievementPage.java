@@ -17,10 +17,17 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.site.projectewok.auth.TysanRankSecured;
+import com.tysanclan.site.projectewok.beans.AchievementService;
+import com.tysanclan.site.projectewok.components.StoredImageResource;
+import com.tysanclan.site.projectewok.entities.AchievementIcon;
+import com.tysanclan.site.projectewok.entities.AchievementProposal;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.dao.AchievementIconDAO;
+import com.tysanclan.site.projectewok.entities.dao.AchievementProposalDAO;
+import com.tysanclan.site.projectewok.entities.filter.AchievementIconFilter;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -35,18 +42,10 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.danekja.java.util.function.serializable.SerializableConsumer;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
-import com.tysanclan.rest.api.data.Rank;
-import com.tysanclan.site.projectewok.auth.TysanRankSecured;
-import com.tysanclan.site.projectewok.beans.AchievementService;
-import com.tysanclan.site.projectewok.components.StoredImageResource;
-import com.tysanclan.site.projectewok.entities.AchievementIcon;
-import com.tysanclan.site.projectewok.entities.AchievementProposal;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.AchievementIconDAO;
-import com.tysanclan.site.projectewok.entities.dao.AchievementProposalDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.AchievementIconFilter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -77,27 +76,28 @@ public class ProposeAchievementPage extends AbstractMemberPage {
 
 		this.tabIndex = tabIndex;
 
-		add(new ListView<AchievementProposal>("proposals",
-				ModelMaker.wrap(achievementProposalDAO.findAll())) {
+		add(new ListView<AchievementProposal>("proposals", ModelMaker
+				.wrap(achievementProposalDAO.findAll().toJavaList())) {
 
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void populateItem(final ListItem<AchievementProposal> item) {
+			protected void populateItem(
+					final ListItem<AchievementProposal> item) {
 				AchievementProposal proposal = item.getModelObject();
 
-				item.add(new Image("icon", new StoredImageResource(proposal
-						.getIcon().getImage())));
+				item.add(new Image("icon", new StoredImageResource(
+						proposal.getIcon().getImage())));
 
 				item.add(new Label("name", proposal.getName()));
 				item.add(new Label("description", proposal.getDescription())
 						.setEscapeModelStrings(false));
-				item.add(new Label("game",
-						proposal.getGame() != null ? proposal.getGame()
-								.getName() : "-"));
-				item.add(new Label("group",
-						proposal.getGroup() != null ? proposal.getGroup()
-								.getName() : "-"));
+				item.add(new Label("game", proposal.getGame() != null ?
+						proposal.getGame().getName() :
+						"-"));
+				item.add(new Label("group", proposal.getGroup() != null ?
+						proposal.getGroup().getName() :
+						"-"));
 			}
 
 		});
@@ -109,7 +109,7 @@ public class ProposeAchievementPage extends AbstractMemberPage {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onClick(AchievementIcon icon) {
+			public void accept(AchievementIcon icon) {
 				setResponsePage(new ProposeAchievementPage2(icon));
 			}
 		}));
@@ -124,7 +124,7 @@ public class ProposeAchievementPage extends AbstractMemberPage {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public void onClick(AchievementIcon icon) {
+					public void accept(AchievementIcon icon) {
 						achievementService.deleteIcon(getUser(), icon);
 
 						setResponsePage(new ProposeAchievementPage(2));
@@ -132,7 +132,7 @@ public class ProposeAchievementPage extends AbstractMemberPage {
 				}));
 
 		final FileUploadField uploadField = new FileUploadField("file",
-				new ListModel<FileUpload>());
+				new ListModel<>());
 		uploadField.setRequired(true);
 
 		final TextField<String> purposeField = new TextField<String>("purpose",
@@ -157,8 +157,8 @@ public class ProposeAchievementPage extends AbstractMemberPage {
 					FileUpload upload = uploads.get(0);
 
 					AchievementIcon icon = achievementService
-							.uploadAchievementIcon(getUser(),
-									upload.getBytes(), purpose, privateIcon);
+							.uploadAchievementIcon(getUser(), upload.getBytes(),
+									purpose, privateIcon);
 
 					if (icon != null) {
 						setResponsePage(new ProposeAchievementPage(2));
@@ -191,28 +191,28 @@ public class ProposeAchievementPage extends AbstractMemberPage {
 	private List<AchievementIcon> getRejectedIcons(User user) {
 		AchievementIconFilter filter = new AchievementIconFilter();
 
-		filter.setCreator(user);
-		filter.setApproved(false);
+		filter.creator(user);
+		filter.approved(false);
 
-		return achievementIconDAO.findByFilter(filter);
+		return achievementIconDAO.findByFilter(filter).toJavaList();
 	}
 
 	private List<AchievementIcon> getApprovedIcons(User user) {
 		AchievementIconFilter filter = new AchievementIconFilter();
 
-		filter.setCreator(user);
-		filter.setApproved(true);
+		filter.creator(user);
+		filter.approved(true);
 
-		return achievementIconDAO.findByFilter(filter);
+		return achievementIconDAO.findByFilter(filter).toJavaList();
 	}
 
 	private List<AchievementIcon> getPendingIcons(User user) {
 		AchievementIconFilter filter = new AchievementIconFilter();
 
-		filter.setCreator(user);
-		filter.setApprovedAsNull(true);
+		filter.creator(user);
+		filter.approved().isNull();
 
-		return achievementIconDAO.findByFilter(filter);
+		return achievementIconDAO.findByFilter(filter).toJavaList();
 	}
 
 	private ListView<List<Long>> getIconListview(String id,
@@ -252,9 +252,11 @@ public class ProposeAchievementPage extends AbstractMemberPage {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					protected void populateItem(final ListItem<Long> innerItem) {
-						AchievementIcon icon = iconDAO.load(innerItem
-								.getModelObject());
+					protected void populateItem(
+							final ListItem<Long> innerItem) {
+						AchievementIcon icon = iconDAO
+								.load(innerItem.getModelObject())
+								.getOrElseThrow(IllegalStateException::new);
 
 						Link<AchievementIcon> iconLink = new Link<AchievementIcon>(
 								"iconLink", ModelMaker.wrap(icon)) {
@@ -271,8 +273,8 @@ public class ProposeAchievementPage extends AbstractMemberPage {
 						iconLink.setEnabled(responder != null);
 						iconLink.setRenderBodyOnly(responder == null);
 
-						iconLink.add(new Image("icon", new StoredImageResource(
-								icon.getImage())));
+						iconLink.add(new Image("icon",
+								new StoredImageResource(icon.getImage())));
 
 						innerItem.add(iconLink);
 					}
@@ -283,7 +285,10 @@ public class ProposeAchievementPage extends AbstractMemberPage {
 		};
 	}
 
-	private static interface IconClickResponder extends Serializable {
-		void onClick(AchievementIcon icon);
+	private interface IconClickResponder
+			extends SerializableConsumer<AchievementIcon> {
+		default void onClick(AchievementIcon icon) {
+			accept(icon);
+		}
 	}
 }

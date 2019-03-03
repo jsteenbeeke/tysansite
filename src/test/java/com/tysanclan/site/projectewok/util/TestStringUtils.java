@@ -17,13 +17,12 @@
  */
 package com.tysanclan.site.projectewok.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
-import org.junit.Test;
-
 import com.tysanclan.rest.api.util.HashException;
 import com.tysanclan.rest.api.util.HashUtil;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * @author Jeroen Steenbeeke

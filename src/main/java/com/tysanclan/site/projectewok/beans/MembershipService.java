@@ -17,22 +17,18 @@
  */
 package com.tysanclan.site.projectewok.beans;
 
-import com.tysanclan.site.projectewok.entities.ForumThread;
-import com.tysanclan.site.projectewok.entities.Game;
-import com.tysanclan.site.projectewok.entities.JoinApplication;
-import com.tysanclan.site.projectewok.entities.Realm;
-import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.*;
 
 /**
  * Various functions relating to clan membership
- * 
+ *
  * @author Jeroen Steenbeeke
  */
 public interface MembershipService {
 
 	/**
 	 * Indicates that the given user has just done something
-	 * 
+	 *
 	 * @param user
 	 *            The user that just did something
 	 */
@@ -43,7 +39,7 @@ public interface MembershipService {
 
 	/**
 	 * Sets the mentor for the given applicant
-	 * 
+	 *
 	 * @param application
 	 *            The application to set the mentor of
 	 * @param mentor
@@ -54,7 +50,7 @@ public interface MembershipService {
 	/**
 	 * Registers the vote of a given senator regarding the given join
 	 * application
-	 * 
+	 *
 	 * @param application
 	 *            The join application to vote for
 	 * @param senator

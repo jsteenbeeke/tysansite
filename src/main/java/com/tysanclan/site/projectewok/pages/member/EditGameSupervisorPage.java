@@ -17,17 +17,7 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.Collections;
-import java.util.List;
-
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
@@ -35,8 +25,17 @@ import com.tysanclan.site.projectewok.beans.GameService;
 import com.tysanclan.site.projectewok.entities.Game;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.User.CaseInsensitiveUserComparator;
+import com.tysanclan.site.projectewok.entities.UserGameRealm;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -51,7 +50,7 @@ public class EditGameSupervisorPage extends TysanPage {
 	private UserDAO userDAO;
 
 	/**
-	 * 
+	 *
 	 */
 	public EditGameSupervisorPage(Game game) {
 		super("Game Supervisor for " + game.getName());
@@ -80,19 +79,21 @@ public class EditGameSupervisorPage extends TysanPage {
 		};
 
 		UserFilter filter = new UserFilter();
-		filter.addRank(Rank.CHANCELLOR);
-		filter.addRank(Rank.SENATOR);
-		filter.addRank(Rank.TRUTHSAYER);
-		filter.addRank(Rank.REVERED_MEMBER);
-		filter.addRank(Rank.SENIOR_MEMBER);
-		filter.addRank(Rank.FULL_MEMBER);
-		filter.addRank(Rank.JUNIOR_MEMBER);
-		filter.setGame(game);
+		filter.rank(Rank.CHANCELLOR);
+		filter.orRank(Rank.SENATOR);
+		filter.orRank(Rank.TRUTHSAYER);
+		filter.orRank(Rank.REVERED_MEMBER);
+		filter.orRank(Rank.SENIOR_MEMBER);
+		filter.orRank(Rank.FULL_MEMBER);
+		filter.orRank(Rank.JUNIOR_MEMBER);
 
-		List<User> users = userDAO.findByFilter(filter);
-		Collections.sort(users, new CaseInsensitiveUserComparator());
+		List<User> users = userDAO.findByFilter(filter)
+				.filter(u -> u.getPlayedGames().stream()
+						.map(UserGameRealm::getGame).anyMatch(game::equals))
+				.toJavaList();
+		users.sort(new CaseInsensitiveUserComparator());
 
-		userSelect = new DropDownChoice<User>("coordinator", users);
+		userSelect = new DropDownChoice<>("coordinator", users);
 
 		form.add(userSelect);
 

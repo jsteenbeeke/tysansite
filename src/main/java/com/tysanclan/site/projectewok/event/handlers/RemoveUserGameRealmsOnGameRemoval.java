@@ -17,15 +17,14 @@
  */
 package com.tysanclan.site.projectewok.event.handlers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.jeroensteenbeeke.hyperion.events.EventHandler;
 import com.jeroensteenbeeke.hyperion.events.EventResult;
 import com.tysanclan.site.projectewok.entities.dao.UserGameRealmDAO;
 import com.tysanclan.site.projectewok.event.GameDeletionEvent;
+import org.springframework.beans.factory.annotation.Autowired;
 
-public class RemoveUserGameRealmsOnGameRemoval implements
-		EventHandler<GameDeletionEvent> {
+public class RemoveUserGameRealmsOnGameRemoval
+		implements EventHandler<GameDeletionEvent> {
 
 	private UserGameRealmDAO gameRealmDAO;
 

@@ -17,15 +17,14 @@
  */
 package com.tysanclan.site.projectewok.components.renderer;
 
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
-
+import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.NaiveRenderer;
 import com.tysanclan.site.projectewok.model.GameRealmCartesian;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public final class GameRealmCartesianRenderer implements
-        IChoiceRenderer<GameRealmCartesian> {
+public final class GameRealmCartesianRenderer
+		implements NaiveRenderer<GameRealmCartesian> {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -33,8 +32,8 @@ public final class GameRealmCartesianRenderer implements
 	 */
 	@Override
 	public Object getDisplayValue(GameRealmCartesian object) {
-		return object.getGame().getName() + " on "
-		        + object.getRealm().getName();
+		return object.getGame().getName() + " on " + object.getRealm()
+				.getName();
 	}
 
 	/**
@@ -42,8 +41,7 @@ public final class GameRealmCartesianRenderer implements
 	 *      int)
 	 */
 	@Override
-	public String getIdValue(GameRealmCartesian object,
-	        int index) {
+	public String getIdValue(GameRealmCartesian object, int index) {
 		return Integer.toString(index);
 	}
 

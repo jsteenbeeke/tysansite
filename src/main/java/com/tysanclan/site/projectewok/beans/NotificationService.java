@@ -17,10 +17,10 @@
  */
 package com.tysanclan.site.projectewok.beans;
 
-import java.util.List;
-
 import com.tysanclan.site.projectewok.entities.Notification;
 import com.tysanclan.site.projectewok.entities.User;
+
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke

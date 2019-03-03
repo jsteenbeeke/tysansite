@@ -17,44 +17,36 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.Group;
+import com.tysanclan.site.projectewok.entities.Group_;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.filter.GroupFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.Group;
-import com.tysanclan.site.projectewok.entities.dao.filters.GroupFilter;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class GroupDAOImpl extends EwokHibernateDAO<Group> implements
-		com.tysanclan.site.projectewok.entities.dao.GroupDAO {
-	/**
-	 * @see com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO#createCriteria(com.tysanclan.site.projectewok.dataaccess.SearchFilter)
-	 */
+class GroupDAOImpl extends HibernateDAO<Group, GroupFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.GroupDAO {
+
 	@Override
-	protected Criteria createCriteria(SearchFilter<Group> filter) {
-		Criteria criteria = getSession().createCriteria(Group.class);
+	public List<Group> getMemberGroups(User user) {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Group> query = criteriaBuilder.createQuery(Group.class);
+		Root<Group> root = query.from(Group.class);
 
-		if (filter instanceof GroupFilter) {
-			GroupFilter groupFilter = (GroupFilter) filter;
-			if (groupFilter.getIncludedMembers() != null
-					&& !groupFilter.getIncludedMembers().isEmpty()) {
+		query.select(root).where(criteriaBuilder
+				.equal(root.get(Group_.groupMembers), user));
 
-				criteria.createCriteria("groupMembers")
-						.add(Restrictions.in("id",
-								groupFilter.getIncludedMembers()));
-			}
-			if (groupFilter.getName() != null) {
-				criteria.add(Restrictions.eq("name", groupFilter.getName()));
-			}
-		}
-
-		return criteria;
+		return entityManager.createQuery(query).getResultList();
 	}
 }

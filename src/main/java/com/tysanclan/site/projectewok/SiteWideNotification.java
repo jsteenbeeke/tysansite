@@ -17,45 +17,39 @@
  */
 package com.tysanclan.site.projectewok;
 
-import java.io.Serializable;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.util.time.Duration;
+
+import java.io.Serializable;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public final class SiteWideNotification implements
-        Serializable {
+public final class SiteWideNotification implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public static enum Category {
 		INFO {
 			@Override
-			public void display(Component component,
-			        String message) {
+			public void display(Component component, String message) {
 				component.info(message);
 
 			}
-		},
-		WARNING {
+		}, WARNING {
 			@Override
-			public void display(Component component,
-			        String message) {
+			public void display(Component component, String message) {
 				component.warn(message);
 
 			}
-		},
-		ERROR {
+		}, ERROR {
 			@Override
-			public void display(Component component,
-			        String message) {
+			public void display(Component component, String message) {
 				component.error(message);
 
 			}
 		};
-		public abstract void display(Component component,
-		        String message);
+
+		public abstract void display(Component component, String message);
 	}
 
 	private final Category category;
@@ -66,8 +60,8 @@ public final class SiteWideNotification implements
 
 	private final long start;
 
-	public SiteWideNotification(Category category,
-	        String message, Duration duration) {
+	public SiteWideNotification(Category category, String message,
+			Duration duration) {
 		this.category = category;
 		this.message = message;
 		this.duration = duration;
@@ -90,7 +84,7 @@ public final class SiteWideNotification implements
 
 	public boolean isExpired() {
 		return (start + duration.getMilliseconds()) < System
-		        .currentTimeMillis();
+				.currentTimeMillis();
 	}
 
 	public final void display(Component component) {
@@ -104,14 +98,9 @@ public final class SiteWideNotification implements
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime
-		        * result
-		        + ((category == null) ? 0 : category
-		                .hashCode());
-		result = prime
-		        * result
-		        + ((message == null) ? 0 : message
-		                .hashCode());
+		result =
+				prime * result + ((category == null) ? 0 : category.hashCode());
+		result = prime * result + ((message == null) ? 0 : message.hashCode());
 		return result;
 	}
 

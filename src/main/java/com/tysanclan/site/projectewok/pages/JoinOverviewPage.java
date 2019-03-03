@@ -17,11 +17,10 @@
  */
 package com.tysanclan.site.projectewok.pages;
 
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.util.MemberUtil;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 
 /**
  * @author Jeroen Steenbeeke
@@ -36,9 +35,11 @@ public class JoinOverviewPage extends TysanPage {
 
 		if (user != null) {
 			if (MemberUtil.isMember(user)) {
-				setResponsePage(com.tysanclan.site.projectewok.pages.member.OverviewPage.class);
+				setResponsePage(
+						com.tysanclan.site.projectewok.pages.member.OverviewPage.class);
 			} else {
-				setResponsePage(com.tysanclan.site.projectewok.pages.forum.OverviewPage.class);
+				setResponsePage(
+						com.tysanclan.site.projectewok.pages.forum.OverviewPage.class);
 			}
 		}
 

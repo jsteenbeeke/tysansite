@@ -17,44 +17,20 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.TruthsayerNomination;
+import com.tysanclan.site.projectewok.entities.filter.TruthsayerNominationFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.TruthsayerNomination;
-import com.tysanclan.site.projectewok.entities.dao.filters.TruthsayerNominationFilter;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class TruthsayerNominationDAOImpl extends
-		EwokHibernateDAO<TruthsayerNomination> implements
+class TruthsayerNominationDAOImpl
+		extends HibernateDAO<TruthsayerNomination, TruthsayerNominationFilter>
+		implements
 		com.tysanclan.site.projectewok.entities.dao.TruthsayerNominationDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<TruthsayerNomination> filter) {
-		Criteria criteria = getSession().createCriteria(
-				TruthsayerNomination.class);
 
-		if (filter instanceof TruthsayerNominationFilter) {
-			TruthsayerNominationFilter cf = (TruthsayerNominationFilter) filter;
-
-			if (cf.getNominee() != null) {
-				criteria.add(Restrictions.eq("user", cf.getNominee()));
-			}
-			if (cf.getStartBefore() != null) {
-				criteria.add(Restrictions.lt("voteStart", cf.getStartBefore()));
-			} else if (cf.isStartNotSet()) {
-				criteria.add(Restrictions.isNull("voteStart"));
-			} else if (cf.isStartSet()) {
-				criteria.add(Restrictions.isNotNull("voteStart"));
-			}
-		}
-
-		return criteria;
-	}
 }

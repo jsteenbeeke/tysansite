@@ -17,29 +17,19 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.RealmPetition;
+import com.tysanclan.site.projectewok.entities.filter.RealmPetitionFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.RealmPetition;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class RealmPetitionDAOImpl extends EwokHibernateDAO<RealmPetition> implements
+class RealmPetitionDAOImpl
+		extends HibernateDAO<RealmPetition, RealmPetitionFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.RealmPetitionDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<RealmPetition> filter) {
-		Criteria criteria = getSession().createCriteria(RealmPetition.class);
 
-		// if (filter instanceof RealmPetitionFilter) {
-		// RealmPetitionFilter cf = (RealmPetitionFilter) filter;
-		// }
-
-		return criteria;
-	}
 }

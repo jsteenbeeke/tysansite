@@ -17,13 +17,15 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.TruthsayerNominationVote;
+import com.tysanclan.site.projectewok.entities.filter.TruthsayerNominationVoteFilter;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface TruthsayerNominationVoteDAO extends EwokDAO<TruthsayerNominationVote> {
+public interface TruthsayerNominationVoteDAO
+		extends DAO<TruthsayerNominationVote, TruthsayerNominationVoteFilter> {
 
 }

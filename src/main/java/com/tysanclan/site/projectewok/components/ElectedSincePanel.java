@@ -17,26 +17,24 @@
  */
 package com.tysanclan.site.projectewok.components;
 
+import com.tysanclan.site.projectewok.entities.Election;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.util.DateUtil;
+import org.apache.wicket.markup.html.panel.Panel;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.wicket.markup.html.panel.Panel;
-
-import com.tysanclan.site.projectewok.entities.Election;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.util.DateUtil;
-
 /**
  * @author Jeroen Steenbeeke
  */
-public abstract class ElectedSincePanel<T extends Election>
-        extends Panel {
+public abstract class ElectedSincePanel<T extends Election> extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	/**
-     * 
-     */
+	 *
+	 */
 	public ElectedSincePanel(String id, User user) {
 		super(id);
 
@@ -49,8 +47,7 @@ public abstract class ElectedSincePanel<T extends Election>
 				break;
 			}
 
-			Calendar calendar2 = DateUtil
-			        .getCalendarInstance();
+			Calendar calendar2 = DateUtil.getCalendarInstance();
 			calendar2.setTime(election.getStart());
 			calendar2.add(Calendar.WEEK_OF_YEAR, 2);
 			calendar2.add(Calendar.DAY_OF_YEAR, 1);

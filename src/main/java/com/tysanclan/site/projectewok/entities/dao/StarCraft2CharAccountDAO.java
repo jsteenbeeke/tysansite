@@ -17,13 +17,15 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.jeroensteenbeeke.hyperion.data.DAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.StarCraft2CharAccount;
+import com.tysanclan.site.projectewok.entities.filter.StarCraft2CharAccountFilter;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface StarCraft2CharAccountDAO extends DAO<StarCraft2CharAccount> {
+public interface StarCraft2CharAccountDAO
+		extends DAO<StarCraft2CharAccount, StarCraft2CharAccountFilter> {
 
 }

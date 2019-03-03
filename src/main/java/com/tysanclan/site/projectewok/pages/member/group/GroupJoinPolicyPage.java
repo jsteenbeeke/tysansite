@@ -17,16 +17,8 @@
  */
 package com.tysanclan.site.projectewok.pages.member.group;
 
-import java.util.Arrays;
-
-import org.apache.wicket.RestartResponseAtInterceptPageException;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.NaiveRenderer;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.beans.GroupService;
 import com.tysanclan.site.projectewok.entities.Committee;
@@ -35,6 +27,13 @@ import com.tysanclan.site.projectewok.entities.Group.JoinPolicy;
 import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
 import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
 import com.tysanclan.site.projectewok.pages.member.OverviewPage;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.Arrays;
 
 /**
  * @author Jeroen Steenbeeke
@@ -46,7 +45,8 @@ public class GroupJoinPolicyPage extends AbstractMemberPage {
 	public GroupJoinPolicyPage(Group group) {
 		super("Join policy for " + group.getName());
 
-		if (group instanceof Committee || !group.getLeader().equals(getUser())) {
+		if (group instanceof Committee || !group.getLeader()
+				.equals(getUser())) {
 			throw new RestartResponseAtInterceptPageException(
 					new AccessDeniedPage());
 		}
@@ -65,7 +65,8 @@ public class GroupJoinPolicyPage extends AbstractMemberPage {
 			@Override
 			protected void onSubmit() {
 				Group gr = getModelObject();
-				DropDownChoice<JoinPolicy> policyChoice = (DropDownChoice<JoinPolicy>) get("policy");
+				DropDownChoice<JoinPolicy> policyChoice = (DropDownChoice<JoinPolicy>) get(
+						"policy");
 				JoinPolicy joinPolicy = policyChoice.getModelObject();
 
 				groupService.setJoinPolicy(gr, joinPolicy);
@@ -74,10 +75,10 @@ public class GroupJoinPolicyPage extends AbstractMemberPage {
 			}
 		};
 
-		setPolicyForm.add(new DropDownChoice<JoinPolicy>("policy",
-				new Model<JoinPolicy>(group.getJoinPolicy()), Arrays
-						.asList(JoinPolicy.values()),
-				new IChoiceRenderer<JoinPolicy>() {
+		setPolicyForm.add(new DropDownChoice<>("policy",
+				new Model<>(group.getJoinPolicy()),
+				Arrays.asList(JoinPolicy.values()),
+				new NaiveRenderer<JoinPolicy>() {
 					private static final long serialVersionUID = 1L;
 
 					/**
@@ -100,7 +101,7 @@ public class GroupJoinPolicyPage extends AbstractMemberPage {
 
 					/**
 					 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getIdValue(java.lang.Object,
-					 *      int)
+					 * int)
 					 */
 					@Override
 					public String getIdValue(JoinPolicy object, int index) {

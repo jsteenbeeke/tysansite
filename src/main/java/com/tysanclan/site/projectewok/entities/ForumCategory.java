@@ -17,23 +17,13 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
+import org.hibernate.annotations.Cache;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.SequenceGenerator;
-
-import org.hibernate.annotations.Cache;
-
-import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 
 /**
  * @author Jeroen Steenbeeke
@@ -112,55 +102,5 @@ public class ForumCategory extends BaseDomainObject {
 	public void setAllowPublicGroupForums(boolean allowPublicGroupForums) {
 		this.allowPublicGroupForums = allowPublicGroupForums;
 	}
-
-	/**
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (allowPublicGroupForums ? 1231 : 1237);
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
-	}
-
-	/**
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		ForumCategory other = (ForumCategory) obj;
-		if (isAllowPublicGroupForums() != other.isAllowPublicGroupForums()) {
-			return false;
-		}
-		if (getId() == null) {
-			if (other.getId() != null) {
-				return false;
-			}
-		} else if (!getId().equals(other.getId())) {
-			return false;
-		}
-		if (getName() == null) {
-			if (other.getName() != null) {
-				return false;
-			}
-		} else if (!getName().equals(other.getName())) {
-			return false;
-		}
-		return true;
-	}
-
-	// $GS$
 
 }

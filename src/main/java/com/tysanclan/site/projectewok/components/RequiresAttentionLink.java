@@ -1,28 +1,21 @@
 /**
  * Tysan Clan Website
  * Copyright (C) 2008-2013 Jeroen Steenbeeke and Ties van de Ven
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.tysanclan.site.projectewok.components;
-
-import java.io.Serializable;
-import java.util.List;
-
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.IDetachable;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.tysanclan.site.projectewok.TysanSession;
 import com.tysanclan.site.projectewok.components.IconLink.ClickResponder;
@@ -31,6 +24,12 @@ import com.tysanclan.site.projectewok.entities.AttentionSuppression;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.AttentionSuppressionDAO;
 import com.tysanclan.site.projectewok.pages.member.OverviewPage;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IDetachable;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -46,13 +45,13 @@ public class RequiresAttentionLink extends Panel {
 	}
 
 	public static enum AttentionType {
-		INFO("images/icons/information.png"), WARNING("images/icons/error.png"), ERROR(
-				"images/icons/delete.png");
+		INFO("images/icons/information.png"), WARNING(
+				"images/icons/error.png"), ERROR("images/icons/delete.png");
 
 		private String iconPath;
 
 		/**
-		 * 
+		 *
 		 */
 		private AttentionType(String iconPath) {
 			this.iconPath = iconPath;
@@ -88,7 +87,8 @@ public class RequiresAttentionLink extends Panel {
 		 * @param invisibleIfNotNotified
 		 *            the invisibleIfNotNotified to set
 		 */
-		public Builder setInvisibleIfNotNotified(boolean invisibleIfNotNotified) {
+		public Builder setInvisibleIfNotNotified(
+				boolean invisibleIfNotNotified) {
 			this.invisibleIfNotNotified = invisibleIfNotNotified;
 			return this;
 		}
@@ -99,8 +99,8 @@ public class RequiresAttentionLink extends Panel {
 			RequiresAttentionLink instance = new RequiresAttentionLink(id,
 					condition);
 
-			TysanSession session = TysanSession.get();
-			User user = session != null ? session.getUser() : null;
+			User user = TysanSession.session().flatMap(TysanSession::getUser)
+					.getOrNull();
 
 			instance.label = new IconLink.Builder("", responder)
 					.setImageVisible(false).setText(text).newInstance("label");
@@ -114,8 +114,8 @@ public class RequiresAttentionLink extends Panel {
 
 			instance.add(instance.label);
 
-			instance.dismissed = attentionDAO.isSuppressed(
-					condition.getClass(), condition.getDismissableId(), user);
+			instance.dismissed = attentionDAO.isSuppressed(condition.getClass(),
+					condition.getDismissableId(), user);
 
 			if (!instance.dismissed && active) {
 				conditionList.add(id);
@@ -159,8 +159,8 @@ public class RequiresAttentionLink extends Panel {
 		this.dismissalId = condition.getDismissableId();
 		this.conditionClass = condition.getClass();
 
-		String iconPath = attentionType != null ? attentionType.getIconPath()
-				: "";
+		String iconPath =
+				attentionType != null ? attentionType.getIconPath() : "";
 
 		icon = new IconLink.Builder(iconPath,
 				new DefaultClickResponder<AttentionSuppression>() {
@@ -195,8 +195,8 @@ public class RequiresAttentionLink extends Panel {
 	}
 
 	private User getUser() {
-		TysanSession session = TysanSession.get();
-		return session != null ? session.getUser() : null;
+		return TysanSession.session().flatMap(TysanSession::getUser)
+				.getOrNull();
 	}
 
 }

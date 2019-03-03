@@ -1,44 +1,31 @@
 /**
  * Tysan Clan Website
  * Copyright (C) 2008-2013 Jeroen Steenbeeke and Ties van de Ven
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.tysanclan.site.projectewok.entities;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.annotation.Nullable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.Type;
-
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 import com.tysanclan.rest.api.data.RestMessage;
 import com.tysanclan.site.projectewok.util.SerializableFunction;
+import org.hibernate.annotations.Cache;
+
+import javax.annotation.Nullable;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author Jeroen Steenbeeke
@@ -76,7 +63,6 @@ public class Message extends BaseDomainObject {
 
 	@Column
 	@Lob
-	@Type(type = "org.hibernate.type.StringClobType")
 	private String content;
 
 	@Column
@@ -122,7 +108,7 @@ public class Message extends BaseDomainObject {
 
 	/**
 	 * Sets the Sender of this Message
-	 * 
+	 *
 	 * @param sender
 	 *            The Sender of this Message
 	 */
@@ -139,7 +125,7 @@ public class Message extends BaseDomainObject {
 
 	/**
 	 * Sets the Content of this Message
-	 * 
+	 *
 	 * @param content
 	 *            The Content of this Message
 	 */
@@ -156,7 +142,7 @@ public class Message extends BaseDomainObject {
 
 	/**
 	 * Sets the SendTime of this Message
-	 * 
+	 *
 	 * @param sendTime
 	 *            The SendTime of this Message
 	 */
@@ -173,7 +159,7 @@ public class Message extends BaseDomainObject {
 
 	/**
 	 * Sets the Conversation of this Message
-	 * 
+	 *
 	 * @param conversation
 	 *            The Conversation of this Message
 	 */

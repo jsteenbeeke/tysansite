@@ -17,15 +17,14 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import org.apache.wicket.markup.html.link.Link;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.entities.Forum;
 import com.tysanclan.site.projectewok.pages.ForumPage;
+import org.apache.wicket.markup.html.link.Link;
 
 /**
  * Link to a ForumThread
- * 
+ *
  * @author Jeroen Steenbeeke
  */
 public class ForumLink extends Link<Forum> {
@@ -44,7 +43,6 @@ public class ForumLink extends Link<Forum> {
 
 	@Override
 	public void onClick() {
-		setResponsePage(new ForumPage(getModelObject(),
-		        page));
+		setResponsePage(new ForumPage(getModelObject(), page));
 	}
 }

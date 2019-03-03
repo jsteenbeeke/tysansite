@@ -17,31 +17,29 @@
  */
 package com.tysanclan.site.projectewok.components;
 
+import com.tysanclan.site.projectewok.entities.SenateElection;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.dao.SenateElectionDAO;
+import com.tysanclan.site.projectewok.entities.filter.SenateElectionFilter;
+import com.tysanclan.site.projectewok.util.DateUtil;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.tysanclan.site.projectewok.entities.SenateElection;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.SenateElectionDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.SenateElectionFilter;
-import com.tysanclan.site.projectewok.util.DateUtil;
-
 /**
  * @author Jeroen Steenbeeke
  */
-public class SenateElectedSincePanel extends
-        ElectedSincePanel<SenateElection> {
+public class SenateElectedSincePanel extends ElectedSincePanel<SenateElection> {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private SenateElectionDAO senateElectionDAO;
 
 	/**
-     * 
-     */
+	 *
+	 */
 	public SenateElectedSincePanel(String id, User user) {
 		super(id, user);
 	}
@@ -52,9 +50,9 @@ public class SenateElectedSincePanel extends
 	@Override
 	public List<SenateElection> getElectionsSortedByDate() {
 		SenateElectionFilter filter = new SenateElectionFilter();
-		filter.addOrderBy("start", false);
+		filter.start().orderBy(false);
 
-		return senateElectionDAO.findByFilter(filter);
+		return senateElectionDAO.findByFilter(filter).toJavaList();
 	}
 
 	/**
@@ -62,15 +60,13 @@ public class SenateElectedSincePanel extends
 	 *      com.tysanclan.site.projectewok.entities.User)
 	 */
 	@Override
-	public boolean isWinner(SenateElection election,
-	        User user) {
+	public boolean isWinner(SenateElection election, User user) {
 		return election.getWinners().contains(user);
 	}
 
 	@Override
 	public Date getInitialDate(User user) {
-		Calendar calendar = DateUtil
-		        .getMidnightCalendarInstance();
+		Calendar calendar = DateUtil.getMidnightCalendarInstance();
 		calendar.set(Calendar.YEAR, 2009);
 		calendar.set(Calendar.MONTH, Calendar.FEBRUARY);
 		calendar.set(Calendar.DAY_OF_MONTH, 13);

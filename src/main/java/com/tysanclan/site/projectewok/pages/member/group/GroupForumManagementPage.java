@@ -17,8 +17,15 @@
  */
 package com.tysanclan.site.projectewok.pages.member.group;
 
-import java.util.List;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
+import com.tysanclan.site.projectewok.beans.ForumService;
+import com.tysanclan.site.projectewok.entities.Group;
+import com.tysanclan.site.projectewok.entities.GroupForum;
+import com.tysanclan.site.projectewok.entities.dao.GroupForumDAO;
+import com.tysanclan.site.projectewok.entities.filter.GroupForumFilter;
+import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
+import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.ContextImage;
@@ -27,15 +34,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
-import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
-import com.tysanclan.site.projectewok.beans.ForumService;
-import com.tysanclan.site.projectewok.entities.Group;
-import com.tysanclan.site.projectewok.entities.GroupForum;
-import com.tysanclan.site.projectewok.entities.dao.GroupForumDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.GroupForumFilter;
-import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
-import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -48,7 +47,7 @@ public class GroupForumManagementPage extends AbstractMemberPage {
 	private GroupForumDAO groupForumDAO;
 
 	/**
-	 * 
+	 *
 	 */
 	public GroupForumManagementPage(Group group) {
 		super("Forums for " + group.getName());
@@ -59,9 +58,9 @@ public class GroupForumManagementPage extends AbstractMemberPage {
 		}
 
 		GroupForumFilter filter = new GroupForumFilter();
-		filter.setGroup(group);
+		filter.group(group);
 
-		List<GroupForum> forums = groupForumDAO.findByFilter(filter);
+		List<GroupForum> forums = groupForumDAO.findByFilter(filter).asJava();
 
 		add(new ListView<GroupForum>("forums", ModelMaker.wrap(forums)) {
 			private static final long serialVersionUID = 1L;
@@ -86,13 +85,14 @@ public class GroupForumManagementPage extends AbstractMemberPage {
 
 					@Override
 					public void onClick() {
-						setResponsePage(new EditGroupForumPage(getModelObject()));
+						setResponsePage(
+								new EditGroupForumPage(getModelObject()));
 					}
 
 				};
 
-				editLink.add(new ContextImage("icon",
-						"images/icons/book_edit.png"));
+				editLink.add(
+						new ContextImage("icon", "images/icons/book_edit.png"));
 
 				item.add(editLink);
 			}
@@ -131,8 +131,8 @@ public class GroupForumManagementPage extends AbstractMemberPage {
 					public void onClick() {
 						Group gr = getModelObject().getGroup();
 
-						if (!forumService.deleteForum(getUser(),
-								getModelObject())) {
+						if (!forumService
+								.deleteForum(getUser(), getModelObject())) {
 							error("Could not delete non-empty forum!");
 						} else {
 							setResponsePage(new GroupForumManagementPage(gr));

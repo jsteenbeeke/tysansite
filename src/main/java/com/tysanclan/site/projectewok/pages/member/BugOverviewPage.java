@@ -17,20 +17,19 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.beans.BugTrackerService;
 import com.tysanclan.site.projectewok.components.BugListPanel;
 import com.tysanclan.site.projectewok.entities.Bug;
 import com.tysanclan.site.projectewok.entities.Bug.BugStatus;
 import com.tysanclan.site.projectewok.entities.Bug.ReportType;
-import com.tysanclan.site.projectewok.entities.dao.filters.BugFilter;
+import com.tysanclan.site.projectewok.entities.filter.BugFilter;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 @TysanMemberSecured
 public class BugOverviewPage extends AbstractMemberPage {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -41,14 +40,14 @@ public class BugOverviewPage extends AbstractMemberPage {
 		super("Bugs Overview");
 
 		BugFilter filter = new BugFilter();
-		filter.addReportType(ReportType.BUGREPORT);
-		filter.addReportType(ReportType.CRASHREPORT);
-		filter.addAllowedStatus(BugStatus.NEW);
-		filter.addAllowedStatus(BugStatus.ACKNOWLEDGED);
+		filter.reportType(ReportType.BUGREPORT);
+		filter.orReportType(ReportType.CRASHREPORT);
+		filter.status(BugStatus.NEW);
+		filter.orStatus(BugStatus.ACKNOWLEDGED);
 
-		filter.addOrderBy("status", true);
-		filter.addOrderBy("updated", false);
-		filter.addOrderBy("reported", false);
+		filter.status().orderBy(true);
+		filter.updated().orderBy(false);
+		filter.reported().orderBy(false);
 
 		add(new BugListPanel("bugs", "Bug", filter) {
 			private static final long serialVersionUID = 1L;
@@ -60,14 +59,14 @@ public class BugOverviewPage extends AbstractMemberPage {
 		});
 
 		filter = new BugFilter();
-		filter.addReportType(ReportType.BUGREPORT);
-		filter.addReportType(ReportType.CRASHREPORT);
-		filter.addAllowedStatus(BugStatus.RESOLVED);
-		filter.addAllowedStatus(BugStatus.CLOSED);
+		filter.reportType(ReportType.BUGREPORT);
+		filter.orReportType(ReportType.CRASHREPORT);
+		filter.status(BugStatus.RESOLVED);
+		filter.orStatus(BugStatus.CLOSED);
 
-		filter.addOrderBy("status", false);
-		filter.addOrderBy("updated", false);
-		filter.addOrderBy("reported", false);
+		filter.status().orderBy(false);
+		filter.updated().orderBy(false);
+		filter.reported().orderBy(false);
 
 		add(new BugListPanel("rbugs", "Bug", filter) {
 			private static final long serialVersionUID = 1L;

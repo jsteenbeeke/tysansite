@@ -17,35 +17,24 @@
  */
 package com.tysanclan.site.projectewok.tasks;
 
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.HyperionTask;
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.ServiceProvider;
+import com.tysanclan.site.projectewok.TysanTaskGroup;
 import com.tysanclan.site.projectewok.beans.MembershipService;
-import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 
 /**
  * Special task that bumps account activity every hour, so no expired mails go
  * out
- * 
+ *
  * @author Jeroen Steenbeeke
  */
-public class NoAccountExpireTask extends PeriodicTask {
-	@SpringBean
-	private MembershipService membershipService;
-
-	/**
-	 * 
-	 */
+public class NoAccountExpireTask extends HyperionTask {
 	public NoAccountExpireTask() {
-		super("Account bumper", "Debug", ExecutionMode.HOURLY);
+		super("Account bumper", TysanTaskGroup.DEBUG);
 	}
 
-	/**
-	 * @see com.tysanclan.site.projectewok.util.scheduler.TysanTask#run()
-	 */
 	@Override
-	public void run() {
-		membershipService.bumpAccounts();
-
+	public void run(ServiceProvider provider) {
+		provider.getService(MembershipService.class).bumpAccounts();
 	}
-
 }

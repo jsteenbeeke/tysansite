@@ -17,22 +17,12 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
-import java.io.Serializable;
-
-import javax.persistence.Entity;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Cache;
-
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 import com.tysanclan.site.projectewok.entities.GameAccount.AccountType;
+import org.hibernate.annotations.Cache;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  *
@@ -51,6 +41,7 @@ public class AllowedAccountType extends BaseDomainObject {
 	private Long id;
 
 	@Enumerated
+	@Column
 	private AccountType type;
 
 	@ManyToOne

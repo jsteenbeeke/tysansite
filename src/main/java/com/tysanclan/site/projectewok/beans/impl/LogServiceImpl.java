@@ -17,27 +17,27 @@
  */
 package com.tysanclan.site.projectewok.beans.impl;
 
+import com.tysanclan.site.projectewok.entities.LogItem;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.dao.LogItemDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.tysanclan.site.projectewok.entities.LogItem;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.LogItemDAO;
-
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class LogServiceImpl implements com.tysanclan.site.projectewok.beans.LogService {
+class LogServiceImpl
+		implements com.tysanclan.site.projectewok.beans.LogService {
 	@Autowired
 	private LogItemDAO logItemDAO;
 
 	/**
-	 * 
+	 *
 	 */
 	public LogServiceImpl() {
 	}

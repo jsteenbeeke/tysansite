@@ -1,54 +1,58 @@
 <html xmlns:wicket>
 <wicket:panel>
-	<div class="jqui-accordion">
-		<h2>
-			<a>Trial</a>
-		</h2>
-		<div>
-			<span wicket:id="accused"></span> stands accused of violating the
-			following regulations:
+    <div class="jqui-accordion">
+        <h2>
+            <a>Trial</a>
+        </h2>
+        <div>
+            <span wicket:id="accused"></span> stands accused of violating the
+            following regulations:
 
-			<p>
-			<div wicket:id="regulations">
-				<span wicket:id="name"></span><br />
-			</div>
-			</p>
+            <p>
+            <div wicket:id="regulations">
+                <span wicket:id="name"></span><br/>
+            </div>
+            </p>
 
-			<p>
-				<span wicket:id="truthsayer"></span> will determine the verdict of
-				this trial.
-			</p>
+            <p>
+                <span wicket:id="truthsayer"></span> will determine the verdict
+                of
+                this trial.
+            </p>
 
-			<wicket:enclosure child="restrain">
-				<p>If the accused does not behave himself during the trial, a
-					Truthsayer has the option to restrain the accused, limiting his
-					posting abilities to threads in which he is either accuser or
-					accused.
-				<div wicket:id="restrain"></div>
-				</p>
-			</wicket:enclosure>
+            <wicket:enclosure child="restrain">
+                <p>If the accused does not behave himself during the trial, a
+                    Truthsayer has the option to restrain the accused, limiting
+                    his
+                    posting abilities to threads in which he is either accuser
+                    or
+                    accused.
+                <div wicket:id="restrain"></div>
+                </p>
+            </wicket:enclosure>
 
-			<wicket:enclosure child="evidence">
-				<b>Motivation given by accuser:</b>
-				<br />
-				<p wicket:id="evidence"></p>
-			</wicket:enclosure>
+            <wicket:enclosure child="evidence">
+                <b>Motivation given by accuser:</b>
+                <br/>
+                <p wicket:id="evidence"></p>
+            </wicket:enclosure>
 
-			<wicket:enclosure child="verdictForm">
-				<p>
-				<form wicket:id="verdictForm">
-					<select wicket:id="verdict"></select> <input type="submit"
-						value="Pass verdict" class="SubmitButton" />
-				</form>
-				</p>
-			</wicket:enclosure>
+            <wicket:enclosure child="verdictForm">
+                <p>
+                <form wicket:id="verdictForm">
+                    <select wicket:id="verdict"></select> <input type="submit"
+                                                                 value="Pass verdict"
+                                                                 class="SubmitButton"/>
+                </form>
+                </p>
+            </wicket:enclosure>
 
-			<p wicket:id="verdict">Member was deemed INNOCENT</p>
+            <p wicket:id="verdict">Member was deemed INNOCENT</p>
 
-		</div>
+        </div>
 
-	</div>
-	<br />
-	<br />
+    </div>
+    <br/>
+    <br/>
 </wicket:panel>
 </html>

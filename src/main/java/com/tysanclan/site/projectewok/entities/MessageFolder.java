@@ -17,29 +17,18 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
-import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
+import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 import org.hibernate.annotations.Cache;
 
-import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Entity
 @Table(indexes = { //
-@Index(name = "IDX_MESSAGEFOLDER_OWNER", columnList = "owner_id"),
+		@Index(name = "IDX_MESSAGEFOLDER_OWNER", columnList = "owner_id"),
 		@Index(name = "IDX_MESSAGEFOLDER_PARENT", columnList = "parent_id") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class MessageFolder extends BaseDomainObject {
@@ -96,7 +85,7 @@ public class MessageFolder extends BaseDomainObject {
 
 	/**
 	 * Sets the Name of this MessageFolder
-	 * 
+	 *
 	 * @param name
 	 *            The Name of this MessageFolder
 	 */
@@ -113,7 +102,7 @@ public class MessageFolder extends BaseDomainObject {
 
 	/**
 	 * Sets the Owner of this MessageFolder
-	 * 
+	 *
 	 * @param owner
 	 *            The Owner of this MessageFolder
 	 */
@@ -130,73 +119,11 @@ public class MessageFolder extends BaseDomainObject {
 
 	/**
 	 * Sets the Parent of this MessageFolder
-	 * 
+	 *
 	 * @param parent
 	 *            The Parent of this MessageFolder
 	 */
 	public void setParent(MessageFolder parent) {
 		this.parent = parent;
 	}
-
-	/**
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((owner == null) ? 0 : owner.hashCode());
-		result = prime * result + ((parent == null) ? 0 : parent.hashCode());
-		return result;
-	}
-
-	/**
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj instanceof MessageFolder)) {
-			return false;
-		}
-		MessageFolder other = (MessageFolder) obj;
-		if (getId() == null) {
-			if (other.getId() != null) {
-				return false;
-			}
-		} else if (!getId().equals(other.getId())) {
-			return false;
-		}
-		if (getName() == null) {
-			if (other.getName() != null) {
-				return false;
-			}
-		} else if (!getName().equals(other.getName())) {
-			return false;
-		}
-		if (getOwner() == null) {
-			if (other.getOwner() != null) {
-				return false;
-			}
-		} else if (!getOwner().equals(other.getOwner())) {
-			return false;
-		}
-		if (getParent() == null) {
-			if (other.getParent() != null) {
-				return false;
-			}
-		} else if (!getParent().equals(other.getParent())) {
-			return false;
-		}
-		return true;
-	}
-
-	// $GS$
 }

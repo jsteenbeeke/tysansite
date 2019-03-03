@@ -17,12 +17,22 @@
  */
 package com.tysanclan.site.projectewok.beans;
 
+import com.tysanclan.site.projectewok.entities.DisneyCharacter;
 import com.tysanclan.site.projectewok.entities.OtterSighting;
 import com.tysanclan.site.projectewok.entities.User;
+import io.vavr.control.Option;
+
+import java.util.Random;
 
 /**
  * @author Ties
  */
 public interface HumorService {
 	OtterSighting otterSighted(User user, Integer otterNumber);
+
+	Option<DisneyCharacter> findDisneyCharacter(User user, Random random);
+
+	void catchDisneyCharacter(User user, DisneyCharacter character);
+
+	Option<String> getDisneyScore(User user);
 }

@@ -17,15 +17,16 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.JoinApplication;
 import com.tysanclan.site.projectewok.entities.JoinVerdict;
+import com.tysanclan.site.projectewok.entities.filter.JoinVerdictFilter;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface JoinVerdictDAO extends EwokDAO<JoinVerdict> {
+public interface JoinVerdictDAO extends DAO<JoinVerdict, JoinVerdictFilter> {
 
 	void deleteForApplication(JoinApplication application);
 

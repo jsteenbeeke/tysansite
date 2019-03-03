@@ -17,15 +17,14 @@
  */
 package com.tysanclan.site.projectewok.components;
 
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.beans.UserService;
+import com.tysanclan.site.projectewok.entities.User;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
-import com.tysanclan.site.projectewok.beans.UserService;
-import com.tysanclan.site.projectewok.entities.User;
 
 /**
  * @author Jeroen Steenbeeke
@@ -34,13 +33,13 @@ public abstract class ChangeEmailPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	/**
-     * 
-     */
+	 *
+	 */
 	public ChangeEmailPanel(String id, User user) {
 		super(id);
 
-		Form<User> changeMailForm = new Form<User>(
-		        "changemailform", ModelMaker.wrap(user)) {
+		Form<User> changeMailForm = new Form<User>("changemailform",
+				ModelMaker.wrap(user)) {
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean
@@ -57,10 +56,8 @@ public abstract class ChangeEmailPanel extends Panel {
 
 				String email = mailField.getModelObject();
 
-				if (email != null
-				        && !email.equals(u.getEMail())) {
-					userService.createEmailChangeRequest(
-					        u, email);
+				if (email != null && !email.equals(u.getEMail())) {
+					userService.createEmailChangeRequest(u, email);
 					info("Confirmation mail sent");
 				}
 
@@ -70,7 +67,7 @@ public abstract class ChangeEmailPanel extends Panel {
 		};
 
 		changeMailForm.add(new TextField<String>("mail",
-		        new Model<String>(user.getEMail())));
+				new Model<String>(user.getEMail())));
 
 		add(changeMailForm);
 	}

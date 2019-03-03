@@ -17,9 +17,11 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.RoleTransferApproval;
+import com.tysanclan.site.projectewok.entities.filter.RoleTransferApprovalFilter;
 
-public interface RoleTransferApprovalDAO extends EwokDAO<RoleTransferApproval> {
+public interface RoleTransferApprovalDAO
+		extends DAO<RoleTransferApproval, RoleTransferApprovalFilter> {
 
 }

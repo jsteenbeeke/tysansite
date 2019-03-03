@@ -17,18 +17,17 @@
  */
 package com.tysanclan.site.projectewok.pages.member.senate;
 
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.DemocracyService;
 import com.tysanclan.site.projectewok.components.BBCodeTextArea;
 import com.tysanclan.site.projectewok.entities.RegulationChange;
 import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -45,7 +44,7 @@ public class AddRegulationPage extends AbstractMemberPage {
 	}
 
 	/**
-	 	 */
+	 */
 	private Form<RegulationChange> createAddForm() {
 		Form<RegulationChange> form = new Form<RegulationChange>("addForm") {
 			private static final long serialVersionUID = 1L;
@@ -59,8 +58,10 @@ public class AddRegulationPage extends AbstractMemberPage {
 			@SuppressWarnings("unchecked")
 			@Override
 			protected void onSubmit() {
-				TextArea<String> descriptionArea = (TextArea<String>) get("description");
-				TextField<String> newTitleField = (TextField<String>) get("newTitle");
+				TextArea<String> descriptionArea = (TextArea<String>) get(
+						"description");
+				TextField<String> newTitleField = (TextField<String>) get(
+						"newTitle");
 
 				String newDescription = descriptionArea.getModelObject();
 				String newTitle = newTitleField.getModelObject();

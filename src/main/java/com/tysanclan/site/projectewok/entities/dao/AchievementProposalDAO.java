@@ -17,13 +17,15 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.AchievementProposal;
+import com.tysanclan.site.projectewok.entities.filter.AchievementProposalFilter;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface AchievementProposalDAO extends EwokDAO<AchievementProposal> {
+public interface AchievementProposalDAO
+		extends DAO<AchievementProposal, AchievementProposalFilter> {
 
 }

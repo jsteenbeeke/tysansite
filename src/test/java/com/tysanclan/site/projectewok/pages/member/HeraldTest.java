@@ -1,26 +1,15 @@
 package com.tysanclan.site.projectewok.pages.member;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
+import com.tysanclan.site.projectewok.entities.Role;
 import com.tysanclan.site.projectewok.pages.member.admin.HeraldTransferPage;
 import com.tysanclan.site.projectewok.pages.member.admin.MumbleServerAdminPage;
 import com.tysanclan.site.projectewok.pages.member.admin.RequestPaymentPage;
+import org.junit.Test;
 
 public class HeraldTest extends AbstractClickThroughTester {
-	public HeraldTest() {
-		super(1L);
-	}
-
-	@Before
-	public void makeHerald() {
-		assignRole(2L);
-	}
-
-	@After
-	public void unmakeHerald() {
-		clearRole(2L);
+	@Override
+	protected long determineUserId() {
+		return userIdWithRole(Role.RoleType.HERALD);
 	}
 
 	@Test

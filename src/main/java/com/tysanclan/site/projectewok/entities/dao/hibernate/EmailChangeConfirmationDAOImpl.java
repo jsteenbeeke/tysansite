@@ -17,15 +17,11 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.EmailChangeConfirmation;
+import com.tysanclan.site.projectewok.entities.filter.EmailChangeConfirmationFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.EmailChangeConfirmation;
-import com.tysanclan.site.projectewok.entities.dao.filters.EmailChangeConfirmationFilter;
 
 /**
  * @author Jeroen Steenbeeke
@@ -33,26 +29,7 @@ import com.tysanclan.site.projectewok.entities.dao.filters.EmailChangeConfirmati
 @Component
 @Scope("request")
 class EmailChangeConfirmationDAOImpl extends
-		EwokHibernateDAO<EmailChangeConfirmation> implements
+		HibernateDAO<EmailChangeConfirmation, EmailChangeConfirmationFilter>
+		implements
 		com.tysanclan.site.projectewok.entities.dao.EmailChangeConfirmationDAO {
-	@Override
-	protected Criteria createCriteria(
-			SearchFilter<EmailChangeConfirmation> filter) {
-		Criteria criteria = getSession().createCriteria(
-				EmailChangeConfirmation.class);
-
-		if (filter instanceof EmailChangeConfirmationFilter) {
-			EmailChangeConfirmationFilter eccf = (EmailChangeConfirmationFilter) filter;
-
-			if (eccf.getDateBefore() != null) {
-				criteria.add(Restrictions.lt("initialized",
-						eccf.getDateBefore()));
-			}
-			if (eccf.getUser() != null) {
-				criteria.add(Restrictions.eq("user", eccf.getUser()));
-			}
-		}
-
-		return criteria;
-	}
 }

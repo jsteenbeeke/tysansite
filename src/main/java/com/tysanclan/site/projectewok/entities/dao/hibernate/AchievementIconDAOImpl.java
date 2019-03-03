@@ -17,16 +17,11 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Disjunction;
-import org.hibernate.criterion.Restrictions;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.AchievementIcon;
+import com.tysanclan.site.projectewok.entities.filter.AchievementIconFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.AchievementIcon;
-import com.tysanclan.site.projectewok.entities.dao.filters.AchievementIconFilter;
 
 /**
  *
@@ -34,42 +29,8 @@ import com.tysanclan.site.projectewok.entities.dao.filters.AchievementIconFilter
  */
 @Component
 @Scope("request")
-class AchievementIconDAOImpl extends EwokHibernateDAO<AchievementIcon>
-		implements
+class AchievementIconDAOImpl
+		extends HibernateDAO<AchievementIcon, AchievementIconFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.AchievementIconDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<AchievementIcon> filter) {
-		Criteria criteria = getSession().createCriteria(AchievementIcon.class);
 
-		if (filter instanceof AchievementIconFilter) {
-			AchievementIconFilter cf = (AchievementIconFilter) filter;
-
-			if (cf.getUnclaimed() != null) {
-				if (cf.getUnclaimed()) {
-					criteria.add(Restrictions.isNull("achievement"));
-					criteria.add(Restrictions.isNull("proposal"));
-				} else {
-					Disjunction d = Restrictions.disjunction();
-					d.add(Restrictions.isNotNull("achievement"));
-					d.add(Restrictions.isNotNull("proposal"));
-					criteria.add(d);
-				}
-			}
-			if (cf.getCreatorOnly() != null) {
-				criteria.add(Restrictions.eq("creatorOnly", cf.getCreatorOnly()));
-			} else if (cf.isCreatorOnlyAsNull()) {
-				criteria.add(Restrictions.isNull("creatorOnly"));
-			}
-			if (cf.getApproved() != null) {
-				criteria.add(Restrictions.eq("approved", cf.getApproved()));
-			} else if (cf.isApprovedAsNull()) {
-				criteria.add(Restrictions.isNull("approved"));
-			}
-			if (cf.getCreator() != null) {
-				criteria.add(Restrictions.eq("creator", cf.getCreator()));
-			}
-		}
-
-		return criteria;
-	}
 }

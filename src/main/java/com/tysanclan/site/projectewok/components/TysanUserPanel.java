@@ -17,10 +17,7 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.TysanTopPanel;
 import com.tysanclan.site.projectewok.auth.TysanNonMemberSecured;
@@ -31,6 +28,8 @@ import com.tysanclan.site.projectewok.pages.ForumOverviewPage;
 import com.tysanclan.site.projectewok.pages.forum.ForumUserPreferencesPage;
 import com.tysanclan.site.projectewok.pages.forum.JoinPage;
 import com.tysanclan.site.projectewok.pages.forum.OverviewPage;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -61,13 +60,13 @@ public class TysanUserPanel extends TysanTopPanel {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void addJoinLink(Rank rank) {
 		add(new Link<Void>("joinlink") {
 
 			/**
-			 * 
+			 *
 			 */
 			private static final long serialVersionUID = 1L;
 
@@ -80,13 +79,13 @@ public class TysanUserPanel extends TysanTopPanel {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void addPreferencesLink() {
 		add(new Link<Void>("preferences") {
 
 			/**
-			 * 
+			 *
 			 */
 			private static final long serialVersionUID = 1L;
 
@@ -114,7 +113,7 @@ public class TysanUserPanel extends TysanTopPanel {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void addOverviewLink() {
 		add(new Link<Void>("overview") {

@@ -17,13 +17,15 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.UntenabilityVote;
+import com.tysanclan.site.projectewok.entities.filter.UntenabilityVoteFilter;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface UntenabilityVoteDAO extends EwokDAO<UntenabilityVote> {
+public interface UntenabilityVoteDAO
+		extends DAO<UntenabilityVote, UntenabilityVoteFilter> {
 
 }

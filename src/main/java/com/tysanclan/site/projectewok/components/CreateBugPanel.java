@@ -17,15 +17,14 @@
  */
 package com.tysanclan.site.projectewok.components;
 
+import com.tysanclan.site.projectewok.entities.Bug;
+import com.tysanclan.site.projectewok.entities.Bug.ReportType;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
-
-import com.tysanclan.site.projectewok.entities.Bug;
-import com.tysanclan.site.projectewok.entities.Bug.ReportType;
 
 public abstract class CreateBugPanel extends Panel {
 	private static final long serialVersionUID = 1L;
@@ -35,8 +34,8 @@ public abstract class CreateBugPanel extends Panel {
 
 		add(new Label("title", "Create " + type.getDescription()));
 
-		final TextField<String> titleField = new TextField<String>(
-				"titleField", new Model<String>(""));
+		final TextField<String> titleField = new TextField<String>("titleField",
+				new Model<String>(""));
 		titleField.setRequired(true);
 
 		final TextArea<String> descriptionArea = new TextArea<String>(

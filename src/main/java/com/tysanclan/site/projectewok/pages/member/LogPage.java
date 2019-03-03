@@ -17,19 +17,19 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.Date;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.FilterDataProvider;
+import com.tysanclan.site.projectewok.components.OtterSniperPanel;
+import com.tysanclan.site.projectewok.entities.LogItem;
+import com.tysanclan.site.projectewok.entities.dao.LogItemDAO;
+import com.tysanclan.site.projectewok.entities.filter.LogItemFilter;
+import com.tysanclan.site.projectewok.util.DateUtil;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.tysanclan.site.projectewok.components.OtterSniperPanel;
-import com.tysanclan.site.projectewok.dataaccess.FilterProvider;
-import com.tysanclan.site.projectewok.entities.LogItem;
-import com.tysanclan.site.projectewok.entities.dao.LogItemDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.LogItemFilter;
-import com.tysanclan.site.projectewok.util.DateUtil;
+import java.util.Date;
 
 /**
  * @author Jeroen Steenbeeke
@@ -37,22 +37,25 @@ import com.tysanclan.site.projectewok.util.DateUtil;
 public class LogPage extends AbstractMemberPage {
 	private static final long serialVersionUID = 1L;
 
+	@SpringBean
+	private LogItemDAO logItemDAO;
+
 	public LogPage() {
 		super("Clan Log");
 
 		LogItemFilter filter = new LogItemFilter();
-		filter.addOrderBy("LogTime", false);
+		filter.logTime().orderBy(false);
 
 		DataView<LogItem> pageable = new DataView<LogItem>("log",
-				FilterProvider.of(LogItemDAO.class, filter)) {
+				FilterDataProvider.of(filter, logItemDAO)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void populateItem(Item<LogItem> item) {
 				LogItem logItem = item.getModelObject();
 
-				item.add(new Label("time", DateUtil
-						.getESTFormattedString(new Date(logItem.getLogTime()))));
+				item.add(new Label("time", DateUtil.getESTFormattedString(
+						new Date(logItem.getLogTime()))));
 				item.add(new Label("category", logItem.getCategory()));
 				item.add(new Label("user", logItem.getVisibleUsername()));
 				item.add(new Label("action", logItem.getMessage()));

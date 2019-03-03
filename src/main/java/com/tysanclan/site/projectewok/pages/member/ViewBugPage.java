@@ -17,28 +17,8 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.RestartResponseAtInterceptPageException;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
-import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.NaiveRenderer;
 import com.tysanclan.site.projectewok.TysanApplication;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.beans.BugTrackerService;
@@ -51,7 +31,22 @@ import com.tysanclan.site.projectewok.entities.Bug.BugStatus;
 import com.tysanclan.site.projectewok.entities.Bug.ReportType;
 import com.tysanclan.site.projectewok.entities.BugComment;
 import com.tysanclan.site.projectewok.entities.dao.BugDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.BugFilter;
+import com.tysanclan.site.projectewok.entities.filter.BugFilter;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.*;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @TysanMemberSecured
 public class ViewBugPage extends AbstractSingleAccordionMemberPage {
@@ -70,7 +65,8 @@ public class ViewBugPage extends AbstractSingleAccordionMemberPage {
 		}
 	}
 
-	public static class BugRenderer implements IChoiceRenderer<Bug> {
+	public static class BugRenderer
+			implements IChoiceRenderer<Bug>, NaiveRenderer<Bug> {
 		private static final long serialVersionUID = 1L;
 
 		@Override
@@ -144,18 +140,16 @@ public class ViewBugPage extends AbstractSingleAccordionMemberPage {
 
 		ViewBugPageParams parameters;
 		try {
-			parameters = requiredLong("bug").forParameters(params).toClass(
-					ViewBugPageParams.class);
+			parameters = requiredLong("bug").forParameters(params)
+					.toClass(ViewBugPageParams.class);
 		} catch (PageParameterExtractorException e) {
 			throw new AbortWithHttpErrorCodeException(
 					HttpServletResponse.SC_NOT_FOUND);
 		}
 
-		Bug bug = bugDAO.get(parameters.getId());
-
-		if (bug == null)
-			throw new RestartResponseAtInterceptPageException(
-					BugOverviewPage.class);
+		Bug bug = bugDAO.load(parameters.getId()).getOrElseThrow(
+				() -> new RestartResponseAtInterceptPageException(
+						BugOverviewPage.class));
 
 		initPage(bug);
 	}
@@ -182,15 +176,16 @@ public class ViewBugPage extends AbstractSingleAccordionMemberPage {
 	private void initPage(Bug bug) {
 		bugModel = ModelMaker.wrap(bug);
 
-		setPageTitle(bug.getTitle() + " - "
-				+ bug.getReportType().getDescription());
+		setPageTitle(
+				bug.getTitle() + " - " + bug.getReportType().getDescription());
 
 		add(new Label("description", bug.getDescription())
 				.setEscapeModelStrings(true));
 
-		add(new Label("permalink", "Link to this "
-				+ bug.getReportType().getDescription()).add(AttributeModifier
-				.replace("href", bug.getReportType().getUrl(bug.getId()))));
+		add(new Label("permalink",
+				"Link to this " + bug.getReportType().getDescription())
+				.add(AttributeModifier.replace("href",
+						bug.getReportType().getUrl(bug.getId()))));
 
 		add(new Label("status", bug.getStatus().toString()));
 
@@ -205,11 +200,11 @@ public class ViewBugPage extends AbstractSingleAccordionMemberPage {
 					.setEscapeModelStrings(false));
 		}
 
-		add(new Label("fixedIn", bug.getResolutionVersion()).setVisible(bug
-				.getResolutionVersion() != null));
+		add(new Label("fixedIn", bug.getResolutionVersion())
+				.setVisible(bug.getResolutionVersion() != null));
 
-		add(new ListView<BugComment>("comments", ModelMaker.wrap(bug
-				.getComments())) {
+		add(new ListView<BugComment>("comments",
+				ModelMaker.wrap(bug.getComments())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -217,7 +212,8 @@ public class ViewBugPage extends AbstractSingleAccordionMemberPage {
 				BugComment comment = item.getModelObject();
 
 				if (comment.getCommenter() != null) {
-					item.add(new MemberListItem("user", comment.getCommenter()));
+					item.add(
+							new MemberListItem("user", comment.getCommenter()));
 				} else {
 					item.add(new Label("user", "<i>Non-logged in user</i>")
 							.setEscapeModelStrings(false));
@@ -251,35 +247,29 @@ public class ViewBugPage extends AbstractSingleAccordionMemberPage {
 		add(createCommentForm);
 
 		add(new IconLink.Builder("images/icons/bug_go.png",
-				new AcceptResponder(bug))
-				.setText("I will fix this bug")
-				.newInstance("accept")
-				.setVisible(
-						getUser().isBugReportMaster()
-								&& !getUser().equals(bug.getAssignedTo())));
+				new AcceptResponder(bug)).setText("I will fix this bug")
+				.newInstance("accept").setVisible(
+						getUser().isBugReportMaster() && !getUser()
+								.equals(bug.getAssignedTo())));
 
 		add(new IconLink.Builder("images/icons/bug_delete.png",
-				new CloseResponder(bug))
-				.setText(
-						"This bug/feature is fixed/realized in the current version, and can be closed")
-				.newInstance("close")
-				.setVisible(
-						getUser().isBugReportMaster()
-								&& bug.getStatus() == BugStatus.RESOLVED));
+				new CloseResponder(bug)).setText(
+				"This bug/feature is fixed/realized in the current version, and can be closed")
+				.newInstance("close").setVisible(getUser().isBugReportMaster()
+						&& bug.getStatus() == BugStatus.RESOLVED));
 		add(new IconLink.Builder("images/icons/bug_add.png",
-				new ReopenResponder(bug))
-				.setText("This bug still occurs")
-				.newInstance("reopen")
-				.setVisible(
+				new ReopenResponder(bug)).setText("This bug still occurs")
+				.newInstance("reopen").setVisible(
 						bug.getStatus() == BugStatus.CLOSED
-								&& bug.getReportType() != ReportType.FEATUREREQUEST));
+								&& bug.getReportType()
+								!= ReportType.FEATUREREQUEST));
 
 		WebMarkupContainer masterPanel = new WebMarkupContainer("masterPanel");
 
 		BugFilter filter = new BugFilter();
-		filter.setExclude(bug.getId());
+		filter.id().notEqualTo(bug.getId());
 
-		List<Bug> otherBugs = bugDAO.findByFilter(filter);
+		List<Bug> otherBugs = bugDAO.findByFilter(filter).asJava();
 
 		final DropDownChoice<Bug> bugSelect = new DropDownChoice<Bug>(
 				"duplicate", ModelMaker.wrap((Bug) null),
@@ -305,14 +295,14 @@ public class ViewBugPage extends AbstractSingleAccordionMemberPage {
 
 		masterPanel.add(resolveAsDuplicateForm);
 
-		masterPanel
-				.setVisible(getUser().isBugReportMaster()
-						&& getUser().equals(bug.getAssignedTo())
-						&& (bug.getStatus() == BugStatus.NEW || bug.getStatus() == BugStatus.ACKNOWLEDGED));
+		masterPanel.setVisible(getUser().isBugReportMaster() && getUser()
+				.equals(bug.getAssignedTo()) && (
+				bug.getStatus() == BugStatus.NEW
+						|| bug.getStatus() == BugStatus.ACKNOWLEDGED));
 
 		final TextField<String> fixedInVersionField = new TextField<String>(
-				"fixedIn", new Model<String>(
-						TysanApplication.getApplicationVersion()));
+				"fixedIn",
+				new Model<String>(TysanApplication.getApplicationVersion()));
 		fixedInVersionField.setRequired(true);
 
 		final TextArea<String> solutionArea = new TextArea<String>(

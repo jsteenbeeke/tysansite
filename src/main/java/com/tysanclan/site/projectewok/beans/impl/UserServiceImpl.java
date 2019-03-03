@@ -1,28 +1,36 @@
 /**
  * Tysan Clan Website
  * Copyright (C) 2008-2013 Jeroen Steenbeeke and Ties van de Ven
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.tysanclan.site.projectewok.beans.impl;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-
+import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
+import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.site.projectewok.entities.*;
+import com.tysanclan.site.projectewok.entities.dao.*;
+import com.tysanclan.site.projectewok.entities.filter.ActivationFilter;
+import com.tysanclan.site.projectewok.entities.filter.EmailChangeConfirmationFilter;
+import com.tysanclan.site.projectewok.entities.filter.PasswordRequestFilter;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
+import com.tysanclan.site.projectewok.util.DateUtil;
+import com.tysanclan.site.projectewok.util.MemberUtil;
+import com.tysanclan.site.projectewok.util.StringUtil;
+import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
+import io.vavr.collection.Seq;
+import io.vavr.control.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,37 +39,17 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
-import com.tysanclan.rest.api.data.Rank;
-import com.tysanclan.rest.api.util.HashException;
-import com.tysanclan.site.projectewok.entities.Activation;
-import com.tysanclan.site.projectewok.entities.EmailChangeConfirmation;
-import com.tysanclan.site.projectewok.entities.InactivityNotification;
-import com.tysanclan.site.projectewok.entities.PasswordRequest;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.ActivationDAO;
-import com.tysanclan.site.projectewok.entities.dao.EmailChangeConfirmationDAO;
-import com.tysanclan.site.projectewok.entities.dao.InactivityNotificationDAO;
-import com.tysanclan.site.projectewok.entities.dao.PasswordRequestDAO;
-import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.ActivationFilter;
-import com.tysanclan.site.projectewok.entities.dao.filters.EmailChangeConfirmationFilter;
-import com.tysanclan.site.projectewok.entities.dao.filters.PasswordRequestFilter;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
-import com.tysanclan.site.projectewok.util.DateUtil;
-import com.tysanclan.site.projectewok.util.MemberUtil;
-import com.tysanclan.site.projectewok.util.StringUtil;
-import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
+import java.util.*;
 
 /**
  * Various general user-related actions (non-member)
- * 
+ *
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class UserServiceImpl implements
-		com.tysanclan.site.projectewok.beans.UserService {
+class UserServiceImpl
+		implements com.tysanclan.site.projectewok.beans.UserService {
 	private static final Logger logger = LoggerFactory
 			.getLogger(UserServiceImpl.class);
 
@@ -99,38 +87,35 @@ class UserServiceImpl implements
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.UserService#createUser(java.lang.String,
-	 *      java.lang.String, java.lang.String)
+	 * java.lang.String, java.lang.String)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public User createUser(String username, String password, String email) {
-		try {
-			if (!hasUser(username)) {
-				User user = new User();
+		if (!hasUser(username)) {
+			User user = new User();
 
-				String checkedPassword = MemberUtil.isHashedPassword(password) ? password
-						: MemberUtil.hashPassword(password);
+			String checkedPassword = MemberUtil.isHashedPassword(password) ?
+					password :
+					MemberUtil.hashPassword(password);
 
-				user.setCustomTitle("");
-				user.setEMail(email);
-				user.setImageURL("");
-				user.setPassword(checkedPassword);
-				user.setRank(Rank.FORUM);
-				user.setSignature("");
-				user.setUsername(username);
-				user.setJoinDate(new Date());
-				user.setVacation(false);
-				user.setRetired(false);
-				userDAO.save(user);
+			user.setCustomTitle("");
+			user.setEMail(email);
+			user.setImageURL("");
+			user.setArgon2hash(checkedPassword);
+			user.setRank(Rank.FORUM);
+			user.setSignature("");
+			user.setUsername(username);
+			user.setJoinDate(new Date());
+			user.setVacation(false);
+			user.setRetired(false);
+			userDAO.save(user);
 
-				logger.info(StringUtil.combineStrings("Created user ",
-						user.getUsername(), " (uid ", user.getId(), ")"));
+			logger.info(StringUtil
+					.combineStrings("Created user ", user.getUsername(),
+							" (uid ", user.getId(), ")"));
 
-				return user;
-			}
-		} catch (HashException e) {
-			logger.error("Unable to hash user password");
-			logger.error(e.getMessage(), e);
+			return user;
 		}
 
 		return null;
@@ -149,14 +134,13 @@ class UserServiceImpl implements
 	@Override
 	public boolean hasUser(String username) {
 		UserFilter filter = new UserFilter();
-		filter.setUsername(username);
+		filter.username(username);
 
 		return userDAO.countByFilter(filter) > 0;
 	}
 
 	/**
-	 * @param userDAO
-	 *            the userDAO to set
+	 * @param userDAO the userDAO to set
 	 */
 	public void setUserDAO(UserDAO userDAO) {
 		this.userDAO = userDAO;
@@ -164,112 +148,98 @@ class UserServiceImpl implements
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.UserService#setUserImportData(long,
-	 *      com.tysanclan.rest.api.data.Rank, long)
+	 * com.tysanclan.rest.api.data.Rank, long)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public boolean setUserImportData(long user_id, Rank rank, long joinTime) {
-		User user = userDAO.load(user_id);
-
-		if (user != null) {
+		return userDAO.load(user_id).map(user -> {
 			user.setRank(rank);
 			user.setJoinDate(new Date(joinTime));
 			userDAO.update(user);
 
-			logService.logSystemAction("Membership", StringUtil.combineStrings(
-					"User ", user.getUsername(), " imported"));
+			logService.logSystemAction("Membership", StringUtil
+					.combineStrings("User ", user.getUsername(), " imported"));
 
 			return true;
-		}
-
-		return false;
+		}).getOrElse(false);
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.UserService#setUserRetirement(long,
-	 *      boolean)
+	 * boolean)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public boolean setUserRetirement(long user_id, boolean retirement) {
-		User user = userDAO.load(user_id);
+		return userDAO.load(user_id).map(user -> {
 
-		if (user != null) {
 			user.setRetired(retirement);
 			userDAO.update(user);
 
 			return true;
-		}
-
-		return false;
+		}).getOrElse(false);
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.UserService#setUserAvatar(long,
-	 *      java.lang.String)
+	 * java.lang.String)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public boolean setUserAvatar(long user_id, String avatarURL) {
-		User user = userDAO.load(user_id);
+		return userDAO.load(user_id).map(user -> {
 
-		if (user != null) {
 			user.setImageURL(BBCodeUtil.filterURL(avatarURL));
 			userDAO.update(user);
 
 			return true;
-		}
+		}).getOrElse(false);
 
-		return false;
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.UserService#setUserCustomTitle(long,
-	 *      java.lang.String)
+	 * java.lang.String)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public boolean setUserCustomTitle(long user_id, String customTitle) {
-		User user = userDAO.load(user_id);
+		return userDAO.load(user_id).map(user -> {
 
-		if (user != null) {
 			user.setCustomTitle(BBCodeUtil.stripTags(customTitle));
 			userDAO.update(user);
 
 			return true;
-		}
+		}).getOrElse(false);
 
-		return false;
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.UserService#setUserSignature(long,
-	 *      java.lang.String)
+	 * java.lang.String)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public boolean setUserSignature(long user_id, String signature) {
-		User user = userDAO.load(user_id);
+		return userDAO.load(user_id).map(user -> {
 
-		if (user != null) {
 			user.setSignature(BBCodeUtil.stripTags(signature));
 			userDAO.update(user);
 
 			return true;
-		}
+		}).getOrElse(false);
 
-		return false;
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void setUserCollapseForums(Long user_id, boolean collapse) {
-		User user = userDAO.load(user_id);
+		userDAO.load(user_id).forEach(user -> {
 
-		if (user != null) {
 			user.setCollapseForums(collapse);
 			userDAO.update(user);
-		}
+		});
 
 	}
 
@@ -280,9 +250,9 @@ class UserServiceImpl implements
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public Activation getActivationByUser(User user) {
 		ActivationFilter filter = new ActivationFilter();
-		filter.setUser(user);
-		filter.addOrderBy("id", true);
-		List<Activation> activations = activationDAO.findByFilter(filter);
+		filter.user(user);
+		filter.id().orderBy(true);
+		Seq<Activation> activations = activationDAO.findByFilter(filter);
 
 		if (!activations.isEmpty()) {
 			return activations.get(0);
@@ -304,23 +274,20 @@ class UserServiceImpl implements
 	 */
 	@Override
 	public boolean activateAccount(Activation activation) {
-		Activation _activation = activationDAO.load(activation.getId());
+		return activationDAO.load(activation.getId()).map(_activation -> {
 
-		if (_activation != null) {
 			logService.logUserAction(activation.getUser(), "User",
 					"Account has been activated");
 
 			activationDAO.delete(_activation);
 
 			return true;
-		}
-
-		return false;
+		}).getOrElse(false);
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.UserService#setUserMail(com.tysanclan.site.projectewok.entities.User,
-	 *      java.lang.String)
+	 * java.lang.String)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -328,15 +295,15 @@ class UserServiceImpl implements
 		if (!user.getEMail().equals(mail)) {
 
 			UserFilter filter = new UserFilter();
-			filter.setEmail(mail);
+			filter.eMail(mail);
 
 			if (userDAO.countByFilter(filter) == 0) {
+				return userDAO.load(user.getId()).map(_user -> {
+					_user.setEMail(mail);
+					userDAO.save(_user);
 
-				User _user = userDAO.load(user.getId());
-				_user.setEMail(mail);
-				userDAO.save(_user);
-
-				return true;
+					return true;
+				}).getOrElse(false);
 			}
 
 			return false;
@@ -362,21 +329,21 @@ class UserServiceImpl implements
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.UserService#processPasswordReset(com.tysanclan.site.projectewok.entities.PasswordRequest,
-	 *      java.lang.String)
+	 * java.lang.String)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void processPasswordReset(PasswordRequest request, String password) {
-		try {
-			PasswordRequest _request = passwordRequestDAO.load(request.getId());
+		Option<PasswordRequest> passwordRequestOption = passwordRequestDAO
+				.load(request.getId());
+		if (passwordRequestOption.isDefined()) {
+			PasswordRequest _request = passwordRequestOption.get();
 			User user = _request.getUser();
-			user.setPassword(MemberUtil.hashPassword(password));
+			user.setLegacyhash(false);
+			user.setArgon2hash(MemberUtil.hashPassword(password));
 			userDAO.update(user);
 
 			passwordRequestDAO.delete(_request);
-		} catch (HashException e) {
-			logger.error("Unable to hash user password");
-			logger.error(e.getMessage(), e);
 		}
 	}
 
@@ -386,9 +353,8 @@ class UserServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void expireRequest(PasswordRequest request) {
-		PasswordRequest _request = passwordRequestDAO.load(request.getId());
-		passwordRequestDAO.delete(_request);
-
+		passwordRequestDAO.load(request.getId())
+				.forEach(passwordRequestDAO::delete);
 	}
 
 	/**
@@ -397,9 +363,8 @@ class UserServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void expireConfirmation(EmailChangeConfirmation confirmation) {
-		EmailChangeConfirmation _confirmation = emailChangeConfirmationDAO
-				.load(confirmation.getId());
-		emailChangeConfirmationDAO.delete(_confirmation);
+		emailChangeConfirmationDAO.load(confirmation.getId())
+				.forEach(emailChangeConfirmationDAO::delete);
 	}
 
 	@Override
@@ -411,8 +376,7 @@ class UserServiceImpl implements
 	}
 
 	/**
-	 * @param logService
-	 *            the logService to set
+	 * @param logService the logService to set
 	 */
 	public void setLogService(
 			com.tysanclan.site.projectewok.beans.LogService logService) {
@@ -420,24 +384,21 @@ class UserServiceImpl implements
 	}
 
 	/**
-	 * @param activationDAO
-	 *            the activationDAO to set
+	 * @param activationDAO the activationDAO to set
 	 */
 	public void setActivationDAO(ActivationDAO activationDAO) {
 		this.activationDAO = activationDAO;
 	}
 
 	/**
-	 * @param passwordRequestDAO
-	 *            the passwordRequestDAO to set
+	 * @param passwordRequestDAO the passwordRequestDAO to set
 	 */
 	public void setPasswordRequestDAO(PasswordRequestDAO passwordRequestDAO) {
 		this.passwordRequestDAO = passwordRequestDAO;
 	}
 
 	/**
-	 * @param emailChangeConfirmationDAO
-	 *            the emailChangeConfirmationDAO to set
+	 * @param emailChangeConfirmationDAO the emailChangeConfirmationDAO to set
 	 */
 	public void setEmailChangeConfirmationDAO(
 			EmailChangeConfirmationDAO emailChangeConfirmationDAO) {
@@ -448,7 +409,7 @@ class UserServiceImpl implements
 	public List<User> getMembers() {
 		UserFilter userFilter = getMemberFilter();
 
-		return userDAO.findByFilter(userFilter);
+		return userDAO.findByFilter(userFilter).toJavaList();
 	}
 
 	@Override
@@ -458,23 +419,25 @@ class UserServiceImpl implements
 		Calendar calendar = Calendar.getInstance(DateUtil.NEW_YORK, Locale.US);
 		calendar.add(Calendar.MINUTE, -5);
 
-		userFilter.setActiveSince(calendar.getTime());
+		userFilter.lastAction().greaterThan(calendar.getTime());
+		userFilter.username().orderBy(true);
 
-		return userDAO.findByFilter(userFilter);
+		return userDAO.findByFilter(userFilter).toJavaList();
 	}
 
 	/**
-	 	 */
+	 *
+	 */
 	private UserFilter getMemberFilter() {
 		UserFilter userFilter = new UserFilter();
-		userFilter.addRank(Rank.CHANCELLOR);
-		userFilter.addRank(Rank.FULL_MEMBER);
-		userFilter.addRank(Rank.JUNIOR_MEMBER);
-		userFilter.addRank(Rank.REVERED_MEMBER);
-		userFilter.addRank(Rank.SENATOR);
-		userFilter.addRank(Rank.SENIOR_MEMBER);
-		userFilter.addRank(Rank.TRIAL);
-		userFilter.addRank(Rank.TRUTHSAYER);
+		userFilter.rank(Rank.CHANCELLOR);
+		userFilter.orRank(Rank.FULL_MEMBER);
+		userFilter.orRank(Rank.JUNIOR_MEMBER);
+		userFilter.orRank(Rank.REVERED_MEMBER);
+		userFilter.orRank(Rank.SENATOR);
+		userFilter.orRank(Rank.SENIOR_MEMBER);
+		userFilter.orRank(Rank.TRIAL);
+		userFilter.orRank(Rank.TRUTHSAYER);
 		return userFilter;
 	}
 
@@ -487,54 +450,54 @@ class UserServiceImpl implements
 		UserFilter filter = new UserFilter();
 		Calendar fourteenDaysAgo = DateUtil.getCalendarInstance();
 		fourteenDaysAgo.add(Calendar.DAY_OF_YEAR, -14);
-		filter.setActiveBefore(fourteenDaysAgo.getTime());
-		filter.addRank(Rank.CHANCELLOR);
-		filter.addRank(Rank.SENATOR);
-		filter.addRank(Rank.TRUTHSAYER);
-		filter.addRank(Rank.REVERED_MEMBER);
-		filter.addRank(Rank.SENIOR_MEMBER);
-		filter.addRank(Rank.FULL_MEMBER);
-		filter.addRank(Rank.JUNIOR_MEMBER);
-		filter.setRetired(false);
-		filter.setVacation(false);
-		members.addAll(userDAO.findByFilter(filter));
+		filter.lastAction().lessThan(fourteenDaysAgo.getTime());
+		filter.rank(Rank.CHANCELLOR);
+		filter.orRank(Rank.SENATOR);
+		filter.orRank(Rank.TRUTHSAYER);
+		filter.orRank(Rank.REVERED_MEMBER);
+		filter.orRank(Rank.SENIOR_MEMBER);
+		filter.orRank(Rank.FULL_MEMBER);
+		filter.orRank(Rank.JUNIOR_MEMBER);
+		filter.retired(false);
+		filter.vacation(false);
+		members.addAll(userDAO.findByFilter(filter).toJavaList());
 
 		UserFilter filter2 = new UserFilter();
 		Calendar oneYearAgo = DateUtil.getCalendarInstance();
 		oneYearAgo.add(Calendar.YEAR, -1);
-		filter2.setActiveBefore(oneYearAgo.getTime());
-		filter2.addRank(Rank.REVERED_MEMBER);
-		filter2.addRank(Rank.SENIOR_MEMBER);
-		filter2.addRank(Rank.FULL_MEMBER);
-		filter2.addRank(Rank.JUNIOR_MEMBER);
-		filter2.setRetired(true);
+		filter2.lastAction().lessThan(oneYearAgo.getTime());
+		filter2.rank(Rank.REVERED_MEMBER);
+		filter2.orRank(Rank.SENIOR_MEMBER);
+		filter2.orRank(Rank.FULL_MEMBER);
+		filter2.orRank(Rank.JUNIOR_MEMBER);
+		filter2.retired(true);
 
-		members.addAll(userDAO.findByFilter(filter2));
+		members.addAll(userDAO.findByFilter(filter2).toJavaList());
 
 		UserFilter filter3 = new UserFilter();
 		Calendar sixtyDaysAgo = DateUtil.getCalendarInstance();
 		sixtyDaysAgo.add(Calendar.DAY_OF_YEAR, -60);
-		filter3.setActiveBefore(sixtyDaysAgo.getTime());
-		filter3.addRank(Rank.CHANCELLOR);
-		filter3.addRank(Rank.SENATOR);
-		filter3.addRank(Rank.TRUTHSAYER);
-		filter3.addRank(Rank.REVERED_MEMBER);
-		filter3.addRank(Rank.SENIOR_MEMBER);
-		filter3.addRank(Rank.FULL_MEMBER);
-		filter3.addRank(Rank.JUNIOR_MEMBER);
-		filter3.addRank(Rank.TRIAL);
-		filter3.setRetired(false);
-		filter3.setVacation(true);
-		members.addAll(userDAO.findByFilter(filter3));
+		filter3.lastAction().lessThan(sixtyDaysAgo.getTime());
+		filter3.rank(Rank.CHANCELLOR);
+		filter3.orRank(Rank.SENATOR);
+		filter3.orRank(Rank.TRUTHSAYER);
+		filter3.orRank(Rank.REVERED_MEMBER);
+		filter3.orRank(Rank.SENIOR_MEMBER);
+		filter3.orRank(Rank.FULL_MEMBER);
+		filter3.orRank(Rank.JUNIOR_MEMBER);
+		filter3.orRank(Rank.TRIAL);
+		filter3.retired(false);
+		filter3.vacation(true);
+		members.addAll(userDAO.findByFilter(filter3).toJavaList());
 
 		UserFilter filter4 = new UserFilter();
 		Calendar sevenSaysAgo = DateUtil.getCalendarInstance();
 		sevenSaysAgo.add(Calendar.DAY_OF_YEAR, -7);
-		filter4.setActiveBefore(sevenSaysAgo.getTime());
-		filter4.addRank(Rank.TRIAL);
-		filter4.setRetired(false);
-		filter4.setVacation(false);
-		members.addAll(userDAO.findByFilter(filter4));
+		filter4.lastAction().lessThan(sevenSaysAgo.getTime());
+		filter4.rank(Rank.TRIAL);
+		filter4.retired(false);
+		filter4.vacation(false);
+		members.addAll(userDAO.findByFilter(filter4).toJavaList());
 
 		return members;
 	}
@@ -551,17 +514,15 @@ class UserServiceImpl implements
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.UserService#setUserTimezone(java.lang.Long,
-	 *      java.lang.String)
+	 * java.lang.String)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void setUserTimezone(Long userId, String timezone) {
-		User user = userDAO.load(userId);
-
-		if (user != null) {
+		userDAO.load(userId).forEach(user -> {
 			user.setTimezone(BBCodeUtil.stripTags(timezone));
 			userDAO.update(user);
-		}
+		});
 	}
 
 	/**
@@ -570,113 +531,112 @@ class UserServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void activateVacationMode(User user) {
-		User _user = userDAO.load(user.getId());
-
-		if (_user != null) {
+		userDAO.load(user.getId()).forEach(_user -> {
 			_user.setVacation(true);
 			userDAO.update(_user);
-		}
+		});
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.UserService#createEmailChangeRequest(com.tysanclan.site.projectewok.entities.User,
-	 *      java.lang.String)
+	 * java.lang.String)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public EmailChangeConfirmation createEmailChangeRequest(User user,
 			String email) {
-		User _user = userDAO.load(user.getId());
+		return userDAO.load(user.getId()).map(_user -> {
 
-		EmailChangeConfirmation confirmation = new EmailChangeConfirmation();
-		confirmation.setActivationKey(StringUtil.generateRequestKey(17, 5));
-		confirmation.setEmail(email);
-		confirmation.setInitialized(new Date());
-		confirmation.setUser(_user);
+			EmailChangeConfirmation confirmation = new EmailChangeConfirmation();
+			confirmation.setActivationKey(StringUtil.generateRequestKey(17, 5));
+			confirmation.setEmail(email);
+			confirmation.setInitialized(new Date());
+			confirmation.setUser(_user);
 
-		emailChangeConfirmationDAO.save(confirmation);
+			emailChangeConfirmationDAO.save(confirmation);
 
-		String mailBody = mailService.getEmailChangeMailBody(
-				_user.getUsername(), confirmation.getActivationKey());
+			String mailBody = mailService
+					.getEmailChangeMailBody(_user.getUsername(),
+							confirmation.getActivationKey());
 
-		mailService.sendHTMLMail(email, "Tysan Clan E-Mail Change", mailBody);
+			mailService
+					.sendHTMLMail(email, "Tysan Clan E-Mail Change", mailBody);
 
-		return confirmation;
+			return confirmation;
+		}).getOrNull();
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.UserService#setUserPassword(com.tysanclan.site.projectewok.entities.User,
-	 *      java.lang.String)
+	 * java.lang.String)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void setUserPassword(User user, String newPassword) {
-		try {
-			User _user = userDAO.load(user.getId());
-
-			_user.setPassword(MemberUtil.hashPassword(newPassword));
+		userDAO.load(user.getId()).forEach(_user -> {
+			_user.setArgon2hash(MemberUtil.hashPassword(newPassword));
+			_user.setLegacyhash(false);
 
 			userDAO.update(_user);
-		} catch (HashException e) {
-			logger.error("Unable to hash user password");
-			logger.error(e.getMessage(), e);
-		}
+		});
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.UserService#banUser(com.tysanclan.site.projectewok.entities.User,
-	 *      com.tysanclan.site.projectewok.entities.User)
+	 * com.tysanclan.site.projectewok.entities.User)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void banUser(User banner, User user) {
-		User _user = userDAO.load(user.getId());
-		if (_user.getRank() == Rank.FORUM) {
-			_user.setRank(Rank.BANNED);
-			userDAO.update(_user);
+		userDAO.load(user.getId())
+				.filter(_user -> _user.getRank() == Rank.FORUM)
+				.forEach(_user -> {
+					_user.setRank(Rank.BANNED);
+					userDAO.update(_user);
 
-			logService.logUserAction(banner, "Forums",
-					"Forum user " + _user.getUsername()
-							+ " was banned from the forums");
+					logService.logUserAction(banner, "Forums",
+							"Forum user " + _user.getUsername()
+									+ " was banned from the forums");
 
-		}
+				});
 
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.UserService#unbanUser(com.tysanclan.site.projectewok.entities.User,
-	 *      com.tysanclan.site.projectewok.entities.User)
+	 * com.tysanclan.site.projectewok.entities.User)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void unbanUser(User unbanner, User user) {
-		User _user = userDAO.load(user.getId());
-		if (_user.getRank() == Rank.BANNED) {
-			_user.setRank(Rank.FORUM);
-			userDAO.update(_user);
+		userDAO.load(user.getId())
+				.filter(_user -> _user.getRank() == Rank.BANNED)
+				.forEach(_user -> {
+					_user.setRank(Rank.FORUM);
+					userDAO.update(_user);
 
-			logService.logUserAction(unbanner, "Forums",
-					"Forum user " + _user.getUsername()
-							+ " may once again access the forums");
+					logService.logUserAction(unbanner, "Forums",
+							"Forum user " + _user.getUsername()
+									+ " may once again access the forums");
 
-		}
+				});
 
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void warnUserForInactivity(Long userId) {
-		User u = userDAO.load(userId);
+		userDAO.load(userId).forEach(u -> {
+			mailService.sendHTMLMail(u.getEMail(),
+					"Please remember to log in to the Tysan Clan website",
+					mailService.getInactivityWarningMail(u));
 
-		mailService.sendHTMLMail(u.getEMail(),
-				"Please remember to log in to the Tysan Clan website",
-				mailService.getInactivityWarningMail(u));
+			logger.info("Notified " + u.getUsername() + " of inactivity");
 
-		logger.info("Notified " + u.getUsername() + " of inactivity");
-
-		InactivityNotification notification = new InactivityNotification();
-		notification.setUser(u);
-		inactivityDAO.save(notification);
+			InactivityNotification notification = new InactivityNotification();
+			notification.setUser(u);
+			inactivityDAO.save(notification);
+		});
 	}
 
 	@Override
@@ -686,9 +646,9 @@ class UserServiceImpl implements
 		cal.add(Calendar.DAY_OF_YEAR, -1);
 
 		EmailChangeConfirmationFilter filter = new EmailChangeConfirmationFilter();
-		filter.setDateBefore(cal.getTime());
+		filter.initialized().lessThan(cal.getTime());
 
-		List<EmailChangeConfirmation> expiredConfirmations = emailChangeConfirmationDAO
+		Seq<EmailChangeConfirmation> expiredConfirmations = emailChangeConfirmationDAO
 				.findByFilter(filter);
 		for (EmailChangeConfirmation confirmation : expiredConfirmations) {
 			expireConfirmation(confirmation);
@@ -703,9 +663,9 @@ class UserServiceImpl implements
 		cal.add(Calendar.DAY_OF_YEAR, -3);
 
 		PasswordRequestFilter filter = new PasswordRequestFilter();
-		filter.setDateBefore(cal.getTime());
+		filter.requested().lessThan(cal.getTime());
 
-		List<PasswordRequest> expiredRequests = passwordRequestDAO
+		Seq<PasswordRequest> expiredRequests = passwordRequestDAO
 				.findByFilter(filter);
 		for (PasswordRequest passwordRequest : expiredRequests) {
 			expireRequest(passwordRequest);

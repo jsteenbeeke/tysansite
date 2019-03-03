@@ -17,12 +17,13 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.GamingGroup;
+import com.tysanclan.site.projectewok.entities.filter.GamingGroupFilter;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public interface GamingGroupDAO extends EwokDAO<GamingGroup> {
+public interface GamingGroupDAO extends DAO<GamingGroup, GamingGroupFilter> {
 
 }

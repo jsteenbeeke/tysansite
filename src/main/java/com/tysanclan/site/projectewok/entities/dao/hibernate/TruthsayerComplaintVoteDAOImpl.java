@@ -17,26 +17,17 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.TruthsayerComplaintVote;
+import com.tysanclan.site.projectewok.entities.filter.TruthsayerComplaintVoteFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.TruthsayerComplaintVote;
 
 @Component
 @Scope("request")
 class TruthsayerComplaintVoteDAOImpl extends
-		EwokHibernateDAO<TruthsayerComplaintVote> implements
+		HibernateDAO<TruthsayerComplaintVote, TruthsayerComplaintVoteFilter>
+		implements
 		com.tysanclan.site.projectewok.entities.dao.TruthsayerComplaintVoteDAO {
 
-	@Override
-	protected Criteria createCriteria(
-			SearchFilter<TruthsayerComplaintVote> filter) {
-		Criteria criteria = getSession().createCriteria(
-				TruthsayerComplaintVote.class);
-
-		return criteria;
-	}
 }

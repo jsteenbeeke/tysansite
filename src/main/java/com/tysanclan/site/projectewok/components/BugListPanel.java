@@ -17,6 +17,12 @@
  */
 package com.tysanclan.site.projectewok.components;
 
+import com.jeroensteenbeeke.hyperion.solstice.data.FilterDataProvider;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.entities.Bug;
+import com.tysanclan.site.projectewok.entities.Bug.BugStatus;
+import com.tysanclan.site.projectewok.entities.dao.BugDAO;
+import com.tysanclan.site.projectewok.entities.filter.BugFilter;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
@@ -25,13 +31,6 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.FilterDataProvider;
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
-import com.tysanclan.site.projectewok.entities.Bug;
-import com.tysanclan.site.projectewok.entities.Bug.BugStatus;
-import com.tysanclan.site.projectewok.entities.dao.BugDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.BugFilter;
 
 public abstract class BugListPanel extends Panel {
 	private static final long serialVersionUID = 1L;
@@ -64,23 +63,24 @@ public abstract class BugListPanel extends Panel {
 						.setRenderBodyOnly(true));
 
 				item.add(link);
-				item.add(new DateLabel("lastUpdate",
-						bug.getUpdated() != null ? bug.getUpdated() : bug
-								.getReported()));
+				item.add(new DateLabel("lastUpdate", bug.getUpdated() != null ?
+						bug.getUpdated() :
+						bug.getReported()));
 				if (bug.getReporter() != null) {
-					item.add(new MemberListItem("reportedBy", bug.getReporter()));
+					item.add(new MemberListItem("reportedBy",
+							bug.getReporter()));
 				} else {
 					item.add(new BBCodePanel("reportedBy",
 							"[i]Someone not logged in[/i]"));
 				}
 				if (bug.getAssignedTo() != null) {
-					item.add(new MemberListItem("assignedTo", bug
-							.getAssignedTo()));
+					item.add(new MemberListItem("assignedTo",
+							bug.getAssignedTo()));
 				} else {
 					item.add(new BBCodePanel("assignedTo", "[i]Nobody[/i]"));
 				}
-				item.add(new Label("status", new Model<BugStatus>(bug
-						.getStatus())));
+				item.add(new Label("status",
+						new Model<BugStatus>(bug.getStatus())));
 
 			}
 		};

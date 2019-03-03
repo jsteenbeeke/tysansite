@@ -17,42 +17,19 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.PasswordRequest;
+import com.tysanclan.site.projectewok.entities.filter.PasswordRequestFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.PasswordRequest;
-import com.tysanclan.site.projectewok.entities.dao.filters.PasswordRequestFilter;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class PasswordRequestDAOImpl extends EwokHibernateDAO<PasswordRequest>
-		implements
+class PasswordRequestDAOImpl
+		extends HibernateDAO<PasswordRequest, PasswordRequestFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.PasswordRequestDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<PasswordRequest> filter) {
-		Criteria criteria = getSession().createCriteria(PasswordRequest.class);
 
-		if (filter instanceof PasswordRequestFilter) {
-			PasswordRequestFilter pf = (PasswordRequestFilter) filter;
-
-			if (pf.getDateBefore() != null) {
-				criteria.add(Restrictions.le("requested", pf.getDateBefore()));
-			}
-			if (pf.getKey() != null) {
-				criteria.add(Restrictions.eq("key", pf.getKey()));
-			}
-			if (pf.getUser() != null) {
-				criteria.add(Restrictions.eq("user", pf.getUser()));
-			}
-		}
-
-		return criteria;
-	}
 }

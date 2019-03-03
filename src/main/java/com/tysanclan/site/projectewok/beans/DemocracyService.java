@@ -17,20 +17,9 @@
  */
 package com.tysanclan.site.projectewok.beans;
 
-import java.util.List;
+import com.tysanclan.site.projectewok.entities.*;
 
-import com.tysanclan.site.projectewok.entities.AcceptanceVote;
-import com.tysanclan.site.projectewok.entities.ChancellorElection;
-import com.tysanclan.site.projectewok.entities.CompoundVote;
-import com.tysanclan.site.projectewok.entities.Election;
-import com.tysanclan.site.projectewok.entities.Group;
-import com.tysanclan.site.projectewok.entities.GroupLeaderElection;
-import com.tysanclan.site.projectewok.entities.JoinApplication;
-import com.tysanclan.site.projectewok.entities.Regulation;
-import com.tysanclan.site.projectewok.entities.RegulationChange;
-import com.tysanclan.site.projectewok.entities.SenateElection;
-import com.tysanclan.site.projectewok.entities.UntenabilityVote;
-import com.tysanclan.site.projectewok.entities.User;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -49,21 +38,21 @@ public interface DemocracyService {
 
 	/**
 	 * Creates a new senate election
-	 * 
+	 *
 	 * @return A new election
 	 */
 	SenateElection createSenateElection();
 
 	/**
 	 * Creates a new chancellor election
-	 * 
+	 *
 	 * @return A new election
 	 */
 	ChancellorElection createChancellorElection();
 
 	/**
 	 * Creates a new election for the leader of a group
-	 * 
+	 *
 	 * @param group
 	 *            The group to elect a leader for
 	 * @return The new election object
@@ -137,7 +126,8 @@ public interface DemocracyService {
 
 	void createUntenabilityVote(User user, Regulation regulation);
 
-	void castUntenabilityVote(User user, UntenabilityVote vote, boolean inFavor);
+	void castUntenabilityVote(User user, UntenabilityVote vote,
+			boolean inFavor);
 
 	void resolveUntenabilityVote(UntenabilityVote vote);
 
@@ -147,12 +137,14 @@ public interface DemocracyService {
 	RegulationChange createModifyRegulationVote(User user,
 			Regulation regulation, String newTitle, String newDescription);
 
-	RegulationChange createRepealRegulationVote(User user, Regulation regulation);
+	RegulationChange createRepealRegulationVote(User user,
+			Regulation regulation);
 
 	void voteForRegulation(User senator, RegulationChange regulationChange,
 			boolean inFavor);
 
-	void vetoRegulationChange(User chancellor, RegulationChange regulationChange);
+	void vetoRegulationChange(User chancellor,
+			RegulationChange regulationChange);
 
 	void resolveRegulationVote(RegulationChange change);
 

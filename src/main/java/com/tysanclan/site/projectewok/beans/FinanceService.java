@@ -17,18 +17,13 @@
  */
 package com.tysanclan.site.projectewok.beans;
 
+import com.tysanclan.site.projectewok.entities.*;
+import com.tysanclan.site.projectewok.entities.Expense.ExpensePeriod;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Set;
 import java.util.SortedMap;
-
-import com.tysanclan.site.projectewok.entities.Donation;
-import com.tysanclan.site.projectewok.entities.Expense;
-import com.tysanclan.site.projectewok.entities.Expense.ExpensePeriod;
-import com.tysanclan.site.projectewok.entities.PaymentRequest;
-import com.tysanclan.site.projectewok.entities.Subscription;
-import com.tysanclan.site.projectewok.entities.SubscriptionPayment;
-import com.tysanclan.site.projectewok.entities.User;
 
 /**
  * @author Jeroen Steenbeeke

@@ -24,7 +24,7 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation to indicate only a logged in user can use an action or component
- * 
+ *
  * @author Jeroen Steenbeeke
  */
 @Retention(RetentionPolicy.RUNTIME)

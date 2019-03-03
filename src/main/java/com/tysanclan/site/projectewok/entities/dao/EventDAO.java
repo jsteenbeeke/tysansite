@@ -17,18 +17,19 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.Event;
 import com.tysanclan.site.projectewok.entities.ForumThread;
+import com.tysanclan.site.projectewok.entities.filter.EventFilter;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public interface EventDAO extends EwokDAO<Event> {
+public interface EventDAO extends DAO<Event, EventFilter> {
 
 	/**
 	 * Checks if the given thread has an Event tied to it
-	 * 
+	 *
 	 * @param thread
 	 *            The thread to check for
 	 * @return The {@code ForumThread} belonging to this Event, or {@code null}

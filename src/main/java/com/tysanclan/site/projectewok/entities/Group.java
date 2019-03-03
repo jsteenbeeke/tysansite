@@ -17,50 +17,27 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
+import org.hibernate.annotations.Cache;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OrderBy;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.Type;
-
-import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Entity
 @Table(name = "TGROUP", indexes = { //
-@Index(name = "IDX_GROUP_LEADER", columnList = "leader_id") })
+		@Index(name = "IDX_GROUP_LEADER", columnList = "leader_id") })
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, length = 255)
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public abstract class Group extends BaseDomainObject {
 	private static final long serialVersionUID = 1L;
 
-	public static enum JoinPolicy {
+	public enum JoinPolicy {
 		OPEN, APPLICATION, INVITATION;
 	}
 
@@ -81,7 +58,7 @@ public abstract class Group extends BaseDomainObject {
 
 	@Column
 	@Lob
-	@Type(type = "org.hibernate.type.StringClobType")
+
 	private String description;
 
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -101,13 +78,13 @@ public abstract class Group extends BaseDomainObject {
 
 	@Column(nullable = true)
 	@Lob
-	@Type(type = "org.hibernate.type.StringClobType")
+
 	private String messageOfTheDay;
 
 	// $P$
 
 	/**
-	 * 
+	 *
 	 */
 	public Group() {
 		this.appliedMembers = new LinkedList<User>();

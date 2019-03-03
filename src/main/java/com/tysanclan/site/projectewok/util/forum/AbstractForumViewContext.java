@@ -17,10 +17,11 @@
  */
 package com.tysanclan.site.projectewok.util.forum;
 
-import java.util.List;
+import com.jeroensteenbeeke.hyperion.data.DomainObject;
 
-import org.hibernate.Criteria;
-import org.hibernate.SQLQuery;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaQuery;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -29,18 +30,19 @@ public abstract class AbstractForumViewContext implements ForumViewContext {
 
 	private static final long serialVersionUID = 1L;
 
-	@SuppressWarnings("unchecked")
-	protected final <U> List<U> listOf(SQLQuery query) {
-		return (List<U>) query.list();
+	protected <T extends DomainObject> List<T> listOf(EntityManager em,
+			CriteriaQuery<T> criteriaQuery, int limit, int offset) {
+		return em.createQuery(criteriaQuery).setFirstResult(offset)
+				.setMaxResults(limit).getResultList();
 	}
 
-	@SuppressWarnings("unchecked")
-	protected final <U> List<U> listOf(Criteria criteria) {
-		return (List<U>) criteria.list();
+	protected <T extends DomainObject> List<T> listOf(EntityManager em,
+			CriteriaQuery<T> criteriaQuery) {
+		return em.createQuery(criteriaQuery).getResultList();
 	}
 
-	protected final int count(SQLQuery query) {
-		return ((Number) query.uniqueResult()).intValue();
+	protected int count(EntityManager em, CriteriaQuery<Long> criteriaQuery) {
+		return ((Number) em.createQuery(criteriaQuery).getSingleResult())
+				.intValue();
 	}
-
 }

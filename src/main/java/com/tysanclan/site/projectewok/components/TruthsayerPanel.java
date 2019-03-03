@@ -17,46 +17,34 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.components.RequiresAttentionLink.AttentionType;
 import com.tysanclan.site.projectewok.components.RequiresAttentionLink.IRequiresAttentionCondition;
-import com.tysanclan.site.projectewok.entities.dao.AchievementIconDAO;
-import com.tysanclan.site.projectewok.entities.dao.AchievementProposalDAO;
-import com.tysanclan.site.projectewok.entities.dao.AchievementRequestDAO;
-import com.tysanclan.site.projectewok.entities.dao.TrialDAO;
-import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.AchievementIconFilter;
-import com.tysanclan.site.projectewok.entities.dao.filters.AchievementProposalFilter;
-import com.tysanclan.site.projectewok.entities.dao.filters.TrialFilter;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
+import com.tysanclan.site.projectewok.entities.dao.*;
+import com.tysanclan.site.projectewok.entities.filter.AchievementIconFilter;
+import com.tysanclan.site.projectewok.entities.filter.AchievementProposalFilter;
+import com.tysanclan.site.projectewok.entities.filter.TrialFilter;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
 import com.tysanclan.site.projectewok.pages.member.TruthsayerStepDownPage;
-import com.tysanclan.site.projectewok.pages.member.justice.AchievementApprovalPage;
-import com.tysanclan.site.projectewok.pages.member.justice.AchievementIconApprovalPage;
-import com.tysanclan.site.projectewok.pages.member.justice.ForumUserManagementPage;
-import com.tysanclan.site.projectewok.pages.member.justice.ImpeachmentInitiationPage;
-import com.tysanclan.site.projectewok.pages.member.justice.TrialConfirmationPage;
-import com.tysanclan.site.projectewok.pages.member.justice.TruthSayerEditUserPage;
-import com.tysanclan.site.projectewok.pages.member.justice.TruthsayerAchievementProposalPage;
-import com.tysanclan.site.projectewok.pages.member.justice.UntenabilityPage;
+import com.tysanclan.site.projectewok.pages.member.justice.*;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @TysanMemberSecured
 public class TruthsayerPanel extends TysanOverviewPanel<Void> {
-	public class PendingAchievementProposalCondition implements
-			IRequiresAttentionCondition {
+	public class PendingAchievementProposalCondition
+			implements IRequiresAttentionCondition {
 		private static final long serialVersionUID = 1L;
 
 		@Override
 		public AttentionType requiresAttention() {
 			AchievementProposalFilter filter = new AchievementProposalFilter();
 
-			filter.setTruthsayerReviewed(false);
+			filter.truthsayerReviewed(false);
 
 			if (achievementProposalDAO.countByFilter(filter) > 0) {
 				return AttentionType.WARNING;
@@ -71,8 +59,8 @@ public class TruthsayerPanel extends TysanOverviewPanel<Void> {
 		}
 	}
 
-	public class PendingAchievementIconCondition implements
-			IRequiresAttentionCondition {
+	public class PendingAchievementIconCondition
+			implements IRequiresAttentionCondition {
 
 		private static final long serialVersionUID = 1L;
 
@@ -80,7 +68,7 @@ public class TruthsayerPanel extends TysanOverviewPanel<Void> {
 		public AttentionType requiresAttention() {
 			AchievementIconFilter filter = new AchievementIconFilter();
 
-			filter.setApprovedAsNull(true);
+			filter.approved().isNull();
 
 			if (achievementIconDAO.countByFilter(filter) > 0) {
 				return AttentionType.WARNING;
@@ -101,7 +89,7 @@ public class TruthsayerPanel extends TysanOverviewPanel<Void> {
 		@Override
 		public AttentionType requiresAttention() {
 			TrialFilter filter = new TrialFilter();
-			filter.setWithTrialThread(false);
+			filter.trialThread().isNotNull();
 			if (trialDAO.countByFilter(filter) > 0) {
 				return AttentionType.ERROR;
 			}
@@ -115,8 +103,8 @@ public class TruthsayerPanel extends TysanOverviewPanel<Void> {
 		}
 	}
 
-	public class PendingAchievementRequestCondition implements
-			IRequiresAttentionCondition {
+	public class PendingAchievementRequestCondition
+			implements IRequiresAttentionCondition {
 		private static final long serialVersionUID = 1L;
 
 		@Override
@@ -169,7 +157,7 @@ public class TruthsayerPanel extends TysanOverviewPanel<Void> {
 		});
 
 		UserFilter filter = new UserFilter();
-		filter.addRank(Rank.CHANCELLOR);
+		filter.rank(Rank.CHANCELLOR);
 
 		add(new Link<Void>("impeachlink") {
 

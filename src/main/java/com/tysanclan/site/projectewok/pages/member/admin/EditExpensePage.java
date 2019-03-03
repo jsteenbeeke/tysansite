@@ -17,14 +17,14 @@
  */
 package com.tysanclan.site.projectewok.pages.member.admin;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.TysanPage;
+import com.tysanclan.site.projectewok.beans.FinanceService;
+import com.tysanclan.site.projectewok.beans.RoleService;
+import com.tysanclan.site.projectewok.components.DatePickerPanel;
+import com.tysanclan.site.projectewok.entities.Expense;
+import com.tysanclan.site.projectewok.entities.Expense.ExpensePeriod;
+import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -33,14 +33,9 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
-import com.tysanclan.site.projectewok.TysanPage;
-import com.tysanclan.site.projectewok.beans.FinanceService;
-import com.tysanclan.site.projectewok.beans.RoleService;
-import com.tysanclan.site.projectewok.components.DatePickerPanel;
-import com.tysanclan.site.projectewok.entities.Expense;
-import com.tysanclan.site.projectewok.entities.Expense.ExpensePeriod;
-import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.*;
 
 /**
  * @author Jeroen Steenbeeke
@@ -68,7 +63,7 @@ public class EditExpensePage extends TysanPage {
 	private RoleService roleService;
 
 	/**
-	 * 
+	 *
 	 */
 	public EditExpensePage(Expense expense) {
 		super("Clan Finances");
@@ -85,13 +80,12 @@ public class EditExpensePage extends TysanPage {
 		final DatePickerPanel endPicker = new DatePickerPanel("end",
 				expense.getEnd());
 
-		List<String> regularityChoices = Arrays.asList(new String[] {
-				"Monthly", "Quarterly", "Semiannually", "Annually",
-				"Biannually" });
+		List<String> regularityChoices = Arrays
+				.asList(new String[] { "Monthly", "Quarterly", "Semiannually",
+						"Annually", "Biannually" });
 
 		final DropDownChoice<String> expenseRegularity = new DropDownChoice<String>(
-				"regularity",
-				new Model<String>(expense.getPeriod().toString()),
+				"regularity", new Model<String>(expense.getPeriod().toString()),
 				regularityChoices);
 
 		BigDecimal whole = expense.getAmount().setScale(0, RoundingMode.DOWN);
@@ -127,8 +121,8 @@ public class EditExpensePage extends TysanPage {
 				BigDecimal amount = new BigDecimal(100 * major + minor)
 						.divide(new BigDecimal(100));
 
-				ExpensePeriod period = ExpensePeriod.valueOf(regularity
-						.toUpperCase());
+				ExpensePeriod period = ExpensePeriod
+						.valueOf(regularity.toUpperCase());
 
 				Expense x = getModelObject();
 

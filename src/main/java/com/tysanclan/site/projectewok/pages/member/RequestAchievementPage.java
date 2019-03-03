@@ -17,11 +17,14 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
+import com.tysanclan.site.projectewok.components.IconLink;
+import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
+import com.tysanclan.site.projectewok.components.StoredImageResource;
+import com.tysanclan.site.projectewok.entities.*;
+import com.tysanclan.site.projectewok.entities.dao.AchievementDAO;
+import com.tysanclan.site.projectewok.util.AchievementComparator;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
@@ -29,18 +32,9 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
-import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
-import com.tysanclan.site.projectewok.components.IconLink;
-import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
-import com.tysanclan.site.projectewok.components.StoredImageResource;
-import com.tysanclan.site.projectewok.entities.Achievement;
-import com.tysanclan.site.projectewok.entities.AchievementRequest;
-import com.tysanclan.site.projectewok.entities.Game;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.UserGameRealm;
-import com.tysanclan.site.projectewok.entities.dao.AchievementDAO;
-import com.tysanclan.site.projectewok.util.AchievementComparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Jeroen Steenbeeke
@@ -59,7 +53,7 @@ public class RequestAchievementPage extends AbstractSingleAccordionMemberPage {
 
 		Set<Game> games = new HashSet<Game>();
 
-		List<Achievement> available = achievementDAO.findAll();
+		List<Achievement> available = achievementDAO.findAll().toJavaList();
 		available.removeAll(user.getAchievements());
 
 		for (UserGameRealm ugr : user.getPlayedGames()) {
@@ -86,56 +80,53 @@ public class RequestAchievementPage extends AbstractSingleAccordionMemberPage {
 		}
 		available.removeAll(remove);
 
-		Collections.sort(available, AchievementComparator.INSTANCE);
+		available.sort(AchievementComparator.INSTANCE);
 
-		add(
-				new ListView<Achievement>("achievements", ModelMaker
-						.wrap(available)) {
+		add(new ListView<Achievement>("achievements",
+				ModelMaker.wrap(available)) {
 
-					private static final long serialVersionUID = 1L;
+			private static final long serialVersionUID = 1L;
 
-					@Override
-					protected void populateItem(final ListItem<Achievement> item) {
-						Achievement achievement = item.getModelObject();
+			@Override
+			protected void populateItem(final ListItem<Achievement> item) {
+				Achievement achievement = item.getModelObject();
 
-						item.add(new Image("icon", new StoredImageResource(
-								achievement.getIcon().getImage())));
+				item.add(new Image("icon", new StoredImageResource(
+						achievement.getIcon().getImage())));
 
-						if (achievement.getGame() != null) {
-							item.add(new Image("game", new StoredImageResource(
-									achievement.getGame().getImage())));
-						} else {
-							item.add(new WebMarkupContainer("game")
-									.setVisible(false));
-						}
+				if (achievement.getGame() != null) {
+					item.add(new Image("game", new StoredImageResource(
+							achievement.getGame().getImage())));
+				} else {
+					item.add(new WebMarkupContainer("game").setVisible(false));
+				}
 
-						if (achievement.getGroup() != null) {
-							item.add(new Label("group", achievement.getGroup()
-									.getName()));
-						} else {
-							item.add(new Label("group", "-"));
-						}
+				if (achievement.getGroup() != null) {
+					item.add(new Label("group",
+							achievement.getGroup().getName()));
+				} else {
+					item.add(new Label("group", "-"));
+				}
 
-						item.add(new Label("name", achievement.getName()));
-						item.add(new Label("description", achievement
-								.getDescription()).setEscapeModelStrings(false));
-						item.add(new IconLink.Builder(
-								"images/icons/accept.png",
-								new DefaultClickResponder<Achievement>(
-										ModelMaker.wrap(achievement)) {
+				item.add(new Label("name", achievement.getName()));
+				item.add(new Label("description", achievement.getDescription())
+						.setEscapeModelStrings(false));
+				item.add(new IconLink.Builder("images/icons/accept.png",
+						new DefaultClickResponder<Achievement>(
+								ModelMaker.wrap(achievement)) {
 
-									private static final long serialVersionUID = 1L;
+							private static final long serialVersionUID = 1L;
 
-									@Override
-									public void onClick() {
-										setResponsePage(new RequestAchievementPage2(
-												getModelObject()));
-									}
+							@Override
+							public void onClick() {
+								setResponsePage(new RequestAchievementPage2(
+										getModelObject()));
+							}
 
-								}).newInstance("request"));
-					}
+						}).newInstance("request"));
+			}
 
-				});
+		});
 	}
 
 }

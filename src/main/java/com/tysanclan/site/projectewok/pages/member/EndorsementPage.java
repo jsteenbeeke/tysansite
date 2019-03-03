@@ -17,12 +17,14 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
+import com.tysanclan.site.projectewok.beans.DemocracyService;
+import com.tysanclan.site.projectewok.components.MemberListItem;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.dao.UserDAO;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -31,14 +33,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
-import com.tysanclan.rest.api.data.Rank;
-import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
-import com.tysanclan.site.projectewok.beans.DemocracyService;
-import com.tysanclan.site.projectewok.components.MemberListItem;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
+import java.util.*;
 
 /**
  * @author Jeroen Steenbeeke
@@ -51,7 +46,7 @@ public class EndorsementPage extends AbstractMemberPage {
 	private UserDAO userDAO;
 
 	/**
-	 * 
+	 *
 	 */
 	public EndorsementPage() {
 		super("Endorsements");
@@ -62,8 +57,8 @@ public class EndorsementPage extends AbstractMemberPage {
 		add(new WebMarkupContainer("nousers")
 				.setVisible(endorsements.isEmpty()));
 
-		add(new WebMarkupContainer("nousers3").setVisible(endorsements2
-				.isEmpty()));
+		add(new WebMarkupContainer("nousers3")
+				.setVisible(endorsements2.isEmpty()));
 
 		List<User> endorsers = new ArrayList<User>();
 		endorsers.addAll(endorsements);
@@ -90,7 +85,7 @@ public class EndorsementPage extends AbstractMemberPage {
 		add(new ListView<User>("users", ModelMaker.wrap(endorsers)) {
 
 			/**
-			 * 
+			 *
 			 */
 			private static final long serialVersionUID = 1L;
 
@@ -104,7 +99,7 @@ public class EndorsementPage extends AbstractMemberPage {
 		add(new ListView<User>("users2", ModelMaker.wrap(endorsers2)) {
 
 			/**
-			 * 
+			 *
 			 */
 			private static final long serialVersionUID = 1L;
 
@@ -116,8 +111,8 @@ public class EndorsementPage extends AbstractMemberPage {
 		}.setVisible(!endorsements2.isEmpty()));
 
 		User endorses = getUser().getEndorses();
-		String endorsesName = endorses == null ? "Nobody" : endorses
-				.getUsername();
+		String endorsesName =
+				endorses == null ? "Nobody" : endorses.getUsername();
 
 		add(new WebMarkupContainer("nousers2").setVisible(endorses == null));
 		WebMarkupContainer container = new WebMarkupContainer("endorsed");
@@ -138,12 +133,13 @@ public class EndorsementPage extends AbstractMemberPage {
 			@SuppressWarnings("unchecked")
 			@Override
 			protected void onSubmit() {
-				DropDownChoice<User> userSelect = (DropDownChoice<User>) get("targetUser");
+				DropDownChoice<User> userSelect = (DropDownChoice<User>) get(
+						"targetUser");
 				User target = userSelect.getModelObject();
 				User endorser = getUser();
 
-				if (democracyService.isElectionCandidate(getUser()
-						.getEndorses())) {
+				if (democracyService
+						.isElectionCandidate(getUser().getEndorses())) {
 					error("You are currently endorsing a running candidate,"
 							+ " you must wait until after elections before you can change your endorsement");
 				} else {
@@ -156,20 +152,21 @@ public class EndorsementPage extends AbstractMemberPage {
 		};
 
 		UserFilter filter = new UserFilter();
-		filter.addRank(Rank.CHANCELLOR);
-		filter.addRank(Rank.SENATOR);
-		filter.addRank(Rank.TRUTHSAYER);
-		filter.addRank(Rank.REVERED_MEMBER);
-		filter.addRank(Rank.SENIOR_MEMBER);
-		filter.addRank(Rank.FULL_MEMBER);
-		filter.setRetired(false);
-		filter.addOrderBy("username", true);
+		filter.rank(Rank.CHANCELLOR);
+		filter.orRank(Rank.SENATOR);
+		filter.orRank(Rank.TRUTHSAYER);
+		filter.orRank(Rank.REVERED_MEMBER);
+		filter.orRank(Rank.SENIOR_MEMBER);
+		filter.orRank(Rank.FULL_MEMBER);
+		filter.retired(false);
+		filter.username().orderBy(true);
 
-		List<User> eligible = userDAO.findByFilter(filter);
+		List<User> eligible = userDAO.findByFilter(filter).toJavaList();
 		eligible.remove(getUser());
 
-		endorsementForm.add(new DropDownChoice<User>("targetUser", ModelMaker
-				.wrap(endorses), ModelMaker.wrap(eligible)).setNullValid(true));
+		endorsementForm.add(new DropDownChoice<User>("targetUser",
+				ModelMaker.wrap(endorses), ModelMaker.wrap(eligible))
+				.setNullValid(true));
 
 		add(endorsementForm);
 
@@ -185,12 +182,13 @@ public class EndorsementPage extends AbstractMemberPage {
 			@SuppressWarnings("unchecked")
 			@Override
 			protected void onSubmit() {
-				DropDownChoice<User> userSelect = (DropDownChoice<User>) get("targetUser");
+				DropDownChoice<User> userSelect = (DropDownChoice<User>) get(
+						"targetUser");
 				User target = userSelect.getModelObject();
 				User endorser = getUser();
 
-				if (democracyService.isElectionCandidate(getUser()
-						.getEndorsesForSenate())) {
+				if (democracyService.isElectionCandidate(
+						getUser().getEndorsesForSenate())) {
 					error("You are currently endorsing a running candidate,"
 							+ " you must wait until after elections before you can change your endorsement");
 				} else {
@@ -203,23 +201,25 @@ public class EndorsementPage extends AbstractMemberPage {
 		};
 
 		UserFilter filter2 = new UserFilter();
-		filter2.addRank(Rank.CHANCELLOR);
-		filter2.addRank(Rank.SENATOR);
-		filter2.addRank(Rank.TRUTHSAYER);
-		filter2.addRank(Rank.REVERED_MEMBER);
-		filter2.addRank(Rank.SENIOR_MEMBER);
-		filter2.addRank(Rank.FULL_MEMBER);
-		filter2.setRetired(false);
+		filter2.rank(Rank.CHANCELLOR);
+		filter2.orRank(Rank.SENATOR);
+		filter2.orRank(Rank.TRUTHSAYER);
+		filter2.orRank(Rank.REVERED_MEMBER);
+		filter2.orRank(Rank.SENIOR_MEMBER);
+		filter2.orRank(Rank.FULL_MEMBER);
+		filter2.retired(false);
+		filter2.username().orderBy(true);
 
-		List<User> eligible2 = userDAO.findByFilter(filter2);
+		List<User> eligible2 = userDAO.findByFilter(filter2).toJavaList();
 		eligible2.remove(getUser());
 
 		User endorsesForSenate = getUser().getEndorsesForSenate();
-		String endorsesForSenateName = endorsesForSenate == null ? "Nobody"
-				: endorsesForSenate.getUsername();
+		String endorsesForSenateName = endorsesForSenate == null ?
+				"Nobody" :
+				endorsesForSenate.getUsername();
 
-		endorsementForm2.add(new DropDownChoice<User>("targetUser", ModelMaker
-				.wrap(endorsesForSenate), ModelMaker.wrap(eligible))
+		endorsementForm2.add(new DropDownChoice<User>("targetUser",
+				ModelMaker.wrap(endorsesForSenate), ModelMaker.wrap(eligible))
 				.setNullValid(true));
 
 		add(endorsementForm2);

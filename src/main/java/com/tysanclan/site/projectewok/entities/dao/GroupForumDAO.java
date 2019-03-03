@@ -17,13 +17,14 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.GroupForum;
+import com.tysanclan.site.projectewok.entities.filter.GroupForumFilter;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface GroupForumDAO extends EwokDAO<GroupForum> {
+public interface GroupForumDAO extends DAO<GroupForum, GroupForumFilter> {
 
 }

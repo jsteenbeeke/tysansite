@@ -17,22 +17,11 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
-import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
+import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 import org.hibernate.annotations.Cache;
 
-import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @author Jeroen Steenbeeke
@@ -96,7 +85,7 @@ public class JoinVerdict extends BaseDomainObject {
 
 	/**
 	 * Sets the User of this JoinVerdict
-	 * 
+	 *
 	 * @param user
 	 *            The User of this JoinVerdict
 	 */
@@ -113,7 +102,7 @@ public class JoinVerdict extends BaseDomainObject {
 
 	/**
 	 * Sets the InFavor of this JoinVerdict
-	 * 
+	 *
 	 * @param inFavor
 	 *            The InFavor of this JoinVerdict
 	 */
@@ -130,7 +119,7 @@ public class JoinVerdict extends BaseDomainObject {
 
 	/**
 	 * Sets the Application of this JoinVerdict
-	 * 
+	 *
 	 * @param application
 	 *            The Application of this JoinVerdict
 	 */

@@ -17,9 +17,11 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.TruthsayerComplaint;
+import com.tysanclan.site.projectewok.entities.filter.TruthsayerComplaintFilter;
 
-public interface TruthsayerComplaintDAO extends EwokDAO<TruthsayerComplaint> {
+public interface TruthsayerComplaintDAO
+		extends DAO<TruthsayerComplaint, TruthsayerComplaintFilter> {
 
 }

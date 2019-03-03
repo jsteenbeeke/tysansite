@@ -17,30 +17,20 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Cache;
-
 import com.google.common.base.Joiner;
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 import com.jeroensteenbeeke.hyperion.util.HashUtil;
+import org.hibernate.annotations.Cache;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(indexes = { //
 		@Index(name = "IDX_RestToken_user", columnList = "user_id"), //
-		@Index(name = "IDX_RESTTOKEN_APPLICATION", columnList = "application_id") //
+		@Index(name = "IDX_RESTTOKEN_APPLICATION", columnList = "application_id")
+		//
 })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class RestToken extends BaseDomainObject {
@@ -68,8 +58,9 @@ public class RestToken extends BaseDomainObject {
 	public RestToken(User user) {
 		this.user = user;
 		setExpires(System.currentTimeMillis() + TOKEN_VALID);
-		this.hash = HashUtil.sha1Hash(Joiner.on("!").join(user.getUsername(),
-				new Date().toString()));
+		this.hash = HashUtil.sha1Hash(
+				Joiner.on("!").join(user.getUsername(), new Date().toString()))
+				.throwIfNotOk(IllegalStateException::new);
 
 	}
 

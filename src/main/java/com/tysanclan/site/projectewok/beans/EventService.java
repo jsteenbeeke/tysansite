@@ -17,10 +17,10 @@
  */
 package com.tysanclan.site.projectewok.beans;
 
-import java.util.Date;
-
 import com.tysanclan.site.projectewok.entities.Event;
 import com.tysanclan.site.projectewok.entities.User;
+
+import java.util.Date;
 
 /**
  * @author Jeroen Steenbeeke
@@ -28,7 +28,7 @@ import com.tysanclan.site.projectewok.entities.User;
 public interface EventService {
 	/**
 	 * Schedules a new event
-	 * 
+	 *
 	 * @param user
 	 *            The user that scheduled the event
 	 * @param date
@@ -37,7 +37,7 @@ public interface EventService {
 	 *            The title of the event
 	 * @param description
 	 *            The description of the event
-	 	 */
+	 */
 	public Event scheduleEvent(User user, Date date, String title,
 			String description);
 }

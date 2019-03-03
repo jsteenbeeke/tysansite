@@ -1,30 +1,34 @@
 /**
  * Tysan Clan Website
  * Copyright (C) 2008-2013 Jeroen Steenbeeke and Ties van de Ven
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.tysanclan.site.projectewok.pages;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.Calendar;
-import java.util.List;
-
-import javax.annotation.Nullable;
-import javax.servlet.http.HttpServletResponse;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.site.projectewok.TysanPage;
+import com.tysanclan.site.projectewok.TysanSession;
+import com.tysanclan.site.projectewok.beans.ForumService;
+import com.tysanclan.site.projectewok.beans.MembershipService;
+import com.tysanclan.site.projectewok.components.*;
+import com.tysanclan.site.projectewok.entities.*;
+import com.tysanclan.site.projectewok.entities.dao.*;
+import com.tysanclan.site.projectewok.pages.forum.ReplyPage;
+import com.tysanclan.site.projectewok.util.DateUtil;
+import com.tysanclan.site.projectewok.util.MemberUtil;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -39,38 +43,12 @@ import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
-import com.tysanclan.rest.api.data.Rank;
-import com.tysanclan.site.projectewok.TysanPage;
-import com.tysanclan.site.projectewok.TysanSession;
-import com.tysanclan.site.projectewok.beans.ForumService;
-import com.tysanclan.site.projectewok.beans.MembershipService;
-import com.tysanclan.site.projectewok.components.AutoForumLink;
-import com.tysanclan.site.projectewok.components.AutoThreadLink;
-import com.tysanclan.site.projectewok.components.ForumDataProvider;
-import com.tysanclan.site.projectewok.components.ForumEventPanel;
-import com.tysanclan.site.projectewok.components.ForumThreadModeratorPanel;
-import com.tysanclan.site.projectewok.components.PostPanel;
-import com.tysanclan.site.projectewok.components.TrialPanel;
-import com.tysanclan.site.projectewok.entities.Event;
-import com.tysanclan.site.projectewok.entities.Forum;
-import com.tysanclan.site.projectewok.entities.ForumPost;
-import com.tysanclan.site.projectewok.entities.ForumThread;
-import com.tysanclan.site.projectewok.entities.Game;
-import com.tysanclan.site.projectewok.entities.JoinApplication;
-import com.tysanclan.site.projectewok.entities.JoinVerdict;
-import com.tysanclan.site.projectewok.entities.Realm;
-import com.tysanclan.site.projectewok.entities.Trial;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.UserGameRealm;
-import com.tysanclan.site.projectewok.entities.dao.EventDAO;
-import com.tysanclan.site.projectewok.entities.dao.ForumPostDAO;
-import com.tysanclan.site.projectewok.entities.dao.ForumThreadDAO;
-import com.tysanclan.site.projectewok.entities.dao.JoinApplicationDAO;
-import com.tysanclan.site.projectewok.entities.dao.TrialDAO;
-import com.tysanclan.site.projectewok.pages.forum.ReplyPage;
-import com.tysanclan.site.projectewok.util.DateUtil;
-import com.tysanclan.site.projectewok.util.MemberUtil;
+import javax.annotation.Nullable;
+import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -132,12 +110,9 @@ public class ForumThreadPage extends TysanPage {
 					HttpServletResponse.SC_NOT_FOUND);
 		}
 
-		ForumThread t = dao.get(parameters.getThreadId());
-
-		if (t == null) {
-			throw new RestartResponseAtInterceptPageException(
-					AccessDeniedPage.class);
-		}
+		ForumThread t = dao.load(parameters.getThreadId()).getOrElseThrow(
+				() -> new RestartResponseAtInterceptPageException(
+						AccessDeniedPage.class));
 
 		initComponents(t, parameters.getPageNumber(), getUser() == null);
 	}
@@ -146,7 +121,7 @@ public class ForumThreadPage extends TysanPage {
 			final boolean publicView) {
 		super("");
 
-		initComponents(dao.load(threadId), pageId, publicView);
+		initComponents(dao.load(threadId).getOrNull(), pageId, publicView);
 	}
 
 	/**
@@ -201,8 +176,8 @@ public class ForumThreadPage extends TysanPage {
 				"moderatorToolbox", thread);
 
 		User currentUser = getUser();
-		boolean moderator = forumService.isModerator(currentUser,
-				thread.getForum());
+		boolean moderator = forumService
+				.isModerator(currentUser, thread.getForum());
 
 		modPanel.setVisible(moderator);
 
@@ -252,16 +227,17 @@ public class ForumThreadPage extends TysanPage {
 		add(new PagingNavigator("topnavigation", postView));
 		add(new PagingNavigator("bottomnavigation", postView));
 
-		replyLink.setVisible(memberLoggedIn && !thread.isLocked()
-				&& forumService.canReply(getUser(), thread.getForum())
-				&& mayReplyToTrial(trial, getUser()));
+		replyLink.setVisible(
+				memberLoggedIn && !thread.isLocked() && forumService
+						.canReply(getUser(), thread.getForum())
+						&& mayReplyToTrial(trial, getUser()));
 
 	}
 
 	private boolean mayReplyToTrial(Trial trial, User user) {
 		if (trial != null) {
-			return user.getRank() == Rank.TRUTHSAYER
-					|| trial.getAccused().equals(user);
+			return user.getRank() == Rank.TRUTHSAYER || trial.getAccused()
+					.equals(user);
 
 		}
 
@@ -285,16 +261,15 @@ public class ForumThreadPage extends TysanPage {
 	}
 
 	private void addStatusBox(JoinApplication app) {
-		WebMarkupContainer joinMessages = new WebMarkupContainer("joinMessages");
+		WebMarkupContainer joinMessages = new WebMarkupContainer(
+				"joinMessages");
 
-		joinMessages
-				.add(new Label(
-						"mentor",
-						app != null ? app.getMentor() != null ? "<b>"
-								+ app.getMentor().getUsername()
-								+ "</b> has volunteered to be this candidate member's Mentor"
-								: "This candidate member has no mentor"
-								: "").setEscapeModelStrings(false));
+		joinMessages.add(new Label("mentor", app != null ?
+				app.getMentor() != null ?
+						"<b>" + app.getMentor().getUsername()
+								+ "</b> has volunteered to be this candidate member's Mentor" :
+						"This candidate member has no mentor" :
+				"").setEscapeModelStrings(false));
 
 		int infavor = 0, total = 0;
 
@@ -311,12 +286,10 @@ public class ForumThreadPage extends TysanPage {
 			calendar.add(Calendar.DAY_OF_YEAR, 3);
 
 			if (app.getPrimaryGame() != null && app.getPrimaryRealm() != null) {
-				joinMessages.add(new Label("realms", app.getApplicant()
-						.getUsername()
-						+ " primarily plays "
-						+ app.getPrimaryGame().getName()
-						+ " on "
-						+ app.getPrimaryRealm().getName()));
+				joinMessages.add(new Label("realms",
+						app.getApplicant().getUsername() + " primarily plays "
+								+ app.getPrimaryGame().getName() + " on " + app
+								.getPrimaryRealm().getName()));
 			} else {
 				joinMessages.add(new WebMarkupContainer("realms")
 						.setVisible(false));
@@ -326,16 +299,17 @@ public class ForumThreadPage extends TysanPage {
 					.add(new WebMarkupContainer("realms").setVisible(false));
 		}
 
-		joinMessages.add(new Label("expirationTime", DateUtil
-				.getTimezoneFormattedString(calendar.getTime(),
-						getUser() != null ? getUser().getTimezone()
-								: DateUtil.NEW_YORK.getID()))
+		joinMessages.add(new Label("expirationTime",
+				DateUtil.getTimezoneFormattedString(calendar.getTime(),
+						getUser() != null ?
+								getUser().getTimezone() :
+								DateUtil.NEW_YORK.getID()))
 				.setVisible(app != null));
 
 		int against = total - infavor;
 
-		joinMessages.add(new Label("senatestatus", new Model<String>(String
-				.format("%d Senators voted in favor, %d voted against",
+		joinMessages.add(new Label("senatestatus", new Model<String>(
+				String.format("%d Senators voted in favor, %d voted against",
 						infavor, against))));
 
 		joinMessages.setVisible(app != null);
@@ -348,8 +322,9 @@ public class ForumThreadPage extends TysanPage {
 				"mentorApplication");
 
 		boolean realmInCommon = false;
-		final boolean activated = app != null ? app.getApplicant()
-				.getActivations().isEmpty() : false;
+		final boolean activated = app != null ?
+				app.getApplicant().getActivations().isEmpty() :
+				false;
 
 		if (app != null && getUser() != null) {
 			Game game = app.getPrimaryGame();
@@ -357,8 +332,8 @@ public class ForumThreadPage extends TysanPage {
 
 			if (game != null && realm != null) {
 				for (UserGameRealm ugr : getUser().getPlayedGames()) {
-					if (ugr.getGame().equals(game)
-							&& ugr.getRealm().equals(realm)) {
+					if (ugr.getGame().equals(game) && ugr.getRealm()
+							.equals(realm)) {
 						realmInCommon = true;
 					}
 				}
@@ -388,42 +363,40 @@ public class ForumThreadPage extends TysanPage {
 
 		};
 
-		yesLink.add(new ContextImage("yes", new Model<String>(
-				"images/icons/tick.png")));
-		yesLink.add(new Label("username", app != null ? app.getApplicant()
-				.getUsername() : "-"));
+		yesLink.add(new ContextImage("yes",
+				new Model<String>("images/icons/tick.png")));
+		yesLink.add(new Label("username",
+				app != null ? app.getApplicant().getUsername() : "-"));
 		yesLink.setVisible(realmInCommon && activated);
 		mentorBox.add(yesLink);
 
-		mentorBox
-				.add(new Label(
-						"realmWarning",
-						"You cannot be Mentor of this applicant, as you do not have a realm and game in common")
-						.setVisible(!realmInCommon));
+		mentorBox.add(new Label("realmWarning",
+				"You cannot be Mentor of this applicant, as you do not have a realm and game in common")
+				.setVisible(!realmInCommon));
 
-		mentorBox
-				.add(new Label(
-						"activationWarning",
-						"You cannot volunteer to mentor for this applicant until his or her account is activated")
-						.setVisible(realmInCommon && !activated));
+		mentorBox.add(new Label("activationWarning",
+				"You cannot volunteer to mentor for this applicant until his or her account is activated")
+				.setVisible(realmInCommon && !activated));
 
-		mentorBox.setVisible(app != null
-				&& MemberUtil.canUserBeMentor(getUser())
-				&& app.getMentor() == null);
+		mentorBox.setVisible(
+				app != null && MemberUtil.canUserBeMentor(getUser())
+						&& app.getMentor() == null);
 
 		add(mentorBox);
 	}
 
 	private void addSenatorBox(@Nullable JoinApplication app) {
-		boolean visible = getUser() != null
-				&& getUser().getRank() == Rank.SENATOR && app != null;
+		boolean visible =
+				getUser() != null && getUser().getRank() == Rank.SENATOR
+						&& app != null;
 
 		WebMarkupContainer senatorBox = new WebMarkupContainer(
 				"senatorApproval");
 		senatorBox.setVisible(visible);
 
-		final boolean activated = visible ? app.getApplicant().getActivations()
-				.isEmpty() : false;
+		final boolean activated = visible ?
+				app.getApplicant().getActivations().isEmpty() :
+				false;
 
 		Boolean inFavor = null;
 		final String status;
@@ -477,8 +450,8 @@ public class ForumThreadPage extends TysanPage {
 
 		};
 
-		yesLink.add(new ContextImage("yes", new Model<String>(
-				"images/icons/tick.png")));
+		yesLink.add(new ContextImage("yes",
+				new Model<String>("images/icons/tick.png")));
 
 		senatorBox.add(new WebMarkupContainer("question"));
 
@@ -506,8 +479,8 @@ public class ForumThreadPage extends TysanPage {
 
 		};
 
-		noLink.add(new ContextImage("no", new Model<String>(
-				"images/icons/cross.png")));
+		noLink.add(new ContextImage("no",
+				new Model<String>("images/icons/cross.png")));
 
 		senatorBox.add(noLink);
 
@@ -519,13 +492,14 @@ public class ForumThreadPage extends TysanPage {
 
 	private long determineParentPageIndex(ForumThread thread) {
 
-		List<ForumThread> allThreads = forumService.fiterAndSortThreads(
-				getUser(), thread.getForum(), getUser() == null);
+		List<ForumThread> allThreads = forumService
+				.fiterAndSortThreads(getUser(), thread.getForum(),
+						getUser() == null);
 
 		int index = allThreads.indexOf(thread);
-		int pos = 1 + new BigDecimal(index).divide(
-				new BigDecimal(ForumThread.POSTS_PER_PAGE), RoundingMode.FLOOR)
-				.intValue();
+		int pos = 1 + new BigDecimal(index)
+				.divide(new BigDecimal(ForumThread.POSTS_PER_PAGE),
+						RoundingMode.FLOOR).intValue();
 		return pos;
 	}
 

@@ -17,6 +17,13 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.site.projectewok.TysanPage;
+import com.tysanclan.site.projectewok.auth.TysanRankSecured;
+import com.tysanclan.site.projectewok.beans.ForumService;
+import com.tysanclan.site.projectewok.entities.Forum;
+import com.tysanclan.site.projectewok.entities.NewsForum;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
@@ -26,14 +33,6 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
-import com.tysanclan.rest.api.data.Rank;
-import com.tysanclan.site.projectewok.TysanPage;
-import com.tysanclan.site.projectewok.auth.TysanRankSecured;
-import com.tysanclan.site.projectewok.beans.ForumService;
-import com.tysanclan.site.projectewok.entities.Forum;
-import com.tysanclan.site.projectewok.entities.NewsForum;
-
 /**
  * @author Jeroen Steenbeeke
  */
@@ -42,7 +41,7 @@ public class EditForumPage extends TysanPage {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 
+	 *
 	 */
 	public EditForumPage(Forum forum) {
 		super("Edit forum");
@@ -63,7 +62,8 @@ public class EditForumPage extends TysanPage {
 			@Override
 			protected void onSubmit() {
 				TextField<String> nameField = (TextField<String>) get("name");
-				TextArea<String> descriptionArea = (TextArea<String>) get("description");
+				TextArea<String> descriptionArea = (TextArea<String>) get(
+						"description");
 
 				CheckBox interactiveBox = (CheckBox) get("interactive");
 				CheckBox publicAccessBox = (CheckBox) get("publicaccess");
@@ -81,8 +81,8 @@ public class EditForumPage extends TysanPage {
 				if (f.getName() == null || !f.getName().equals(name)) {
 					forumService.setForumName(f, name, getUser());
 				}
-				if (f.getDescription() == null
-						|| !f.getDescription().equals(description)) {
+				if (f.getDescription() == null || !f.getDescription()
+						.equals(description)) {
 					forumService.setForumDescription(f, description, getUser());
 				}
 				if (!Boolean.valueOf(f.isInteractive()).equals(interactive)) {
@@ -101,18 +101,20 @@ public class EditForumPage extends TysanPage {
 
 		};
 
-		editForm.add(new TextField<String>("name", new Model<String>(forum
-				.getName())));
+		editForm.add(new TextField<>("name", new Model<>(forum.getName())));
 
-		editForm.add(new TextArea<String>("description", new Model<String>(
-				forum.getDescription())));
+		editForm.add(new TextArea<>("description",
+				new Model<>(forum.getDescription())));
 
-		editForm.add(new CheckBox("interactive", new Model<Boolean>(forum
-				.isInteractive())).setEnabled(false));
-		editForm.add(new CheckBox("publicaccess", new Model<Boolean>(!forum
-				.isPublicAccess())).setEnabled(!(forum instanceof NewsForum)));
-		editForm.add(new CheckBox("membersonly", new Model<Boolean>(forum
-				.isMembersOnly())).setEnabled(!(forum instanceof NewsForum)));
+		editForm.add(
+				new CheckBox("interactive", new Model<>(forum.isInteractive()))
+						.setEnabled(false));
+		editForm.add(new CheckBox("publicaccess",
+				new Model<>(!forum.isPublicAccess()))
+				.setEnabled(!(forum instanceof NewsForum)));
+		editForm.add(
+				new CheckBox("membersonly", new Model<>(forum.isMembersOnly()))
+						.setEnabled(!(forum instanceof NewsForum)));
 
 		add(editForm);
 

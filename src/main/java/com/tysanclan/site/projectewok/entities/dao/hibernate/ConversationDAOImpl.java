@@ -17,50 +17,18 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.Subqueries;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.Conversation;
+import com.tysanclan.site.projectewok.entities.filter.ConversationFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.Conversation;
-import com.tysanclan.site.projectewok.entities.ConversationParticipation;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.filters.ConversationFilter;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class ConversationDAOImpl extends EwokHibernateDAO<Conversation> implements
-		com.tysanclan.site.projectewok.entities.dao.ConversationDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<Conversation> _filter) {
-		ConversationFilter filter = (ConversationFilter) _filter;
-
-		Criteria crit = getSession().createCriteria(Conversation.class);
-
-		if (filter.isSortByLastResponse()) {
-			filter.addOrderBy("id", false);
-			filter.addOrderBy("lastResponse", false);
-		}
-
-		if (!filter.getParticipants().isEmpty()) {
-			for (User participant : filter.getParticipants()) {
-				DetachedCriteria dc = DetachedCriteria
-						.forClass(ConversationParticipation.class);
-				dc.add(Restrictions.eq("user", participant));
-				dc.setProjection(Projections.property("conversation"));
-				crit.add(Subqueries.propertyIn("id", dc));
-			}
-		}
-
-		return crit;
-	}
+class ConversationDAOImpl extends HibernateDAO<Conversation, ConversationFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.ConversationDAO {
 
 }

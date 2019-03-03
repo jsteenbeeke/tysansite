@@ -17,31 +17,30 @@
  */
 package com.tysanclan.site.projectewok.components;
 
+import com.tysanclan.site.projectewok.entities.ChancellorElection;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.dao.ChancellorElectionDAO;
+import com.tysanclan.site.projectewok.entities.filter.ChancellorElectionFilter;
+import com.tysanclan.site.projectewok.util.DateUtil;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.tysanclan.site.projectewok.entities.ChancellorElection;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.ChancellorElectionDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.ChancellorElectionFilter;
-import com.tysanclan.site.projectewok.util.DateUtil;
-
 /**
  * @author Jeroen Steenbeeke
  */
-public class ChancellorElectedSincePanel extends
-        ElectedSincePanel<ChancellorElection> {
+public class ChancellorElectedSincePanel
+		extends ElectedSincePanel<ChancellorElection> {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private ChancellorElectionDAO chancellorElectionDAO;
 
 	/**
-     * 
-     */
+	 *
+	 */
 	public ChancellorElectedSincePanel(String id, User user) {
 		super(id, user);
 	}
@@ -52,9 +51,9 @@ public class ChancellorElectedSincePanel extends
 	@Override
 	public List<ChancellorElection> getElectionsSortedByDate() {
 		ChancellorElectionFilter filter = new ChancellorElectionFilter();
-		filter.addOrderBy("start", false);
+		filter.start().orderBy(false);
 
-		return chancellorElectionDAO.findByFilter(filter);
+		return chancellorElectionDAO.findByFilter(filter).asJava();
 	}
 
 	/**
@@ -62,15 +61,14 @@ public class ChancellorElectedSincePanel extends
 	 *      com.tysanclan.site.projectewok.entities.User)
 	 */
 	@Override
-	public boolean isWinner(ChancellorElection election,
-	        User user) {
-		return election != null && election.getWinner() != null && election.getWinner().equals(user);
+	public boolean isWinner(ChancellorElection election, User user) {
+		return election != null && election.getWinner() != null && election
+				.getWinner().equals(user);
 	}
 
 	@Override
 	public Date getInitialDate(User user) {
-		Calendar calendar = DateUtil
-		        .getMidnightCalendarInstance();
+		Calendar calendar = DateUtil.getMidnightCalendarInstance();
 		calendar.set(Calendar.YEAR, 2008);
 		calendar.set(Calendar.MONTH, Calendar.SEPTEMBER);
 		calendar.set(Calendar.DAY_OF_MONTH, 10);

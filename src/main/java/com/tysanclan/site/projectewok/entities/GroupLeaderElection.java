@@ -17,14 +17,13 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import com.tysanclan.site.projectewok.util.MemberUtil;
+import org.hibernate.annotations.Cache;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
-
-import org.hibernate.annotations.Cache;
-
-import com.tysanclan.site.projectewok.util.MemberUtil;
 
 /**
  * @author Jeroen Steenbeeke
@@ -44,8 +43,8 @@ public class GroupLeaderElection extends Election {
 
 		@Override
 		public boolean isEligible(User user) {
-			return group.getGroupMembers().contains(user)
-					&& MemberUtil.isMember(user);
+			return group.getGroupMembers().contains(user) && MemberUtil
+					.isMember(user);
 		}
 	}
 
@@ -73,7 +72,7 @@ public class GroupLeaderElection extends Election {
 
 	/**
 	 * Sets the Group of this GroupLeaderElection
-	 * 
+	 *
 	 * @param group
 	 *            The Group of this GroupLeaderElection
 	 */
@@ -90,7 +89,7 @@ public class GroupLeaderElection extends Election {
 
 	/**
 	 * Sets the Winner of this GroupLeaderElection
-	 * 
+	 *
 	 * @param winner
 	 *            The Winner of this GroupLeaderElection
 	 */

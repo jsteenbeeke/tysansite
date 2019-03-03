@@ -17,13 +17,14 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.jeroensteenbeeke.hyperion.data.DAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.AcceptanceVoteVerdict;
+import com.tysanclan.site.projectewok.entities.filter.AcceptanceVoteVerdictFilter;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public interface AcceptanceVoteVerdictDAO extends
-        DAO<AcceptanceVoteVerdict> {
+public interface AcceptanceVoteVerdictDAO
+		extends DAO<AcceptanceVoteVerdict, AcceptanceVoteVerdictFilter> {
 
 }

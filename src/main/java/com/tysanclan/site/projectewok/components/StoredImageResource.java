@@ -17,9 +17,8 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import org.apache.wicket.request.resource.ByteArrayResource;
-
 import com.tysanclan.site.projectewok.util.ImageUtil;
+import org.apache.wicket.request.resource.ByteArrayResource;
 
 public class StoredImageResource extends ByteArrayResource {
 	private static final long serialVersionUID = 1L;

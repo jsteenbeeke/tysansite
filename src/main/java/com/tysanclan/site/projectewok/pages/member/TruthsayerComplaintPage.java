@@ -17,18 +17,17 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.beans.LawEnforcementService;
 import com.tysanclan.site.projectewok.components.BBCodeTextArea;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class TruthsayerComplaintPage extends AbstractSingleAccordionMemberPage {
 	private static final long serialVersionUID = 1L;
@@ -40,17 +39,17 @@ public class TruthsayerComplaintPage extends AbstractSingleAccordionMemberPage {
 		super("File Truthsayer Complaint");
 
 		UserFilter filter = new UserFilter();
-		filter.addRank(Rank.TRUTHSAYER);
-		filter.addOrderBy("username", true);
+		filter.rank(Rank.TRUTHSAYER);
+		filter.username().orderBy(true);
 
-		final DropDownChoice<User> userChoice = new DropDownChoice<User>(
-				"user", ModelMaker.wrap((User) null),
-				ModelMaker.wrapChoices(userDAO.findByFilter(filter)));
+		final DropDownChoice<User> userChoice = new DropDownChoice<User>("user",
+				ModelMaker.wrap((User) null), ModelMaker
+				.wrapChoices(userDAO.findByFilter(filter).toJavaList()));
 		userChoice.setRequired(true);
 		userChoice.setNullValid(true);
 
-		final TextArea<String> motivationArea = new BBCodeTextArea(
-				"motivation", "");
+		final TextArea<String> motivationArea = new BBCodeTextArea("motivation",
+				"");
 		motivationArea.setRequired(true);
 
 		Form<User> complaintForm = new Form<User>("complaintForm") {
@@ -64,9 +63,9 @@ public class TruthsayerComplaintPage extends AbstractSingleAccordionMemberPage {
 			protected void onSubmit() {
 				super.onSubmit();
 
-				lawEnforcementService.fileComplaint(getUser(),
-						userChoice.getModelObject(),
-						motivationArea.getModelObject());
+				lawEnforcementService
+						.fileComplaint(getUser(), userChoice.getModelObject(),
+								motivationArea.getModelObject());
 
 				setResponsePage(new OverviewPage());
 			}

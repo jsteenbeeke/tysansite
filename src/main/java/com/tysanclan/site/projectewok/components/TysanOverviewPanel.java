@@ -1,31 +1,29 @@
 /**
  * Tysan Clan Website
  * Copyright (C) 2008-2013 Jeroen Steenbeeke and Ties van de Ven
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.tysanclan.site.projectewok.components;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.LinkedList;
-import java.util.List;
-
+import com.tysanclan.site.projectewok.TysanPage;
+import com.tysanclan.site.projectewok.TysanSession;
+import com.tysanclan.site.projectewok.auth.TysanSecurity;
+import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
+import com.tysanclan.site.projectewok.components.RequiresAttentionLink.IRequiresAttentionCondition;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.dao.AttentionSuppressionDAO;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -37,13 +35,14 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.tysanclan.site.projectewok.TysanPage;
-import com.tysanclan.site.projectewok.TysanSession;
-import com.tysanclan.site.projectewok.auth.TysanSecurity;
-import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
-import com.tysanclan.site.projectewok.components.RequiresAttentionLink.IRequiresAttentionCondition;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.AttentionSuppressionDAO;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -53,7 +52,7 @@ public abstract class TysanOverviewPanel<T> extends Panel {
 
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(value = ElementType.CONSTRUCTOR)
-	public static @interface NoAuto {
+	public @interface NoAuto {
 
 	}
 
@@ -152,65 +151,62 @@ public abstract class TysanOverviewPanel<T> extends Panel {
 		RequiresAttentionLink.Builder builder = new RequiresAttentionLink.Builder(
 				text, new DefaultClickResponder<U>(linkModel) {
 
-					private static final long serialVersionUID = 1L;
+			private static final long serialVersionUID = 1L;
 
-					/**
-					 * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
-					 */
-					@SuppressWarnings("unchecked")
-					@Override
-					public void onClick() {
-						Constructor<? extends TysanPage> modelParamConstructor = null;
-						Constructor<? extends TysanPage> userParamConstructor = null;
-						Constructor<? extends TysanPage> noParamConstructor = null;
+			/**
+			 * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
+			 */
+			@SuppressWarnings("unchecked")
+			@Override
+			public void onClick() {
+				Constructor<? extends TysanPage> modelParamConstructor = null;
+				Constructor<? extends TysanPage> userParamConstructor = null;
+				Constructor<? extends TysanPage> noParamConstructor = null;
 
-						U modelObject = super.getModelObject();
+				U modelObject = super.getModelObject();
 
-						for (Constructor<?> cns : pageClass.getConstructors()) {
-							if (cns.getParameterTypes().length == 0) {
-								if (!cns.isAnnotationPresent(NoAuto.class)) {
-									noParamConstructor = (Constructor<? extends TysanPage>) cns;
-								}
-							}
-							if (cns.getParameterTypes().length == 1
-									&& cns.getParameterTypes()[0] == User.class) {
-								if (!cns.isAnnotationPresent(NoAuto.class)) {
-									userParamConstructor = (Constructor<? extends TysanPage>) cns;
-								}
-							}
-							if (cns.getParameterTypes().length == 1
-									&& modelObject != null
-									&& cns.getParameterTypes()[0]
-											.isAssignableFrom(modelObject
-													.getClass())) {
-								if (!cns.isAnnotationPresent(NoAuto.class)) {
-									modelParamConstructor = (Constructor<? extends TysanPage>) cns;
-								}
-							}
-						}
-
-						try {
-							if (userParamConstructor != null) {
-								setResponsePage(userParamConstructor
-										.newInstance(getUser()));
-							} else if (noParamConstructor != null) {
-								setResponsePage(noParamConstructor
-										.newInstance());
-							} else if (modelParamConstructor != null) {
-								setResponsePage(modelParamConstructor
-										.newInstance(modelObject));
-							}
-						} catch (IllegalArgumentException e) {
-							logger.error(e.getMessage(), e);
-						} catch (InstantiationException e) {
-							logger.error(e.getMessage(), e);
-						} catch (IllegalAccessException e) {
-							logger.error(e.getMessage(), e);
-						} catch (InvocationTargetException e) {
-							logger.error(e.getMessage(), e);
+				for (Constructor<?> cns : pageClass.getConstructors()) {
+					if (cns.getParameterTypes().length == 0) {
+						if (!cns.isAnnotationPresent(NoAuto.class)) {
+							noParamConstructor = (Constructor<? extends TysanPage>) cns;
 						}
 					}
-				});
+					if (cns.getParameterTypes().length == 1
+							&& cns.getParameterTypes()[0] == User.class) {
+						if (!cns.isAnnotationPresent(NoAuto.class)) {
+							userParamConstructor = (Constructor<? extends TysanPage>) cns;
+						}
+					}
+					if (cns.getParameterTypes().length == 1
+							&& modelObject != null && cns.getParameterTypes()[0]
+							.isAssignableFrom(modelObject.getClass())) {
+						if (!cns.isAnnotationPresent(NoAuto.class)) {
+							modelParamConstructor = (Constructor<? extends TysanPage>) cns;
+						}
+					}
+				}
+
+				try {
+					if (userParamConstructor != null) {
+						setResponsePage(
+								userParamConstructor.newInstance(getUser()));
+					} else if (noParamConstructor != null) {
+						setResponsePage(noParamConstructor.newInstance());
+					} else if (modelParamConstructor != null) {
+						setResponsePage(
+								modelParamConstructor.newInstance(modelObject));
+					}
+				} catch (IllegalArgumentException e) {
+					logger.error(e.getMessage(), e);
+				} catch (InstantiationException e) {
+					logger.error(e.getMessage(), e);
+				} catch (IllegalAccessException e) {
+					logger.error(e.getMessage(), e);
+				} catch (InvocationTargetException e) {
+					logger.error(e.getMessage(), e);
+				}
+			}
+		});
 
 		TysanSecurity sec = new TysanSecurity();
 		if (!sec.authorize(pageClass)) {
@@ -238,9 +234,8 @@ public abstract class TysanOverviewPanel<T> extends Panel {
 	}
 
 	protected final User getUser() {
-		TysanSession session = TysanSession.get();
-
-		return session.getUser();
+		return TysanSession.session().flatMap(TysanSession::getUser)
+				.getOrNull();
 	}
 
 	public void requiresAttention() {

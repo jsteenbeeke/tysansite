@@ -17,14 +17,15 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.ConversationParticipation;
 import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.filter.ConversationParticipationFilter;
 
 /**
  * @author Jeroen Steenbeeke
  */
 public interface ConversationParticipationDAO extends
-        EwokDAO<ConversationParticipation> {
+		DAO<ConversationParticipation, ConversationParticipationFilter> {
 	public long countUnreadMessages(User user);
 }

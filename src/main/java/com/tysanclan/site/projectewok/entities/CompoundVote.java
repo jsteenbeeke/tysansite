@@ -17,30 +17,19 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
-import java.io.Serializable;
-import java.util.Set;
-
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
+import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 import org.hibernate.annotations.Cache;
 
-import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Set;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Entity
 @Table(indexes = { //
-@Index(name = "IDX_CompoundVote_Caster", columnList = "caster_id"), //
+		@Index(name = "IDX_CompoundVote_Caster", columnList = "caster_id"), //
 		@Index(name = "IDX_CompoundVote_Election", columnList = "election_id") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class CompoundVote extends BaseDomainObject {
@@ -97,7 +86,7 @@ public class CompoundVote extends BaseDomainObject {
 
 	/**
 	 * Sets the Choices of this CompoundVote
-	 * 
+	 *
 	 * @param choices
 	 *            The Choices of this CompoundVote
 	 */
@@ -114,7 +103,7 @@ public class CompoundVote extends BaseDomainObject {
 
 	/**
 	 * Sets the Caster of this CompoundVote
-	 * 
+	 *
 	 * @param caster
 	 *            The Caster of this CompoundVote
 	 */

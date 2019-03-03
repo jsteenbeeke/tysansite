@@ -17,12 +17,13 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.Committee;
+import com.tysanclan.site.projectewok.entities.filter.CommitteeFilter;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public interface CommitteeDAO extends EwokDAO<Committee> {
+public interface CommitteeDAO extends DAO<Committee, CommitteeFilter> {
 
 }

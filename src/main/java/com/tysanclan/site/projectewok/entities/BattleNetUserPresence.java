@@ -17,33 +17,20 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import com.jeroensteenbeeke.hyperion.data.DomainObject;
+import org.hibernate.annotations.Cache;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Cache;
-
-import com.jeroensteenbeeke.hyperion.data.DomainObject;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Entity
 @Table(indexes = { //
-@Index(name = "IDX_BattleNetUserPresence_Channel", columnList = "channel_id") })
+		@Index(name = "IDX_BattleNetUserPresence_Channel", columnList = "channel_id") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class BattleNetUserPresence implements DomainObject {
 	public static final long serialVersionUID = 1L;
@@ -64,8 +51,8 @@ public class BattleNetUserPresence implements DomainObject {
 		SERVER_ADMIN("bnet-battlenet.gif", USER_ADMIN), BLIZZREP(
 				"bnet-blizzard.gif", USER_BLIZZREP), OPERATOR(
 				"bnet-channelops.gif", USER_CHANNELOP), SPEAKER(
-				"bnet-speaker.gif", USER_SPEAKER), SQUELCHED(
-				"bnet-squelch.gif", USER_SQUELCHED), NONE(null, 0x0);
+				"bnet-speaker.gif", USER_SPEAKER), SQUELCHED("bnet-squelch.gif",
+				USER_SQUELCHED), NONE(null, 0x0);
 
 		private final String image;
 		private final int requiredFlag;

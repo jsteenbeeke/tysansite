@@ -17,34 +17,21 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.AchievementProposalVote;
+import com.tysanclan.site.projectewok.entities.filter.AchievementProposalVoteFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.AchievementProposalVote;
-
 /**
- * 
+ *
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
 class AchievementProposalVoteDAOImpl extends
-		EwokHibernateDAO<AchievementProposalVote> implements
+		HibernateDAO<AchievementProposalVote, AchievementProposalVoteFilter>
+		implements
 		com.tysanclan.site.projectewok.entities.dao.AchievementProposalVoteDAO {
-	@Override
-	protected Criteria createCriteria(
-			SearchFilter<AchievementProposalVote> filter) {
-		Criteria criteria = getSession().createCriteria(
-				AchievementProposalVote.class);
 
-		// if (filter instanceof AchievementProposalVoteFilter) {
-		// AchievementProposalVoteFilter cf = (AchievementProposalVoteFilter)
-		// filter;
-		// }
-
-		return criteria;
-	}
 }

@@ -17,22 +17,15 @@
  */
 package com.tysanclan.site.projectewok.event.handlers;
 
-import java.util.ArrayList;
-
 import com.google.common.collect.Lists;
 import com.jeroensteenbeeke.hyperion.events.Event;
 import com.jeroensteenbeeke.hyperion.events.EventHandler;
 import com.jeroensteenbeeke.hyperion.events.EventResult;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.event.ForumUserBannedEvent;
-import com.tysanclan.site.projectewok.event.MembershipTerminatedEvent;
-import com.tysanclan.site.projectewok.event.RankChangeEvent;
-import com.tysanclan.site.projectewok.event.UserAppointedTruthsayerEvent;
-import com.tysanclan.site.projectewok.event.UserElectedToChancellorEvent;
-import com.tysanclan.site.projectewok.event.UserElectedToSenateEvent;
-import com.tysanclan.site.projectewok.event.UserPromotedEvent;
-import com.tysanclan.site.projectewok.event.UserUnbannedEvent;
+import com.tysanclan.site.projectewok.event.*;
+
+import java.util.ArrayList;
 
 public class RankChangeEventTrigger implements EventHandler<RankChangeEvent> {
 	@Override

@@ -17,22 +17,7 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.TimeZone;
-
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.ContextImage;
-import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.google.common.collect.Iterables;
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
@@ -41,96 +26,38 @@ import com.tysanclan.site.projectewok.beans.RoleService;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
 import com.tysanclan.site.projectewok.components.RequiresAttentionLink.AttentionType;
 import com.tysanclan.site.projectewok.components.RequiresAttentionLink.IRequiresAttentionCondition;
-import com.tysanclan.site.projectewok.entities.AcceptanceVote;
-import com.tysanclan.site.projectewok.entities.AcceptanceVoteVerdict;
-import com.tysanclan.site.projectewok.entities.Bug;
+import com.tysanclan.site.projectewok.entities.*;
 import com.tysanclan.site.projectewok.entities.Bug.ReportType;
-import com.tysanclan.site.projectewok.entities.ChancellorElection;
-import com.tysanclan.site.projectewok.entities.CompoundVote;
-import com.tysanclan.site.projectewok.entities.Event;
-import com.tysanclan.site.projectewok.entities.GamePetition;
-import com.tysanclan.site.projectewok.entities.Group;
-import com.tysanclan.site.projectewok.entities.MumbleServer;
-import com.tysanclan.site.projectewok.entities.Profile;
-import com.tysanclan.site.projectewok.entities.RealmPetition;
 import com.tysanclan.site.projectewok.entities.Role.RoleType;
-import com.tysanclan.site.projectewok.entities.RoleTransfer;
-import com.tysanclan.site.projectewok.entities.SenateElection;
-import com.tysanclan.site.projectewok.entities.SubscriptionPayment.UnpaidFilter;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.UserGameRealm;
-import com.tysanclan.site.projectewok.entities.dao.AcceptanceVoteDAO;
-import com.tysanclan.site.projectewok.entities.dao.BugDAO;
-import com.tysanclan.site.projectewok.entities.dao.ConversationParticipationDAO;
-import com.tysanclan.site.projectewok.entities.dao.EventDAO;
-import com.tysanclan.site.projectewok.entities.dao.GamePetitionDAO;
-import com.tysanclan.site.projectewok.entities.dao.GroupDAO;
-import com.tysanclan.site.projectewok.entities.dao.MumbleServerDAO;
-import com.tysanclan.site.projectewok.entities.dao.NotificationDAO;
-import com.tysanclan.site.projectewok.entities.dao.ProfileDAO;
-import com.tysanclan.site.projectewok.entities.dao.RealmPetitionDAO;
-import com.tysanclan.site.projectewok.entities.dao.RoleTransferDAO;
-import com.tysanclan.site.projectewok.entities.dao.TruthsayerNominationDAO;
-import com.tysanclan.site.projectewok.entities.dao.UntenabilityVoteDAO;
-import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.EventFilter;
-import com.tysanclan.site.projectewok.entities.dao.filters.NotificationFilter;
-import com.tysanclan.site.projectewok.entities.dao.filters.RoleTransferFilter;
-import com.tysanclan.site.projectewok.entities.dao.filters.TruthsayerNominationFilter;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
-import com.tysanclan.site.projectewok.pages.member.AcceptanceVotePage;
-import com.tysanclan.site.projectewok.pages.member.BugOverviewPage;
-import com.tysanclan.site.projectewok.pages.member.CalendarPage;
-import com.tysanclan.site.projectewok.pages.member.ChancellorElectionPage;
-import com.tysanclan.site.projectewok.pages.member.ClanStatisticsPage;
-import com.tysanclan.site.projectewok.pages.member.CreateGamePetitionPage;
-import com.tysanclan.site.projectewok.pages.member.CreateGroupPage;
-import com.tysanclan.site.projectewok.pages.member.CreateRealmPetitionPage;
-import com.tysanclan.site.projectewok.pages.member.EditAccountsPage;
-import com.tysanclan.site.projectewok.pages.member.EndorsementPage;
-import com.tysanclan.site.projectewok.pages.member.FeatureOverviewPage;
-import com.tysanclan.site.projectewok.pages.member.FeelingLuckyPage;
-import com.tysanclan.site.projectewok.pages.member.FinancePage;
-import com.tysanclan.site.projectewok.pages.member.JoinGroupPage;
-import com.tysanclan.site.projectewok.pages.member.KeyRoleNominationAcceptancePage;
-import com.tysanclan.site.projectewok.pages.member.LogPage;
-import com.tysanclan.site.projectewok.pages.member.MemberPreferencesPage;
-import com.tysanclan.site.projectewok.pages.member.MessageListPage;
-import com.tysanclan.site.projectewok.pages.member.MumbleServerStatusPage;
-import com.tysanclan.site.projectewok.pages.member.NotificationsPage;
-import com.tysanclan.site.projectewok.pages.member.OverviewPage;
-import com.tysanclan.site.projectewok.pages.member.PastElectionsPage;
-import com.tysanclan.site.projectewok.pages.member.ProposeAchievementPage;
-import com.tysanclan.site.projectewok.pages.member.ReportBugPage;
-import com.tysanclan.site.projectewok.pages.member.RequestAchievementPage;
-import com.tysanclan.site.projectewok.pages.member.RequestFeaturePage;
-import com.tysanclan.site.projectewok.pages.member.RunForChancellorPage;
-import com.tysanclan.site.projectewok.pages.member.RunForSenatorPage;
-import com.tysanclan.site.projectewok.pages.member.SenateElectionPage;
-import com.tysanclan.site.projectewok.pages.member.SignGamePetitionsPage;
-import com.tysanclan.site.projectewok.pages.member.SignRealmPetitionsPage;
-import com.tysanclan.site.projectewok.pages.member.SkypeOverviewPage;
-import com.tysanclan.site.projectewok.pages.member.SubscriptionPaymentPage;
-import com.tysanclan.site.projectewok.pages.member.TruthsayerAcceptancePage;
-import com.tysanclan.site.projectewok.pages.member.TruthsayerComplaintPage;
-import com.tysanclan.site.projectewok.pages.member.UntenabilityVotePage;
+import com.tysanclan.site.projectewok.entities.dao.*;
+import com.tysanclan.site.projectewok.entities.filter.*;
+import com.tysanclan.site.projectewok.pages.member.*;
 import com.tysanclan.site.projectewok.pages.member.justice.StartTrialPage;
 import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.MemberUtil;
+import io.vavr.collection.Seq;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.ContextImage;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.*;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @TysanMemberSecured
 public class BasicMemberPanel extends TysanOverviewPanel<Void> {
-	public class PendingSubscriptionPayment implements
-			IRequiresAttentionCondition {
+	public class PendingSubscriptionPayment
+			implements IRequiresAttentionCondition {
 		private static final long serialVersionUID = 1L;
 
 		@Override
 		public AttentionType requiresAttention() {
-			if (Iterables.filter(getUser().getPayments(), new UnpaidFilter())
-					.iterator().hasNext()) {
+			if (getUser().getPayments().stream().anyMatch(s -> !s.isPaid())) {
 				User treasurer = roleService.getTreasurer();
 				if (treasurer != null && treasurer.getPaypalAddress() != null) {
 					return AttentionType.ERROR;
@@ -189,13 +116,13 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 		}
 	}
 
-	public class InvitedForGroupCondition implements
-			IRequiresAttentionCondition {
+	public class InvitedForGroupCondition
+			implements IRequiresAttentionCondition {
 		private static final long serialVersionUID = 1L;
 
 		@Override
 		public AttentionType requiresAttention() {
-			List<Group> allGroups = groupDAO.findAll();
+			Seq<Group> allGroups = groupDAO.findAll();
 			allGroups.removeAll(getUser().getGroups());
 
 			for (Group g : allGroups) {
@@ -213,8 +140,8 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 		}
 	}
 
-	public class VoteForChancellorCondition implements
-			IRequiresAttentionCondition {
+	public class VoteForChancellorCondition
+			implements IRequiresAttentionCondition {
 		private static final long serialVersionUID = 1L;
 
 		@Override
@@ -245,8 +172,8 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 		}
 	}
 
-	public class ElectionPreparationInProgressCondition implements
-			IRequiresAttentionCondition {
+	public class ElectionPreparationInProgressCondition
+			implements IRequiresAttentionCondition {
 		private static final long serialVersionUID = 1L;
 
 		@Override
@@ -281,8 +208,8 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 		}
 	}
 
-	public static class NeverTrueCondition implements
-			IRequiresAttentionCondition {
+	public static class NeverTrueCondition
+			implements IRequiresAttentionCondition {
 		private static final long serialVersionUID = 1L;
 
 		private static final IRequiresAttentionCondition INSTANCE = new NeverTrueCondition();
@@ -303,7 +230,8 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 
 	}
 
-	public class VoteForSenatorCondition implements IRequiresAttentionCondition {
+	public class VoteForSenatorCondition
+			implements IRequiresAttentionCondition {
 		private static final long serialVersionUID = 1L;
 
 		@Override
@@ -342,8 +270,8 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 
 			if (sel != null) {
 
-				boolean canRun = MemberUtil.isEligibleForElectedRank(getUser(),
-						Rank.SENATOR)
+				boolean canRun = MemberUtil
+						.isEligibleForElectedRank(getUser(), Rank.SENATOR)
 						&& !sel.getCandidates().contains(getUser());
 
 				if (canRun) {
@@ -356,13 +284,14 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 
 		@Override
 		public Long getDismissableId() {
-			return democracyService.getCurrentSenateElection() != null ? democracyService
-					.getCurrentSenateElection().getId() : null;
+			return democracyService.getCurrentSenateElection() != null ?
+					democracyService.getCurrentSenateElection().getId() :
+					null;
 		}
 	}
 
-	public class RunForChancellorCondition implements
-			IRequiresAttentionCondition {
+	public class RunForChancellorCondition
+			implements IRequiresAttentionCondition {
 		private static final long serialVersionUID = 1L;
 
 		@Override
@@ -372,8 +301,8 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 
 			if (cel != null) {
 
-				boolean canRun = MemberUtil.isEligibleForElectedRank(getUser(),
-						Rank.CHANCELLOR)
+				boolean canRun = MemberUtil
+						.isEligibleForElectedRank(getUser(), Rank.CHANCELLOR)
 						&& !cel.getCandidates().contains(getUser());
 
 				if (canRun) {
@@ -386,8 +315,9 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 
 		@Override
 		public Long getDismissableId() {
-			return democracyService.getCurrentChancellorElection() != null ? democracyService
-					.getCurrentChancellorElection().getId() : null;
+			return democracyService.getCurrentChancellorElection() != null ?
+					democracyService.getCurrentChancellorElection().getId() :
+					null;
 		}
 	}
 
@@ -442,7 +372,7 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 	private RoleService roleService;
 
 	/**
-	 * 
+	 *
 	 */
 	public BasicMemberPanel(String id, User user) {
 		super(id, "Basic Overview");
@@ -480,8 +410,8 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 		addBugLink();
 		addSubscriptionPaymentLink();
 
-		add(new ListView<MumbleServer>("servers", ModelMaker.wrap(serverDAO
-				.findAll())) {
+		add(new ListView<MumbleServer>("servers",
+				ModelMaker.wrap(serverDAO.findAll().toJavaList())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -494,8 +424,8 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 
 					@Override
 					public void onClick() {
-						setResponsePage(new MumbleServerStatusPage(
-								getModelObject()));
+						setResponsePage(
+								new MumbleServerStatusPage(getModelObject()));
 					}
 
 				};
@@ -516,17 +446,22 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 	}
 
 	private void addKeyRoleLinks(User user) {
+		addRoleLink(createRoleTransferFilter(user, RoleType.HERALD),
+				"heraldAccept");
+		addRoleLink(createRoleTransferFilter(user, RoleType.STEWARD),
+				"stewardAccept");
+		addRoleLink(createRoleTransferFilter(user, RoleType.TREASURER),
+				"treasurerAccept");
+
+	}
+
+	private RoleTransferFilter createRoleTransferFilter(User user,
+			RoleType type) {
 		RoleTransferFilter filter = new RoleTransferFilter();
-		filter.setAccepted(false);
-		filter.setUser(user);
-		filter.setRoleType(RoleType.HERALD);
-
-		addRoleLink(filter, "heraldAccept");
-		filter.setRoleType(RoleType.STEWARD);
-		addRoleLink(filter, "stewardAccept");
-		filter.setRoleType(RoleType.TREASURER);
-		addRoleLink(filter, "treasurerAccept");
-
+		filter.accepted(false);
+		filter.candidate(user);
+		filter.roleType(type);
+		return filter;
 	}
 
 	/**
@@ -534,7 +469,8 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 	 * @param id
 	 */
 	private void addRoleLink(RoleTransferFilter filter, String id) {
-		RoleTransfer transfer = roleTransferDAO.getUniqueByFilter(filter);
+		RoleTransfer transfer = roleTransferDAO.getUniqueByFilter(filter)
+				.getOrNull();
 
 		add(new IconLink.Builder("images/icons/delete.png",
 				new DefaultClickResponder<RoleTransfer>(
@@ -546,10 +482,9 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 						setResponsePage(new KeyRoleNominationAcceptancePage(
 								getModelObject()));
 					}
-				})
-				.setText(
-						(transfer != null ? transfer.getRoleType().toString()
-								: "") + " nomination").newInstance(id)
+				}).setText(
+				(transfer != null ? transfer.getRoleType().toString() : "")
+						+ " nomination").newInstance(id)
 				.setVisible(transfer != null));
 	}
 
@@ -565,7 +500,7 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void addAprilFools2010() {
 		add(createConditionalVisibilityLink("lucky", FeelingLuckyPage.class,
@@ -574,11 +509,11 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void addBirthdays() {
 
-		List<Profile> _profiles = profileDAO.findAll();
+		Seq<Profile> _profiles = profileDAO.findAll();
 		List<Profile> profiles = new LinkedList<Profile>();
 
 		Calendar cal = DateUtil.getCalendarInstance();
@@ -591,17 +526,19 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 
 		for (Profile p : _profiles) {
 			if (p.getBirthDate() != null && MemberUtil.isMember(p.getUser())) {
-				Calendar cal2 = DateUtil.getMidnightCalendarByUnadjustedDate(
-						p.getBirthDate(), TimeZone.getTimeZone(tzName));
+				Calendar cal2 = DateUtil
+						.getMidnightCalendarByUnadjustedDate(p.getBirthDate(),
+								TimeZone.getTimeZone(tzName));
 				if (cal.get(Calendar.MONTH) == cal2.get(Calendar.MONTH)
 						&& cal.get(Calendar.DAY_OF_MONTH) == cal2
-								.get(Calendar.DAY_OF_MONTH)) {
+						.get(Calendar.DAY_OF_MONTH)) {
 					profiles.add(p);
 				}
 			}
 		}
 
-		add(new WebMarkupContainer("birthdays").setVisible(!profiles.isEmpty()));
+		add(new WebMarkupContainer("birthdays")
+				.setVisible(!profiles.isEmpty()));
 
 		add(new ListView<Profile>("users", ModelMaker.wrap(profiles)) {
 			private static final long serialVersionUID = 1L;
@@ -620,7 +557,7 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 
 	private void addEditAccountsPage() {
@@ -704,12 +641,12 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 	}
 
 	private void addNotificationsLink(User user) {
-		add(createLink("notification", NotificationsPage.class,
-				"Notifications", new ActiveNotificationCondition()));
+		add(createLink("notification", NotificationsPage.class, "Notifications",
+				new ActiveNotificationCondition()));
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void addSkypeOverviewLink() {
 		add(new Link<Void>("skype") {
@@ -742,12 +679,12 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void addStartTrialLink(User user) {
 		Link<?> trialLink = new Link<Void>("trial") {
 			/**
-			 * 
+			 *
 			 */
 			private static final long serialVersionUID = 1L;
 
@@ -772,44 +709,45 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 		};
 
 		UserFilter filter = new UserFilter();
-		filter.addRank(Rank.TRUTHSAYER);
-		List<User> truthsayers = userDAO.findByFilter(filter);
+		filter.rank(Rank.TRUTHSAYER);
+		Seq<User> truthsayers = userDAO.findByFilter(filter);
 
-		trialLink.setVisible(!truthsayers.contains(user)
-				|| truthsayers.size() > 1);
-		complaintLink.setVisible(!truthsayers.contains(user)
-				|| truthsayers.size() > 1);
+		trialLink.setVisible(
+				!truthsayers.contains(user) || truthsayers.size() > 1);
+		complaintLink.setVisible(
+				!truthsayers.contains(user) || truthsayers.size() > 1);
 
 		add(trialLink);
 		add(complaintLink);
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void addUntenabilityVoteLink(User user) {
 		IconLink untenabilityVoteLink = new IconLink.Builder(
 				"images/icons/error.png", new DefaultClickResponder<Void>() {
-					private static final long serialVersionUID = 1L;
+			private static final long serialVersionUID = 1L;
 
-					/**
-					 * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
-					 */
-					@Override
-					public void onClick() {
-						setResponsePage(new UntenabilityVotePage());
-					}
-				}).setText("Untenable Regulations").newInstance("untenable");
+			/**
+			 * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
+			 */
+			@Override
+			public void onClick() {
+				setResponsePage(new UntenabilityVotePage());
+			}
+		}).setText("Untenable Regulations").newInstance("untenable");
 
-		untenabilityVoteLink.setVisible(untenabilityVoteDAO.countAll() > 0
-				&& MemberUtil.canUserVote(user));
+		untenabilityVoteLink.setVisible(
+				untenabilityVoteDAO.countAll() > 0 && MemberUtil
+						.canUserVote(user));
 
 		add(untenabilityVoteLink);
 
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void addPreferencesLink() {
 		Link<User> preferencesLink = new Link<User>("preferences") {
@@ -839,8 +777,8 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 		};
 
 		TruthsayerNominationFilter filter = new TruthsayerNominationFilter();
-		filter.setNominee(user);
-		filter.setStartNotSet(true);
+		filter.user(user);
+		filter.voteStart().isNull();
 
 		acceptLink.add(new ContextImage("icon", "images/icons/error.png"));
 
@@ -852,7 +790,7 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void addCreateGroupLink(User user) {
 		Link<?> createLink = new Link<Void>("creategroup") {
@@ -886,7 +824,7 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void addJoinGroupLink(User user) {
 		add(createLink("joingroup", JoinGroupPage.class, "Join Group",
@@ -894,7 +832,7 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void addChancellorElectionLink(User user) {
 		ChancellorElection e = democracyService.getCurrentChancellorElection();
@@ -926,14 +864,13 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 
 	private void addEndorsementLink(User user) {
 		if (user.getEndorses() == null || user.getEndorsesForSenate() == null) {
-			add(createLink("endorsement", EndorsementPage.class,
-					"Endorsements",
-					new ElectionPreparationInProgressCondition()).setVisible(
-					MemberUtil.canUserGrantEndorsement(user)));
+			add(createLink("endorsement", EndorsementPage.class, "Endorsements",
+					new ElectionPreparationInProgressCondition())
+					.setVisible(MemberUtil.canUserGrantEndorsement(user)));
 		} else {
-			add(createLink("endorsement", EndorsementPage.class,
-					"Endorsements", new NeverTrueCondition()).setVisible(
-					MemberUtil.canUserGrantEndorsement(user)));
+			add(createLink("endorsement", EndorsementPage.class, "Endorsements",
+					new NeverTrueCondition())
+					.setVisible(MemberUtil.canUserGrantEndorsement(user)));
 		}
 
 	}
@@ -944,7 +881,7 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void addEmailChangeConfirmationPanel(User user) {
 		add(new EmailChangeConfirmationPanel("emailchange", user) {
@@ -966,7 +903,7 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void addCalendarLink() {
 		add(createLink("calendar", CalendarPage.class, "Calendar",
@@ -974,7 +911,7 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void addFinanceLink() {
 		add(new Link<User>("finance") {
@@ -1009,7 +946,7 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void addMessagesLink() {
 		add(createLink("messages", MessageListPage.class, "Messages",
@@ -1033,15 +970,15 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 			public void onClick() {
 				setResponsePage(new ProposeAchievementPage());
 			}
-		}.setVisible(MemberUtil.hasPermission(user,
-				ProposeAchievementPage.class)));
+		}.setVisible(
+				MemberUtil.hasPermission(user, ProposeAchievementPage.class)));
 	}
 
 	private void addLogLink() {
 		add(new Link<User>("log") {
 
 			/**
-			 * 
+			 *
 			 */
 			private static final long serialVersionUID = 1L;
 
@@ -1061,7 +998,13 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 
 		private Event getNextEvent() {
 			EventFilter filter = new EventFilter();
-			filter.setDate(DateUtil.getMidnightCalendarInstance().getTime());
+			Calendar midnightCalendarInstance = DateUtil
+					.getMidnightCalendarInstance();
+			Date startOfDay = midnightCalendarInstance.getTime();
+			midnightCalendarInstance.add(Calendar.DAY_OF_YEAR, 1);
+			midnightCalendarInstance.add(Calendar.SECOND, 1);
+			filter.date()
+					.between(startOfDay, midnightCalendarInstance.getTime());
 
 			if (eventDAO.countByFilter(filter) > 0) {
 				return eventDAO.findByFilter(filter).get(0);
@@ -1091,7 +1034,8 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 		}
 	}
 
-	private class UnreadMessageCondition implements IRequiresAttentionCondition {
+	private class UnreadMessageCondition
+			implements IRequiresAttentionCondition {
 		private static final long serialVersionUID = 1L;
 
 		@Override
@@ -1109,14 +1053,14 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 		}
 	}
 
-	private class ActiveNotificationCondition implements
-			IRequiresAttentionCondition {
+	private class ActiveNotificationCondition
+			implements IRequiresAttentionCondition {
 		private static final long serialVersionUID = 1L;
 
 		@Override
 		public AttentionType requiresAttention() {
 			NotificationFilter nfilter = new NotificationFilter();
-			nfilter.setUser(getUser());
+			nfilter.user(getUser());
 
 			if (notificationDAO.countByFilter(nfilter) > 0) {
 				return AttentionType.WARNING;
@@ -1131,8 +1075,8 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 		}
 	}
 
-	private class AprilFools2010Condition implements
-			IRequiresAttentionCondition {
+	private class AprilFools2010Condition
+			implements IRequiresAttentionCondition {
 		private static final long serialVersionUID = 1L;
 
 		@Override
@@ -1152,22 +1096,22 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 		}
 	}
 
-	private class UnsignedGamePetitionCondition implements
-			IRequiresAttentionCondition {
+	private class UnsignedGamePetitionCondition
+			implements IRequiresAttentionCondition {
 		private static final long serialVersionUID = 1L;
 
 		private GamePetition petition;
 
 		private GamePetition getPetition() {
 			if (petition == null) {
-				if (gamePetitionDAO.countAll() > 0
-						&& Arrays.asList(
-								new Rank[] { Rank.CHANCELLOR, Rank.SENATOR,
-										Rank.TRUTHSAYER, Rank.REVERED_MEMBER,
-										Rank.SENIOR_MEMBER, Rank.FULL_MEMBER,
-										Rank.JUNIOR_MEMBER }).contains(
-								getUser().getRank())) {
-					outer: for (GamePetition gp : gamePetitionDAO.findAll()) {
+				if (gamePetitionDAO.countAll() > 0 && Arrays
+						.asList(new Rank[] { Rank.CHANCELLOR, Rank.SENATOR,
+								Rank.TRUTHSAYER, Rank.REVERED_MEMBER,
+								Rank.SENIOR_MEMBER, Rank.FULL_MEMBER,
+								Rank.JUNIOR_MEMBER })
+						.contains(getUser().getRank())) {
+					outer:
+					for (GamePetition gp : gamePetitionDAO.findAll()) {
 
 						if (getUser().equals(gp.getRequester())) {
 							continue;
@@ -1207,24 +1151,24 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 
 	}
 
-	private class UnsignedRealmPetitionCondition implements
-			IRequiresAttentionCondition {
+	private class UnsignedRealmPetitionCondition
+			implements IRequiresAttentionCondition {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 		private RealmPetition petition;
 
 		private RealmPetition getPetition() {
 			if (petition == null) {
-				if (realmPetitionDAO.countAll() > 0
-						&& Arrays.asList(
-								new Rank[] { Rank.CHANCELLOR, Rank.SENATOR,
-										Rank.TRUTHSAYER, Rank.REVERED_MEMBER,
-										Rank.SENIOR_MEMBER, Rank.FULL_MEMBER,
-										Rank.JUNIOR_MEMBER }).contains(
-								getUser().getRank())) {
-					outer: for (RealmPetition rp : realmPetitionDAO.findAll()) {
+				if (realmPetitionDAO.countAll() > 0 && Arrays
+						.asList(new Rank[] { Rank.CHANCELLOR, Rank.SENATOR,
+								Rank.TRUTHSAYER, Rank.REVERED_MEMBER,
+								Rank.SENIOR_MEMBER, Rank.FULL_MEMBER,
+								Rank.JUNIOR_MEMBER })
+						.contains(getUser().getRank())) {
+					outer:
+					for (RealmPetition rp : realmPetitionDAO.findAll()) {
 
 						if (getUser().equals(rp.getRequester())) {
 							continue;
@@ -1264,10 +1208,10 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 		}
 	}
 
-	private class UserDoesNotHaveAccountsCondition implements
-			IRequiresAttentionCondition {
+	private class UserDoesNotHaveAccountsCondition
+			implements IRequiresAttentionCondition {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
@@ -1294,16 +1238,16 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 		}
 	}
 
-	private class UserHasNotVotedInAcceptanceVoteCondition implements
-			IRequiresAttentionCondition {
+	private class UserHasNotVotedInAcceptanceVoteCondition
+			implements IRequiresAttentionCondition {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
 		@Override
 		public AttentionType requiresAttention() {
-			List<AcceptanceVote> votes = acceptanceVoteDAO.findAll();
+			Seq<AcceptanceVote> votes = acceptanceVoteDAO.findAll();
 
 			if (!votes.isEmpty() && MemberUtil.canUserVote(getUser())) {
 

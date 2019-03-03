@@ -17,44 +17,18 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.Message;
+import com.tysanclan.site.projectewok.entities.filter.MessageFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.Message;
-import com.tysanclan.site.projectewok.entities.dao.filters.MessageFilter;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class MessageDAOImpl extends EwokHibernateDAO<Message> implements
-		com.tysanclan.site.projectewok.entities.dao.MessageDAO {
-	/**
-	 * @see com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO#createCriteria(com.tysanclan.site.projectewok.dataaccess.SearchFilter)
-	 */
-	@Override
-	protected Criteria createCriteria(SearchFilter<Message> filter) {
-		Criteria criteria = getSession().createCriteria(Message.class);
+class MessageDAOImpl extends HibernateDAO<Message, MessageFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.MessageDAO {
 
-		if (filter instanceof MessageFilter) {
-			MessageFilter mf = (MessageFilter) filter;
-			if (mf.getReceiver() != null) {
-				criteria.add(Restrictions.eq("receiver", mf.getReceiver()));
-			}
-			if (mf.getSender() != null) {
-				criteria.add(Restrictions.eq("sender", mf.getSender()));
-			}
-
-			if (mf.getMessageRead() != null) {
-				criteria.add(Restrictions.eq("read", mf.getMessageRead()));
-			}
-		}
-
-		return criteria;
-	}
 }

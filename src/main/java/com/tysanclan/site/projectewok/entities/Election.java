@@ -17,32 +17,16 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
+import com.tysanclan.site.projectewok.util.DateUtil;
+import org.hibernate.annotations.Cache;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-
-import org.hibernate.annotations.Cache;
-
-import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
-import com.tysanclan.site.projectewok.util.DateUtil;
 
 /**
  * @author Jeroen Steenbeeke
@@ -57,13 +41,13 @@ public abstract class Election extends BaseDomainObject {
 	/**
 	 * Interface for determining whether or not a candidate is eligible for a
 	 * given position
-	 * 
+	 *
 	 * @author Jeroen Steenbeeke
 	 */
 	public static interface Eligibility {
 		/**
 		 * Determines if the given user is eligible for the position
-		 * 
+		 *
 		 * @param user
 		 *            The user to check
 		 * @return {@code true} if the user is eligible for the position,
@@ -126,7 +110,7 @@ public abstract class Election extends BaseDomainObject {
 
 	/**
 	 * Sets the Start of this Election
-	 * 
+	 *
 	 * @param start
 	 *            The Start of this Election
 	 */
@@ -143,7 +127,7 @@ public abstract class Election extends BaseDomainObject {
 
 	/**
 	 * Sets the Votes of this Election
-	 * 
+	 *
 	 * @param votes
 	 *            The Votes of this Election
 	 */
@@ -160,7 +144,7 @@ public abstract class Election extends BaseDomainObject {
 
 	/**
 	 * Sets the Candidates of this Election
-	 * 
+	 *
 	 * @param candidates
 	 *            The Candidates of this Election
 	 */

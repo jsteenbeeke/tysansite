@@ -17,13 +17,15 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.AllowedAccountType;
+import com.tysanclan.site.projectewok.entities.filter.AllowedAccountTypeFilter;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface AllowedAccountTypeDAO extends EwokDAO<AllowedAccountType> {
+public interface AllowedAccountTypeDAO
+		extends DAO<AllowedAccountType, AllowedAccountTypeFilter> {
 
 }

@@ -17,13 +17,11 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.Diablo2Account;
+import com.tysanclan.site.projectewok.entities.filter.Diablo2AccountFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.Diablo2Account;
 
 /**
  *
@@ -31,16 +29,8 @@ import com.tysanclan.site.projectewok.entities.Diablo2Account;
  */
 @Component
 @Scope("request")
-class Diablo2AccountDAOImpl extends EwokHibernateDAO<Diablo2Account> implements
+class Diablo2AccountDAOImpl
+		extends HibernateDAO<Diablo2Account, Diablo2AccountFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.Diablo2AccountDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<Diablo2Account> filter) {
-		Criteria criteria = getSession().createCriteria(Diablo2Account.class);
 
-		// if (filter instanceof Diablo2AccountFilter) {
-		// Diablo2AccountFilter cf = (Diablo2AccountFilter) filter;
-		// }
-
-		return criteria;
-	}
 }

@@ -17,15 +17,14 @@
  */
 package com.tysanclan.site.projectewok.pages.member.admin;
 
-import org.apache.wicket.RestartResponseAtInterceptPageException;
-import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.tysanclan.site.projectewok.beans.FinanceService;
 import com.tysanclan.site.projectewok.entities.PaymentRequest;
 import com.tysanclan.site.projectewok.entities.dao.PaymentRequestDAO;
 import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class ProcessPaymentRequestPage extends WebPage {
 	private static final long serialVersionUID = 1L;
@@ -69,6 +68,6 @@ public class ProcessPaymentRequestPage extends WebPage {
 
 	private PaymentRequest getRequest(Long requestId) {
 
-		return paymentRequestDAO.get(requestId);
+		return paymentRequestDAO.load(requestId).getOrNull();
 	}
 }

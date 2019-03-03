@@ -17,17 +17,16 @@
  */
 package com.tysanclan.site.projectewok.components;
 
+import com.tysanclan.site.projectewok.entities.ForumThread;
+import com.tysanclan.site.projectewok.pages.ForumThreadPage;
+import org.apache.wicket.markup.html.link.Link;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.wicket.markup.html.link.Link;
-
-import com.tysanclan.site.projectewok.entities.ForumThread;
-import com.tysanclan.site.projectewok.pages.ForumThreadPage;
-
 /**
  * Link to a ForumThread
- * 
+ *
  * @author Jeroen Steenbeeke
  */
 public class ThreadLink extends Link<ForumThread> {
@@ -43,7 +42,8 @@ public class ThreadLink extends Link<ForumThread> {
 		this(id, thread, false);
 	}
 
-	public ThreadLink(@Nonnull String id, @Nullable ForumThread thread, int page) {
+	public ThreadLink(@Nonnull String id, @Nullable ForumThread thread,
+			int page) {
 		this(id, thread, page, false);
 	}
 
@@ -63,8 +63,8 @@ public class ThreadLink extends Link<ForumThread> {
 	@Override
 	public void onClick() {
 		if (threadId != null) {
-			setResponsePage(new ForumThreadPage(threadId, pageNumber,
-					publicView));
+			setResponsePage(
+					new ForumThreadPage(threadId, pageNumber, publicView));
 		}
 	}
 }

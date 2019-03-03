@@ -17,13 +17,14 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.UpdateMark;
+import com.tysanclan.site.projectewok.entities.filter.UpdateMarkFilter;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface UpdateMarkDAO extends EwokDAO<UpdateMark> {
+public interface UpdateMarkDAO extends DAO<UpdateMark, UpdateMarkFilter> {
 
 }

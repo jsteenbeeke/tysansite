@@ -17,15 +17,14 @@
  */
 package com.tysanclan.site.projectewok.beans.impl;
 
+import com.tysanclan.site.projectewok.beans.MumbleService;
+import com.tysanclan.site.projectewok.entities.MumbleServer;
+import com.tysanclan.site.projectewok.entities.dao.MumbleServerDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.tysanclan.site.projectewok.beans.MumbleService;
-import com.tysanclan.site.projectewok.entities.MumbleServer;
-import com.tysanclan.site.projectewok.entities.dao.MumbleServerDAO;
 
 /**
  * @author Jeroen Steenbeeke

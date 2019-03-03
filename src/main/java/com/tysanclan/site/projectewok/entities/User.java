@@ -17,48 +17,6 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
-import javax.annotation.Nullable;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.OrderBy;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.Where;
-
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
@@ -67,6 +25,15 @@ import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.rest.api.data.RestUser;
 import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.SerializableFunction;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Where;
+
+import javax.annotation.Nullable;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.*;
 
 /**
  * @author Jeroen Steenbeeke
@@ -89,8 +56,8 @@ public class User extends BaseDomainObject implements DomainObject {
 	/**
 	 * @author Jeroen Steenbeeke
 	 */
-	public static final class CaseInsensitiveUserComparator implements
-			Comparator<User>, Serializable {
+	public static final class CaseInsensitiveUserComparator
+			implements Comparator<User>, Serializable {
 		private static final long serialVersionUID = 1L;
 
 		@Override
@@ -99,19 +66,9 @@ public class User extends BaseDomainObject implements DomainObject {
 		}
 	}
 
-	public static final class Renderer implements IChoiceRenderer<User> {
-		private static final long serialVersionUID = 1L;
+	public static final int ITERATIONS = 25;
 
-		@Override
-		public Object getDisplayValue(User object) {
-			return object.getUsername();
-		}
-
-		@Override
-		public String getIdValue(User object, int index) {
-			return Long.toString(object.getId());
-		}
-	}
+	public static final int KEY_LENGTH = 32;
 
 	@Column
 	private String customTitle;
@@ -130,9 +87,6 @@ public class User extends BaseDomainObject implements DomainObject {
 	@Column(nullable = false)
 	private Date joinDate;
 
-	@Column(nullable = false)
-	private String password;
-
 	@Column
 	@Enumerated(EnumType.STRING)
 	private Rank rank;
@@ -141,7 +95,7 @@ public class User extends BaseDomainObject implements DomainObject {
 	private Rank oldRank;
 
 	@Column
-	@Type(type = "org.hibernate.type.StringClobType")
+
 	@Lob
 	private String signature;
 
@@ -178,7 +132,7 @@ public class User extends BaseDomainObject implements DomainObject {
 	private User endorses;
 
 	@OneToMany(mappedBy = "endorsesForSenate", fetch = FetchType.LAZY)
-	private Set<User> endorsedForSenateBy;
+	private Set<User> endorsedForSenateBy = new HashSet<>();
 
 	@OneToMany(mappedBy = "requestedBy", fetch = FetchType.LAZY)
 	private List<AchievementRequest> achievementRequests;
@@ -201,6 +155,9 @@ public class User extends BaseDomainObject implements DomainObject {
 	@Column
 	private Integer luckyScore;
 
+	@Column
+	private Integer bpm;
+
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)
 	private User mentor;
 
@@ -209,7 +166,7 @@ public class User extends BaseDomainObject implements DomainObject {
 	private List<User> pupils;
 
 	@OneToMany(mappedBy = "donator", fetch = FetchType.LAZY)
-	private List<Donation> donations;
+	private List<Donation> donations = new LinkedList<>();
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
 	private List<UnreadForumPost> unreadForumPosts;
@@ -217,7 +174,7 @@ public class User extends BaseDomainObject implements DomainObject {
 	@Column(nullable = false, columnDefinition = "boolean default false not null")
 	private boolean bugReportMaster;
 
-	@Column(nullable = true)
+	@Column
 	private String paypalAddress;
 
 	@OneToMany(mappedBy = "requester", fetch = FetchType.LAZY)
@@ -228,6 +185,12 @@ public class User extends BaseDomainObject implements DomainObject {
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private List<Activation> activations;
+
+	@Column(nullable = false)
+	private String argon2hash;
+
+	@Column(nullable = false)
+	private boolean legacyhash;
 
 	/**
 	 * @return the mentor
@@ -339,10 +302,6 @@ public class User extends BaseDomainObject implements DomainObject {
 		return joinDate;
 	}
 
-	public String getPassword() {
-		return password;
-	}
-
 	public Rank getRank() {
 		return rank;
 	}
@@ -377,10 +336,6 @@ public class User extends BaseDomainObject implements DomainObject {
 	 */
 	public void setJoinDate(Date joinDate) {
 		this.joinDate = joinDate;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	public void setRank(Rank rank) {
@@ -488,7 +443,7 @@ public class User extends BaseDomainObject implements DomainObject {
 
 	/**
 	 * Sets the Endorses of this User
-	 * 
+	 *
 	 * @param endorses
 	 *            The Endorses of this User
 	 */
@@ -505,7 +460,7 @@ public class User extends BaseDomainObject implements DomainObject {
 
 	/**
 	 * Sets the EndorsedBy of this User
-	 * 
+	 *
 	 * @param endorsedBy
 	 *            The EndorsedBy of this User
 	 */
@@ -552,7 +507,7 @@ public class User extends BaseDomainObject implements DomainObject {
 
 	/**
 	 * Sets the Profile of this User
-	 * 
+	 *
 	 * @param profile
 	 *            The Profile of this User
 	 */
@@ -569,7 +524,7 @@ public class User extends BaseDomainObject implements DomainObject {
 
 	/**
 	 * Sets the PenaltyPoints of this User
-	 * 
+	 *
 	 * @param penaltyPoints
 	 *            The PenaltyPoints of this User
 	 */
@@ -757,6 +712,30 @@ public class User extends BaseDomainObject implements DomainObject {
 
 	public void setSubscription(Subscription subscription) {
 		this.subscription = subscription;
+	}
+
+	public String getArgon2hash() {
+		return argon2hash;
+	}
+
+	public void setArgon2hash(String argon2hash) {
+		this.argon2hash = argon2hash;
+	}
+
+	public boolean isLegacyhash() {
+		return legacyhash;
+	}
+
+	public void setLegacyhash(boolean legacyhash) {
+		this.legacyhash = legacyhash;
+	}
+
+	public Integer getBpm() {
+		return bpm;
+	}
+
+	public void setBpm(Integer bpm) {
+		this.bpm = bpm;
 	}
 
 	/**

@@ -17,6 +17,8 @@
  */
 package com.tysanclan.site.projectewok;
 
+import com.tysanclan.site.projectewok.entities.Activation;
+import com.tysanclan.site.projectewok.entities.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -24,9 +26,6 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.tysanclan.site.projectewok.entities.Activation;
-import com.tysanclan.site.projectewok.entities.User;
 
 /**
  * @author Jeroen Steenbeeke

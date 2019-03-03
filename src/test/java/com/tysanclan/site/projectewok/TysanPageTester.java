@@ -1,39 +1,42 @@
 /**
  * Tysan Clan Website
  * Copyright (C) 2008-2013 Jeroen Steenbeeke and Ties van de Ven
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.tysanclan.site.projectewok;
 
+import com.jeroensteenbeeke.hyperion.solitary.InMemory;
+import org.apache.wicket.ThreadContext;
 import org.apache.wicket.protocol.http.mock.MockHttpServletRequest;
 import org.apache.wicket.protocol.http.mock.MockHttpSession;
 import org.apache.wicket.protocol.http.mock.MockServletContext;
 import org.apache.wicket.util.tester.WicketTester;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.orm.hibernate4.SessionFactoryUtils;
+import org.springframework.context.ApplicationContext;
+import org.springframework.orm.jpa.EntityManagerHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.RequestScope;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
 /**
  * @author Jeroen Steenbeeke
@@ -41,23 +44,35 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 public abstract class TysanPageTester {
 	private static WicketTester tester;
 
-	private SessionFactory sessionFactory;
+	private static InMemory.Handler handler;
 
 	private BeanFactory beanFactory;
+	private EntityManagerFactory emf;
 
 	@BeforeClass
-	public static void setUp() {
-		tester = WicketTesterProvider.INST.getTester();
-		tester.getRequestCycle();
+	public static void setUp() throws Exception {
+		System.setProperty("ewok.testmode", "true");
+		handler = InMemory.run("ewok").withContextPath("/tysantest")
+				.withoutShowingSql().atPort(8383).orElseThrow(
+						() -> new IllegalStateException(
+								"Could not start webserver"));
+
+		TysanApplication application = TysanApplicationReference.INSTANCE
+				.getApplication();
+		ThreadContext.setApplication(application);
+
+		tester = new WicketTester(application, false);
+	}
+
+	@AfterClass
+	public static void tearDown() throws Exception {
+		RequestContextHolder.resetRequestAttributes();
+
+		handler.terminate();
 	}
 
 	@Before
 	public void startRequest() {
-		ConfigurableBeanFactory configurableBeanFactory = (ConfigurableBeanFactory) TysanApplication
-				.getApplicationContext().getAutowireCapableBeanFactory();
-		// configurableBeanFactory.registerScope("session", new SessionScope());
-		configurableBeanFactory.registerScope("request", new RequestScope());
-		this.beanFactory = configurableBeanFactory;
 
 		MockServletContext sctx = new MockServletContext(
 				tester.getApplication(), "/src/main/webapp/");
@@ -67,24 +82,29 @@ public abstract class TysanPageTester {
 
 		RequestContextHolder.setRequestAttributes(attr);
 
-		sessionFactory = (SessionFactory) configurableBeanFactory
-				.getBean("sessionFactory");
+		ApplicationContext context = TysanApplication.get()
+				.getApplicationContext();
+		beanFactory = context.getAutowireCapableBeanFactory();
+		emf = context.getBean(EntityManagerFactory.class);
+		EntityManager em = context.getBean(EntityManager.class);
+		EntityManagerHolder emHolder = new EntityManagerHolder(em);
+		TransactionSynchronizationManager.bindResource(emf, emHolder);
 
-		Session session = sessionFactory.openSession();
-		TransactionSynchronizationManager.bindResource(sessionFactory, session);
+		setupAfterRequestStarted();
 	}
 
-	protected <T> T getBean(Class<T> beanClass) {
-		return beanFactory.getBean(beanClass);
+	protected void setupAfterRequestStarted() {
 	}
 
 	@After
 	public void endRequest() {
+		TransactionSynchronizationManager.unbindResource(emf);
+
 		RequestContextHolder.resetRequestAttributes();
-		Session session = (Session) TransactionSynchronizationManager
-				.unbindResource(sessionFactory);
-		SessionFactoryUtils.closeSession(session);
-		this.beanFactory = null;
+	}
+
+	protected <T> T getBean(Class<T> beanClass) {
+		return beanFactory.getBean(beanClass);
 	}
 
 	protected void logIn(Long userId) {

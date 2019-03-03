@@ -17,9 +17,15 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.math.BigDecimal;
-import java.util.Locale;
-
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
+import com.tysanclan.site.projectewok.beans.RoleService;
+import com.tysanclan.site.projectewok.entities.SubscriptionPayment;
+import com.tysanclan.site.projectewok.entities.SubscriptionPayment.UnpaidFilter;
+import com.tysanclan.site.projectewok.entities.dao.SubscriptionPaymentDAO;
+import com.tysanclan.site.projectewok.model.DollarSignModel;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.basic.Label;
@@ -30,15 +36,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.joda.time.DateTime;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
-import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
-import com.tysanclan.site.projectewok.beans.RoleService;
-import com.tysanclan.site.projectewok.entities.SubscriptionPayment;
-import com.tysanclan.site.projectewok.entities.SubscriptionPayment.UnpaidFilter;
-import com.tysanclan.site.projectewok.entities.dao.SubscriptionPaymentDAO;
-import com.tysanclan.site.projectewok.model.DollarSignModel;
+import java.util.Locale;
 
 @TysanMemberSecured
 public class SubscriptionPaymentPage extends AbstractMemberPage {
@@ -61,9 +59,10 @@ public class SubscriptionPaymentPage extends AbstractMemberPage {
 			throw new RestartResponseAtInterceptPageException(p);
 		}
 
-		add(new ListView<SubscriptionPayment>("requests",
-				ModelMaker.wrap(ImmutableList.copyOf(Iterables.filter(getUser()
-						.getPayments(), new UnpaidFilter())))) {
+		add(new ListView<SubscriptionPayment>("requests", ModelMaker
+				.wrap(ImmutableList.copyOf(Iterables
+						.filter(getUser().getPayments(),
+								new UnpaidFilter())))) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -73,39 +72,32 @@ public class SubscriptionPaymentPage extends AbstractMemberPage {
 				DateTime dt = new DateTime(payment.getDate());
 				String dateTimeStr = dt.toString("dd MMMM yyyy", Locale.US);
 
-				item.add(new Label("header", "Subscription Payment - "
-						+ dateTimeStr));
+				item.add(new Label("header",
+						"Subscription Payment - " + dateTimeStr));
 				item.add(new Label("amount", new DollarSignModel(
-						new Model<BigDecimal>(payment.getSubscription()
-								.getAmount()))));
+						new Model<>(payment.getSubscription().getAmount()))));
 
-				item.add(new HiddenField<String>(
-						"paypalAddress",
-						new Model<String>(
-								roleService.getTreasurer() != null ? roleService
-										.getTreasurer().getPaypalAddress()
-										: null)).add(AttributeModifier.replace(
-						"name", "business")));
-				item.add(new HiddenField<String>("itemname", new Model<String>(
+				item.add(new HiddenField<>("paypalAddress", new Model<>(
+						roleService.getTreasurer() != null ?
+								roleService.getTreasurer().getPaypalAddress() :
+								null))
+						.add(AttributeModifier.replace("name", "business")));
+				item.add(new HiddenField<>("itemname", new Model<>(
 						"The Tysan Clan - Subscription Payment - "
 								+ dateTimeStr)));
 
-				item.add(new HiddenField<String>("itemdesc", new Model<String>(
+				item.add(new HiddenField<>("itemdesc", new Model<>(
 						"The Tysan Clan - Subscription Payment - "
-								+ dateTimeStr)).add(AttributeModifier.replace(
-						"name", "item_name"))); //
-				item.add(new HiddenField<String>("amount2", new Model<String>(
+								+ dateTimeStr)).add(AttributeModifier
+						.replace("name", "item_name"))); //
+				item.add(new HiddenField<>("amount2", new Model<>(
 						payment.getSubscription().getAmount().toString()))
 						.add(AttributeModifier.replace("name", "amount")));
-				item.add(new HiddenField<String>("returnUrl",
-						new Model<String>(
-								"https://www.tysanclan.com/processSubscriptionPayment/"
-										+ payment.getId()
-										+ "/"
-										+ paymentDAO
-												.getConfirmationKey(payment)
-										+ "/")).add(AttributeModifier.replace(
-						"name", "return")));
+				item.add(new HiddenField<>("returnUrl", new Model<>(
+						"https://www.tysanclan.com/processSubscriptionPayment/"
+								+ payment.getId() + "/" + paymentDAO
+								.getConfirmationKey(payment) + "/"))
+						.add(AttributeModifier.replace("name", "return")));
 			}
 		});
 	}

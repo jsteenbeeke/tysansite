@@ -23,14 +23,14 @@ import org.apache.wicket.SharedResources;
  * Resource provider that registers Wicket resources on application startup.
  * This is a convenience interface - implementations of this interface can be
  * autowired and use SpringBean annotations
- * 
+ *
  * @author Jeroen Steenbeeke
  */
 public interface StartupResourceProvider {
 	/**
 	 * Called to let the provider register resources with the SharedResources
 	 * instance
-	 * 
+	 *
 	 * @param resources
 	 *            The resources to add this provider's resources to
 	 */

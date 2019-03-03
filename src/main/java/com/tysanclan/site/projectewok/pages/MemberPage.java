@@ -17,16 +17,22 @@
  */
 package com.tysanclan.site.projectewok.pages;
 
-import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
-
-import javax.servlet.http.HttpServletResponse;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.site.projectewok.TysanPage;
+import com.tysanclan.site.projectewok.beans.ForumService;
+import com.tysanclan.site.projectewok.components.*;
+import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
+import com.tysanclan.site.projectewok.entities.*;
+import com.tysanclan.site.projectewok.entities.dao.ForumPostDAO;
+import com.tysanclan.site.projectewok.entities.dao.GroupDAO;
+import com.tysanclan.site.projectewok.entities.dao.RoleDAO;
+import com.tysanclan.site.projectewok.entities.dao.UserDAO;
+import com.tysanclan.site.projectewok.entities.filter.ForumPostFilter;
+import com.tysanclan.site.projectewok.entities.filter.RoleFilter;
+import com.tysanclan.site.projectewok.pages.member.MessageListPage;
+import com.tysanclan.site.projectewok.util.DateUtil;
+import com.tysanclan.site.projectewok.util.MemberUtil;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -38,36 +44,9 @@ import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
-import com.tysanclan.rest.api.data.Rank;
-import com.tysanclan.site.projectewok.TysanPage;
-import com.tysanclan.site.projectewok.beans.ForumService;
-import com.tysanclan.site.projectewok.components.AchievementsPanel;
-import com.tysanclan.site.projectewok.components.AutoGroupLink;
-import com.tysanclan.site.projectewok.components.AutoThreadLink;
-import com.tysanclan.site.projectewok.components.ChancellorElectedSincePanel;
-import com.tysanclan.site.projectewok.components.DateTimeLabel;
-import com.tysanclan.site.projectewok.components.IconLink;
-import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
-import com.tysanclan.site.projectewok.components.RankIcon;
-import com.tysanclan.site.projectewok.components.SenateElectedSincePanel;
-import com.tysanclan.site.projectewok.entities.ForumPost;
-import com.tysanclan.site.projectewok.entities.GameAccount;
-import com.tysanclan.site.projectewok.entities.Group;
-import com.tysanclan.site.projectewok.entities.Profile;
-import com.tysanclan.site.projectewok.entities.Role;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.UserGameRealm;
-import com.tysanclan.site.projectewok.entities.dao.ForumPostDAO;
-import com.tysanclan.site.projectewok.entities.dao.GroupDAO;
-import com.tysanclan.site.projectewok.entities.dao.RoleDAO;
-import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.ForumPostFilter;
-import com.tysanclan.site.projectewok.entities.dao.filters.GroupFilter;
-import com.tysanclan.site.projectewok.entities.dao.filters.RoleFilter;
-import com.tysanclan.site.projectewok.pages.member.MessageListPage;
-import com.tysanclan.site.projectewok.util.DateUtil;
-import com.tysanclan.site.projectewok.util.MemberUtil;
+import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @author Jeroen Steenbeeke
@@ -110,18 +89,17 @@ public class MemberPage extends TysanPage {
 		MemberPageParams parameters;
 
 		try {
-			parameters = requiredLong("userid").forParameters(params).toClass(
-					MemberPageParams.class);
+			parameters = requiredLong("userid").forParameters(params)
+					.toClass(MemberPageParams.class);
 		} catch (PageParameterExtractorException e) {
 			throw new AbortWithHttpErrorCodeException(
 					HttpServletResponse.SC_NOT_FOUND);
 		}
 
-		User u = dao.get(parameters.getUserId());
-
-		if (u == null || !MemberUtil.isMember(u)) {
-			throw new RestartResponseAtInterceptPageException(RosterPage.class);
-		}
+		User u = dao.load(parameters.getUserId()).filter(MemberUtil::isMember)
+				.getOrElseThrow(
+						() -> new RestartResponseAtInterceptPageException(
+								RosterPage.class));
 
 		initComponents(u);
 	}
@@ -132,19 +110,22 @@ public class MemberPage extends TysanPage {
 		TimeZone tz = TimeZone.getTimeZone("America/New_York");
 		SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy", Locale.US);
 		sdf.setTimeZone(tz);
-		add(new Label("membersince", new Model<String>(sdf.format(u
-				.getJoinDate()))));
+		add(new Label("membersince",
+				new Model<String>(sdf.format(u.getJoinDate()))));
 
-		add(new Label("lastlogin", new Model<String>(
-				u.getLastAction() != null ? sdf.format(u.getLastAction())
-						: null)));
+		add(new Label("lastlogin", new Model<String>(u.getLastAction() != null ?
+				sdf.format(u.getLastAction()) :
+				null)));
 
 		Profile profile = u.getProfile();
 
-		add(new Label("realname", profile != null
-				&& profile.getRealName() != null ? profile.getRealName() : "")
-				.setVisible(profile != null && profile.getRealName() != null
-						&& getUser() != null && MemberUtil.isMember(getUser())));
+		add(new Label("realname",
+				profile != null && profile.getRealName() != null ?
+						profile.getRealName() :
+						"").setVisible(
+				profile != null && profile.getRealName() != null
+						&& getUser() != null && MemberUtil
+						.isMember(getUser())));
 
 		WebMarkupContainer photo = new WebMarkupContainer("photo");
 		photo.setVisible(false);
@@ -153,46 +134,42 @@ public class MemberPage extends TysanPage {
 
 		if (profile != null && profile.getPhotoURL() != null) {
 			photo.add(AttributeModifier.replace("src", profile.getPhotoURL()));
-			photo.setVisible(profile.isPhotoPublic()
-					|| (getUser() != null && MemberUtil.isMember(getUser())));
+			photo.setVisible(
+					profile.isPhotoPublic() || (getUser() != null && MemberUtil
+							.isMember(getUser())));
 		}
 
-		add(new Label(
-				"age",
-				profile != null && profile.getBirthDate() != null ? Integer
-						.toString(DateUtil.calculateAge(profile.getBirthDate()))
-						: "Unknown").setVisible(profile != null
-				&& profile.getBirthDate() != null && u.getRank() != Rank.HERO));
+		add(new Label("age", profile != null && profile.getBirthDate() != null ?
+				Integer.toString(
+						DateUtil.calculateAge(profile.getBirthDate())) :
+				"Unknown").setVisible(
+				profile != null && profile.getBirthDate() != null
+						&& u.getRank() != Rank.HERO));
 		add(new Label("username", u.getUsername()));
 
 		WebMarkupContainer aboutMe = new WebMarkupContainer("aboutme");
 
-		aboutMe.add(new Label("publicDescription", profile != null
-				&& profile.getPublicDescription() != null ? profile
-				.getPublicDescription() : "").setEscapeModelStrings(false)
-				.setVisible(
-						profile != null
-								&& profile.getPublicDescription() != null));
+		aboutMe.add(new Label("publicDescription",
+				profile != null && profile.getPublicDescription() != null ?
+						profile.getPublicDescription() :
+						"").setEscapeModelStrings(false).setVisible(
+				profile != null && profile.getPublicDescription() != null));
 
-		aboutMe.add(new Label("privateDescription", profile != null
-				&& profile.getPrivateDescription() != null ? profile
-				.getPrivateDescription() : "").setEscapeModelStrings(false)
-				.setVisible(
-						profile != null
-								&& profile.getPrivateDescription() != null
-								&& getUser() != null
-								&& MemberUtil.isMember(getUser())));
+		aboutMe.add(new Label("privateDescription",
+				profile != null && profile.getPrivateDescription() != null ?
+						profile.getPrivateDescription() :
+						"").setEscapeModelStrings(false).setVisible(
+				profile != null && profile.getPrivateDescription() != null
+						&& getUser() != null && MemberUtil
+						.isMember(getUser())));
 
-		add(aboutMe
-				.setVisible(profile != null
-						&& (profile.getPublicDescription() != null || (profile
-								.getPrivateDescription() != null
+		add(aboutMe.setVisible(
+				profile != null && (profile.getPublicDescription() != null || (
+						profile.getPrivateDescription() != null
 								&& getUser() != null && MemberUtil
-									.isMember(getUser())))));
+								.isMember(getUser())))));
 
-		GroupFilter gfilter = new GroupFilter();
-		gfilter.addIncludedMember(u);
-		List<Group> groups = groupDAO.findByFilter(gfilter);
+		List<Group> groups = groupDAO.getMemberGroups(u);
 
 		add(new ListView<Group>("groups", ModelMaker.wrap(groups)) {
 			private static final long serialVersionUID = 1L;
@@ -209,11 +186,11 @@ public class MemberPage extends TysanPage {
 		}.setVisible(!groups.isEmpty()));
 
 		RoleFilter rfilter = new RoleFilter();
-		rfilter.setUser(u);
+		rfilter.assignedTo(u);
 
 		add(new Label("usernameroles", u.getUsername()));
 
-		List<Role> roles = roleDAO.findByFilter(rfilter);
+		List<Role> roles = roleDAO.findByFilter(rfilter).toJavaList();
 
 		add(new ListView<Role>("roles", ModelMaker.wrap(roles)) {
 			private static final long serialVersionUID = 1L;
@@ -245,11 +222,11 @@ public class MemberPage extends TysanPage {
 		}
 
 		ForumPostFilter filter = new ForumPostFilter();
-		filter.setShadow(false);
-		filter.setUser(u);
-		filter.addOrderBy("time", false);
+		filter.shadow(false);
+		filter.poster(u);
+		filter.time().orderBy(false);
 
-		List<ForumPost> posts = forumPostDAO.findByFilter(filter);
+		List<ForumPost> posts = forumPostDAO.findByFilter(filter).toJavaList();
 
 		posts = forumService.filterPosts(getUser(), true, posts);
 
@@ -292,8 +269,8 @@ public class MemberPage extends TysanPage {
 			}
 		});
 
-		container.add(new ListView<UserGameRealm>("games", ModelMaker
-				.wrap(played)) {
+		container.add(new ListView<UserGameRealm>("games",
+				ModelMaker.wrap(played)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -328,11 +305,12 @@ public class MemberPage extends TysanPage {
 		add(new Label("twitterhead", u.getUsername() + " on Twitter")
 				.setVisible(twitviz));
 
-		String url = "http://twitter.com/"
-				+ (twitviz && profile != null ? profile.getTwitterUID() : "");
+		String url = "http://twitter.com/" + (twitviz && profile != null ?
+				profile.getTwitterUID() :
+				"");
 
-		add(new Label("twitterprofile", url).add(AttributeModifier.replace(
-				"href", url)));
+		add(new Label("twitterprofile", url)
+				.add(AttributeModifier.replace("href", url)));
 
 		add(new AchievementsPanel("achievements", u));
 
@@ -344,9 +322,8 @@ public class MemberPage extends TysanPage {
 					public void onClick() {
 						setResponsePage(new MessageListPage(getModelObject()));
 					}
-				})
-				.setText("Send Message")
-				.newInstance("sendMessage")
-				.setVisible(getUser() != null && MemberUtil.isMember(getUser())));
+				}).setText("Send Message").newInstance("sendMessage")
+				.setVisible(
+						getUser() != null && MemberUtil.isMember(getUser())));
 	}
 }

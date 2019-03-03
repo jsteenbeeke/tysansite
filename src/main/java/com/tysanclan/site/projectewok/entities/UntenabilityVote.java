@@ -17,35 +17,22 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Entity
 @Table(indexes = { //
-@Index(name = "IDX_UntenabilityVote_Regulation", columnList = "regulation_id") })
+		@Index(name = "IDX_UntenabilityVote_Regulation", columnList = "regulation_id") })
 @Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class UntenabilityVote extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;
@@ -102,7 +89,7 @@ public class UntenabilityVote extends BaseDomainObject {
 
 	/**
 	 * Sets the Regulation of this UntenabilityVote
-	 * 
+	 *
 	 * @param regulation
 	 *            The Regulation of this UntenabilityVote
 	 */
@@ -119,7 +106,7 @@ public class UntenabilityVote extends BaseDomainObject {
 
 	/**
 	 * Sets the Start of this UntenabilityVote
-	 * 
+	 *
 	 * @param start
 	 *            The Start of this UntenabilityVote
 	 */
@@ -136,7 +123,7 @@ public class UntenabilityVote extends BaseDomainObject {
 
 	/**
 	 * Sets the Choices of this UntenabilityVote
-	 * 
+	 *
 	 * @param choices
 	 *            The Choices of this UntenabilityVote
 	 */

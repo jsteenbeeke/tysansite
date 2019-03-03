@@ -17,27 +17,14 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
+import org.hibernate.annotations.Cache;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Cache;
-
-import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 
 /**
  * @author Jeroen Steenbeeke
@@ -97,7 +84,7 @@ public class AcceptanceVote extends BaseDomainObject {
 
 	/**
 	 * Sets the TrialMember of this AcceptanceVote
-	 * 
+	 *
 	 * @param trialMember
 	 *            The TrialMember of this AcceptanceVote
 	 */
@@ -114,7 +101,7 @@ public class AcceptanceVote extends BaseDomainObject {
 
 	/**
 	 * Sets the Verdicts of this AcceptanceVote
-	 * 
+	 *
 	 * @param verdicts
 	 *            The Verdicts of this AcceptanceVote
 	 */

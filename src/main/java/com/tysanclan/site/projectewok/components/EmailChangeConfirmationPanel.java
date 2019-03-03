@@ -17,8 +17,13 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import java.util.List;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.beans.UserService;
+import com.tysanclan.site.projectewok.entities.EmailChangeConfirmation;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.dao.EmailChangeConfirmationDAO;
+import com.tysanclan.site.projectewok.entities.filter.EmailChangeConfirmationFilter;
+import io.vavr.collection.Seq;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
@@ -28,33 +33,24 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
-import com.tysanclan.site.projectewok.beans.UserService;
-import com.tysanclan.site.projectewok.entities.EmailChangeConfirmation;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.EmailChangeConfirmationDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.EmailChangeConfirmationFilter;
-
 /**
  * @author Jeroen Steenbeeke
  */
-public abstract class EmailChangeConfirmationPanel extends
-        Panel {
+public abstract class EmailChangeConfirmationPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
 	private EmailChangeConfirmationDAO emailChangeConfirmationDAO;
 
-	
 	public EmailChangeConfirmationPanel(String id, User user) {
 		super(id);
 
 		EmailChangeConfirmationFilter filter = new EmailChangeConfirmationFilter();
-		filter.setUser(user);
-		filter.addOrderBy("id", true);
+		filter.user(user);
+		filter.id().orderBy(true);
 
-		List<EmailChangeConfirmation> confirmations = emailChangeConfirmationDAO
-		        .findByFilter(filter);
+		Seq<EmailChangeConfirmation> confirmations = emailChangeConfirmationDAO
+				.findByFilter(filter);
 
 		EmailChangeConfirmation confirmation = null;
 
@@ -65,8 +61,7 @@ public abstract class EmailChangeConfirmationPanel extends
 		}
 
 		Form<EmailChangeConfirmation> confirmationForm = new Form<EmailChangeConfirmation>(
-		        "confirmForm", ModelMaker
-		                .wrap(confirmation)) {
+				"confirmForm", ModelMaker.wrap(confirmation)) {
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean
@@ -86,14 +81,10 @@ public abstract class EmailChangeConfirmationPanel extends
 				TextField<String> codeField = (TextField<String>) get("code");
 				String code = codeField.getModelObject();
 
-				if (code.equals(conf
-				        .getActivationKey())) {
+				if (code.equals(conf.getActivationKey())) {
 
-					userService.setUserMail(conf
-					        .getUser(), conf
-					        .getEmail());
-					_emailChangeConfirmationDAO
-					        .delete(conf);
+					userService.setUserMail(conf.getUser(), conf.getEmail());
+					_emailChangeConfirmationDAO.delete(conf);
 					onConfirmed();
 
 				} else {
@@ -106,31 +97,26 @@ public abstract class EmailChangeConfirmationPanel extends
 		add(confirmationForm);
 
 		confirmationForm.add(new Label("mail",
-		        confirmation != null ? confirmation
-		                .getEmail() : ""));
-		confirmationForm.add(new TextField<String>("code",
-		        new Model<String>("")));
+				confirmation != null ? confirmation.getEmail() : ""));
 		confirmationForm
-		        .add(new AjaxLink<EmailChangeConfirmation>(
-		                "cancel", ModelMaker
-		                        .wrap(confirmation)) {
-			        private static final long serialVersionUID = 1L;
+				.add(new TextField<String>("code", new Model<String>("")));
+		confirmationForm.add(new AjaxLink<EmailChangeConfirmation>("cancel",
+				ModelMaker.wrap(confirmation)) {
+			private static final long serialVersionUID = 1L;
 
-			        @SpringBean
-			        private EmailChangeConfirmationDAO _emailChangeConfirmationDAO;
+			@SpringBean
+			private EmailChangeConfirmationDAO _emailChangeConfirmationDAO;
 
-			        /**
-			         * @see org.apache.wicket.ajax.markup.html.AjaxLink#onClick(org.apache.wicket.ajax.AjaxRequestTarget)
-			         */
-			        @Override
-			        public void onClick(
-			                AjaxRequestTarget target) {
-				        EmailChangeConfirmation conf = (EmailChangeConfirmation) getModelObject();
-				        _emailChangeConfirmationDAO
-				                .delete(conf);
-				        onCancel();
-			        }
-		        });
+			/**
+			 * @see org.apache.wicket.ajax.markup.html.AjaxLink#onClick(org.apache.wicket.ajax.AjaxRequestTarget)
+			 */
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				EmailChangeConfirmation conf = (EmailChangeConfirmation) getModelObject();
+				_emailChangeConfirmationDAO.delete(conf);
+				onCancel();
+			}
+		});
 	}
 
 	public abstract void onConfirmed();

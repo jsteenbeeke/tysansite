@@ -1,9 +1,8 @@
 package com.tysanclan.site.projectewok.pages;
 
+import com.tysanclan.site.projectewok.TysanPageTester;
 import org.apache.wicket.Page;
 import org.junit.Test;
-
-import com.tysanclan.site.projectewok.TysanPageTester;
 
 public class PublicPagesTest extends TysanPageTester {
 

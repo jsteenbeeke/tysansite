@@ -17,34 +17,21 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
+import org.hibernate.annotations.Cache;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Cache;
-
-import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Entity
 @Table(indexes = { //
-@Index(name = "IDX_IMPEACHMENT_CHANCELLOR", columnList = "chancellor_id"),
+		@Index(name = "IDX_IMPEACHMENT_CHANCELLOR", columnList = "chancellor_id"),
 		@Index(name = "IDX_IMPEACHMENT_INITIATOR", columnList = "initiator_id") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class Impeachment extends BaseDomainObject {
@@ -105,7 +92,7 @@ public class Impeachment extends BaseDomainObject {
 
 	/**
 	 * Sets the Votes of this Impeachment
-	 * 
+	 *
 	 * @param votes
 	 *            The Votes of this Impeachment
 	 */
@@ -122,7 +109,7 @@ public class Impeachment extends BaseDomainObject {
 
 	/**
 	 * Sets the Chancellor of this Impeachment
-	 * 
+	 *
 	 * @param chancellor
 	 *            The Chancellor of this Impeachment
 	 */
@@ -139,7 +126,7 @@ public class Impeachment extends BaseDomainObject {
 
 	/**
 	 * Sets the Initiator of this Impeachment
-	 * 
+	 *
 	 * @param initiator
 	 *            The Initiator of this Impeachment
 	 */
@@ -156,7 +143,7 @@ public class Impeachment extends BaseDomainObject {
 
 	/**
 	 * Sets the Start of this Impeachment
-	 * 
+	 *
 	 * @param start
 	 *            The Start of this Impeachment
 	 */

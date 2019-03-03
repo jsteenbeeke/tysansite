@@ -17,10 +17,7 @@
  */
 package com.tysanclan.site.projectewok.pages.forum;
 
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.auth.TysanLoginSecured;
 import com.tysanclan.site.projectewok.beans.ForumService;
@@ -30,6 +27,8 @@ import com.tysanclan.site.projectewok.entities.ForumPost;
 import com.tysanclan.site.projectewok.entities.dao.ForumDAO;
 import com.tysanclan.site.projectewok.pages.ForumPage;
 import com.tysanclan.site.projectewok.pages.ForumThreadPage;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 @TysanLoginSecured
 public class ConfirmForumPostDeletePage extends TysanPage {
@@ -51,19 +50,19 @@ public class ConfirmForumPostDeletePage extends TysanPage {
 			@Override
 			protected void onSubmit() {
 
-				boolean threadExists = getModelObject().getThread().getPosts()
-						.size() > 1;
+				boolean threadExists =
+						getModelObject().getThread().getPosts().size() > 1;
 
 				forumService.deletePost(getModelObject(),
-						ConfirmForumPostDeletePage.this.getTysanSession()
-								.getUser());
+						ConfirmForumPostDeletePage.this.getUser());
 				if (threadExists) {
-					setResponsePage(new ForumThreadPage(getModelObject()
-							.getThread().getId(), 1, false));
+					setResponsePage(new ForumThreadPage(
+							getModelObject().getThread().getId(), 1, false));
 				} else {
-					setResponsePage(new ForumPage(
-							forumDAO.load(getModelObject().getThread()
-									.getForum().getId())));
+					forumDAO.load(
+							getModelObject().getThread().getForum().getId())
+							.forEach(forum -> setResponsePage(
+									new ForumPage(forum)));
 				}
 			}
 		};

@@ -17,38 +17,28 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
+import org.hibernate.annotations.Cache;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Cache;
-
-import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Entity
 @Table(indexes = { //
-		@Index(name = "IDX_JOINAPPLICATION_APPLICANT", columnList = "applicant_id"), //
-		@Index(name = "IDX_JOINAPPLICATION_MENTOR", columnList = "mentor_id"), //
-		@Index(name = "IDX_JOINAPPLICATION_JOINTHREAD", columnList = "joinThread_id"), //
-		@Index(name = "IDX_JOINAPPLICATION_PRIMARYREALM", columnList = "primaryRealm_id"), //
+		@Index(name = "IDX_JOINAPPLICATION_APPLICANT", columnList = "applicant_id"),
+		//
+		@Index(name = "IDX_JOINAPPLICATION_MENTOR", columnList = "mentor_id"),
+		//
+		@Index(name = "IDX_JOINAPPLICATION_JOINTHREAD", columnList = "joinThread_id"),
+		//
+		@Index(name = "IDX_JOINAPPLICATION_PRIMARYREALM", columnList = "primaryRealm_id"),
+		//
 		@Index(name = "IDX_JOINAPPLICATION_PRIMARYGAME", columnList = "primaryGame_id")
 
 })
@@ -120,7 +110,7 @@ public class JoinApplication extends BaseDomainObject {
 
 	/**
 	 * Sets the Applicant of this JoinApplication
-	 * 
+	 *
 	 * @param applicant
 	 *            The Applicant of this JoinApplication
 	 */
@@ -137,7 +127,7 @@ public class JoinApplication extends BaseDomainObject {
 
 	/**
 	 * Sets the Mentor of this JoinApplication
-	 * 
+	 *
 	 * @param mentor
 	 *            The Mentor of this JoinApplication
 	 */
@@ -154,7 +144,7 @@ public class JoinApplication extends BaseDomainObject {
 
 	/**
 	 * Sets the Verdicts of this JoinApplication
-	 * 
+	 *
 	 * @param verdicts
 	 *            The Verdicts of this JoinApplication
 	 */
@@ -171,7 +161,7 @@ public class JoinApplication extends BaseDomainObject {
 
 	/**
 	 * Sets the JoinThread of this JoinApplication
-	 * 
+	 *
 	 * @param joinThread
 	 *            The JoinThread of this JoinApplication
 	 */
@@ -188,7 +178,7 @@ public class JoinApplication extends BaseDomainObject {
 
 	/**
 	 * Sets the StartDate of this JoinApplication
-	 * 
+	 *
 	 * @param startDate
 	 *            The StartDate of this JoinApplication
 	 */

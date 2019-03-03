@@ -23,6 +23,6 @@ import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
 public class MockEventBroker implements IEventDispatcher {
 	@Override
 	public void dispatchEvent(Event<?> event) {
-	
+
 	}
 }

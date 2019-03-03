@@ -17,23 +17,8 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
-import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.IDetachable;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.NaiveRenderer;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.GameService;
@@ -44,7 +29,18 @@ import com.tysanclan.site.projectewok.entities.Group;
 import com.tysanclan.site.projectewok.entities.GroupCreationRequest;
 import com.tysanclan.site.projectewok.entities.Realm;
 import com.tysanclan.site.projectewok.entities.dao.GroupCreationRequestDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.GroupCreationRequestFilter;
+import com.tysanclan.site.projectewok.entities.filter.GroupCreationRequestFilter;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.*;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.IDetachable;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -61,7 +57,7 @@ public class CreateGroupPage extends AbstractMemberPage {
 	private GroupCreationRequestDAO groupCreationRequestDAO;
 
 	/**
-	 * 
+	 *
 	 */
 	public CreateGroupPage() {
 		super("Create Group");
@@ -73,13 +69,14 @@ public class CreateGroupPage extends AbstractMemberPage {
 
 	private void addPendingRequests() {
 		GroupCreationRequestFilter filter = new GroupCreationRequestFilter();
-		filter.setRequester(getUser());
+		filter.requester(getUser());
 
 		List<GroupCreationRequest> requests = groupCreationRequestDAO
-				.findByFilter(filter);
+				.findByFilter(filter).asJava();
 
-		String intro = (requests.size() == 0) ? "You have no pending group creation requests"
-				: "You have " + requests.size()
+		String intro = (requests.size() == 0) ?
+				"You have no pending group creation requests" :
+				"You have " + requests.size()
 						+ " pending group creation requests:";
 		add(new Label("pendingtext", intro));
 		add(new ListView<GroupCreationRequest>("requests",
@@ -90,9 +87,9 @@ public class CreateGroupPage extends AbstractMemberPage {
 			protected void populateItem(ListItem<GroupCreationRequest> item) {
 				GroupCreationRequest request = item.getModelObject();
 				item.add(new Label("name", request.getName()));
-				item.add(new Label("type",
-						request.getGame() == null ? "Social Group"
-								: "Gaming Group"));
+				item.add(new Label("type", request.getGame() == null ?
+						"Social Group" :
+						"Gaming Group"));
 				item.add(new Label("description", request.getDescription())
 						.setEscapeModelStrings(false));
 				item.add(new Label("motivation", request.getMotivation())
@@ -105,7 +102,7 @@ public class CreateGroupPage extends AbstractMemberPage {
 	}
 
 	/**
-	 	 */
+	 */
 	private Form<Group> createSocialGroupForm() {
 		Form<Group> socialGroupForm = new Form<Group>("createsocialgroupform") {
 			private static final long serialVersionUID = 1L;
@@ -120,35 +117,37 @@ public class CreateGroupPage extends AbstractMemberPage {
 			@Override
 			protected void onSubmit() {
 				TextField<String> nameField = (TextField<String>) get("name");
-				TextArea<String> descriptionArea = (TextArea<String>) get("publicdescription");
-				TextArea<String> motivationArea = (TextArea<String>) get("motivation");
+				TextArea<String> descriptionArea = (TextArea<String>) get(
+						"publicdescription");
+				TextArea<String> motivationArea = (TextArea<String>) get(
+						"motivation");
 
 				String name = nameField.getModelObject();
 				String description = descriptionArea.getModelObject();
 				String motivation = motivationArea.getModelObject();
 
-				groupService.createSocialGroupRequest(getUser(), name,
-						description, motivation);
+				groupService
+						.createSocialGroupRequest(getUser(), name, description,
+								motivation);
 
 				setResponsePage(new CreateGroupPage());
 			}
 
 		};
 
-		socialGroupForm
-				.add(new TextField<String>("name", new Model<String>(""))
-						.setRequired(true));
+		socialGroupForm.add(new TextField<String>("name", new Model<String>(""))
+				.setRequired(true));
 
 		socialGroupForm.add(new BBCodeTextArea("publicdescription", "")
 				.setRequired(true));
-		socialGroupForm.add(new BBCodeTextArea("motivation", "")
-				.setRequired(true));
+		socialGroupForm
+				.add(new BBCodeTextArea("motivation", "").setRequired(true));
 
 		return socialGroupForm;
 	}
 
 	/**
-	 	 */
+	 */
 	private Form<Group> createGamingGroupForm() {
 		Form<Group> gamingGroupForm = new Form<Group>("creategaminggroupform") {
 			private static final long serialVersionUID = 1L;
@@ -163,9 +162,12 @@ public class CreateGroupPage extends AbstractMemberPage {
 			@Override
 			protected void onSubmit() {
 				TextField<String> nameField = (TextField<String>) get("name");
-				TextArea<String> descriptionArea = (TextArea<String>) get("publicdescription");
-				TextArea<String> motivationArea = (TextArea<String>) get("motivation");
-				DropDownChoice<GameRealm> gameGroup = (DropDownChoice<GameRealm>) get("gamerealm");
+				TextArea<String> descriptionArea = (TextArea<String>) get(
+						"publicdescription");
+				TextArea<String> motivationArea = (TextArea<String>) get(
+						"motivation");
+				DropDownChoice<GameRealm> gameGroup = (DropDownChoice<GameRealm>) get(
+						"gamerealm");
 
 				String name = nameField.getModelObject();
 				String description = descriptionArea.getModelObject();
@@ -181,8 +183,9 @@ public class CreateGroupPage extends AbstractMemberPage {
 				} else if (motivation.isEmpty()) {
 					error("Motivation must not be empty");
 				} else {
-					groupService.createGamingGroupRequest(getUser(), game,
-							realm, name, description, motivation);
+					groupService
+							.createGamingGroupRequest(getUser(), game, realm,
+									name, description, motivation);
 
 					setResponsePage(new CreateGroupPage());
 				}
@@ -216,14 +219,13 @@ public class CreateGroupPage extends AbstractMemberPage {
 				new Model<GameRealm>(null), grlms, new GameRealmRenderer())
 				.setRequired(true));
 
-		gamingGroupForm
-				.add(new TextField<String>("name", new Model<String>(""))
-						.setRequired(true));
+		gamingGroupForm.add(new TextField<String>("name", new Model<String>(""))
+				.setRequired(true));
 
 		gamingGroupForm.add(new BBCodeTextArea("publicdescription", "")
 				.setRequired(true));
-		gamingGroupForm.add(new BBCodeTextArea("motivation", "")
-				.setRequired(true));
+		gamingGroupForm
+				.add(new BBCodeTextArea("motivation", "").setRequired(true));
 
 		return gamingGroupForm;
 	}
@@ -235,7 +237,7 @@ public class CreateGroupPage extends AbstractMemberPage {
 		private IModel<Realm> realmModel;
 
 		/**
-		 * 
+		 *
 		 */
 		public GameRealm(Game game, Realm realm) {
 			this.gameModel = ModelMaker.wrap(game);
@@ -261,8 +263,8 @@ public class CreateGroupPage extends AbstractMemberPage {
 		}
 	}
 
-	private static class GameRealmRenderer implements
-			IChoiceRenderer<GameRealm> {
+	private static class GameRealmRenderer
+			implements IChoiceRenderer<GameRealm>, NaiveRenderer<GameRealm> {
 		private static final long serialVersionUID = 1L;
 
 		/**
@@ -270,8 +272,8 @@ public class CreateGroupPage extends AbstractMemberPage {
 		 */
 		@Override
 		public Object getDisplayValue(GameRealm object) {
-			return object.getGame().getName() + " on "
-					+ object.getRealm().getName();
+			return object.getGame().getName() + " on " + object.getRealm()
+					.getName();
 		}
 
 		/**

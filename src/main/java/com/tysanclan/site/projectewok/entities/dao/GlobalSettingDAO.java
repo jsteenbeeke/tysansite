@@ -17,15 +17,19 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.GlobalSetting;
 import com.tysanclan.site.projectewok.entities.GlobalSetting.GlobalSettings;
+import com.tysanclan.site.projectewok.entities.filter.GlobalSettingFilter;
+import io.vavr.control.Option;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface GlobalSettingDAO extends EwokDAO<GlobalSetting> {
+public interface GlobalSettingDAO
+		extends DAO<GlobalSetting, GlobalSettingFilter> {
+	Option<GlobalSetting> get(String id);
 
-	public GlobalSetting getGlobalSetting(GlobalSettings id);
+	GlobalSetting getGlobalSetting(GlobalSettings id);
 }

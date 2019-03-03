@@ -17,31 +17,20 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.GroupCreationRequest;
+import com.tysanclan.site.projectewok.entities.filter.GroupCreationRequestFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.GroupCreationRequest;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class GroupCreationRequestDAOImpl extends
-		EwokHibernateDAO<GroupCreationRequest> implements
+class GroupCreationRequestDAOImpl
+		extends HibernateDAO<GroupCreationRequest, GroupCreationRequestFilter>
+		implements
 		com.tysanclan.site.projectewok.entities.dao.GroupCreationRequestDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<GroupCreationRequest> filter) {
-		Criteria criteria = getSession().createCriteria(
-				GroupCreationRequest.class);
 
-		// if (filter instanceof GroupCreationRequestFilter) {
-		// GroupCreationRequestFilter cf = (GroupCreationRequestFilter) filter;
-		// }
-
-		return criteria;
-	}
 }

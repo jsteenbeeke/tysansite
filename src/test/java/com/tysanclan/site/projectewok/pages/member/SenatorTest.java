@@ -1,18 +1,13 @@
 package com.tysanclan.site.projectewok.pages.member;
 
+import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.site.projectewok.pages.member.senate.*;
 import org.junit.Test;
 
-import com.tysanclan.site.projectewok.pages.member.senate.AddRegulationPage;
-import com.tysanclan.site.projectewok.pages.member.senate.ModifyRegulationPage;
-import com.tysanclan.site.projectewok.pages.member.senate.RegulationModificationPage;
-import com.tysanclan.site.projectewok.pages.member.senate.RepealRegulationPage;
-import com.tysanclan.site.projectewok.pages.member.senate.SenateTruthsayerComplaintPage;
-import com.tysanclan.site.projectewok.pages.member.senate.TruthsayerVotePage;
-
 public class SenatorTest extends AbstractClickThroughTester {
-
-	public SenatorTest() {
-		super(3L);
+	@Override
+	protected long determineUserId() {
+		return userIdOfRank(Rank.SENATOR);
 	}
 
 	@Test

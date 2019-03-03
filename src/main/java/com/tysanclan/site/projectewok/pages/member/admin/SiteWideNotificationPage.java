@@ -17,8 +17,14 @@
  */
 package com.tysanclan.site.projectewok.pages.member.admin;
 
-import java.util.Arrays;
-
+import com.tysanclan.site.projectewok.SiteWideNotification;
+import com.tysanclan.site.projectewok.SiteWideNotification.Category;
+import com.tysanclan.site.projectewok.TysanApplication;
+import com.tysanclan.site.projectewok.beans.RoleService;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
+import com.tysanclan.site.projectewok.pages.member.AbstractSingleAccordionMemberPage;
+import com.tysanclan.site.projectewok.pages.member.OverviewPage;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -28,19 +34,13 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.time.Duration;
 import org.apache.wicket.validation.validator.RangeValidator;
 
-import com.tysanclan.site.projectewok.SiteWideNotification;
-import com.tysanclan.site.projectewok.SiteWideNotification.Category;
-import com.tysanclan.site.projectewok.TysanApplication;
-import com.tysanclan.site.projectewok.beans.RoleService;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
-import com.tysanclan.site.projectewok.pages.member.AbstractSingleAccordionMemberPage;
-import com.tysanclan.site.projectewok.pages.member.OverviewPage;
+import java.util.Arrays;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public class SiteWideNotificationPage extends AbstractSingleAccordionMemberPage {
+public class SiteWideNotificationPage
+		extends AbstractSingleAccordionMemberPage {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
@@ -52,14 +52,12 @@ public class SiteWideNotificationPage extends AbstractSingleAccordionMemberPage 
 			public Duration getDuration(int amount) {
 				return Duration.minutes(amount);
 			}
-		},
-		HOURS("hours") {
+		}, HOURS("hours") {
 			@Override
 			public Duration getDuration(int amount) {
 				return Duration.hours(amount);
 			}
-		},
-		DAYS("days") {
+		}, DAYS("days") {
 			@Override
 			public Duration getDuration(int amount) {
 				return Duration.days(amount);

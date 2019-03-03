@@ -17,13 +17,11 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.StarCraft2CharAccount;
+import com.tysanclan.site.projectewok.entities.filter.StarCraft2CharAccountFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.StarCraft2CharAccount;
 
 /**
  *
@@ -31,19 +29,9 @@ import com.tysanclan.site.projectewok.entities.StarCraft2CharAccount;
  */
 @Component
 @Scope("request")
-class StarCraft2CharAccountDAOImpl extends
-		EwokHibernateDAO<StarCraft2CharAccount> implements
+class StarCraft2CharAccountDAOImpl
+		extends HibernateDAO<StarCraft2CharAccount, StarCraft2CharAccountFilter>
+		implements
 		com.tysanclan.site.projectewok.entities.dao.StarCraft2CharAccountDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<StarCraft2CharAccount> filter) {
-		Criteria criteria = getSession().createCriteria(
-				StarCraft2CharAccount.class);
 
-		// if (filter instanceof StarCraft2CharAccountFilter) {
-		// StarCraft2CharAccountFilter cf = (StarCraft2CharAccountFilter)
-		// filter;
-		// }
-
-		return criteria;
-	}
 }

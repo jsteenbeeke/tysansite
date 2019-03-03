@@ -17,14 +17,8 @@
  */
 package com.tysanclan.site.projectewok.pages.member.justice;
 
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.markup.repeater.data.DataView;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.FilterDataProvider;
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.FilterDataProvider;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.AchievementService;
@@ -33,8 +27,13 @@ import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
 import com.tysanclan.site.projectewok.components.StoredImageResource;
 import com.tysanclan.site.projectewok.entities.AchievementProposal;
 import com.tysanclan.site.projectewok.entities.dao.AchievementProposalDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.AchievementProposalFilter;
+import com.tysanclan.site.projectewok.entities.filter.AchievementProposalFilter;
 import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -53,7 +52,7 @@ public class TruthsayerAchievementProposalPage extends AbstractMemberPage {
 		super("Achievement Proposals");
 
 		AchievementProposalFilter filter = new AchievementProposalFilter();
-		filter.setTruthsayerReviewed(false);
+		filter.truthsayerReviewed(false);
 
 		add(new DataView<AchievementProposal>("proposals",
 				FilterDataProvider.of(filter, achievementProposalDAO)) {
@@ -65,16 +64,19 @@ public class TruthsayerAchievementProposalPage extends AbstractMemberPage {
 				AchievementProposal proposal = item.getModelObject();
 
 				item.add(new Label("name", proposal.getName()));
-				item.add(new Image("icon", new StoredImageResource(proposal
-						.getIcon().getImage())));
-				item.add(new Image("game", new StoredImageResource(proposal
-						.getGame() != null ? proposal.getGame().getImage()
-						: new byte[0])).setVisible(proposal.getGame() != null));
+				item.add(new Image("icon", new StoredImageResource(
+						proposal.getIcon().getImage())));
+				item.add(new Image("game", new StoredImageResource(
+						proposal.getGame() != null ?
+								proposal.getGame().getImage() :
+								new byte[0]))
+						.setVisible(proposal.getGame() != null));
 
 				boolean hasGroup = proposal.getGroup() != null;
 
-				item.add(new Label("group", hasGroup ? proposal.getGroup()
-						.getName() : "-").setVisible(hasGroup));
+				item.add(new Label("group",
+						hasGroup ? proposal.getGroup().getName() : "-")
+						.setVisible(hasGroup));
 				item.add(new Label("description", proposal.getDescription())
 						.setEscapeModelStrings(false));
 
@@ -88,7 +90,8 @@ public class TruthsayerAchievementProposalPage extends AbstractMemberPage {
 							public void onClick() {
 								service.approveProposal(getModelObject(),
 										getUser());
-								setResponsePage(new TruthsayerAchievementProposalPage());
+								setResponsePage(
+										new TruthsayerAchievementProposalPage());
 							}
 
 						}).setText("Yes, this achievement is in order")
@@ -105,9 +108,8 @@ public class TruthsayerAchievementProposalPage extends AbstractMemberPage {
 										getModelObject()));
 							}
 
-						})
-						.setText(
-								"No, this achievement would be in violation of Regulations")
+						}).setText(
+						"No, this achievement would be in violation of Regulations")
 						.newInstance("no"));
 			}
 

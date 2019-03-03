@@ -17,9 +17,10 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.Subscription;
+import com.tysanclan.site.projectewok.entities.filter.SubscriptionFilter;
 
-public interface SubscriptionDAO extends EwokDAO<Subscription> {
+public interface SubscriptionDAO extends DAO<Subscription, SubscriptionFilter> {
 
 }

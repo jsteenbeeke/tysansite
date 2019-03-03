@@ -17,20 +17,8 @@
  */
 package com.tysanclan.site.projectewok.pages.member.justice;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
-import org.apache.wicket.markup.html.form.ListMultipleChoice;
-import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.webcomponents.core.form.choice.NaiveRenderer;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.beans.LawEnforcementService;
 import com.tysanclan.site.projectewok.beans.UserService;
@@ -41,6 +29,13 @@ import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.RegulationDAO;
 import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
 import com.tysanclan.site.projectewok.pages.member.OverviewPage;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.ListMultipleChoice;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.*;
 
 /**
  * @author Jeroen Steenbeeke
@@ -56,7 +51,7 @@ public class StartTrialPage extends AbstractMemberPage {
 	private UserService userService;
 
 	/**
-	 * 
+	 *
 	 */
 	public StartTrialPage() {
 		super("Report rules violation");
@@ -73,17 +68,21 @@ public class StartTrialPage extends AbstractMemberPage {
 			@SuppressWarnings("unchecked")
 			@Override
 			protected void onSubmit() {
-				DropDownChoice<User> accusedChoice = (DropDownChoice<User>) get("member");
-				ListMultipleChoice<Regulation> regulationsChoice = (ListMultipleChoice<Regulation>) get("regulations");
-				TextArea<String> motivationArea = (TextArea<String>) get("motivation");
+				DropDownChoice<User> accusedChoice = (DropDownChoice<User>) get(
+						"member");
+				ListMultipleChoice<Regulation> regulationsChoice = (ListMultipleChoice<Regulation>) get(
+						"regulations");
+				TextArea<String> motivationArea = (TextArea<String>) get(
+						"motivation");
 
 				User accused = accusedChoice.getModelObject();
 				Collection<Regulation> regulations = regulationsChoice
 						.getModelObject();
 				String motivation = motivationArea.getModelObject();
 
-				Trial trial = lawEnforcementService.startTrial(getUser(),
-						accused, motivation, regulations);
+				Trial trial = lawEnforcementService
+						.startTrial(getUser(), accused, motivation,
+								regulations);
 
 				if (trial == null) {
 					error("Could not assign judge! That means there are not enough Truthsayers, Senators and no Chancellor, or all of them are on trial in this case");
@@ -109,16 +108,16 @@ public class StartTrialPage extends AbstractMemberPage {
 			}
 		});
 
-		accuseForm.add(new DropDownChoice<User>("member", ModelMaker.wrap(
-				(User) null, true), ModelMaker.wrapChoices(users))
-				.setRequired(true));
+		accuseForm.add(new DropDownChoice<User>("member",
+				ModelMaker.wrap((User) null, true),
+				ModelMaker.wrapChoices(users)).setRequired(true));
 
 		accuseForm.add(new BBCodeTextArea("motivation", "").setRequired(true));
 
-		accuseForm.add(new ListMultipleChoice<Regulation>("regulations",
-				ModelMaker.wrapAsCollection(new LinkedList<Regulation>()),
-				ModelMaker.wrapChoices(regulationDAO.findAll()),
-				new IChoiceRenderer<Regulation>() {
+		accuseForm.add(new ListMultipleChoice<>("regulations",
+				ModelMaker.wrapAsCollection(new LinkedList<>()),
+				ModelMaker.wrapChoices(regulationDAO.findAll().toJavaList()),
+				new NaiveRenderer<Regulation>() {
 					private static final long serialVersionUID = 1L;
 
 					/**

@@ -17,6 +17,12 @@
  */
 package com.tysanclan.site.projectewok.components;
 
+import com.tysanclan.site.projectewok.TysanSession;
+import com.tysanclan.site.projectewok.beans.ForumService;
+import com.tysanclan.site.projectewok.entities.ForumPost;
+import com.tysanclan.site.projectewok.entities.ForumThread;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.pages.ForumThreadPage;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.image.ContextImage;
@@ -24,12 +30,6 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.tysanclan.site.projectewok.TysanSession;
-import com.tysanclan.site.projectewok.beans.ForumService;
-import com.tysanclan.site.projectewok.entities.ForumPost;
-import com.tysanclan.site.projectewok.entities.ForumThread;
-import com.tysanclan.site.projectewok.pages.ForumThreadPage;
 
 /**
  * @author Jeroen Steenbeeke
@@ -43,8 +43,8 @@ public class LastPostLink extends Panel {
 	public LastPostLink(String id, ForumThread thread) {
 		super(id);
 
-		TysanSession sess = TysanSession.get();
-
+		User user = TysanSession.session().flatMap(TysanSession::getUser)
+				.getOrNull();
 		PageParameters params = new PageParameters();
 		params.add("threadid", thread.getId().toString());
 
@@ -52,9 +52,9 @@ public class LastPostLink extends Panel {
 
 		ForumPost firstPost = null;
 
-		if (sess != null && sess.getUser() != null) {
+		if (user != null) {
 			for (ForumPost post : thread.getPosts()) {
-				if (forumService.isPostUnread(sess.getUser(), post)) {
+				if (forumService.isPostUnread(user, post)) {
 					firstPost = post;
 					break;
 				}
@@ -76,8 +76,8 @@ public class LastPostLink extends Panel {
 				.toString();
 
 		if (firstPost != null) {
-			threadLink.add(AttributeModifier.replace("href", url + "#"
-					+ firstPost.getId().toString()));
+			threadLink.add(AttributeModifier
+					.replace("href", url + "#" + firstPost.getId().toString()));
 		}
 
 		threadLink

@@ -17,13 +17,15 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.jeroensteenbeeke.hyperion.data.DAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.BattleNetChannel;
+import com.tysanclan.site.projectewok.entities.filter.BattleNetChannelFilter;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public interface BattleNetChannelDAO extends DAO<BattleNetChannel> {
+public interface BattleNetChannelDAO
+		extends DAO<BattleNetChannel, BattleNetChannelFilter> {
 
 	String getPasswordByUID(String identifier);
 

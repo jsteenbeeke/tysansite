@@ -17,29 +17,18 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.GamePetition;
+import com.tysanclan.site.projectewok.entities.filter.GamePetitionFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.GamePetition;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class GamePetitionDAOImpl extends EwokHibernateDAO<GamePetition> implements
-		com.tysanclan.site.projectewok.entities.dao.GamePetitionDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<GamePetition> filter) {
-		Criteria criteria = getSession().createCriteria(GamePetition.class);
+class GamePetitionDAOImpl extends HibernateDAO<GamePetition, GamePetitionFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.GamePetitionDAO {
 
-		// if (filter instanceof GamePetitionFilter) {
-		// GamePetitionFilter cf = (GamePetitionFilter) filter;
-		// }
-
-		return criteria;
-	}
 }

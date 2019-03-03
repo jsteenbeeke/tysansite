@@ -17,42 +17,19 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-
-import org.apache.wicket.Page;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.Type;
-
 import com.google.common.collect.Lists;
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 import com.tysanclan.site.projectewok.TysanApplication;
 import com.tysanclan.site.projectewok.TysanApplication.VersionDescriptor;
 import com.tysanclan.site.projectewok.pages.member.BugOverviewPage;
 import com.tysanclan.site.projectewok.pages.member.FeatureOverviewPage;
+import org.apache.wicket.Page;
+import org.hibernate.annotations.Cache;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -76,8 +53,7 @@ public class Bug extends BaseDomainObject {
 			public Page getOverviewPage() {
 				return new BugOverviewPage();
 			}
-		},
-		FEATUREREQUEST("Feature Request") {
+		}, FEATUREREQUEST("Feature Request") {
 			public String getUrl(Long id) {
 				return "https://www.tysanclan.com/feature/" + id.toString()
 						+ "/";
@@ -87,8 +63,7 @@ public class Bug extends BaseDomainObject {
 			public Page getOverviewPage() {
 				return new FeatureOverviewPage();
 			}
-		},
-		CRASHREPORT("Crash Report") {
+		}, CRASHREPORT("Crash Report") {
 			@Override
 			public Page getOverviewPage() {
 				return new BugOverviewPage();
@@ -126,7 +101,7 @@ public class Bug extends BaseDomainObject {
 
 	@Column(nullable = false)
 	@Lob
-	@Type(type = "org.hibernate.type.StringClobType")
+
 	private String description;
 
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)
@@ -279,8 +254,8 @@ public class Bug extends BaseDomainObject {
 
 	@Transient
 	public boolean isResolvedInCurrentVersion() {
-		VersionDescriptor current = VersionDescriptor.of(TysanApplication
-				.getApplicationVersion());
+		VersionDescriptor current = VersionDescriptor
+				.of(TysanApplication.getApplicationVersion());
 		VersionDescriptor resolved = VersionDescriptor
 				.of(getResolutionVersion());
 

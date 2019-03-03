@@ -17,28 +17,27 @@
  */
 package com.tysanclan.site.projectewok.beans.impl;
 
-import java.util.Date;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.tysanclan.site.projectewok.entities.Event;
 import com.tysanclan.site.projectewok.entities.Forum;
 import com.tysanclan.site.projectewok.entities.ForumThread;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.EventDAO;
 import com.tysanclan.site.projectewok.util.StringUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class EventServiceImpl implements
-		com.tysanclan.site.projectewok.beans.EventService {
+class EventServiceImpl
+		implements com.tysanclan.site.projectewok.beans.EventService {
 	@Autowired
 	private EventDAO eventDAO;
 

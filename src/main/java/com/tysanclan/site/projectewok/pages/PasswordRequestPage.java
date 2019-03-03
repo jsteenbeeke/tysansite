@@ -17,14 +17,7 @@
  */
 package com.tysanclan.site.projectewok.pages;
 
-import java.util.List;
-
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.beans.MailService;
 import com.tysanclan.site.projectewok.beans.UserService;
@@ -32,8 +25,13 @@ import com.tysanclan.site.projectewok.entities.PasswordRequest;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.PasswordRequestDAO;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.PasswordRequestFilter;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
+import com.tysanclan.site.projectewok.entities.filter.PasswordRequestFilter;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
+import io.vavr.collection.Seq;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -48,13 +46,13 @@ public class PasswordRequestPage extends TysanPage {
 		super("Request Password");
 
 		UserFilter filter = new UserFilter();
-		filter.setUsername(username);
+		filter.username(username);
 
 		String _username = username;
 
 		User user = null;
 
-		List<User> users = userDAO.findByFilter(filter);
+		Seq<User> users = userDAO.findByFilter(filter);
 		if (!users.isEmpty()) {
 			user = users.get(0);
 		}
@@ -80,9 +78,9 @@ public class PasswordRequestPage extends TysanPage {
 				User u = getModelObject();
 
 				PasswordRequestFilter f = new PasswordRequestFilter();
-				f.setUser(u);
+				f.user(u);
 
-				List<PasswordRequest> requests = passwordRequestDAO
+				Seq<PasswordRequest> requests = passwordRequestDAO
 						.findByFilter(f);
 
 				if (u != null && requests.isEmpty()) {
@@ -103,8 +101,9 @@ public class PasswordRequestPage extends TysanPage {
 
 		requestPasswordForm.setVisible(user != null);
 
-		requestPasswordForm.add(new TextField<String>("username",
-				new Model<String>(_username)).setEnabled(false));
+		requestPasswordForm
+				.add(new TextField<>("username", new Model<>(_username))
+						.setEnabled(false));
 
 		add(requestPasswordForm);
 

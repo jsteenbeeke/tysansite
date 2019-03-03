@@ -17,22 +17,18 @@
  */
 package com.tysanclan.site.projectewok.pages;
 
-import java.util.List;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.TysanPage;
+import com.tysanclan.site.projectewok.components.AutoGroupLink;
+import com.tysanclan.site.projectewok.entities.Group;
+import com.tysanclan.site.projectewok.entities.dao.CommitteeDAO;
+import com.tysanclan.site.projectewok.entities.dao.GamingGroupDAO;
+import com.tysanclan.site.projectewok.entities.dao.SocialGroupDAO;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
-import com.tysanclan.site.projectewok.TysanPage;
-import com.tysanclan.site.projectewok.components.AutoGroupLink;
-import com.tysanclan.site.projectewok.entities.Committee;
-import com.tysanclan.site.projectewok.entities.GamingGroup;
-import com.tysanclan.site.projectewok.entities.Group;
-import com.tysanclan.site.projectewok.entities.SocialGroup;
-import com.tysanclan.site.projectewok.entities.dao.CommitteeDAO;
-import com.tysanclan.site.projectewok.entities.dao.GamingGroupDAO;
-import com.tysanclan.site.projectewok.entities.dao.SocialGroupDAO;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -52,9 +48,9 @@ public class GroupsPage extends TysanPage {
 	public GroupsPage() {
 		super("Groups");
 
-		add(new GroupLister<SocialGroup>("social", socialGroupDAO.findAll()));
-		add(new GroupLister<GamingGroup>("gaming", gamingGroupDAO.findAll()));
-		add(new GroupLister<Committee>("committee", commiteeDAO.findAll()));
+		add(new GroupLister<>("social", socialGroupDAO.findAll().toJavaList()));
+		add(new GroupLister<>("gaming", gamingGroupDAO.findAll().toJavaList()));
+		add(new GroupLister<>("committee", commiteeDAO.findAll().toJavaList()));
 
 	}
 
@@ -62,7 +58,7 @@ public class GroupsPage extends TysanPage {
 		private static final long serialVersionUID = 1L;
 
 		/**
-		 * 
+		 *
 		 */
 		public GroupLister(String id, List<T> groups) {
 			super(id, ModelMaker.wrap(groups));

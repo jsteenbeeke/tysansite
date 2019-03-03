@@ -17,14 +17,6 @@
  */
 package com.tysanclan.site.projectewok.pages.member.justice;
 
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.SubmitLink;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.image.ContextImage;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.NotificationService;
@@ -32,8 +24,18 @@ import com.tysanclan.site.projectewok.beans.UserService;
 import com.tysanclan.site.projectewok.components.ConfirmationLink;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
 import com.tysanclan.site.projectewok.pages.member.AbstractSingleAccordionMemberPage;
+import com.tysanclan.site.projectewok.pages.member.OverviewPage;
+import io.vavr.control.Option;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.SubmitLink;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.image.ContextImage;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Ties
@@ -56,7 +58,9 @@ public class TruthSayerEditUserPage extends AbstractSingleAccordionMemberPage {
 
 		User givenUser = null;
 		if (user != null) {
-			givenUser = userDao.load(user.getId());
+			givenUser = userDao.load(user.getId()).getOrElseThrow(
+					() -> new RestartResponseAtInterceptPageException(
+							OverviewPage.class));
 		}
 
 		Form<Void> form = new Form<Void>("userSearchForm") {
@@ -65,24 +69,24 @@ public class TruthSayerEditUserPage extends AbstractSingleAccordionMemberPage {
 			@Override
 			protected void onSubmit() {
 				UserFilter filter = new UserFilter();
-				filter.setUsername(get("username")
-						.getDefaultModelObjectAsString());
-				User foundUser = userDao.getUniqueByFilter(filter);
-				if (foundUser == null) {
+				filter.username(
+						get("username").getDefaultModelObjectAsString());
+				Option<User> foundUser = userDao.getUniqueByFilter(filter);
+				if (foundUser.isEmpty()) {
 					warn("Could not find user");
 					return;
 				}
-				setResponsePage(new TruthSayerEditUserPage(foundUser));
+				setResponsePage(new TruthSayerEditUserPage(foundUser.get()));
 			}
 		};
-		form.add(new TextField<String>("username", new Model<String>(
-				givenUser != null ? givenUser.getUsername() : "")));
+		form.add(new TextField<>("username",
+				new Model<>(givenUser != null ? givenUser.getUsername() : "")));
 		SubmitLink submit = new SubmitLink("submit", form);
 		submit.add(new ContextImage("search", "images/icons/magnifier.png"));
 		form.add(submit);
 
 		ConfirmationLink<User> removeAvatarLink = new ConfirmationLink<User>(
-				"removeAvatar", new Model<User>(givenUser),
+				"removeAvatar", new Model<>(givenUser),
 				"Are you sure you want to delete this users avatar?") {
 
 			private static final long serialVersionUID = 1L;
@@ -120,7 +124,7 @@ public class TruthSayerEditUserPage extends AbstractSingleAccordionMemberPage {
 		};
 
 		ConfirmationLink<User> removeCustomTitleLink = new ConfirmationLink<User>(
-				"removeCustomTitleLink", new Model<User>(givenUser),
+				"removeCustomTitleLink", new Model<>(givenUser),
 				"Are you sure you want to delete this users custom title?") {
 
 			private static final long serialVersionUID = 1L;
@@ -130,35 +134,33 @@ public class TruthSayerEditUserPage extends AbstractSingleAccordionMemberPage {
 				User selectedUser = getModelObject();
 				if (selectedUser != null) {
 					userService.setUserCustomTitle(selectedUser.getId(), "");
-					notificationService
-							.notifyUser(selectedUser,
-									"Your custom title has been removed by a Truthsayer");
+					notificationService.notifyUser(selectedUser,
+							"Your custom title has been removed by a Truthsayer");
 					setResponsePage(new TruthSayerEditUserPage(selectedUser));
 				}
 			}
 
 		};
 
-		removeAvatarLink.setEnabled(givenUser != null
-				&& givenUser.getImageURL() != null
-				&& !givenUser.getImageURL().isEmpty());
-		removeSignatureLink.setEnabled(givenUser != null
-				&& givenUser.getSignature() != null
-				&& !givenUser.getSignature().isEmpty());
-		removeCustomTitleLink.setEnabled(givenUser != null
-				&& givenUser.getCustomTitle() != null
-				&& !givenUser.getCustomTitle().isEmpty());
+		removeAvatarLink.setEnabled(
+				givenUser != null && givenUser.getImageURL() != null
+						&& !givenUser.getImageURL().isEmpty());
+		removeSignatureLink.setEnabled(
+				givenUser != null && givenUser.getSignature() != null
+						&& !givenUser.getSignature().isEmpty());
+		removeCustomTitleLink.setEnabled(
+				givenUser != null && givenUser.getCustomTitle() != null
+						&& !givenUser.getCustomTitle().isEmpty());
 
-		removeAvatarLink.add(new ContextImage("delete",
-				"images/icons/delete.png"));
-		removeSignatureLink.add(new ContextImage("delete",
-				"images/icons/delete.png"));
-		removeCustomTitleLink.add(new ContextImage("delete",
-				"images/icons/delete.png"));
+		removeAvatarLink
+				.add(new ContextImage("delete", "images/icons/delete.png"));
+		removeSignatureLink
+				.add(new ContextImage("delete", "images/icons/delete.png"));
+		removeCustomTitleLink
+				.add(new ContextImage("delete", "images/icons/delete.png"));
 
-		add(
-				new Label("username", new Model<String>(
-						givenUser != null ? givenUser.getUsername() : "")));
+		add(new Label("username",
+				new Model<>(givenUser != null ? givenUser.getUsername() : "")));
 		add(removeAvatarLink);
 		add(removeSignatureLink);
 		add(removeCustomTitleLink);

@@ -17,26 +17,18 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.SocialGroup;
+import com.tysanclan.site.projectewok.entities.filter.SocialGroupFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.SocialGroup;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class SocialGroupDAOImpl extends EwokHibernateDAO<SocialGroup> implements
-		com.tysanclan.site.projectewok.entities.dao.SocialGroupDAO {
-	/**
-	 * @see com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO#createCriteria(com.tysanclan.site.projectewok.dataaccess.SearchFilter)
-	 */
-	@Override
-	protected Criteria createCriteria(SearchFilter<SocialGroup> filter) {
-		return getSession().createCriteria(SocialGroup.class);
-	}
+class SocialGroupDAOImpl extends HibernateDAO<SocialGroup, SocialGroupFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.SocialGroupDAO {
+
 }

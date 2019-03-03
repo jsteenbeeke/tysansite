@@ -17,31 +17,25 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.jeroensteenbeeke.hyperion.util.HashUtil;
+import com.tysanclan.site.projectewok.entities.PaymentRequest;
+import com.tysanclan.site.projectewok.entities.dao.PaymentRequestDAO;
+import com.tysanclan.site.projectewok.entities.filter.PaymentRequestFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.jeroensteenbeeke.hyperion.util.HashUtil;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.PaymentRequest;
-import com.tysanclan.site.projectewok.entities.dao.PaymentRequestDAO;
-
 @Component
 @Scope("request")
-class PaymentRequestDAOImpl extends EwokHibernateDAO<PaymentRequest> implements
-		PaymentRequestDAO {
+class PaymentRequestDAOImpl
+		extends HibernateDAO<PaymentRequest, PaymentRequestFilter>
+		implements PaymentRequestDAO {
 	@Override
 	public String getConfirmationKey(PaymentRequest request) {
 
-		return HashUtil.sha1Hash(request.getId()
-				+ request.getRequester().getUsername());
+		return HashUtil.sha1Hash(
+				request.getId() + request.getRequester().getUsername())
+				.throwIfNotOk(IllegalStateException::new);
 	}
 
-	@Override
-	protected Criteria createCriteria(SearchFilter<PaymentRequest> filter) {
-		Criteria criteria = getSession().createCriteria(PaymentRequest.class);
-
-		return criteria;
-	}
 }

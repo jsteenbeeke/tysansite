@@ -17,16 +17,18 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
+import com.jeroensteenbeeke.hyperion.meld.DAO;
+import com.tysanclan.site.projectewok.entities.MembershipStatusChange;
+import com.tysanclan.site.projectewok.entities.filter.MembershipStatusChangeFilter;
+
 import java.util.Date;
 import java.util.SortedMap;
-
-import com.jeroensteenbeeke.hyperion.data.DAO;
-import com.tysanclan.site.projectewok.entities.MembershipStatusChange;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public interface MembershipStatusChangeDAO extends DAO<MembershipStatusChange> {
+public interface MembershipStatusChangeDAO
+		extends DAO<MembershipStatusChange, MembershipStatusChangeFilter> {
 
 	SortedMap<Date, Long> getMutationsByDate(Date start, Date end);
 

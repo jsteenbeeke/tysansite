@@ -17,25 +17,16 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.Subscription;
+import com.tysanclan.site.projectewok.entities.dao.SubscriptionDAO;
+import com.tysanclan.site.projectewok.entities.filter.SubscriptionFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.Subscription;
-import com.tysanclan.site.projectewok.entities.dao.SubscriptionDAO;
-
 @Component
 @Scope("request")
-class SubscriptionDAOImpl extends EwokHibernateDAO<Subscription> implements
-		SubscriptionDAO {
-
-	@Override
-	protected Criteria createCriteria(SearchFilter<Subscription> filter) {
-		Criteria criteria = getSession().createCriteria(Subscription.class);
-
-		return criteria;
-	}
+class SubscriptionDAOImpl extends HibernateDAO<Subscription, SubscriptionFilter>
+		implements SubscriptionDAO {
 
 }

@@ -17,33 +17,18 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.Realm;
+import com.tysanclan.site.projectewok.entities.filter.RealmFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.Realm;
-import com.tysanclan.site.projectewok.entities.dao.filters.RealmFilter;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class RealmDAOImpl extends EwokHibernateDAO<Realm> implements
-		com.tysanclan.site.projectewok.entities.dao.RealmDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<Realm> filter) {
-		Criteria criteria = getSession().createCriteria(Realm.class);
+class RealmDAOImpl extends HibernateDAO<Realm, RealmFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.RealmDAO {
 
-		if (filter instanceof RealmFilter) {
-			RealmFilter cf = (RealmFilter) filter;
-			if (cf.getOverseer() != null)
-				criteria.add(Restrictions.eq("overseer", cf.getOverseer()));
-		}
-
-		return criteria;
-	}
 }

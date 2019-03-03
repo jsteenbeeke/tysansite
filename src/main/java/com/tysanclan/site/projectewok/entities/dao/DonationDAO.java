@@ -17,13 +17,14 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.Donation;
+import com.tysanclan.site.projectewok.entities.filter.DonationFilter;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface DonationDAO extends EwokDAO<Donation> {
+public interface DonationDAO extends DAO<Donation, DonationFilter> {
 
 }

@@ -17,17 +17,18 @@
  */
 package com.tysanclan.site.projectewok.util;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
+import com.jeroensteenbeeke.hyperion.password.argon2.Argon2PasswordHasher;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.rest.api.util.HashException;
 import com.tysanclan.rest.api.util.HashUtil;
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.auth.TysanSecurity;
 import com.tysanclan.site.projectewok.entities.User;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -45,34 +46,24 @@ public class MemberUtil {
 
 	/**
 	 * Checks whether or not the user is a member
-	 * 
+	 *
 	 * @param user
 	 *            The user to check
 	 * @return <code>true</code> if the user is a member, <code>false</code>
 	 *         otherwise
 	 */
 	public static boolean isMember(User user) {
-		return user != null
-				&& (user.getRank() != Rank.BANNED && user.getRank() != Rank.FORUM);
+		return user != null && (user.getRank() != Rank.BANNED
+				&& user.getRank() != Rank.FORUM);
 	}
 
 	public static boolean isHashedPassword(String password) {
-		if (password.length() != 40) {
-			return false;
-		}
-		for (byte character : password.getBytes()) {
-			if (!Character.isDigit(character)
-					&& !(character >= 97 && character <= 102)) {
-				return false;
-			}
-		}
-
-		return true;
+		return password.startsWith("$argon2");
 	}
 
 	/**
 	 * Checks if the given user can be a mentor
-	 * 
+	 *
 	 * @param user
 	 *            The user to check
 	 * @return {@code true} if the user can be a mentor, {@code false} otherwise
@@ -126,9 +117,24 @@ public class MemberUtil {
 		return visible;
 	}
 
-	public static String hashPassword(String password) throws HashException {
-		return HashUtil.sha1Hash(StringUtil.combineStrings(password,
-				PASSWORD_SALT));
+	public static String hashPassword(String password) {
+		int keyLength = System.getProperty("ewok.testmode") != null ?
+				8 :
+				User.KEY_LENGTH;
+		int iterations = System.getProperty("ewok.testmode") != null ?
+				4 :
+				User.ITERATIONS;
+
+		return Argon2PasswordHasher.hashNewPassword(password.toCharArray())
+				.withHashLength(keyLength).withIterations(iterations)
+				.withPHCIssue9DefaultMemorySettings()
+				.withPHCIssue9DefaultParallelism();
+	}
+
+	public static String legacyHashPassword(String password)
+			throws HashException {
+		return HashUtil
+				.sha1Hash(StringUtil.combineStrings(password, PASSWORD_SALT));
 
 	}
 

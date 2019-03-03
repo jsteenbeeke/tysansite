@@ -1,14 +1,5 @@
 package com.tysanclan.site.projectewok.beans.impl;
 
-import java.util.Date;
-
-import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.tysanclan.rest.api.util.Challenge;
 import com.tysanclan.rest.api.util.HashException;
 import com.tysanclan.site.projectewok.beans.RestService;
@@ -17,9 +8,17 @@ import com.tysanclan.site.projectewok.entities.RestApplicationChallenge;
 import com.tysanclan.site.projectewok.entities.dao.AuthorizedRestApplicationDAO;
 import com.tysanclan.site.projectewok.entities.dao.RestApplicationChallengeDAO;
 import com.tysanclan.site.projectewok.entities.dao.RestTokenDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.AuthorizedRestApplicationFilter;
-import com.tysanclan.site.projectewok.entities.dao.filters.RestApplicationChallengeFilter;
+import com.tysanclan.site.projectewok.entities.filter.AuthorizedRestApplicationFilter;
+import com.tysanclan.site.projectewok.entities.filter.RestApplicationChallengeFilter;
 import com.tysanclan.site.projectewok.util.StringUtil;
+import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 @Component
 @Scope("request")
@@ -58,7 +57,7 @@ class RestServiceImpl implements RestService {
 	@Override
 	public void timeoutChallenges() {
 		RestApplicationChallengeFilter filter = new RestApplicationChallengeFilter();
-		filter.setIssueDateBefore(new DateTime().minusMinutes(5).toDate());
+		filter.issueDate().lessThan(new DateTime().minusMinutes(5).toDate());
 
 		for (RestApplicationChallenge challenge : challengeDAO
 				.findByFilter(filter)) {
@@ -92,7 +91,7 @@ class RestServiceImpl implements RestService {
 	@Override
 	public AuthorizedRestApplication createApplication(String name) {
 		AuthorizedRestApplicationFilter filter = new AuthorizedRestApplicationFilter();
-		filter.setName(name);
+		filter.name(name);
 
 		if (applicationDAO.countByFilter(filter) == 0) {
 			long found = -1;
@@ -102,7 +101,7 @@ class RestServiceImpl implements RestService {
 			while (found != 0) {
 
 				filter = new AuthorizedRestApplicationFilter();
-				filter.setClientId(clientId);
+				filter.clientId(clientId);
 
 				found = applicationDAO.countByFilter(filter);
 			}
@@ -126,10 +125,10 @@ class RestServiceImpl implements RestService {
 	@Override
 	public AuthorizedRestApplication getClient(String clientId) {
 		AuthorizedRestApplicationFilter filter = new AuthorizedRestApplicationFilter();
-		filter.setActive(true);
-		filter.setClientId(clientId);
+		filter.active(true);
+		filter.clientId(clientId);
 
-		return applicationDAO.getUniqueByFilter(filter);
+		return applicationDAO.getUniqueByFilter(filter).getOrNull();
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -137,21 +136,17 @@ class RestServiceImpl implements RestService {
 	public AuthorizedRestApplication consumeChallengeIfValid(String challenge,
 			String response) {
 		RestApplicationChallengeFilter filter = new RestApplicationChallengeFilter();
-		filter.setChallenge(challenge);
-		filter.setResponse(response);
+		filter.challengeString(challenge);
+		filter.expectedResponse(response);
 
-		RestApplicationChallenge foundChallenge = challengeDAO
-				.getUniqueByFilter(filter);
-
-		if (foundChallenge != null) {
+		return challengeDAO.getUniqueByFilter(filter).map(foundChallenge -> {
 			AuthorizedRestApplication application = foundChallenge
 					.getApplication();
 			challengeDAO.delete(foundChallenge);
 
 			return application;
-		}
+		}).getOrNull();
 
-		return null;
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -162,9 +157,10 @@ class RestServiceImpl implements RestService {
 			RestApplicationChallenge challenge = new RestApplicationChallenge();
 			challenge.setApplication(application);
 			challenge.setChallengeString(c);
-			challenge.setExpectedResponse(Challenge
-					.forClient(application.getClientId())
-					.withSecret(application.getClientSecret()).getResponse(c));
+			challenge.setExpectedResponse(
+					Challenge.forClient(application.getClientId())
+							.withSecret(application.getClientSecret())
+							.getResponse(c));
 			challenge.setIssueDate(new Date());
 			challengeDAO.save(challenge);
 

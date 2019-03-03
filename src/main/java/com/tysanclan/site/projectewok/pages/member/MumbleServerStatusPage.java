@@ -17,10 +17,9 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
+import com.tysanclan.site.projectewok.entities.MumbleServer;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.basic.Label;
-
-import com.tysanclan.site.projectewok.entities.MumbleServer;
 
 public class MumbleServerStatusPage extends AbstractSingleAccordionMemberPage {
 	private static final long serialVersionUID = 1L;
@@ -29,9 +28,8 @@ public class MumbleServerStatusPage extends AbstractSingleAccordionMemberPage {
 		super("Server Information: " + server.getName());
 
 		add(new Label("name", server.getName()));
-		add(
-				new Label("url", server.getUrl()).add(AttributeModifier
-						.replace("href", server.getUrl())));
+		add(new Label("url", server.getUrl())
+				.add(AttributeModifier.replace("href", server.getUrl())));
 		add(new Label("password", server.getPassword()));
 	}
 

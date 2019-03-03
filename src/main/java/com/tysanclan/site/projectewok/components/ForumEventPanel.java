@@ -17,14 +17,13 @@
  */
 package com.tysanclan.site.projectewok.components;
 
+import com.tysanclan.site.projectewok.entities.Event;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.util.DateUtil;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
-
-import com.tysanclan.site.projectewok.entities.Event;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.util.DateUtil;
 
 /**
  * @author Jeroen Steenbeeke
@@ -33,14 +32,13 @@ public class ForumEventPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	/**
-     * 
-     */
+	 *
+	 */
 	public ForumEventPanel(String id, Event event, User user) {
 		super(id);
 
-		add(new ContextImage("icon", new Model<String>(
-		        "images/icons/calendar.png")));
-		add(new Label("time", DateUtil.getUserTime(event
-		        .getDate(), user)));
+		add(new ContextImage("icon",
+				new Model<String>("images/icons/calendar.png")));
+		add(new Label("time", DateUtil.getUserTime(event.getDate(), user)));
 	}
 }

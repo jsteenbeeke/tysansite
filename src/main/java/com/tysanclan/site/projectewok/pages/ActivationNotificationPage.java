@@ -17,19 +17,18 @@
  */
 package com.tysanclan.site.projectewok.pages;
 
-import org.apache.wicket.RestartResponseAtInterceptPageException;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.beans.MailService;
 import com.tysanclan.site.projectewok.beans.UserService;
 import com.tysanclan.site.projectewok.entities.Activation;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.util.StringUtil;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -66,13 +65,13 @@ public class ActivationNotificationPage extends TysanPage {
 
 					User user = getModelObject().getUser();
 
-					if (userService.setUserMail(user,
-							mailField.getModelObject())) {
+					if (userService
+							.setUserMail(user, mailField.getModelObject())) {
 
 						mailService.sendHTMLMail(user.getEMail(),
 								"Tysan Clan Forums", mailService
-										.getActivationMailBody(user
-												.getUsername(),
+										.getActivationMailBody(
+												user.getUsername(),
 												getModelObject()
 														.getActivationKey()));
 
@@ -89,8 +88,8 @@ public class ActivationNotificationPage extends TysanPage {
 
 		};
 
-		activationForm.add(new TextField<String>("email", new Model<String>(
-				activation.getUser().getEMail())));
+		activationForm.add(new TextField<String>("email",
+				new Model<String>(activation.getUser().getEMail())));
 
 		add(activationForm);
 	}

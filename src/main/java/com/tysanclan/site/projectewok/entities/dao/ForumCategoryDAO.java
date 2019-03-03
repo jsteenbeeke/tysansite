@@ -17,11 +17,13 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.ForumCategory;
 import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.filter.ForumCategoryFilter;
 
-public interface ForumCategoryDAO extends EwokDAO<ForumCategory>,
+public interface ForumCategoryDAO
+		extends DAO<ForumCategory, ForumCategoryFilter>,
 		ContextBasedForumDAO<ForumCategory, User> {
 
 }

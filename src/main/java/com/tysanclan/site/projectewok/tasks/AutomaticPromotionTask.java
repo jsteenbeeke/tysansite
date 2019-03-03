@@ -17,32 +17,23 @@
  */
 package com.tysanclan.site.projectewok.tasks;
 
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.HyperionTask;
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.ServiceProvider;
+import com.tysanclan.site.projectewok.TysanTaskGroup;
 import com.tysanclan.site.projectewok.beans.MembershipService;
-import com.tysanclan.site.projectewok.util.scheduler.PeriodicTask;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public class AutomaticPromotionTask extends PeriodicTask {
-
-	@SpringBean
-	private MembershipService membershipService;
-
-	/**
-	 * 
-	 */
+public class AutomaticPromotionTask extends HyperionTask {
 	public AutomaticPromotionTask() {
-		super("Promotion", "Members", ExecutionMode.DAILY);
+		super("Promotion", TysanTaskGroup.MEMBERS);
 	}
 
-	/**
-	 * @see com.tysanclan.site.projectewok.util.scheduler.TysanTask#run()
-	 */
 	@Override
-	public void run() {
-		membershipService.determinePromotions();
+	public void run(ServiceProvider provider) {
+
+		provider.getService(MembershipService.class).determinePromotions();
 	}
 
 }

@@ -17,12 +17,7 @@
  */
 package com.tysanclan.site.projectewok.pages.member.group;
 
-import org.apache.wicket.RestartResponseAtInterceptPageException;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.beans.GroupService;
@@ -33,6 +28,10 @@ import com.tysanclan.site.projectewok.entities.Group;
 import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
 import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
 import com.tysanclan.site.projectewok.pages.member.OverviewPage;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -44,14 +43,15 @@ public class DisbandGroupPage extends AbstractMemberPage {
 	private IModel<Group> groupModel;
 
 	/**
-	 * 
+	 *
 	 */
 	public DisbandGroupPage(Group group) {
 		super("Disband " + group.getName());
 
-		if (((group instanceof Committee) && getUser().getRank() != Rank.CHANCELLOR)
-				|| (!(group instanceof Committee) && !group.getLeader().equals(
-						getUser()))) {
+		if (((group instanceof Committee)
+				&& getUser().getRank() != Rank.CHANCELLOR) || (
+				!(group instanceof Committee) && !group.getLeader()
+						.equals(getUser()))) {
 
 			throw new RestartResponseAtInterceptPageException(
 					new AccessDeniedPage());
@@ -78,7 +78,8 @@ public class DisbandGroupPage extends AbstractMemberPage {
 
 				});
 
-		builder.setText("Yes, I understand the consequences and wish to proceed with disbanding this group");
+		builder.setText(
+				"Yes, I understand the consequences and wish to proceed with disbanding this group");
 
 		add(builder.newInstance("yes"));
 
@@ -95,7 +96,8 @@ public class DisbandGroupPage extends AbstractMemberPage {
 					}
 				});
 
-		builder.setText("No, I have changed my mind and do not wish to disband this group");
+		builder.setText(
+				"No, I have changed my mind and do not wish to disband this group");
 
 		add(builder.newInstance("no"));
 

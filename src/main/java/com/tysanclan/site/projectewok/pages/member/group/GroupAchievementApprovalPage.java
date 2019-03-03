@@ -17,16 +17,7 @@
  */
 package com.tysanclan.site.projectewok.pages.member.group;
 
-import org.apache.wicket.RestartResponseAtInterceptPageException;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.AchievementService;
 import com.tysanclan.site.projectewok.components.IconLink;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
@@ -37,6 +28,14 @@ import com.tysanclan.site.projectewok.entities.Group;
 import com.tysanclan.site.projectewok.entities.dao.AchievementRequestDAO;
 import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
 import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -68,23 +67,25 @@ public class GroupAchievementApprovalPage extends AbstractMemberPage {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void populateItem(final ListItem<AchievementRequest> item) {
+			protected void populateItem(
+					final ListItem<AchievementRequest> item) {
 				AchievementRequest request = item.getModelObject();
 
 				item.add(new Label("name", request.getAchievement().getName()));
-				item.add(new Image("icon", new StoredImageResource(request
-						.getAchievement().getIcon().getImage())));
+				item.add(new Image("icon", new StoredImageResource(
+						request.getAchievement().getIcon().getImage())));
 
-				item.add(new Label("description", request.getAchievement()
-						.getDescription()).setEscapeModelStrings(false));
-				item.add(new MemberListItem("requester", request
-						.getRequestedBy()));
+				item.add(new Label("description",
+						request.getAchievement().getDescription())
+						.setEscapeModelStrings(false));
+				item.add(new MemberListItem("requester",
+						request.getRequestedBy()));
 
 				if (request.getEvidencePicture() != null) {
 					byte[] evidence = request.getEvidencePicture();
 
-					item.add(new Image("screenshot", new StoredImageResource(
-							evidence)));
+					item.add(new Image("screenshot",
+							new StoredImageResource(evidence)));
 				} else {
 					item.add(new WebMarkupContainer("screenshot")
 							.setVisible(false));
@@ -103,13 +104,13 @@ public class GroupAchievementApprovalPage extends AbstractMemberPage {
 								achievementService.approveRequest(getUser(),
 										getModelObject());
 
-								setResponsePage(new GroupAchievementApprovalPage(
-										groupModel.getObject()));
+								setResponsePage(
+										new GroupAchievementApprovalPage(
+												groupModel.getObject()));
 
 							}
-						})
-						.setText(
-								"Yes, the requirements for this achievement have been met")
+						}).setText(
+						"Yes, the requirements for this achievement have been met")
 						.newInstance("yes"));
 				item.add(new IconLink.Builder("images/icons/cross.png",
 						new DefaultClickResponder<AchievementRequest>(
@@ -121,13 +122,13 @@ public class GroupAchievementApprovalPage extends AbstractMemberPage {
 								achievementService.denyRequest(getUser(),
 										getModelObject());
 
-								setResponsePage(new GroupAchievementApprovalPage(
-										groupModel.getObject()));
+								setResponsePage(
+										new GroupAchievementApprovalPage(
+												groupModel.getObject()));
 
 							}
-						})
-						.setText(
-								"No, the requirements for this achievement have not been met")
+						}).setText(
+						"No, the requirements for this achievement have not been met")
 						.newInstance("no"));
 
 			}

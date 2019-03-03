@@ -17,12 +17,7 @@
  */
 package com.tysanclan.site.projectewok.pages.member.group;
 
-import java.util.List;
-
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.DemocracyService;
 import com.tysanclan.site.projectewok.entities.GroupLeaderElection;
 import com.tysanclan.site.projectewok.entities.User;
@@ -30,12 +25,16 @@ import com.tysanclan.site.projectewok.pages.member.AbstractElectionPage;
 import com.tysanclan.site.projectewok.pages.member.AbstractManualElectionPage;
 import com.tysanclan.site.projectewok.pages.member.GroupLeaderManualElectionPage;
 import com.tysanclan.site.projectewok.pages.member.OverviewPage;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
  */
-public class GroupLeaderElectionPage extends
-		AbstractElectionPage<GroupLeaderElection> {
+public class GroupLeaderElectionPage
+		extends AbstractElectionPage<GroupLeaderElection> {
 	private static final long serialVersionUID = 1L;
 
 	private IModel<GroupLeaderElection> electionModel;
@@ -44,7 +43,7 @@ public class GroupLeaderElectionPage extends
 	private DemocracyService democracyService;
 
 	/**
-	 * 
+	 *
 	 */
 	public GroupLeaderElectionPage(GroupLeaderElection election) {
 		super("Leader for group " + election.getGroup().getName(), election);

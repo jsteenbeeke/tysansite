@@ -17,11 +17,11 @@
  */
 package com.tysanclan.site.projectewok.model;
 
+import org.apache.wicket.model.IModel;
+
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Locale;
-
-import org.apache.wicket.model.IModel;
 
 /**
  * @author Jeroen Steenbeeke
@@ -32,8 +32,8 @@ public class DollarSignModel implements IModel<String> {
 	private IModel<BigDecimal> wrapped;
 
 	/**
-     * 
-     */
+	 *
+	 */
 	public DollarSignModel(IModel<BigDecimal> wrapped) {
 		this.wrapped = wrapped;
 	}
@@ -43,10 +43,8 @@ public class DollarSignModel implements IModel<String> {
 	 */
 	@Override
 	public String getObject() {
-		NumberFormat format = NumberFormat
-		        .getCurrencyInstance(Locale.US);
-		return format.format(wrapped.getObject()
-		        .doubleValue());
+		NumberFormat format = NumberFormat.getCurrencyInstance(Locale.US);
+		return format.format(wrapped.getObject().doubleValue());
 
 	}
 

@@ -17,12 +17,11 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-
+import com.tysanclan.rest.api.data.Rank;
 import org.hibernate.annotations.Cache;
 
-import com.tysanclan.rest.api.data.Rank;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 
 /**
  * @author Jeroen Steenbeeke
@@ -44,10 +43,9 @@ public class NewsForum extends Forum {
 
 	@Override
 	public boolean canCreateThread(User u) {
-		return u != null
-				&& (getModerators().contains(u)
-						|| u.getRank() == Rank.CHANCELLOR
-						|| u.getRank() == Rank.SENATOR || u.getRank() == Rank.TRUTHSAYER);
+		return u != null && (getModerators().contains(u)
+				|| u.getRank() == Rank.CHANCELLOR || u.getRank() == Rank.SENATOR
+				|| u.getRank() == Rank.TRUTHSAYER);
 	}
 
 	@Override

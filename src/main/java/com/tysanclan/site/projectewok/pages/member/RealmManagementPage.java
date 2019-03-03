@@ -17,14 +17,7 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.RealmService;
@@ -33,6 +26,12 @@ import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
 import com.tysanclan.site.projectewok.components.MemberListItem;
 import com.tysanclan.site.projectewok.entities.Realm;
 import com.tysanclan.site.projectewok.entities.dao.RealmDAO;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -50,88 +49,84 @@ public class RealmManagementPage extends AbstractSingleAccordionMemberPage {
 	public RealmManagementPage() {
 		super("Realm Management");
 
-		add(
-				new ListView<Realm>("realms", ModelMaker.wrap(realmDAO
-						.findAll())) {
-					private static final long serialVersionUID = 1L;
+		add(new ListView<Realm>("realms",
+				ModelMaker.wrap(realmDAO.findAll().toJavaList())) {
+			private static final long serialVersionUID = 1L;
 
-					@Override
-					protected void populateItem(ListItem<Realm> item) {
-						Realm realm = item.getModelObject();
+			@Override
+			protected void populateItem(ListItem<Realm> item) {
+				Realm realm = item.getModelObject();
 
-						item.add(new Label("name", realm.getName()));
-						if (realm.getOverseer() != null) {
-							item.add(new MemberListItem("coordinator", realm
-									.getOverseer()));
-							IconLink.Builder builder = new IconLink.Builder(
-									"images/icons/user_edit.png",
-									new DefaultClickResponder<Realm>(ModelMaker
-											.wrap(realm)) {
-										private static final long serialVersionUID = 1L;
+				item.add(new Label("name", realm.getName()));
+				if (realm.getOverseer() != null) {
+					item.add(new MemberListItem("coordinator",
+							realm.getOverseer()));
+					IconLink.Builder builder = new IconLink.Builder(
+							"images/icons/user_edit.png",
+							new DefaultClickResponder<Realm>(
+									ModelMaker.wrap(realm)) {
+								private static final long serialVersionUID = 1L;
 
-										@Override
-										public void onClick() {
-											setResponsePage(new EditRealmSupervisorPage(
-													getModelObject()));
-										}
-									});
+								@Override
+								public void onClick() {
+									setResponsePage(new EditRealmSupervisorPage(
+											getModelObject()));
+								}
+							});
 
-							item.add(builder.newInstance("edit"));
-						} else {
-							item.add(new WebMarkupContainer("edit")
-									.setVisible(false));
-							IconLink.Builder builder = new IconLink.Builder(
-									"images/icons/user_add.png",
-									new DefaultClickResponder<Realm>(ModelMaker
-											.wrap(realm)) {
-										private static final long serialVersionUID = 1L;
+					item.add(builder.newInstance("edit"));
+				} else {
+					item.add(new WebMarkupContainer("edit").setVisible(false));
+					IconLink.Builder builder = new IconLink.Builder(
+							"images/icons/user_add.png",
+							new DefaultClickResponder<Realm>(
+									ModelMaker.wrap(realm)) {
+								private static final long serialVersionUID = 1L;
 
-										@Override
-										public void onClick() {
-											setResponsePage(new EditRealmSupervisorPage(
-													getModelObject()));
-										}
-									});
+								@Override
+								public void onClick() {
+									setResponsePage(new EditRealmSupervisorPage(
+											getModelObject()));
+								}
+							});
 
-							item.add(builder.newInstance("coordinator"));
-						}
-						item.add(new Label("gamescount", new Model<Integer>(
-								realm.getGames().size())));
-						item.add(new Label("playercount", new Model<Integer>(
-								realmService.countActivePlayers(realm))));
-						item.add(new Label("groupcount", new Model<Integer>(
-								realm.getGroups().size())));
+					item.add(builder.newInstance("coordinator"));
+				}
+				item.add(new Label("gamescount",
+						new Model<Integer>(realm.getGames().size())));
+				item.add(new Label("playercount", new Model<Integer>(
+						realmService.countActivePlayers(realm))));
+				item.add(new Label("groupcount",
+						new Model<Integer>(realm.getGroups().size())));
 
-						IconLink.Builder builder = new IconLink.Builder(
-								"images/icons/cross.png",
-								new DefaultClickResponder<Realm>(ModelMaker
-										.wrap(realm)) {
-									private static final long serialVersionUID = 1L;
+				IconLink.Builder builder = new IconLink.Builder(
+						"images/icons/cross.png",
+						new DefaultClickResponder<Realm>(
+								ModelMaker.wrap(realm)) {
+							private static final long serialVersionUID = 1L;
 
-									/**
-									 * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
-									 */
-									@Override
-									public void onClick() {
-										Realm rlm = getModelObject();
+							/**
+							 * @see com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder#onClick()
+							 */
+							@Override
+							public void onClick() {
+								Realm rlm = getModelObject();
 
-										if (realmService.isRealmInactive(rlm)) {
-											realmService.deleteRealm(rlm,
-													getUser());
-										}
+								if (realmService.isRealmInactive(rlm)) {
+									realmService.deleteRealm(rlm, getUser());
+								}
 
-										setResponsePage(new RealmManagementPage());
-									}
+								setResponsePage(new RealmManagementPage());
+							}
 
-								});
+						});
 
-						builder.setImageVisible(realmService
-								.isRealmInactive(realm));
+				builder.setImageVisible(realmService.isRealmInactive(realm));
 
-						item.add(builder.newInstance("remove"));
-					}
+				item.add(builder.newInstance("remove"));
+			}
 
-				});
+		});
 
 	}
 }

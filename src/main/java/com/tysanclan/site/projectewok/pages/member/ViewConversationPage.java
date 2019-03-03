@@ -17,21 +17,20 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.link.Link;
-
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.components.ConversationContentPanel;
 import com.tysanclan.site.projectewok.components.models.EntityClickListener;
 import com.tysanclan.site.projectewok.entities.ConversationParticipation;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.link.Link;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @TysanMemberSecured
-public class ViewConversationPage extends TysanPage implements
-		EntityClickListener<ConversationParticipation> {
+public class ViewConversationPage extends TysanPage
+		implements EntityClickListener<ConversationParticipation> {
 	private static final long serialVersionUID = 1L;
 
 	public ViewConversationPage(ConversationParticipation conversation) {

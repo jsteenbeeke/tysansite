@@ -17,11 +17,13 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
+import com.tysanclan.rest.api.data.Rank;
 import org.junit.Test;
 
 public class JuniorMemberLinksTest extends AbstractOverviewLinksTest {
-	public JuniorMemberLinksTest() {
-		super(13L);
+	@Override
+	protected long determineUserId() {
+		return userIdOfRank(Rank.JUNIOR_MEMBER);
 	}
 
 	@Test
@@ -50,7 +52,7 @@ public class JuniorMemberLinksTest extends AbstractOverviewLinksTest {
 	 * wicket:id="stewardAccept">Steward Nomination</div> <div
 	 * wicket:id="pendingSubscription">Subscription</div> <div
 	 * wicket:id="notification"></div> <div wicket:id="lucky"></div>
-	 * 
+	 *
 	 * <a wicket:id="preferences">Preferences</a><br /> </td> <td
 	 * class="topCenteredCell"> <div wicket:id="accounts"></div> <a
 	 * wicket:id="requestAchievement">Request Achievement</a><br />
@@ -61,7 +63,7 @@ public class JuniorMemberLinksTest extends AbstractOverviewLinksTest {
 	 * /></wicket:enclosure> <wicket:enclosure child="createrealmpetition"><a
 	 * wicket:id="createrealmpetition">Create Realm Petition</a><br
 	 * /></wicket:enclosure>
-	 * 
+	 *
 	 * </td> </tr> <tr> <td colspan="2" style="height: 15px;"></td> </tr> <tr>
 	 * <th>Democracy</th> <th>Social</th> </tr> <tr> <td
 	 * class="topCenteredCell"> <wicket:enclosure child="endorsement"><a
@@ -74,16 +76,16 @@ public class JuniorMemberLinksTest extends AbstractOverviewLinksTest {
 	 * /></wicket:enclosure> <div wicket:id="runforchancellor"></div> <div
 	 * wicket:id="runforsenator"></div> <a wicket:id="pastelections">Past
 	 * Elections</a><br />
-	 * 
+	 *
 	 * </td> <td class="topCenteredCell">
-	 * 
+	 *
 	 * <div wicket:id="calendar">Calendar</div> <a wicket:id="gallery">Image and
 	 * Video Galleries</a><br /> <a wicket:id="aim">AIM accounts</a><br /> <div
 	 * wicket:id="joingroup">Join Group</div> <wicket:enclosure
 	 * child="creategroup"><a wicket:id="creategroup">Create Group</a><br
 	 * /></wicket:enclosure> </td> </tr> <tr> <td colspan="2"
 	 * style="height: 15px;"></td> </tr>
-	 * 
+	 *
 	 * <tr> <th colspan="2">Clan</th> </tr> <tr> <td colspan="2"
 	 * class="topCenteredCell"> <a wicket:id="log">Clan Log</a><br /> <a
 	 * wicket:id="finance">Clan Finances</a><br /> <a wicket:id="clanstats">Clan

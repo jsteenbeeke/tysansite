@@ -17,9 +17,11 @@
  */
 package com.tysanclan.site.projectewok.pages.member.group;
 
-import java.util.LinkedList;
-import java.util.List;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.beans.GroupService;
+import com.tysanclan.site.projectewok.entities.Group;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.link.Link;
@@ -28,11 +30,8 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
-import com.tysanclan.site.projectewok.beans.GroupService;
-import com.tysanclan.site.projectewok.entities.Group;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -43,7 +42,7 @@ public class AcceptGroupApplicationPage extends AbstractMemberPage {
 	private IModel<Group> groupModel;
 
 	/**
-	 * 
+	 *
 	 */
 	public AcceptGroupApplicationPage(Group group) {
 		super("Accept group applications");
@@ -70,14 +69,16 @@ public class AcceptGroupApplicationPage extends AbstractMemberPage {
 
 					@Override
 					public void onClick() {
-						groupService.acceptGroupJoinRequest(getUser(),
-								getGroup(), getModelObject());
-						setResponsePage(new AcceptGroupApplicationPage(
-								getGroup()));
+						groupService
+								.acceptGroupJoinRequest(getUser(), getGroup(),
+										getModelObject());
+						setResponsePage(
+								new AcceptGroupApplicationPage(getGroup()));
 					}
 				};
 
-				Link<User> noLink = new Link<User>("no", ModelMaker.wrap(user)) {
+				Link<User> noLink = new Link<User>("no",
+						ModelMaker.wrap(user)) {
 					private static final long serialVersionUID = 1L;
 
 					@SpringBean
@@ -85,10 +86,11 @@ public class AcceptGroupApplicationPage extends AbstractMemberPage {
 
 					@Override
 					public void onClick() {
-						groupService.declineGroupJoinRequest(getUser(),
-								getGroup(), getModelObject());
-						setResponsePage(new AcceptGroupApplicationPage(
-								getGroup()));
+						groupService
+								.declineGroupJoinRequest(getUser(), getGroup(),
+										getModelObject());
+						setResponsePage(
+								new AcceptGroupApplicationPage(getGroup()));
 					}
 				};
 

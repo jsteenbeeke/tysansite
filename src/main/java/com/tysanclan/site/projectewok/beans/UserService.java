@@ -17,23 +17,23 @@
  */
 package com.tysanclan.site.projectewok.beans;
 
-import java.util.List;
-
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.entities.Activation;
 import com.tysanclan.site.projectewok.entities.EmailChangeConfirmation;
 import com.tysanclan.site.projectewok.entities.PasswordRequest;
 import com.tysanclan.site.projectewok.entities.User;
 
+import java.util.List;
+
 /**
  * A service for various User-related actions
- * 
+ *
  * @author Jeroen Steenbeeke
  */
 public interface UserService {
 	/**
 	 * Creates a new website user, granting the rank of forum user
-	 * 
+	 *
 	 * @param username
 	 *            The username of the created user
 	 * @param password
@@ -46,7 +46,7 @@ public interface UserService {
 
 	/**
 	 * Checks if a given username is taken
-	 * 
+	 *
 	 * @param username
 	 *            The username to check for
 	 * @return <code>true</code> If the user exists, <code>false</code>
@@ -56,7 +56,7 @@ public interface UserService {
 
 	/**
 	 * Sets a user's rank and join time as indicated by an import
-	 * 
+	 *
 	 * @param user_id
 	 *            The ID of the user to modify
 	 * @param rank
@@ -69,7 +69,7 @@ public interface UserService {
 
 	/**
 	 * Sets the retirement status of a user
-	 * 
+	 *
 	 * @param user_id
 	 *            The ID of the user to modify
 	 * @param retirement
@@ -110,7 +110,7 @@ public interface UserService {
 	List<User> getMembersOnline();
 
 	/**
-	 	 */
+	 */
 	long countMembers();
 
 	public void setUserTimezone(Long userId, String timezone);

@@ -17,12 +17,14 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.jeroensteenbeeke.hyperion.data.DAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.OtterSighting;
+import com.tysanclan.site.projectewok.entities.filter.OtterSightingFilter;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface OtterSightingDAO extends DAO<OtterSighting> {
+public interface OtterSightingDAO
+		extends DAO<OtterSighting, OtterSightingFilter> {
 }

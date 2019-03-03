@@ -17,15 +17,6 @@
  */
 package com.tysanclan.site.projectewok.pages.forum;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.auth.TysanNonMemberSecured;
 import com.tysanclan.site.projectewok.beans.GameService;
@@ -39,6 +30,14 @@ import com.tysanclan.site.projectewok.model.GameRealmCartesian;
 import com.tysanclan.site.projectewok.pages.ForumThreadPage;
 import com.tysanclan.site.projectewok.util.StringUtil;
 import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -102,12 +101,12 @@ public class JoinPage2 extends TysanPage {
 					realm = cart.getRealm();
 				}
 
-				String otherGames = BBCodeUtil.stripTags(otherGamesDescription
-						.getModelObject());
-				String sortOfPerson = BBCodeUtil.stripTags(sortOfPersonArea
-						.getModelObject());
-				String lookingFor = BBCodeUtil.stripTags(lookingForArea
-						.getModelObject());
+				String otherGames = BBCodeUtil
+						.stripTags(otherGamesDescription.getModelObject());
+				String sortOfPerson = BBCodeUtil
+						.stripTags(sortOfPersonArea.getModelObject());
+				String lookingFor = BBCodeUtil
+						.stripTags(lookingForArea.getModelObject());
 
 				boolean valid = true;
 
@@ -138,13 +137,14 @@ public class JoinPage2 extends TysanPage {
 					motivation.append(otherGames);
 					motivation.append("\n\n");
 
-					ForumThread thread = membershipService.applyForMembership(
-							user, motivation.toString(), game, realm);
+					ForumThread thread = membershipService
+							.applyForMembership(user, motivation.toString(),
+									game, realm);
 
 					membershipService.registerAction(user);
 
-					setResponsePage(new ForumThreadPage(thread.getId(), 1,
-							false));
+					setResponsePage(
+							new ForumThreadPage(thread.getId(), 1, false));
 				}
 
 			}

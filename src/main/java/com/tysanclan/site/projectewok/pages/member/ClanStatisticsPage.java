@@ -17,23 +17,18 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.Map.Entry;
-import java.util.SortedMap;
-import java.util.TreeMap;
-
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.beans.UserService;
 import com.tysanclan.site.projectewok.entities.MembershipStatusChange;
 import com.tysanclan.site.projectewok.entities.dao.MembershipStatusChangeDAO;
 import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.GraphUtil;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * @author Jeroen Steenbeeke
@@ -140,10 +135,9 @@ public class ClanStatisticsPage extends AbstractMemberPage {
 
 		for (MembershipStatusChange change : dao.findAll()) {
 			if (mutations.containsKey(change.getChangeTime())) {
-				mutations.put(
-						change.getChangeTime(),
-						mutations.get(change.getChangeTime())
-								+ change.getMemberSizeMutation());
+				mutations.put(change.getChangeTime(),
+						mutations.get(change.getChangeTime()) + change
+								.getMemberSizeMutation());
 			} else {
 				mutations.put(change.getChangeTime(),
 						change.getMemberSizeMutation());

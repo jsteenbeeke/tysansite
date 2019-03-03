@@ -1,30 +1,32 @@
 /**
  * Tysan Clan Website
  * Copyright (C) 2008-2013 Jeroen Steenbeeke and Ties van de Ven
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.tysanclan.site.projectewok.beans.impl;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-
+import com.google.common.collect.ImmutableList;
+import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.site.projectewok.entities.*;
+import com.tysanclan.site.projectewok.entities.dao.*;
+import com.tysanclan.site.projectewok.entities.filter.ForumFilter;
+import com.tysanclan.site.projectewok.entities.filter.ForumPostFilter;
+import com.tysanclan.site.projectewok.util.MemberUtil;
+import com.tysanclan.site.projectewok.util.StringUtil;
+import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
+import io.vavr.collection.Seq;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -32,38 +34,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.tysanclan.rest.api.data.Rank;
-import com.tysanclan.site.projectewok.entities.Event;
-import com.tysanclan.site.projectewok.entities.Forum;
-import com.tysanclan.site.projectewok.entities.ForumCategory;
-import com.tysanclan.site.projectewok.entities.ForumPost;
-import com.tysanclan.site.projectewok.entities.ForumThread;
-import com.tysanclan.site.projectewok.entities.Group;
-import com.tysanclan.site.projectewok.entities.GroupForum;
-import com.tysanclan.site.projectewok.entities.NewsForum;
-import com.tysanclan.site.projectewok.entities.Trial;
-import com.tysanclan.site.projectewok.entities.UnreadForumPost;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.EventDAO;
-import com.tysanclan.site.projectewok.entities.dao.ForumCategoryDAO;
-import com.tysanclan.site.projectewok.entities.dao.ForumDAO;
-import com.tysanclan.site.projectewok.entities.dao.ForumPostDAO;
-import com.tysanclan.site.projectewok.entities.dao.ForumThreadDAO;
-import com.tysanclan.site.projectewok.entities.dao.GroupDAO;
-import com.tysanclan.site.projectewok.entities.dao.NewsForumDAO;
-import com.tysanclan.site.projectewok.entities.dao.TrialDAO;
-import com.tysanclan.site.projectewok.entities.dao.UnreadForumPostDAO;
-import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.ForumFilter;
-import com.tysanclan.site.projectewok.entities.dao.filters.ForumPostFilter;
-import com.tysanclan.site.projectewok.util.MemberUtil;
-import com.tysanclan.site.projectewok.util.StringUtil;
-import com.tysanclan.site.projectewok.util.bbcode.BBCodeUtil;
+import java.io.Serializable;
+import java.util.*;
 
 @Component
 @Scope("request")
-class ForumServiceImpl implements
-		com.tysanclan.site.projectewok.beans.ForumService {
+class ForumServiceImpl
+		implements com.tysanclan.site.projectewok.beans.ForumService {
 	@Autowired
 	private ForumDAO forumDAO;
 	@Autowired
@@ -89,32 +66,28 @@ class ForumServiceImpl implements
 	private UserDAO userDAO;
 
 	/**
-	 * @param eventDAO
-	 *            the eventDAO to set
+	 * @param eventDAO the eventDAO to set
 	 */
 	public void setEventDAO(EventDAO eventDAO) {
 		this.eventDAO = eventDAO;
 	}
 
 	/**
-	 * @param groupDAO
-	 *            the groupDAO to set
+	 * @param groupDAO the groupDAO to set
 	 */
 	public void setGroupDAO(GroupDAO groupDAO) {
 		this.groupDAO = groupDAO;
 	}
 
 	/**
-	 * @param trialDAO
-	 *            the trialDAO to set
+	 * @param trialDAO the trialDAO to set
 	 */
 	public void setTrialDAO(TrialDAO trialDAO) {
 		this.trialDAO = trialDAO;
 	}
 
 	/**
-	 * @param logService
-	 *            the logService to set
+	 * @param logService the logService to set
 	 */
 	public void setLogService(
 			com.tysanclan.site.projectewok.beans.LogService logService) {
@@ -149,19 +122,25 @@ class ForumServiceImpl implements
 	@Transactional(propagation = Propagation.REQUIRED)
 	public boolean canView(User _user, Forum _forum) {
 
-		Forum forum = forumDAO.load(_forum.getId());
-		User user = _user != null ? userDAO.load(_user.getId()) : null;
+		return forumDAO.load(_forum.getId()).map(forum -> {
+			User user = _user != null ?
+					userDAO.load(_user.getId()).getOrNull() :
+					null;
 
-		return forum.canView(user);
+			return forum.canView(user);
+		}).getOrElse(false);
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public boolean canReply(User _user, Forum _forum) {
-		Forum forum = forumDAO.load(_forum.getId());
-		User user = _user != null ? userDAO.load(_user.getId()) : null;
+		return forumDAO.load(_forum.getId()).map(forum -> {
+			User user = _user != null ?
+					userDAO.load(_user.getId()).getOrNull() :
+					null;
 
-		return forum.canReply(user);
+			return forum.canReply(user);
+		}).getOrElse(false);
 	}
 
 	@Override
@@ -169,27 +148,27 @@ class ForumServiceImpl implements
 	public ForumThread createForumThread(Forum forum, String title,
 			String content, User user) {
 		ForumThread nt = createEmptyForumThread(forum, title, user);
-		Forum f2 = forumDAO.load(forum.getId());
+		return forumDAO.load(forum.getId()).map(f2 -> {
+			ForumPost post = new ForumPost();
+			post.setPoster(user);
+			post.setContent(BBCodeUtil.stripTags(content));
+			post.setShadow(user != null && user.getRank() == Rank.BANNED);
+			post.setTime(new Date());
+			post.setThread(nt);
 
-		ForumPost post = new ForumPost();
-		post.setPoster(user);
-		post.setContent(BBCodeUtil.stripTags(content));
-		post.setShadow(user != null && user.getRank() == Rank.BANNED);
-		post.setTime(new Date());
-		post.setThread(nt);
+			List<ForumPost> posts = new LinkedList<ForumPost>();
+			posts.add(post);
 
-		List<ForumPost> posts = new LinkedList<ForumPost>();
-		posts.add(post);
+			nt.setPosts(posts);
 
-		nt.setPosts(posts);
+			f2.getThreads().add(nt);
 
-		f2.getThreads().add(nt);
+			forumDAO.update(f2);
+			forumThreadDAO.update(nt);
+			forumPostDAO.save(post);
 
-		forumDAO.update(f2);
-		forumThreadDAO.update(nt);
-		forumPostDAO.save(post);
-
-		return nt;
+			return nt;
+		}).getOrElseThrow(IllegalStateException::new);
 	}
 
 	@Override
@@ -210,15 +189,15 @@ class ForumServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public boolean deletePost(ForumPost post, User user) {
-		if (post.getPoster().equals(user)
-				|| isModerator(user, post.getThread().getForum())) {
+		if (post.getPoster().equals(user) || isModerator(user,
+				post.getThread().getForum())) {
 			forumPostDAO.delete(post);
 			post.getThread().getPosts().remove(post);
 			forumThreadDAO.update(post.getThread());
 
-			logService.logUserAction(user, "Forum", StringUtil.combineStrings(
-					"Post ", post.getId(), " by ", post.getPoster()
-							.getUsername(), " deleted"));
+			logService.logUserAction(user, "Forum", StringUtil
+					.combineStrings("Post ", post.getId(), " by ",
+							post.getPoster().getUsername(), " deleted"));
 
 			if (post.getThread().getPosts().isEmpty()) {
 				return deleteThread(post.getThread(), null);
@@ -229,12 +208,13 @@ class ForumServiceImpl implements
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.ForumService#deleteThread(com.tysanclan.site.projectewok.entities.ForumThread,
-	 *      com.tysanclan.site.projectewok.entities.User)
+	 * com.tysanclan.site.projectewok.entities.User)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public boolean deleteThread(ForumThread thread, User user) {
-		if (isModerator(user, thread.getForum()) || thread.getPosts().isEmpty()) {
+		if (isModerator(user, thread.getForum()) || thread.getPosts()
+				.isEmpty()) {
 			Event event = eventDAO.getEventByThread(thread);
 			Trial trial = trialDAO.getTrialByThread(thread);
 
@@ -252,8 +232,8 @@ class ForumServiceImpl implements
 			forumDAO.update(thread.getForum());
 			forumThreadDAO.delete(thread);
 
-			logService.logUserAction(user, "Forum", StringUtil.combineStrings(
-					"Thread ", thread.getTitle(), " deleted"));
+			logService.logUserAction(user, "Forum", StringUtil
+					.combineStrings("Thread ", thread.getTitle(), " deleted"));
 
 			return true;
 		}
@@ -264,9 +244,8 @@ class ForumServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void editPost(ForumPost post, String content, User currentUser) {
-		if (post.getPoster().equals(currentUser)
-				|| post.getThread().getForum().getModerators()
-						.contains(currentUser)
+		if (post.getPoster().equals(currentUser) || post.getThread().getForum()
+				.getModerators().contains(currentUser)
 				|| currentUser.getRank() == Rank.TRUTHSAYER) {
 			post.setContent(BBCodeUtil.stripTags(content));
 			forumPostDAO.update(post);
@@ -281,8 +260,7 @@ class ForumServiceImpl implements
 	}
 
 	/**
-	 * @param newsForumDAO
-	 *            the newsForumDAO to set
+	 * @param newsForumDAO the newsForumDAO to set
 	 */
 	public void setNewsForumDAO(NewsForumDAO newsForumDAO) {
 		this.newsForumDAO = newsForumDAO;
@@ -311,50 +289,44 @@ class ForumServiceImpl implements
 
 	@Override
 	public Forum getNewsForum() {
-		List<NewsForum> forums = newsForumDAO.findAll();
+		Seq<NewsForum> forums = newsForumDAO.findAll();
 
-		return forums.isEmpty() ? null : newsForumDAO.findAll().get(0);
+		return forums.isEmpty() ? null : forums.get(0);
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.ForumService#getValidDestinationForums(com.tysanclan.site.projectewok.entities.Forum,
-	 *      com.tysanclan.site.projectewok.entities.User)
+	 * com.tysanclan.site.projectewok.entities.User)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public List<Forum> getValidDestinationForums(Forum _forum, User u) {
-		Forum forum = forumDAO.load(_forum.getId());
-
-		List<Forum> forums = new LinkedList<Forum>();
-		for (Forum f : forumDAO.findAll()) {
-			if (isModerator(u, f) && !f.equals(forum) && f.canView(u)) {
-				forums.add(f);
-			}
-		}
-
-		return forums;
+		return forumDAO.load(_forum.getId())
+				.map(forum -> forumDAO.findAll().filter(f -> isModerator(u, f))
+						.filter(f -> f.canView(u)).filter(f -> !f.equals(forum))
+						.toJavaList()).getOrElse(ImmutableList::of);
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public boolean isModerator(User user, Forum forum) {
-		Forum f2 = forumDAO.load(forum.getId());
-
-		if (user != null) {
-			if (f2.getModerators().contains(user)) {
-				return true;
+		return forumDAO.load(forum.getId()).map(f2 -> {
+			if (user != null) {
+				if (f2.getModerators().contains(user)) {
+					return true;
+				}
+				if (user.getRank() == Rank.TRUTHSAYER) {
+					return true;
+				}
 			}
-			if (user.getRank() == Rank.TRUTHSAYER) {
-				return true;
-			}
-		}
 
-		return false;
+			return false;
+		}).getOrElse(false);
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.ForumService#lockThread(com.tysanclan.site.projectewok.entities.ForumThread,
-	 *      com.tysanclan.site.projectewok.entities.User)
+	 * com.tysanclan.site.projectewok.entities.User)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -363,8 +335,8 @@ class ForumServiceImpl implements
 			thread.setLocked(true);
 			forumThreadDAO.update(thread);
 
-			logService.logUserAction(user, "Forum", StringUtil.combineStrings(
-					"Thread ", thread.getTitle(), " locked"));
+			logService.logUserAction(user, "Forum", StringUtil
+					.combineStrings("Thread ", thread.getTitle(), " locked"));
 
 			return true;
 		}
@@ -374,39 +346,42 @@ class ForumServiceImpl implements
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.ForumService#moveThread(com.tysanclan.site.projectewok.entities.ForumThread,
-	 *      com.tysanclan.site.projectewok.entities.Forum,
-	 *      com.tysanclan.site.projectewok.entities.User)
+	 * com.tysanclan.site.projectewok.entities.Forum,
+	 * com.tysanclan.site.projectewok.entities.User)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public boolean moveThread(ForumThread _thread, Forum _forum, User _user) {
-		ForumThread thread = forumThreadDAO.load(_thread.getId());
-		Forum forum = forumDAO.load(_forum.getId());
-		User user = userDAO.load(_user.getId());
+		return forumThreadDAO.load(_thread.getId()).flatMap(
+				thread -> forumDAO.load(_forum.getId()).flatMap(
+						forum -> userDAO.load(_user.getId()).map(user -> {
+							if (isModerator(user, forum) && isModerator(user,
+									thread.getForum())) {
+								forum.getThreads().add(thread);
+								thread.getForum().getThreads().remove(thread);
 
-		if (isModerator(user, forum) && isModerator(user, thread.getForum())) {
-			forum.getThreads().add(thread);
-			thread.getForum().getThreads().remove(thread);
+								forumDAO.update(thread.getForum());
 
-			forumDAO.update(thread.getForum());
+								thread.setForum(forum);
 
-			thread.setForum(forum);
+								forumDAO.update(forum);
+								forumThreadDAO.update(thread);
 
-			forumDAO.update(forum);
-			forumThreadDAO.update(thread);
+								logService.logUserAction(user, "Forum",
+										StringUtil.combineStrings("Thread ",
+												thread.getTitle(), " moved"));
 
-			logService.logUserAction(user, "Forum", StringUtil.combineStrings(
-					"Thread ", thread.getTitle(), " moved"));
+								return true;
+							}
 
-			return true;
-		}
-
-		return false;
+							return false;
+						}))).getOrElse(false);
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
-	public ForumPost replyToThread(ForumThread thread, String content, User user) {
+	public ForumPost replyToThread(ForumThread thread, String content,
+			User user) {
 		Date posttime = new Date();
 
 		ForumPost post = new ForumPost();
@@ -429,32 +404,28 @@ class ForumServiceImpl implements
 	}
 
 	/**
-	 * @param forumDAO
-	 *            the forumDAO to set
+	 * @param forumDAO the forumDAO to set
 	 */
 	public void setForumDAO(ForumDAO forumDAO) {
 		this.forumDAO = forumDAO;
 	}
 
 	/**
-	 * @param forumPostDAO
-	 *            the forumPostDAO to set
+	 * @param forumPostDAO the forumPostDAO to set
 	 */
 	public void setForumPostDAO(ForumPostDAO forumPostDAO) {
 		this.forumPostDAO = forumPostDAO;
 	}
 
 	/**
-	 * @param forumThreadDAO
-	 *            the forumThreadDAO to set
+	 * @param forumThreadDAO the forumThreadDAO to set
 	 */
 	public void setForumThreadDAO(ForumThreadDAO forumThreadDAO) {
 		this.forumThreadDAO = forumThreadDAO;
 	}
 
 	/**
-	 * @param forumCategoryDAO
-	 *            the forumCategoryDAO to set
+	 * @param forumCategoryDAO the forumCategoryDAO to set
 	 */
 	public void setForumCategoryDAO(ForumCategoryDAO forumCategoryDAO) {
 		this.forumCategoryDAO = forumCategoryDAO;
@@ -488,11 +459,9 @@ class ForumServiceImpl implements
 					notification.setBranchTo(target);
 					forumPostDAO.update(notification);
 
-					logService.logUserAction(
-							user,
-							"Forum",
-							StringUtil.combineStrings("Thread ",
-									source.getTitle(), " split"));
+					logService.logUserAction(user, "Forum", StringUtil
+							.combineStrings("Thread ", source.getTitle(),
+									" split"));
 
 					return target;
 				}
@@ -508,16 +477,16 @@ class ForumServiceImpl implements
 	@Override
 	public Forum getInteractionForum() {
 		ForumFilter filter = new ForumFilter();
-		filter.setInteraction(true);
+		filter.interactive(true);
 
-		List<Forum> forums = forumDAO.findByFilter(filter);
+		Seq<Forum> forums = forumDAO.findByFilter(filter);
 
 		return !forums.isEmpty() ? forums.get(0) : null;
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.ForumService#stickyThread(com.tysanclan.site.projectewok.entities.ForumThread,
-	 *      com.tysanclan.site.projectewok.entities.User)
+	 * com.tysanclan.site.projectewok.entities.User)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -526,8 +495,8 @@ class ForumServiceImpl implements
 			thread.setPostSticky(true);
 			forumThreadDAO.update(thread);
 
-			logService.logUserAction(user, "Forum", StringUtil.combineStrings(
-					"Thread ", thread.getTitle(), " stickied"));
+			logService.logUserAction(user, "Forum", StringUtil
+					.combineStrings("Thread ", thread.getTitle(), " stickied"));
 
 			return true;
 		}
@@ -537,7 +506,7 @@ class ForumServiceImpl implements
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.ForumService#unlockThread(com.tysanclan.site.projectewok.entities.ForumThread,
-	 *      com.tysanclan.site.projectewok.entities.User)
+	 * com.tysanclan.site.projectewok.entities.User)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -546,8 +515,8 @@ class ForumServiceImpl implements
 			thread.setLocked(false);
 			forumThreadDAO.update(thread);
 
-			logService.logUserAction(user, "Forum", StringUtil.combineStrings(
-					"Thread ", thread.getTitle(), " unlocked"));
+			logService.logUserAction(user, "Forum", StringUtil
+					.combineStrings("Thread ", thread.getTitle(), " unlocked"));
 
 			return true;
 		}
@@ -557,7 +526,7 @@ class ForumServiceImpl implements
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.ForumService#unstickyThread(com.tysanclan.site.projectewok.entities.ForumThread,
-	 *      com.tysanclan.site.projectewok.entities.User)
+	 * com.tysanclan.site.projectewok.entities.User)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -566,8 +535,9 @@ class ForumServiceImpl implements
 			thread.setPostSticky(false);
 			forumThreadDAO.update(thread);
 
-			logService.logUserAction(user, "Forum", StringUtil.combineStrings(
-					"Thread ", thread.getTitle(), " unstickied"));
+			logService.logUserAction(user, "Forum", StringUtil
+					.combineStrings("Thread ", thread.getTitle(),
+							" unstickied"));
 
 			return true;
 		}
@@ -623,9 +593,9 @@ class ForumServiceImpl implements
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.ForumService#createGroupForum(java.lang.String,
-	 *      java.lang.String,
-	 *      com.tysanclan.site.projectewok.entities.ForumCategory,
-	 *      com.tysanclan.site.projectewok.entities.Group)
+	 * java.lang.String,
+	 * com.tysanclan.site.projectewok.entities.ForumCategory,
+	 * com.tysanclan.site.projectewok.entities.Group)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -652,17 +622,17 @@ class ForumServiceImpl implements
 
 		category.getForums().add(forum);
 
-		logService.logSystemAction("Forum", StringUtil.combineStrings(
-				"Group forum ", name, " for group ", group.getName(),
-				" created"));
+		logService.logSystemAction("Forum", StringUtil
+				.combineStrings("Group forum ", name, " for group ",
+						group.getName(), " created"));
 
 		return forum;
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.ForumService#createNewsForum(java.lang.String,
-	 *      java.lang.String, boolean,
-	 *      com.tysanclan.site.projectewok.entities.ForumCategory)
+	 * java.lang.String, boolean,
+	 * com.tysanclan.site.projectewok.entities.ForumCategory)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -696,7 +666,7 @@ class ForumServiceImpl implements
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.ForumService#makeMembersOnly(com.tysanclan.site.projectewok.entities.Forum,
-	 *      com.tysanclan.site.projectewok.entities.User)
+	 * com.tysanclan.site.projectewok.entities.User)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -704,15 +674,16 @@ class ForumServiceImpl implements
 		forum.setMembersOnly(true);
 		forumDAO.update(forum);
 
-		logService.logUserAction(user, "Forum", StringUtil.combineStrings(
-				"Forum ", forum.getName(), " is now members-only"));
+		logService.logUserAction(user, "Forum", StringUtil
+				.combineStrings("Forum ", forum.getName(),
+						" is now members-only"));
 
 		return true;
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.ForumService#unmakeMembersOnly(com.tysanclan.site.projectewok.entities.Forum,
-	 *      com.tysanclan.site.projectewok.entities.User)
+	 * com.tysanclan.site.projectewok.entities.User)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -720,15 +691,16 @@ class ForumServiceImpl implements
 		forum.setMembersOnly(true);
 		forumDAO.update(forum);
 
-		logService.logUserAction(user, "Forum", StringUtil.combineStrings(
-				"Forum ", forum.getName(), " is no longer members-only"));
+		logService.logUserAction(user, "Forum", StringUtil
+				.combineStrings("Forum ", forum.getName(),
+						" is no longer members-only"));
 
 		return true;
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.ForumService#setInteractive(com.tysanclan.site.projectewok.entities.Forum,
-	 *      boolean, com.tysanclan.site.projectewok.entities.User)
+	 * boolean, com.tysanclan.site.projectewok.entities.User)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -736,9 +708,9 @@ class ForumServiceImpl implements
 		forum.setInteractive(interactive);
 		forumDAO.update(forum);
 
-		logService.logUserAction(user, "Forum", StringUtil.combineStrings(
-				"Forum ", forum.getName(), " is now ", interactive ? ""
-						: "not ", "interactive"));
+		logService.logUserAction(user, "Forum", StringUtil
+				.combineStrings("Forum ", forum.getName(), " is now ",
+						interactive ? "" : "not ", "interactive"));
 
 	}
 
@@ -748,133 +720,133 @@ class ForumServiceImpl implements
 	@Override
 	public List<ForumPost> getUnreadPosts(User user) {
 		ForumPostFilter filter = new ForumPostFilter();
-		filter.setPostAfter(user.getLastAction());
+		filter.time().greaterThan(user.getLastAction());
 
-		return forumPostDAO.findByFilter(filter);
+		return forumPostDAO.findByFilter(filter).toJavaList();
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.ForumService#isGroupMember(com.tysanclan.site.projectewok.entities.User,
-	 *      com.tysanclan.site.projectewok.entities.Group)
+	 * com.tysanclan.site.projectewok.entities.Group)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public boolean isGroupMember(User user, Group group) {
-		Group _group = groupDAO.load(group.getId());
-
-		return _group.getGroupMembers().contains(user);
+		return groupDAO.load(group.getId())
+				.filter(g -> g.getGroupMembers().contains(user)).isDefined();
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.ForumService#deleteCategory(com.tysanclan.site.projectewok.entities.User,
-	 *      com.tysanclan.site.projectewok.entities.ForumCategory)
+	 * com.tysanclan.site.projectewok.entities.ForumCategory)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void deleteCategory(User user, ForumCategory category) {
-		ForumCategory _category = forumCategoryDAO.load(category.getId());
+		forumCategoryDAO.load(category.getId()).forEach(_category -> {
+			if (_category.getForums().isEmpty()) {
+				forumCategoryDAO.delete(_category);
 
-		if (_category.getForums().isEmpty()) {
-			forumCategoryDAO.delete(_category);
-
-			logService.logUserAction(user, "Forum",
-					"Category " + _category.getName() + " deleted");
-		}
-
+				logService.logUserAction(user, "Forum",
+						"Category " + _category.getName() + " deleted");
+			}
+		});
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.ForumService#setForumName(com.tysanclan.site.projectewok.entities.Forum,
-	 *      java.lang.String, com.tysanclan.site.projectewok.entities.User)
+	 * java.lang.String, com.tysanclan.site.projectewok.entities.User)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void setForumName(Forum forum, String newName, User user) {
-		Forum _forum = forumDAO.load(forum.getId());
+		forumDAO.load(forum.getId()).forEach(_forum -> {
+			String oldName = _forum.getName();
 
-		String oldName = _forum.getName();
+			_forum.setName(newName);
+			forumDAO.update(_forum);
 
-		_forum.setName(newName);
-		forumDAO.update(_forum);
-
-		logService.logUserAction(user, "Forum", "Name of forum " + oldName
-				+ " changed to " + newName);
-
+			logService.logUserAction(user, "Forum",
+					"Name of forum " + oldName + " changed to " + newName);
+		});
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.ForumService#setForumDescription(com.tysanclan.site.projectewok.entities.Forum,
-	 *      java.lang.String, com.tysanclan.site.projectewok.entities.User)
+	 * java.lang.String, com.tysanclan.site.projectewok.entities.User)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
-	public void setForumDescription(Forum forum, String description, User user) {
-		Forum _forum = forumDAO.load(forum.getId());
+	public void setForumDescription(Forum forum, String description,
+			User user) {
+		forumDAO.load(forum.getId()).forEach(_forum -> {
 
-		_forum.setDescription(BBCodeUtil.stripTags(description));
-		forumDAO.update(_forum);
+			_forum.setDescription(BBCodeUtil.stripTags(description));
+			forumDAO.update(_forum);
 
-		logService.logUserAction(user, "Forum", "Description of forum "
-				+ _forum.getName() + " changed");
-
+			logService.logUserAction(user, "Forum",
+					"Description of forum " + _forum.getName() + " changed");
+		});
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void setMembersOnly(User user, Forum forum, boolean membersOnly) {
-		Forum _forum = forumDAO.load(forum.getId());
+		forumDAO.load(forum.getId()).forEach(_forum -> {
+			_forum.setMembersOnly(membersOnly);
 
-		_forum.setMembersOnly(membersOnly);
+			forumDAO.update(_forum);
 
-		forumDAO.update(_forum);
-
-		logService.logUserAction(user, "Forum", "Forum " + _forum.getName()
-				+ " is now " + (membersOnly ? " " : "not ")
-				+ " visible for non-members");
+			logService.logUserAction(user, "Forum",
+					"Forum " + _forum.getName() + " is now " + (membersOnly ?
+							" " :
+							"not ") + " visible for non-members");
+		});
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.ForumService#setModeratorOnlyRestriction(com.tysanclan.site.projectewok.entities.User,
-	 *      com.tysanclan.site.projectewok.entities.Forum, boolean)
+	 * com.tysanclan.site.projectewok.entities.Forum, boolean)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void setModeratorOnlyRestriction(User user, Forum forum,
 			boolean membersOnly) {
-		Forum _forum = forumDAO.load(forum.getId());
+		forumDAO.load(forum.getId()).forEach(_forum -> {
+			_forum.setPublicAccess(membersOnly);
 
-		_forum.setPublicAccess(membersOnly);
+			forumDAO.update(_forum);
 
-		forumDAO.update(_forum);
-
-		logService.logUserAction(user, "Forum", "Forum " + _forum.getName()
-				+ " is now " + (membersOnly ? " " : "not ")
-				+ " accessible for non-members");
+			logService.logUserAction(user, "Forum",
+					"Forum " + _forum.getName() + " is now " + (membersOnly ?
+							" " :
+							"not ") + " accessible for non-members");
+		});
 
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.ForumService#deleteForum(com.tysanclan.site.projectewok.entities.User,
-	 *      com.tysanclan.site.projectewok.entities.Forum)
+	 * com.tysanclan.site.projectewok.entities.Forum)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public boolean deleteForum(User user, Forum forum) {
-		Forum _forum = forumDAO.load(forum.getId());
+		return forumDAO.load(forum.getId()).map(_forum -> {
+			if (_forum.getThreads().isEmpty()) {
 
-		if (_forum.getThreads().isEmpty()) {
+				logService.logUserAction(user, "Forum",
+						"Forum " + forum.getName() + " deleted");
 
-			logService.logUserAction(user, "Forum", "Forum " + forum.getName()
-					+ " deleted");
+				forumCategoryDAO.evict(_forum.getCategory());
+				forumDAO.evict(_forum);
+				forumDAO.delete(_forum);
 
-			forumCategoryDAO.evict(_forum.getCategory());
-			forumDAO.evict(_forum);
-			forumDAO.delete(_forum);
+				return true;
+			}
 
-			return true;
-		}
-
-		return false;
+			return false;
+		}).getOrElse(false);
 	}
 
 	/**
@@ -883,31 +855,32 @@ class ForumServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void moveDown(Forum forum) {
-		Forum _forum = forumDAO.load(forum.getId());
+		forumDAO.load(forum.getId()).forEach(_forum -> {
 
-		ForumCategory category = _forum.getCategory();
+			ForumCategory category = _forum.getCategory();
 
-		int oldPosition = _forum.getPosition();
-		int newPosition = oldPosition + 1;
+			int oldPosition = _forum.getPosition();
+			int newPosition = oldPosition + 1;
 
-		Forum forumOnNewPosition = null;
+			Forum forumOnNewPosition = null;
 
-		for (Forum next : category.getForums()) {
-			if (next.getPosition() == newPosition) {
-				forumOnNewPosition = next;
-				break;
+			for (Forum next : category.getForums()) {
+				if (next.getPosition() == newPosition) {
+					forumOnNewPosition = next;
+					break;
+				}
 			}
-		}
 
-		_forum.setPosition(newPosition);
-		forumDAO.update(_forum);
+			_forum.setPosition(newPosition);
+			forumDAO.update(_forum);
 
-		if (forumOnNewPosition != null) {
-			forumOnNewPosition.setPosition(oldPosition);
-			forumDAO.update(forumOnNewPosition);
-		}
+			if (forumOnNewPosition != null) {
+				forumOnNewPosition.setPosition(oldPosition);
+				forumDAO.update(forumOnNewPosition);
+			}
 
-		forumCategoryDAO.evict(category);
+			forumCategoryDAO.evict(category);
+		});
 	}
 
 	/**
@@ -916,124 +889,127 @@ class ForumServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void moveUp(Forum forum) {
-		Forum _forum = forumDAO.load(forum.getId());
+		forumDAO.load(forum.getId()).forEach(_forum -> {
+			ForumCategory category = _forum.getCategory();
 
-		ForumCategory category = _forum.getCategory();
+			int oldPosition = _forum.getPosition();
+			int newPosition = oldPosition - 1;
 
-		int oldPosition = _forum.getPosition();
-		int newPosition = oldPosition - 1;
+			Forum forumOnNewPosition = null;
 
-		Forum forumOnNewPosition = null;
-
-		for (Forum next : category.getForums()) {
-			if (next.getPosition() == newPosition) {
-				forumOnNewPosition = next;
-				break;
+			for (Forum next : category.getForums()) {
+				if (next.getPosition() == newPosition) {
+					forumOnNewPosition = next;
+					break;
+				}
 			}
-		}
 
-		_forum.setPosition(newPosition);
-		forumDAO.update(_forum);
+			_forum.setPosition(newPosition);
+			forumDAO.update(_forum);
 
-		if (forumOnNewPosition != null) {
-			forumOnNewPosition.setPosition(oldPosition);
-			forumDAO.update(forumOnNewPosition);
-		}
+			if (forumOnNewPosition != null) {
+				forumOnNewPosition.setPosition(oldPosition);
+				forumDAO.update(forumOnNewPosition);
+			}
 
-		forumCategoryDAO.evict(category);
-
+			forumCategoryDAO.evict(category);
+		});
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.ForumService#moveToCategory(com.tysanclan.site.projectewok.entities.User,
-	 *      com.tysanclan.site.projectewok.entities.Forum,
-	 *      com.tysanclan.site.projectewok.entities.ForumCategory)
+	 * com.tysanclan.site.projectewok.entities.Forum,
+	 * com.tysanclan.site.projectewok.entities.ForumCategory)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void moveToCategory(User user, Forum forum,
 			ForumCategory forumCategory) {
-		Forum _forum = forumDAO.load(forum.getId());
-		ForumCategory _category = forumCategoryDAO.load(forumCategory.getId());
+		forumDAO.load(forum.getId()).forEach(
+				_forum -> forumCategoryDAO.load(forumCategory.getId())
+						.forEach(_category -> {
+							if (!_category.equals(_forum.getCategory())) {
+								_forum.setCategory(_category);
+								int maxPos = 1;
+								for (Forum next : _category.getForums()) {
+									if (maxPos < next.getPosition()) {
+										maxPos = next.getPosition();
+									}
+								}
+								maxPos++;
 
-		if (!_category.equals(_forum.getCategory())) {
-			_forum.setCategory(_category);
-			int maxPos = 1;
-			for (Forum next : _category.getForums()) {
-				if (maxPos < next.getPosition()) {
-					maxPos = next.getPosition();
-				}
-			}
-			maxPos++;
+								_forum.setPosition(maxPos);
 
-			_forum.setPosition(maxPos);
+								forumDAO.update(_forum);
 
-			forumDAO.update(_forum);
+								logService.logUserAction(user, "Forum",
+										"Forum " + _forum.getName()
+												+ " moved to category "
+												+ _category.getName());
 
-			logService.logUserAction(user, "Forum", "Forum " + _forum.getName()
-					+ " moved to category " + _category.getName());
-
-			forumCategoryDAO.evict(_category);
-			forumCategoryDAO.evict(forumCategory);
-		}
-
+								forumCategoryDAO.evict(_category);
+								forumCategoryDAO.evict(forumCategory);
+							}
+						}));
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.ForumService#addModerator(com.tysanclan.site.projectewok.entities.User,
-	 *      com.tysanclan.site.projectewok.entities.Forum,
-	 *      com.tysanclan.site.projectewok.entities.User)
+	 * com.tysanclan.site.projectewok.entities.Forum,
+	 * com.tysanclan.site.projectewok.entities.User)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public Forum addModerator(User adder, Forum forum, User moderator) {
-		Forum _forum = forumDAO.load(forum.getId());
+		return forumDAO.load(forum.getId()).map(_forum -> {
 
-		_forum.getModerators().add(moderator);
+			_forum.getModerators().add(moderator);
 
-		forumDAO.update(_forum);
+			forumDAO.update(_forum);
 
-		logService.logUserAction(adder, "Forum",
-				"Assigned " + moderator.getUsername() + " as moderator of "
-						+ forum.getName());
+			logService.logUserAction(adder, "Forum",
+					"Assigned " + moderator.getUsername() + " as moderator of "
+							+ forum.getName());
 
-		return _forum;
-
+			return _forum;
+		}).getOrElseThrow(IllegalStateException::new);
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.ForumService#removeModerator(com.tysanclan.site.projectewok.entities.User,
-	 *      com.tysanclan.site.projectewok.entities.Forum,
-	 *      com.tysanclan.site.projectewok.entities.User)
+	 * com.tysanclan.site.projectewok.entities.Forum,
+	 * com.tysanclan.site.projectewok.entities.User)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public Forum removeModerator(User remover, Forum forum, User moderator) {
-		Forum _forum = forumDAO.load(forum.getId());
+		return forumDAO.load(forum.getId()).map(_forum -> {
 
-		_forum.getModerators().remove(moderator);
+			_forum.getModerators().remove(moderator);
 
-		forumDAO.update(_forum);
+			forumDAO.update(_forum);
 
-		logService.logUserAction(remover, "Forum",
-				"Removed " + moderator.getUsername() + " as moderator of "
-						+ forum.getName());
+			logService.logUserAction(remover, "Forum",
+					"Removed " + moderator.getUsername() + " as moderator of "
+							+ forum.getName());
 
-		return _forum;
+			return _forum;
+		}).getOrElseThrow(IllegalStateException::new);
 	}
 
 	/**
 	 * @see com.tysanclan.site.projectewok.beans.ForumService#setThreadTitle(com.tysanclan.site.projectewok.entities.ForumThread,
-	 *      java.lang.String)
+	 * java.lang.String)
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void setThreadTitle(ForumThread _thread, String newTitle) {
-		ForumThread thread = forumThreadDAO.load(_thread.getId());
+		forumThreadDAO.load(_thread.getId()).forEach(thread -> {
 
-		thread.setTitle(newTitle);
+			thread.setTitle(newTitle);
 
-		forumThreadDAO.update(thread);
+			forumThreadDAO.update(thread);
+		});
 
 	}
 
@@ -1057,7 +1033,11 @@ class ForumServiceImpl implements
 	}
 
 	@Override
-	public int countUnread(User user) {
+	@Transactional(propagation = Propagation.REQUIRED)
+	public int countUnread(User _user) {
+		User user = userDAO.load(_user.getId())
+				.getOrElseThrow(IllegalStateException::new);
+
 		if (user.getUnreadForumPosts() == null) {
 			return 0;
 		}
@@ -1121,8 +1101,8 @@ class ForumServiceImpl implements
 			Forum forum = thread.getForum();
 
 			if (forum.canView(user)) {
-				if (post.getPoster() == null
-						|| !(post.getPoster().equals(user))) {
+				if (post.getPoster() == null || !(post.getPoster()
+						.equals(user))) {
 					UnreadForumPost upost = new UnreadForumPost(user, post);
 					unreadForumPostDAO.save(upost);
 					user.getUnreadForumPosts().add(upost);
@@ -1170,24 +1150,26 @@ class ForumServiceImpl implements
 			List<ForumPost> originalPosts) {
 		List<ForumPost> pList = new LinkedList<ForumPost>();
 		for (ForumPost _fp : originalPosts) {
-			ForumPost fp = forumPostDAO.load(_fp.getId());
+			forumPostDAO.load(_fp.getId()).forEach(fp -> {
 
-			if (publicView) {
-				if (!fp.getThread().getForum().isMembersOnly()
-						&& !fp.isShadow()) {
-					pList.add(fp);
-				}
-			} else {
-				if (user != null) {
-					Forum f = forumDAO.load(fp.getThread().getForum().getId());
-
-					if (f.isAccessible(user)
-							&& (!fp.isShadow() || (fp.isShadow() && fp
-									.getPoster().equals(user)))) {
+				if (publicView) {
+					if (!fp.getThread().getForum().isMembersOnly() && !fp
+							.isShadow()) {
 						pList.add(fp);
 					}
+				} else {
+					if (user != null) {
+						forumDAO.load(fp.getThread().getForum().getId())
+								.forEach(f -> {
+
+									if (f.isAccessible(user) && (!fp.isShadow()
+											|| fp.getPoster().equals(user))) {
+										pList.add(fp);
+									}
+								});
+					}
 				}
-			}
+			});
 		}
 
 		return pList;
@@ -1197,30 +1179,29 @@ class ForumServiceImpl implements
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<ForumThread> filterThreads(User user, Forum _forum,
 			boolean publicView) {
-		Forum forum = forumDAO.load(_forum.getId());
-		List<ForumThread> tList = new LinkedList<ForumThread>();
+		return forumDAO.load(_forum.getId()).map(forum -> {
+			List<ForumThread> tList = new LinkedList<ForumThread>();
 
-		for (ForumThread ft : forum.getThreads()) {
-			if (publicView) {
-				if (!forum.isMembersOnly() && !ft.isShadow()
-						&& forum.isAccessible(user)) {
-					tList.add(ft);
-				}
-			} else {
-				if (user != null) {
-					if (forum.isAccessible(user)
-							&& (!ft.isShadow() || (ft.isShadow() && ft
-									.getPoster().equals(user)))) {
+			for (ForumThread ft : forum.getThreads()) {
+				if (publicView) {
+					if (!forum.isMembersOnly() && !ft.isShadow() && forum
+							.isAccessible(user)) {
 						tList.add(ft);
+					}
+				} else {
+					if (user != null) {
+						if (forum.isAccessible(user) && (!ft.isShadow() || ft
+								.getPoster().equals(user))) {
+							tList.add(ft);
+						}
 					}
 				}
 			}
-		}
 
-		Collections.sort(tList, forumThreadComparator);
+			tList.sort(forumThreadComparator);
 
-		return tList;
-
+			return tList;
+		}).getOrElse(ImmutableList::of);
 	}
 
 	@Override
@@ -1265,8 +1246,8 @@ class ForumServiceImpl implements
 		return thread.getPosts().get(0);
 	}
 
-	private static class ForumThreadComparator implements
-			Comparator<ForumThread>, Serializable {
+	private static class ForumThreadComparator
+			implements Comparator<ForumThread>, Serializable {
 		private static final long serialVersionUID = 1L;
 
 		/**
@@ -1295,7 +1276,7 @@ class ForumServiceImpl implements
 		// Filter shadow threads
 		List<ForumThread> tList = filterThreads(user, forum, publicView);
 
-		Collections.sort(tList, new Comparator<ForumThread>() {
+		tList.sort(new Comparator<ForumThread>() {
 
 			@Override
 			public int compare(ForumThread o1, ForumThread o2) {

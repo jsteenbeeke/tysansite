@@ -1,73 +1,80 @@
 <html xmlns:wicket>
 <wicket:extend>
-	<div class="jqui-tabs">
-		<ul>
-			<li><a href="#tabs-1">Available Groups</a></li>
-			<li><a href="#tabs-2">Pending applications</a></li>
-			<li><a href="#tabs-3">Invitations</a></li>
-		</ul>
-		<div id="tabs-1">
-			<p wicket:id="can-apply-description">You can apply to join the
-				following groups</p>
+    <div class="jqui-tabs">
+        <ul>
+            <li><a href="#tabs-1">Available Groups</a></li>
+            <li><a href="#tabs-2">Pending applications</a></li>
+            <li><a href="#tabs-3">Invitations</a></li>
+        </ul>
+        <div id="tabs-1">
+            <p wicket:id="can-apply-description">You can apply to join the
+                following groups</p>
 
-			<wicket:enclosure child="applyToGroups">
-				<table style="width: 100%;">
-					<tr>
-						<th>Group Name</th>
-						<th>Group Type</th>
-						<th>Apply</th>
-					</tr>
-					<tr wicket:id="applyToGroups">
-						<td style="text-align: center;"><a wicket:id="group"><span
-								wicket:id="name"></span></a></td>
-						<td style="text-align: center;"><span wicket:id="type"></span></td>
-						<td style="text-align: center;"><a wicket:id="apply"><img
-								wicket:id="icon" /></a></td>
-					</tr>
-				</table>
-			</wicket:enclosure>
-		</div>
-		<div id="tabs-2">
-			<p wicket:id="applied-description">You have applied to join the
-				following groups</p>
+            <wicket:enclosure child="applyToGroups">
+                <table style="width: 100%;">
+                    <tr>
+                        <th>Group Name</th>
+                        <th>Group Type</th>
+                        <th>Apply</th>
+                    </tr>
+                    <tr wicket:id="applyToGroups">
+                        <td style="text-align: center;"><a
+                                wicket:id="group"><span
+                                wicket:id="name"></span></a></td>
+                        <td style="text-align: center;"><span
+                                wicket:id="type"></span></td>
+                        <td style="text-align: center;"><a
+                                wicket:id="apply"><img
+                                wicket:id="icon"/></a></td>
+                    </tr>
+                </table>
+            </wicket:enclosure>
+        </div>
+        <div id="tabs-2">
+            <p wicket:id="applied-description">You have applied to join the
+                following groups</p>
 
-			<wicket:enclosure child="appliedGroups">
-				<table style="width: 100%;">
-					<tr>
-						<th>Group Name</th>
-						<th>Group Type</th>
-					</tr>
-					<tr wicket:id="appliedGroups">
-						<td style="text-align: center;"><a wicket:id="group"><span
-								wicket:id="name"></span></a></td>
-						<td style="text-align: center;"><span wicket:id="type"></span></td>
-					</tr>
-				</table>
-			</wicket:enclosure>
-		</div>
-		<div id="tabs-3">
-			<p wicket:id="invited-description">You have been invited to join
-				the following groups</p>
+            <wicket:enclosure child="appliedGroups">
+                <table style="width: 100%;">
+                    <tr>
+                        <th>Group Name</th>
+                        <th>Group Type</th>
+                    </tr>
+                    <tr wicket:id="appliedGroups">
+                        <td style="text-align: center;"><a
+                                wicket:id="group"><span
+                                wicket:id="name"></span></a></td>
+                        <td style="text-align: center;"><span
+                                wicket:id="type"></span></td>
+                    </tr>
+                </table>
+            </wicket:enclosure>
+        </div>
+        <div id="tabs-3">
+            <p wicket:id="invited-description">You have been invited to join
+                the following groups</p>
 
-			<wicket:enclosure child="invited">
-				<table style="width: 100%;">
-					<tr>
-						<th>Group Name</th>
-						<th>Group Type</th>
-						<th colspan="2">Response</th>
-					</tr>
-					<tr wicket:id="invited">
-						<td style="text-align: center;"><a wicket:id="group"><span
-								wicket:id="name"></span></a></td>
-						<td style="text-align: center;"><span wicket:id="type"></span></td>
-						<td style="text-align: center;"><a wicket:id="yes"><img
-								wicket:id="icon" /> Accept</a></td>
-						<td style="text-align: center;"><a wicket:id="no"><img
-								wicket:id="icon" /> Decline</a></td>
-					</tr>
-				</table>
-			</wicket:enclosure>
-		</div>
-	</div>
+            <wicket:enclosure child="invited">
+                <table style="width: 100%;">
+                    <tr>
+                        <th>Group Name</th>
+                        <th>Group Type</th>
+                        <th colspan="2">Response</th>
+                    </tr>
+                    <tr wicket:id="invited">
+                        <td style="text-align: center;"><a
+                                wicket:id="group"><span
+                                wicket:id="name"></span></a></td>
+                        <td style="text-align: center;"><span
+                                wicket:id="type"></span></td>
+                        <td style="text-align: center;"><a wicket:id="yes"><img
+                                wicket:id="icon"/> Accept</a></td>
+                        <td style="text-align: center;"><a wicket:id="no"><img
+                                wicket:id="icon"/> Decline</a></td>
+                    </tr>
+                </table>
+            </wicket:enclosure>
+        </div>
+    </div>
 </wicket:extend>
 </html>

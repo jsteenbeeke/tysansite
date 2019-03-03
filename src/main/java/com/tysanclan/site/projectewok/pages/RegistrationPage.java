@@ -17,6 +17,14 @@
  */
 package com.tysanclan.site.projectewok.pages;
 
+import com.tysanclan.site.projectewok.TysanPage;
+import com.tysanclan.site.projectewok.beans.MailService;
+import com.tysanclan.site.projectewok.beans.UserService;
+import com.tysanclan.site.projectewok.entities.Activation;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.dao.UserDAO;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
+import com.tysanclan.site.projectewok.util.StringUtil;
 import org.apache.wicket.extensions.markup.html.captcha.CaptchaImageResource;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
@@ -24,15 +32,6 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.tysanclan.site.projectewok.TysanPage;
-import com.tysanclan.site.projectewok.beans.MailService;
-import com.tysanclan.site.projectewok.beans.UserService;
-import com.tysanclan.site.projectewok.entities.Activation;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
-import com.tysanclan.site.projectewok.util.StringUtil;
 
 public class RegistrationPage extends TysanPage {
 	private static final long serialVersionUID = 1L;
@@ -52,20 +51,20 @@ public class RegistrationPage extends TysanPage {
 		resource = new CaptchaImageResource(passId);
 
 		final TextField<String> tfUsername = new TextField<String>("username",
-				new Model<String>(""));
+				new Model<>(""));
 		tfUsername.setRequired(true);
 		final TextField<String> tfMail = new TextField<String>("mail",
-				new Model<String>(""));
+				new Model<>(""));
 		tfMail.setRequired(true);
 		final PasswordTextField tfPassword = new PasswordTextField("password",
-				new Model<String>(""));
+				new Model<>(""));
 		tfPassword.setRequired(true);
-		final PasswordTextField tfPassword2 = new PasswordTextField(
-				"password2", new Model<String>(""));
+		final PasswordTextField tfPassword2 = new PasswordTextField("password2",
+				new Model<>(""));
 		tfPassword2.setRequired(true);
 
 		final TextField<String> tfCaptcha = new TextField<String>(
-				"captchaResponse", new Model<String>(""));
+				"captchaResponse", new Model<>(""));
 		tfCaptcha.setRequired(true);
 
 		Form<?> registrationForm = new Form<Void>("registerform") {
@@ -115,20 +114,20 @@ public class RegistrationPage extends TysanPage {
 					RegistrationPage.this
 							.error("Password must be at least 8 characters");
 				}
-				if (valid
-						&& !tfPassword.getModelObject().equals(
-								tfPassword2.getModelObject())) {
+				if (valid && !tfPassword.getModelObject()
+						.equals(tfPassword2.getModelObject())) {
 					valid = false;
 					RegistrationPage.this.error("Passwords do not match");
 				}
-				if (valid && !StringUtil.isValidEMail(tfMail.getModelObject())) {
+				if (valid && !StringUtil
+						.isValidEMail(tfMail.getModelObject())) {
 					valid = false;
 					RegistrationPage.this
 							.error("Please provide a valid e-mail address");
 				}
 				if (valid) {
 					UserFilter filter = new UserFilter();
-					filter.setEmail(tfMail.getModelObject());
+					filter.eMail(tfMail.getModelObject());
 					long users = userDAO.countByFilter(filter);
 					if (users != 0) {
 						valid = false;
@@ -151,15 +150,14 @@ public class RegistrationPage extends TysanPage {
 					if (user != null) {
 						Activation activation = ub.getActivationByUser(user);
 
-						mailService.sendHTMLMail(
-								tfMail.getModelObject(),
-								"Tysan Clan Forums",
-								mailService.getActivationMailBody(
-										user.getUsername(),
-										activation.getActivationKey()));
+						mailService.sendHTMLMail(tfMail.getModelObject(),
+								"Tysan Clan Forums", mailService
+										.getActivationMailBody(
+												user.getUsername(),
+												activation.getActivationKey()));
 
-						info("You have succesfully registered as "
-								+ tfUsername.getModelObject());
+						info("You have succesfully registered as " + tfUsername
+								.getModelObject());
 						tfUsername.clearInput();
 						tfMail.clearInput();
 

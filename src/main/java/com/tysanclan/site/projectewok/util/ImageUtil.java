@@ -17,23 +17,16 @@
  */
 package com.tysanclan.site.projectewok.util;
 
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Serializable;
-import java.sql.Blob;
-import java.sql.SQLException;
-
-import javax.imageio.ImageIO;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.sql.Blob;
+import java.sql.SQLException;
 
 /**
  * @author Jeroen Steenbeeke
@@ -43,7 +36,8 @@ public class ImageUtil implements Serializable {
 
 	private static final Logger log = LoggerFactory.getLogger(ImageUtil.class);
 
-	public static byte[] resize(byte[] image, int targetWidth, int targetHeight) {
+	public static byte[] resize(byte[] image, int targetWidth,
+			int targetHeight) {
 		InputStream imageStream = new ByteArrayInputStream(image);
 
 		BufferedImage sourceImage;
@@ -103,7 +97,7 @@ public class ImageUtil implements Serializable {
 
 	/**
 	 * Checks if an image is a GIF file
-	 * 
+	 *
 	 * @param image
 	 *            The image to check
 	 * @return {@code true} if we suspect this file is a GIF file, {@code false}
@@ -112,9 +106,8 @@ public class ImageUtil implements Serializable {
 	public static boolean isGIFImage(byte[] image) {
 		return image != null && image.length > 6 && image[0] == (byte) 0x47
 				&& image[1] == (byte) 0x49 && image[2] == (byte) 0x46
-				&& image[3] == (byte) 0x38
-				&& (image[4] == (byte) 0x39 || image[4] == (byte) 0x37)
-				&& image[5] == (byte) 0x61;
+				&& image[3] == (byte) 0x38 && (image[4] == (byte) 0x39
+				|| image[4] == (byte) 0x37) && image[5] == (byte) 0x61;
 	}
 
 	public static boolean isJPEGImage(byte[] image) {

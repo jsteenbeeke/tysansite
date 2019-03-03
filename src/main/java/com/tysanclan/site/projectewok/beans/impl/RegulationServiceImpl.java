@@ -17,23 +17,22 @@
  */
 package com.tysanclan.site.projectewok.beans.impl;
 
+import com.tysanclan.site.projectewok.entities.Regulation;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.dao.RegulationDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.tysanclan.site.projectewok.entities.Regulation;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.RegulationDAO;
-
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class RegulationServiceImpl implements
-		com.tysanclan.site.projectewok.beans.RegulationService {
+class RegulationServiceImpl
+		implements com.tysanclan.site.projectewok.beans.RegulationService {
 	@Autowired
 	private RegulationDAO regulationDAO;
 

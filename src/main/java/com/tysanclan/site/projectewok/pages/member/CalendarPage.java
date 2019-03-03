@@ -17,13 +17,14 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
+import com.tysanclan.site.projectewok.beans.EventService;
+import com.tysanclan.site.projectewok.components.*;
+import com.tysanclan.site.projectewok.entities.Event;
+import com.tysanclan.site.projectewok.entities.dao.EventDAO;
+import com.tysanclan.site.projectewok.entities.filter.EventFilter;
+import com.tysanclan.site.projectewok.util.DateUtil;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -38,18 +39,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
-import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
-import com.tysanclan.site.projectewok.beans.EventService;
-import com.tysanclan.site.projectewok.components.AutoThreadLink;
-import com.tysanclan.site.projectewok.components.BBCodeTextArea;
-import com.tysanclan.site.projectewok.components.DatePickerPanel;
-import com.tysanclan.site.projectewok.components.InlineDatePicker;
-import com.tysanclan.site.projectewok.components.OtterSniperPanel;
-import com.tysanclan.site.projectewok.entities.Event;
-import com.tysanclan.site.projectewok.entities.dao.EventDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.EventFilter;
-import com.tysanclan.site.projectewok.util.DateUtil;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @author Jeroen Steenbeeke
@@ -63,7 +54,7 @@ public class CalendarPage extends AbstractMemberPage {
 	private EventDAO eventDAO;
 
 	/**
-	 * 
+	 *
 	 */
 	public CalendarPage() {
 		super("Calendar");
@@ -78,8 +69,8 @@ public class CalendarPage extends AbstractMemberPage {
 		InlineDatePicker calendar = new InlineDatePicker("calendar", currTime) {
 
 			/**
-			                 * 
-			                 */
+			 *
+			 */
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -102,23 +93,24 @@ public class CalendarPage extends AbstractMemberPage {
 						.setVisible(!eventView.getModelObject().isEmpty());
 
 				Label newTitle = new Label("title",
-						"Events for "
-								+ new SimpleDateFormat("EEEE d MMMM yyyy",
-										Locale.US).format(date));
+						"Events for " + new SimpleDateFormat("EEEE d MMMM yyyy",
+								Locale.US).format(date));
 
 				oldEventView.replaceWith(eventView);
 				oldTitle.replaceWith(newTitle);
 
-				Component component = get("schedule:description").setVisible(
-						true);
+				Component component = get("schedule:description")
+						.setVisible(true);
 
 				if (target != null) {
-					target.appendJavaScript("tinyMCE.execCommand('mceRemoveControl', false, '"
-							+ component.getMarkupId() + "')");
+					target.appendJavaScript(
+							"tinyMCE.execCommand('mceRemoveControl', false, '"
+									+ component.getMarkupId() + "')");
 					target.add(getContainer());
 
-					target.appendJavaScript("tinyMCE.execCommand('mceAddControl', false, '"
-							+ component.getMarkupId() + "')");
+					target.appendJavaScript(
+							"tinyMCE.execCommand('mceAddControl', false, '"
+									+ component.getMarkupId() + "')");
 				}
 			}
 
@@ -131,9 +123,9 @@ public class CalendarPage extends AbstractMemberPage {
 		ListView<Event> eventView = createListView(currTime);
 		container.add(eventView);
 		container.setVisible(!eventView.getModelObject().isEmpty());
-		container.add(new Label("title", "Events for "
-				+ new SimpleDateFormat("EEEE d MMMM yyyy", Locale.US)
-						.format(currTime)));
+		container.add(new Label("title",
+				"Events for " + new SimpleDateFormat("EEEE d MMMM yyyy",
+						Locale.US).format(currTime)));
 
 		Form<Event> scheduleEventForm = new Form<Event>("schedule") {
 			private static final long serialVersionUID = 1L;
@@ -144,11 +136,16 @@ public class CalendarPage extends AbstractMemberPage {
 			@SuppressWarnings("unchecked")
 			@Override
 			protected void onSubmit() {
-				TextField<String> titleComponent = (TextField<String>) get("title");
-				TextArea<String> descriptionComponent = (TextArea<String>) get("description");
-				DatePickerPanel dateComponent = (DatePickerPanel) get("dateselect");
-				DropDownChoice<Integer> hourComponent = (DropDownChoice<Integer>) get("hourselect");
-				DropDownChoice<Integer> minuteComponent = (DropDownChoice<Integer>) get("minuteselect");
+				TextField<String> titleComponent = (TextField<String>) get(
+						"title");
+				TextArea<String> descriptionComponent = (TextArea<String>) get(
+						"description");
+				DatePickerPanel dateComponent = (DatePickerPanel) get(
+						"dateselect");
+				DropDownChoice<Integer> hourComponent = (DropDownChoice<Integer>) get(
+						"hourselect");
+				DropDownChoice<Integer> minuteComponent = (DropDownChoice<Integer>) get(
+						"minuteselect");
 
 				String title = titleComponent.getModelObject();
 				String description = descriptionComponent.getModelObject();
@@ -171,8 +168,9 @@ public class CalendarPage extends AbstractMemberPage {
 				cal.add(Calendar.HOUR_OF_DAY, hourComponent.getModelObject());
 				cal.add(Calendar.MINUTE, minuteComponent.getModelObject());
 
-				Event event = eventService.scheduleEvent(getUser(),
-						cal.getTime(), title, description);
+				Event event = eventService
+						.scheduleEvent(getUser(), cal.getTime(), title,
+								description);
 				if (event != null) {
 					setResponsePage(new CalendarPage());
 				}
@@ -180,8 +178,9 @@ public class CalendarPage extends AbstractMemberPage {
 
 		};
 
-		scheduleEventForm.add(new TextField<String>("title", new Model<String>(
-				"")).setRequired(true));
+		scheduleEventForm
+				.add(new TextField<String>("title", new Model<String>(""))
+						.setRequired(true));
 		TextArea<String> descriptionEditor = new BBCodeTextArea("description",
 				"");
 		descriptionEditor.setRequired(true);
@@ -193,13 +192,13 @@ public class CalendarPage extends AbstractMemberPage {
 		scheduleEventForm.add(datePanel);
 
 		scheduleEventForm.add(new DropDownChoice<Integer>("hourselect",
-				new Model<Integer>(0), DateUtil.getHours(), DateUtil
-						.getTwoDigitRenderer()).setNullValid(false)
+				new Model<Integer>(0), DateUtil.getHours(),
+				DateUtil.getTwoDigitRenderer()).setNullValid(false)
 				.setRequired(true));
 
 		scheduleEventForm.add(new DropDownChoice<Integer>("minuteselect",
-				new Model<Integer>(0), DateUtil.getMinutes(), DateUtil
-						.getTwoDigitRenderer()).setNullValid(false)
+				new Model<Integer>(0), DateUtil.getMinutes(),
+				DateUtil.getTwoDigitRenderer()).setNullValid(false)
 				.setRequired(true));
 
 		TimeZone tz = DateUtil.NEW_YORK;
@@ -208,8 +207,8 @@ public class CalendarPage extends AbstractMemberPage {
 			tz = TimeZone.getTimeZone(getUser().getTimezone());
 		}
 
-		scheduleEventForm.add(new Label("timezone", tz.getDisplayName(false,
-				TimeZone.LONG, Locale.US)));
+		scheduleEventForm.add(new Label("timezone",
+				tz.getDisplayName(false, TimeZone.LONG, Locale.US)));
 
 		add(scheduleEventForm);
 	}
@@ -217,12 +216,17 @@ public class CalendarPage extends AbstractMemberPage {
 	public ListView<Event> createListView(Date date) {
 
 		EventFilter filter = new EventFilter();
-		filter.setDate(date);
+		Calendar midnightCalendarInstance = DateUtil
+				.getMidnightCalendarInstance();
+		Date startOfDay = midnightCalendarInstance.getTime();
+		midnightCalendarInstance.add(Calendar.DAY_OF_YEAR, 1);
+		midnightCalendarInstance.add(Calendar.SECOND, 1);
+		filter.date().between(startOfDay, midnightCalendarInstance.getTime());
 
-		IModel<List<Event>> events = ModelMaker.wrap(eventDAO
-				.findByFilter(filter));
+		IModel<List<Event>> events = ModelMaker
+				.wrap(eventDAO.findByFilter(filter).toJavaList());
 
-		ListView<Event> result = new ListView<Event>(EVENT_VIEW_ID, events) {
+		return new ListView<Event>(EVENT_VIEW_ID, events) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -235,14 +239,12 @@ public class CalendarPage extends AbstractMemberPage {
 					name = name.substring(7);
 				}
 
-				item.add(new AutoThreadLink("event", item.getModelObject()
-						.getEventThread(), name));
+				item.add(new AutoThreadLink("event",
+						item.getModelObject().getEventThread(), name));
 
 			}
 
 		};
-
-		return result;
 	}
 
 	Component getContainer() {

@@ -1,27 +1,30 @@
 /**
  * Tysan Clan Website
  * Copyright (C) 2008-2013 Jeroen Steenbeeke and Ties van de Ven
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.tysanclan.site.projectewok;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.List;
-
+import com.google.common.collect.Lists;
+import com.tysanclan.site.projectewok.components.*;
+import com.tysanclan.site.projectewok.entities.GlobalSetting;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.dao.GlobalSettingDAO;
+import com.tysanclan.site.projectewok.util.AprilFools;
+import com.tysanclan.site.projectewok.util.MemberUtil;
+import io.vavr.control.Option;
 import org.apache.wicket.Application;
 import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -49,23 +52,16 @@ import org.apache.wicket.util.time.Duration;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
-import org.odlabs.wiquery.ui.dialog.Dialog;
+import org.wicketstuff.wiquery.ui.dialog.Dialog;
 
-import com.google.common.collect.Lists;
-import com.tysanclan.site.projectewok.components.DebugWindow;
-import com.tysanclan.site.projectewok.components.TysanLoginPanel;
-import com.tysanclan.site.projectewok.components.TysanMemberPanel;
-import com.tysanclan.site.projectewok.components.TysanMenu;
-import com.tysanclan.site.projectewok.components.TysanUserPanel;
-import com.tysanclan.site.projectewok.entities.GlobalSetting;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.GlobalSettingDAO;
-import com.tysanclan.site.projectewok.util.AprilFools;
-import com.tysanclan.site.projectewok.util.MemberUtil;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Web page for use within the Tysan Clan
- * 
+ *
  * @author Jeroen Steenbeeke
  */
 public class TysanPage extends WebPage {
@@ -148,10 +144,10 @@ public class TysanPage extends WebPage {
 
 			}
 
-		}.setVisible(Application.get()
-				.getConfigurationType() == RuntimeConfigurationType.DEVELOPMENT));
+		}.setVisible(Application.get().getConfigurationType()
+				== RuntimeConfigurationType.DEVELOPMENT));
 
-		User u = getTysanSession().getUser();
+		User u = getUser();
 		WebMarkupContainer subMenu = new WebMarkupContainer("topMenu");
 		if (u != null) {
 			if (MemberUtil.isMember(u)) {
@@ -172,36 +168,35 @@ public class TysanPage extends WebPage {
 		add(new Label("version", TysanApplication.getApplicationVersion()));
 
 		if (u != null) {
-			get("version").add(
-					new AjaxSelfUpdatingTimerBehavior(Duration.seconds(30)) {
-						private static final long serialVersionUID = 1L;
+			get("version").add(new AjaxSelfUpdatingTimerBehavior(
+					Duration.seconds(30)) {
+				private static final long serialVersionUID = 1L;
 
-						/**
-						 * @see org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior#onPostProcessTarget(org.apache.wicket.ajax.AjaxRequestTarget)
-						 */
-						@Override
-						protected void onPostProcessTarget(
-								AjaxRequestTarget target) {
-							Dialog d = getNotificationWindow();
-							TysanSession t = TysanSession.get();
-							int i = 0;
+				/**
+				 * @see org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior#onPostProcessTarget(org.apache.wicket.ajax.AjaxRequestTarget)
+				 */
+				@Override
+				protected void onPostProcessTarget(AjaxRequestTarget target) {
+					Dialog d = getNotificationWindow();
+					TysanSession t = TysanSession.get();
+					int i = 0;
 
-							for (SiteWideNotification swn : TysanApplication
-									.get().getActiveNotifications()) {
-								if (t != null && !t.notificationSeen(swn)) {
-									swn.display(d);
-									i++;
-								}
-							}
-
-							if (i > 0) {
-								d.setAutoOpen(true);
-								d.setVisible(true);
-								target.add(d);
-								getNotificationWindow().open(target);
-							}
+					for (SiteWideNotification swn : TysanApplication.get()
+							.getActiveNotifications()) {
+						if (t != null && !t.notificationSeen(swn)) {
+							swn.display(d);
+							i++;
 						}
-					});
+					}
+
+					if (i > 0) {
+						d.setAutoOpen(true);
+						d.setVisible(true);
+						target.add(d);
+						getNotificationWindow().open(target);
+					}
+				}
+			});
 
 		}
 		addAnimalPanel();
@@ -212,8 +207,13 @@ public class TysanPage extends WebPage {
 	}
 
 	private String getTitleSuffix() {
-		return isAprilFoolsDay(2017) ? " - The Texas Clan"
-				: " - The Tysan Clan ";
+		if (isAprilFoolsDay(2019)) {
+			return " - The Disney Clan";
+		} else if (isAprilFoolsDay(2017)) {
+			return " - The Texas Clan";
+		}
+
+		return " - The Tysan Clan ";
 	}
 
 	public void setAutoCollapse(boolean autoCollapse) {
@@ -221,11 +221,11 @@ public class TysanPage extends WebPage {
 	}
 
 	public User getUser() {
-		return getTysanSession() != null ? getTysanSession().getUser() : null;
+		return getTysanSession().flatMap(TysanSession::getUser).getOrNull();
 	}
 
-	public TysanSession getTysanSession() {
-		return (TysanSession) getSession();
+	public Option<TysanSession> getTysanSession() {
+		return TysanSession.session();
 	}
 
 	/**
@@ -253,23 +253,23 @@ public class TysanPage extends WebPage {
 	}
 
 	private void addAnimalPanel() {
-		GlobalSetting animalSetting = globalSettingDAO
+		Option<GlobalSetting> animalSetting = globalSettingDAO
 				.get(AprilFools.KEY_ANIMALS);
 
 		boolean isAprilFoolsDay2011 = isAprilFoolsDay(2011);
 
 		if (getUser() != null && MemberUtil.isMember(getUser())) {
-			if (animalSetting != null || isAprilFoolsDay2011) {
+			if (isAprilFoolsDay2011) {
 
 				String validOption = "";
 
-				if (animalSetting != null) {
-					validOption = animalSetting.getValue();
+				if (animalSetting.isDefined()) {
+					validOption = animalSetting.get().getValue();
 				} else {
 					validOption = AprilFools.getRandomAnimalOption();
 				}
 
-				int showChance = isAprilFoolsDay2011 ? 249 : 0;
+				int showChance = 249;
 
 				boolean show = showChance > AprilFools.rand.nextInt(1000);
 
@@ -307,7 +307,9 @@ public class TysanPage extends WebPage {
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 
-		if (isAprilFoolsDay(2017)) {
+		if (isAprilFoolsDay(2019)) {
+			response.render(CssHeaderItem.forUrl("css/styled.css"));
+		} else if (isAprilFoolsDay(2017)) {
 			response.render(CssHeaderItem.forUrl("css/texas.css"));
 		} else {
 			response.render(CssHeaderItem.forUrl("css/style.css"));
@@ -407,8 +409,7 @@ public class TysanPage extends WebPage {
 			public Object getValue(StringValue value) {
 				return value.toOptionalBoolean();
 			}
-		},
-		INT {
+		}, INT {
 			@Override
 			protected void checkType(StringValue value)
 					throws PageParameterExtractorException {
@@ -424,8 +425,7 @@ public class TysanPage extends WebPage {
 			public Object getValue(StringValue value) {
 				return value.toOptionalInteger();
 			}
-		},
-		LONG {
+		}, LONG {
 			@Override
 			protected void checkType(StringValue value)
 					throws PageParameterExtractorException {
@@ -441,8 +441,7 @@ public class TysanPage extends WebPage {
 			public Object getValue(StringValue value) {
 				return value.toOptionalLong();
 			}
-		},
-		STRING {
+		}, STRING {
 			@Override
 			protected void checkType(StringValue value)
 					throws PageParameterExtractorException {
@@ -555,9 +554,7 @@ public class TysanPage extends WebPage {
 			try {
 				Constructor<T> con = targetClass.getConstructor(pClass);
 				return con.newInstance(p);
-			} catch (NoSuchMethodException | SecurityException
-					| InstantiationException | IllegalAccessException
-					| IllegalArgumentException | InvocationTargetException e) {
+			} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 				throw new PageParameterExtractorException(
 						"Cannot store parameters in target class: %s",
 						e.getMessage());

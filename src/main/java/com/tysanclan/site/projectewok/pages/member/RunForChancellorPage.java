@@ -17,23 +17,7 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.math.BigDecimal;
-import java.text.NumberFormat;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.DemocracyService;
@@ -41,9 +25,20 @@ import com.tysanclan.site.projectewok.components.MemberListItem;
 import com.tysanclan.site.projectewok.entities.Donation;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.DonationDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.DonationFilter;
+import com.tysanclan.site.projectewok.entities.filter.DonationFilter;
 import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.MemberUtil;
+import io.vavr.collection.Seq;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.util.*;
 
 /**
  * @author Jeroen Steenbeeke
@@ -60,7 +55,7 @@ public class RunForChancellorPage extends AbstractMemberPage {
 	private DonationDAO donationDAO;
 
 	/**
-	 * 
+	 *
 	 */
 	public RunForChancellorPage() {
 		super("Run for Chancellor");
@@ -98,38 +93,41 @@ public class RunForChancellorPage extends AbstractMemberPage {
 			private static final long serialVersionUID = 1L;
 
 			/**
-			* @see org.apache.wicket.markup.html.form.Form#onSubmit()
-			*/
+			 * @see org.apache.wicket.markup.html.form.Form#onSubmit()
+			 */
 			@Override
 			protected void onSubmit() {
 				User user = getModelObject();
 
-				if (MemberUtil.isEligibleForElectedRank(user, Rank.CHANCELLOR)) {
+				if (MemberUtil
+						.isEligibleForElectedRank(user, Rank.CHANCELLOR)) {
 					if (democracyService.addChancellorCandidate(user)) {
 						setResponsePage(new ChancellorElectionPage(
-								democracyService.getCurrentChancellorElection()));
+								democracyService
+										.getCurrentChancellorElection()));
 					} else {
 						error("Failed to finalize candidacy");
 					}
 				}
 			}
 
-		}.setVisible(democracyService.isEligibleChancellorCandidate(getUser())));
+		}.setVisible(
+				democracyService.isEligibleChancellorCandidate(getUser())));
 
 	}
 
 	/**
-	 	 */
+	 */
 	private BigDecimal getDonatedAmount() {
 		Calendar cal = DateUtil.getCalendarInstance();
 		cal.add(Calendar.MONTH, -6);
 
 		DonationFilter filter = new DonationFilter();
-		filter.setFrom(cal.getTime());
-		filter.setDonator(getUser());
+		filter.donationTime().greaterThanOrEqualTo(cal.getTime());
+		filter.donator(getUser());
 
 		BigDecimal value = BigDecimal.ZERO;
-		List<Donation> donations = donationDAO.findByFilter(filter);
+		Seq<Donation> donations = donationDAO.findByFilter(filter);
 		for (Donation donation : donations) {
 			value = value.add(donation.getAmount());
 		}

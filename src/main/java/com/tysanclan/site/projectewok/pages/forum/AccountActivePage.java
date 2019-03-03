@@ -28,8 +28,8 @@ public class AccountActivePage extends TysanPage {
 	private static final long serialVersionUID = 1L;
 
 	public AccountActivePage(User user) {
-		super(StringUtil.combineStrings("Account ", user.getUsername(),
-				" activated"));
+		super(StringUtil
+				.combineStrings("Account ", user.getUsername(), " activated"));
 
 	}
 }

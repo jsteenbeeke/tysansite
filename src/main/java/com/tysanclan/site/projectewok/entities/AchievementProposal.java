@@ -17,28 +17,14 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import com.jeroensteenbeeke.hyperion.data.DomainObject;
+import org.hibernate.annotations.Cache;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Cache;
-
-import com.jeroensteenbeeke.hyperion.data.DomainObject;
 
 /**
  *
@@ -46,9 +32,12 @@ import com.jeroensteenbeeke.hyperion.data.DomainObject;
  */
 @Entity
 @Table(indexes = { //
-		@Index(columnList = "suggestor_id", name = "IDX_AchievementProposal_suggestor"), //
-		@Index(columnList = "game_id", name = "IDX_AchievementProposal_Game"), //
-		@Index(columnList = "group_id", name = "IDX_AchievementProposal_Group") //
+		@Index(columnList = "suggestor_id", name = "IDX_AchievementProposal_suggestor"),
+		//
+		@Index(columnList = "game_id", name = "IDX_AchievementProposal_Game"),
+		//
+		@Index(columnList = "group_id", name = "IDX_AchievementProposal_Group")
+		//
 })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class AchievementProposal implements DomainObject {

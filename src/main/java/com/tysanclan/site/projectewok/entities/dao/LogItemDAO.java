@@ -17,13 +17,14 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.LogItem;
+import com.tysanclan.site.projectewok.entities.filter.LogItemFilter;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface LogItemDAO extends EwokDAO<LogItem> {
+public interface LogItemDAO extends DAO<LogItem, LogItemFilter> {
 
 }

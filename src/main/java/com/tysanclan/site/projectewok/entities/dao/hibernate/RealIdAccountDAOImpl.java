@@ -17,13 +17,11 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.RealIdAccount;
+import com.tysanclan.site.projectewok.entities.filter.RealIdAccountFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.RealIdAccount;
 
 /**
  *
@@ -31,16 +29,8 @@ import com.tysanclan.site.projectewok.entities.RealIdAccount;
  */
 @Component
 @Scope("request")
-class RealIdAccountDAOImpl extends EwokHibernateDAO<RealIdAccount> implements
+class RealIdAccountDAOImpl
+		extends HibernateDAO<RealIdAccount, RealIdAccountFilter> implements
 		com.tysanclan.site.projectewok.entities.dao.RealIdAccountDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<RealIdAccount> filter) {
-		Criteria criteria = getSession().createCriteria(RealIdAccount.class);
 
-		// if (filter instanceof RealIdAccountFilter) {
-		// RealIdAccountFilter cf = (RealIdAccountFilter) filter;
-		// }
-
-		return criteria;
-	}
 }

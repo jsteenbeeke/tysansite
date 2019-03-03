@@ -17,6 +17,13 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.site.projectewok.TysanPage;
+import com.tysanclan.site.projectewok.auth.TysanRankSecured;
+import com.tysanclan.site.projectewok.beans.RoleService;
+import com.tysanclan.site.projectewok.components.BBCodeTextArea;
+import com.tysanclan.site.projectewok.entities.Role;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
@@ -24,14 +31,6 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
-import com.tysanclan.rest.api.data.Rank;
-import com.tysanclan.site.projectewok.TysanPage;
-import com.tysanclan.site.projectewok.auth.TysanRankSecured;
-import com.tysanclan.site.projectewok.beans.RoleService;
-import com.tysanclan.site.projectewok.components.BBCodeTextArea;
-import com.tysanclan.site.projectewok.entities.Role;
 
 /**
  * @author Jeroen Steenbeeke
@@ -45,7 +44,8 @@ public class EditRolePage extends TysanPage {
 
 		add(new Label("title", role.getName()));
 
-		Form<Role> editForm = new Form<Role>("editForm", ModelMaker.wrap(role)) {
+		Form<Role> editForm = new Form<Role>("editForm",
+				ModelMaker.wrap(role)) {
 			private static final long serialVersionUID = 1L;
 
 			@SpringBean
@@ -58,7 +58,8 @@ public class EditRolePage extends TysanPage {
 			@Override
 			protected void onSubmit() {
 				TextField<String> nameField = (TextField<String>) get("name");
-				TextArea<String> descriptionArea = (TextArea<String>) get("description");
+				TextArea<String> descriptionArea = (TextArea<String>) get(
+						"description");
 
 				String name = nameField.getModelObject();
 				String description = descriptionArea.getModelObject();
@@ -76,8 +77,8 @@ public class EditRolePage extends TysanPage {
 
 		};
 
-		editForm.add(new TextField<String>("name", new Model<String>(role
-				.getName())));
+		editForm.add(new TextField<String>("name",
+				new Model<String>(role.getName())));
 		editForm.add(new BBCodeTextArea("description", role.getDescription()));
 
 		add(editForm);

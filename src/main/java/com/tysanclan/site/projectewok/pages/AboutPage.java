@@ -17,11 +17,19 @@
  */
 package com.tysanclan.site.projectewok.pages;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.site.projectewok.TysanPage;
+import com.tysanclan.site.projectewok.beans.GameService;
+import com.tysanclan.site.projectewok.components.MemberListItem;
+import com.tysanclan.site.projectewok.components.RankIcon;
+import com.tysanclan.site.projectewok.entities.Game;
+import com.tysanclan.site.projectewok.entities.Realm;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.dao.GameDAO;
+import com.tysanclan.site.projectewok.entities.dao.UserDAO;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
+import com.tysanclan.site.projectewok.util.ImageUtil;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -35,19 +43,10 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.ByteArrayResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
-import com.tysanclan.rest.api.data.Rank;
-import com.tysanclan.site.projectewok.TysanPage;
-import com.tysanclan.site.projectewok.beans.GameService;
-import com.tysanclan.site.projectewok.components.MemberListItem;
-import com.tysanclan.site.projectewok.components.RankIcon;
-import com.tysanclan.site.projectewok.entities.Game;
-import com.tysanclan.site.projectewok.entities.Realm;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.GameDAO;
-import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
-import com.tysanclan.site.projectewok.util.ImageUtil;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Jeroen Steenbeeke
@@ -68,22 +67,23 @@ public class AboutPage extends TysanPage {
 		super("About");
 
 		UserFilter chancellorFilter = new UserFilter();
-		chancellorFilter.addRank(Rank.CHANCELLOR);
+		chancellorFilter.rank(Rank.CHANCELLOR);
 
-		List<User> users = userDAO.findByFilter(chancellorFilter);
+		List<User> users = userDAO.findByFilter(chancellorFilter).toJavaList();
 
 		User leader = null;
 		if (!users.isEmpty()) {
 			leader = users.get(0);
 			add(new MemberListItem("leader", leader));
 		} else {
-			add(new Label("leader", "<i>None</i>").setEscapeModelStrings(false));
+			add(new Label("leader", "<i>None</i>")
+					.setEscapeModelStrings(false));
 		}
 
 		UserFilter senateFilter = new UserFilter();
-		senateFilter.addRank(Rank.SENATOR);
+		senateFilter.rank(Rank.SENATOR);
 
-		List<User> senate = userDAO.findByFilter(senateFilter);
+		List<User> senate = userDAO.findByFilter(senateFilter).toJavaList();
 		add(new ListView<User>("senate", ModelMaker.wrap(senate)) {
 			private static final long serialVersionUID = 1L;
 
@@ -96,7 +96,8 @@ public class AboutPage extends TysanPage {
 
 		});
 
-		add(new ListView<Game>("games", ModelMaker.wrap(gameDAO.findAll())) {
+		add(new ListView<Game>("games",
+				ModelMaker.wrap(gameDAO.findAll().toJavaList())) {
 			private static final long serialVersionUID = 1L;
 
 			/**
@@ -109,8 +110,8 @@ public class AboutPage extends TysanPage {
 				final int rowCount = game.getRealms().size();
 				final String gameName = game.getName();
 
-				item.add(new ListView<Realm>("realms", ModelMaker.wrap(game
-						.getRealms())) {
+				item.add(new ListView<Realm>("realms",
+						ModelMaker.wrap(game.getRealms())) {
 					private static final long serialVersionUID = 1L;
 
 					@SpringBean
@@ -132,8 +133,9 @@ public class AboutPage extends TysanPage {
 							gameNameLabel.setVisible(false);
 							supervisorContainer.setVisible(false);
 						} else {
-							AttributeModifier mod = AttributeModifier.replace(
-									"rowspan", Integer.toString(rowCount));
+							AttributeModifier mod = AttributeModifier
+									.replace("rowspan",
+											Integer.toString(rowCount));
 							iconContainer.add(mod);
 							gameNameLabel.add(mod);
 							supervisorContainer.add(mod);
@@ -154,21 +156,21 @@ public class AboutPage extends TysanPage {
 
 						realmLink.add(new Label("name", realm.getName()));
 
-						innerItem.add(new Label("playercount", Integer
-								.toString(gameService
-										.countPlayers(_game, realm))));
+						innerItem.add(new Label("playercount", Integer.toString(
+								gameService.countPlayers(_game, realm))));
 
 						innerItem.add(realmLink);
 
 						iconContainer.add(new Image("icon",
-								new ByteArrayResource(ImageUtil
-										.getMimeType(_game.getImage()), _game
-										.getImage())));
+								new ByteArrayResource(
+										ImageUtil.getMimeType(_game.getImage()),
+										_game.getImage())));
 
 						if (_game.getCoordinator() != null) {
 
-							supervisorContainer.add(new MemberListItem(
-									"supervisor", _game.getCoordinator()));
+							supervisorContainer
+									.add(new MemberListItem("supervisor",
+											_game.getCoordinator()));
 						} else {
 							supervisorContainer
 									.add(new Label("supervisor", "-"));
@@ -181,31 +183,31 @@ public class AboutPage extends TysanPage {
 		});
 
 		UserFilter activeMemberFilter = new UserFilter();
-		activeMemberFilter.addRank(Rank.CHANCELLOR);
-		activeMemberFilter.addRank(Rank.SENATOR);
-		activeMemberFilter.addRank(Rank.TRUTHSAYER);
-		activeMemberFilter.addRank(Rank.REVERED_MEMBER);
-		activeMemberFilter.addRank(Rank.SENIOR_MEMBER);
-		activeMemberFilter.addRank(Rank.FULL_MEMBER);
-		activeMemberFilter.addRank(Rank.JUNIOR_MEMBER);
-		activeMemberFilter.addRank(Rank.TRIAL);
-		activeMemberFilter.setRetired(false);
+		activeMemberFilter.rank(Rank.CHANCELLOR);
+		activeMemberFilter.orRank(Rank.SENATOR);
+		activeMemberFilter.orRank(Rank.TRUTHSAYER);
+		activeMemberFilter.orRank(Rank.REVERED_MEMBER);
+		activeMemberFilter.orRank(Rank.SENIOR_MEMBER);
+		activeMemberFilter.orRank(Rank.FULL_MEMBER);
+		activeMemberFilter.orRank(Rank.JUNIOR_MEMBER);
+		activeMemberFilter.orRank(Rank.TRIAL);
+		activeMemberFilter.retired(false);
 
-		add(new Label("activecount", new Model<Long>(
-				userDAO.countByFilter(activeMemberFilter))));
+		add(new Label("activecount",
+				new Model<Long>(userDAO.countByFilter(activeMemberFilter))));
 
 		UserFilter allMemberFilter = new UserFilter();
-		allMemberFilter.addRank(Rank.CHANCELLOR);
-		allMemberFilter.addRank(Rank.SENATOR);
-		allMemberFilter.addRank(Rank.TRUTHSAYER);
-		allMemberFilter.addRank(Rank.REVERED_MEMBER);
-		allMemberFilter.addRank(Rank.SENIOR_MEMBER);
-		allMemberFilter.addRank(Rank.FULL_MEMBER);
-		allMemberFilter.addRank(Rank.JUNIOR_MEMBER);
-		allMemberFilter.addRank(Rank.TRIAL);
+		allMemberFilter.rank(Rank.CHANCELLOR);
+		allMemberFilter.orRank(Rank.SENATOR);
+		allMemberFilter.orRank(Rank.TRUTHSAYER);
+		allMemberFilter.orRank(Rank.REVERED_MEMBER);
+		allMemberFilter.orRank(Rank.SENIOR_MEMBER);
+		allMemberFilter.orRank(Rank.FULL_MEMBER);
+		allMemberFilter.orRank(Rank.JUNIOR_MEMBER);
+		allMemberFilter.orRank(Rank.TRIAL);
 
-		add(new Label("membercount", new Model<Long>(
-				userDAO.countByFilter(allMemberFilter))));
+		add(new Label("membercount",
+				new Model<>(userDAO.countByFilter(allMemberFilter))));
 
 		addRank(Rank.CHANCELLOR, "The leader of the Clan, has executive power");
 		addRank(Rank.SENATOR, "A member of the Senate, has legislative power");
@@ -235,9 +237,9 @@ public class AboutPage extends TysanPage {
 		});
 
 		UserFilter heroFilter = new UserFilter();
-		heroFilter.addRank(Rank.HERO);
+		heroFilter.rank(Rank.HERO);
 
-		List<User> heroes = userDAO.findByFilter(heroFilter);
+		List<User> heroes = userDAO.findByFilter(heroFilter).toJavaList();
 
 		add(new ListView<User>("heroes", heroes) {
 			private static final long serialVersionUID = 1L;

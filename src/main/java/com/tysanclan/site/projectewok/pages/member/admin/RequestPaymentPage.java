@@ -17,8 +17,19 @@
  */
 package com.tysanclan.site.projectewok.pages.member.admin;
 
-import java.math.BigDecimal;
-
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.beans.FinanceService;
+import com.tysanclan.site.projectewok.beans.RoleService;
+import com.tysanclan.site.projectewok.components.IconLink;
+import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
+import com.tysanclan.site.projectewok.entities.PaymentRequest;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.dao.PaymentRequestDAO;
+import com.tysanclan.site.projectewok.entities.dao.UserDAO;
+import com.tysanclan.site.projectewok.entities.filter.PaymentRequestFilter;
+import com.tysanclan.site.projectewok.model.DollarSignModel;
+import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
+import com.tysanclan.site.projectewok.pages.member.AbstractSingleAccordionMemberPage;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -28,16 +39,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
-import com.tysanclan.site.projectewok.beans.FinanceService;
-import com.tysanclan.site.projectewok.beans.RoleService;
-import com.tysanclan.site.projectewok.components.IconLink;
-import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
-import com.tysanclan.site.projectewok.entities.PaymentRequest;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.model.DollarSignModel;
-import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
-import com.tysanclan.site.projectewok.pages.member.AbstractSingleAccordionMemberPage;
+import java.math.BigDecimal;
 
 public class RequestPaymentPage extends AbstractSingleAccordionMemberPage {
 	private static final long serialVersionUID = 1L;
@@ -48,47 +50,57 @@ public class RequestPaymentPage extends AbstractSingleAccordionMemberPage {
 	@SpringBean
 	private FinanceService financeService;
 
-	public RequestPaymentPage(User user) {
+	@SpringBean
+	private UserDAO userDAO;
+
+	@SpringBean
+	private PaymentRequestDAO requestDAO;
+
+	public RequestPaymentPage(User _user) {
 		super("Request Payment");
 
-		if (!user.equals(roleService.getHerald())
-				&& !user.equals(roleService.getSteward())) {
+		User user = userDAO.load(_user.getId())
+				.getOrElseThrow(IllegalStateException::new);
+
+		if (!user.equals(roleService.getHerald()) && !user
+				.equals(roleService.getSteward())) {
 			throw new RestartResponseAtInterceptPageException(
 					AccessDeniedPage.class);
 		}
 
-		add(
-				new ListView<PaymentRequest>("pending", user
-						.getPaymentRequests()) {
-					private static final long serialVersionUID = 1L;
+		PaymentRequestFilter filter = new PaymentRequestFilter();
+		filter.requester(user);
+		filter.id().orderBy(true);
 
-					@Override
-					protected void populateItem(ListItem<PaymentRequest> item) {
-						PaymentRequest request = item.getModelObject();
-						item.add(new Label("description", request.getItem()));
-						item.add(new Label("amount", new DollarSignModel(
-								new Model<BigDecimal>(request.getAmount()))));
-						item.add(new IconLink.Builder(
-								"images/icons/money_delete.png",
-								new DefaultClickResponder<PaymentRequest>(
-										ModelMaker.wrap(request)) {
+		add(new ListView<PaymentRequest>("pending",
+				requestDAO.findByFilter(filter).toJavaList()) {
+			private static final long serialVersionUID = 1L;
 
-									private static final long serialVersionUID = 1L;
+			@Override
+			protected void populateItem(ListItem<PaymentRequest> item) {
+				PaymentRequest request = item.getModelObject();
+				item.add(new Label("description", request.getItem()));
+				item.add(new Label("amount", new DollarSignModel(
+						new Model<BigDecimal>(request.getAmount()))));
+				item.add(new IconLink.Builder("images/icons/money_delete.png",
+						new DefaultClickResponder<PaymentRequest>(
+								ModelMaker.wrap(request)) {
 
-									@Override
-									public void onClick() {
-										financeService
-												.cancelRequest(getModelObject());
+							private static final long serialVersionUID = 1L;
 
-										setResponsePage(new RequestPaymentPage(
-												getUser()));
-									}
+							@Override
+							public void onClick() {
+								financeService.cancelRequest(getModelObject());
 
-								}).newInstance("delete"));
+								setResponsePage(
+										new RequestPaymentPage(getUser()));
+							}
 
-					}
+						}).newInstance("delete"));
 
-				});
+			}
+
+		});
 
 		final TextField<String> itemDescriptionField = new TextField<String>(
 				"description", new Model<String>());

@@ -17,12 +17,11 @@
  */
 package com.tysanclan.site.projectewok.components;
 
+import com.tysanclan.rest.api.data.Rank;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
-
-import com.tysanclan.rest.api.data.Rank;
 
 /**
  * @author Jeroen Steenbeeke
@@ -31,7 +30,7 @@ public class RankIcon extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 
+	 *
 	 */
 	public RankIcon(String id, Rank rank) {
 		super(id);
@@ -56,11 +55,12 @@ public class RankIcon extends Panel {
 			imageLocation = "images/icons/rosette.png";
 		}
 
-		ContextImage img = new ContextImage("icon", new Model<String>(
-				imageLocation));
-		img.add(new AttributeModifier("title", new Model<String>(rank
-				.toString())));
-		img.add(new AttributeModifier("alt", new Model<String>(rank.toString())));
+		ContextImage img = new ContextImage("icon",
+				new Model<String>(imageLocation));
+		img.add(new AttributeModifier("title",
+				new Model<String>(rank.toString())));
+		img.add(new AttributeModifier("alt",
+				new Model<String>(rank.toString())));
 		add(img);
 	}
 }

@@ -17,15 +17,14 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.List;
-
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.beans.DemocracyService;
 import com.tysanclan.site.projectewok.entities.ChancellorElection;
 import com.tysanclan.site.projectewok.entities.User;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -39,7 +38,7 @@ public class ChancellorManualElectionPage extends AbstractManualElectionPage {
 	private IModel<ChancellorElection> electionModel;
 
 	/**
-	 * 
+	 *
 	 */
 	public ChancellorManualElectionPage(ChancellorElection election) {
 		super("Chancellor Election", election);

@@ -17,13 +17,15 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.SenateElection;
+import com.tysanclan.site.projectewok.entities.filter.SenateElectionFilter;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface SenateElectionDAO extends EwokDAO<SenateElection> {
+public interface SenateElectionDAO
+		extends DAO<SenateElection, SenateElectionFilter> {
 
 }

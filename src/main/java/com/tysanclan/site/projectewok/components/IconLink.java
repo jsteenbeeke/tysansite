@@ -64,8 +64,8 @@ public class IconLink extends Panel {
 			responderLink.add(new ContextImage("icon", iconPath)
 					.setVisible(imageVisible));
 			if (text == null) {
-				responderLink.add(new WebMarkupContainer("text")
-						.setVisible(false));
+				responderLink
+						.add(new WebMarkupContainer("text").setVisible(false));
 			} else {
 				responderLink.add(new Label("text", text));
 			}
@@ -142,21 +142,21 @@ public class IconLink extends Panel {
 		public boolean isUseAjax();
 	}
 
-	public static abstract class DefaultClickResponder<T> implements
-			ClickResponder {
+	public static abstract class DefaultClickResponder<T>
+			implements ClickResponder {
 		private static final long serialVersionUID = 1L;
 
 		private final IModel<T> model;
 
 		/**
-		 * 
+		 *
 		 */
 		public DefaultClickResponder() {
 			this.model = null;
 		}
 
 		/**
-		 * 
+		 *
 		 */
 		public DefaultClickResponder(IModel<T> model) {
 			this.model = model;

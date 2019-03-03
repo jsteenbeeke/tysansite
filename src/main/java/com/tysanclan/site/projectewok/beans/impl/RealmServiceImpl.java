@@ -1,25 +1,33 @@
 /**
  * Tysan Clan Website
  * Copyright (C) 2008-2013 Jeroen Steenbeeke and Ties van de Ven
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.tysanclan.site.projectewok.beans.impl;
 
-import java.util.Date;
-import java.util.List;
-
+import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
+import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.site.projectewok.beans.LogService;
+import com.tysanclan.site.projectewok.beans.NotificationService;
+import com.tysanclan.site.projectewok.entities.*;
+import com.tysanclan.site.projectewok.entities.dao.RealmDAO;
+import com.tysanclan.site.projectewok.entities.dao.RealmPetitionDAO;
+import com.tysanclan.site.projectewok.entities.dao.UserGameRealmDAO;
+import com.tysanclan.site.projectewok.entities.filter.UserGameRealmFilter;
+import com.tysanclan.site.projectewok.event.RealmDeletionEvent;
+import com.tysanclan.site.projectewok.util.MemberUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,29 +37,16 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.events.EventException;
 
-import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
-import com.tysanclan.rest.api.data.Rank;
-import com.tysanclan.site.projectewok.beans.LogService;
-import com.tysanclan.site.projectewok.beans.NotificationService;
-import com.tysanclan.site.projectewok.entities.Game;
-import com.tysanclan.site.projectewok.entities.Realm;
-import com.tysanclan.site.projectewok.entities.RealmPetition;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.UserGameRealm;
-import com.tysanclan.site.projectewok.entities.dao.RealmDAO;
-import com.tysanclan.site.projectewok.entities.dao.RealmPetitionDAO;
-import com.tysanclan.site.projectewok.entities.dao.UserGameRealmDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserGameRealmFilter;
-import com.tysanclan.site.projectewok.event.RealmDeletionEvent;
-import com.tysanclan.site.projectewok.util.MemberUtil;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class RealmServiceImpl implements
-		com.tysanclan.site.projectewok.beans.RealmService {
+class RealmServiceImpl
+		implements com.tysanclan.site.projectewok.beans.RealmService {
 	private static final Logger log = LoggerFactory
 			.getLogger(RealmServiceImpl.class);
 
@@ -93,7 +88,8 @@ class RealmServiceImpl implements
 	 * @param notificationService
 	 *            the notificationService to set
 	 */
-	public void setNotificationService(NotificationService notificationService) {
+	public void setNotificationService(
+			NotificationService notificationService) {
 		this.notificationService = notificationService;
 	}
 
@@ -139,9 +135,10 @@ class RealmServiceImpl implements
 			addPlayedGame(user, petition.getGame(), realm);
 		}
 
-		String message = "The petition for expanding "
-				+ petition.getGame().getName() + " to realm "
-				+ petition.getName() + " has passed succesfully!";
+		String message =
+				"The petition for expanding " + petition.getGame().getName()
+						+ " to realm " + petition.getName()
+						+ " has passed succesfully!";
 
 		logService.logSystemAction("Petitions", message);
 		notifyPetitionParticipants(petition, message);
@@ -158,7 +155,8 @@ class RealmServiceImpl implements
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
-	public RealmPetition createRealmPetition(String name, User user, Game game) {
+	public RealmPetition createRealmPetition(String name, User user,
+			Game game) {
 
 		RealmPetition petition = new RealmPetition();
 		petition.setGame(game);
@@ -183,9 +181,9 @@ class RealmServiceImpl implements
 						+ " has expired without gaining enough signatures";
 
 			} else {
-				message = "The petition for expanding "
-						+ petition.getGame().getName() + " to realm "
-						+ petition.getRealm().getName()
+				message = "The petition for expanding " + petition.getGame()
+						.getName() + " to realm " + petition.getRealm()
+						.getName()
 						+ " has expired without gaining enough signatures";
 			}
 
@@ -205,7 +203,8 @@ class RealmServiceImpl implements
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public RealmPetition createRealmPetition(Realm realm, User user, Game game) {
+	public RealmPetition createRealmPetition(Realm realm, User user,
+			Game game) {
 		RealmPetition petition = new RealmPetition();
 		petition.setGame(game);
 		petition.setRequester(user);
@@ -230,7 +229,7 @@ class RealmServiceImpl implements
 	 */
 	@Override
 	public List<Realm> getRealms() {
-		return realmDAO.findAll();
+		return realmDAO.findAll().asJava();
 	}
 
 	/**
@@ -283,48 +282,48 @@ class RealmServiceImpl implements
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void setSupervisor(Realm _realm, User user) {
-		Realm realm = realmDAO.load(_realm.getId());
+		realmDAO.load(_realm.getId()).forEach(realm -> {
+			if (MemberUtil.isMember(user) && user.getRank() != Rank.TRIAL) {
+				boolean wasReplaced = realm.getOverseer() == null;
+				if (realm.getOverseer() != null && !realm.getOverseer()
+						.equals(user)) {
+					notificationService.notifyUser(realm.getOverseer(),
+							"You are no longer supervisor for the realm "
+									+ realm.getName());
+					wasReplaced = true;
+				}
 
-		if (MemberUtil.isMember(user) && user.getRank() != Rank.TRIAL) {
-			boolean wasReplaced = realm.getOverseer() == null;
-			if (realm.getOverseer() != null
-					&& !realm.getOverseer().equals(user)) {
-				notificationService.notifyUser(
-						realm.getOverseer(),
-						"You are no longer supervisor for the realm "
-								+ realm.getName());
-				wasReplaced = true;
+				realm.setOverseer(user);
+
+				if (wasReplaced) {
+					notificationService.notifyUser(realm.getOverseer(),
+							"You are now supervisor for the realm " + realm
+									.getName());
+					logService.logUserAction(realm.getOverseer(), "Realm",
+							"User is now supervisor for realm " + realm
+									.getName());
+				}
 			}
-
-			realm.setOverseer(user);
-
-			if (wasReplaced) {
-				notificationService.notifyUser(
-						realm.getOverseer(),
-						"You are now supervisor for the realm "
-								+ realm.getName());
-				logService.logUserAction(realm.getOverseer(), "Realm",
-						"User is now supervisor for realm " + realm.getName());
-			}
-		}
+		});
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void deleteRealm(Realm _realm, User user) {
-		Realm realm = realmDAO.load(_realm.getId());
+		realmDAO.load(_realm.getId()).forEach(realm -> {
 
-		if (user.getRank() == Rank.CHANCELLOR) {
-			realmDAO.delete(realm);
+			if (user.getRank() == Rank.CHANCELLOR) {
+				realmDAO.delete(realm);
 
-			logService.logUserAction(user, "Realm", "Realm was removed");
+				logService.logUserAction(user, "Realm", "Realm was removed");
 
-			try {
-				dispatcher.dispatchEvent(new RealmDeletionEvent(realm));
-			} catch (EventException e) {
-				log.error(e.getMessage(), e);
+				try {
+					dispatcher.dispatchEvent(new RealmDeletionEvent(realm));
+				} catch (EventException e) {
+					log.error(e.getMessage(), e);
+				}
 			}
-		}
+		});
 	}
 
 	/**
@@ -332,7 +331,7 @@ class RealmServiceImpl implements
 	 * @param message
 	 */
 	@Transactional(propagation = Propagation.REQUIRED)
-	private void notifyPetitionParticipants(RealmPetition petition,
+	protected void notifyPetitionParticipants(RealmPetition petition,
 			String message) {
 		notificationService.notifyUser(petition.getRequester(), message);
 		for (User user : petition.getSignatures()) {
@@ -358,8 +357,9 @@ class RealmServiceImpl implements
 			addPlayedGame(user, game, realm);
 		}
 
-		String message = "The petition for expanding " + game.getName()
-				+ " to realm " + realm.getName() + " has passed succesfully!";
+		String message =
+				"The petition for expanding " + game.getName() + " to realm "
+						+ realm.getName() + " has passed succesfully!";
 
 		logService.logSystemAction("Petitions", message);
 		notifyPetitionParticipants(petition, message);
@@ -379,7 +379,8 @@ class RealmServiceImpl implements
 			petition.getSignatures().add(user);
 			realmPetitionDAO.update(petition);
 
-			if (petition.getSignatures().size() >= getRequiredPetitionSignatures()) {
+			if (petition.getSignatures().size()
+					>= getRequiredPetitionSignatures()) {
 				// Trigger check
 				if (petition.getName() != null) {
 					createRealmFromPetition(petition);
@@ -401,9 +402,9 @@ class RealmServiceImpl implements
 	public void addPlayedGame(User user, Game game, Realm realm) {
 		UserGameRealmFilter filter = new UserGameRealmFilter();
 
-		filter.setUser(user);
-		filter.setGame(game);
-		filter.setRealm(realm);
+		filter.user(user);
+		filter.game(game);
+		filter.realm(realm);
 
 		if (userGameRealmDAO.countByFilter(filter) == 0) {
 			UserGameRealm ugr = new UserGameRealm();

@@ -17,10 +17,10 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import org.hibernate.annotations.Cache;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-
-import org.hibernate.annotations.Cache;
 
 /**
  * @author Jeroen Steenbeeke
@@ -31,11 +31,8 @@ import org.hibernate.annotations.Cache;
 public class SocialGroup extends Group {
 	private static final long serialVersionUID = 1L;
 
-	// $P$
-
 	public SocialGroup() {
 		super();
-		// $H$
 	}
 
 	/**
@@ -53,7 +50,5 @@ public class SocialGroup extends Group {
 	public String toString() {
 		return "Social Group [" + getId() + "]: " + getName();
 	}
-
-	// $GS$
 
 }

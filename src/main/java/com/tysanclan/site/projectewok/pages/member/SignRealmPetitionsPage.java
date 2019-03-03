@@ -17,15 +17,7 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.RealmService;
@@ -34,12 +26,20 @@ import com.tysanclan.site.projectewok.components.MemberListItem;
 import com.tysanclan.site.projectewok.entities.RealmPetition;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.RealmPetitionDAO;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @TysanRankSecured({ Rank.CHANCELLOR, Rank.FULL_MEMBER, Rank.SENIOR_MEMBER,
-		Rank.SENATOR, Rank.TRUTHSAYER, Rank.REVERED_MEMBER, Rank.JUNIOR_MEMBER })
+		Rank.SENATOR, Rank.TRUTHSAYER, Rank.REVERED_MEMBER,
+		Rank.JUNIOR_MEMBER })
 public class SignRealmPetitionsPage extends AbstractMemberPage {
 	private static final long serialVersionUID = 1L;
 
@@ -50,7 +50,7 @@ public class SignRealmPetitionsPage extends AbstractMemberPage {
 	private RealmPetitionDAO realmPetitionDAO;
 
 	/**
-	 * 
+	 *
 	 */
 	public SignRealmPetitionsPage() {
 		super("Sign realm petitions");
@@ -58,7 +58,7 @@ public class SignRealmPetitionsPage extends AbstractMemberPage {
 		add(new Label("count", new Model<Integer>(
 				realmService.getRequiredPetitionSignatures())));
 		add(new ListView<RealmPetition>("petitions",
-				ModelMaker.wrap(realmPetitionDAO.findAll())) {
+				ModelMaker.wrap(realmPetitionDAO.findAll().toJavaList())) {
 			private static final long serialVersionUID = 1L;
 
 			/**
@@ -89,23 +89,24 @@ public class SignRealmPetitionsPage extends AbstractMemberPage {
 
 				item.add(form);
 
-				item.add(new Label("name", petition.getGame().getName()
-						+ " on "
-						+ (petition.getName() != null ? petition.getName()
-								: petition.getRealm().getName())));
-				form.add(new Label("realm",
-						petition.getName() != null ? petition.getName()
-								: petition.getRealm().getName()));
+				item.add(new Label("name",
+						petition.getGame().getName() + " on " + (
+								petition.getName() != null ?
+										petition.getName() :
+										petition.getRealm().getName())));
+				form.add(new Label("realm", petition.getName() != null ?
+						petition.getName() :
+						petition.getRealm().getName()));
 
 				form.add(new Label("game", petition.getGame().getName()));
 
-				form.add(new Label("starter", petition.getRequester()
-						.getUsername()));
+				form.add(new Label("starter",
+						petition.getRequester().getUsername()));
 
 				form.add(new DateLabel("expires", petition.getExpires()));
 
-				form.add(new ListView<User>("signatures", ModelMaker
-						.wrap(petition.getSignatures())) {
+				form.add(new ListView<User>("signatures",
+						ModelMaker.wrap(petition.getSignatures())) {
 
 					private static final long serialVersionUID = 1L;
 
@@ -119,9 +120,9 @@ public class SignRealmPetitionsPage extends AbstractMemberPage {
 					}
 				});
 
-				form.add(new WebMarkupContainer("sign").setVisible(!petition
-						.getSignatures().contains(getUser())
-						&& !petition.getRequester().equals(getUser())));
+				form.add(new WebMarkupContainer("sign").setVisible(
+						!petition.getSignatures().contains(getUser())
+								&& !petition.getRequester().equals(getUser())));
 			}
 		});
 	}

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+
+  <changeSet id="02-argon2-create-hash-and-legacy-field"
+             author="Jeroen Steenbeeke">
+    <preConditions onFail="HALT">
+      <tableExists tableName="tuser"/>
+    </preConditions>
+
+    <addColumn tableName="tuser">
+      <column name="argon2hash" type="VARCHAR(255)">
+        <constraints nullable="true"/>
+      </column>
+      <column name="legacyhash" type="BOOLEAN" defaultValueBoolean="true">
+        <constraints nullable="false"/>
+      </column>
+    </addColumn>
+  </changeSet>
+
+  <changeSet id="02-argon2-rehash-passwords" author="Jeroen Steenbeeke">
+    <preConditions onFail="HALT">
+      <columnExists tableName="tuser" columnName="argon2hash"/>
+      <columnExists tableName="tuser" columnName="legacyhash"/>
+    </preConditions>
+
+    <customChange
+      class="com.tysanclan.site.projectewok.entities.liquibase.Argon2HashMigration"/>
+  </changeSet>
+
+  <changeSet id="02-argon2-require-new-hash" author="Jeroen Steenbeeke">
+    <preConditions onFail="HALT">
+      <columnExists tableName="tuser" columnName="argon2hash"/>
+      <columnExists tableName="tuser" columnName="legacyhash"/>
+    </preConditions>
+
+    <addNotNullConstraint tableName="tuser" columnName="argon2hash"
+                          columnDataType="VARCHAR(255)"/>
+
+    <dropColumn tableName="tuser" columnName="password"/>
+  </changeSet>
+
+  <changeSet id="03-disney" author="Jeroen Steenbeeke">
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <tableExists tableName="disneyhunt"/>
+      </not>
+    </preConditions>
+
+    <createSequence sequenceName="seq_id_disneyhunt"/>
+
+    <createTable tableName="disneyhunt">
+      <column name="id" type="BIGINT">
+        <constraints primaryKey="true" primaryKeyName="pkey_disneyhunt"/>
+      </column>
+      <column name="type" type="VARCHAR(255)">
+        <constraints nullable="true"/>
+      </column>
+      <column name="user_id" type="BIGINT"/>
+    </createTable>
+
+    <createIndex tableName="disneyhunt" indexName="idx_disneyhunt_player">
+      <column name="user_Id"/>
+    </createIndex>
+    <addForeignKeyConstraint baseTableName="disneyhunt"
+                             baseColumnNames="user_id"
+                             constraintName="fk_disneyhunt_player"
+                             referencedTableName="tuser"
+                             referencedColumnNames="id"/>
+  </changeSet>
+</databaseChangeLog>

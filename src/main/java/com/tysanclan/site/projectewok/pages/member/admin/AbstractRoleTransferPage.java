@@ -17,14 +17,6 @@
  */
 package com.tysanclan.site.projectewok.pages.member.admin;
 
-import java.util.List;
-
-import org.apache.wicket.RestartResponseAtInterceptPageException;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.beans.RoleService;
@@ -33,13 +25,20 @@ import com.tysanclan.site.projectewok.entities.Role.RoleType;
 import com.tysanclan.site.projectewok.entities.RoleTransfer;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
 import com.tysanclan.site.projectewok.pages.AccessDeniedPage;
 import com.tysanclan.site.projectewok.pages.member.AbstractSingleAccordionMemberPage;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.List;
 
 @TysanMemberSecured
-public abstract class AbstractRoleTransferPage extends
-		AbstractSingleAccordionMemberPage {
+public abstract class AbstractRoleTransferPage
+		extends AbstractSingleAccordionMemberPage {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
@@ -63,17 +62,17 @@ public abstract class AbstractRoleTransferPage extends
 					new TransferInProgressPage(type));
 
 		UserFilter filter = new UserFilter();
-		filter.setRetired(false);
-		filter.addRank(Rank.CHANCELLOR);
-		filter.addRank(Rank.SENATOR);
-		filter.addRank(Rank.TRUTHSAYER);
-		filter.addRank(Rank.REVERED_MEMBER);
-		filter.addRank(Rank.FULL_MEMBER);
-		filter.addRank(Rank.SENIOR_MEMBER);
-		filter.addRank(Rank.JUNIOR_MEMBER);
-		filter.addOrderBy("username", true);
+		filter.retired(false);
+		filter.rank(Rank.CHANCELLOR);
+		filter.orRank(Rank.SENATOR);
+		filter.orRank(Rank.TRUTHSAYER);
+		filter.orRank(Rank.REVERED_MEMBER);
+		filter.orRank(Rank.FULL_MEMBER);
+		filter.orRank(Rank.SENIOR_MEMBER);
+		filter.orRank(Rank.JUNIOR_MEMBER);
+		filter.username().orderBy(true);
 
-		List<User> users = userDAO.findByFilter(filter);
+		List<User> users = userDAO.findByFilter(filter).toJavaList();
 
 		final TysanDropDownChoice<User> userChoice = new TysanDropDownChoice<User>(
 				"user", null, users);

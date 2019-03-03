@@ -17,10 +17,7 @@
  */
 package com.tysanclan.site.projectewok.pages.forum;
 
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.TysanPage;
 import com.tysanclan.site.projectewok.auth.TysanMemberSecured;
 import com.tysanclan.site.projectewok.beans.ForumService;
@@ -29,6 +26,8 @@ import com.tysanclan.site.projectewok.components.ThreadLink;
 import com.tysanclan.site.projectewok.entities.ForumPost;
 import com.tysanclan.site.projectewok.entities.ForumThread;
 import com.tysanclan.site.projectewok.pages.ForumThreadPage;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 @TysanMemberSecured
 public class ConfirmForumThreadLockPage extends TysanPage {
@@ -54,12 +53,11 @@ public class ConfirmForumThreadLockPage extends TysanPage {
 			@Override
 			protected void onSubmit() {
 				if (!service.lockThread(getModelObject(),
-						ConfirmForumThreadLockPage.this.getTysanSession()
-								.getUser())) {
+						ConfirmForumThreadLockPage.this.getUser())) {
 					error("Unable to lock thread: Permission denied");
 				}
-				setResponsePage(new ForumThreadPage(getModelObject().getId(),
-						1, false));
+				setResponsePage(new ForumThreadPage(getModelObject().getId(), 1,
+						false));
 			}
 		};
 

@@ -17,12 +17,11 @@
  */
 package com.tysanclan.site.projectewok.model;
 
-import org.apache.wicket.model.IDetachable;
-import org.apache.wicket.model.IModel;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.site.projectewok.entities.Game;
 import com.tysanclan.site.projectewok.entities.Realm;
+import org.apache.wicket.model.IDetachable;
+import org.apache.wicket.model.IModel;
 
 /**
  * @author Jeroen Steenbeeke
@@ -64,8 +63,8 @@ public final class GameRealmCartesian implements IDetachable {
 		if (obj.getClass() == GameRealmCartesian.class) {
 			GameRealmCartesian other = (GameRealmCartesian) obj;
 
-			return other.getGame().equals(getGame())
-					&& other.getRealm().equals(getRealm());
+			return other.getGame().equals(getGame()) && other.getRealm()
+					.equals(getRealm());
 		}
 
 		return false;

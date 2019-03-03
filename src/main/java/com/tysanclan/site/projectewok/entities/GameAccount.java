@@ -17,32 +17,13 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
-import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
+import com.jeroensteenbeeke.hyperion.data.DomainObject;
+import com.tysanclan.site.projectewok.components.accountpanel.*;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.hibernate.annotations.Cache;
 
-import com.jeroensteenbeeke.hyperion.data.DomainObject;
-import com.tysanclan.site.projectewok.components.accountpanel.Diablo2Panel;
-import com.tysanclan.site.projectewok.components.accountpanel.LeagueOfLegendsPanel;
-import com.tysanclan.site.projectewok.components.accountpanel.MineCraftPanel;
-import com.tysanclan.site.projectewok.components.accountpanel.RealIdPanel;
-import com.tysanclan.site.projectewok.components.accountpanel.StarCraft2Panel;
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @author Jeroen Steenbeeke
@@ -51,7 +32,7 @@ import com.tysanclan.site.projectewok.components.accountpanel.StarCraft2Panel;
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Table(indexes = { //
-@Index(name = "IDX_GAMEACCOUNT_UGR", columnList = "userGameRealm_id") })
+		@Index(name = "IDX_GAMEACCOUNT_UGR", columnList = "userGameRealm_id") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public abstract class GameAccount implements DomainObject {
 	public static final long serialVersionUID = 1L;
@@ -68,8 +49,7 @@ public abstract class GameAccount implements DomainObject {
 
 				return new RealIdPanel(id, object);
 			}
-		},
-		STARCRAFT2 {
+		}, STARCRAFT2 {
 			@Override
 			public String toString() {
 				return "StarCraft 2 Character Account";
@@ -79,8 +59,7 @@ public abstract class GameAccount implements DomainObject {
 			public Panel createAddForm(String id, UserGameRealm object) {
 				return new StarCraft2Panel(id, object);
 			}
-		},
-		DIABLO2 {
+		}, DIABLO2 {
 			@Override
 			public String toString() {
 				return "Diablo 2 Account";
@@ -90,8 +69,7 @@ public abstract class GameAccount implements DomainObject {
 			public Panel createAddForm(String id, UserGameRealm object) {
 				return new Diablo2Panel(id, object);
 			}
-		},
-		MINECRAFT {
+		}, MINECRAFT {
 			@Override
 			public String toString() {
 				return "MineCraft Account";
@@ -101,8 +79,7 @@ public abstract class GameAccount implements DomainObject {
 			public Panel createAddForm(String id, UserGameRealm object) {
 				return new MineCraftPanel(id, object);
 			}
-		},
-		LEAGUE_OF_LEGENDS {
+		}, LEAGUE_OF_LEGENDS {
 			@Override
 			public String toString() {
 				return "League of Legends account";
@@ -166,7 +143,7 @@ public abstract class GameAccount implements DomainObject {
 
 	/**
 	 * Sets the Name of this GameAccount
-	 * 
+	 *
 	 * @param name
 	 *            The Name of this GameAccount
 	 */
@@ -183,7 +160,7 @@ public abstract class GameAccount implements DomainObject {
 
 	/**
 	 * Sets the UserGameRealm of this GameAccount
-	 * 
+	 *
 	 * @param userGameRealm
 	 *            The UserGameRealm of this GameAccount
 	 */

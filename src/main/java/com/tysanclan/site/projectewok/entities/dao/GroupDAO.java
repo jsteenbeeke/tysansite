@@ -17,14 +17,19 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.Group;
+import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.entities.filter.GroupFilter;
+
+import java.util.List;
 
 /**
  * A Data Access Object for handling various groups
- * 
+ *
  * @author Jeroen Steenbeeke
  */
-public interface GroupDAO extends EwokDAO<Group> {
+public interface GroupDAO extends DAO<Group, GroupFilter> {
 
+	List<Group> getMemberGroups(User user);
 }

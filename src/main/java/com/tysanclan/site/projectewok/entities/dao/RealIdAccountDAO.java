@@ -17,13 +17,15 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.jeroensteenbeeke.hyperion.data.DAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.RealIdAccount;
+import com.tysanclan.site.projectewok.entities.filter.RealIdAccountFilter;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface RealIdAccountDAO extends DAO<RealIdAccount> {
+public interface RealIdAccountDAO
+		extends DAO<RealIdAccount, RealIdAccountFilter> {
 
 }

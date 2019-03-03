@@ -17,29 +17,18 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.UpdateMark;
+import com.tysanclan.site.projectewok.entities.filter.UpdateMarkFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.UpdateMark;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Component
 @Scope("request")
-class UpdateMarkDAOImpl extends EwokHibernateDAO<UpdateMark> implements
-		com.tysanclan.site.projectewok.entities.dao.UpdateMarkDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<UpdateMark> filter) {
-		Criteria criteria = getSession().createCriteria(UpdateMark.class);
+class UpdateMarkDAOImpl extends HibernateDAO<UpdateMark, UpdateMarkFilter>
+		implements com.tysanclan.site.projectewok.entities.dao.UpdateMarkDAO {
 
-		// if (filter instanceof UpdateMarkFilter) {
-		// UpdateMarkFilter cf = (UpdateMarkFilter) filter;
-		// }
-
-		return criteria;
-	}
 }

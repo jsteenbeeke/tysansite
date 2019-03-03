@@ -17,13 +17,14 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import com.tysanclan.site.projectewok.dataaccess.EwokDAO;
+import com.jeroensteenbeeke.hyperion.meld.DAO;
 import com.tysanclan.site.projectewok.entities.Impeachment;
+import com.tysanclan.site.projectewok.entities.filter.ImpeachmentFilter;
 
 /**
  *
  * @author Jeroen Steenbeeke
  */
-public interface ImpeachmentDAO extends EwokDAO<Impeachment> {
+public interface ImpeachmentDAO extends DAO<Impeachment, ImpeachmentFilter> {
 
 }

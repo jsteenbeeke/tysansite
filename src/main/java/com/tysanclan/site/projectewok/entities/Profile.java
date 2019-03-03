@@ -17,32 +17,19 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
+import org.hibernate.annotations.Cache;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.Lob;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.Type;
-
-import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Entity
 @Table(indexes = { //
-@Index(name = "IDX_PROFILE_USER", columnList = "user_id") })
+		@Index(name = "IDX_PROFILE_USER", columnList = "user_id") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class Profile extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;
@@ -63,12 +50,12 @@ public class Profile extends BaseDomainObject {
 
 	@Column
 	@Lob
-	@Type(type = "org.hibernate.type.StringClobType")
+
 	private String privateDescription;
 
 	@Column
 	@Lob
-	@Type(type = "org.hibernate.type.StringClobType")
+
 	private String publicDescription;
 
 	@Column
@@ -126,7 +113,7 @@ public class Profile extends BaseDomainObject {
 
 	/**
 	 * Sets the User of this Profile
-	 * 
+	 *
 	 * @param user
 	 *            The User of this Profile
 	 */
@@ -143,7 +130,7 @@ public class Profile extends BaseDomainObject {
 
 	/**
 	 * Sets the RealName of this Profile
-	 * 
+	 *
 	 * @param realName
 	 *            The RealName of this Profile
 	 */
@@ -160,7 +147,7 @@ public class Profile extends BaseDomainObject {
 
 	/**
 	 * Sets the BirthDate of this Profile
-	 * 
+	 *
 	 * @param birthDate
 	 *            The BirthDate of this Profile
 	 */
@@ -177,7 +164,7 @@ public class Profile extends BaseDomainObject {
 
 	/**
 	 * Sets the PrivateDescription of this Profile
-	 * 
+	 *
 	 * @param privateDescription
 	 *            The PrivateDescription of this Profile
 	 */
@@ -194,7 +181,7 @@ public class Profile extends BaseDomainObject {
 
 	/**
 	 * Sets the PublicDescription of this Profile
-	 * 
+	 *
 	 * @param publicDescription
 	 *            The PublicDescription of this Profile
 	 */
@@ -211,7 +198,7 @@ public class Profile extends BaseDomainObject {
 
 	/**
 	 * Sets the PhotoURL of this Profile
-	 * 
+	 *
 	 * @param photoURL
 	 *            The PhotoURL of this Profile
 	 */
@@ -228,7 +215,7 @@ public class Profile extends BaseDomainObject {
 
 	/**
 	 * Sets the PhotoPublic of this Profile
-	 * 
+	 *
 	 * @param photoPublic
 	 *            The PhotoPublic of this Profile
 	 */

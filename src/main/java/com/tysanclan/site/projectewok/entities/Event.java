@@ -17,31 +17,19 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
+import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 import org.hibernate.annotations.Cache;
 
-import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Entity
 @Table(indexes = { //
-@Index(name = "IDX_EVENT_ORGANIZER", columnList = "organizer_id"), //
+		@Index(name = "IDX_EVENT_ORGANIZER", columnList = "organizer_id"), //
 		@Index(name = "IDX_EVENT_THREAD", columnList = "eventThread_id") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class Event extends BaseDomainObject {
@@ -98,7 +86,7 @@ public class Event extends BaseDomainObject {
 
 	/**
 	 * Sets the Organizer of this Event
-	 * 
+	 *
 	 * @param organizer
 	 *            The Organizer of this Event
 	 */
@@ -115,7 +103,7 @@ public class Event extends BaseDomainObject {
 
 	/**
 	 * Sets the Date of this Event
-	 * 
+	 *
 	 * @param date
 	 *            The Date of this Event
 	 */

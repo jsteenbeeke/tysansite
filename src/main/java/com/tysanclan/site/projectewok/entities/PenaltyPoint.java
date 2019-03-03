@@ -17,30 +17,19 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
+import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 import org.hibernate.annotations.Cache;
 
-import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author Jeroen Steenbeeke
  */
 @Entity
 @Table(indexes = { //
-@Index(name = "IDX_PENALTYPOINT_USER", columnList = "user_id") })
+		@Index(name = "IDX_PENALTYPOINT_USER", columnList = "user_id") })
 @Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.TRANSACTIONAL, region = "main")
 public class PenaltyPoint extends BaseDomainObject {
 	public static final long serialVersionUID = 1L;
@@ -93,7 +82,7 @@ public class PenaltyPoint extends BaseDomainObject {
 
 	/**
 	 * Sets the Given of this PenaltyPoint
-	 * 
+	 *
 	 * @param given
 	 *            The Given of this PenaltyPoint
 	 */
@@ -110,7 +99,7 @@ public class PenaltyPoint extends BaseDomainObject {
 
 	/**
 	 * Sets the User of this PenaltyPoint
-	 * 
+	 *
 	 * @param user
 	 *            The User of this PenaltyPoint
 	 */

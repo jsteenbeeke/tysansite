@@ -17,18 +17,7 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.Button;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.RealmService;
@@ -41,6 +30,17 @@ import com.tysanclan.site.projectewok.entities.dao.GameDAO;
 import com.tysanclan.site.projectewok.entities.dao.RealmDAO;
 import com.tysanclan.site.projectewok.entities.dao.RealmPetitionDAO;
 import com.tysanclan.site.projectewok.model.GameRealmCartesian;
+import io.vavr.collection.Seq;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -64,11 +64,11 @@ public class CreateRealmPetitionPage extends AbstractMemberPage {
 
 		List<GameRealmCartesian> allCombinations = new LinkedList<GameRealmCartesian>();
 
-		List<Game> games = gameDAO.findAll();
+		Seq<Game> games = gameDAO.findAll();
 
 		for (Game game : games) {
-			List<Realm> curr = new LinkedList<Realm>();
-			curr.addAll(realmDAO.findAll());
+			List<Realm> curr = new LinkedList<>(
+					realmDAO.findAll().toJavaList());
 			curr.removeAll(game.getRealms());
 
 			for (Realm realm : curr) {
@@ -79,8 +79,9 @@ public class CreateRealmPetitionPage extends AbstractMemberPage {
 
 		for (RealmPetition petition : realmPetitionDAO.findAll()) {
 			if (petition.getGame() != null && petition.getRealm() != null) {
-				allCombinations.remove(new GameRealmCartesian(petition
-						.getGame(), petition.getRealm()));
+				allCombinations
+						.remove(new GameRealmCartesian(petition.getGame(),
+								petition.getRealm()));
 			}
 		}
 
@@ -97,7 +98,8 @@ public class CreateRealmPetitionPage extends AbstractMemberPage {
 			@Override
 			protected void onSubmit() {
 				TextField<String> nameField = (TextField<String>) get("name");
-				DropDownChoice<Game> gameSelect = (DropDownChoice<Game>) get("game");
+				DropDownChoice<Game> gameSelect = (DropDownChoice<Game>) get(
+						"game");
 
 				String name = nameField.getModelObject();
 				Game game = gameSelect.getModelObject();
@@ -111,11 +113,11 @@ public class CreateRealmPetitionPage extends AbstractMemberPage {
 
 		newRealm.add(new Button("submit").setVisible(!games.isEmpty()));
 
-		newRealm.add(new TextField<String>("name", new Model<String>(""))
-				.setRequired(true));
+		newRealm.add(
+				new TextField<>("name", new Model<>("")).setRequired(true));
 
-		newRealm.add(new DropDownChoice<Game>("game", ModelMaker
-				.wrap((Game) null), ModelMaker.wrapChoices(games),
+		newRealm.add(new DropDownChoice<>("game", ModelMaker.wrap((Game) null),
+				ModelMaker.wrapChoices(games.toJavaList()),
 				new GameChoiceRenderer()).setRequired(true));
 
 		add(newRealm);
@@ -132,22 +134,25 @@ public class CreateRealmPetitionPage extends AbstractMemberPage {
 			@SuppressWarnings("unchecked")
 			@Override
 			protected void onSubmit() {
-				DropDownChoice<GameRealmCartesian> gameRealmSelect = (DropDownChoice<GameRealmCartesian>) get("existing");
+				DropDownChoice<GameRealmCartesian> gameRealmSelect = (DropDownChoice<GameRealmCartesian>) get(
+						"existing");
 
 				GameRealmCartesian cartesian = gameRealmSelect.getModelObject();
 
-				realmService.createRealmPetition(cartesian.getRealm(),
-						getUser(), cartesian.getGame());
+				realmService
+						.createRealmPetition(cartesian.getRealm(), getUser(),
+								cartesian.getGame());
 
 				setResponsePage(new SignRealmPetitionsPage());
 			}
 		};
 
-		existing.add(new DropDownChoice<GameRealmCartesian>("existing",
-				new Model<GameRealmCartesian>(null), allCombinations,
-				new GameRealmCartesianRenderer()).setRequired(true));
+		existing.add(new DropDownChoice<>("existing", new Model<>(null),
+				allCombinations, new GameRealmCartesianRenderer())
+				.setRequired(true));
 
-		existing.add(new Button("submit").setVisible(!allCombinations.isEmpty()));
+		existing.add(
+				new Button("submit").setVisible(!allCombinations.isEmpty()));
 
 		add(new WebMarkupContainer("existingRealmsHeader")
 				.setVisible(!allCombinations.isEmpty()));

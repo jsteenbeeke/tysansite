@@ -17,24 +17,16 @@
  */
 package com.tysanclan.site.projectewok.entities.dao.hibernate;
 
-import org.hibernate.Criteria;
+import com.jeroensteenbeeke.hyperion.solstice.data.HibernateDAO;
+import com.tysanclan.site.projectewok.entities.PaidExpense;
+import com.tysanclan.site.projectewok.entities.dao.PaidExpenseDAO;
+import com.tysanclan.site.projectewok.entities.filter.PaidExpenseFilter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.jeroensteenbeeke.hyperion.data.SearchFilter;
-import com.tysanclan.site.projectewok.dataaccess.EwokHibernateDAO;
-import com.tysanclan.site.projectewok.entities.PaidExpense;
-import com.tysanclan.site.projectewok.entities.dao.PaidExpenseDAO;
-
 @Component
 @Scope("request")
-class PaidExpenseDAOImpl extends EwokHibernateDAO<PaidExpense> implements
-		PaidExpenseDAO {
-	@Override
-	protected Criteria createCriteria(SearchFilter<PaidExpense> filter) {
-		Criteria criteria = getSession().createCriteria(PaidExpense.class);
-
-		return criteria;
-	}
+class PaidExpenseDAOImpl extends HibernateDAO<PaidExpense, PaidExpenseFilter>
+		implements PaidExpenseDAO {
 
 }

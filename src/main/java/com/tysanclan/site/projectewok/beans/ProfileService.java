@@ -17,10 +17,10 @@
  */
 package com.tysanclan.site.projectewok.beans;
 
-import java.util.Date;
-
 import com.tysanclan.site.projectewok.entities.Profile;
 import com.tysanclan.site.projectewok.entities.User;
+
+import java.util.Date;
 
 /**
  * @author Jeroen Steenbeeke
@@ -40,7 +40,8 @@ public interface ProfileService {
 
 	public void setPrivateDescription(Profile profile, String description);
 
-	public void setAIMAddress(Profile profile, String aimName, Boolean aimPublic);
+	public void setAIMAddress(Profile profile, String aimName,
+			Boolean aimPublic);
 
 	public void setTwitterUID(Profile profile, String twitter);
 }

@@ -17,11 +17,11 @@
  */
 package com.tysanclan.site.projectewok.entities.dao;
 
-import java.util.List;
-
 import com.jeroensteenbeeke.hyperion.data.DomainObject;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.util.forum.ForumViewContext;
+
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -32,6 +32,6 @@ public interface ContextBasedForumDAO<T extends DomainObject, ContextType extend
 			ForumViewContext context);
 
 	List<T> findByContext(User user, ContextType contextId,
-			ForumViewContext context, long first, long count);
+			ForumViewContext context, int first, int count);
 
 }

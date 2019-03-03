@@ -17,15 +17,7 @@
  */
 package com.tysanclan.site.projectewok.pages.member.justice;
 
-import java.util.Calendar;
-
-import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.PageableListView;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.UserService;
@@ -33,9 +25,16 @@ import com.tysanclan.site.projectewok.components.IconLink;
 import com.tysanclan.site.projectewok.components.IconLink.DefaultClickResponder;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.UserDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.UserFilter;
+import com.tysanclan.site.projectewok.entities.filter.UserFilter;
 import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
 import com.tysanclan.site.projectewok.util.DateUtil;
+import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.PageableListView;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.Calendar;
 
 /**
  * @author Jeroen Steenbeeke
@@ -55,20 +54,21 @@ public class ForumUserManagementPage extends AbstractMemberPage {
 		super("Manage Forum Users");
 
 		UserFilter filter = new UserFilter();
-		filter.addRank(Rank.BANNED);
-		filter.addRank(Rank.FORUM);
+		filter.rank(Rank.BANNED);
+		filter.orRank(Rank.FORUM);
 
 		if (filterInactive) {
 			Calendar cal = DateUtil.getCalendarInstance();
 			cal.add(Calendar.WEEK_OF_YEAR, -2);
 
-			filter.setActiveSince(cal.getTime());
+			filter.lastAction().greaterThan(cal.getTime());
 		}
 
-		filter.addOrderBy("username", true);
+		filter.username().orderBy(true);
 
 		PageableListView<User> users = new PageableListView<User>("users",
-				ModelMaker.wrap(userDAO.findByFilter(filter)), 20) {
+				ModelMaker.wrap(userDAO.findByFilter(filter).toJavaList()),
+				20) {
 			private static final long serialVersionUID = 1L;
 
 			/**
@@ -104,8 +104,8 @@ public class ForumUserManagementPage extends AbstractMemberPage {
 					 */
 					@Override
 					public void onClick() {
-						setResponsePage(new ForumUserManagementPage(
-								!filterInactive));
+						setResponsePage(
+								new ForumUserManagementPage(!filterInactive));
 					}
 				});
 
@@ -126,7 +126,7 @@ public class ForumUserManagementPage extends AbstractMemberPage {
 		private UserService userService;
 
 		/**
-		 * 
+		 *
 		 */
 		public BanClickResponder(User user) {
 			super(ModelMaker.wrap(user));
@@ -152,7 +152,7 @@ public class ForumUserManagementPage extends AbstractMemberPage {
 		private UserService userService;
 
 		/**
-		 * 
+		 *
 		 */
 		public UnbanClickResponder(User user) {
 			super(ModelMaker.wrap(user));

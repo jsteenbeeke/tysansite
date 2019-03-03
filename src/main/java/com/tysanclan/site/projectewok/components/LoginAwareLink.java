@@ -17,13 +17,10 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import org.apache.wicket.Session;
+import com.tysanclan.site.projectewok.TysanSession;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.Panel;
-
-import com.tysanclan.site.projectewok.TysanSession;
-import com.tysanclan.site.projectewok.entities.User;
 
 /**
  * @author Jeroen Steenbeeke
@@ -70,9 +67,8 @@ public abstract class LoginAwareLink<L extends Link<?>, U extends Link<?>>
 	}
 
 	protected boolean isLoggedInCondition() {
-		TysanSession sess = (TysanSession) Session.get();
-		User u = (sess != null) ? sess.getUser() : null;
-		return (u != null);
+		return TysanSession.session().flatMap(TysanSession::getUser)
+				.isDefined();
 	}
 
 	/**

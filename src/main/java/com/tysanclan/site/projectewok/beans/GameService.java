@@ -17,15 +17,10 @@
  */
 package com.tysanclan.site.projectewok.beans;
 
-import java.util.List;
-
-import com.tysanclan.site.projectewok.entities.Game;
-import com.tysanclan.site.projectewok.entities.GameAccount;
+import com.tysanclan.site.projectewok.entities.*;
 import com.tysanclan.site.projectewok.entities.GameAccount.AccountType;
-import com.tysanclan.site.projectewok.entities.GamePetition;
-import com.tysanclan.site.projectewok.entities.Realm;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.UserGameRealm;
+
+import java.util.List;
 
 /**
  * @author Jeroen Steenbeeke
@@ -38,7 +33,8 @@ public interface GameService {
 
 	int getRequiredPetitionSignatures();
 
-	GamePetition createPetition(User user, String name, Realm realm, byte[] icon);
+	GamePetition createPetition(User user, String name, Realm realm,
+			byte[] icon);
 
 	GamePetition createPetition(User user, String name, String realmName,
 			byte[] icon);

@@ -17,49 +17,26 @@
  */
 package com.tysanclan.site.projectewok.components;
 
-import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.joda.time.DateTime;
-
 import com.tysanclan.site.projectewok.beans.RoleService;
 import com.tysanclan.site.projectewok.components.RequiresAttentionLink.AttentionType;
 import com.tysanclan.site.projectewok.components.RequiresAttentionLink.IRequiresAttentionCondition;
-import com.tysanclan.site.projectewok.entities.RegulationChange;
+import com.tysanclan.site.projectewok.entities.*;
 import com.tysanclan.site.projectewok.entities.Role.RoleType;
-import com.tysanclan.site.projectewok.entities.RoleTransfer;
-import com.tysanclan.site.projectewok.entities.RoleTransferApproval;
-import com.tysanclan.site.projectewok.entities.TruthsayerComplaint;
-import com.tysanclan.site.projectewok.entities.User;
-import com.tysanclan.site.projectewok.entities.dao.AchievementProposalDAO;
-import com.tysanclan.site.projectewok.entities.dao.GroupCreationRequestDAO;
-import com.tysanclan.site.projectewok.entities.dao.RegulationChangeDAO;
-import com.tysanclan.site.projectewok.entities.dao.RoleTransferDAO;
-import com.tysanclan.site.projectewok.entities.dao.TruthsayerComplaintDAO;
-import com.tysanclan.site.projectewok.entities.dao.filters.AchievementProposalFilter;
-import com.tysanclan.site.projectewok.entities.dao.filters.RoleTransferFilter;
-import com.tysanclan.site.projectewok.pages.member.ChancellorAchievementPage;
-import com.tysanclan.site.projectewok.pages.member.ChancellorStepDownPage;
-import com.tysanclan.site.projectewok.pages.member.ChancellorTruthsayerComplaintPage;
-import com.tysanclan.site.projectewok.pages.member.CommitteePage;
-import com.tysanclan.site.projectewok.pages.member.ForumManagementPage;
-import com.tysanclan.site.projectewok.pages.member.GameManagementPage;
-import com.tysanclan.site.projectewok.pages.member.GroupRequestApprovalPage;
-import com.tysanclan.site.projectewok.pages.member.InactiveKeyRoleTransferPage;
-import com.tysanclan.site.projectewok.pages.member.RealmManagementPage;
-import com.tysanclan.site.projectewok.pages.member.RolesManagementPage;
-import com.tysanclan.site.projectewok.pages.member.TruthsayerNominationPage;
-import com.tysanclan.site.projectewok.pages.member.senate.AddRegulationPage;
-import com.tysanclan.site.projectewok.pages.member.senate.KeyRoleNominationApprovalPage;
-import com.tysanclan.site.projectewok.pages.member.senate.ModifyRegulationPage;
-import com.tysanclan.site.projectewok.pages.member.senate.RepealRegulationPage;
-import com.tysanclan.site.projectewok.pages.member.senate.VetoPage;
+import com.tysanclan.site.projectewok.entities.dao.*;
+import com.tysanclan.site.projectewok.entities.filter.AchievementProposalFilter;
+import com.tysanclan.site.projectewok.entities.filter.RoleTransferFilter;
+import com.tysanclan.site.projectewok.pages.member.*;
+import com.tysanclan.site.projectewok.pages.member.senate.*;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.joda.time.DateTime;
 
 /**
  * @author Jeroen Steenbeeke
  */
 public class ChancellorPanel extends TysanOverviewPanel<Void> {
-	public class TruthsayerComplaintCondition implements
-			IRequiresAttentionCondition {
+	public class TruthsayerComplaintCondition
+			implements IRequiresAttentionCondition {
 		private static final long serialVersionUID = 1L;
 
 		@Override
@@ -87,16 +64,16 @@ public class ChancellorPanel extends TysanOverviewPanel<Void> {
 		}
 	}
 
-	public class KeyRoleNominationCondition implements
-			IRequiresAttentionCondition {
+	public class KeyRoleNominationCondition
+			implements IRequiresAttentionCondition {
 		private static final long serialVersionUID = 1L;
 
 		private RoleTransfer getActiveTransfer() {
 			RoleTransferFilter filter = new RoleTransferFilter();
-			filter.setAccepted(true);
+			filter.accepted(true);
 
-			outer: for (RoleTransfer transfer : roleTransferDAO
-					.findByFilter(filter)) {
+			outer:
+			for (RoleTransfer transfer : roleTransferDAO.findByFilter(filter)) {
 				for (RoleTransferApproval app : transfer.getApprovedBy()) {
 					if (app.getApprovedBy().equals(getUser()))
 						continue outer;
@@ -128,8 +105,8 @@ public class ChancellorPanel extends TysanOverviewPanel<Void> {
 		}
 	}
 
-	public class InactiveKeyRoleCondition implements
-			IRequiresAttentionCondition {
+	public class InactiveKeyRoleCondition
+			implements IRequiresAttentionCondition {
 		private static final long serialVersionUID = 1L;
 
 		@Override
@@ -183,18 +160,18 @@ public class ChancellorPanel extends TysanOverviewPanel<Void> {
 		}
 	}
 
-	public class PendingAchievementCondition implements
-			IRequiresAttentionCondition {
+	public class PendingAchievementCondition
+			implements IRequiresAttentionCondition {
 
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
 		@Override
 		public AttentionType requiresAttention() {
 			AchievementProposalFilter filter = new AchievementProposalFilter();
-			filter.setVetoUndecided(true);
+			filter.chancellorVeto().isNull();
 
 			if (achievementProposalDAO.countByFilter(filter) > 0) {
 				return AttentionType.WARNING;
@@ -208,10 +185,10 @@ public class ChancellorPanel extends TysanOverviewPanel<Void> {
 		}
 	}
 
-	public class RegulationChangeCondition implements
-			IRequiresAttentionCondition {
+	public class RegulationChangeCondition
+			implements IRequiresAttentionCondition {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
@@ -269,7 +246,7 @@ public class ChancellorPanel extends TysanOverviewPanel<Void> {
 	private TruthsayerComplaintDAO truthsayerComplaintDAO;
 
 	/**
-	 * 
+	 *
 	 */
 	public ChancellorPanel(String id) {
 		super(id, "Chancellor");
@@ -304,7 +281,8 @@ public class ChancellorPanel extends TysanOverviewPanel<Void> {
 
 		add(createConditionalVisibilityLink("keyrolevote",
 				KeyRoleNominationApprovalPage.class,
-				"Approve key role nomination", new KeyRoleNominationCondition()));
+				"Approve key role nomination",
+				new KeyRoleNominationCondition()));
 
 		add(createConditionalVisibilityLink("pendingproposal",
 				ChancellorAchievementPage.class,
@@ -345,7 +323,7 @@ public class ChancellorPanel extends TysanOverviewPanel<Void> {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void addRegulationLinks() {
 		add(new Link<Void>("addregulation") {
@@ -383,7 +361,7 @@ public class ChancellorPanel extends TysanOverviewPanel<Void> {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void addStepdownLink() {
 		add(new Link<Void>("stepdown") {
@@ -403,7 +381,7 @@ public class ChancellorPanel extends TysanOverviewPanel<Void> {
 	private void addRolesLink() {
 		add(new Link<Void>("roles") {
 			/**
-			 * 
+			 *
 			 */
 			private static final long serialVersionUID = 1L;
 
@@ -418,7 +396,7 @@ public class ChancellorPanel extends TysanOverviewPanel<Void> {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void addNominateTruthsayerLink() {
 		add(new Link<Void>("truthsayernomination") {
@@ -433,7 +411,7 @@ public class ChancellorPanel extends TysanOverviewPanel<Void> {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void addForumManagementLink() {
 		add(new Link<Void>("forummanagement") {
@@ -448,7 +426,7 @@ public class ChancellorPanel extends TysanOverviewPanel<Void> {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void addMakeCommitteeLink() {
 		add(new Link<Void>("committee") {
@@ -463,7 +441,7 @@ public class ChancellorPanel extends TysanOverviewPanel<Void> {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void addGroupRequestLink() {
 		add(createLink("grouprequest", GroupRequestApprovalPage.class,

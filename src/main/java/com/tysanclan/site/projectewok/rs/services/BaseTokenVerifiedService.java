@@ -1,12 +1,12 @@
 package com.tysanclan.site.projectewok.rs.services;
 
-import javax.inject.Inject;
-
 import com.tysanclan.site.projectewok.entities.AuthorizedRestApplication;
 import com.tysanclan.site.projectewok.entities.RestToken;
 import com.tysanclan.site.projectewok.entities.User;
 import com.tysanclan.site.projectewok.entities.dao.RestTokenDAO;
 import com.tysanclan.site.projectewok.rs.HttpStatusException;
+
+import javax.inject.Inject;
 
 public abstract class BaseTokenVerifiedService {
 	@Inject

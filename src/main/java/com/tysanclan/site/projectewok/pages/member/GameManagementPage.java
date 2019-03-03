@@ -17,16 +17,7 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.request.resource.ByteArrayResource;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.auth.TysanRankSecured;
 import com.tysanclan.site.projectewok.beans.GameService;
@@ -36,6 +27,14 @@ import com.tysanclan.site.projectewok.components.MemberListItem;
 import com.tysanclan.site.projectewok.entities.Game;
 import com.tysanclan.site.projectewok.entities.dao.GameDAO;
 import com.tysanclan.site.projectewok.util.ImageUtil;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.request.resource.ByteArrayResource;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author Jeroen Steenbeeke
@@ -53,7 +52,8 @@ public class GameManagementPage extends AbstractSingleAccordionMemberPage {
 	public GameManagementPage() {
 		super("Game Management");
 
-		add(new ListView<Game>("games", ModelMaker.wrap(gameDAO.findAll())) {
+		add(new ListView<Game>("games",
+				ModelMaker.wrap(gameDAO.findAll().toJavaList())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -61,11 +61,12 @@ public class GameManagementPage extends AbstractSingleAccordionMemberPage {
 				Game game = item.getModelObject();
 
 				item.add(new Label("name", game.getName()));
-				item.add(new Image("icon", new ByteArrayResource(ImageUtil
-						.getMimeType(game.getImage()), game.getImage())));
+				item.add(new Image("icon", new ByteArrayResource(
+						ImageUtil.getMimeType(game.getImage()),
+						game.getImage())));
 				if (game.getCoordinator() != null) {
-					item.add(new MemberListItem("coordinator", game
-							.getCoordinator()));
+					item.add(new MemberListItem("coordinator",
+							game.getCoordinator()));
 					IconLink.Builder builder = new IconLink.Builder(
 							"images/icons/user_edit.png",
 							new DefaultClickResponder<Game>(
@@ -97,12 +98,12 @@ public class GameManagementPage extends AbstractSingleAccordionMemberPage {
 
 					item.add(builder.newInstance("coordinator"));
 				}
-				item.add(new Label("realmcount", new Model<Integer>(game
-						.getRealms().size())));
+				item.add(new Label("realmcount",
+						new Model<Integer>(game.getRealms().size())));
 				item.add(new Label("playercount", new Model<Integer>(
 						gameService.countActivePlayers(game))));
-				item.add(new Label("groupcount", new Model<Integer>(game
-						.getGroups().size())));
+				item.add(new Label("groupcount",
+						new Model<Integer>(game.getGroups().size())));
 
 				IconLink.Builder builder = new IconLink.Builder(
 						"images/icons/cross.png",

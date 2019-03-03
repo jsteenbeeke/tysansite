@@ -17,6 +17,14 @@
  */
 package com.tysanclan.site.projectewok.pages.member;
 
+import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.site.projectewok.beans.AchievementService;
+import com.tysanclan.site.projectewok.components.BBCodeTextArea;
+import com.tysanclan.site.projectewok.components.StoredImageResource;
+import com.tysanclan.site.projectewok.entities.Achievement;
+import com.tysanclan.site.projectewok.entities.AchievementRequest;
+import com.tysanclan.site.projectewok.entities.Game;
+import com.tysanclan.site.projectewok.util.ImageUtil;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
@@ -26,15 +34,6 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.jeroensteenbeeke.hyperion.data.ModelMaker;
-import com.tysanclan.site.projectewok.beans.AchievementService;
-import com.tysanclan.site.projectewok.components.BBCodeTextArea;
-import com.tysanclan.site.projectewok.components.StoredImageResource;
-import com.tysanclan.site.projectewok.entities.Achievement;
-import com.tysanclan.site.projectewok.entities.AchievementRequest;
-import com.tysanclan.site.projectewok.entities.Game;
-import com.tysanclan.site.projectewok.util.ImageUtil;
 
 /**
  * @author Jeroen Steenbeeke
@@ -51,7 +50,7 @@ public class RequestAchievementPage2 extends AbstractSingleAccordionMemberPage {
 		achievementModel = ModelMaker.wrap(achievement);
 
 		final FileUploadField uploadField = new FileUploadField("screenshot",
-				new ListModel<FileUpload>());
+				new ListModel<>());
 		final TextArea<String> evidenceField = new BBCodeTextArea("evidence",
 				"");
 
@@ -67,9 +66,9 @@ public class RequestAchievementPage2 extends AbstractSingleAccordionMemberPage {
 				String evidence = evidenceField.getModelObject();
 
 				if (upload != null) {
-					if (!ImageUtil.isGIFImage(upload.getBytes())
-							&& !ImageUtil.isPNGImage(upload.getBytes())
-							&& !ImageUtil.isJPEGImage(upload.getBytes())) {
+					if (!ImageUtil.isGIFImage(upload.getBytes()) && !ImageUtil
+							.isPNGImage(upload.getBytes()) && !ImageUtil
+							.isJPEGImage(upload.getBytes())) {
 						error("Please supply a valid JPG, GIF or PNG image");
 						return;
 					}
@@ -80,9 +79,11 @@ public class RequestAchievementPage2 extends AbstractSingleAccordionMemberPage {
 					}
 				}
 
-				AchievementRequest request = service.requestAchievement(
-						getUser(), achievementModel.getObject(),
-						upload != null ? upload.getBytes() : null, evidence);
+				AchievementRequest request = service
+						.requestAchievement(getUser(),
+								achievementModel.getObject(),
+								upload != null ? upload.getBytes() : null,
+								evidence);
 				if (request != null) {
 					setResponsePage(new RequestAchievementPage());
 				} else {
@@ -103,15 +104,17 @@ public class RequestAchievementPage2 extends AbstractSingleAccordionMemberPage {
 
 		Game game = achievement.getGame();
 
-		form.add(new Image("icon", new StoredImageResource(achievement
-				.getIcon().getImage())));
-		form.add(new Image("game", new StoredImageResource(game != null ? game
-				.getImage() : new byte[0])).setVisible(game != null));
+		form.add(new Image("icon",
+				new StoredImageResource(achievement.getIcon().getImage())));
+		form.add(new Image("game", new StoredImageResource(
+				game != null ? game.getImage() : new byte[0]))
+				.setVisible(game != null));
 
 		boolean hasGroup = achievement.getGroup() != null;
 
-		form.add(new Label("group", hasGroup ? achievement.getGroup().getName()
-				: "-").setVisible(hasGroup));
+		form.add(new Label("group",
+				hasGroup ? achievement.getGroup().getName() : "-")
+				.setVisible(hasGroup));
 		form.add(new Label("description", achievement.getDescription())
 				.setEscapeModelStrings(false));
 	}
