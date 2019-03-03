@@ -36,7 +36,7 @@ public class Notification implements DomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Notification")
-	@SequenceGenerator(name = "Notification", sequenceName = "SEQ_ID_Notification")
+	@SequenceGenerator(name = "Notification", sequenceName="SEQ_ID_Notification", allocationSize=1)
 	private Long id;
 
 	@Column(nullable = false)

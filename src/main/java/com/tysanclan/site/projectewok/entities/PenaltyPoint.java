@@ -36,7 +36,7 @@ public class PenaltyPoint extends BaseDomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PenaltyPoint")
-	@SequenceGenerator(name = "PenaltyPoint", sequenceName = "SEQ_ID_PenaltyPoint")
+	@SequenceGenerator(name = "PenaltyPoint", sequenceName="SEQ_ID_PenaltyPoint", allocationSize=1)
 	private Long id;
 
 	@Column

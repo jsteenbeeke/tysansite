@@ -34,7 +34,7 @@ public class MumbleServer implements DomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MumbleServer")
-	@SequenceGenerator(name = "MumbleServer", sequenceName = "SEQ_ID_MumbleServer")
+	@SequenceGenerator(name = "MumbleServer", sequenceName="SEQ_ID_MumbleServer", allocationSize=1)
 	private Long id;
 
 	@Column(nullable = false)

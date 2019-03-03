@@ -97,7 +97,7 @@ public abstract class GameAccount implements DomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GameAccount")
-	@SequenceGenerator(name = "GameAccount", sequenceName = "SEQ_ID_GameAccount")
+	@SequenceGenerator(name = "GameAccount", sequenceName="SEQ_ID_GameAccount", allocationSize=1)
 	private Long id;
 
 	@Column

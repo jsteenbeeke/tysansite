@@ -37,7 +37,7 @@ public class Event extends BaseDomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Event")
-	@SequenceGenerator(name = "Event", sequenceName = "SEQ_ID_Event")
+	@SequenceGenerator(name = "Event", sequenceName="SEQ_ID_Event", allocationSize=1)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)

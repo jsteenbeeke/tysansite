@@ -40,7 +40,7 @@ public class Conversation extends BaseDomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Conversation")
-	@SequenceGenerator(name = "Conversation", sequenceName = "SEQ_ID_Conversation")
+	@SequenceGenerator(name = "Conversation", sequenceName="SEQ_ID_Conversation", allocationSize=1)
 	private Long id;
 
 	@OneToMany(mappedBy = "conversation", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

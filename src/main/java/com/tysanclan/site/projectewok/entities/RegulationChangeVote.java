@@ -37,7 +37,7 @@ public class RegulationChangeVote extends BaseDomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RegulationChangeVote")
-	@SequenceGenerator(name = "RegulationChangeVote", sequenceName = "SEQ_ID_RegulationChangeVote")
+	@SequenceGenerator(name = "RegulationChangeVote", sequenceName="SEQ_ID_RegulationChangeVote", allocationSize=1)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)

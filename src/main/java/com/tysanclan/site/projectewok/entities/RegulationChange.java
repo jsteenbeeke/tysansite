@@ -51,7 +51,7 @@ public class RegulationChange extends BaseDomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RegulationChange")
-	@SequenceGenerator(name = "RegulationChange", sequenceName = "SEQ_ID_RegulationChange")
+	@SequenceGenerator(name = "RegulationChange", sequenceName="SEQ_ID_RegulationChange", allocationSize=1)
 	private Long id;
 
 	@Column

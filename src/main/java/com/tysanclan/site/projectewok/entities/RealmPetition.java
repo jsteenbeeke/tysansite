@@ -43,7 +43,7 @@ public class RealmPetition implements DomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RealmPetition")
-	@SequenceGenerator(name = "RealmPetition", sequenceName = "SEQ_ID_RealmPetition")
+	@SequenceGenerator(name = "RealmPetition", sequenceName="SEQ_ID_RealmPetition", allocationSize=1)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)

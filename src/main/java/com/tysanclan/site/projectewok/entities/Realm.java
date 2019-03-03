@@ -37,7 +37,7 @@ public class Realm implements DomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Realm")
-	@SequenceGenerator(name = "Realm", sequenceName = "SEQ_ID_Realm")
+	@SequenceGenerator(name = "Realm", sequenceName="SEQ_ID_Realm", allocationSize=1)
 	private Long id;
 
 	@Column

@@ -43,7 +43,7 @@ public class Trial extends BaseDomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Trial")
-	@SequenceGenerator(name = "Trial", sequenceName = "SEQ_ID_Trial")
+	@SequenceGenerator(name = "Trial", sequenceName="SEQ_ID_Trial", allocationSize=1)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)

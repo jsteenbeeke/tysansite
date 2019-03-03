@@ -37,7 +37,7 @@ public class AllowedAccountType extends BaseDomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AllowedAccountType")
-	@SequenceGenerator(name = "AllowedAccountType", sequenceName = "SEQ_ID_AllowedAccountType")
+	@SequenceGenerator(name = "AllowedAccountType", sequenceName="SEQ_ID_AllowedAccountType", allocationSize=1)
 	private Long id;
 
 	@Enumerated

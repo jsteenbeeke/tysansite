@@ -42,7 +42,7 @@ public class AchievementIcon implements DomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AchievementIcon")
-	@SequenceGenerator(name = "AchievementIcon", sequenceName = "SEQ_ID_AchievementIcon")
+	@SequenceGenerator(name = "AchievementIcon", sequenceName="SEQ_ID_AchievementIcon", allocationSize=1)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)

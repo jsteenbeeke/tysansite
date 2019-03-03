@@ -37,7 +37,7 @@ public class InactivityNotification extends BaseDomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "InactivityNotification")
-	@SequenceGenerator(name = "InactivityNotification", sequenceName = "SEQ_ID_InactivityNotification")
+	@SequenceGenerator(name = "InactivityNotification", sequenceName="SEQ_ID_InactivityNotification", allocationSize=1)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)

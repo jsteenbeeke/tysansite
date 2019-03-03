@@ -37,7 +37,7 @@ public class UntenabilityVoteChoice extends BaseDomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "UntenabilityVoteChoice")
-	@SequenceGenerator(name = "UntenabilityVoteChoice", sequenceName = "SEQ_ID_UntenabilityVoteChoice")
+	@SequenceGenerator(name = "UntenabilityVoteChoice", sequenceName="SEQ_ID_UntenabilityVoteChoice", allocationSize=1)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

@@ -36,7 +36,7 @@ public class JoinVerdict extends BaseDomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "JoinVerdict")
-	@SequenceGenerator(name = "JoinVerdict", sequenceName = "SEQ_ID_JoinVerdict")
+	@SequenceGenerator(name = "JoinVerdict", sequenceName="SEQ_ID_JoinVerdict", allocationSize=1)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)

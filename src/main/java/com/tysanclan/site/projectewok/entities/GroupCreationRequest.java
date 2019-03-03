@@ -39,7 +39,7 @@ public class GroupCreationRequest extends BaseDomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GroupCreationRequest")
-	@SequenceGenerator(name = "GroupCreationRequest", sequenceName = "SEQ_ID_GroupCreationRequest")
+	@SequenceGenerator(name = "GroupCreationRequest", sequenceName="SEQ_ID_GroupCreationRequest", allocationSize=1)
 	private Long id;
 
 	@Column

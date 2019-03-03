@@ -40,7 +40,7 @@ public class RestToken extends BaseDomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RestToken")
-	@SequenceGenerator(name = "RestToken", sequenceName = "SEQ_ID_RestToken")
+	@SequenceGenerator(name = "RestToken", sequenceName = "SEQ_ID_RestToken", allocationSize = 1)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)

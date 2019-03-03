@@ -33,7 +33,7 @@ public class UpdateMark implements DomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "UpdateMark")
-	@SequenceGenerator(name = "UpdateMark", sequenceName = "SEQ_ID_UpdateMark")
+	@SequenceGenerator(name = "UpdateMark", sequenceName="SEQ_ID_UpdateMark", allocationSize=1)
 	private Long id;
 
 	@Column

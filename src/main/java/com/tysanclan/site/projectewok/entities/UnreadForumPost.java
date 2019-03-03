@@ -37,7 +37,7 @@ public class UnreadForumPost extends BaseDomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "UnreadForumPost")
-	@SequenceGenerator(name = "UnreadForumPost", sequenceName = "SEQ_ID_UnreadForumPost")
+	@SequenceGenerator(name = "UnreadForumPost", sequenceName="SEQ_ID_UnreadForumPost", allocationSize=1)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)

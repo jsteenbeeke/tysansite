@@ -36,7 +36,7 @@ public class PasswordRequest extends BaseDomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PasswordRequest")
-	@SequenceGenerator(name = "PasswordRequest", sequenceName = "SEQ_ID_PasswordRequest")
+	@SequenceGenerator(name = "PasswordRequest", sequenceName="SEQ_ID_PasswordRequest", allocationSize=1)
 	private Long id;
 
 	@Column

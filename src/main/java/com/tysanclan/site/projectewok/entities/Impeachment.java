@@ -39,7 +39,7 @@ public class Impeachment extends BaseDomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Impeachment")
-	@SequenceGenerator(name = "Impeachment", sequenceName = "SEQ_ID_Impeachment")
+	@SequenceGenerator(name = "Impeachment", sequenceName="SEQ_ID_Impeachment", allocationSize=1)
 	private Long id;
 
 	@OneToMany(mappedBy = "impeachment", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)

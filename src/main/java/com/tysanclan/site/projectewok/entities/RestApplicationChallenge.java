@@ -14,7 +14,7 @@ public class RestApplicationChallenge extends BaseDomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RestApplicationChallenge")
-	@SequenceGenerator(name = "RestApplicationChallenge", sequenceName = "SEQ_ID_RestApplicationChallenge")
+	@SequenceGenerator(name = "RestApplicationChallenge", sequenceName="SEQ_ID_RestApplicationChallenge", allocationSize=1)
 	private Long id;
 
 	@Column(nullable = false, unique = true)

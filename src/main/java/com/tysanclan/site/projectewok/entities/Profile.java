@@ -36,7 +36,7 @@ public class Profile extends BaseDomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Profile")
-	@SequenceGenerator(name = "Profile", sequenceName = "SEQ_ID_Profile")
+	@SequenceGenerator(name = "Profile", sequenceName="SEQ_ID_Profile", allocationSize=1)
 	private Long id;
 
 	@OneToOne(fetch = FetchType.LAZY)

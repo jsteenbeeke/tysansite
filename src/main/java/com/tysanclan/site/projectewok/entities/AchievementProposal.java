@@ -45,7 +45,7 @@ public class AchievementProposal implements DomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AchievementProposal")
-	@SequenceGenerator(name = "AchievementProposal", sequenceName = "SEQ_ID_AchievementProposal")
+	@SequenceGenerator(name = "AchievementProposal", sequenceName="SEQ_ID_AchievementProposal", allocationSize=1)
 	private Long id;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "proposal", cascade = CascadeType.ALL)

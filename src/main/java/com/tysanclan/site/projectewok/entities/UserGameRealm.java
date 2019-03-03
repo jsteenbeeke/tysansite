@@ -40,7 +40,7 @@ public class UserGameRealm implements DomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "UserGameRealm")
-	@SequenceGenerator(name = "UserGameRealm", sequenceName = "SEQ_ID_UserGameRealm")
+	@SequenceGenerator(name = "UserGameRealm", sequenceName="SEQ_ID_UserGameRealm", allocationSize=1)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)

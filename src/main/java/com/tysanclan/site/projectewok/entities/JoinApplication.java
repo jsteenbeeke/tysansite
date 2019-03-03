@@ -48,7 +48,7 @@ public class JoinApplication extends BaseDomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "JoinApplication")
-	@SequenceGenerator(name = "JoinApplication", sequenceName = "SEQ_ID_JoinApplication")
+	@SequenceGenerator(name = "JoinApplication", sequenceName="SEQ_ID_JoinApplication", allocationSize=1)
 	private Long id;
 
 	@OneToOne(fetch = FetchType.LAZY)

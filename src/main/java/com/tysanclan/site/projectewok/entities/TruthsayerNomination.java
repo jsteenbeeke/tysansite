@@ -38,7 +38,7 @@ public class TruthsayerNomination extends BaseDomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TruthsayerNomination")
-	@SequenceGenerator(name = "TruthsayerNomination", sequenceName = "SEQ_ID_TruthsayerNomination")
+	@SequenceGenerator(name = "TruthsayerNomination", sequenceName="SEQ_ID_TruthsayerNomination", allocationSize=1)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)

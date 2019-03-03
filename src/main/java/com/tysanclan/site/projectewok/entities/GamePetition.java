@@ -42,7 +42,7 @@ public class GamePetition extends BaseDomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GamePetition")
-	@SequenceGenerator(name = "GamePetition", sequenceName = "SEQ_ID_GamePetition")
+	@SequenceGenerator(name = "GamePetition", sequenceName="SEQ_ID_GamePetition", allocationSize=1)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)

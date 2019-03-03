@@ -36,7 +36,7 @@ public class EmailChangeConfirmation extends BaseDomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "EmailChangeConfirmation")
-	@SequenceGenerator(name = "EmailChangeConfirmation", sequenceName = "SEQ_ID_EmailChangeConfirmation")
+	@SequenceGenerator(name = "EmailChangeConfirmation", sequenceName="SEQ_ID_EmailChangeConfirmation", allocationSize=1)
 	private Long id;
 
 	@Column

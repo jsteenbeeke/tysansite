@@ -36,7 +36,7 @@ public class AchievementProposalVote implements DomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AchievementProposalVote")
-	@SequenceGenerator(name = "AchievementProposalVote", sequenceName = "SEQ_ID_AchievementProposalVote")
+	@SequenceGenerator(name = "AchievementProposalVote", sequenceName="SEQ_ID_AchievementProposalVote", allocationSize=1)
 	private Long id;
 
 	@Column

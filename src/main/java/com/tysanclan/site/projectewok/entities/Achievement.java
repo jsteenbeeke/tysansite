@@ -40,7 +40,7 @@ public class Achievement implements DomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Achievement")
-	@SequenceGenerator(name = "Achievement", sequenceName = "SEQ_ID_Achievement")
+	@SequenceGenerator(name = "Achievement", sequenceName="SEQ_ID_Achievement", allocationSize=1)
 	private Long id;
 
 	@Column(unique = true, nullable = false)

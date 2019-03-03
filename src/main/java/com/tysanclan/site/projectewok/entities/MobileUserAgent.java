@@ -37,7 +37,7 @@ public class MobileUserAgent implements DomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MobileUserAgent")
-	@SequenceGenerator(name = "MobileUserAgent", sequenceName = "SEQ_ID_MobileUserAgent")
+	@SequenceGenerator(name = "MobileUserAgent", sequenceName="SEQ_ID_MobileUserAgent", allocationSize=1)
 	private Long id;
 
 	@Column(nullable = false, length = 255)

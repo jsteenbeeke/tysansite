@@ -82,7 +82,7 @@ public class BattleNetUserPresence implements DomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "BattleNetUserPresence")
-	@SequenceGenerator(name = "BattleNetUserPresence", sequenceName = "SEQ_ID_BattleNetUserPresence")
+	@SequenceGenerator(name = "BattleNetUserPresence", sequenceName="SEQ_ID_BattleNetUserPresence", allocationSize=1)
 	private Long id;
 
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)

@@ -53,7 +53,7 @@ public class ConversationParticipation extends BaseDomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ConversationParticipation")
-	@SequenceGenerator(name = "ConversationParticipation", sequenceName = "SEQ_ID_ConversationParticipation")
+	@SequenceGenerator(name = "ConversationParticipation", sequenceName="SEQ_ID_ConversationParticipation", allocationSize=1)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)

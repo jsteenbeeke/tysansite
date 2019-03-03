@@ -37,7 +37,7 @@ public class BattleNetChannel extends BaseDomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "BattleNetChannel")
-	@SequenceGenerator(name = "BattleNetChannel", sequenceName = "SEQ_ID_BattleNetChannel")
+	@SequenceGenerator(name = "BattleNetChannel", sequenceName="SEQ_ID_BattleNetChannel", allocationSize=1)
 	private Long id;
 
 	@Column(nullable = false)

@@ -37,7 +37,7 @@ public class OtterSighting extends BaseDomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "OtterSighting")
-	@SequenceGenerator(name = "OtterSighting", sequenceName = "SEQ_ID_OtterSighting")
+	@SequenceGenerator(name = "OtterSighting", sequenceName="SEQ_ID_OtterSighting", allocationSize=1)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)

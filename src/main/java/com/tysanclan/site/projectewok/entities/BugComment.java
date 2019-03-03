@@ -37,7 +37,7 @@ public class BugComment extends BaseDomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "BugComment")
-	@SequenceGenerator(name = "BugComment", sequenceName = "SEQ_ID_BugComment")
+	@SequenceGenerator(name = "BugComment", sequenceName="SEQ_ID_BugComment", allocationSize=1)
 	private Long id;
 
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)

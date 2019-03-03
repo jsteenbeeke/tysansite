@@ -37,7 +37,7 @@ public class AchievementRequest implements DomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AchievementRequest")
-	@SequenceGenerator(name = "AchievementRequest", sequenceName = "SEQ_ID_AchievementRequest")
+	@SequenceGenerator(name = "AchievementRequest", sequenceName="SEQ_ID_AchievementRequest", allocationSize=1)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)

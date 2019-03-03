@@ -39,7 +39,7 @@ public class AcceptanceVoteVerdict extends BaseDomainObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AcceptanceVoteVerdict")
-	@SequenceGenerator(name = "AcceptanceVoteVerdict", sequenceName = "SEQ_ID_AcceptanceVoteVerdict")
+	@SequenceGenerator(name = "AcceptanceVoteVerdict", sequenceName="SEQ_ID_AcceptanceVoteVerdict", allocationSize=1)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
