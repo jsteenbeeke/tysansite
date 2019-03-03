@@ -127,12 +127,6 @@
       </exclusions>
     </dependency>
 
-    <dependency>
-      <groupId>com.tysanclan.rest</groupId>
-      <artifactId>rest-api</artifactId>
-      <version>${tysan.rest.version}</version>
-    </dependency>
-
     <!-- Mojang account dependencies -->
     <dependency>
       <groupId>com.google.code.gson</groupId>
