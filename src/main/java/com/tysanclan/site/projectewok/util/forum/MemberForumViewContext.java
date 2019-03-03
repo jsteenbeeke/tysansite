@@ -64,7 +64,6 @@ public class MemberForumViewContext extends AbstractForumViewContext {
 
 		criteriaQuery.select(criteriaBuilder.count(root));
 		criteriaQuery.where(criteriaBuilder.exists(subquery));
-		criteriaQuery.orderBy(criteriaBuilder.asc(root.get(ForumCategory_.id)));
 
 		return count(em, criteriaQuery);
 	}
@@ -102,6 +101,8 @@ public class MemberForumViewContext extends AbstractForumViewContext {
 
 		criteriaQuery.select(root);
 		criteriaQuery.where(criteriaBuilder.exists(subquery));
+		criteriaQuery.orderBy(criteriaBuilder.asc(root.get(ForumCategory_.id)));
+
 		return listOf(em, criteriaQuery, count, offset);
 	}
 
