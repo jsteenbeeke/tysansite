@@ -22,8 +22,8 @@ pipeline {
 
 
 			steps {
-			    sh 'mvn clean package -U'
-			    sh 'echo `git log -n 1 --pretty=format:"%H"` > '+ env.WORKSPACE +'/src/main/java/com/tysanclan/site/projectewok/revision.txt'
+				sh 'echo `git log -n 1 --pretty=format:"%H"` > '+ env.WORKSPACE +'/src/main/java/com/tysanclan/site/projectewok/revision.txt'
+				sh 'mvn clean package -U'
 			    stash name: 'projectewok-war', includes: '**/*.war'
 			}
 		}
