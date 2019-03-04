@@ -10,6 +10,7 @@ import org.apache.wicket.request.Request;
 import org.apache.wicket.request.RequestHandlerExecutor;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.cycle.AbstractRequestCycleListener;
+import org.apache.wicket.request.cycle.IRequestCycleListener;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.http.WebRequest;
 import org.slf4j.Logger;
@@ -17,7 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Set;
 
-public class ErrorReporterListener extends AbstractRequestCycleListener {
+public class ErrorReporterListener implements IRequestCycleListener {
 	private static final Set<String> RESOLVE_AS_404 = Sets
 			.newHashSet("png", "js", "css", "jpg", "gif");
 

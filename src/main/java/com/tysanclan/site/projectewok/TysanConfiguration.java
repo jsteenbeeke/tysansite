@@ -59,6 +59,7 @@ public class TysanConfiguration {
 
 		Rollbar rollbar = Rollbar.init(ConfigBuilder.withAccessToken(apiKey).environment(environment).build());
 
+		RollBarReference.instance.excludeException("org.eclipse.jetty.io.EofException");
 		RollBarReference.instance.setRollbar(rollbar);
 
 		return rollbar;
