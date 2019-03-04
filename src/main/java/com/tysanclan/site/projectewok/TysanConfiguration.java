@@ -3,12 +3,11 @@ package com.tysanclan.site.projectewok;
 import com.google.common.base.Strings;
 import com.jeroensteenbeeke.hyperion.events.DefaultEventDispatcher;
 import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
+import com.jeroensteenbeeke.hyperion.rollbar.RollBarDeployNotifier;
 import com.jeroensteenbeeke.hyperion.rollbar.RollBarReference;
 import com.jeroensteenbeeke.hyperion.solstice.spring.db.EnableSolstice;
 import com.rollbar.notifier.Rollbar;
-import com.rollbar.notifier.config.Config;
 import com.rollbar.notifier.config.ConfigBuilder;
-import com.tysanclan.site.projectewok.util.StringUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -65,4 +64,15 @@ public class TysanConfiguration {
 		return rollbar;
 	}
 
+	@Bean
+	@Scope("singleton")
+	public RollBarDeployNotifier deployNotifier(@Value("${rollbar.apiKey:}") String apiKey, @Value("${rollbar.environment:}") String environment, @Value("${rollbar.deployingUser:}") String deployingUser) {
+		if (Strings.isNullOrEmpty(apiKey) || Strings.isNullOrEmpty(environment) || Strings.isNullOrEmpty(deployingUser)) {
+			return null;
+		}
+
+		return RollBarDeployNotifier.createNotifier().withApiKey(apiKey)
+									.withEnvironment(environment)
+									.andDeployingUser(deployingUser);
+	}
 }

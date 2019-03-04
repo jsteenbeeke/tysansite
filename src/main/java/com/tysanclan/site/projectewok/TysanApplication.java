@@ -18,6 +18,7 @@
 package com.tysanclan.site.projectewok;
 
 import com.jeroensteenbeeke.hyperion.meld.web.EntityEncapsulator;
+import com.jeroensteenbeeke.hyperion.rollbar.RollBarDeployNotifier;
 import com.jeroensteenbeeke.hyperion.solstice.data.factory.SolsticeEntityEncapsulatorFactory;
 import com.jeroensteenbeeke.hyperion.solstice.spring.ApplicationContextProvider;
 import com.jeroensteenbeeke.hyperion.tardis.scheduler.intervals.Interval;
@@ -100,7 +101,7 @@ public class TysanApplication extends WebApplication
 				Properties props = new Properties();
 
 				InputStream stream = get().getServletContext()
-						.getResourceAsStream("/META-INF/MANIFEST.MF");
+										  .getResourceAsStream("/META-INF/MANIFEST.MF");
 
 				if (stream != null) {
 
@@ -152,6 +153,8 @@ public class TysanApplication extends WebApplication
 		SpringComponentInjector injector = new SpringComponentInjector(this);
 		getComponentInstantiationListeners().add(injector);
 
+		getApplicationListeners().add(new RollbarDeployListener(context.getBean(RollBarDeployNotifier.class)));
+
 		mountBookmarkablePages();
 		mountResources();
 
@@ -181,15 +184,15 @@ public class TysanApplication extends WebApplication
 		getResourceSettings().setUseMinifiedResources(false);
 
 		addResourceReplacement(WiQueryCoreThemeResourceReference.get(),
-				new CssResourceReference(TysanApplication.class,
-						"themes/ui-darkness/jquery-ui-1.10.2.custom.css"));
+							   new CssResourceReference(TysanApplication.class,
+														"themes/ui-darkness/jquery-ui-1.10.2.custom.css"));
 	}
 
 	private void runSitePopulator() {
 		MockServletContext sctx = new MockServletContext(this,
-				"/src/main/webapp/");
+														 "/src/main/webapp/");
 		MockHttpServletRequest request = new MockHttpServletRequest(this,
-				new MockHttpSession(sctx), sctx);
+																	new MockHttpSession(sctx), sctx);
 		RequestAttributes attr = new ServletRequestAttributes(request);
 
 		RequestContextHolder.setRequestAttributes(attr);
@@ -210,58 +213,58 @@ public class TysanApplication extends WebApplication
 		Interval everySixHours = Intervals.hours(6);
 
 		HyperionScheduler.getScheduler()
-				.scheduleRepeatingTask(daily, new AcceptanceVoteStartTask());
+						 .scheduleRepeatingTask(daily, new AcceptanceVoteStartTask());
 
 		HyperionScheduler.getScheduler().scheduleRepeatingTask(everyFourHours,
-				new AcceptanceVoteStopTask());
+															   new AcceptanceVoteStopTask());
 		HyperionScheduler.getScheduler()
-				.scheduleRepeatingTask(daily, new AutomaticPromotionTask());
+						 .scheduleRepeatingTask(daily, new AutomaticPromotionTask());
 
 		HyperionScheduler.getScheduler()
-				.scheduleRepeatingTask(hourly, new ChancellorElectionChecker());
+						 .scheduleRepeatingTask(hourly, new ChancellorElectionChecker());
 		HyperionScheduler.getScheduler().scheduleRepeatingTask(everyFourHours,
-				new ChancellorElectionResolutionTask());
+															   new ChancellorElectionResolutionTask());
 		HyperionScheduler.getScheduler().scheduleRepeatingTask(daily,
-				new EmailChangeConfirmationExpirationTask());
+															   new EmailChangeConfirmationExpirationTask());
 		HyperionScheduler.getScheduler().scheduleRepeatingTask(daily,
-				new GroupLeaderElectionResolutionTask());
+															   new GroupLeaderElectionResolutionTask());
 		HyperionScheduler.getScheduler().scheduleRepeatingTask(hourly,
-				new MemberApplicationResolutionTask());
+															   new MemberApplicationResolutionTask());
 		HyperionScheduler.getScheduler()
-				.scheduleRepeatingTask(hourly, new MembershipExpirationTask());
+						 .scheduleRepeatingTask(hourly, new MembershipExpirationTask());
 
 		HyperionScheduler.getScheduler().scheduleRepeatingTask(hourly,
-				new PasswordRequestExpirationTask());
+															   new PasswordRequestExpirationTask());
 		HyperionScheduler.getScheduler().scheduleRepeatingTask(everyFourHours,
-				new RegulationChangeResolutionTask());
+															   new RegulationChangeResolutionTask());
 		HyperionScheduler.getScheduler()
-				.scheduleRepeatingTask(daily, new ResolveImpeachmentTask());
+						 .scheduleRepeatingTask(daily, new ResolveImpeachmentTask());
 		HyperionScheduler.getScheduler()
-				.scheduleRepeatingTask(hourly, new SenateElectionChecker());
+						 .scheduleRepeatingTask(hourly, new SenateElectionChecker());
 		HyperionScheduler.getScheduler().scheduleRepeatingTask(everyFourHours,
-				new SenateElectionResolutionTask());
+															   new SenateElectionResolutionTask());
 		HyperionScheduler.getScheduler().scheduleRepeatingTask(daily,
-				new TruthsayerAcceptanceVoteResolver());
+															   new TruthsayerAcceptanceVoteResolver());
 		HyperionScheduler.getScheduler().scheduleRepeatingTask(daily,
-				new UntenabilityVoteResolutionTask());
+															   new UntenabilityVoteResolutionTask());
 		HyperionScheduler.getScheduler()
-				.scheduleRepeatingTask(hourly, new AchievementProposalTask());
+						 .scheduleRepeatingTask(hourly, new AchievementProposalTask());
 		HyperionScheduler.getScheduler()
-				.scheduleRepeatingTask(hourly, new WarnInactiveMembersTask());
+						 .scheduleRepeatingTask(hourly, new WarnInactiveMembersTask());
 
 		HyperionScheduler.getScheduler().scheduleRepeatingTask(everySixHours,
-				new ResolveRoleTransferTask());
+															   new ResolveRoleTransferTask());
 		HyperionScheduler.getScheduler().scheduleRepeatingTask(everySixHours,
-				new CheckSubscriptionsDueTask());
+															   new CheckSubscriptionsDueTask());
 		HyperionScheduler.getScheduler().scheduleRepeatingTask(everySixHours,
-				new ResolveTruthsayerComplaintTask());
+															   new ResolveTruthsayerComplaintTask());
 		HyperionScheduler.getScheduler()
-				.scheduleRepeatingTask(Intervals.minutes(5),
-						new RestTokenCleanupTask());
+						 .scheduleRepeatingTask(Intervals.minutes(5),
+												new RestTokenCleanupTask());
 
 		if (System.getProperty("tysan.debug") != null) {
 			HyperionScheduler.getScheduler()
-					.scheduleRepeatingTask(hourly, new NoAccountExpireTask());
+							 .scheduleRepeatingTask(hourly, new NoAccountExpireTask());
 		}
 	}
 
@@ -295,7 +298,7 @@ public class TysanApplication extends WebApplication
 		mountPage("/activation/${key}", ActivationPage.class);
 
 		mountPage("/resetpassword/${key}",
-				PasswordRequestConfirmationPage.class);
+				  PasswordRequestConfirmationPage.class);
 
 		mountPage("/accessdenied", AccessDeniedPage.class);
 
@@ -303,10 +306,10 @@ public class TysanApplication extends WebApplication
 		mountPage("/tracker/requestfeature", RequestFeaturePage.class);
 
 		mountPage("/processPaymentRequest/${requestId}/${confirmationKey}",
-				ProcessPaymentRequestPage.class);
+				  ProcessPaymentRequestPage.class);
 
 		mountPage("/processSubscriptionPayment/${paymentId}/${confirmationKey}",
-				SubscriptionPaymentResolvedPage.class);
+				  SubscriptionPaymentResolvedPage.class);
 
 		mountPage("/bug/${id}", ViewBugPage.class);
 		mountPage("/feature/${id}", ViewBugPage.class);
@@ -318,13 +321,13 @@ public class TysanApplication extends WebApplication
 
 	private void mountResources() {
 		mountResource("/images/signatures/daysintysan/${username}",
-				new DaysInTysanImageResourceReference());
+					  new DaysInTysanImageResourceReference());
 		mountResource("/images/signatures/haley",
-				new HaleyAccidentResourceReference());
+					  new HaleyAccidentResourceReference());
 		mountResource("/mc-whitelist/",
-				new MinecraftWhitelistResourceReference());
+					  new MinecraftWhitelistResourceReference());
 		mountResource("/uuid-mc-whitelist/",
-				new UUIDMinecraftWhitelistResourceReference());
+					  new UUIDMinecraftWhitelistResourceReference());
 	}
 
 	/**
@@ -341,11 +344,11 @@ public class TysanApplication extends WebApplication
 
 	@Override
 	public WebRequest newWebRequest(HttpServletRequest servletRequest,
-			String filterPath) {
+									String filterPath) {
 		WebRequest request = super.newWebRequest(servletRequest, filterPath);
 		getSessionStore().setAttribute(request, "wickery-theme",
-				new CssResourceReference(TysanApplication.class,
-						"themes/ui-darkness/jquery-ui-1.7.2.custom.css"));
+									   new CssResourceReference(TysanApplication.class,
+																"themes/ui-darkness/jquery-ui-1.7.2.custom.css"));
 
 		return request;
 	}
@@ -373,7 +376,7 @@ public class TysanApplication extends WebApplication
 
 	public List<SiteWideNotification> getActiveNotifications() {
 		synchronized (notifications) {
-			Set<SiteWideNotification> exit = new HashSet<SiteWideNotification>();
+			Set<SiteWideNotification> exit = new HashSet<>();
 
 			for (SiteWideNotification next : notifications) {
 				if (next.isExpired()) {
