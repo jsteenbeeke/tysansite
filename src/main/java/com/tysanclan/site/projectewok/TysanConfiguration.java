@@ -1,8 +1,14 @@
 package com.tysanclan.site.projectewok;
 
+import com.google.common.base.Strings;
 import com.jeroensteenbeeke.hyperion.events.DefaultEventDispatcher;
 import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
+import com.jeroensteenbeeke.hyperion.rollbar.RollBarReference;
 import com.jeroensteenbeeke.hyperion.solstice.spring.db.EnableSolstice;
+import com.rollbar.notifier.Rollbar;
+import com.rollbar.notifier.config.Config;
+import com.rollbar.notifier.config.ConfigBuilder;
+import com.tysanclan.site.projectewok.util.StringUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -12,10 +18,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import java.util.Properties;
 
 @Configuration
-@ComponentScan(basePackages = { "com.tysanclan.site.projectewok.beans.impl",
+@ComponentScan(basePackages = {"com.tysanclan.site.projectewok.beans.impl",
 		"com.tysanclan.site.projectewok.entities.dao.hibernate",
 		"com.tysanclan.site.projectewok.rs.services",
-		"com.tysanclan.site.projectewok.rs.helpers" }, scopedProxy = ScopedProxyMode.INTERFACES)
+		"com.tysanclan.site.projectewok.rs.helpers"}, scopedProxy = ScopedProxyMode.INTERFACES)
 @EnableTransactionManagement
 @EnableSolstice(entityBasePackage = "com.tysanclan.site.projectewok.entities", liquibaseChangelog = "classpath:/com/tysanclan/site/projectewok/entities/liquibase/db.changelog-master.xml")
 @PropertySource("file:${hyperion.configdir:${user.home}/.hyperion}/ewok.properties")
@@ -28,8 +34,8 @@ public class TysanConfiguration {
 
 	@Bean
 	public JavaMailSender mailSender(@Value("mail.server") String mailServer,
-			@Value("mail.username") String mailUser,
-			@Value("mail.password") String mailPassword) {
+									 @Value("mail.username") String mailUser,
+									 @Value("mail.password") String mailPassword) {
 		Properties javaMailProperties = new Properties();
 		javaMailProperties.setProperty("mail.smtp.auth", "true");
 		javaMailProperties.setProperty("mail.smtp.starttls.enable", "true");
@@ -43,6 +49,20 @@ public class TysanConfiguration {
 
 		return sender;
 
+	}
+
+	@Bean
+	@Scope("singleton")
+	public Rollbar rollbar(@Value("${rollbar.apiKey:}") String apiKey, @Value("${rollbar.environment:}") String environment) {
+		if (Strings.isNullOrEmpty(apiKey) || Strings.isNullOrEmpty(environment)) {
+			return null;
+		}
+
+		Rollbar rollbar = Rollbar.init(ConfigBuilder.withAccessToken(apiKey).environment(environment).build());
+
+		RollBarReference.instance.setRollbar(rollbar);
+
+		return rollbar;
 	}
 
 }

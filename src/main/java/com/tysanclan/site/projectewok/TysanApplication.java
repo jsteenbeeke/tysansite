@@ -49,6 +49,7 @@ import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
 import org.apache.wicket.request.http.WebRequest;
 import org.apache.wicket.request.resource.CssResourceReference;
+import org.apache.wicket.settings.ExceptionSettings;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -154,6 +155,9 @@ public class TysanApplication extends WebApplication
 		mountBookmarkablePages();
 		mountResources();
 
+		getExceptionSettings().setUnexpectedExceptionDisplay(ExceptionSettings.SHOW_INTERNAL_ERROR_PAGE);
+
+		getApplicationSettings().setInternalErrorPage(TysanErrorPage.class);
 		getApplicationSettings().setAccessDeniedPage(AccessDeniedPage.class);
 		getApplicationSettings()
 				.setPageExpiredErrorPage(SessionTimeoutPage.class);

@@ -1,31 +1,31 @@
 /**
  * Tysan Clan Website
  * Copyright (C) 2008-2013 Jeroen Steenbeeke and Ties van de Ven
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.tysanclan.site.projectewok.pages;
 
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.wicket.HyperionScheduler;
 import com.tysanclan.site.projectewok.TysanPage;
-import com.tysanclan.site.projectewok.beans.BugTrackerService;
 import com.tysanclan.site.projectewok.entities.Bug;
-import org.apache.wicket.markup.html.basic.Label;
+import com.tysanclan.site.projectewok.tasks.ErrorReportTask;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,8 +41,6 @@ public class TysanErrorPage extends TysanPage {
 	private static final Logger log = LoggerFactory
 			.getLogger(TysanErrorPage.class);
 
-	@SpringBean
-	private BugTrackerService bugTrackerService;
 
 	public TysanErrorPage() {
 		super("DAFUQ!");
@@ -51,46 +49,19 @@ public class TysanErrorPage extends TysanPage {
 	}
 
 	public TysanErrorPage(@Nullable String target, @Nullable String referrer,
-			@Nonnull final Exception exception) {
+						  @Nonnull final Exception exception) {
 		super("An error has occurred");
 
-		Throwable e = exception;
+		final ErrorReportTask.ErrorData errorData = new ErrorReportTask.ErrorData(exception, target, referrer);
 
-		while (e != null) {
-			log.error(e.getMessage(), e);
-			e = e.getCause();
-		}
+		HyperionScheduler.getScheduler().scheduleTask(DateTime.now().plusMinutes(5), new ErrorReportTask(errorData));
 
-		boolean known = (bugTrackerService.isKnownIssue(exception));
-
-		Bug report = bugTrackerService
-				.reportCrash(getUser(), target, exception);
-		if (referrer != null) {
-			bugTrackerService.addCommentToBug(report, getUser(),
-					String.format("HTTP Referrer: %s", referrer));
-		}
-
-		known = known && report != null;
-
-		if (known) {
-			if (report.getComments().isEmpty()) {
-				add(new Label("issuedescriptor",
-						"This issue has already been reported, but the person who last encountered it did not write a report of what he or she was doing when it happened. Please help us by doing so"));
-			} else {
-				add(new Label("issuedescriptor",
-						"This issue has already been reported and described, so we probably already know enough to solve it. Still, if you feel you may have vital info to help us solve it, please fill out what you were doing when the error occurred."));
-			}
-		} else {
-			add(new Label("issuedescriptor",
-					"We have not encountered this issue before. It would be of great help if you could tell us what you were trying to do when the error occurred."));
-		}
 
 		final TextArea<String> reportArea = new TextArea<String>("report",
-				new Model<String>(""));
+																 new Model<>(""));
 		reportArea.setRequired(true);
 
-		Form<Bug> reportForm = new Form<Bug>("bugreport",
-				ModelMaker.wrap(report)) {
+		Form<Bug> reportForm = new Form<Bug>("bugreport") {
 			private static final long serialVersionUID = 1L;
 
 			/**
@@ -98,8 +69,7 @@ public class TysanErrorPage extends TysanPage {
 			 */
 			@Override
 			protected void onSubmit() {
-				bugTrackerService.addCommentToBug(getModelObject(), getUser(),
-						reportArea.getModelObject());
+				errorData.getCustomData().put("userReport", reportArea.getModelObject());
 
 				setResponsePage(NewsPage.class);
 			}
@@ -111,5 +81,6 @@ public class TysanErrorPage extends TysanPage {
 		add(reportForm);
 
 	}
+
 
 }

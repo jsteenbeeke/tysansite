@@ -84,6 +84,12 @@
 
     <dependency>
       <groupId>com.jeroensteenbeeke</groupId>
+      <artifactId>hyperion-rollbar-filter</artifactId>
+    </dependency>
+
+
+    <dependency>
+      <groupId>com.jeroensteenbeeke</groupId>
       <artifactId>hyperion-wicket-standalone-test-deps</artifactId>
       <scope>test</scope>
     </dependency>

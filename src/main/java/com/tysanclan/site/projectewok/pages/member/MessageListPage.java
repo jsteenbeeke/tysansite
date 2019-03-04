@@ -88,13 +88,14 @@ public class MessageListPage extends AbstractMemberPage {
 		ConversationParticipationFilter participationFilter = new ConversationParticipationFilter();
 		participationFilter.user(getUser());
 
+
 		ConversationFilter filter = new ConversationFilter();
-		Seq<Long> participationIds = participationDAO
-				.properties(participationFilter.id(), participationFilter);
+		Seq<Conversation> participationIds = participationDAO
+				.properties(participationFilter.conversation(), participationFilter);
 		if (participationIds.isEmpty()) {
 			filter.id().equalTo(-1L);
 		} else {
-			filter.id().in(participationIds);
+			filter.id().in(participationIds.map(Conversation::getId));
 		}
 
 		filter.lastResponse().orderBy(false);
