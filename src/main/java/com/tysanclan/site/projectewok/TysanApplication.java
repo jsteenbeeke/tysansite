@@ -18,6 +18,7 @@
 package com.tysanclan.site.projectewok;
 
 import com.jeroensteenbeeke.hyperion.meld.web.EntityEncapsulator;
+import com.jeroensteenbeeke.hyperion.rollbar.IRollBarDeployNotifier;
 import com.jeroensteenbeeke.hyperion.rollbar.RollBarDeployNotifier;
 import com.jeroensteenbeeke.hyperion.solstice.data.factory.SolsticeEntityEncapsulatorFactory;
 import com.jeroensteenbeeke.hyperion.solstice.spring.ApplicationContextProvider;
@@ -153,7 +154,7 @@ public class TysanApplication extends WebApplication
 		SpringComponentInjector injector = new SpringComponentInjector(this);
 		getComponentInstantiationListeners().add(injector);
 
-		getApplicationListeners().add(new RollbarDeployListener(context.getBean(RollBarDeployNotifier.class)));
+		getApplicationListeners().add(new RollbarDeployListener(context.getBean(IRollBarDeployNotifier.class)));
 
 		mountBookmarkablePages();
 		mountResources();

@@ -1,6 +1,7 @@
 package com.tysanclan.site.projectewok;
 
 import com.jeroensteenbeeke.hyperion.Hyperion;
+import com.jeroensteenbeeke.hyperion.rollbar.IRollBarDeployNotifier;
 import com.jeroensteenbeeke.hyperion.rollbar.RollBarDeployNotifier;
 import org.apache.wicket.Application;
 import org.apache.wicket.IApplicationListener;
@@ -11,17 +12,22 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 public class RollbarDeployListener implements IApplicationListener {
-	private final RollBarDeployNotifier notifier;
+	private final IRollBarDeployNotifier notifier;
 
-	RollbarDeployListener(RollBarDeployNotifier notifier) {
+	RollbarDeployListener(IRollBarDeployNotifier notifier) {
 		this.notifier = notifier;
 	}
 
 	@Override
 	public void onAfterInitialized(Application application) {
 		if (notifier != null) {
-			notifier
-					.notifyDeploy(String.format("projectewok-%s-hyperion-%s", getRevision(), Hyperion.getRevision().getOrElse("unknown")));
+			notifier.
+							notifyDeploy(getRevision(), Hyperion
+									.getRevision()
+									.map(rev -> "Hyperion version: " + rev)
+									.getOrElse("Hyperion version: unknown") + "; Application version: " + TysanApplication
+									.getApplicationVersion()
+							);
 		}
 	}
 

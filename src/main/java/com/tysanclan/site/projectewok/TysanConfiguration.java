@@ -3,6 +3,8 @@ package com.tysanclan.site.projectewok;
 import com.google.common.base.Strings;
 import com.jeroensteenbeeke.hyperion.events.DefaultEventDispatcher;
 import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
+import com.jeroensteenbeeke.hyperion.rollbar.IRollBarDeployNotifier;
+import com.jeroensteenbeeke.hyperion.rollbar.NoopRollBarDeployNotifier;
 import com.jeroensteenbeeke.hyperion.rollbar.RollBarDeployNotifier;
 import com.jeroensteenbeeke.hyperion.rollbar.RollBarReference;
 import com.jeroensteenbeeke.hyperion.solstice.spring.db.EnableSolstice;
@@ -10,6 +12,7 @@ import com.rollbar.notifier.Rollbar;
 import com.rollbar.notifier.config.ConfigBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
+import org.springframework.lang.Nullable;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -51,12 +54,9 @@ public class TysanConfiguration {
 	}
 
 	@Bean
+	@Conditional(RollbarCondition.class)
 	@Scope("singleton")
 	public Rollbar rollbar(@Value("${rollbar.apiKey:}") String apiKey, @Value("${rollbar.environment:}") String environment) {
-		if (Strings.isNullOrEmpty(apiKey) || Strings.isNullOrEmpty(environment)) {
-			return null;
-		}
-
 		Rollbar rollbar = Rollbar.init(ConfigBuilder.withAccessToken(apiKey).environment(environment).build());
 
 		RollBarReference.instance.excludeException("org.eclipse.jetty.io.EofException");
@@ -67,9 +67,9 @@ public class TysanConfiguration {
 
 	@Bean
 	@Scope("singleton")
-	public RollBarDeployNotifier deployNotifier(@Value("${rollbar.apiKey:}") String apiKey, @Value("${rollbar.environment:}") String environment, @Value("${rollbar.deployingUser:}") String deployingUser) {
+	public IRollBarDeployNotifier deployNotifier(@Value("${rollbar.apiKey:}") String apiKey, @Value("${rollbar.environment:}") String environment, @Value("${rollbar.deployingUser:}") String deployingUser) {
 		if (Strings.isNullOrEmpty(apiKey) || Strings.isNullOrEmpty(environment) || Strings.isNullOrEmpty(deployingUser)) {
-			return null;
+			return new NoopRollBarDeployNotifier();
 		}
 
 		return RollBarDeployNotifier.createNotifier().withApiKey(apiKey)
