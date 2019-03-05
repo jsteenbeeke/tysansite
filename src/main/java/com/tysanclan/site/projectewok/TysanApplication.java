@@ -177,6 +177,9 @@ public class TysanApplication extends WebApplication
 			TysanApplicationReference.INSTANCE.setApplication(this);
 		}
 
+		HyperionScheduler.getScheduler()
+						 .scheduleRepeatingTask(Intervals.seconds(15), new UpdateCheckerTask());
+
 		// if (usesDeploymentConfig())
 		// getApplicationSettings().setInternalErrorPage(TysanErrorPage.class);
 

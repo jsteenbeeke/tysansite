@@ -5,7 +5,7 @@ import com.jeroensteenbeeke.hyperion.tardis.scheduler.TaskGroup;
 public enum TysanTaskGroup implements TaskGroup {
 	DEBUG("Debug"), CLEANUP("Cleanup"), MEMBERS("Members"), FINANCE(
 			"Finance"), DEMOCRACY("Democracy"), ORGANIZATIONAL(
-			"Organizational"), JUSTICE("Judicial");
+			"Organizational"), JUSTICE("Judicial"), NOTIFY("Notifications");
 
 	private final String descriptor;
 
