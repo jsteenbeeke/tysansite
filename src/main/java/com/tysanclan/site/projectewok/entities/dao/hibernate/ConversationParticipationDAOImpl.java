@@ -50,13 +50,15 @@ class ConversationParticipationDAOImpl extends
 		Join<Message, Conversation> join = subqueryRoot
 				.join(Message_.conversation);
 		subquery.select(criteriaBuilder.count(join)).where(criteriaBuilder
-				.equal(join.get(Conversation_.id),
-						root.get(ConversationParticipation_.conversation)));
+																   .equal(join.get(Conversation_.id),
+																		  root.get(ConversationParticipation_.conversation)));
 
 		query.select(criteriaBuilder.count(root)).where(criteriaBuilder
-				.lessThan(criteriaBuilder.size(root
-								.get(ConversationParticipation_.readMessages)),
-						subquery.as(Integer.class)));
+																.lessThan(criteriaBuilder.size(root
+																									   .get(ConversationParticipation_.readMessages)),
+																		  subquery.as(Integer.class)),
+
+														criteriaBuilder.equal(root.get(ConversationParticipation_.user), user));
 
 		return entityManager.createQuery(query).getSingleResult();
 	}
