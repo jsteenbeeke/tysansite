@@ -2,6 +2,7 @@ package com.tysanclan.site.projectewok.tasks;
 
 import com.jeroensteenbeeke.hyperion.tardis.scheduler.HyperionTask;
 import com.jeroensteenbeeke.hyperion.tardis.scheduler.ServiceProvider;
+import com.jeroensteenbeeke.hyperion.tardis.scheduler.wicket.HyperionScheduler;
 import com.tysanclan.site.projectewok.SiteWideNotification;
 import com.tysanclan.site.projectewok.TysanApplication;
 import com.tysanclan.site.projectewok.TysanTaskGroup;
@@ -10,6 +11,8 @@ import org.apache.wicket.util.time.Duration;
 import java.io.File;
 
 public class UpdateCheckerTask extends HyperionTask {
+
+	public static final String WARNING_MESSAGE = "Site update started. All sessions will be logged out in less than 5 minutes";
 
 	public UpdateCheckerTask() {
 		super("Check if site is being updated", TysanTaskGroup.NOTIFY);
@@ -23,11 +26,19 @@ public class UpdateCheckerTask extends HyperionTask {
 			File monitorFile = new File(tempDir, "ewok.deploy");
 
 			if (monitorFile.exists()) {
-				TysanApplication.get().notify(new SiteWideNotification(SiteWideNotification.Category.WARNING,
-																	   "Site update started. All sessions will be logged out in less than 5 minutes", Duration.ONE_HOUR
-				));
+				if (TysanApplication
+						.get()
+						.getActiveNotifications()
+						.stream()
+						.map(SiteWideNotification::getMessage)
+						.noneMatch(
+								WARNING_MESSAGE::equals
+						)) {
 
-				monitorFile.delete();
+					TysanApplication.get().notify(new SiteWideNotification(SiteWideNotification.Category.WARNING,
+																		   WARNING_MESSAGE, Duration.ONE_HOUR
+					));
+				}
 			}
 		}
 	}
