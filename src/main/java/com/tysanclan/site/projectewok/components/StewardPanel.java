@@ -144,6 +144,18 @@ public class StewardPanel extends TysanOverviewPanel<User> {
 			}
 		});
 
+		add(new Link<User>("export") {
+			private static final long serialVersionUID = 1L;
+
+			/**
+			 * @see org.apache.wicket.markup.html.link.Link#onClick()
+			 */
+			@Override
+			public void onClick() {
+				setResponsePage(new ExportToMyriadPage());
+			}
+		});
+
 	}
 
 }
