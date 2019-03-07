@@ -53,11 +53,11 @@ public class PublicForumViewContext extends AbstractForumViewContext {
 		groupForumSubquery.select(groupForumRoot.get(GroupForum_.id));
 
 		subquery.where(criteriaBuilder
-						.not(subqueryRoot.get(Forum_.id).in(groupForumSubquery)),
-				criteriaBuilder
-						.equal(subqueryRoot.get(Forum_.membersOnly), false),
-				criteriaBuilder.equal(subqueryRoot.get(Forum_.category),
-						root.get(ForumCategory_.id)));
+							   .not(subqueryRoot.get(Forum_.id).in(groupForumSubquery)),
+					   criteriaBuilder
+							   .equal(subqueryRoot.get(Forum_.membersOnly), false),
+					   criteriaBuilder.equal(subqueryRoot.get(Forum_.category),
+											 root.get(ForumCategory_.id)));
 
 		criteriaQuery.select(criteriaBuilder.count(root));
 		criteriaQuery.where(criteriaBuilder.exists(subquery));
@@ -66,7 +66,7 @@ public class PublicForumViewContext extends AbstractForumViewContext {
 
 	@Override
 	public List<ForumCategory> getCategories(EntityManager em, User viewer,
-			int offset, int count) {
+											 int offset, int count) {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<ForumCategory> criteriaQuery = criteriaBuilder
 				.createQuery(ForumCategory.class);
@@ -83,11 +83,11 @@ public class PublicForumViewContext extends AbstractForumViewContext {
 		groupForumSubquery.select(groupForumRoot.get(GroupForum_.id));
 
 		subquery.where(criteriaBuilder
-						.not(subqueryRoot.get(Forum_.id).in(groupForumSubquery)),
-				criteriaBuilder
-						.equal(subqueryRoot.get(Forum_.membersOnly), false),
-				criteriaBuilder.equal(subqueryRoot.get(Forum_.category),
-						root.get(ForumCategory_.id)));
+							   .not(subqueryRoot.get(Forum_.id).in(groupForumSubquery)),
+					   criteriaBuilder
+							   .equal(subqueryRoot.get(Forum_.membersOnly), false),
+					   criteriaBuilder.equal(subqueryRoot.get(Forum_.category),
+											 root.get(ForumCategory_.id)));
 
 		criteriaQuery.select(root);
 		criteriaQuery.where(criteriaBuilder.exists(subquery));
@@ -97,7 +97,7 @@ public class PublicForumViewContext extends AbstractForumViewContext {
 
 	@Override
 	public int countForums(EntityManager em, ForumCategory context,
-			User viewer) {
+						   User viewer) {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<Long> criteriaQuery = criteriaBuilder
 				.createQuery(Long.class);
@@ -111,15 +111,15 @@ public class PublicForumViewContext extends AbstractForumViewContext {
 
 		criteriaQuery.select(criteriaBuilder.count(root));
 		criteriaQuery.where(criteriaBuilder
-						.not(root.get(Forum_.id).in(groupForumSubquery)),
-				criteriaBuilder.equal(root.get(Forum_.membersOnly), false),
-				criteriaBuilder.equal(root.get(Forum_.category), context));
+									.not(root.get(Forum_.id).in(groupForumSubquery)),
+							criteriaBuilder.equal(root.get(Forum_.membersOnly), false),
+							criteriaBuilder.equal(root.get(Forum_.category), context));
 		return count(em, criteriaQuery);
 	}
 
 	@Override
 	public List<Forum> getForums(EntityManager em, ForumCategory context,
-			User viewer, int offset, int count) {
+								 User viewer, int offset, int count) {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<Forum> criteriaQuery = criteriaBuilder
 				.createQuery(Forum.class);
@@ -133,10 +133,10 @@ public class PublicForumViewContext extends AbstractForumViewContext {
 
 		criteriaQuery.select(root);
 		criteriaQuery.where(criteriaBuilder
-						.not(root.get(Forum_.id).in(groupForumSubquery)),
-				criteriaBuilder.equal(root.get(Forum_.membersOnly), false),
-				criteriaBuilder.equal(root.get(Forum_.category), context))
-				.orderBy(criteriaBuilder.asc(root.get(Forum_.position)));
+									.not(root.get(Forum_.id).in(groupForumSubquery)),
+							criteriaBuilder.equal(root.get(Forum_.membersOnly), false),
+							criteriaBuilder.equal(root.get(Forum_.category), context))
+					 .orderBy(criteriaBuilder.asc(root.get(Forum_.position)));
 		return listOf(em, criteriaQuery, count, offset);
 	}
 
@@ -156,19 +156,24 @@ public class PublicForumViewContext extends AbstractForumViewContext {
 		Root<ForumPost> forumPostRoot = forumPostSubquery.from(ForumPost.class);
 
 		criteriaQuery.select(criteriaBuilder.count(root)).where(criteriaBuilder
-						.equal(root.get(ForumThread_.forum), context),
-				criteriaBuilder.equal(root.get(ForumThread_.shadow), false),
-				criteriaBuilder.not(criteriaBuilder
-						.exists(trialSubquery.select(trialRoot)
-								.where(criteriaBuilder.equal(trialRoot
-												.get(Trial_.trialThread),
-										root.get(ForumThread_.id))))),
-				criteriaBuilder.exists(forumPostSubquery.select(forumPostRoot)
-						.where(criteriaBuilder
-								.equal(forumPostRoot.get(ForumPost_.shadow),
-										false), criteriaBuilder
-								.equal(forumPostRoot.get(ForumPost_.thread),
-										root.get(ForumThread_.id)))));
+																		.equal(root.get(ForumThread_.forum), context),
+																criteriaBuilder.equal(root.get(ForumThread_.shadow), false),
+																criteriaBuilder.not(criteriaBuilder
+																							.exists(trialSubquery
+																											.select(trialRoot)
+																											.where(criteriaBuilder
+																														   .equal(trialRoot
+																																		  .get(Trial_.trialThread),
+																																  root.get(ForumThread_.id))))),
+																criteriaBuilder.exists(forumPostSubquery
+																							   .select(forumPostRoot)
+																							   .where(criteriaBuilder
+																											  .equal(forumPostRoot
+																															 .get(ForumPost_.shadow),
+																													 false), criteriaBuilder
+																											  .equal(forumPostRoot
+																															 .get(ForumPost_.thread),
+																													 root.get(ForumThread_.id)))));
 
 		return count(em, criteriaQuery);
 
@@ -176,7 +181,7 @@ public class PublicForumViewContext extends AbstractForumViewContext {
 
 	@Override
 	public List<ForumThread> getThreads(EntityManager em, Forum context,
-			User viewer, int offset, int count) {
+										User viewer, int offset, int count) {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<ForumThread> criteriaQuery = criteriaBuilder
 				.createQuery(ForumThread.class);
@@ -191,20 +196,21 @@ public class PublicForumViewContext extends AbstractForumViewContext {
 		Root<ForumPost> forumPostRoot = forumPostSubquery.from(ForumPost.class);
 
 		criteriaQuery.select(root).where(criteriaBuilder
-						.equal(root.get(ForumThread_.forum), context),
-				criteriaBuilder.equal(root.get(ForumThread_.shadow), false),
-				criteriaBuilder.not(criteriaBuilder
-						.exists(trialSubquery.select(trialRoot)
-								.where(criteriaBuilder.equal(trialRoot
-												.get(Trial_.trialThread),
-										root.get(ForumThread_.id))))),
-				criteriaBuilder.exists(forumPostSubquery.select(forumPostRoot)
-						.where(criteriaBuilder
-								.equal(forumPostRoot.get(ForumPost_.shadow),
-										false), criteriaBuilder
-								.equal(forumPostRoot.get(ForumPost_.thread),
-										root.get(ForumThread_.id)))))
-				.orderBy(criteriaBuilder.desc(root.get(ForumThread_.lastPost)));
+												 .equal(root.get(ForumThread_.forum), context),
+										 criteriaBuilder.equal(root.get(ForumThread_.shadow), false),
+										 criteriaBuilder.not(criteriaBuilder
+																	 .exists(trialSubquery.select(trialRoot)
+																						  .where(criteriaBuilder.equal(trialRoot
+																															   .get(Trial_.trialThread),
+																													   root.get(ForumThread_.id))))),
+										 criteriaBuilder.exists(forumPostSubquery.select(forumPostRoot)
+																				 .where(criteriaBuilder
+																								.equal(forumPostRoot.get(ForumPost_.shadow),
+																									   false), criteriaBuilder
+																								.equal(forumPostRoot.get(ForumPost_.thread),
+																									   root.get(ForumThread_.id)))))
+					 .orderBy(criteriaBuilder.desc(root.get(ForumThread_.sticky)),
+							  criteriaBuilder.desc(root.get(ForumThread_.lastPost)));
 
 		return listOf(em, criteriaQuery, count, offset);
 	}
@@ -217,24 +223,24 @@ public class PublicForumViewContext extends AbstractForumViewContext {
 		Root<ForumPost> root = criteriaQuery.from(ForumPost.class);
 
 		criteriaQuery.select(criteriaBuilder.count(root)).where(criteriaBuilder
-						.equal(root.get(ForumPost_.shadow), false),
-				criteriaBuilder.equal(root.get(ForumPost_.thread), context));
+																		.equal(root.get(ForumPost_.shadow), false),
+																criteriaBuilder.equal(root.get(ForumPost_.thread), context));
 
 		return count(em, criteriaQuery);
 	}
 
 	@Override
 	public List<ForumPost> getPosts(EntityManager em, ForumThread context,
-			User viewer, int offset, int count) {
+									User viewer, int offset, int count) {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<ForumPost> criteriaQuery = criteriaBuilder
 				.createQuery(ForumPost.class);
 		Root<ForumPost> root = criteriaQuery.from(ForumPost.class);
 
 		criteriaQuery.select(root).where(criteriaBuilder
-						.equal(root.get(ForumPost_.shadow), false),
-				criteriaBuilder.equal(root.get(ForumPost_.thread), context))
-				.orderBy(criteriaBuilder.asc(root.get(ForumPost_.time)));
+												 .equal(root.get(ForumPost_.shadow), false),
+										 criteriaBuilder.equal(root.get(ForumPost_.thread), context))
+					 .orderBy(criteriaBuilder.asc(root.get(ForumPost_.time)));
 
 		return listOf(em, criteriaQuery, count, offset);
 	}

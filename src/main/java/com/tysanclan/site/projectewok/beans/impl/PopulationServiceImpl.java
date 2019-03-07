@@ -294,13 +294,13 @@ public class PopulationServiceImpl
 		Forum groupForum = forumService.createGroupForum("Test Group Forum",
 				"The forum for the test group", groupCat, testGroup);
 
-		generateForumThreads(newsForum, 6, averageJoe1, chan, averageJoe2,
+		generateForumThreads(random, newsForum, 6, averageJoe1, chan, averageJoe2,
 				averageJoe3);
-		generateForumThreads(forum, 19, averageJoe1, ban, chan, averageJoe2,
+		generateForumThreads(random, forum, 19, averageJoe1, ban, chan, averageJoe2,
 				averageJoe3);
-		generateForumThreads(groupForum, 12, averageJoe1, averageJoe2,
+		generateForumThreads(random, groupForum, 12, averageJoe1, averageJoe2,
 				averageJoe3);
-		generateForumThreads(membersOnly, 12, averageJoe1, averageJoe2,
+		generateForumThreads(random, membersOnly, 12, averageJoe1, averageJoe2,
 				averageJoe3, ban);
 
 		for (int i = 0; i < 200; i++) {
@@ -328,9 +328,13 @@ public class PopulationServiceImpl
 
 	}
 
-	private void generateForumThreads(Forum forum, int amount,
+	private void generateForumThreads(Random random, Forum forum, int amount,
 			User... posters) {
 		int j = 0;
+
+		List<ForumThread> threads = new ArrayList<>(amount);
+
+
 		for (int i = 0; i < amount; i++) {
 			User poster = posters[j++ % posters.length];
 			while (poster.getRank() == Rank.BANNED) {
@@ -342,6 +346,8 @@ public class PopulationServiceImpl
 					.createForumThread(forum, "Test thread " + (i + 1),
 							"This is a test thread", poster);
 
+			threads.add(thread);
+
 			for (int k = 0; k < ((i % 2) + (i % 5)); k++) {
 				poster = posters[j++ % posters.length];
 				forumService.replyToThread(thread, "This is test response " + k + ". " + Randomizer.random(4000),
@@ -349,5 +355,8 @@ public class PopulationServiceImpl
 			}
 
 		}
+
+		ForumThread forumThread = threads.get(random.nextInt(threads.size()));
+		forumService.stickyThread(forumThread, null);
 	}
 }

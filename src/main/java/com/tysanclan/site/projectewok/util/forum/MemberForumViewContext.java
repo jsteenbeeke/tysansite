@@ -247,7 +247,8 @@ public class MemberForumViewContext extends AbstractForumViewContext {
 							criteriaBuilder.equal(root.get(ForumThread_.shadow), false),
 							criteriaBuilder.not(criteriaBuilder.exists(trialQuery)),
 							criteriaBuilder.exists(forumPostQuery))
-					 .orderBy(criteriaBuilder.desc(root.get(ForumThread_.lastPost)));
+					 .orderBy(criteriaBuilder.desc(root.get(ForumThread_.sticky)),
+							  criteriaBuilder.desc(root.get(ForumThread_.lastPost)));
 		;
 
 		return listOf(em, criteriaQuery, count, offset);
