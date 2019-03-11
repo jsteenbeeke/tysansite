@@ -97,8 +97,23 @@ div.MenuBottom {
     background-image: url('../images/menubottom.png');
 }
 
+.ui-widget-content a {
+    color: #fc0;
+    text-decoration: none;
+}
+
+.ui-widget-content a[disabled] {
+    color: #ccc;
+    text-decoration: none;
+}
+
 a {
-    color: #fc0 !important;
+    color: #fc0;
+    text-decoration: none;
+}
+
+a[disabled] {
+    color: #ccc !important;
     text-decoration: none;
 }
 
