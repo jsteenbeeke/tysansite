@@ -20,6 +20,7 @@ package com.tysanclan.site.projectewok;
 import com.jeroensteenbeeke.hyperion.meld.web.EntityEncapsulator;
 import com.jeroensteenbeeke.hyperion.rollbar.IRollBarDeployNotifier;
 import com.jeroensteenbeeke.hyperion.rollbar.RollBarDeployNotifier;
+import com.jeroensteenbeeke.hyperion.rollbar.RollBarReference;
 import com.jeroensteenbeeke.hyperion.solstice.data.factory.SolsticeEntityEncapsulatorFactory;
 import com.jeroensteenbeeke.hyperion.solstice.spring.ApplicationContextProvider;
 import com.jeroensteenbeeke.hyperion.tardis.scheduler.intervals.Interval;
@@ -169,6 +170,7 @@ public class TysanApplication extends WebApplication
 		EntityEncapsulator.setFactory(new SolsticeEntityEncapsulatorFactory());
 
 		HyperionScheduler.getScheduler().setApplication(this);
+		HyperionScheduler.getScheduler().registerExceptionListener(RollBarReference.instance::errorUncaught);
 
 		if (!testMode) {
 			scheduleDefaultTasks();
