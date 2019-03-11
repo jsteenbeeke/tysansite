@@ -35,9 +35,9 @@ public class TysanConfiguration {
 	}
 
 	@Bean
-	public JavaMailSender mailSender(@Value("mail.server") String mailServer,
-									 @Value("mail.username") String mailUser,
-									 @Value("mail.password") String mailPassword) {
+	public JavaMailSender mailSender(@Value("${mail.server:}") String mailServer,
+									 @Value("${mail.username:}") String mailUser,
+									 @Value("${mail.password:}") String mailPassword) {
 		Properties javaMailProperties = new Properties();
 		javaMailProperties.setProperty("mail.smtp.auth", "true");
 		javaMailProperties.setProperty("mail.smtp.starttls.enable", "true");
