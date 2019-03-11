@@ -24,7 +24,7 @@ import com.tysanclan.site.projectewok.entities.User;
  * @author Jeroen Steenbeeke
  */
 public interface MailService {
-	public final static String MAIL_SENDER = "automailer@tysanclan.com";
+	String MAIL_SENDER = "automailer@ewok.tysanclan.com";
 
 	/**
 	 * Sends an e-mail to the given address
