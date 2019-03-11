@@ -1,5 +1,22 @@
 <html xmlns:wicket>
 <wicket:extend>
+    <form wicket:id="filterform">
+        <h2>Search</h2>
+
+        <label wicket:for="user">User</label>
+        <input type="text" wicket:id="user" />
+
+        <label wicket:for="category">Category</label>
+        <input type="text" wicket:id="category" />
+
+        <label wicket:for="message">Action</label>
+        <input type="text" wicket:id="message" />
+
+
+        <input type="submit" class="SubmitButton" value="Search" />
+    </form>
+
+    <h2>Log</h2>
     <div wicket:id="otterSniperPanel"></div>
     <table class="fullWidth">
         <tr>
