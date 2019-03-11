@@ -63,6 +63,8 @@ class MailServiceImpl
 			helper.setText(body, true);
 
 			this.mailSender.send(msg);
+
+			logger.info("E-mail titled {} for recipient {} sent", subject, to);
 		} catch (MailException ex) {
 			logger.error(ex.getMessage(), ex);
 		} catch (MessagingException e) {
