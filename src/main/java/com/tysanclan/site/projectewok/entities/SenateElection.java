@@ -48,6 +48,11 @@ public class SenateElection extends Election {
 	}
 
 	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+			name = "election_tuser",
+			joinColumns = @JoinColumn(name = "election_id", referencedColumnName = "id"),
+			inverseJoinColumns = @JoinColumn(name = "winners_id", referencedColumnName = "id")
+	)
 	private Set<User> winners;
 
 	@Column
@@ -59,7 +64,7 @@ public class SenateElection extends Election {
 	 * Creates a new SenateElection object
 	 */
 	public SenateElection() {
-		this.winners = new HashSet<User>();
+		this.winners = new HashSet<>();
 		// $H$
 	}
 
