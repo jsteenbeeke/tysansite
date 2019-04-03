@@ -28,8 +28,10 @@ import com.tysanclan.site.projectewok.entities.RegulationChange.ChangeType;
 import com.tysanclan.site.projectewok.entities.RegulationChangeVote;
 import com.tysanclan.site.projectewok.entities.dao.RegulationChangeDAO;
 import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -97,15 +99,20 @@ public class RegulationModificationPage extends AbstractMemberPage {
 				}
 
 				if (myVote == null) {
-					item.add(new Label("whatisay",
-							"You have not yet voted on this change!"));
+					item.add(new ContextImage("verdict-icon", "images/icons/error.png"));
+					item.add(new Label("verdict-text",
+							"You have not yet voted on this change!").add(AttributeModifier.replace("class", "voteVerdictNotCast")));
 				} else {
 					if (myVote.isInFavor()) {
-						item.add(new Label("whatisay",
-								"You have voted in favor of this change"));
+						item.add(new ContextImage("verdict-icon", "images/icons/tick.png"));
+
+						item.add(new Label("verdict-text",
+								"You have voted in favor of this change").add(AttributeModifier.replace("class", "voteVerdictInFavor")));
 					} else {
-						item.add(new Label("whatisay",
-								"You have voted against this change"));
+						item.add(new ContextImage("verdict-icon", "images/icons/cross.png"));
+
+						item.add(new Label("verdict-text",
+								"You have voted against this change").add(AttributeModifier.replace("class", "voteVerdictAgainst")));
 					}
 				}
 

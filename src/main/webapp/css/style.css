@@ -512,3 +512,15 @@ div.CalendarPanelNavigator {
     max-width: 300px;
     max-height: 100px;
 }
+
+.voteVerdictNotCast {
+    color: #cccccc;
+}
+
+.voteVerdictInFavor {
+    color: #99cc99;
+}
+
+.voteVerdictAgainst {
+    color: #cc6666;
+}
