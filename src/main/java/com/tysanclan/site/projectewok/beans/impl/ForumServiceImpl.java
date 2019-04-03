@@ -1276,7 +1276,7 @@ class ForumServiceImpl
 		// Filter shadow threads
 		List<ForumThread> tList = filterThreads(user, forum, publicView);
 
-		tList.sort(new Comparator<ForumThread>() {
+		tList.sort(new Comparator<>() {
 
 			@Override
 			public int compare(ForumThread o1, ForumThread o2) {
@@ -1290,6 +1290,16 @@ class ForumServiceImpl
 
 				Date d1 = extractLastPostTime(o1);
 				Date d2 = extractLastPostTime(o2);
+
+				if (d1 == null || d2 == null) {
+					if (d2 != null) {
+						return -1;
+					} else if (d1 != null) {
+						return 1;
+					} else {
+						return 0;
+					}
+				}
 
 				return d2.compareTo(d1);
 			}
