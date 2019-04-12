@@ -62,6 +62,7 @@
     <!-- Dependency versions -->
     <hyperion.events.version>1.0-SNAPSHOT</hyperion.events.version>
     <tysan.rest.version>1.0-SNAPSHOT</tysan.rest.version>
+    <wicketstuff.version>8.3.0</wicketstuff.version>
     <wiquery.version>8.1.1</wiquery.version>
   </properties>
 
@@ -118,7 +119,7 @@
     <dependency>
       <groupId>org.wicketstuff</groupId>
       <artifactId>jqplot</artifactId>
-      <version>${wicket.version}</version>
+      <version>${wicketstuff.version}</version>
     </dependency>
 
     <dependency>
