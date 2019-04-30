@@ -110,6 +110,10 @@ class HumorServiceImpl
 
 	@Override
 	public Option<String> getDisneyScore(User user) {
+		if (user == null) {
+			return Option.none();
+		}
+
 		DisneyHuntFilter filter = new DisneyHuntFilter();
 		filter.user(user);
 
