@@ -175,7 +175,6 @@ public class TysanApplication extends WebApplication
 		if (!testMode) {
 			scheduleDefaultTasks();
 		} else {
-			runSitePopulator();
 			TysanApplicationReference.INSTANCE.setApplication(this);
 		}
 
@@ -192,20 +191,6 @@ public class TysanApplication extends WebApplication
 		addResourceReplacement(WiQueryCoreThemeResourceReference.get(),
 							   new CssResourceReference(TysanApplication.class,
 														"themes/ui-darkness/jquery-ui-1.10.2.custom.css"));
-	}
-
-	private void runSitePopulator() {
-		MockServletContext sctx = new MockServletContext(this,
-														 "/src/main/webapp/");
-		MockHttpServletRequest request = new MockHttpServletRequest(this,
-																	new MockHttpSession(sctx), sctx);
-		RequestAttributes attr = new ServletRequestAttributes(request);
-
-		RequestContextHolder.setRequestAttributes(attr);
-
-		context.getBean(PopulationService.class).createDebugSite();
-
-		RequestContextHolder.resetRequestAttributes();
 	}
 
 	/**

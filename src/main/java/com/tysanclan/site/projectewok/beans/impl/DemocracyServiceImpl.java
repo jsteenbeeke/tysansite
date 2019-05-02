@@ -1954,7 +1954,7 @@ class DemocracyServiceImpl
 		twoWeeksAgo.add(Calendar.WEEK_OF_YEAR, -2);
 		threeWeeksAgo.add(Calendar.WEEK_OF_YEAR, -3);
 		filter.start().lessThan(twoWeeksAgo.getTime());
-		filter.start().greaterThan(threeWeeksAgo.getTime());
+		filter.andStart().greaterThan(threeWeeksAgo.getTime());
 		Seq<SenateElection> elections = senateElectionDAO.findByFilter(filter);
 		for (SenateElection election : elections) {
 			resolveSenateElection(election);
@@ -1970,7 +1970,7 @@ class DemocracyServiceImpl
 		twoWeeksAgo.add(Calendar.WEEK_OF_YEAR, -2);
 		threeWeeksAgo.add(Calendar.WEEK_OF_YEAR, -3);
 		filter.start().lessThan(twoWeeksAgo.getTime());
-		filter.start().greaterThan(threeWeeksAgo.getTime());
+		filter.andStart().greaterThan(threeWeeksAgo.getTime());
 
 		Seq<GroupLeaderElection> elections = groupLeaderElectionDAO
 				.findByFilter(filter);

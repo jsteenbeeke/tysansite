@@ -7,12 +7,12 @@ import com.jeroensteenbeeke.hyperion.rollbar.IRollBarDeployNotifier;
 import com.jeroensteenbeeke.hyperion.rollbar.NoopRollBarDeployNotifier;
 import com.jeroensteenbeeke.hyperion.rollbar.RollBarDeployNotifier;
 import com.jeroensteenbeeke.hyperion.rollbar.RollBarReference;
+import com.jeroensteenbeeke.hyperion.solstice.spring.TestModeEntityPopulator;
 import com.jeroensteenbeeke.hyperion.solstice.spring.db.EnableSolstice;
 import com.rollbar.notifier.Rollbar;
 import com.rollbar.notifier.config.ConfigBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
-import org.springframework.lang.Nullable;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -32,6 +32,11 @@ public class TysanConfiguration {
 	@Bean
 	public IEventDispatcher eventDispatcher() {
 		return new DefaultEventDispatcher();
+	}
+
+	@Bean
+	public TestModeEntityPopulator testModeEntityPopulator() {
+		return new TestModeEntityPopulator();
 	}
 
 	@Bean

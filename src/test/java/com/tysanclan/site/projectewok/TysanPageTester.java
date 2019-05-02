@@ -17,6 +17,7 @@
  */
 package com.tysanclan.site.projectewok;
 
+import com.jeroensteenbeeke.hyperion.util.Datasets;
 import com.jeroensteenbeeke.hyperion.solitary.InMemory;
 import org.apache.wicket.ThreadContext;
 import org.apache.wicket.protocol.http.mock.MockHttpServletRequest;
@@ -24,9 +25,7 @@ import org.apache.wicket.protocol.http.mock.MockHttpSession;
 import org.apache.wicket.protocol.http.mock.MockServletContext;
 import org.apache.wicket.util.tester.WicketTester;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.orm.jpa.EntityManagerHolder;
@@ -42,37 +41,28 @@ import javax.persistence.EntityManagerFactory;
  * @author Jeroen Steenbeeke
  */
 public abstract class TysanPageTester {
-	private static WicketTester tester;
+	private WicketTester tester;
 
-	private static InMemory.Handler handler;
+	private InMemory.Handler handler;
 
 	private BeanFactory beanFactory;
 	private EntityManagerFactory emf;
 
-	@BeforeClass
-	public static void setUp() throws Exception {
+	@Before
+	public void createHandlerAndStartRequest() throws Exception {
+		Datasets.readFromObject(this).ifPresent(Datasets.INSTANCE::set);
+
 		System.setProperty("ewok.testmode", "true");
 		handler = InMemory.run("ewok").withContextPath("/tysantest")
-				.withoutShowingSql().atPort(8383).orElseThrow(
-						() -> new IllegalStateException(
-								"Could not start webserver"));
+						  .withoutShowingSql().atPort(8383).orElseThrow(
+				() -> new IllegalStateException(
+					"Could not start webserver"));
 
 		TysanApplication application = TysanApplicationReference.INSTANCE
-				.getApplication();
+			.getApplication();
 		ThreadContext.setApplication(application);
 
 		tester = new WicketTester(application, false);
-	}
-
-	@AfterClass
-	public static void tearDown() throws Exception {
-		RequestContextHolder.resetRequestAttributes();
-
-		handler.terminate();
-	}
-
-	@Before
-	public void startRequest() {
 
 		MockServletContext sctx = new MockServletContext(
 				tester.getApplication(), "/src/main/webapp/");
@@ -97,10 +87,15 @@ public abstract class TysanPageTester {
 	}
 
 	@After
-	public void endRequest() {
+	public void endRequest() throws Exception {
 		TransactionSynchronizationManager.unbindResource(emf);
 
 		RequestContextHolder.resetRequestAttributes();
+
+		handler.terminate();
+
+		Datasets.INSTANCE.unset();
+
 	}
 
 	protected <T> T getBean(Class<T> beanClass) {
@@ -122,7 +117,7 @@ public abstract class TysanPageTester {
 
 	}
 
-	protected static WicketTester getTester() {
+	protected WicketTester getTester() {
 		return tester;
 	}
 
