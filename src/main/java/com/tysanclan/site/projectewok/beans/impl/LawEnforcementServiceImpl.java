@@ -748,7 +748,10 @@ class LawEnforcementServiceImpl
 			resolveComplaint(complaint);
 		}
 
+		filter = new TruthsayerComplaintFilter();
 		filter.mediated(false);
+		filter.start().lessThan(new DateTime().minusWeeks(1).toDate());
+
 		for (TruthsayerComplaint complaint : truthsayerComplaintDAO
 				.findByFilter(filter)) {
 			complaintToSenate(complaint, false);
