@@ -1,8 +1,10 @@
 package com.tysanclan.site.projectewok.pages.member;
 
+import com.jeroensteenbeeke.hyperion.annotation.Dataset;
 import com.tysanclan.rest.api.data.Rank;
 import com.tysanclan.site.projectewok.TysanApplication;
 import com.tysanclan.site.projectewok.beans.RoleService;
+import com.tysanclan.site.projectewok.beans.impl.byrank.SingleChancellorPopulator;
 import com.tysanclan.site.projectewok.components.ChancellorPanel;
 import com.tysanclan.site.projectewok.components.RequiresAttentionLink;
 import com.tysanclan.site.projectewok.entities.Role;
@@ -14,6 +16,7 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListView;
 import org.junit.Test;
 
+@Dataset(SingleChancellorPopulator.KEY)
 public class ChancellorTest extends AbstractClickThroughTester {
 
 	@Override

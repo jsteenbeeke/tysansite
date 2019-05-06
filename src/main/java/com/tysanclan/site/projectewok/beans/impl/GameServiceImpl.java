@@ -650,6 +650,8 @@ class GameServiceImpl
 							"User is now supervisor for game " + game
 									.getName());
 				}
+				gameDAO.update(game);
+				gameDAO.flush();
 			}
 		});
 

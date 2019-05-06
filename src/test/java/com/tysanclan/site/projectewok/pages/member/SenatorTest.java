@@ -1,9 +1,12 @@
 package com.tysanclan.site.projectewok.pages.member;
 
+import com.jeroensteenbeeke.hyperion.annotation.Dataset;
 import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.site.projectewok.beans.impl.byrank.SingleSenatorPopulator;
 import com.tysanclan.site.projectewok.pages.member.senate.*;
 import org.junit.Test;
 
+@Dataset(SingleSenatorPopulator.KEY)
 public class SenatorTest extends AbstractClickThroughTester {
 	@Override
 	protected long determineUserId() {

@@ -17,8 +17,8 @@
  */
 package com.tysanclan.site.projectewok;
 
-import com.jeroensteenbeeke.hyperion.util.Datasets;
 import com.jeroensteenbeeke.hyperion.solitary.InMemory;
+import com.jeroensteenbeeke.hyperion.util.Datasets;
 import org.apache.wicket.ThreadContext;
 import org.apache.wicket.protocol.http.mock.MockHttpServletRequest;
 import org.apache.wicket.protocol.http.mock.MockHttpSession;
@@ -49,14 +49,17 @@ public abstract class TysanPageTester {
 	private EntityManagerFactory emf;
 
 	@Before
-	public void createHandlerAndStartRequest() throws Exception {
+	public void setUpAndStartRequest() throws Exception {
 		Datasets.readFromObject(this).ifPresent(Datasets.INSTANCE::set);
 
 		System.setProperty("ewok.testmode", "true");
 		handler = InMemory.run("ewok").withContextPath("/tysantest")
-						  .withoutShowingSql().atPort(8383).orElseThrow(
+						  .withoutShowingSql()
+						  .withDatabasePrototype(TysanPageTester.class.getResourceAsStream("prototype.db"))
+						  .atPort(8383).orElseThrow(
 				() -> new IllegalStateException(
 					"Could not start webserver"));
+
 
 		TysanApplication application = TysanApplicationReference.INSTANCE
 			.getApplication();
@@ -64,27 +67,9 @@ public abstract class TysanPageTester {
 
 		tester = new WicketTester(application, false);
 
-		MockServletContext sctx = new MockServletContext(
-				tester.getApplication(), "/src/main/webapp/");
-		MockHttpServletRequest request = new MockHttpServletRequest(
-				tester.getApplication(), new MockHttpSession(sctx), sctx);
-		RequestAttributes attr = new ServletRequestAttributes(request);
-
-		RequestContextHolder.setRequestAttributes(attr);
-
-		ApplicationContext context = TysanApplication.get()
-				.getApplicationContext();
-		beanFactory = context.getAutowireCapableBeanFactory();
-		emf = context.getBean(EntityManagerFactory.class);
-		EntityManager em = context.getBean(EntityManager.class);
-		EntityManagerHolder emHolder = new EntityManagerHolder(em);
-		TransactionSynchronizationManager.bindResource(emf, emHolder);
-
-		setupAfterRequestStarted();
+		startRequest();
 	}
 
-	protected void setupAfterRequestStarted() {
-	}
 
 	@After
 	public void endRequest() throws Exception {
@@ -95,7 +80,31 @@ public abstract class TysanPageTester {
 		handler.terminate();
 
 		Datasets.INSTANCE.unset();
+	}
 
+	public void startRequest() {
+
+		MockServletContext sctx = new MockServletContext(
+			tester.getApplication(), "/src/main/webapp/");
+		MockHttpServletRequest request = new MockHttpServletRequest(
+			tester.getApplication(), new MockHttpSession(sctx), sctx);
+		RequestAttributes attr = new ServletRequestAttributes(request);
+
+		RequestContextHolder.setRequestAttributes(attr);
+
+		ApplicationContext context = TysanApplication.get()
+													 .getApplicationContext();
+		beanFactory = context.getAutowireCapableBeanFactory();
+		emf = context.getBean(EntityManagerFactory.class);
+		EntityManager em = context.getBean(EntityManager.class);
+		EntityManagerHolder emHolder = new EntityManagerHolder(em);
+		TransactionSynchronizationManager.bindResource(emf, emHolder);
+
+		setupAfterRequestStarted();
+	}
+
+
+	protected void setupAfterRequestStarted() {
 	}
 
 	protected <T> T getBean(Class<T> beanClass) {

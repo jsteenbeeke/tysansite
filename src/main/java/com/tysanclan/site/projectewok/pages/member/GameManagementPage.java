@@ -36,6 +36,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.resource.ByteArrayResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import java.util.List;
+
 /**
  * @author Jeroen Steenbeeke
  */
@@ -52,8 +54,9 @@ public class GameManagementPage extends AbstractSingleAccordionMemberPage {
 	public GameManagementPage() {
 		super("Game Management");
 
+		List<Game> list = gameDAO.findAll().toJavaList();
 		add(new ListView<Game>("games",
-				ModelMaker.wrap(gameDAO.findAll().toJavaList())) {
+							   ModelMaker.wrap(list)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

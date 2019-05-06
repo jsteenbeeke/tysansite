@@ -104,6 +104,10 @@ public class PopulationServiceImpl
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void createDebugSite() {
+		if (userDAO.countAll() > 0L) {
+			return;
+		}
+
 		Map<Rank, Integer> userTypes = new HashMap<Rank, Integer>();
 		userTypes.put(Rank.CHANCELLOR, 1);
 		userTypes.put(Rank.SENATOR, 3);

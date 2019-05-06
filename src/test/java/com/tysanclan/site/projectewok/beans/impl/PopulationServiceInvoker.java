@@ -12,7 +12,7 @@ public class PopulationServiceInvoker implements IEntityPopulator {
 
 	@Override
 	public void createEntities() {
-		populationService.createDebugSite();
+		 populationService.createDebugSite();
 	}
 
 	@Override

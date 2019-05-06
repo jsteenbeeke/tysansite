@@ -119,10 +119,10 @@ public class MemberUtil {
 
 	public static String hashPassword(String password) {
 		int keyLength = System.getProperty("ewok.testmode") != null ?
-				8 :
+				4 :
 				User.KEY_LENGTH;
 		int iterations = System.getProperty("ewok.testmode") != null ?
-				4 :
+				1 :
 				User.ITERATIONS;
 
 		return Argon2PasswordHasher.hashNewPassword(password.toCharArray())
