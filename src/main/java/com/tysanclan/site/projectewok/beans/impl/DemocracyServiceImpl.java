@@ -19,6 +19,7 @@ package com.tysanclan.site.projectewok.beans.impl;
 
 import com.jeroensteenbeeke.hyperion.events.IEventDispatcher;
 import com.tysanclan.rest.api.data.Rank;
+import com.tysanclan.site.projectewok.beans.DemocracyService;
 import com.tysanclan.site.projectewok.beans.MailService;
 import com.tysanclan.site.projectewok.entities.*;
 import com.tysanclan.site.projectewok.entities.RegulationChange.ChangeType;
@@ -45,7 +46,9 @@ import java.util.*;
 @Component
 @Scope("request")
 class DemocracyServiceImpl
-		implements com.tysanclan.site.projectewok.beans.DemocracyService {
+	implements com.tysanclan.site.projectewok.beans.DemocracyService {
+
+
 	@Autowired
 	private ChancellorElectionDAO chancellorElectionDAO;
 
@@ -133,7 +136,7 @@ class DemocracyServiceImpl
 	}
 
 	public void setNotificationService(
-			com.tysanclan.site.projectewok.beans.NotificationService notificationService) {
+		com.tysanclan.site.projectewok.beans.NotificationService notificationService) {
 		this.notificationService = notificationService;
 	}
 
@@ -141,12 +144,12 @@ class DemocracyServiceImpl
 	 * @param regulationChangeVoteDAO the regulationChangeVoteDAO to set
 	 */
 	public void setRegulationChangeVoteDAO(
-			RegulationChangeVoteDAO regulationChangeVoteDAO) {
+		RegulationChangeVoteDAO regulationChangeVoteDAO) {
 		this.regulationChangeVoteDAO = regulationChangeVoteDAO;
 	}
 
 	public void setMembershipService(
-			com.tysanclan.site.projectewok.beans.UserService userService) {
+		com.tysanclan.site.projectewok.beans.UserService userService) {
 		this.userService = userService;
 	}
 
@@ -168,7 +171,7 @@ class DemocracyServiceImpl
 	 * @param compoundVoteChoiceDAO the compoundVoteChoiceDAO to set
 	 */
 	public void setCompoundVoteChoiceDAO(
-			CompoundVoteChoiceDAO compoundVoteChoiceDAO) {
+		CompoundVoteChoiceDAO compoundVoteChoiceDAO) {
 		this.compoundVoteChoiceDAO = compoundVoteChoiceDAO;
 	}
 
@@ -218,7 +221,7 @@ class DemocracyServiceImpl
 	 * @param logService the logService to set
 	 */
 	public void setLogService(
-			com.tysanclan.site.projectewok.beans.LogService logService) {
+		com.tysanclan.site.projectewok.beans.LogService logService) {
 		this.logService = logService;
 	}
 
@@ -226,7 +229,7 @@ class DemocracyServiceImpl
 	 * @param acceptanceVoteVerdictDAO the acceptanceVoteVerdictDAO to set
 	 */
 	public void setAcceptanceVoteVerdictDAO(
-			AcceptanceVoteVerdictDAO acceptanceVoteVerdictDAO) {
+		AcceptanceVoteVerdictDAO acceptanceVoteVerdictDAO) {
 		this.acceptanceVoteVerdictDAO = acceptanceVoteVerdictDAO;
 	}
 
@@ -234,7 +237,7 @@ class DemocracyServiceImpl
 	 * @param userService the userService to set
 	 */
 	public void setUserService(
-			com.tysanclan.site.projectewok.beans.UserService userService) {
+		com.tysanclan.site.projectewok.beans.UserService userService) {
 		this.userService = userService;
 	}
 
@@ -249,7 +252,7 @@ class DemocracyServiceImpl
 	 * @param regulationChangeDAO the regulationChangeDAO to set
 	 */
 	public void setRegulationChangeDAO(
-			RegulationChangeDAO regulationChangeDAO) {
+		RegulationChangeDAO regulationChangeDAO) {
 		this.regulationChangeDAO = regulationChangeDAO;
 	}
 
@@ -257,7 +260,7 @@ class DemocracyServiceImpl
 	 * @param untenabilityVoteChoiceDAO the untenabilityVoteChoiceDAO to set
 	 */
 	public void setUntenabilityVoteChoiceDAO(
-			UntenabilityVoteChoiceDAO untenabilityVoteChoiceDAO) {
+		UntenabilityVoteChoiceDAO untenabilityVoteChoiceDAO) {
 		this.untenabilityVoteChoiceDAO = untenabilityVoteChoiceDAO;
 	}
 
@@ -265,7 +268,7 @@ class DemocracyServiceImpl
 	 * @param untenabilityVoteDAO the untenabilityVoteDAO to set
 	 */
 	public void setUntenabilityVoteDAO(
-			UntenabilityVoteDAO untenabilityVoteDAO) {
+		UntenabilityVoteDAO untenabilityVoteDAO) {
 		this.untenabilityVoteDAO = untenabilityVoteDAO;
 	}
 
@@ -286,29 +289,33 @@ class DemocracyServiceImpl
 		SenateElection election = getCurrentSenateElection();
 		if (election != null) {
 			if (election.isNominationOpen() && election.getCandidates()
-					.contains(user)) {
+													   .contains(user)) {
 				election.getCandidates().remove(user);
 
 			} else if (election.getCandidates().contains(user)) {
 				// Reset election to nomination period
-				election.setStart(new Date());
-				for (CompoundVote vote : election.getVotes()) {
-					for (CompoundVoteChoice choice : vote.getChoices()) {
-						compoundVoteChoiceDAO.delete(choice);
-					}
-					compoundVoteDAO.delete(vote);
-
-					notificationService.notifyUser(vote.getCaster(),
-							"The Senate election was restarted due to a candidate's membership being terminated. You will need to vote again in a week");
-
-				}
-
-				logService.logSystemAction("Democracy",
-						"Senate election restarted due to candidate membership termination");
+				resetSenateElection(election, Messages.Notification.RESTART_SENATE_DUE_TO_TERMINATION, Messages.Log.RESTART_SENATE_DUE_TO_TERMINATION);
 			}
 
 			senateElectionDAO.update(election);
 		}
+	}
+
+	protected void resetSenateElection(SenateElection election, String notificationMessage, String logMessage) {
+		election.setStart(new Date());
+		for (CompoundVote vote : election.getVotes()) {
+			for (CompoundVoteChoice choice : vote.getChoices()) {
+				compoundVoteChoiceDAO.delete(choice);
+			}
+			compoundVoteDAO.delete(vote);
+
+			notificationService.notifyUser(vote.getCaster(),
+										   notificationMessage);
+
+		}
+
+		logService.logSystemAction("Democracy",
+								   logMessage);
 	}
 
 	@Override
@@ -316,7 +323,7 @@ class DemocracyServiceImpl
 		ChancellorElection election = getCurrentChancellorElection();
 		if (election != null) {
 			if (election.isNominationOpen() && election.getCandidates()
-					.contains(user)) {
+													   .contains(user)) {
 				election.getCandidates().remove(user);
 
 			} else if (election.getCandidates().contains(user)) {
@@ -329,12 +336,12 @@ class DemocracyServiceImpl
 					compoundVoteDAO.delete(vote);
 
 					notificationService.notifyUser(vote.getCaster(),
-							"The Chancellor election was restarted due to a candidate's membership being terminated. You will need to vote again in a week");
+												   "The Chancellor election was restarted due to a candidate's membership being terminated. You will need to vote again in a week");
 
 				}
 
 				logService.logSystemAction("Democracy",
-						"Chancellor election restarted due to candidate membership termination");
+										   "Chancellor election restarted due to candidate membership termination");
 			}
 
 			chancellorElectionDAO.update(election);
@@ -354,7 +361,7 @@ class DemocracyServiceImpl
 			}
 
 			if (user.getEndorsedBy().size()
-					>= getRequiredChancellorEndorsements()) {
+				>= getRequiredChancellorEndorsements()) {
 				return true;
 			}
 
@@ -392,7 +399,7 @@ class DemocracyServiceImpl
 			}
 
 			if (user.getEndorsedForSenateBy().size()
-					>= getRequiredSenateEndorsements()) {
+				>= getRequiredSenateEndorsements()) {
 				return true;
 			}
 
@@ -445,8 +452,8 @@ class DemocracyServiceImpl
 		groupLeaderElectionDAO.save(election);
 
 		logService.logSystemAction("Groups",
-				"Group leader election for group " + group.getName()
-						+ " started");
+								   "Group leader election for group " + group.getName()
+									   + " started");
 
 		return election;
 	}
@@ -479,7 +486,7 @@ class DemocracyServiceImpl
 		senateElectionDAO.save(election);
 
 		logService.logSystemAction("Democracy",
-				"Senate election started with " + seats + " available seats");
+								   "Senate election started with " + seats + " available seats");
 
 		return election;
 	}
@@ -501,7 +508,7 @@ class DemocracyServiceImpl
 				chancellorElectionDAO.update(election);
 
 				logService.logSystemAction("Democracy",
-						"Chancellor election restarted due to lack of winners");
+										   "Chancellor election restarted due to lack of winners");
 			} else {
 				election.setWinner(winners.iterator().next());
 				chancellorElectionDAO.update(election);
@@ -513,13 +520,13 @@ class DemocracyServiceImpl
 				// Should only be 0 or 1, but hey, who knows!
 				for (User chancellor : chancellors) {
 					chancellor.setRank(MemberUtil
-							.determineRankByJoinDate(chancellor.getJoinDate()));
+										   .determineRankByJoinDate(chancellor.getJoinDate()));
 					if (!election.getWinner().equals(chancellor)) {
 						logService.logUserAction(chancellor, "Election",
-								"Has not been reelected as Chancellor, and has assumed the rank of "
-										+ chancellor.getRank().toString());
+												 "Has not been reelected as Chancellor, and has assumed the rank of "
+													 + chancellor.getRank().toString());
 						notificationService.notifyUser(chancellor,
-								"You were not reelected as Chancellor");
+													   "You were not reelected as Chancellor");
 					}
 
 					userDAO.update(chancellor);
@@ -531,14 +538,14 @@ class DemocracyServiceImpl
 
 				if (chancellors.contains(election.getWinner())) {
 					logService.logUserAction(election.getWinner(), "Election",
-							"Has been reelected as Chancellor");
+											 "Has been reelected as Chancellor");
 					notificationService.notifyUser(election.getWinner(),
-							"You were reelected as Chancellor");
+												   "You were reelected as Chancellor");
 				} else {
 					logService.logUserAction(election.getWinner(), "Election",
-							"Has been elected as Chancellor");
+											 "Has been elected as Chancellor");
 					notificationService.notifyUser(election.getWinner(),
-							"You were elected as Chancellor");
+												   "You were elected as Chancellor");
 				}
 			}
 		});
@@ -563,9 +570,9 @@ class DemocracyServiceImpl
 				groupLeaderElectionDAO.update(election);
 
 				logService.logSystemAction("Democracy",
-						"Group leader election for " + election.getGroup()
-								.getName()
-								+ " restarted due to lack of winners");
+										   "Group leader election for " + election.getGroup()
+																				  .getName()
+											   + " restarted due to lack of winners");
 			} else {
 				election.setWinner(winners.iterator().next());
 
@@ -574,11 +581,11 @@ class DemocracyServiceImpl
 				election.getGroup().setLeader(election.getWinner());
 
 				logService.logUserAction(election.getWinner(), "Election",
-						"Has become the new leader of " + election.getGroup()
-								.getName());
+										 "Has become the new leader of " + election.getGroup()
+																				   .getName());
 				notificationService.notifyUser(election.getWinner(),
-						"You were elected as leader of " + election.getGroup()
-								.getName());
+											   "You were elected as leader of " + election.getGroup()
+																						  .getName());
 
 				groupDAO.update(election.getGroup());
 			}
@@ -587,7 +594,7 @@ class DemocracyServiceImpl
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	protected Set<User> determineBordaWinners(final Map<User, Integer> scores,
-			int amount) {
+											  int amount) {
 		List<User> winners = new ArrayList<User>(scores.size());
 		Set<User> result = new HashSet<User>();
 
@@ -665,8 +672,8 @@ class DemocracyServiceImpl
 				seats = Math.max(2, candidateCount - 1);
 
 				logService.logSystemAction("Democracy",
-						"Available Senate seats adjusted to " + seats
-								+ " due to lack of candidates");
+										   "Available Senate seats adjusted to " + seats
+											   + " due to lack of candidates");
 			}
 
 			Map<User, Integer> scores = determineUserScoreTotals(election);
@@ -694,18 +701,18 @@ class DemocracyServiceImpl
 				Seq<User> senators = userDAO.findByFilter(filter);
 				for (User senator : senators) {
 					senator.setRank(MemberUtil
-							.determineRankByJoinDate(senator.getJoinDate()));
+										.determineRankByJoinDate(senator.getJoinDate()));
 					if (!winners.contains(senator)) {
 						logService.logUserAction(senator, "Election",
-								"Has not been reelected as Senator, and has assumed the rank of "
-										+ senator.getRank().toString());
+												 "Has not been reelected as Senator, and has assumed the rank of "
+													 + senator.getRank().toString());
 						notificationService.notifyUser(senator,
-								"You were not reelected as Senator");
+													   "You were not reelected as Senator");
 					} else {
 						logService.logUserAction(senator, "Election",
-								"Has been reelected as Senator");
+												 "Has been reelected as Senator");
 						notificationService.notifyUser(senator,
-								"You were reelected as Senator");
+													   "You were reelected as Senator");
 					}
 
 					userDAO.update(senator);
@@ -717,9 +724,9 @@ class DemocracyServiceImpl
 
 					if (!senators.contains(senator)) {
 						logService.logUserAction(senator, "Election",
-								"Has been elected as Senator");
+												 "Has been elected as Senator");
 						notificationService.notifyUser(senator,
-								"You were elected as Senator");
+													   "You were elected as Senator");
 					}
 				}
 
@@ -729,7 +736,7 @@ class DemocracyServiceImpl
 				senateElectionDAO.update(election);
 
 				logService.logSystemAction("Democracy",
-						"Senate election restarted due to lack of winners");
+										   "Senate election restarted due to lack of winners");
 			}
 		});
 
@@ -751,9 +758,9 @@ class DemocracyServiceImpl
 				acceptanceVoteDAO.save(acceptanceVote);
 
 				logService.logUserAction(_user, "Membership",
-						"Acceptance vote has started");
+										 "Acceptance vote has started");
 				notificationService
-						.notifyUser(_user, "Your acceptance vote has started");
+					.notifyUser(_user, "Your acceptance vote has started");
 			}
 		});
 
@@ -779,29 +786,29 @@ class DemocracyServiceImpl
 			Integer factor = total > 0 ? (100 * inFavor) / total : null;
 
 			boolean accepted = factor != null
-					&& factor >= MEMBERSHIP_ACCEPTANCE_VOTE_PERCENTAGE_REQUIRED;
+				&& factor >= MEMBERSHIP_ACCEPTANCE_VOTE_PERCENTAGE_REQUIRED;
 
 			String body = mailService
-					.getAcceptanceVoteNotificationMail(user, accepted, inFavor,
-							total);
+				.getAcceptanceVoteNotificationMail(user, accepted, inFavor,
+												   total);
 
 			mailService.sendHTMLMail(user.getEMail(),
-					"Your Tysan Clan trial period is over", body);
+									 "Your Tysan Clan trial period is over", body);
 
 			user.setRank(accepted ? Rank.JUNIOR_MEMBER : Rank.FORUM);
 
 			if (accepted) {
 				notificationService
-						.notifyUser(user, "You are now a Junior Member");
+					.notifyUser(user, "You are now a Junior Member");
 
 				dispatcher.dispatchEvent(new MemberStatusEvent(
-						com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.MEMBERSHIP_GRANTED,
-						user));
+					com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.MEMBERSHIP_GRANTED,
+					user));
 
 			} else {
 				dispatcher.dispatchEvent(new MemberStatusEvent(
-						com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.MEMBERSHIP_DENIED,
-						user));
+					com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.MEMBERSHIP_DENIED,
+					user));
 			}
 
 			user.setMentor(null);
@@ -811,9 +818,9 @@ class DemocracyServiceImpl
 			acceptanceVoteDAO.delete(vote);
 
 			logService.logUserAction(user, "Membership",
-					"User has " + (accepted ? "passed" : "failed")
-							+ " his or her acceptance vote (" + (
-							factor != null ? factor : 0) + "%)");
+									 "User has " + (accepted ? "passed" : "failed")
+										 + " his or her acceptance vote (" + (
+										 factor != null ? factor : 0) + "%)");
 		});
 
 	}
@@ -893,25 +900,25 @@ class DemocracyServiceImpl
 				joinApplicationDAO.delete(application);
 
 				mailService.sendHTMLMail(applicant.getEMail(),
-						"Result of your Tysan Clan Application", mailService
-								.getJoinApplicationMail(application, accepted,
-										inFavor, total));
+										 "Result of your Tysan Clan Application", mailService
+											 .getJoinApplicationMail(application, accepted,
+																	 inFavor, total));
 
 				logService.logUserAction(applicant, "Membership",
-						"User has " + (accepted ? "been" : "not been")
-								+ " granted a trial membership");
+										 "User has " + (accepted ? "been" : "not been")
+											 + " granted a trial membership");
 
 				if (accepted) {
 					notificationService.notifyUser(applicant,
-							"You are now a Trial Member");
+												   "You are now a Trial Member");
 
 					dispatcher.dispatchEvent(new MemberStatusEvent(
-							com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.TRIAL_GRANTED,
-							applicant));
+						com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.TRIAL_GRANTED,
+						applicant));
 				} else {
 					dispatcher.dispatchEvent(new MemberStatusEvent(
-							com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.TRIAL_DENIED,
-							applicant));
+						com.tysanclan.site.projectewok.entities.MembershipStatusChange.ChangeType.TRIAL_DENIED,
+						applicant));
 				}
 			}
 		});
@@ -922,7 +929,7 @@ class DemocracyServiceImpl
 	 * @param chancellorElectionDAO the chancellorElectionDAO to set
 	 */
 	public void setChancellorElectionDAO(
-			ChancellorElectionDAO chancellorElectionDAO) {
+		ChancellorElectionDAO chancellorElectionDAO) {
 		this.chancellorElectionDAO = chancellorElectionDAO;
 	}
 
@@ -937,7 +944,7 @@ class DemocracyServiceImpl
 	 * @param groupLeaderElectionDAO the groupLeaderElectionDAO to set
 	 */
 	public void setGroupLeaderElectionDAO(
-			GroupLeaderElectionDAO groupLeaderElectionDAO) {
+		GroupLeaderElectionDAO groupLeaderElectionDAO) {
 		this.groupLeaderElectionDAO = groupLeaderElectionDAO;
 	}
 
@@ -954,7 +961,7 @@ class DemocracyServiceImpl
 		filter.start().between(twoWeeksAgo.getTime(), new Date());
 
 		Seq<ChancellorElection> elections = chancellorElectionDAO
-				.findByFilter(filter);
+			.findByFilter(filter);
 
 		if (elections.size() > 0) {
 			return elections.get(0);
@@ -1044,8 +1051,8 @@ class DemocracyServiceImpl
 	public void endorseUserForChancellor(User endorser, User target) {
 		userDAO.load(endorser.getId()).forEach(_endorser -> {
 			User _target = target != null ?
-					userDAO.load(target.getId()).getOrNull() :
-					null;
+				userDAO.load(target.getId()).getOrNull() :
+				null;
 
 			User _current = _endorser.getEndorses();
 
@@ -1057,21 +1064,21 @@ class DemocracyServiceImpl
 			}
 
 			if (MemberUtil.canUserGrantEndorsement(_endorser) && (
-					_target == null || MemberUtil
-							.canUserGrantEndorsement(target))) {
+				_target == null || MemberUtil
+					.canUserGrantEndorsement(target))) {
 				_endorser.setEndorses(_target);
 				userDAO.update(_endorser);
 
 				if (_target != null) {
 					logService.logUserAction(_endorser, "Democracy",
-							"User has endorsed " + _target.getUsername()
-									+ " for Chancellor");
+											 "User has endorsed " + _target.getUsername()
+												 + " for Chancellor");
 					notificationService.notifyUser(_target,
-							"You are endorsed for Chancellor by " + _endorser
-									.getUsername());
+												   "You are endorsed for Chancellor by " + _endorser
+													   .getUsername());
 				} else {
 					logService.logUserAction(_endorser, "Democracy",
-							"User is no longer endorsing any member for Chancellor");
+											 "User is no longer endorsing any member for Chancellor");
 				}
 			}
 		});
@@ -1083,8 +1090,8 @@ class DemocracyServiceImpl
 	public void endorseUserForSenate(User endorser, User target) {
 		userDAO.load(endorser.getId()).forEach(_endorser -> {
 			User _target = target != null ?
-					userDAO.load(target.getId()).getOrNull() :
-					null;
+				userDAO.load(target.getId()).getOrNull() :
+				null;
 
 			User _current = _endorser.getEndorsesForSenate();
 
@@ -1096,21 +1103,21 @@ class DemocracyServiceImpl
 			}
 
 			if (MemberUtil.canUserGrantEndorsement(_endorser) && (
-					_target == null || MemberUtil
-							.canUserGrantEndorsement(target))) {
+				_target == null || MemberUtil
+					.canUserGrantEndorsement(target))) {
 				_endorser.setEndorsesForSenate(_target);
 				userDAO.update(_endorser);
 
 				if (_target != null) {
 					logService.logUserAction(_endorser, "Democracy",
-							"User has endorsed " + _target.getUsername()
-									+ " for Senator");
+											 "User has endorsed " + _target.getUsername()
+												 + " for Senator");
 					notificationService.notifyUser(_target,
-							"You are endorsed for Senator by " + _endorser
-									.getUsername());
+												   "You are endorsed for Senator by " + _endorser
+													   .getUsername());
 				} else {
 					logService.logUserAction(_endorser, "Democracy",
-							"User is no longer endorsing any member for Senator");
+											 "User is no longer endorsing any member for Senator");
 				}
 			}
 		});
@@ -1127,14 +1134,14 @@ class DemocracyServiceImpl
 
 		if (!user.isRetired() && election != null) {
 			if (user.getEndorsedBy().size()
-					>= getRequiredChancellorEndorsements() || user
-					.hasDonatedAtLeast(new BigDecimal(30))) {
+				>= getRequiredChancellorEndorsements() || user
+				.hasDonatedAtLeast(new BigDecimal(30))) {
 				if (!isElectionCandidate(user) && election.isNominationOpen()) {
 					election.getCandidates().add(user);
 					chancellorElectionDAO.update(election);
 
 					logService.logUserAction(user, "Democracy",
-							"Has decided to run for Chancellor!");
+											 "Has decided to run for Chancellor!");
 
 					return true;
 				}
@@ -1155,14 +1162,14 @@ class DemocracyServiceImpl
 
 		if (!user.isRetired() && election != null) {
 			if (user.getEndorsedForSenateBy().size()
-					>= getRequiredSenateEndorsements() || user
-					.hasDonatedAtLeast(new BigDecimal(20))) {
+				>= getRequiredSenateEndorsements() || user
+				.hasDonatedAtLeast(new BigDecimal(20))) {
 				if (!isElectionCandidate(user) && election.isNominationOpen()) {
 					election.getCandidates().add(user);
 					senateElectionDAO.update(election);
 
 					logService.logUserAction(user, "Democracy",
-							"Has decided to run for Senator!");
+											 "Has decided to run for Senator!");
 
 					return true;
 				}
@@ -1179,23 +1186,23 @@ class DemocracyServiceImpl
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public boolean addGroupLeaderCandidate(User user,
-			GroupLeaderElection election) {
+										   GroupLeaderElection election) {
 		return groupLeaderElectionDAO.load(election.getId())
-				.map(_election -> userDAO.load(user.getId()).map(_user -> {
+									 .map(_election -> userDAO.load(user.getId()).map(_user -> {
 
-					if (_election != null) {
-						if (!_election.getCandidates().contains(_user)
-								&& _election.isNominationOpen()) {
-							_election.getCandidates().add(_user);
-							groupLeaderElectionDAO.update(_election);
-							groupLeaderElectionDAO.flush();
+										 if (_election != null) {
+											 if (!_election.getCandidates().contains(_user)
+												 && _election.isNominationOpen()) {
+												 _election.getCandidates().add(_user);
+												 groupLeaderElectionDAO.update(_election);
+												 groupLeaderElectionDAO.flush();
 
-							return true;
-						}
-					}
+												 return true;
+											 }
+										 }
 
-					return false;
-				}).getOrElse(false)).getOrElse(false);
+										 return false;
+									 }).getOrElse(false)).getOrElse(false);
 	}
 
 	/**
@@ -1205,7 +1212,7 @@ class DemocracyServiceImpl
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public CompoundVote createVote(User caster, List<User> votesFor,
-			Election election) {
+								   Election election) {
 		CompoundVote vote = new CompoundVote();
 		vote.setCaster(caster);
 		vote.setElection(election);
@@ -1233,32 +1240,32 @@ class DemocracyServiceImpl
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void castAcceptanceVote(AcceptanceVote vote, User caster,
-			boolean inFavor) {
+								   boolean inFavor) {
 		acceptanceVoteDAO.load(vote.getId()).forEach(
-				_vote -> userDAO.load(caster.getId()).forEach(_caster -> {
-					AcceptanceVoteVerdict myVerdict = null;
+			_vote -> userDAO.load(caster.getId()).forEach(_caster -> {
+				AcceptanceVoteVerdict myVerdict = null;
 
-					for (AcceptanceVoteVerdict v : _vote.getVerdicts()) {
-						if (v.getCaster().equals(_caster)) {
-							myVerdict = v;
-							break;
-						}
+				for (AcceptanceVoteVerdict v : _vote.getVerdicts()) {
+					if (v.getCaster().equals(_caster)) {
+						myVerdict = v;
+						break;
 					}
+				}
 
-					if (myVerdict == null) {
-						myVerdict = new AcceptanceVoteVerdict();
-						myVerdict.setCaster(_caster);
-						myVerdict.setVote(_vote);
-						myVerdict.setInFavor(inFavor);
+				if (myVerdict == null) {
+					myVerdict = new AcceptanceVoteVerdict();
+					myVerdict.setCaster(_caster);
+					myVerdict.setVote(_vote);
+					myVerdict.setInFavor(inFavor);
 
-						acceptanceVoteVerdictDAO.save(myVerdict);
-						acceptanceVoteDAO.evict(_vote);
+					acceptanceVoteVerdictDAO.save(myVerdict);
+					acceptanceVoteDAO.evict(_vote);
 
-					} else {
-						myVerdict.setInFavor(inFavor);
-						acceptanceVoteVerdictDAO.update(myVerdict);
-					}
-				}));
+				} else {
+					myVerdict.setInFavor(inFavor);
+					acceptanceVoteVerdictDAO.update(myVerdict);
+				}
+			}));
 
 	}
 
@@ -1282,10 +1289,10 @@ class DemocracyServiceImpl
 			impeachmentDAO.save(impeachment);
 
 			logService.logUserAction(initiator, "Democracy",
-					"An impeachment vote against the Chancellor has been started");
+									 "An impeachment vote against the Chancellor has been started");
 			notificationService.notifyUser(chancellor,
-					"An impeachment vote against you was started by "
-							+ initiator.getUsername());
+										   "An impeachment vote against you was started by "
+											   + initiator.getUsername());
 
 		}
 
@@ -1360,14 +1367,14 @@ class DemocracyServiceImpl
 
 				if (percentage >= 66) {
 					notificationService
-							.notifyUser(chancellor, "You have been impeached");
+						.notifyUser(chancellor, "You have been impeached");
 
 					logService.logUserAction(chancellor, "Democracy",
-							"Chancellor has been impeached (" + percentage
-									+ ")");
+											 "Chancellor has been impeached (" + percentage
+												 + ")");
 
 					chancellor.setRank(MemberUtil
-							.determineRankByJoinDate(chancellor.getJoinDate()));
+										   .determineRankByJoinDate(chancellor.getJoinDate()));
 					userDAO.update(chancellor);
 				}
 
@@ -1384,10 +1391,10 @@ class DemocracyServiceImpl
 	public void stepDownAsChancellor(User chancellor) {
 		userDAO.load(chancellor.getId()).forEach(user -> {
 			user.setRank(
-					MemberUtil.determineRankByJoinDate(user.getJoinDate()));
+				MemberUtil.determineRankByJoinDate(user.getJoinDate()));
 
 			logService.logUserAction(user, "Democracy",
-					"User has stepped down as Chancellor");
+									 "User has stepped down as Chancellor");
 
 			userDAO.update(user);
 		});
@@ -1401,10 +1408,10 @@ class DemocracyServiceImpl
 	public void stepDownAsSenator(User senator) {
 		userDAO.load(senator.getId()).forEach(user -> {
 			user.setRank(
-					MemberUtil.determineRankByJoinDate(user.getJoinDate()));
+				MemberUtil.determineRankByJoinDate(user.getJoinDate()));
 
 			logService.logUserAction(user, "Democracy",
-					"User has stepped down as Senator");
+									 "User has stepped down as Senator");
 
 			userDAO.update(user);
 		});
@@ -1419,10 +1426,10 @@ class DemocracyServiceImpl
 		userDAO.load(truthsayer.getId()).forEach(user -> {
 
 			user.setRank(
-					MemberUtil.determineRankByJoinDate(user.getJoinDate()));
+				MemberUtil.determineRankByJoinDate(user.getJoinDate()));
 
 			logService.logUserAction(user, "Democracy",
-					"User has stepped down as Truthsayer");
+									 "User has stepped down as Truthsayer");
 
 			userDAO.update(user);
 		});
@@ -1435,31 +1442,31 @@ class DemocracyServiceImpl
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void castUntenabilityVote(User user, UntenabilityVote vote,
-			boolean inFavor) {
+									 boolean inFavor) {
 		untenabilityVoteDAO.load(vote.getId())
-				.forEach(_vote -> userDAO.load(user.getId()).forEach(_user -> {
+						   .forEach(_vote -> userDAO.load(user.getId()).forEach(_user -> {
 
-					UntenabilityVoteChoice myChoice = null;
+							   UntenabilityVoteChoice myChoice = null;
 
-					for (UntenabilityVoteChoice choice : _vote.getChoices()) {
-						if (choice.getCaster().equals(_user)) {
-							myChoice = choice;
-							break;
-						}
-					}
+							   for (UntenabilityVoteChoice choice : _vote.getChoices()) {
+								   if (choice.getCaster().equals(_user)) {
+									   myChoice = choice;
+									   break;
+								   }
+							   }
 
-					if (myChoice == null) {
-						myChoice = new UntenabilityVoteChoice();
-						myChoice.setCaster(_user);
-						myChoice.setInFavor(inFavor);
-						myChoice.setVote(_vote);
+							   if (myChoice == null) {
+								   myChoice = new UntenabilityVoteChoice();
+								   myChoice.setCaster(_user);
+								   myChoice.setInFavor(inFavor);
+								   myChoice.setVote(_vote);
 
-						untenabilityVoteChoiceDAO.save(myChoice);
-					} else {
-						myChoice.setInFavor(inFavor);
-						untenabilityVoteChoiceDAO.update(myChoice);
-					}
-				}));
+								   untenabilityVoteChoiceDAO.save(myChoice);
+							   } else {
+								   myChoice.setInFavor(inFavor);
+								   untenabilityVoteChoiceDAO.update(myChoice);
+							   }
+						   }));
 	}
 
 	/**
@@ -1470,23 +1477,23 @@ class DemocracyServiceImpl
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void createUntenabilityVote(User user, Regulation regulation) {
 		regulationDAO.load(regulation.getId()).forEach(
-				_regulation -> userDAO.load(user.getId()).forEach(_user -> {
+			_regulation -> userDAO.load(user.getId()).forEach(_user -> {
 
-					UntenabilityVoteFilter filter = new UntenabilityVoteFilter();
-					filter.regulation(_regulation);
+				UntenabilityVoteFilter filter = new UntenabilityVoteFilter();
+				filter.regulation(_regulation);
 
-					if (untenabilityVoteDAO.countByFilter(filter) == 0) {
-						UntenabilityVote vote = new UntenabilityVote();
-						vote.setRegulation(_regulation);
-						vote.setStart(new Date());
+				if (untenabilityVoteDAO.countByFilter(filter) == 0) {
+					UntenabilityVote vote = new UntenabilityVote();
+					vote.setRegulation(_regulation);
+					vote.setStart(new Date());
 
-						untenabilityVoteDAO.save(vote);
+					untenabilityVoteDAO.save(vote);
 
-						logService.logUserAction(_user, "Democracy",
-								"Regulation " + _regulation.getName()
-										+ " declared untenable, vote started");
-					}
-				}));
+					logService.logUserAction(_user, "Democracy",
+											 "Regulation " + _regulation.getName()
+												 + " declared untenable, vote started");
+				}
+			}));
 	}
 
 	/**
@@ -1513,17 +1520,17 @@ class DemocracyServiceImpl
 
 				if (percentage >= 51) {
 					logService.logSystemAction("Democracy",
-							"Regulation " + regulation.getName()
-									+ " was repealled by untenability vote ("
-									+ percentage + "%)");
+											   "Regulation " + regulation.getName()
+												   + " was repealled by untenability vote ("
+												   + percentage + "%)");
 
 					regulationDAO.delete(regulation);
 
 				} else {
 					logService.logSystemAction("Democracy",
-							"Regulation " + regulation.getName()
-									+ " was maintained by untenability vote ("
-									+ percentage + "%)");
+											   "Regulation " + regulation.getName()
+												   + " was maintained by untenability vote ("
+												   + percentage + "%)");
 				}
 			}
 
@@ -1539,7 +1546,7 @@ class DemocracyServiceImpl
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public RegulationChange createAddRegulationVote(User user, String title,
-			String description) {
+													String description) {
 		return userDAO.load(user.getId()).map(_user -> {
 
 			RegulationChange change = new RegulationChange();
@@ -1565,25 +1572,25 @@ class DemocracyServiceImpl
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public RegulationChange createModifyRegulationVote(User user,
-			Regulation regulation, String newTitle, String newDescription) {
+													   Regulation regulation, String newTitle, String newDescription) {
 		return userDAO.load(user.getId()).flatMap(
-				_user -> regulationDAO.load(regulation.getId())
-						.map(_regulation -> {
+			_user -> regulationDAO.load(regulation.getId())
+								  .map(_regulation -> {
 
-							RegulationChange change = new RegulationChange();
-							change.setChangeType(ChangeType.MODIFY);
-							change.setTitle(BBCodeUtil.stripTags(newTitle));
-							change.setDescription(
-									BBCodeUtil.stripTags(newDescription));
-							change.setStart(new Date());
-							change.setVeto(false);
-							change.setRegulation(_regulation);
-							change.setProposer(_user);
+									  RegulationChange change = new RegulationChange();
+									  change.setChangeType(ChangeType.MODIFY);
+									  change.setTitle(BBCodeUtil.stripTags(newTitle));
+									  change.setDescription(
+										  BBCodeUtil.stripTags(newDescription));
+									  change.setStart(new Date());
+									  change.setVeto(false);
+									  change.setRegulation(_regulation);
+									  change.setProposer(_user);
 
-							regulationChangeDAO.save(change);
+									  regulationChangeDAO.save(change);
 
-							return change;
-						})).getOrElseThrow(IllegalStateException::new);
+									  return change;
+								  })).getOrElseThrow(IllegalStateException::new);
 
 	}
 
@@ -1594,22 +1601,22 @@ class DemocracyServiceImpl
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public RegulationChange createRepealRegulationVote(User user,
-			Regulation regulation) {
+													   Regulation regulation) {
 		return userDAO.load(user.getId()).flatMap(
-				_user -> regulationDAO.load(regulation.getId())
-						.map(_regulation -> {
+			_user -> regulationDAO.load(regulation.getId())
+								  .map(_regulation -> {
 
-							RegulationChange change = new RegulationChange();
-							change.setChangeType(ChangeType.REPEAL);
-							change.setVeto(false);
-							change.setStart(new Date());
-							change.setRegulation(_regulation);
-							change.setProposer(_user);
+									  RegulationChange change = new RegulationChange();
+									  change.setChangeType(ChangeType.REPEAL);
+									  change.setVeto(false);
+									  change.setStart(new Date());
+									  change.setRegulation(_regulation);
+									  change.setProposer(_user);
 
-							regulationChangeDAO.save(change);
+									  regulationChangeDAO.save(change);
 
-							return change;
-						})).getOrElseThrow(IllegalStateException::new);
+									  return change;
+								  })).getOrElseThrow(IllegalStateException::new);
 	}
 
 	/**
@@ -1624,8 +1631,8 @@ class DemocracyServiceImpl
 			filter.rank(Rank.SENATOR);
 
 			long total = _change.isVeto() ?
-					userDAO.countByFilter(filter) :
-					_change.getVotes().size();
+				userDAO.countByFilter(filter) :
+				_change.getVotes().size();
 			int required_factor = _change.isVeto() ? 66 : 51;
 
 			int inFavor = 0;
@@ -1655,20 +1662,20 @@ class DemocracyServiceImpl
 				switch (_change.getChangeType()) {
 					case ADD:
 						logService.logSystemAction("Regulations",
-								"The proposed regulation " + _change.getTitle()
-										+ " did not pass (" + factor + "%)");
+												   "The proposed regulation " + _change.getTitle()
+													   + " did not pass (" + factor + "%)");
 						break;
 					case MODIFY:
 						logService.logSystemAction("Regulations",
-								"The proposed modifications to regulation "
-										+ _change.getTitle() + " did not pass ("
-										+ factor + "%)");
+												   "The proposed modifications to regulation "
+													   + _change.getTitle() + " did not pass ("
+													   + factor + "%)");
 						break;
 					case REPEAL:
 						logService.logSystemAction("Regulations",
-								"The proposed repeal of regulation " + _change
-										.getTitle() + " did not pass (" + factor
-										+ "%)");
+												   "The proposed repeal of regulation " + _change
+													   .getTitle() + " did not pass (" + factor
+													   + "%)");
 						break;
 				}
 			}
@@ -1687,8 +1694,8 @@ class DemocracyServiceImpl
 		Regulation regulation = _change.getRegulation();
 
 		logService.logSystemAction("Regulations",
-				"The Senate has voted to repeal the Regulation named "
-						+ regulation.getName() + " (" + factor + "%)");
+								   "The Senate has voted to repeal the Regulation named "
+									   + regulation.getName() + " (" + factor + "%)");
 		regulationDAO.delete(regulation);
 	}
 
@@ -1697,8 +1704,8 @@ class DemocracyServiceImpl
 		Regulation regulation = _change.getRegulation();
 
 		logService.logSystemAction("Regulations",
-				"The Senate has voted to modify the Regulation named "
-						+ regulation.getName() + " (" + factor + "%)");
+								   "The Senate has voted to modify the Regulation named "
+									   + regulation.getName() + " (" + factor + "%)");
 
 		regulation.setContents(_change.getDescription());
 		regulation.setName(_change.getTitle());
@@ -1711,8 +1718,8 @@ class DemocracyServiceImpl
 		Regulation regulation = new Regulation();
 
 		logService.logSystemAction("Regulations",
-				"The Senate has voted to create a new Regulation named "
-						+ _change.getTitle() + " (" + factor + "%)");
+								   "The Senate has voted to create a new Regulation named "
+									   + _change.getTitle() + " (" + factor + "%)");
 
 		regulation.setContents(_change.getDescription());
 		regulation.setDrafter(_change.getProposer());
@@ -1727,7 +1734,7 @@ class DemocracyServiceImpl
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void voteForRegulation(User senator, RegulationChange change,
-			boolean inFavor) {
+								  boolean inFavor) {
 		regulationChangeDAO.load(change.getId()).forEach(_change -> {
 			RegulationChangeVote myVote = null;
 
@@ -1765,7 +1772,7 @@ class DemocracyServiceImpl
 			String status;
 
 			if (userDAO.countByFilter(filter) < 2 || _change.getProposer()
-					.equals(chancellor)) {
+															.equals(chancellor)) {
 				regulationChangeDAO.delete(_change);
 
 				status = " was vetoed and automatically withdrawn";
@@ -1780,18 +1787,18 @@ class DemocracyServiceImpl
 			switch (_change.getChangeType()) {
 				case ADD:
 					logService.logUserAction(chancellor, "Regulations",
-							"The proposed regulation " + _change.getTitle()
-									+ status);
+											 "The proposed regulation " + _change.getTitle()
+												 + status);
 					break;
 				case MODIFY:
 					logService.logUserAction(chancellor, "Regulations",
-							"The proposed modifications to regulation "
-									+ _change.getTitle() + status);
+											 "The proposed modifications to regulation "
+												 + _change.getTitle() + status);
 					break;
 				case REPEAL:
 					logService.logUserAction(chancellor, "Regulations",
-							"The proposed repeal of regulation " + _change
-									.getTitle() + status);
+											 "The proposed repeal of regulation " + _change
+												 .getTitle() + status);
 					break;
 			}
 		});
@@ -1845,11 +1852,11 @@ class DemocracyServiceImpl
 
 		boolean noChancellor = userDAO.countByFilter(chancellorFilter) == 0;
 		boolean noElectionInPastSixMonths = chancellorElectionDAO
-				.countByFilter(electionsLessThanSixMonthsAgo) == 0;
+			.countByFilter(electionsLessThanSixMonthsAgo) == 0;
 		boolean noElectionCurrently = current == null;
 
 		if ((noElectionCurrently && noChancellor) || (noElectionInPastSixMonths
-				&& noElectionCurrently)) {
+			&& noElectionCurrently)) {
 			createChancellorElection();
 		}
 
@@ -1864,7 +1871,7 @@ class DemocracyServiceImpl
 		filter.start().lessThan(cal.getTime());
 		filter.winner().isNull();
 		Seq<ChancellorElection> elections = chancellorElectionDAO
-				.findByFilter(filter);
+			.findByFilter(filter);
 		for (ChancellorElection election : elections) {
 			resolveChancellorElection(election);
 		}
@@ -1876,8 +1883,18 @@ class DemocracyServiceImpl
 	public void checkSenatorElections() {
 		final SenateElection current = getCurrentSenateElection();
 
-		if (current != null)
+		if (current != null) {
+			if (current.getCandidates().size() == 1) {
+				LocalDate start = LocalDate.fromDateFields(current.getStart());
+				LocalDate sevenDaysAgo = LocalDate.now().minusWeeks(1);
+
+				if (start.isBefore(sevenDaysAgo)) {
+					resetSenateElection(current, Messages.Notification.RESTART_SENATE_DUE_TO_CANDIDATE_LACK, Messages.Log.RESTART_SENATE_DUE_TO_CANDIDATE_LACK);
+				}
+			}
+
 			return;
+		}
 
 		LocalDate sixMonthsAgo = LocalDate.now().minusMonths(6);
 
@@ -1887,26 +1904,26 @@ class DemocracyServiceImpl
 
 		SenateElectionFilter electionsLessThanSixMonthsAgo = new SenateElectionFilter();
 		electionsLessThanSixMonthsAgo.start()
-				.greaterThan(sixMonthsAgo.toDate());
+									 .greaterThan(sixMonthsAgo.toDate());
 		electionsLessThanSixMonthsAgo.start().orderBy(false);
 
 		final boolean thereWasAnElectionMoreThanSixMonthsAgo =
-				senateElectionDAO.countByFilter(electionsMoreThanSixMonthsAgo)
-						> 0;
+			senateElectionDAO.countByFilter(electionsMoreThanSixMonthsAgo)
+				> 0;
 		final boolean thereWasNoElectionLessThanSixMonthsAgo =
-				senateElectionDAO.countByFilter(electionsLessThanSixMonthsAgo)
-						== 0;
+			senateElectionDAO.countByFilter(electionsLessThanSixMonthsAgo)
+				== 0;
 		final boolean thereHasNeverBeenAnElection =
-				senateElectionDAO.countAll() == 0;
+			senateElectionDAO.countAll() == 0;
 		if (thereHasNeverBeenAnElection || (
-				thereWasAnElectionMoreThanSixMonthsAgo
-						&& thereWasNoElectionLessThanSixMonthsAgo)) {
+			thereWasAnElectionMoreThanSixMonthsAgo
+				&& thereWasNoElectionLessThanSixMonthsAgo)) {
 			if (thereHasNeverBeenAnElection) {
 				logService.logSystemAction("Democracy",
-						"There has never been a Senate election");
+										   "There has never been a Senate election");
 			} else {
 				logService.logSystemAction("Democracy",
-						"Last Senate election more than six months ago");
+										   "Last Senate election more than six months ago");
 			}
 			createSenateElection();
 		} else {
@@ -1914,13 +1931,13 @@ class DemocracyServiceImpl
 			SenateElectionFilter lastSenateElectionFilter = new SenateElectionFilter();
 			lastSenateElectionFilter.start().orderBy(false);
 			Seq<SenateElection> elections = senateElectionDAO
-					.findByFilter(lastSenateElectionFilter, 0, 1);
+				.findByFilter(lastSenateElectionFilter, 0, 1);
 
 			final long senators = userDAO.countByRank(Rank.SENATOR);
 
 			if (senators <= 1) {
 				logService
-						.logSystemAction("Democracy", "Only one Senator left");
+					.logSystemAction("Democracy", "Only one Senator left");
 				createSenateElection();
 				return;
 			}
@@ -1934,7 +1951,7 @@ class DemocracyServiceImpl
 
 					if (fraction < 40) {
 						logService.logSystemAction("Democracy",
-								"Senate size less than 40% of last election's seats");
+												   "Senate size less than 40% of last election's seats");
 						createSenateElection();
 					}
 				}
@@ -1973,7 +1990,7 @@ class DemocracyServiceImpl
 		filter.andStart().greaterThan(threeWeeksAgo.getTime());
 
 		Seq<GroupLeaderElection> elections = groupLeaderElectionDAO
-				.findByFilter(filter);
+			.findByFilter(filter);
 		for (GroupLeaderElection election : elections) {
 			resolveGroupLeaderElection(election);
 		}
@@ -1990,7 +2007,7 @@ class DemocracyServiceImpl
 		filter.startDate().lessThan(cal.getTime());
 
 		Seq<JoinApplication> applications = joinApplicationDAO
-				.findByFilter(filter);
+			.findByFilter(filter);
 		for (JoinApplication application : applications) {
 			resolveJoinApplication(application);
 		}
@@ -2005,7 +2022,7 @@ class DemocracyServiceImpl
 		filter.start().lessThan(cal.getTime());
 
 		for (RegulationChange change : regulationChangeDAO
-				.findByFilter(filter)) {
+			.findByFilter(filter)) {
 			resolveRegulationVote(change);
 		}
 	}

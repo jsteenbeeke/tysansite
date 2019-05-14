@@ -25,6 +25,23 @@ import java.util.List;
  * @author Jeroen Steenbeeke
  */
 public interface DemocracyService {
+	interface Messages {
+		interface Notification {
+			String RESTART_SENATE_DUE_TO_TERMINATION = "The Senate election was restarted due to a candidate's membership being terminated. You will need to vote again in a week";
+
+			String RESTART_SENATE_DUE_TO_CANDIDATE_LACK = "The Senate election was restarted due to a lack of candidates. You will need to vote again in a week";
+		}
+
+		interface Log {
+			String RESTART_SENATE_DUE_TO_TERMINATION = "Senate election restarted due to candidate membership termination";
+
+			String RESTART_SENATE_DUE_TO_CANDIDATE_LACK = "The Senate election was restarted due to a lack of candidates";
+		}
+	}
+
+
+
+
 	/**
 	 * The percentage of votes in favor required to succesfully end the trial
 	 * period
