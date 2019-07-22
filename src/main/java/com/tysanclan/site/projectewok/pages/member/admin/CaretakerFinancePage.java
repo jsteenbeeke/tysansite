@@ -342,8 +342,8 @@ public class CaretakerFinancePage extends AbstractMemberPage {
 		Collections.sort(members, new CaseInsensitiveUserComparator());
 
 		DropDownChoice<User> userSelect = new DropDownChoice<User>("userselect",
-				ModelMaker.wrap((User) null, true),
-				ModelMaker.wrapChoices(members));
+				ModelMaker.wrap(User.class),
+				ModelMaker.wrapList(members));
 		donationForm.add(userSelect);
 
 		DropDownChoice<Integer> currencyMajor = new DropDownChoice<Integer>(

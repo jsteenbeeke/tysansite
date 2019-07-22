@@ -43,8 +43,8 @@ public class TruthsayerComplaintPage extends AbstractSingleAccordionMemberPage {
 		filter.username().orderBy(true);
 
 		final DropDownChoice<User> userChoice = new DropDownChoice<User>("user",
-				ModelMaker.wrap((User) null), ModelMaker
-				.wrapChoices(userDAO.findByFilter(filter).toJavaList()));
+				ModelMaker.wrap(User.class), ModelMaker
+				.wrapList(userDAO.findByFilter(filter).toJavaList()));
 		userChoice.setRequired(true);
 		userChoice.setNullValid(true);
 

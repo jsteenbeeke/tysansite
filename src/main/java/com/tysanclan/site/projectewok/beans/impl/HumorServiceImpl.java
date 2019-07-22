@@ -76,7 +76,7 @@ class HumorServiceImpl
 		filter.user(user);
 
 		for (DisneyCharacter property : disneyHuntDAO
-				.properties(filter.type(), filter)) {
+				.properties(filter.type())) {
 			available = available.remove(property);
 		}
 

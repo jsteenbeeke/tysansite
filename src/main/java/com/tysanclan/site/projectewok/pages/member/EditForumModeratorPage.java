@@ -140,7 +140,7 @@ public class EditForumModeratorPage extends TysanPage {
 		List<User> users = userDAO.findByFilter(filter).toJavaList();
 
 		addModeratorForm.add(new DropDownChoice<User>("userSelect",
-				ModelMaker.wrap(users.get(0), true), ModelMaker.wrap(users))
+												  ModelMaker.wrap(users.get(0)), ModelMaker.wrap(users))
 				.setNullValid(false));
 
 		add(addModeratorForm);

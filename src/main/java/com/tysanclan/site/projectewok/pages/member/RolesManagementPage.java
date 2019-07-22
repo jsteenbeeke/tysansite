@@ -130,9 +130,9 @@ public class RolesManagementPage extends AbstractMemberPage {
 
 				List<User> users = userDAO.findByFilter(f).toJavaList();
 
-				reassignForm.add(new DropDownChoice<>("user",
-						ModelMaker.wrap(users.get(0), true),
-						ModelMaker.wrap(users)).setNullValid(false));
+				reassignForm.add(new DropDownChoice<User>("user",
+						ModelMaker.wrap(users.get(0)),
+						ModelMaker.wrapList(users)).setNullValid(false));
 
 				reassignDialog.add(reassignForm);
 

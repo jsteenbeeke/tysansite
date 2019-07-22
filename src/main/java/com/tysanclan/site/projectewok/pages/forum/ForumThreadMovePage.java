@@ -51,7 +51,7 @@ public class ForumThreadMovePage extends TysanPage {
 		final DropDownChoice<Forum> targetForum = new DropDownChoice<Forum>(
 				"target");
 		targetForum.setChoices(forums);
-		targetForum.setModel(ModelMaker.wrap(forums.get(0), true));
+		targetForum.setModel(ModelMaker.wrap(forums.get(0)));
 		targetForum.setChoiceRenderer(LambdaRenderer.of(Forum::getName));
 
 		Form<ForumThread> form = new Form<ForumThread>("moveform",

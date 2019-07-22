@@ -35,6 +35,7 @@ import com.tysanclan.site.projectewok.pages.member.*;
 import com.tysanclan.site.projectewok.pages.member.justice.StartTrialPage;
 import com.tysanclan.site.projectewok.util.DateUtil;
 import com.tysanclan.site.projectewok.util.MemberUtil;
+import io.vavr.collection.Array;
 import io.vavr.collection.Seq;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -122,8 +123,8 @@ public class BasicMemberPanel extends TysanOverviewPanel<Void> {
 
 		@Override
 		public AttentionType requiresAttention() {
-			Seq<Group> allGroups = groupDAO.findAll();
-			allGroups.removeAll(getUser().getGroups());
+			Seq<Group> allGroups = Array.ofAll(groupDAO.findAll());
+			allGroups = allGroups.removeAll(getUser().getGroups());
 
 			for (Group g : allGroups) {
 				if (g.getInvitedMembers().contains(getUser())) {

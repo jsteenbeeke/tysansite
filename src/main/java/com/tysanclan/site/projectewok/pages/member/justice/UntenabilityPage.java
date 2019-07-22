@@ -29,6 +29,7 @@ import com.tysanclan.site.projectewok.entities.dao.UntenabilityVoteDAO;
 import com.tysanclan.site.projectewok.pages.member.AbstractMemberPage;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.List;
@@ -81,27 +82,26 @@ public class UntenabilityPage extends AbstractMemberPage {
 			regulations.remove(vote.getRegulation());
 		}
 
-		initiateForm.add(new DropDownChoice<Regulation>("regulation", ModelMaker
-				.wrap(regulations.isEmpty() ?
-						(Regulation) null :
-						regulations.get(0), true),
-				ModelMaker.wrapChoices(regulations),
-				new NaiveRenderer<Regulation>() {
-					private static final long serialVersionUID = 1L;
+		IModel<Regulation> choiceModel = regulations.isEmpty() ? ModelMaker.wrap(Regulation.class) : ModelMaker.wrap(regulations.get(0));
 
-					/**
-					 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(java.lang.Object)
-					 */
-					@Override
-					public Object getDisplayValue(Regulation object) {
-						return object.getName();
-					}
+		initiateForm.add(new DropDownChoice<Regulation>("regulation", choiceModel,
+											  ModelMaker.wrapList(regulations),
+											  new NaiveRenderer<Regulation>() {
+												  private static final long serialVersionUID = 1L;
 
-					@Override
-					public String getIdValue(Regulation object, int index) {
-						return object.getId().toString();
-					}
-				}));
+												  /**
+												   * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(java.lang.Object)
+												   */
+												  @Override
+												  public Object getDisplayValue(Regulation object) {
+													  return object.getName();
+												  }
+
+												  @Override
+												  public String getIdValue(Regulation object, int index) {
+													  return object.getId().toString();
+												  }
+											  }));
 
 		add(initiateForm);
 

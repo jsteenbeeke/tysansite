@@ -106,28 +106,28 @@ public class RepealRegulationPage extends AbstractMemberPage {
 				.setOutputMarkupId(true).setOutputMarkupPlaceholderTag(true));
 
 		form.add(new DropDownChoice<Regulation>("regulation",
-				ModelMaker.wrap((Regulation) null, true),
-				ModelMaker.wrapChoices(regulationDAO.findAll().toJavaList()),
-				new NaiveRenderer<Regulation>() {
-					private static final long serialVersionUID = 1L;
+									  ModelMaker.wrap(Regulation.class),
+									  ModelMaker.wrapList(regulationDAO.findAll().toJavaList()),
+									  new NaiveRenderer<Regulation>() {
+										  private static final long serialVersionUID = 1L;
 
-					/**
-					 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(java.lang.Object)
-					 */
-					@Override
-					public Object getDisplayValue(Regulation object) {
-						return object.getName();
-					}
+										  /**
+										   * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(java.lang.Object)
+										   */
+										  @Override
+										  public Object getDisplayValue(Regulation object) {
+											  return object.getName();
+										  }
 
-					/**
-					 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getIdValue(java.lang.Object,
-					 *      int)
-					 */
-					@Override
-					public String getIdValue(Regulation object, int index) {
-						return object.getId().toString();
-					}
-				}).setNullValid(false)
+										  /**
+										   * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getIdValue(java.lang.Object,
+										   * int)
+										   */
+										  @Override
+										  public String getIdValue(Regulation object, int index) {
+											  return object.getId().toString();
+										  }
+									  }).setNullValid(false)
 				.add(new AjaxFormComponentUpdatingBehavior("onchange") {
 					private static final long serialVersionUID = 1L;
 

@@ -98,6 +98,8 @@ public class LogPage extends AbstractMemberPage {
 		};
 
 		pageable.setItemsPerPage(20);
+		add(pageable);
+
 
 		TextField<String> messageField = new TextField<>("message", Model.of(messageText));
 		TextField<String> categoryField = new TextField<>("category", Model.of(categoryText));
@@ -127,7 +129,6 @@ public class LogPage extends AbstractMemberPage {
 		add(filterForm);
 
 
-		add(pageable);
 		add(new OtterSniperPanel("otterSniperPanel", 1));
 
 		add(new PagingNavigator("nav", pageable));

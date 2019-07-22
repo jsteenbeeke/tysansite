@@ -272,8 +272,8 @@ public class ViewBugPage extends AbstractSingleAccordionMemberPage {
 		List<Bug> otherBugs = bugDAO.findByFilter(filter).asJava();
 
 		final DropDownChoice<Bug> bugSelect = new DropDownChoice<Bug>(
-				"duplicate", ModelMaker.wrap((Bug) null),
-				ModelMaker.wrapChoices(otherBugs), new BugRenderer());
+				"duplicate", ModelMaker.wrap(Bug.class),
+				ModelMaker.wrapList(otherBugs), new BugRenderer());
 		bugSelect.setRequired(true);
 		bugSelect.setNullValid(false);
 

@@ -116,8 +116,8 @@ public class CreateRealmPetitionPage extends AbstractMemberPage {
 		newRealm.add(
 				new TextField<>("name", new Model<>("")).setRequired(true));
 
-		newRealm.add(new DropDownChoice<>("game", ModelMaker.wrap((Game) null),
-				ModelMaker.wrapChoices(games.toJavaList()),
+		newRealm.add(new DropDownChoice<Game>("game", ModelMaker.wrap(Game.class),
+				ModelMaker.wrapList(games.toJavaList()),
 				new GameChoiceRenderer()).setRequired(true));
 
 		add(newRealm);

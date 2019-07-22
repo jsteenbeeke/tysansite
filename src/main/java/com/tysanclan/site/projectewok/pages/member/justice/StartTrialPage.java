@@ -109,14 +109,14 @@ public class StartTrialPage extends AbstractMemberPage {
 		});
 
 		accuseForm.add(new DropDownChoice<User>("member",
-				ModelMaker.wrap((User) null, true),
-				ModelMaker.wrapChoices(users)).setRequired(true));
+				ModelMaker.wrap(User.class),
+				ModelMaker.wrapList(users)).setRequired(true));
 
 		accuseForm.add(new BBCodeTextArea("motivation", "").setRequired(true));
 
-		accuseForm.add(new ListMultipleChoice<>("regulations",
-				ModelMaker.wrapAsCollection(new LinkedList<>()),
-				ModelMaker.wrapChoices(regulationDAO.findAll().toJavaList()),
+		accuseForm.add(new ListMultipleChoice<Regulation>("regulations",
+				ModelMaker.wrapList(new LinkedList<Regulation>()),
+				ModelMaker.wrapList(regulationDAO.findAll().toJavaList()),
 				new NaiveRenderer<Regulation>() {
 					private static final long serialVersionUID = 1L;
 

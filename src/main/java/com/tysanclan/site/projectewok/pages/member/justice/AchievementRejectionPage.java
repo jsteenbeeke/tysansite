@@ -55,8 +55,8 @@ public class AchievementRejectionPage
 		final CheckBox charterCheckBox = new CheckBox("charter",
 				new Model<Boolean>(false));
 		final DropDownChoice<Regulation> regulationChoice = new DropDownChoice<Regulation>(
-				"regulation", ModelMaker.wrap((Regulation) null), ModelMaker
-				.wrapChoices(regulationDAO.findByFilter(filter).toJavaList()),
+				"regulation", ModelMaker.wrap(Regulation.class), ModelMaker
+				.wrapList(regulationDAO.findByFilter(filter).toJavaList()),
 				new NaiveRenderer<Regulation>() {
 					private static final long serialVersionUID = 1L;
 
@@ -73,7 +73,7 @@ public class AchievementRejectionPage
 
 		Form<AchievementProposal> rejectForm = new Form<AchievementProposal>(
 				"rejectForm", new CompoundPropertyModel<AchievementProposal>(
-				ModelMaker.wrap(proposal))) {
+			ModelMaker.wrap(proposal))) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -82,7 +82,7 @@ public class AchievementRejectionPage
 
 			@Override
 			public void onSubmit() {
-				if (charterCheckBox.getModelObject() != true
+				if (!charterCheckBox.getModelObject()
 						&& regulationChoice.getModelObject() == null) {
 					error("You must select a regulation or indicate that there is a Charter violation");
 					return;

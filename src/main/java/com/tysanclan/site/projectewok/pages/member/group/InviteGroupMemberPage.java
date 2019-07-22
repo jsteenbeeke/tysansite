@@ -89,7 +89,7 @@ public class InviteGroupMemberPage extends AbstractMemberPage {
 
 		users.sort(Comparator.comparing(o -> o.getUsername().toLowerCase()));
 
-		addForm.add(new DropDownChoice<>("user", ModelMaker.wrap((User) null),
+		addForm.add(new DropDownChoice<User>("user", ModelMaker.wrap(User.class),
 				ModelMaker.wrap(users)));
 
 		add(addForm);

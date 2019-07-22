@@ -111,11 +111,11 @@ public class CommitteePage extends AbstractMemberPage {
 
 		List<User> users = userService.getMembers();
 		createForm.add(new DropDownChoice<User>("leader",
-				ModelMaker.wrap((User) null, true), ModelMaker.wrap(users))
+											ModelMaker.wrap(User.class), ModelMaker.wrap(users))
 				.setNullValid(false));
 
 		createForm.add(new BBCodeTextArea("description", ""));
-		createForm.add(new TextField<String>("name", new Model<String>("")));
+		createForm.add(new TextField<String>("name", Model.of("")));
 
 		add(createForm);
 
@@ -123,7 +123,7 @@ public class CommitteePage extends AbstractMemberPage {
 		filter.name().orderBy(true);
 
 		add(new ListView<Committee>("committees", ModelMaker
-				.wrap(committeeDAO.findByFilter(filter).toJavaList())) {
+			.wrap(committeeDAO.findByFilter(filter).toJavaList())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -133,14 +133,14 @@ public class CommitteePage extends AbstractMemberPage {
 				item.add(new Label("name", committee.getName()));
 				item.add(new MemberListItem("chairman", committee.getLeader()));
 				IconLink.Builder builder = new Builder(
-						"images/icons/delete.png",
-						new DisbandResponder(committee));
+					"images/icons/delete.png",
+					new DisbandResponder(committee));
 				item.add(builder.newInstance("disband"));
 
 			}
 
 			class DisbandResponder
-					extends IconLink.DefaultClickResponder<Committee> {
+				extends IconLink.DefaultClickResponder<Committee> {
 				private static final long serialVersionUID = 1L;
 
 				/**

@@ -1,17 +1,17 @@
 /**
  * Tysan Clan Website
  * Copyright (C) 2008-2013 Jeroen Steenbeeke and Ties van de Ven
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -91,7 +91,7 @@ public class MessageListPage extends AbstractMemberPage {
 
 		ConversationFilter filter = new ConversationFilter();
 		Seq<Conversation> participationIds = participationDAO
-				.properties(participationFilter.conversation(), participationFilter);
+			.properties(participationFilter.conversation());
 		if (participationIds.isEmpty()) {
 			filter.id().equalTo(-1L);
 		} else {
@@ -101,7 +101,7 @@ public class MessageListPage extends AbstractMemberPage {
 		filter.lastResponse().orderBy(false);
 
 		DataView<Conversation> messageView = new DataView<Conversation>(
-				"messages", FilterDataProvider.of(filter, conversationDAO)) {
+			"messages", FilterDataProvider.of(filter, conversationDAO)) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -131,18 +131,18 @@ public class MessageListPage extends AbstractMemberPage {
 				}
 
 				item.add(new ContextImage("unread",
-						"images/icons/email_error.png").setVisible(
-						cp != null && cp.getReadMessages().size() != conv
-								.getMessages().size()));
+										  "images/icons/email_error.png").setVisible(
+					cp != null && cp.getReadMessages().size() != conv
+						.getMessages().size()));
 
 				Link<ConversationParticipation> link = new Link<ConversationParticipation>(
-						"link", ModelMaker.wrap(cp)) {
+					"link", ModelMaker.wrap(cp)) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void onClick() {
 						setResponsePage(
-								new ViewConversationPage(getModelObject()));
+							new ViewConversationPage(getModelObject()));
 					}
 				};
 
@@ -151,22 +151,22 @@ public class MessageListPage extends AbstractMemberPage {
 				item.add(link);
 				item.add(new Label("participants", builder.toString()));
 				item.add(new IconLink.Builder("images/icons/delete.png",
-						new DefaultClickResponder<ConversationParticipation>(
-								ModelMaker.wrap(cp)) {
+											  new DefaultClickResponder<ConversationParticipation>(
+												  ModelMaker.wrap(cp)) {
 
-							private static final long serialVersionUID = 1L;
+												  private static final long serialVersionUID = 1L;
 
-							@SpringBean
-							private MessageService messageService;
+												  @SpringBean
+												  private MessageService messageService;
 
-							@Override
-							public void onClick() {
-								messageService
-										.ceaseParticipation(getModelObject());
-								setResponsePage(new MessageListPage());
-							}
+												  @Override
+												  public void onClick() {
+													  messageService
+														  .ceaseParticipation(getModelObject());
+													  setResponsePage(new MessageListPage());
+												  }
 
-						}).newInstance("remove"));
+											  }).newInstance("remove"));
 
 			}
 
@@ -188,14 +188,14 @@ public class MessageListPage extends AbstractMemberPage {
 
 	private Form<Conversation> createNewMessageForm(String id) {
 		final TextField<String> titleField = new TextField<String>("title",
-				new Model<String>(""));
+																   new Model<String>(""));
 		titleField.setRequired(true);
 
 		List<User> users = userService.getMembers();
 		Collections.sort(users, new User.CaseInsensitiveUserComparator());
 
 		final ListMultipleChoice<User> userSelect = new ListMultipleChoice<User>(
-				"userselect", new IModel<Collection<User>>() {
+			"userselect", new IModel<Collection<User>>() {
 			private static final long serialVersionUID = 1L;
 
 			private IModel<List<User>> wrapped = null;
@@ -233,7 +233,7 @@ public class MessageListPage extends AbstractMemberPage {
 		}, ModelMaker.wrap(users));
 
 		final TextArea<String> editor = new BBCodeTextArea("messagecontent",
-				"");
+														   "");
 		editor.setRequired(true);
 
 		Form<Conversation> newMessageForm = new Form<Conversation>(id) {
@@ -249,8 +249,8 @@ public class MessageListPage extends AbstractMemberPage {
 				selectedUsers.addAll(userSelect.getModelObject());
 
 				_messageService.createConversation(getUser(), selectedUsers,
-						titleField.getModel().getObject(),
-						editor.getModel().getObject());
+												   titleField.getModel().getObject(),
+												   editor.getModel().getObject());
 
 				setResponsePage(new MessageListPage());
 

@@ -49,7 +49,7 @@ class UserGameRealmDAOImpl
 		filter.game(game);
 		filter.realm(realm);
 
-		return properties(filter.user(), filter).distinct().toJavaList();
+		return properties(filter.user()).distinct().toJavaList();
 	}
 
 	/**
@@ -60,7 +60,7 @@ class UserGameRealmDAOImpl
 		UserGameRealmFilter filter = createDefaultFilter();
 		filter.realm(realm);
 
-		return properties(filter.user(), filter).distinct().size();
+		return properties(filter.user()).distinct().size();
 	}
 
 	protected UserGameRealmFilter createDefaultFilter() {
@@ -77,7 +77,7 @@ class UserGameRealmDAOImpl
 		UserGameRealmFilter filter = createDefaultFilter();
 		filter.game(game);
 
-		return properties(filter.user(), filter).distinct().size();
+		return properties(filter.user()).distinct().size();
 
 	}
 

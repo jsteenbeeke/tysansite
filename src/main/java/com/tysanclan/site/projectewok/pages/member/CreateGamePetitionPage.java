@@ -112,7 +112,7 @@ public class CreateGamePetitionPage extends AbstractSingleAccordionMemberPage {
 		List<Realm> realms = realmService.getRealms();
 
 		DropDownChoice<Realm> realmChoice = new DropDownChoice<Realm>("realm",
-				ModelMaker.wrap((Realm) null), ModelMaker.wrapChoices(realms));
+				ModelMaker.wrap(Realm.class), ModelMaker.wrapList(realms));
 		realmChoice.setNullValid(true);
 		realmChoice.setVisible(realms.size() > 0);
 		realmChoice.add(new AjaxFormComponentUpdatingBehavior("onchange") {

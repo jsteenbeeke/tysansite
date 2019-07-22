@@ -97,8 +97,8 @@ public abstract class AbstractManualElectionPage extends AbstractMemberPage {
 					positionLabel.replaceWith(new Label("position",
 							new Model<>(preferences.size() + 1)));
 
-					userChoice.setChoices(ModelMaker.wrapChoices(remaining));
-					userChoice.setModel(ModelMaker.wrap((User) null, true));
+					userChoice.setChoices(ModelMaker.wrapList(remaining));
+					userChoice.setModel(ModelMaker.wrap(User.class));
 				}
 
 			}
@@ -121,8 +121,8 @@ public abstract class AbstractManualElectionPage extends AbstractMemberPage {
 		voteForm.add(new Label("position", new Model<Integer>(1)));
 
 		voteForm.add(new DropDownChoice<User>("candidate",
-				ModelMaker.wrap((User) null, true),
-				ModelMaker.wrapChoices(candidates)));
+				ModelMaker.wrap(User.class),
+				ModelMaker.wrapList(candidates)));
 
 		add(voteForm);
 	}

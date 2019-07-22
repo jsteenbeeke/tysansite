@@ -140,22 +140,15 @@ public class EditGroupForumModeratorPage extends TysanPage {
 
 		};
 
-		List<User> users = new LinkedList<User>();
-
-		users.addAll(group.getGroupMembers());
+		List<User> users = new LinkedList<User>(group.getGroupMembers());
 		users.removeAll(moderators);
 
-		Collections.sort(users, new Comparator<User>() {
+		users.sort((o1, o2) -> o1.getUsername().compareToIgnoreCase(o2.getUsername()));
 
-			@Override
-			public int compare(User o1, User o2) {
-				return o1.getUsername().compareToIgnoreCase(o2.getUsername());
-			}
-
-		});
+		IModel<User> userModel = users.isEmpty() ? ModelMaker.wrap(User.class) : ModelMaker.wrap(users.get(0));
 
 		addModeratorForm.add(new DropDownChoice<User>("userSelect",
-				ModelMaker.wrap(users.isEmpty() ? null : users.get(0), true),
+				userModel,
 				ModelMaker.wrap(users)).setNullValid(false));
 
 		addModeratorForm.setVisible(!users.isEmpty());

@@ -109,12 +109,12 @@ public class ProposeAchievementPage2 extends AbstractSingleAccordionMemberPage {
 		groupContainer.setOutputMarkupId(true);
 
 		final DropDownChoice<Game> gameChoice = new DropDownChoice<Game>("game",
-				ModelMaker.wrap((Game) null), ModelMaker.wrap(games),
+				ModelMaker.wrap(Game.class), ModelMaker.wrap(games),
 				LambdaRenderer.of(Game::getName));
 		gameContainer.add(gameChoice);
 
 		final DropDownChoice<Group> groupChoice = new DropDownChoice<Group>(
-				"group", ModelMaker.wrap((Group) null),
+				"group", ModelMaker.wrap(Group.class),
 				ModelMaker.wrap(groups));
 		groupContainer.add(groupChoice);
 

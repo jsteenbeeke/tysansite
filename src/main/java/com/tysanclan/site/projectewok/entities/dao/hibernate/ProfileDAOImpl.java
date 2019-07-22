@@ -53,6 +53,6 @@ class ProfileDAOImpl extends HibernateDAO<Profile, ProfileFilter>
 
 		);
 
-		return properties(filter.user(), filter).toJavaList();
+		return properties(filter.user()).toJavaList();
 	}
 }

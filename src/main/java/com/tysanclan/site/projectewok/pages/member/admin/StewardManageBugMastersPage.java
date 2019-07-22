@@ -1,17 +1,17 @@
 /**
  * Tysan Clan Website
  * Copyright (C) 2008-2013 Jeroen Steenbeeke and Ties van de Ven
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -41,7 +41,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 @TysanMemberSecured
 public class StewardManageBugMastersPage
-		extends AbstractSingleAccordionMemberPage {
+	extends AbstractSingleAccordionMemberPage {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean
@@ -58,10 +58,10 @@ public class StewardManageBugMastersPage
 
 		if (!getUser().equals(roleService.getSteward()))
 			throw new RestartResponseAtInterceptPageException(
-					AccessDeniedPage.class);
+				AccessDeniedPage.class);
 
 		add(new DataView<User>("current",
-				FilterDataProvider.of(getFilter(true, true), userDAO)) {
+						   FilterDataProvider.of(getFilter(true, true), userDAO)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -70,16 +70,16 @@ public class StewardManageBugMastersPage
 
 				item.add(new MemberListItem("user", user));
 				item.add(new IconLink.Builder("images/icons/delete.png",
-						new DeleteResponder(user)).newInstance("delete"));
+											  new DeleteResponder(user)).newInstance("delete"));
 
 			}
 
 		});
 
 		final DropDownChoice<User> userChoice = new DropDownChoice<User>("user",
-				ModelMaker.wrap((User) null), ModelMaker.wrapChoices(
-				userDAO.findByFilter(getFilter(false, false)).toJavaList()),
-				LambdaRenderer.of(User::getUsername));
+																		 ModelMaker.wrap(User.class), ModelMaker.wrapList(
+			userDAO.findByFilter(getFilter(false, false)).toJavaList()),
+																		 LambdaRenderer.of(User::getUsername));
 
 		Form<User> addMasterForm = new Form<User>("addMasterForm") {
 			private static final long serialVersionUID = 1L;
@@ -103,7 +103,7 @@ public class StewardManageBugMastersPage
 	 * @return
 	 */
 	private UserFilter getFilter(boolean bugReportMaster,
-			boolean includeJuniorAndLower) {
+								 boolean includeJuniorAndLower) {
 		UserFilter filter = new UserFilter();
 		filter.bugReportMaster(bugReportMaster);
 		filter.rank(Rank.CHANCELLOR);

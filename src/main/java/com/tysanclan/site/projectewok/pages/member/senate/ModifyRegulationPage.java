@@ -99,44 +99,43 @@ public class ModifyRegulationPage extends AbstractMemberPage {
 
 		};
 
-		form.add(new TextField<>("newTitle", new Model<>("")));
+		form.add(new TextField<String>("newTitle", Model.of("")));
 
 		form.add(new BBCodeTextArea("description", "").setRequired(true));
 
-		form.add(new Label("example", new Model<>(""))
+		form.add(new Label("example", Model.of(""))
 				.setEscapeModelStrings(false).setVisible(false)
 				.setOutputMarkupId(true).setOutputMarkupPlaceholderTag(true));
 
-		form.add(new DropDownChoice<>("regulation",
-				ModelMaker.wrap((Regulation) null, true),
-				ModelMaker.wrapChoices(regulationDAO.findAll().toJavaList()),
-				new NaiveRenderer<Regulation>() {
-					private static final long serialVersionUID = 1L;
+		form.add(new DropDownChoice<Regulation>("regulation",
+				ModelMaker.wrap(Regulation.class),
+				ModelMaker.wrapList(regulationDAO.findAll().toJavaList()),
+									  new NaiveRenderer<Regulation>() {
+										  private static final long serialVersionUID = 1L;
 
-					/**
-					 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(java.lang.Object)
-					 */
-					@Override
-					public Object getDisplayValue(Regulation object) {
-						return object.getName();
-					}
+										  /**
+										   * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(java.lang.Object)
+										   */
+										  @Override
+										  public Object getDisplayValue(Regulation object) {
+											  return object.getName();
+										  }
 
-					/**
-					 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getIdValue(java.lang.Object,
-					 * int)
-					 */
-					@Override
-					public String getIdValue(Regulation object, int index) {
-						return object.getId().toString();
-					}
-				}).setNullValid(false)
+										  /**
+										   * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getIdValue(java.lang.Object,
+										   * int)
+										   */
+										  @Override
+										  public String getIdValue(Regulation object, int index) {
+											  return object.getId().toString();
+										  }
+									  }).setNullValid(false)
 				.add(new AjaxFormComponentUpdatingBehavior("onchange") {
 					private static final long serialVersionUID = 1L;
 
 					@SuppressWarnings("unchecked")
 					@Override
 					protected void onUpdate(AjaxRequestTarget target) {
-						System.out.println("FOO!!");
 						Form<Regulation> regForm = (Form<Regulation>) getComponent()
 								.getParent();
 						Label example = (Label) regForm.get("example");
