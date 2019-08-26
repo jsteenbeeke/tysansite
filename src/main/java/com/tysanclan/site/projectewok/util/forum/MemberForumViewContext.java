@@ -55,10 +55,16 @@ public class MemberForumViewContext extends AbstractForumViewContext {
 				.from(GroupForum.class);
 		groupForumSubquery.select(groupForumRoot.get(GroupForum_.id));
 
+		Subquery<Long> userGroupForumSubquery = criteriaQuery.subquery(Long.class);
+		Root<GroupForum> userGroupForumRoot = userGroupForumSubquery
+			.from(GroupForum.class);
+		userGroupForumSubquery.select(userGroupForumRoot.get(GroupForum_.id));
+		userGroupForumSubquery.where(userGroupForumRoot.get(GroupForum_.group).in(groupSubquery));
+
 		subquery.select(subqueryRoot);
 		subquery.where(criteriaBuilder.or(criteriaBuilder
 												  .not(subqueryRoot.get(Forum_.id).in(groupForumSubquery)),
-										  subqueryRoot.get(GroupForum_.id).in(groupSubquery)),
+										  subqueryRoot.get(GroupForum_.id).in(userGroupForumSubquery)),
 					   criteriaBuilder.equal(subqueryRoot.get(Forum_.category),
 											 root.get(ForumCategory_.id)));
 
@@ -92,10 +98,16 @@ public class MemberForumViewContext extends AbstractForumViewContext {
 				.from(GroupForum.class);
 		groupForumSubquery.select(groupForumRoot.get(GroupForum_.id));
 
+		Subquery<Long> userGroupForumSubquery = criteriaQuery.subquery(Long.class);
+		Root<GroupForum> userGroupForumRoot = userGroupForumSubquery
+			.from(GroupForum.class);
+		userGroupForumSubquery.select(userGroupForumRoot.get(GroupForum_.id));
+		userGroupForumSubquery.where(userGroupForumRoot.get(GroupForum_.group).in(groupSubquery));
+
 		subquery.select(subqueryRoot);
 		subquery.where(criteriaBuilder.or(criteriaBuilder
 												  .not(subqueryRoot.get(Forum_.id).in(groupForumSubquery)),
-										  subqueryRoot.get(GroupForum_.id).in(groupSubquery)),
+										  subqueryRoot.get(GroupForum_.id).in(userGroupForumSubquery)),
 					   criteriaBuilder.equal(subqueryRoot.get(Forum_.category),
 											 root.get(ForumCategory_.id)));
 
@@ -125,10 +137,16 @@ public class MemberForumViewContext extends AbstractForumViewContext {
 				.from(GroupForum.class);
 		groupForumSubquery.select(groupForumRoot.get(GroupForum_.id));
 
+		Subquery<Long> userGroupForumSubquery = criteriaQuery.subquery(Long.class);
+		Root<GroupForum> userGroupForumRoot = userGroupForumSubquery
+			.from(GroupForum.class);
+		userGroupForumSubquery.select(userGroupForumRoot.get(GroupForum_.id));
+		userGroupForumSubquery.where(userGroupForumRoot.get(GroupForum_.group).in(groupSubquery));
+
 		criteriaQuery.select(criteriaBuilder.count(root));
 		criteriaQuery.where(criteriaBuilder.or(criteriaBuilder
 													   .not(root.get(Forum_.id).in(groupForumSubquery)),
-											   root.get(GroupForum_.id).in(groupSubquery)),
+											   root.get(GroupForum_.id).in(userGroupForumSubquery)),
 							criteriaBuilder.equal(root.get(Forum_.category), context));
 
 		return count(em, criteriaQuery);
@@ -153,10 +171,16 @@ public class MemberForumViewContext extends AbstractForumViewContext {
 				.from(GroupForum.class);
 		groupForumSubquery.select(groupForumRoot.get(GroupForum_.id));
 
+		Subquery<Long> userGroupForumSubquery = criteriaQuery.subquery(Long.class);
+		Root<GroupForum> userGroupForumRoot = userGroupForumSubquery
+			.from(GroupForum.class);
+		userGroupForumSubquery.select(userGroupForumRoot.get(GroupForum_.id));
+		userGroupForumSubquery.where(userGroupForumRoot.get(GroupForum_.group).in(groupSubquery));
+
 		criteriaQuery.select(root);
 		criteriaQuery.where(criteriaBuilder.or(criteriaBuilder
 													   .not(root.get(Forum_.id).in(groupForumSubquery)),
-											   root.get(GroupForum_.id).in(groupSubquery)),
+											   root.get(GroupForum_.id).in(userGroupForumSubquery)),
 							criteriaBuilder.equal(root.get(Forum_.category), context))
 					 .orderBy(criteriaBuilder.asc(root.get(Forum_.position)));
 

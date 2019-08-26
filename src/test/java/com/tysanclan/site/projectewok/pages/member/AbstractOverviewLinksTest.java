@@ -60,8 +60,8 @@ public abstract class AbstractOverviewLinksTest extends TysanPageTester {
 	public void setToOverviewPage() {
 		logIn(testUser);
 
-		getTester().startPage(OverviewPage.class);
-		getTester().assertRenderedPage(OverviewPage.class);
+		wicket().startPage(OverviewPage.class);
+		wicket().assertRenderedPage(OverviewPage.class);
 	}
 
 	@After
@@ -75,10 +75,10 @@ public abstract class AbstractOverviewLinksTest extends TysanPageTester {
 	}
 
 	protected final void verifyLink(String id, Class<? extends Page> target) {
-		getTester().assertEnabled(id);
-		getTester().assertVisible(id);
+		wicket().assertEnabled(id);
+		wicket().assertVisible(id);
 
-		getTester().clickLink(id, false);
-		getTester().assertRenderedPage(target);
+		wicket().clickLink(id, false);
+		wicket().assertRenderedPage(target);
 	}
 }

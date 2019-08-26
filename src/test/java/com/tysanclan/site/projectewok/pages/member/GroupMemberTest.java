@@ -12,7 +12,7 @@ public class GroupMemberTest extends AbstractClickThroughTester {
 	@Test
 	public void testLeave() {
 		overview();
-		getTester().clickLink("groups:0:grouppanel:leave");
-		getTester().assertRenderedPage(LeaveGroupPage.class);
+		wicket().clickLink("groups:0:grouppanel:leave");
+		wicket().assertRenderedPage(LeaveGroupPage.class);
 	}
 }

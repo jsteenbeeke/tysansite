@@ -101,73 +101,73 @@ public abstract class AbstractClickThroughTester extends TysanPageTester {
 	@Test
 	public void testMessages() {
 		overview();
-		getTester().clickLink("basicpanel:messages:label:link");
-		getTester().assertRenderedPage(MessageListPage.class);
+		wicket().clickLink("basicpanel:messages:label:link");
+		wicket().assertRenderedPage(MessageListPage.class);
 	}
 
 	@Test
 	public void testNotifications() {
 		overview();
-		getTester().clickLink("basicpanel:notification:label:link");
-		getTester().assertRenderedPage(NotificationsPage.class);
+		wicket().clickLink("basicpanel:notification:label:link");
+		wicket().assertRenderedPage(NotificationsPage.class);
 	}
 
 	@Test
 	public void testPreferences() {
 		overview();
-		getTester().clickLink("basicpanel:preferences");
-		getTester().assertRenderedPage(MemberPreferencesPage.class);
+		wicket().clickLink("basicpanel:preferences");
+		wicket().assertRenderedPage(MemberPreferencesPage.class);
 	}
 
 	@Test
 	public void testPastElections() {
 		overview();
-		getTester().clickLink("basicpanel:pastelections");
-		getTester().assertRenderedPage(PastElectionsPage.class);
+		wicket().clickLink("basicpanel:pastelections");
+		wicket().assertRenderedPage(PastElectionsPage.class);
 	}
 
 	@Test
 	public void testLogPage() {
 		overview();
-		getTester().clickLink("basicpanel:log");
-		getTester().assertRenderedPage(LogPage.class);
+		wicket().clickLink("basicpanel:log");
+		wicket().assertRenderedPage(LogPage.class);
 	}
 
 	@Test
 	public void testJoinGroup() {
 		overview();
-		getTester().clickLink("basicpanel:joingroup:label:link");
-		getTester().assertRenderedPage(JoinGroupPage.class);
+		wicket().clickLink("basicpanel:joingroup:label:link");
+		wicket().assertRenderedPage(JoinGroupPage.class);
 	}
 
 	@Test
 	public void testFinancesPage() {
 		overview();
-		getTester().clickLink("basicpanel:finance");
-		getTester().assertRenderedPage(FinancePage.class);
+		wicket().clickLink("basicpanel:finance");
+		wicket().assertRenderedPage(FinancePage.class);
 	}
 
 	@Test
 	public void testClanStats() {
 		overview();
-		getTester().clickLink("basicpanel:clanstats");
-		getTester().assertRenderedPage(ClanStatisticsPage.class);
+		wicket().clickLink("basicpanel:clanstats");
+		wicket().assertRenderedPage(ClanStatisticsPage.class);
 	}
 
 	@Test
 	public void testCalendarPage() {
 		overview();
-		getTester().clickLink("basicpanel:calendar:label:link");
-		getTester().assertRenderedPage(CalendarPage.class);
+		wicket().clickLink("basicpanel:calendar:label:link");
+		wicket().assertRenderedPage(CalendarPage.class);
 	}
 
 	@Test
 	public void testTrial() {
 		if (allowTrial) {
 			overview();
-			getTester().assertComponent("basicpanel:trial", Link.class);
-			getTester().clickLink("basicpanel:trial");
-			getTester().assertRenderedPage(StartTrialPage.class);
+			wicket().assertComponent("basicpanel:trial", Link.class);
+			wicket().clickLink("basicpanel:trial");
+			wicket().assertRenderedPage(StartTrialPage.class);
 		}
 	}
 
@@ -175,64 +175,64 @@ public abstract class AbstractClickThroughTester extends TysanPageTester {
 	public void testComplaintPage() {
 		if (allowTrial) {
 			overview();
-			getTester().assertComponent("basicpanel:complaint", Link.class);
-			getTester().clickLink("basicpanel:complaint");
-			getTester().assertRenderedPage(TruthsayerComplaintPage.class);
+			wicket().assertComponent("basicpanel:complaint", Link.class);
+			wicket().clickLink("basicpanel:complaint");
+			wicket().assertRenderedPage(TruthsayerComplaintPage.class);
 		}
 	}
 
 	@Test
 	public void testSkypePage() {
 		overview();
-		getTester().clickLink("basicpanel:skype");
-		getTester().assertRenderedPage(SkypeOverviewPage.class);
+		wicket().clickLink("basicpanel:skype");
+		wicket().assertRenderedPage(SkypeOverviewPage.class);
 	}
 
 	@Test
 	public void testGameAccounts() {
 		overview();
-		getTester().clickLink("basicpanel:accounts:label:link");
-		getTester().assertRenderedPage(EditAccountsPage.class);
+		wicket().clickLink("basicpanel:accounts:label:link");
+		wicket().assertRenderedPage(EditAccountsPage.class);
 	}
 
 	@Test
 	public void testRequestAchievement() {
 		overview();
-		getTester().clickLink("basicpanel:requestAchievement");
-		getTester().assertRenderedPage(RequestAchievementPage.class);
+		wicket().clickLink("basicpanel:requestAchievement");
+		wicket().assertRenderedPage(RequestAchievementPage.class);
 	}
 
 	@Test
 	public void testBugLink() {
 		overview();
-		getTester().clickLink("basicpanel:bugs:label:link");
-		getTester().assertRenderedPage(BugOverviewPage.class);
+		wicket().clickLink("basicpanel:bugs:label:link");
+		wicket().assertRenderedPage(BugOverviewPage.class);
 	}
 
 	@Test
 	public void testNewBugLink() {
 		overview();
-		getTester().clickLink("basicpanel:newbug:label:link");
-		getTester().assertRenderedPage(ReportBugPage.class);
+		wicket().clickLink("basicpanel:newbug:label:link");
+		wicket().assertRenderedPage(ReportBugPage.class);
 	}
 
 	@Test
 	public void testFeaturesLink() {
 		overview();
-		getTester().clickLink("basicpanel:features:label:link");
-		getTester().assertRenderedPage(FeatureOverviewPage.class);
+		wicket().clickLink("basicpanel:features:label:link");
+		wicket().assertRenderedPage(FeatureOverviewPage.class);
 	}
 
 	@Test
 	public void testNewFeatureLink() {
 		overview();
-		getTester().clickLink("basicpanel:newfeature:label:link");
-		getTester().assertRenderedPage(RequestFeaturePage.class);
+		wicket().clickLink("basicpanel:newfeature:label:link");
+		wicket().assertRenderedPage(RequestFeaturePage.class);
 	}
 
 	protected void overview() {
-		getTester().startPage(OverviewPage.class);
-		getTester().assertRenderedPage(OverviewPage.class);
+		wicket().startPage(OverviewPage.class);
+		wicket().assertRenderedPage(OverviewPage.class);
 	}
 
 	protected List<String> generateLinks() {
@@ -245,7 +245,7 @@ public abstract class AbstractClickThroughTester extends TysanPageTester {
 		final List<String> links = Lists.newArrayList();
 
 		for (WicketTesterHelper.ComponentData obj : WicketTesterHelper
-				.getComponentData(getTester().getLastRenderedPage())) {
+				.getComponentData(wicket().getLastRenderedPage())) {
 			final String path = obj.path;
 			if (prefix == null || path.startsWith(prefix)) {
 				paths.add(obj.path);
@@ -253,7 +253,7 @@ public abstract class AbstractClickThroughTester extends TysanPageTester {
 		}
 
 		for (String path : paths) {
-			Result result = getTester().isComponent(path, Link.class);
+			Result result = wicket().isComponent(path, Link.class);
 			if (!result.wasFailed()) {
 				links.add(path);
 			}

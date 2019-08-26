@@ -66,7 +66,7 @@ public interface GroupService {
 
 	public void declineRequest(User decliner, GroupCreationRequest request);
 
-	public void acceptRequest(User accepter, GroupCreationRequest request);
+	Group acceptRequest(User accepter, GroupCreationRequest request);
 
 	public void setJoinPolicy(Group group, JoinPolicy joinPolicy);
 

@@ -27,88 +27,88 @@ public class ChancellorTest extends AbstractClickThroughTester {
 	@Test
 	public void testGroupRequests() {
 		overview();
-		getTester().clickLink("chancellorpanel:grouprequest:label:link");
-		getTester().assertRenderedPage(GroupRequestApprovalPage.class);
+		wicket().clickLink("chancellorpanel:grouprequest:label:link");
+		wicket().assertRenderedPage(GroupRequestApprovalPage.class);
 	}
 
 	@Test
 	public void testRoleManagement() {
 		overview();
-		getTester().clickLink("chancellorpanel:roles");
-		getTester().assertRenderedPage(RolesManagementPage.class);
+		wicket().clickLink("chancellorpanel:roles");
+		wicket().assertRenderedPage(RolesManagementPage.class);
 	}
 
 	@Test
 	public void testCommitteePage() {
 		overview();
-		getTester().clickLink("chancellorpanel:committee");
-		getTester().assertRenderedPage(CommitteePage.class);
+		wicket().clickLink("chancellorpanel:committee");
+		wicket().assertRenderedPage(CommitteePage.class);
 	}
 
 	@Test
 	public void testNominateTruthsayer() {
 		overview();
-		getTester().clickLink("chancellorpanel:truthsayernomination");
-		getTester().assertRenderedPage(TruthsayerNominationPage.class);
+		wicket().clickLink("chancellorpanel:truthsayernomination");
+		wicket().assertRenderedPage(TruthsayerNominationPage.class);
 	}
 
 	@Test
 	public void testForumManagement() {
 		overview();
-		getTester().clickLink("chancellorpanel:forummanagement");
-		getTester().assertRenderedPage(ForumManagementPage.class);
+		wicket().clickLink("chancellorpanel:forummanagement");
+		wicket().assertRenderedPage(ForumManagementPage.class);
 	}
 
 	@Test
 	public void testStepdown() {
 		overview();
-		getTester().clickLink("chancellorpanel:stepdown");
-		getTester().assertRenderedPage(ChancellorStepDownPage.class);
+		wicket().clickLink("chancellorpanel:stepdown");
+		wicket().assertRenderedPage(ChancellorStepDownPage.class);
 	}
 
 	@Test
 	public void testAddRegulation() {
 		overview();
-		getTester().clickLink("chancellorpanel:addregulation");
-		getTester().assertRenderedPage(AddRegulationPage.class);
+		wicket().clickLink("chancellorpanel:addregulation");
+		wicket().assertRenderedPage(AddRegulationPage.class);
 	}
 
 	@Test
 	public void testModifyRegulation() {
 		overview();
-		getTester().clickLink("chancellorpanel:modifyregulation");
-		getTester().assertRenderedPage(ModifyRegulationPage.class);
+		wicket().clickLink("chancellorpanel:modifyregulation");
+		wicket().assertRenderedPage(ModifyRegulationPage.class);
 	}
 
 	@Test
 	public void testRepealRegulation() {
 		overview();
-		getTester().clickLink("chancellorpanel:repealregulation");
-		getTester().assertRenderedPage(RepealRegulationPage.class);
+		wicket().clickLink("chancellorpanel:repealregulation");
+		wicket().assertRenderedPage(RepealRegulationPage.class);
 	}
 
 	@Test
 	public void testRealmManagement() {
 		overview();
-		getTester().clickLink("chancellorpanel:realms");
-		getTester().assertRenderedPage(RealmManagementPage.class);
-		getTester().assertComponent("realms", ListView.class);
-		getTester().assertComponent("realms:0:edit:link", Link.class);
+		wicket().clickLink("chancellorpanel:realms");
+		wicket().assertRenderedPage(RealmManagementPage.class);
+		wicket().assertComponent("realms", ListView.class);
+		wicket().assertComponent("realms:0:edit:link", Link.class);
 
-		getTester().clickLink("realms:0:edit:link");
-		getTester().assertRenderedPage(EditRealmSupervisorPage.class);
+		wicket().clickLink("realms:0:edit:link");
+		wicket().assertRenderedPage(EditRealmSupervisorPage.class);
 	}
 
 	@Test
 	public void testGameManagement() {
 		overview();
-		getTester().clickLink("chancellorpanel:games");
-		getTester().assertRenderedPage(GameManagementPage.class);
-		getTester().assertComponent("games", ListView.class);
-		getTester().assertComponent("games:0:edit:link", Link.class);
+		wicket().clickLink("chancellorpanel:games");
+		wicket().assertRenderedPage(GameManagementPage.class);
+		wicket().assertComponent("games", ListView.class);
+		wicket().assertComponent("games:0:edit:link", Link.class);
 
-		getTester().clickLink("games:0:edit:link");
-		getTester().assertRenderedPage(EditGameSupervisorPage.class);
+		wicket().clickLink("games:0:edit:link");
+		wicket().assertRenderedPage(EditGameSupervisorPage.class);
 	}
 
 	@Test
@@ -119,12 +119,12 @@ public class ChancellorTest extends AbstractClickThroughTester {
 		roleService.removeRoles(herald);
 
 		overview();
-		getTester().assertComponent("chancellorpanel", ChancellorPanel.class);
-		getTester().assertComponent("chancellorpanel:inactivekeyrole",
-				RequiresAttentionLink.class);
+		wicket().assertComponent("chancellorpanel", ChancellorPanel.class);
+		wicket().assertComponent("chancellorpanel:inactivekeyrole",
+								 RequiresAttentionLink.class);
 
-		getTester().clickLink("chancellorpanel:inactivekeyrole:label:link");
-		getTester().assertRenderedPage(InactiveKeyRoleTransferPage.class);
+		wicket().clickLink("chancellorpanel:inactivekeyrole:label:link");
+		wicket().assertRenderedPage(InactiveKeyRoleTransferPage.class);
 
 		roleService.assignTo(herald.getId(),
 				roleService.getRoleByType(Role.RoleType.HERALD).getId(),
@@ -134,8 +134,8 @@ public class ChancellorTest extends AbstractClickThroughTester {
 	@Test
 	public void testComplaints() {
 		overview();
-		getTester().clickLink("chancellorpanel:complaints:label:link");
-		getTester().assertRenderedPage(ChancellorTruthsayerComplaintPage.class);
+		wicket().clickLink("chancellorpanel:complaints:label:link");
+		wicket().assertRenderedPage(ChancellorTruthsayerComplaintPage.class);
 	}
 
 }

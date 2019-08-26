@@ -49,17 +49,17 @@ public class PublicPagesTest extends TysanPageTester {
 	@Test
 	public void testForumPublicView() {
 		testPage(ForumOverviewPage.class);
-		getTester().startPage(ForumOverviewPage.class);
-		getTester().assertRenderedPage(ForumOverviewPage.class);
-		getTester().clickLink("forums:categories:1:forums:2:forumlink:link");
-		getTester().assertRenderedPage(ForumPage.class);
-		getTester().clickLink("threads:threads:1:postlink:link");
-		getTester().assertRenderedPage(ForumThreadPage.class);
+		wicket().startPage(ForumOverviewPage.class);
+		wicket().assertRenderedPage(ForumOverviewPage.class);
+		wicket().clickLink("forums:categories:1:forums:2:forumlink:link");
+		wicket().assertRenderedPage(ForumPage.class);
+		wicket().clickLink("threads:threads:1:postlink:link");
+		wicket().assertRenderedPage(ForumThreadPage.class);
 
 	}
 
 	public void testPage(Class<? extends Page> pageClass) {
-		getTester().startPage(pageClass);
-		getTester().assertRenderedPage(pageClass);
+		wicket().startPage(pageClass);
+		wicket().assertRenderedPage(pageClass);
 	}
 }

@@ -510,8 +510,8 @@ class GroupServiceImpl
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
-	public void acceptRequest(User accepter, GroupCreationRequest request) {
-		groupCreationRequestDAO.load(request.getId()).forEach(_request -> {
+	public Group acceptRequest(User accepter, GroupCreationRequest request) {
+		return groupCreationRequestDAO.load(request.getId()).map(_request -> {
 
 			Group group;
 
@@ -548,7 +548,8 @@ class GroupServiceImpl
 			notificationService.notifyUser(_request.getRequester(),
 					"Your request to create a group called " + request.getName()
 							+ " has been accepted");
-		});
+			return group;
+		}).getOrElseThrow(IllegalStateException::new);
 
 	}
 

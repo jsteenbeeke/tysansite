@@ -13,6 +13,6 @@ public class TrialMemberTest extends AbstractClickThroughTester {
 	@Test
 	public void testMentorPanel() {
 		overview();
-		getTester().assertComponent("mentor", PupilPanel.class);
+		wicket().assertComponent("mentor", PupilPanel.class);
 	}
 }

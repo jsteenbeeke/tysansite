@@ -16,36 +16,36 @@ public class TruthsayerTest extends AbstractClickThroughTester {
 	@Test
 	public void testForumUserLink() {
 		overview();
-		getTester().clickLink("truthsayerpanel:forumuserlink");
-		getTester().assertRenderedPage(ForumUserManagementPage.class);
+		wicket().clickLink("truthsayerpanel:forumuserlink");
+		wicket().assertRenderedPage(ForumUserManagementPage.class);
 	}
 
 	@Test
 	public void testImpeachment() {
 		overview();
-		getTester().clickLink("truthsayerpanel:impeachlink");
-		getTester().assertRenderedPage(ImpeachmentInitiationPage.class);
+		wicket().clickLink("truthsayerpanel:impeachlink");
+		wicket().assertRenderedPage(ImpeachmentInitiationPage.class);
 	}
 
 	@Test
 	public void testStepDown() {
 		overview();
-		getTester().clickLink("truthsayerpanel:stepdown");
-		getTester().assertRenderedPage(TruthsayerStepDownPage.class);
+		wicket().clickLink("truthsayerpanel:stepdown");
+		wicket().assertRenderedPage(TruthsayerStepDownPage.class);
 	}
 
 	@Test
 	public void testUntenability() {
 		overview();
-		getTester().clickLink("truthsayerpanel:untenable");
-		getTester().assertRenderedPage(UntenabilityPage.class);
+		wicket().clickLink("truthsayerpanel:untenable");
+		wicket().assertRenderedPage(UntenabilityPage.class);
 	}
 
 	@Test
 	public void testEditUser() {
 		overview();
-		getTester().clickLink("truthsayerpanel:truthsayerEditUserPage");
-		getTester().assertRenderedPage(TruthSayerEditUserPage.class);
+		wicket().clickLink("truthsayerpanel:truthsayerEditUserPage");
+		wicket().assertRenderedPage(TruthSayerEditUserPage.class);
 	}
 
 }

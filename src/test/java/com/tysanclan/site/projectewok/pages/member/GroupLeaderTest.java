@@ -15,47 +15,47 @@ public class GroupLeaderTest extends AbstractClickThroughTester {
 	@Test
 	public void testGroupDescription() {
 		overview();
-		getTester().clickLink("groups:0:grouppanel:editdescription");
-		getTester().assertRenderedPage(EditGroupDescriptionPage.class);
+		wicket().clickLink("groups:0:grouppanel:editdescription");
+		wicket().assertRenderedPage(EditGroupDescriptionPage.class);
 	}
 
 	@Test
 	public void testEditMOTD() {
 		overview();
-		getTester().clickLink("groups:0:grouppanel:editmotd:link");
-		getTester().assertRenderedPage(EditMOTDPage.class);
+		wicket().clickLink("groups:0:grouppanel:editmotd:link");
+		wicket().assertRenderedPage(EditMOTDPage.class);
 	}
 
 	@Test
 	public void testInvites() {
 		overview();
-		getTester().assertComponent("groups:0:grouppanel",
-				GroupOverviewPanel.class);
-		getTester().assertComponent("groups:0:grouppanel:invite", Link.class);
+		wicket().assertComponent("groups:0:grouppanel",
+								 GroupOverviewPanel.class);
+		wicket().assertComponent("groups:0:grouppanel:invite", Link.class);
 
-		getTester().clickLink("groups:0:grouppanel:invite");
-		getTester().assertRenderedPage(InviteGroupMemberPage.class);
+		wicket().clickLink("groups:0:grouppanel:invite");
+		wicket().assertRenderedPage(InviteGroupMemberPage.class);
 	}
 
 	@Test
 	public void testGroupForums() {
 		overview();
-		getTester().clickLink("groups:0:grouppanel:forums");
-		getTester().assertRenderedPage(GroupForumManagementPage.class);
+		wicket().clickLink("groups:0:grouppanel:forums");
+		wicket().assertRenderedPage(GroupForumManagementPage.class);
 	}
 
 	@Test
 	public void testGroupManagement() {
 		overview();
-		getTester().clickLink("groups:0:grouppanel:management");
-		getTester().assertRenderedPage(GroupMemberManagementPage.class);
+		wicket().clickLink("groups:0:grouppanel:management");
+		wicket().assertRenderedPage(GroupMemberManagementPage.class);
 	}
 
 	@Test
 	public void testLeave() {
 		overview();
-		getTester().clickLink("groups:0:grouppanel:leave");
-		getTester().assertRenderedPage(LeaveGroupPage.class);
+		wicket().clickLink("groups:0:grouppanel:leave");
+		wicket().assertRenderedPage(LeaveGroupPage.class);
 	}
 
 }

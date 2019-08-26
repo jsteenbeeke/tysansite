@@ -15,29 +15,29 @@ public class TreasurerTest extends AbstractClickThroughTester {
 	@Test
 	public void testFinances() {
 		overview();
-		getTester().clickLink("treasurerpanel:finances");
-		getTester().assertRenderedPage(CaretakerFinancePage.class);
+		wicket().clickLink("treasurerpanel:finances");
+		wicket().assertRenderedPage(CaretakerFinancePage.class);
 	}
 
 	@Test
 	public void testPaymentRequest() {
 		overview();
-		getTester().clickLink("treasurerpanel:paymentRequests:label:link");
-		getTester().assertRenderedPage(PaymentRequestApprovalPage.class);
+		wicket().clickLink("treasurerpanel:paymentRequests:label:link");
+		wicket().assertRenderedPage(PaymentRequestApprovalPage.class);
 	}
 
 	@Test
 	public void testSettings() {
 		overview();
-		getTester().clickLink("treasurerpanel:paypal:label:link");
-		getTester().assertRenderedPage(PaypalSettingsPage.class);
+		wicket().clickLink("treasurerpanel:paypal:label:link");
+		wicket().assertRenderedPage(PaypalSettingsPage.class);
 	}
 
 	@Test
 	public void testTransfer() {
 		overview();
-		getTester().clickLink("treasurerpanel:transfer");
-		getTester().assertRenderedPage(TreasurerTransferPage.class);
+		wicket().clickLink("treasurerpanel:transfer");
+		wicket().assertRenderedPage(TreasurerTransferPage.class);
 	}
 
 }

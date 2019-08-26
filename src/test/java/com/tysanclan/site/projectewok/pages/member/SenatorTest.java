@@ -16,49 +16,49 @@ public class SenatorTest extends AbstractClickThroughTester {
 	@Test
 	public void testTruthsayerApproval() {
 		overview();
-		getTester().clickLink("senatorpanel:truthsayers:label:link");
-		getTester().assertRenderedPage(TruthsayerVotePage.class);
+		wicket().clickLink("senatorpanel:truthsayers:label:link");
+		wicket().assertRenderedPage(TruthsayerVotePage.class);
 	}
 
 	@Test
 	public void testComplaintsPage() {
 		overview();
-		getTester().clickLink("senatorpanel:complaints:label:link");
-		getTester().assertRenderedPage(SenateTruthsayerComplaintPage.class);
+		wicket().clickLink("senatorpanel:complaints:label:link");
+		wicket().assertRenderedPage(SenateTruthsayerComplaintPage.class);
 	}
 
 	@Test
 	public void testRegulationVotes() {
 		overview();
-		getTester().clickLink("senatorpanel:regulations:label:link");
-		getTester().assertRenderedPage(RegulationModificationPage.class);
+		wicket().clickLink("senatorpanel:regulations:label:link");
+		wicket().assertRenderedPage(RegulationModificationPage.class);
 	}
 
 	@Test
 	public void testAddRegulation() {
 		overview();
-		getTester().clickLink("senatorpanel:addregulation");
-		getTester().assertRenderedPage(AddRegulationPage.class);
+		wicket().clickLink("senatorpanel:addregulation");
+		wicket().assertRenderedPage(AddRegulationPage.class);
 	}
 
 	@Test
 	public void testModifyRegulation() {
 		overview();
-		getTester().clickLink("senatorpanel:modifyregulation");
-		getTester().assertRenderedPage(ModifyRegulationPage.class);
+		wicket().clickLink("senatorpanel:modifyregulation");
+		wicket().assertRenderedPage(ModifyRegulationPage.class);
 	}
 
 	@Test
 	public void testRepealRegulation() {
 		overview();
-		getTester().clickLink("senatorpanel:repealregulation");
-		getTester().assertRenderedPage(RepealRegulationPage.class);
+		wicket().clickLink("senatorpanel:repealregulation");
+		wicket().assertRenderedPage(RepealRegulationPage.class);
 	}
 
 	@Test
 	public void testStepdown() {
 		overview();
-		getTester().clickLink("senatorpanel:stepdown");
-		getTester().assertRenderedPage(SenatorStepDownPage.class);
+		wicket().clickLink("senatorpanel:stepdown");
+		wicket().assertRenderedPage(SenatorStepDownPage.class);
 	}
 }

@@ -126,7 +126,7 @@ public abstract class TysanPageTester {
 
 	}
 
-	protected WicketTester getTester() {
+	protected WicketTester wicket() {
 		return tester;
 	}
 

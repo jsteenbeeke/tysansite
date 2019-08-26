@@ -15,28 +15,28 @@ public class HeraldTest extends AbstractClickThroughTester {
 	@Test
 	public void testPaypal() {
 		overview();
-		getTester().clickLink("heraldpanel:paypal:label:link");
-		getTester().assertRenderedPage(PaypalSettingsPage.class);
+		wicket().clickLink("heraldpanel:paypal:label:link");
+		wicket().assertRenderedPage(PaypalSettingsPage.class);
 	}
 
 	@Test
 	public void testRequestPayment() {
 		overview();
-		getTester().clickLink("heraldpanel:requestPayment");
-		getTester().assertRenderedPage(RequestPaymentPage.class);
+		wicket().clickLink("heraldpanel:requestPayment");
+		wicket().assertRenderedPage(RequestPaymentPage.class);
 	}
 
 	@Test
 	public void testTransfer() {
 		overview();
-		getTester().clickLink("heraldpanel:transfer");
-		getTester().assertRenderedPage(HeraldTransferPage.class);
+		wicket().clickLink("heraldpanel:transfer");
+		wicket().assertRenderedPage(HeraldTransferPage.class);
 	}
 
 	@Test
 	public void testMumble() {
 		overview();
-		getTester().clickLink("heraldpanel:mumble");
-		getTester().assertRenderedPage(MumbleServerAdminPage.class);
+		wicket().clickLink("heraldpanel:mumble");
+		wicket().assertRenderedPage(MumbleServerAdminPage.class);
 	}
 }
