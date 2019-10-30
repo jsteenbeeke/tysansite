@@ -62,7 +62,7 @@
     <!-- Dependency versions -->
     <hyperion.events.version>1.0-SNAPSHOT</hyperion.events.version>
     <tysan.rest.version>1.0-SNAPSHOT</tysan.rest.version>
-    <wicketstuff.version>8.3.0</wicketstuff.version>
+    <wicketstuff.version>8.6.0</wicketstuff.version>
     <wiquery.version>8.1.1</wiquery.version>
   </properties>
 

@@ -2,10 +2,10 @@ package com.tysanclan.site.projectewok.rs.services;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.jboss.resteasy.core.Dispatcher;
-import org.jboss.resteasy.core.ResourceInvoker;
 import org.jboss.resteasy.core.ResourceMethodInvoker;
 import org.jboss.resteasy.core.ResourceMethodRegistry;
+import org.jboss.resteasy.spi.Dispatcher;
+import org.jboss.resteasy.spi.ResourceInvoker;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
