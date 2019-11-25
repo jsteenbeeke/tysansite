@@ -50,6 +50,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Jeroen Steenbeeke
@@ -141,7 +142,7 @@ public class PostPanel extends Panel {
 			);
 			container.add(disney);
 
-			Integer bpm = post.getPoster().getBpm();
+			Integer bpm = Optional.ofNullable(post.getPoster()).map(User::getBpm).orElse(null);
 			container.add(new Label("bpm", bpm).setVisible(bpm != null));
 			container.add(new ContextImage("bpmicon", "images/techno-icon.gif")
 					.setVisible(bpm != null));
