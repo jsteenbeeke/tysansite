@@ -2,6 +2,7 @@ package com.tysanclan.site.projectewok.beans.impl;
 
 import com.jeroensteenbeeke.lux.TypedResult;
 import com.tysanclan.site.myriad.importformat.MIDataSet;
+import com.tysanclan.site.myriad.importformat.MIRank;
 import com.tysanclan.site.myriad.importformat.MIUser;
 import com.tysanclan.site.projectewok.beans.MyriadExportService;
 import com.tysanclan.site.projectewok.entities.User;
@@ -28,9 +29,11 @@ class MyriadExportServiceImpl implements MyriadExportService {
 
 			for (User user : userDAO.findAll()) {
 				MIUser miUser = new MIUser();
+				miUser.setId(user.getId());
 				miUser.setUsername(user.getUsername());
 				miUser.setPassword(user.getArgon2hash());
-				miUser.setLegacyHash(user.isLegacyhash());
+				miUser.setMail(user.getEMail());
+				miUser.setRank(MIRank.valueOf(user.getRank().name()));
 
 				dataSet.getUsers().add(miUser);
 			}
