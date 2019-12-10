@@ -17,6 +17,7 @@
  */
 package com.tysanclan.site.projectewok.entities;
 
+import io.vavr.control.Option;
 import org.hibernate.annotations.Cache;
 
 import javax.persistence.DiscriminatorValue;
@@ -86,4 +87,10 @@ public class GroupForum extends Forum {
 	}
 
 	// $GS$
+
+
+	@Override
+	public Option<GroupForum> asGroupForum() {
+		return Option.some(this);
+	}
 }

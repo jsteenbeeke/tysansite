@@ -19,11 +19,13 @@ package com.tysanclan.site.projectewok.entities;
 
 import com.jeroensteenbeeke.hyperion.data.BaseDomainObject;
 import com.tysanclan.site.projectewok.util.MemberUtil;
+import io.vavr.control.Option;
 import org.hibernate.annotations.Cache;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -243,4 +245,7 @@ public class Forum extends BaseDomainObject {
 
 	// $GS$
 
+	public Option<GroupForum> asGroupForum() {
+		return Option.none();
+	}
 }
