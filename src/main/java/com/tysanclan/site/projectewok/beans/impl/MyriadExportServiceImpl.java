@@ -44,6 +44,7 @@ class MyriadExportServiceImpl implements MyriadExportService {
 			dataSet.setConversations(new LinkedList<>());
 			dataSet.setGroups(new LinkedList<>());
 			dataSet.setForumCategories(new LinkedList<>());
+			dataSet.setLogItems(new LinkedList<>());
 
 			for (User user : userDAO.findAll()) {
 				MIUser miUser = new MIUser();
@@ -75,7 +76,7 @@ class MyriadExportServiceImpl implements MyriadExportService {
 													   .map(m -> {
 														   MIMessage msg = new MIMessage();
 														   msg.setTimeSent(m.getSendTime().getTime());
-														   msg.setSender(m.getSender().getId());
+														   msg.setSender(Option.of(m.getSender()).map(User::getId).getOrNull());
 														   msg.setContents(m.getContent());
 														   return msg;
 													   }).collect(Collectors.toList())
@@ -129,13 +130,21 @@ class MyriadExportServiceImpl implements MyriadExportService {
 						mif.getForumThreads().add(mit);
 					}
 
-
 					mic.getForums().add(mif);
 				}
 
 				dataSet.getForumCategories().add(mic);
 			}
 
+			for (LogItem item : logItemDAO.findAll().sortBy(LogItem::getLogTime)) {
+				MILogItem logItem = new MILogItem();
+				logItem.setMessage(item.getMessage());
+				logItem.setCategory(item.getCategory());
+				logItem.setLogTime(item.getLogTime());
+				logItem.setUser(Option.of(item.getUser()).map(User::getId).getOrNull());
+
+				dataSet.getLogItems().add(logItem);
+			}
 
 			JAXB.marshal(dataSet, export);
 			return export;
