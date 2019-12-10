@@ -81,6 +81,8 @@ class MyriadExportServiceImpl implements MyriadExportService {
 														   return msg;
 													   }).collect(Collectors.toList())
 				);
+
+				dataSet.getConversations().add(miConversation);
 			}
 
 			for (Group group : groupDAO.findAll()) {
