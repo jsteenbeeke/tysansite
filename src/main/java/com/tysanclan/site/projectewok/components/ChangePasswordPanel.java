@@ -19,8 +19,10 @@ package com.tysanclan.site.projectewok.components;
 
 import com.jeroensteenbeeke.hyperion.password.argon2.Argon2PasswordHasher;
 import com.jeroensteenbeeke.hyperion.solstice.data.ModelMaker;
+import com.tysanclan.rest.api.util.HashException;
 import com.tysanclan.site.projectewok.beans.UserService;
 import com.tysanclan.site.projectewok.entities.User;
+import com.tysanclan.site.projectewok.util.MemberUtil;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -66,11 +68,20 @@ public abstract class ChangePasswordPanel extends Panel {
 
 				boolean valid = true;
 
-				if (oldPW == null || !Argon2PasswordHasher
+				try {
+					if (oldPW == null || (!Argon2PasswordHasher
 						.checkExistingPassword(oldPW.toCharArray())
-						.withHash(u.getArgon2hash())) {
+						.withHash(u.getArgon2hash()) &&
+						!Argon2PasswordHasher
+							.checkExistingPassword(MemberUtil.legacyHashPassword(oldPW).toCharArray())
+							.withHash(u.getArgon2hash())
+					)) {
+						valid = false;
+						warn("Old password invalid");
+					}
+				} catch (HashException e) {
+					warn("Old password invalid: "+ e.getMessage());
 					valid = false;
-					warn("Old password invalid");
 				}
 
 				if (newPW1 == null || newPW2 == null || newPW1.length() < 8
