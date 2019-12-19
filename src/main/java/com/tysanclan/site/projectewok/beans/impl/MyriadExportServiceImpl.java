@@ -5,6 +5,7 @@ import com.tysanclan.site.myriad.importformat.*;
 import com.tysanclan.site.projectewok.beans.MyriadExportService;
 import com.tysanclan.site.projectewok.entities.*;
 import com.tysanclan.site.projectewok.entities.dao.*;
+import com.tysanclan.site.projectewok.entities.filter.ForumFilter;
 import io.vavr.collection.Array;
 import io.vavr.control.Option;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ class MyriadExportServiceImpl implements MyriadExportService {
 
 	@Autowired
 	private LogItemDAO logItemDAO;
+
+	@Autowired
+	private ForumDAO forumDAO;
 
 	@Override
 	public TypedResult<File> export() {
@@ -99,7 +103,7 @@ class MyriadExportServiceImpl implements MyriadExportService {
 				mic.setName(category.getName());
 				mic.setForums(new LinkedList<>());
 
-				for (Forum forum : category.getForums()) {
+				for (Forum forum : forumDAO.findByFilter(new ForumFilter().category(category).position().orderBy(true))) {
 					MIForum mif = new MIForum();
 					mif.setName(forum.getName());
 					mif.setDescription(forum.getDescription());
