@@ -16,6 +16,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -58,6 +59,13 @@ class MyriadExportServiceImpl implements MyriadExportService {
 				miUser.setMail(user.getEMail());
 				miUser.setRank(MIRank.valueOf(user.getRank().name()));
 				miUser.setGroups(new ArrayList<>());
+
+				Profile profile = user.getProfile();
+				if (profile != null) {
+					miUser.setProfile(Array.of(profile.getPublicDescription(), profile.getPrivateDescription())
+						 .filter(Objects::nonNull)
+						 .mkString("\n\n"));
+				}
 
 				for (Group group : user.getGroups()) {
 					miUser.getGroups().add(group.getId());
